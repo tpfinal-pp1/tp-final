@@ -1,6 +1,4 @@
 # Inmovil
-Sistema para generar camapañas publicitarias en redes sociales.
+Sistema para gestión inmobiliaria
 
-Manven Goals: jetty:run
-
-
+### Manven Goals: jetty:run
