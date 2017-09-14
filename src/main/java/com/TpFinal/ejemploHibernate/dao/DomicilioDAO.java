@@ -1,14 +1,13 @@
 package com.TpFinal.ejemploHibernate.dao;
 
 
-import java.util.List;
-
 import com.TpFinal.ejemploHibernate.conexion.ConexionHibernate;
 import com.TpFinal.ejemploHibernate.dto.DomicilioDTO;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.util.List;
 
 
 public class DomicilioDAO {
@@ -34,7 +33,7 @@ public class DomicilioDAO {
 	
 	public boolean addDomicilio(DomicilioDTO d) {
 		boolean ret = false;
-		Session session=ConexionHibernate.openSession();
+		Session session= ConexionHibernate.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -53,7 +52,7 @@ public class DomicilioDAO {
 	
 	public boolean deleteDomicilio(DomicilioDTO d) {
 		boolean ret = false;
-		Session session=ConexionHibernate.openSession();
+		Session session= ConexionHibernate.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
@@ -73,7 +72,7 @@ public class DomicilioDAO {
 	
 	public boolean update(DomicilioDTO original, DomicilioDTO modificacion) {
 		boolean ret = false;
-		Session session=ConexionHibernate.openSession();
+		Session session= ConexionHibernate.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();

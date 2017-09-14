@@ -1,9 +1,5 @@
 package com.TpFinal.ejemploHibernate.dao;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.TpFinal.ejemploHibernate.conexion.ConexionHibernate;
 import com.TpFinal.ejemploHibernate.dto.DomicilioDTO;
 import com.TpFinal.ejemploHibernate.dto.Identificable;
@@ -13,6 +9,9 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DAOImpl<T extends Identificable> implements DAO<T> {

@@ -1,19 +1,9 @@
 package com.TpFinal.ejemploHibernate.dto;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "personas")
@@ -37,7 +27,7 @@ public class PersonaDTO implements Identificable
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "mascotaPreferida")
-	private TipoMascota	mascotaPreferida;
+	private TipoMascota mascotaPreferida;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "idDomicilio")
@@ -47,7 +37,7 @@ public class PersonaDTO implements Identificable
 	
 
 	public PersonaDTO(String nombre, String telefono, String mail, LocalDate fechaCumpleaños,
-			TipoMascota mascotaPreferida, DomicilioDTO domicilio) {
+                      TipoMascota mascotaPreferida, DomicilioDTO domicilio) {
 		super();
 		this.nombre = nombre;
 		this.telefono = telefono;

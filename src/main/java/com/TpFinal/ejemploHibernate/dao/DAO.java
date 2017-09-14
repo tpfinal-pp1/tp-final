@@ -5,7 +5,6 @@ import com.TpFinal.ejemploHibernate.dto.Identificable;
 import java.util.List;
 
 
-
 public interface DAO<T extends Identificable> {
 	public boolean create(T entidad);
 	public List<T> readAll();
