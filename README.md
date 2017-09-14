@@ -1,4 +1,4 @@
 # Inmovil
 Sistema para gestión inmobiliaria
 
-### Manven Goals: jetty:run
+### Manven Goals: -Pproduction-mode jetty:run
