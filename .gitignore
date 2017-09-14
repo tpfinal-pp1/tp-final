@@ -18,5 +18,34 @@
 *.tar.gz
 *.rar
 
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+#ETC
+codestyles/
+_linux/
+diff.xml
+vcs.xml
+filetypes.xml
+debugger.xml
+baseRefactoring.xml
+*.DB
+*.transaction
+*.ipr
+
+
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
