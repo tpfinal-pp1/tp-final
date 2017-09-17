@@ -1,42 +1,23 @@
-package com.TpFinal.component;
-
-import java.util.Arrays;
+package com.TpFinal.view.component;
 
 import com.TpFinal.data.dto.User;
-import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEvent.CloseOpenWindowsEvent;
+import com.TpFinal.services.DashboardEvent.ProfileUpdatedEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.annotations.PropertyId;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
-import com.vaadin.server.Responsive;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.server.UserError;
+import com.vaadin.server.*;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
-import com.vaadin.ui.RadioButtonGroup;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
 import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException;
+
+import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public class ProfilePreferencesWindow extends Window {
@@ -176,7 +157,7 @@ public class ProfilePreferencesWindow extends Window {
         sexField.addStyleName("horizontal");
         details.addComponent(sexField);
 
-        Label section = new Label("Contact Info");
+        Label section = new Label("Person Info");
         section.addStyleName(ValoTheme.LABEL_H4);
         section.addStyleName(ValoTheme.LABEL_COLORED);
         details.addComponent(section);
@@ -244,7 +225,7 @@ public class ProfilePreferencesWindow extends Window {
                     success.setPosition(Position.BOTTOM_CENTER);
                     success.show(Page.getCurrent());
 
-                    DashboardEventBus.post(new DashboardEvent.ProfileUpdatedEvent());
+                    DashboardEventBus.post(new ProfileUpdatedEvent());
                     close();
                 } catch (CommitException e) {
                     Notification.show("Error while updating profile",
@@ -261,7 +242,7 @@ public class ProfilePreferencesWindow extends Window {
 
     public static void open(final User user,
             final boolean preferencesTabActive) {
-        DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
+        DashboardEventBus.post(new CloseOpenWindowsEvent());
         Window w = new ProfilePreferencesWindow(user, preferencesTabActive);
         UI.getCurrent().addWindow(w);
         w.focus();

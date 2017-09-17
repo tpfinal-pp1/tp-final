@@ -1,21 +1,17 @@
 package com.TpFinal;
 
-import java.util.Locale;
 
-import com.google.common.eventbus.Subscribe;
-import com.TpFinal.domain.User;
+import com.TpFinal.data.dao.DataProvider;
+import com.TpFinal.data.dto.User;
+import com.TpFinal.data.dummy.DummyDataProvider;
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.TpFinal.data.DataProvider;
-import com.TpFinal.data.dummy.DummyDataProvider;
-import com.TpFinal.event.DashboardEvent.BrowserResizeEvent;
-import com.TpFinal.event.DashboardEvent.CloseOpenWindowsEvent;
-import com.TpFinal.event.DashboardEvent.UserLoggedOutEvent;
-import com.TpFinal.event.DashboardEvent.UserLoginRequestedEvent;
-import com.TpFinal.event.DashboardEventBus;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
@@ -26,9 +22,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.Locale;
+
 @Theme("dashboard")
-@Widgetset("com.vaadin.demo.dashboard.DashboardWidgetSet")
-@Title("QuickTickets Dashboard")
+@Widgetset("com.TpFinal.DashboardWidgetSet")
+@Title("TpFinal")
 @SuppressWarnings("serial")
 public final class DashboardUI extends UI {
 
@@ -41,24 +39,24 @@ public final class DashboardUI extends UI {
     private final DataProvider dataProvider = new DummyDataProvider();
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
 
-    @Override
-    protected void init(final VaadinRequest request) {
-        setLocale(Locale.US);
+        @Override
+        protected void init(final VaadinRequest request) {
+            setLocale(Locale.US);
 
-        DashboardEventBus.register(this);
-        Responsive.makeResponsive(this);
-        addStyleName(ValoTheme.UI_WITH_MENU);
+            DashboardEventBus.register(this);
+            Responsive.makeResponsive(this);
+            addStyleName(ValoTheme.UI_WITH_MENU);
 
-        updateContent();
+            updateContent();
 
-        // Some views need to be aware of browser resize events so a
-        // BrowserResizeEvent gets fired to the event bus on every occasion.
+            // Some views need to be aware of browser resize events so a
+            // BrowserResizeEvent gets fired to the event bus on every occasion.
         Page.getCurrent().addBrowserWindowResizeListener(
                 new BrowserWindowResizeListener() {
                     @Override
                     public void browserWindowResized(
                             final BrowserWindowResizeEvent event) {
-                        DashboardEventBus.post(new BrowserResizeEvent());
+                        DashboardEventBus.post(new DashboardEvent.BrowserResizeEvent());
                     }
                 });
     }
@@ -83,7 +81,7 @@ public final class DashboardUI extends UI {
     }
 
     @Subscribe
-    public void userLoginRequested(final UserLoginRequestedEvent event) {
+    public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
         User user = getDataProvider().authenticate(event.getUserName(),
                 event.getPassword());
         VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
@@ -91,7 +89,7 @@ public final class DashboardUI extends UI {
     }
 
     @Subscribe
-    public void userLoggedOut(final UserLoggedOutEvent event) {
+    public void userLoggedOut(final DashboardEvent.UserLoggedOutEvent event) {
         // When the user logs out, current VaadinSession gets closed and the
         // page gets reloaded on the login screen. Do notice the this doesn't
         // invalidate the current HttpSession.
@@ -100,7 +98,7 @@ public final class DashboardUI extends UI {
     }
 
     @Subscribe
-    public void closeOpenWindows(final CloseOpenWindowsEvent event) {
+    public void closeOpenWindows(final DashboardEvent.CloseOpenWindowsEvent event) {
         for (Window window : getWindows()) {
             window.close();
         }

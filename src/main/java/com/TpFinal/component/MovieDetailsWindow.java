@@ -3,9 +3,10 @@ package com.TpFinal.component;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.TpFinal.domain.Movie;
-import com.TpFinal.event.DashboardEvent.CloseOpenWindowsEvent;
-import com.TpFinal.event.DashboardEventBus;
+import com.TpFinal.data.dto.Movie;
+
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.ExternalResource;
 import com.vaadin.server.Responsive;
@@ -167,7 +168,7 @@ public final class MovieDetailsWindow extends Window {
 
     public static void open(final Movie movie, final Date startTime,
             final Date endTime) {
-        DashboardEventBus.post(new CloseOpenWindowsEvent());
+        DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
         Window w = new MovieDetailsWindow(movie, startTime, endTime);
         UI.getCurrent().addWindow(w);
         w.focus();

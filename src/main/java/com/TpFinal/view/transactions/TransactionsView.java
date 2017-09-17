@@ -10,14 +10,15 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.view.DashboardViewType;
 import com.google.common.eventbus.Subscribe;
 import com.TpFinal.DashboardUI;
-import com.TpFinal.domain.Transaction;
+import com.TpFinal.data.dto.Transaction;
 import com.vaadin.data.provider.ListDataProvider;
-import com.TpFinal.event.DashboardEvent.BrowserResizeEvent;
-import com.TpFinal.event.DashboardEvent.TransactionReportEvent;
-import com.TpFinal.event.DashboardEventBus;
-import com.TpFinal.view.DashboardViewType;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.event.ShortcutListener;
 import com.vaadin.navigator.View;
@@ -72,7 +73,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        DashboardEventBus.unregister(this);
+        com.TpFinal.services.DashboardEventBus.unregister(this);
     }
 
     private Component buildToolbar() {
@@ -204,7 +205,7 @@ public final class TransactionsView extends VerticalLayout implements View {
     }
 
     @Subscribe
-    public void browserResized(final BrowserResizeEvent event) {
+    public void browserResized(final DashboardEvent.BrowserResizeEvent event) {
         // Some columns are collapsed when browser window width gets small
         // enough to make the table fit better.
 
@@ -220,7 +221,7 @@ public final class TransactionsView extends VerticalLayout implements View {
         if (!singleSelect.isEmpty()) {
             UI.getCurrent().getNavigator()
                     .navigateTo(DashboardViewType.REPORTS.getViewName());
-            DashboardEventBus.post(new TransactionReportEvent(
+          DashboardEventBus.post(new DashboardEvent.TransactionReportEvent(
                     Collections.singletonList(singleSelect.getValue())));
         }
     }

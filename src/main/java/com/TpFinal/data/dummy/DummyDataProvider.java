@@ -1,48 +1,31 @@
 package com.TpFinal.data.dummy;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.URL;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import com.TpFinal.data.dao.DataProvider;
+import com.TpFinal.data.dto.*;
 
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.*;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.TpFinal.data.DataProvider;
-import com.TpFinal.domain.DashboardNotification;
-import com.TpFinal.domain.Movie;
-import com.TpFinal.domain.MovieRevenue;
-import com.TpFinal.domain.Transaction;
-import com.TpFinal.domain.User;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+/**
+ * A dummy implementation for the backend API.
+ */
+/**
+ * A dummy implementation for the backend API.
+ */
 /**
  * A dummy implementation for the backend API.
  */
@@ -111,7 +94,7 @@ public class DummyDataProvider implements DataProvider {
         try {
             if (cache.exists()
                     && System.currentTimeMillis() < cache.lastModified()
-                            + (1000 * 60 * 60 * 24)) {
+                    + (1000 * 60 * 60 * 24)) {
                 // Use cache if it's under 24h old
                 json = readJsonFromFile(cache);
             } else {
@@ -519,7 +502,7 @@ public class DummyDataProvider implements DataProvider {
 
     @Override
     public Collection<Transaction> getTransactionsBetween(final Date startDate,
-            final Date endDate) {
+                                                          final Date endDate) {
         return Collections2.filter(transactions.values(),
                 new Predicate<Transaction>() {
                     @Override

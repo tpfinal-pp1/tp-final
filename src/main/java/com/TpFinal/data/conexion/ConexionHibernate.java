@@ -1,4 +1,4 @@
-package com.TpFinal.ejemploHibernate.conexion;
+package com.TpFinal.data.conexion;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

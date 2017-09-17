@@ -27,4 +27,10 @@
 
 
     
+
+    <inherits name="com.TpFinal.DashboardWidgetSet" />
+
+    <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
+
+
 </module>

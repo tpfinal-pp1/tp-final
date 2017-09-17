@@ -1,4 +1,4 @@
-package com.TpFinal.ejemploHibernate.dto;
+package com.TpFinal.data.dto;
 
 /**
  * 
@@ -6,6 +6,6 @@ package com.TpFinal.ejemploHibernate.dto;
  *
  */
 public interface Identificable {
-	public Integer getId();
+	public Long getId();
 
 }

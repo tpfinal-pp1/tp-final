@@ -1,44 +1,22 @@
 package com.TpFinal.view;
 
-import java.util.Collection;
-
-import com.google.common.eventbus.Subscribe;
 import com.TpFinal.DashboardUI;
-import com.TpFinal.component.ProfilePreferencesWindow;
-import com.TpFinal.domain.Transaction;
-import com.TpFinal.domain.User;
-import com.TpFinal.event.DashboardEvent.NotificationsCountUpdatedEvent;
-import com.TpFinal.event.DashboardEvent.PostViewChangeEvent;
-import com.TpFinal.event.DashboardEvent.ProfileUpdatedEvent;
-import com.TpFinal.event.DashboardEvent.ReportsCountUpdatedEvent;
-import com.TpFinal.event.DashboardEvent.TransactionReportEvent;
-import com.TpFinal.event.DashboardEvent.UserLoggedOutEvent;
-import com.TpFinal.event.DashboardEventBus;
-import com.vaadin.event.dd.DragAndDropEvent;
-import com.vaadin.event.dd.DropHandler;
-import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
+import com.TpFinal.view.component.ProfilePreferencesWindow;
+import com.TpFinal.data.dto.User;
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.view.dashboard.DashboardView;
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.DragAndDropWrapper;
-import com.vaadin.ui.DragAndDropWrapper.DragStartMode;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.ui.AbstractSelect.AcceptItem;
-import com.vaadin.v7.ui.Table;
 
 /**
  * A responsive menu component providing user information and the controls for
@@ -85,7 +63,7 @@ public final class DashboardMenu extends CustomComponent {
     }
 
     private Component buildTitle() {
-        Label logo = new Label("QuickTickets <strong>Dashboard</strong>",
+        Label logo = new Label("Sistema <strong>Inmobi</strong>",
                 ContentMode.HTML);
         logo.setSizeUndefined();
         HorizontalLayout logoWrapper = new HorizontalLayout(logo);
@@ -107,23 +85,23 @@ public final class DashboardMenu extends CustomComponent {
         settingsItem = settings.addItem("",
                 new ThemeResource("img/profile-pic-300px.jpg"), null);
         updateUserName(null);
-        settingsItem.addItem("Edit Profile", new Command() {
+        settingsItem.addItem("Editar Perfil", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
                 ProfilePreferencesWindow.open(user, false);
             }
         });
-        settingsItem.addItem("Preferences", new Command() {
+        settingsItem.addItem("Preferencias", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
                 ProfilePreferencesWindow.open(user, true);
             }
         });
         settingsItem.addSeparator();
-        settingsItem.addItem("Sign Out", new Command() {
+        settingsItem.addItem("Cerrar Sesion", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
-                DashboardEventBus.post(new UserLoggedOutEvent());
+                DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());
             }
         });
         return settings;
@@ -155,45 +133,16 @@ public final class DashboardMenu extends CustomComponent {
         for (final DashboardViewType view : DashboardViewType.values()) {
             Component menuItemComponent = new ValoMenuItemButton(view);
 
-            if (view == DashboardViewType.REPORTS) {
-                // Add drop target to reports button
-                DragAndDropWrapper reports = new DragAndDropWrapper(
-                        menuItemComponent);
-                reports.setSizeUndefined();
-                reports.setDragStartMode(DragStartMode.NONE);
-                reports.setDropHandler(new DropHandler() {
 
-                    @Override
-                    public void drop(final DragAndDropEvent event) {
-                        UI.getCurrent().getNavigator().navigateTo(
-                                DashboardViewType.REPORTS.getViewName());
-                        Table table = (Table) event.getTransferable()
-                                .getSourceComponent();
-                        DashboardEventBus.post(new TransactionReportEvent(
-                                (Collection<Transaction>) table.getValue()));
-                    }
 
-                    @Override
-                    public AcceptCriterion getAcceptCriterion() {
-                        return AcceptItem.ALL;
-                    }
-
-                });
-                menuItemComponent = reports;
-            }
-
-            if (view == DashboardViewType.DASHBOARD) {
+            if (view == DashboardViewType.INICIO) {
                 notificationsBadge = new Label();
                 notificationsBadge.setId(NOTIFICATIONS_BADGE_ID);
                 menuItemComponent = buildBadgeWrapper(menuItemComponent,
                         notificationsBadge);
             }
-            if (view == DashboardViewType.REPORTS) {
-                reportsBadge = new Label();
-                reportsBadge.setId(REPORTS_BADGE_ID);
-                menuItemComponent = buildBadgeWrapper(menuItemComponent,
-                        reportsBadge);
-            }
+
+
 
             menuItemsLayout.addComponent(menuItemComponent);
         }
@@ -220,14 +169,14 @@ public final class DashboardMenu extends CustomComponent {
     }
 
     @Subscribe
-    public void postViewChange(final PostViewChangeEvent event) {
+    public void postViewChange(final DashboardEvent.PostViewChangeEvent event) {
         // After a successful view change the menu can be hidden in mobile view.
         getCompositionRoot().removeStyleName(STYLE_VISIBLE);
     }
 
     @Subscribe
     public void updateNotificationsCount(
-            final NotificationsCountUpdatedEvent event) {
+            final DashboardEvent.NotificationsCountUpdatedEvent event) {
         int unreadNotificationsCount = DashboardUI.getDataProvider()
                 .getUnreadNotificationsCount();
         notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
@@ -235,13 +184,13 @@ public final class DashboardMenu extends CustomComponent {
     }
 
     @Subscribe
-    public void updateReportsCount(final ReportsCountUpdatedEvent event) {
+    public void updateReportsCount(final DashboardEvent.ReportsCountUpdatedEvent event) {
         reportsBadge.setValue(String.valueOf(event.getCount()));
         reportsBadge.setVisible(event.getCount() > 0);
     }
 
     @Subscribe
-    public void updateUserName(final ProfileUpdatedEvent event) {
+    public void updateUserName(final DashboardEvent.ProfileUpdatedEvent event) {
         User user = getCurrentUser();
         settingsItem.setText(user.getFirstName() + " " + user.getLastName());
     }
@@ -270,7 +219,7 @@ public final class DashboardMenu extends CustomComponent {
         }
 
         @Subscribe
-        public void postViewChange(final PostViewChangeEvent event) {
+        public void postViewChange(final DashboardEvent.PostViewChangeEvent event) {
             removeStyleName(STYLE_SELECTED);
             if (event.getView() == view) {
                 addStyleName(STYLE_SELECTED);

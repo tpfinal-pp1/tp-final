@@ -1,9 +1,10 @@
-package com.TpFinal.event;
+package com.TpFinal.services;
+
+
+import com.TpFinal.data.dto.Transaction;
+import com.TpFinal.view.DashboardViewType;
 
 import java.util.Collection;
-
-import com.TpFinal.domain.Transaction;
-import com.TpFinal.view.DashboardViewType;
 
 /*
  * Event bus events used in Dashboard are listed here as inner classes.

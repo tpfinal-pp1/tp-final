@@ -5,13 +5,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
 import com.TpFinal.DashboardUI;
 import com.TpFinal.component.MovieDetailsWindow;
-import com.TpFinal.domain.Movie;
-import com.TpFinal.domain.Transaction;
-import com.TpFinal.event.DashboardEvent;
-import com.TpFinal.event.DashboardEventBus;
+import com.TpFinal.data.dto.Movie;
+import com.TpFinal.data.dto.Transaction;
+
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.navigator.View;

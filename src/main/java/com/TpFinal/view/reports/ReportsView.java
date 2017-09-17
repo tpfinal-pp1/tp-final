@@ -4,10 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
-import com.TpFinal.event.DashboardEvent.ReportsCountUpdatedEvent;
-import com.TpFinal.event.DashboardEvent.TransactionReportEvent;
-import com.TpFinal.event.DashboardEventBus;
+
 import com.TpFinal.view.reports.ReportEditor.PaletteItemType;
 import com.TpFinal.view.reports.ReportEditor.ReportEditorListener;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -167,13 +167,13 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             reportEditor.addWidget(PaletteItemType.TRANSACTIONS, prefillData);
         }
 
-        DashboardEventBus.post(new ReportsCountUpdatedEvent(
+        DashboardEventBus.post(new DashboardEvent.ReportsCountUpdatedEvent(
                 getComponentCount() - 1));
         setSelectedTab(getComponentCount() - 1);
     }
 
     @Subscribe
-    public void createTransactionReport(final TransactionReportEvent event) {
+    public void createTransactionReport(final DashboardEvent.TransactionReportEvent event) {
         addReport(ReportType.TRANSACTIONS, event.getTransactions());
     }
 
@@ -204,7 +204,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             public void buttonClick(final ClickEvent event) {
                 confirmDialog.close();
                 removeComponent(tabContent);
-                DashboardEventBus.post(new ReportsCountUpdatedEvent(
+                DashboardEventBus.post(new DashboardEvent.ReportsCountUpdatedEvent(
                         getComponentCount() - 1));
                 Notification
                         .show("The report was saved as a draft",
@@ -219,7 +219,7 @@ public final class ReportsView extends TabSheet implements View, CloseHandler,
             public void buttonClick(final ClickEvent event) {
                 confirmDialog.close();
                 removeComponent(tabContent);
-                DashboardEventBus.post(new ReportsCountUpdatedEvent(
+                DashboardEventBus.post(new DashboardEvent.ReportsCountUpdatedEvent(
                         getComponentCount() - 1));
             }
         });

@@ -1,4 +1,4 @@
-package com.TpFinal.domain;
+package com.TpFinal.data.dto;
 
 public final class User {
     private String role;

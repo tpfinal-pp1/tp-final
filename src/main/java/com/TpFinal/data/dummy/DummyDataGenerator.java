@@ -1,10 +1,11 @@
 package com.TpFinal.data.dummy;
 
+import com.TpFinal.data.dto.DashboardNotification;
+
+
 import java.util.Arrays;
 import java.util.Collection;
 
-
-import com.TpFinal.domain.DashboardNotification;
 
 public abstract class DummyDataGenerator {
 

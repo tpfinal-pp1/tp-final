@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import com.TpFinal.component.TopTenMoviesTable;
 import com.TpFinal.component.TransactionsListing;
-import com.TpFinal.domain.Transaction;
+import com.TpFinal.data.dto.Transaction;
 import com.TpFinal.component.InlineTextEditor;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;

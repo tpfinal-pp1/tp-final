@@ -1,16 +1,17 @@
 package com.TpFinal;
 
-import com.TpFinal.event.DashboardEvent;
-import com.TpFinal.event.DashboardEventBus;
+import com.TpFinal.services.DashboardEvent.BrowserResizeEvent;
+import com.TpFinal.services.DashboardEvent.CloseOpenWindowsEvent;
+import com.TpFinal.services.DashboardEvent.PostViewChangeEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.DashboardViewType;
-import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
-
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
+import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
 @SuppressWarnings("serial")
 public class DashboardNavigator extends Navigator {
@@ -19,7 +20,7 @@ public class DashboardNavigator extends Navigator {
     private static final String TRACKER_ID = null;// "UA-658457-6";
     private GoogleAnalyticsTracker tracker;
 
-    private static final DashboardViewType ERROR_VIEW = DashboardViewType.DASHBOARD;
+    private static final DashboardViewType ERROR_VIEW = DashboardViewType.INICIO;
     private ViewProvider errorViewProvider;
 
     public DashboardNavigator(final ComponentContainer container) {
@@ -49,20 +50,20 @@ public class DashboardNavigator extends Navigator {
             public boolean beforeViewChange(final ViewChangeEvent event) {
                 // Since there's no conditions in switching between the views
                 // we can always return true.
-                return true;
-            }
+                    return true;
+                }
 
-            @Override
-            public void afterViewChange(final ViewChangeEvent event) {
-                DashboardViewType view = DashboardViewType.getByViewName(event
-                        .getViewName());
-                // Appropriate events get fired after the view is changed.
-                DashboardEventBus.post(new DashboardEvent.PostViewChangeEvent(view));
-                DashboardEventBus.post(new DashboardEvent.BrowserResizeEvent());
-                DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
+                @Override
+                public void afterViewChange(final ViewChangeEvent event) {
+                    DashboardViewType view = DashboardViewType.getByViewName(event
+                            .getViewName());
+                    // Appropriate events get fired after the view is changed.
+                    DashboardEventBus.post(new PostViewChangeEvent(view));
+                    DashboardEventBus.post(new BrowserResizeEvent());
+                    DashboardEventBus.post(new CloseOpenWindowsEvent());
 
-                if (tracker != null) {
-                    // The view change is submitted as a pageview for GA tracker
+                    if (tracker != null) {
+                        // The view change is submitted as a pageview for GA tracker
                     tracker.trackPageview("/dashboard/" + event.getViewName());
                 }
             }

@@ -1,4 +1,4 @@
-package com.TpFinal.event;
+package com.TpFinal.services;
 
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.SubscriberExceptionContext;

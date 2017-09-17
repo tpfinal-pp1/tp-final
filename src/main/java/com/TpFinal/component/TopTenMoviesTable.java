@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.domain.MovieRevenue;
+import com.TpFinal.data.dto.MovieRevenue;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.util.BeanItemContainer;

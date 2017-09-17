@@ -1,4 +1,4 @@
-package com.TpFinal.domain;
+package com.TpFinal.data.dto;
 
 import java.util.Date;
 

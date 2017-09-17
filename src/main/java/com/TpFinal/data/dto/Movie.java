@@ -1,8 +1,8 @@
-package com.TpFinal.domain;
+package com.TpFinal.data.dto;
 
 import java.util.Date;
 
-public final class Movie {
+public final class    Movie {
     private long id;
     private String title;
     private String synopsis;

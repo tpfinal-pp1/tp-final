@@ -1,23 +1,29 @@
-package com.TpFinal.ejemploHibernate.dao;
+package com.TpFinal.data.dao;
 
-import com.TpFinal.ejemploHibernate.conexion.ConexionHibernate;
-import com.TpFinal.ejemploHibernate.dto.DomicilioDTO;
-import com.TpFinal.ejemploHibernate.dto.Identificable;
-import com.TpFinal.ejemploHibernate.dto.PersonaDTO;
-import com.TpFinal.ejemploHibernate.dto.TipoMascota;
+
+
+import com.TpFinal.data.dto.DashboardNotification;
+import com.TpFinal.data.dto.Person;
+import com.TpFinal.data.dto.User;
+import com.TpFinal.data.conexion.ConexionHibernate;
+
+import com.TpFinal.data.dto.Identificable;
+
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 
 public class DAOImpl<T extends Identificable> implements DAO<T> {
 	private Class<T> clase;
 
-	public DAOImpl() {
+	private DAOImpl() {
+
 	};
 
 	public DAOImpl(Class<T> clase) {
@@ -42,6 +48,8 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		}
 		return resultado;
 	}
+
+
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -81,6 +89,29 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		return ret;
 	}
 
+
+
+	@Override
+	public boolean save(T entidad) {
+		if(exists(entidad)){
+			return update(entidad);
+		}
+		return create(entidad);
+
+	}
+
+
+	public boolean exists(T entidad){
+		if(entidad.getId()==null){
+			return false;
+		}
+		T ret= findById(entidad.getId());
+		if(ret!=null){
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public boolean delete(T entidad) {
 		boolean ret = false;
@@ -107,7 +138,7 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 	}
 
 	@Override
-	public T findById(Integer id) {
+	public T findById(Long id) {
 		T entidad = null;
 		Session session = ConexionHibernate.openSession();
 		Transaction tx = null;
@@ -124,20 +155,34 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		return entidad;
 	}
 
+	@Override
+	public User authenticate(String userName, String password) {
+		return null;
+	}
+
+	@Override
+	public int getUnreadNotificationsCount() {
+		return 0;
+	}
+
+	@Override
+	public Collection<DashboardNotification> getNotifications() {
+		return null;
+	}
+
 	public static void main(String[] args) {
-		DAOImpl<PersonaDTO> dao = new DAOImpl<>(PersonaDTO.class);
+		DAOImpl<Person> dao = new DAOImpl<>(Person.class);
 		System.out.println(dao.getClaseEntidad().getSimpleName());
-		PersonaDTO p = new PersonaDTO("Persona a borrar", "1233 4567", "unmail@mail.com", LocalDate.now(),
-				TipoMascota.Perro, new DomicilioDTO("Una calle", 123, 1, "algo"));
-		PersonaDTO p2 = new PersonaDTO("Persona a modificar", "0000 0000", "unmail@mail.com", LocalDate.now(),
-				TipoMascota.Gato, new DomicilioDTO("Una calle", 123, 1, "algo"));
+		Person p = new Person();
+
+
 		dao.create(p);
-		dao.create(p2);
+
 		dao.readAll().forEach(System.out::println);
 		dao.delete(p);
 
-		p2.setNombre("Nombre Modificado");
-		dao.update(p2);
+		p.setFirstName("Nombre Modificado");
+		dao.update(p);
 		dao.readAll().forEach(System.out::println);
 		ConexionHibernate.close();
 	}
