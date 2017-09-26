@@ -39,6 +39,7 @@ public final class DashboardUI extends UI {
     private final DataProvider dataProvider = new DummyDataProvider();
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
 
+    
         @Override
         protected void init(final VaadinRequest request) {
             setLocale(Locale.US);
