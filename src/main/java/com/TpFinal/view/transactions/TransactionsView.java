@@ -59,7 +59,6 @@ public final class TransactionsView extends VerticalLayout implements View {
         setMargin(false);
         setSpacing(false);
         DashboardEventBus.register(this);
-
         addComponent(buildToolbar());
 
         grid = buildGrid();
