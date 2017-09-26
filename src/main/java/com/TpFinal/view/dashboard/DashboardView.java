@@ -21,6 +21,10 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -116,7 +120,17 @@ public final class DashboardView extends Panel implements View{
 
     private Component buildNotes() {
         TextArea notes = new TextArea("Notas");
-        notes.setValue("Notas:\n-Una nota ");
+        //notes.setValue("Notas:\n-Una nota ");
+        String text="";
+        try {
+            for (String line : Files.readAllLines(Paths.get("README.md"))) {
+                text=text+"\n"+line;
+            }
+            notes.setValue(text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         notes.setSizeFull();
         notes.addStyleName(ValoTheme.TEXTAREA_BORDERLESS);
         Component panel = createContentWrapper(notes);
