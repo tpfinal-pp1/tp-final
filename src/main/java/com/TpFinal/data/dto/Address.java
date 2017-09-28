@@ -46,7 +46,8 @@ public class Address implements Identificable {
 		this.addressID =id;
 	}
 
-	
+	public Address() {
+	}
 
 
 	@Override

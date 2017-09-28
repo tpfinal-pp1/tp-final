@@ -1,11 +1,10 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.view.component.ProfilePreferencesWindow;
+import com.TpFinal.component.ProfilePreferencesWindow;
 import com.TpFinal.data.dto.User;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.view.dashboard.DashboardView;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.ThemeResource;
