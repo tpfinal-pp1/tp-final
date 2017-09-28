@@ -1,15 +1,15 @@
 package com.TpFinal.data.dto;
 
-public class Persona {
+public class PersonaDTO {
 	
 	private String nombre;
 	private String apellido;
 	private String mail;
 	private String telefono;
 	
-	public Persona() {}
+	public PersonaDTO() {}
 	
-	public Persona(String nombre, String apellido, String mail, String telefono) {
+	public PersonaDTO(String nombre, String apellido, String mail, String telefono) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.mail = mail;
