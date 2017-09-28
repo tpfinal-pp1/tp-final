@@ -1,9 +1,8 @@
-package com.TpFinal.data.dummy;
+package com.TpFinal.data.dao.dummy;
 
-import com.TpFinal.data.dao.DataProvider;
+import com.TpFinal.data.dao.dummy.DataProvider;
 import com.TpFinal.data.dto.*;
 
-import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.gson.JsonArray;
@@ -39,7 +38,6 @@ public class DummyDataProvider implements DataProvider {
     private static Date lastDataUpdate;
     private static Collection<Movie> movies;
     private static Multimap<Long, Transaction> transactions;
-    private static Multimap<Long, MovieRevenue> revenue;
 
     private static Random rand = new Random();
 
@@ -62,7 +60,7 @@ public class DummyDataProvider implements DataProvider {
         countryToCities = loadTheaterData();
         movies = loadMoviesData();
         transactions = generateTransactionsData();
-        revenue = countRevenues();
+
     }
 
     /**
@@ -396,49 +394,9 @@ public class DummyDataProvider implements DataProvider {
                 Math.min(count, transactions.values().size() - 1));
     }
 
-    private Multimap<Long, MovieRevenue> countRevenues() {
-        Multimap<Long, MovieRevenue> result = MultimapBuilder.hashKeys()
-                .arrayListValues().build();
-        for (Movie movie : movies) {
-            result.putAll(movie.getId(), countMovieRevenue(movie));
-        }
-        return result;
-    }
 
-    private Collection<MovieRevenue> countMovieRevenue(Movie movie) {
-        Map<Date, Double> dailyIncome = new HashMap<Date, Double>();
-        for (Transaction transaction : transactions.get(movie.getId())) {
-            Date day = getDay(transaction.getTime());
 
-            Double currentValue = dailyIncome.get(day);
-            if (currentValue == null) {
-                currentValue = 0.0;
-            }
-            dailyIncome.put(day, currentValue + transaction.getPrice());
-        }
 
-        Collection<MovieRevenue> result = new ArrayList<MovieRevenue>();
-
-        List<Date> dates = new ArrayList<Date>(dailyIncome.keySet());
-        Collections.sort(dates);
-
-        double revenueSoFar = 0.0;
-        for (Date date : dates) {
-            MovieRevenue movieRevenue = new MovieRevenue();
-            movieRevenue.setTimestamp(date);
-            revenueSoFar += dailyIncome.get(date);
-            movieRevenue.setRevenue(revenueSoFar);
-            movieRevenue.setTitle(movie.getTitle());
-            result.add(movieRevenue);
-        }
-
-        return result;
-    }
-
-    @Override
-    public Collection<MovieRevenue> getDailyRevenuesByMovie(long id) {
-        return Collections.unmodifiableCollection(revenue.get(id));
-    }
 
     private Date getDay(Date time) {
         Calendar cal = Calendar.getInstance();
@@ -450,17 +408,7 @@ public class DummyDataProvider implements DataProvider {
         return cal.getTime();
     }
 
-    @Override
-    public Collection<MovieRevenue> getTotalMovieRevenues() {
-        return Collections2.transform(movies,
-                new Function<Movie, MovieRevenue>() {
-                    @Override
-                    public MovieRevenue apply(Movie input) {
-                        return Iterables.getLast(getDailyRevenuesByMovie(input
-                                .getId()));
-                    }
-                });
-    }
+
 
     @Override
     public int getUnreadNotificationsCount() {
@@ -481,14 +429,6 @@ public class DummyDataProvider implements DataProvider {
         return Collections.unmodifiableCollection(notifications);
     }
 
-    @Override
-    public double getTotalSum() {
-        double result = 0;
-        for (Transaction transaction : transactions.values()) {
-            result += transaction.getPrice();
-        }
-        return result;
-    }
 
     @Override
     public Movie getMovie(final long movieId) {

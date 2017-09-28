@@ -4,22 +4,21 @@ package com.TpFinal.view.adressbook;
 import com.TpFinal.data.dto.Person;
 import com.TpFinal.services.ContactService;
 import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.view.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.server.Responsive;
+import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.data.util.BeanItemContainer;
-import com.vaadin.v7.ui.Grid;
-import com.vaadin.v7.ui.TextField;
+import java.util.List;
 
 /* User Interface written in Java.
  *
@@ -31,7 +30,7 @@ import com.vaadin.v7.ui.TextField;
 @Title("Addressbook")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-public class AddressbookView extends VerticalLayout implements View {
+public class AddressbookView extends DefaultLayout implements View {
 
     /*
      * Hundreds of widgets. Vaadin's user interface components are just Java
@@ -41,42 +40,30 @@ public class AddressbookView extends VerticalLayout implements View {
      * vaadin.com/directory.
      */
     TextField filter = new TextField();
-    Grid contactList = new Grid();
-    Button newContact = new Button("Nuevo");
+    private Grid<Person> grid = new Grid<>(Person.class);
+    Button newItem = new Button("Nuevo");
+    Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
 
 
 
+    HorizontalLayout mainLayout;
     // ContactForm is an example of a custom component class
-    ContactForm contactForm = new ContactForm(this);
+    ContactForm personForm = new ContactForm(this);
+   private boolean isonMobile=false;
 
     // ContactService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
     ContactService service = ContactService.getService();
 
-    /*
-     * The "Main method".
-     *
-     * This is the entry point method executed to initialize and configure the
-     * visible user interface. Executed on every browser reload because a new
-     * instance is created for each web page loaded.
-     */
+
     public AddressbookView(){
         super();
-        configureComponents();
         buildLayout();
-        setMargin(true);
-        newContact.setStyleName(ValoTheme.BUTTON_PRIMARY);
-
-        DashboardEventBus.register(this);
-        TabSheet tabs = new TabSheet();
-        setSizeFull();
-        addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
-
-
-
-
-
+        configureComponents();
+        newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        filter.setIcon(VaadinIcons.SEARCH);
+        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
     }
 
 
@@ -91,26 +78,41 @@ public class AddressbookView extends VerticalLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-        newContact.addClickListener(e -> contactForm.edit(new Person()));
+        newItem.addClickListener(e -> personForm.setPerson(new Person()));
 
-        filter.setInputPrompt("Filtrar...");
-        filter.addTextChangeListener(e -> refreshContacts(e.getText()));
+        filter.addValueChangeListener(e -> updateList());
+        filter.setValueChangeMode(ValueChangeMode.LAZY);
 
-        contactList
-                .setContainerDataSource(new BeanItemContainer<>(Person.class));
+        filter.setPlaceholder("Filtrar");
+        filter.addValueChangeListener(e -> updateList());
+        clearFilterTextBtn.setDescription("Limpiar filtro");
+        clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
-        contactList.removeAllColumns();
-        contactList.addColumn("firstName");
-        contactList.addColumn("lastName");
-        contactList.addColumn("DNI");
-        contactList.getColumn("firstName").setHeaderCaption("Nombre");
-        contactList.getColumn("lastName").setHeaderCaption("Apellido");
-        contactList.getColumn("DNI").setHeaderCaption("DNI");
-        contactList.setColumnOrder("firstName", "lastName", "DNI");
-        contactList.setSelectionMode(Grid.SelectionMode.SINGLE);
-        contactList.addSelectionListener(
-                e -> contactForm.edit((Person) contactList.getSelectedRow()));
-        refreshContacts();
+        newItem.addClickListener(e -> {
+            grid.asSingleSelect().clear();
+            personForm.setPerson(new Person());
+        });
+
+
+        grid.setColumns("firstName", "lastName", "DNI");
+        grid.getColumn("DNI").setCaption("DNI");
+        grid.getColumn("firstName").setCaption("Nombre");
+        grid.getColumn("lastName").setCaption("Apellido ");
+
+
+        Responsive.makeResponsive(this);
+        grid.asSingleSelect().addValueChangeListener(event -> {
+            if (event.getValue() == null) {
+                personForm.setVisible(false);
+            } else {
+                personForm.setPerson(event.getValue());
+            }
+        });
+
+       // grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+
+
+        updateList();
     }
 
     /*
@@ -125,24 +127,26 @@ public class AddressbookView extends VerticalLayout implements View {
      * choose to setup layout declaratively with Vaadin Designer, CSS and HTML.
      */
 
+    public void setComponentsVisible(boolean b){
+        newItem.setVisible(b);
+        filter.setVisible(b);
+        //clearFilterTextBtn.setVisible(b);
+        if(isonMobile)
+            grid.setVisible(b);
 
+    }
 
     private void buildLayout() {
-        HorizontalLayout actions = new HorizontalLayout(filter, newContact);
-        actions.setWidth("100%");
-        filter.setWidth("100%");
-        actions.setExpandRatio(filter, 1);
+        CssLayout filtering = new CssLayout();
+        filtering.addComponents(filter, clearFilterTextBtn);
+        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        VerticalLayout left = new VerticalLayout(actions, contactList);
-        left.setSizeFull();
-        contactList.setSizeFull();
-        left.setExpandRatio(contactList, 1);
-
-        HorizontalLayout mainLayout = new HorizontalLayout(left, contactForm);
+        addComponent(buildToolbar("Personas",filtering, newItem));
+        grid.setSizeFull();
+        mainLayout = new HorizontalLayout(grid, personForm);
         mainLayout.setSizeFull();
-        mainLayout.setExpandRatio(left, 1);
         addComponent(mainLayout);
-
+        this.setExpandRatio(mainLayout, 1);
 
     }
 
@@ -154,32 +158,58 @@ public class AddressbookView extends VerticalLayout implements View {
      * your code into classes to easier maintenance. With Vaadin you can follow
      * MVC, MVP or any other design pattern you choose.
      */
-    void refreshContacts() {
-        refreshContacts(filter.getValue());
+
+        public void updateList() {
+            List<Person> customers = service.findAll(filter.getValue());
+            grid.setItems(customers);
+
     }
 
-    private void refreshContacts(String stringFilter) {
-        contactList.setContainerDataSource(new BeanItemContainer<>(
-                Person.class, service.findAll(stringFilter)));
-        contactForm.setVisible(false);
+    public boolean isIsonMobile() {
+        return isonMobile;
     }
+
+    public void ClearFilterBtnAction(){
+            if(this.personForm.isVisible()){
+                newItem.focus();
+                personForm.cancel();
+
+            }
+            filter.clear();
+    }
+
+
 
     /*
+
      * Deployed as a Servlet or Portlet.
      *
      * You can specify additional servlet parameters like the URI and UI class
      * name and turn on production mode when you have finished developing the
      * application.
      */
+    @Override
+    public void detach() {
+        super.detach();
+        // A new instance of TransactionsView is created every time it's
+        // navigated to so we'll need to clean up references to it on detach.
+        com.TpFinal.services.DashboardEventBus.unregister(this);
+    }
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-            //calendar.setEndDate(calendar.getStartDate());
-        }
+            isonMobile=true;
+    }
+        else{
+        isonMobile=false;
+
+    }
+
     }
 
     @Override
     public void enter(final ViewChangeListener.ViewChangeEvent event) {
     }
+
 
 }

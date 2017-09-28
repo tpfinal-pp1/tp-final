@@ -8,7 +8,7 @@ import javax.persistence.*;
 public class Address implements Identificable {
 	@Id @GeneratedValue
 	@Column(name = "addressID")
-	private Long addressID;
+	private Long id;
 	
 	@Column(name = "street")
 	private String street;
@@ -43,7 +43,7 @@ public class Address implements Identificable {
 
 
 	public Address(Long id) {
-		this.addressID =id;
+		this.id =id;
 	}
 
 	public Address() {
@@ -52,7 +52,7 @@ public class Address implements Identificable {
 
 	@Override
 	public String toString() {
-		return "Address [addressID=" + addressID + ", street=" + street + ", number=" + number + ", floor=" + piso
+		return "Address [addressID=" + id + ", street=" + street + ", number=" + number + ", floor=" + piso
 				+ ", aparment=" + apartment + "]";
 	}
 

@@ -6,6 +6,7 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -38,7 +39,7 @@ public class Person implements Serializable, Cloneable,Identificable {
     private String email="";
 
     @Column(name = "birthDate")
-    private Date birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "dni")
     private String DNI ="";
@@ -50,7 +51,7 @@ public class Person implements Serializable, Cloneable,Identificable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "sex")
-    private Sexo sex;
+    private Sex sex;
 
 
 
@@ -70,18 +71,44 @@ public class Person implements Serializable, Cloneable,Identificable {
         this.address = address;
     }
 
-    public Sexo getSex() {
+    public Sex getSex() {
         return sex;
     }
 
-    public void setSex(Sexo sex) {
+    public void setSex(Sex sex) {
         this.sex = sex;
     }
 
 
 
-    public enum Sexo{
-        Masculino, Femenino
+    public enum Sex {
+        Masculino, Femenino;
+
+        @Override
+        public String toString(){
+
+            if(this== Sex.Masculino){
+                return "Masculino";}
+            else{return "Femenino";}
+
+        }
+        public String genreEndWord(){
+
+            if(this== Sex.Masculino){
+                return "o";}
+            else{return "a";}
+
+        }
+        public static Sex toGenero(String gen){
+            switch (gen) {
+                case "Masculino": return Masculino;
+                case "Femenino": return Femenino;
+                case "m": return Masculino;
+                case "f": return Femenino;
+            }
+            return null;
+        }
+
     }
 
 
@@ -92,7 +119,6 @@ public class Person implements Serializable, Cloneable,Identificable {
     public Person(){
 
     }
-
     public Long getId() {
         return id;
     }
@@ -133,11 +159,11 @@ public class Person implements Serializable, Cloneable,Identificable {
         this.email = email;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -156,5 +182,8 @@ public class Person implements Serializable, Cloneable,Identificable {
                 + ", lastName=" + lastName + ", phone=" + phone + ", email="
                 + email + ", birthDate=" + birthDate + '}';
     }
+
+
+
 
 }

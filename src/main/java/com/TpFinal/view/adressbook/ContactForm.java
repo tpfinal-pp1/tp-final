@@ -1,13 +1,13 @@
 package com.TpFinal.view.adressbook;
 import com.TpFinal.data.dto.Person;
+import com.TpFinal.services.ContactService;
+import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.v7.data.fieldgroup.FieldGroup;
-import com.vaadin.v7.ui.DateField;
-import com.vaadin.v7.ui.TextField;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.TextField;
 
 /* Create custom UI Components.
  *
@@ -18,33 +18,37 @@ import com.vaadin.v7.ui.TextField;
  * with @PropertyId annotation.
  */
     public class ContactForm extends FormLayout {
+    private Person person;
+    Button save = new Button("Guardar");
+    Button delete = new Button("Eliminar");
+    TextField firstName = new TextField("Nombre");
+    TextField lastName = new TextField("Apellido");
+    TextField dni = new TextField("DNI");
+    TextField phone = new TextField("Celular");
+    TextField email = new TextField("Mail");
+    DateField birthDate = new DateField("F.de Nac");
+    private NativeSelect<Person.Sex> sex = new NativeSelect<>("Sexo");
 
-        Button save = new Button("Guardar", this::save);
-        Button cancel = new Button("Cancelar", this::cancel);
-        Button delete = new Button("Eliminar", this::delete);
+    ContactService service = ContactService.getService();
+    private AddressbookView addressbookView;
+    private Binder<Person> binder = new Binder<>(Person.class);
+    VerticalLayout principal;
+    TabSheet tabSheet;
 
 
 
 
-         TextField firstName = new TextField("Nombre");
-        TextField lastName = new TextField("Apellido");
-        TextField dni = new TextField("DNI");
-        TextField phone = new TextField("Celular");
-        TextField email = new TextField("Mail");
-        DateField birthDate = new DateField("F.de Nac");
 
-        AddressbookView addressbookView;
-
-        Person contact;
 
         // Easily bind forms to beans and manage validation and buffering
-        BeanFieldGroup<Person> formFieldBindings;
+
 
     public ContactForm(AddressbookView addressbook) {
+       // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
         buildLayout();
-        delete.setStyleName(ValoTheme.BUTTON_DANGER);
+        addStyleName("v-scrollable");
     }
 
     private void configureComponents() {
@@ -52,98 +56,82 @@ import com.vaadin.v7.ui.TextField;
          * Highlight primary actions.
          *
          * With Vaadin built-in styles you can highlight the primary save button
-         * and give it a keyboard shortcut for a better UX.
+         *
+         * and give it a keyoard shortcut for a better UX.
          */
+        sex.setItems(Person.Sex.values());
+        delete.setStyleName(ValoTheme.BUTTON_DANGER);
+        binder.bindInstanceFields(this);
+        save.addClickListener(e -> this.save());
+        delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         setVisible(false);
     }
 
     private void buildLayout() {
-        setSizeUndefined();
+        setSizeFull();
         setMargin(true);
-        TabSheet tabSheet=new TabSheet();
-        HorizontalLayout actions = new HorizontalLayout(save, cancel);
-        addComponent(actions);
-        actions.setSpacing(true);
-        VerticalLayout principal=new VerticalLayout( firstName, lastName, dni, birthDate);
+
+        tabSheet=new TabSheet();
+
+        VerticalLayout principal=new VerticalLayout( firstName, lastName, dni,sex, birthDate);
         VerticalLayout contacto=new VerticalLayout( email,phone);
 
-         tabSheet.addTab(principal,"Principal");
+        tabSheet.addTab(principal,"Principal");
         tabSheet.addTab(contacto,"Contacto");
 
-         addComponent(tabSheet);
+        addComponent(tabSheet);
+        HorizontalLayout actions = new HorizontalLayout(save,delete);
+        addComponent(actions);
+        actions.setSpacing(true);
 
-         addComponent(delete);
 
     }
 
-    /*
-     * Use any JVM language.
-     *
-     * Vaadin supports all languages supported by Java Virtual Machine 1.6+.
-     * This allows you to program user interface in Java 8, Scala, Groovy or any
-     * other language you choose. The new languages give you very powerful tools
-     * for organizing your code as you choose. For example, you can implement
-     * the listener methods in your compositions or in separate controller
-     * classes and receive to various Vaadin component events, like button
-     * clicks. Or keep it simple and compact with Lambda expressions.
-     */
-    public void save(Button.ClickEvent event) {
-        try {
-            // Commit the fields from UI to DAO
-            formFieldBindings.commit();
 
-            // Save DAO to backend with direct synchronous service API
-            getAddressbookView().service.save(contact);
+    public void setPerson(Person person) {
+        this.person = person;
+        binder.setBean(person);
 
-            String msg = String.format("Saved '%s %s'.", contact.getFirstName(),
-                    contact.getLastName());
-            Notification.show(msg, Type.TRAY_NOTIFICATION);
-            getAddressbookView().refreshContacts();
-        } catch (FieldGroup.CommitException e) {
-            // Validation exceptions could be shown here
-        }
-        getAddressbookView().newContact.setVisible(true);
+        // Show delete button for only Persons already in the database
+        delete.setVisible(person.getId()!=null);
+        setVisible(true);
+        getAddressbookView().setComponentsVisible(false);
+        firstName.selectAll();
+        if(getAddressbookView().isIsonMobile())
+            tabSheet.focus();
+
     }
 
-    public void cancel(Button.ClickEvent event) {
-        // Place to call business logic.
-        Notification.show("Cancelado", Type.TRAY_NOTIFICATION);
-        getAddressbookView().contactList.select(null);
+    private void delete() {
+        service.delete(person);
+        addressbookView.updateList();
         setVisible(false);
-        getAddressbookView().newContact.setVisible(true);
+        getAddressbookView().setComponentsVisible(true);
     }
 
-    private void delete(Button.ClickEvent event) {
-            if(contact==null||contact.getId()==null){
-                String msg = String.format("No es posible eliminar");
-                Notification.show(msg, Type.TRAY_NOTIFICATION);
-                return;
-            }
-            getAddressbookView().service.delete(contact);
+    private void save() {
+        service.save(person);
+        addressbookView.updateList();
+        String msg = String.format("Guardado '%s %s'.", person.getFirstName(),
+                person.getLastName());
+        Notification.show(msg, Type.TRAY_NOTIFICATION);
+        setVisible(false);
+        getAddressbookView().setComponentsVisible(true);
 
-            String msg = String.format("Eliminado '%s %s'.", contact.getFirstName(),
-                    contact.getLastName());
-            Notification.show(msg, Type.TRAY_NOTIFICATION);
-            getAddressbookView().refreshContacts();
-        getAddressbookView().newContact.setVisible(true);
+
 
     }
 
-    void edit(Person contact) {
-        this.contact = contact;
-        if (contact != null) {
-            // Bind the properties of the contact POJO to fiels in this form
-            formFieldBindings = BeanFieldGroup.bindFieldsBuffered(contact,
-                    this);
-            firstName.focus();
+   public void cancel() {
 
-        }
-        setVisible(contact != null);
-        getAddressbookView().newContact.setVisible(contact == null);
-
+        addressbookView.updateList();
+        setVisible(false);
+        getAddressbookView().setComponentsVisible(true);
     }
+    
+    
 
     public AddressbookView getAddressbookView() {
         return addressbookView;

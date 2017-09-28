@@ -1,4 +1,4 @@
-package com.TpFinal.data.dao;
+package com.TpFinal.data.dao.dummy;
 
 import java.util.Collection;
 import java.util.Date;
@@ -17,21 +17,7 @@ public interface DataProvider {
     Collection<Transaction> getRecentTransactions(int count);
 
     /**
-     * @param id
-     *            Movie identifier.
-     * @return A Collection of daily revenues for the movie.
-     */
-    Collection<MovieRevenue> getDailyRevenuesByMovie(long id);
 
-    /**
-     * @return Total revenues for each listed movie.
-     */
-    Collection<MovieRevenue> getTotalMovieRevenues();
-
-    /**
-     * @param userName
-     * @param password
-     * @return Authenticated used.
      */
     User authenticate(String userName, String password);
 
@@ -48,7 +34,6 @@ public interface DataProvider {
     /**
      * @return The total summed up revenue of sold movie tickets
      */
-    double getTotalSum();
 
     /**
      * @return A Collection of movies.

@@ -184,8 +184,7 @@ public final class DashboardMenu extends CustomComponent {
 
     @Subscribe
     public void updateReportsCount(final DashboardEvent.ReportsCountUpdatedEvent event) {
-        reportsBadge.setValue(String.valueOf(event.getCount()));
-        reportsBadge.setVisible(event.getCount() > 0);
+
     }
 
     @Subscribe

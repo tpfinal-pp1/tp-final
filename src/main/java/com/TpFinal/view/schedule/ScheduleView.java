@@ -157,7 +157,7 @@ public final class ScheduleView extends CssLayout implements View {
         });
 
         java.util.Calendar initialView = java.util.Calendar.getInstance();
-        initialView.add(java.util.Calendar.DAY_OF_WEEK,
+       initialView.add(java.util.Calendar.DAY_OF_WEEK,
                 -initialView.get(java.util.Calendar.DAY_OF_WEEK) + 1);
         calendar.setStartDate(initialView.getTime());
 

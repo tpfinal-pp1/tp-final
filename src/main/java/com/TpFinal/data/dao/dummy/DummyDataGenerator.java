@@ -1,4 +1,4 @@
-package com.TpFinal.data.dummy;
+package com.TpFinal.data.dao.dummy;
 
 import com.TpFinal.data.dto.DashboardNotification;
 
