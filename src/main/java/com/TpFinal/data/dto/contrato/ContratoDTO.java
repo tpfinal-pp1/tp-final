@@ -3,13 +3,21 @@ package com.TpFinal.data.dto.contrato;
 import java.sql.Blob;
 import java.time.LocalDate;
 
+import javax.persistence.*;
+
 import com.TpFinal.data.dto.Identificable;
 
-
+@Entity
+@Table(name="contrato")
+@Inheritance(strategy=InheritanceType.JOINED)
 public class ContratoDTO implements Identificable {
-	
+	@Id  
+	@GeneratedValue(strategy=GenerationType.AUTO)  
+	@Column(name = "id")  
 	Long id;
+	@Column(name="fechaCelebracion")
 	LocalDate fechaCelebracion;
+	@Column(name="documento")
 	Blob documento;
 	
 	public ContratoDTO() {}
