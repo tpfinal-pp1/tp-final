@@ -2,8 +2,8 @@ package com.TpFinal.services;
 
 import java.util.List;
 
-import com.TpFinal.data.dao.InquilinoDAO;
 import com.TpFinal.data.dao.InquilinoDAOImpl;
+import com.TpFinal.data.dao.interfaces.InquilinoDAO;
 import com.TpFinal.data.dto.InquilinoDTO;
 
 public class InquilinoService {

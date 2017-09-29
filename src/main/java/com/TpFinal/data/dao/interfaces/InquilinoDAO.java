@@ -1,4 +1,4 @@
-package com.TpFinal.data.dao;
+package com.TpFinal.data.dao.interfaces;
 
 import com.TpFinal.data.dto.InquilinoDTO;
 
