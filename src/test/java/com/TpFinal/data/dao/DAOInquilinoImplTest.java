@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.persona.Inquilino;
 
 public class DAOInquilinoImplTest {
@@ -17,6 +19,11 @@ public class DAOInquilinoImplTest {
 	DAOInquilinoImpl dao;
 	List<Inquilino>inquilinos= new ArrayList<>();
 	
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception{
+		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+	}
 	
 	@Before
 	public void setUp() throws Exception {

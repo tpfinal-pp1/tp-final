@@ -9,8 +9,11 @@ import java.util.stream.Stream;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
@@ -23,6 +26,11 @@ public class DAOInmuebleImplTest {
 	DAOInmuebleImpl dao;
 	List<Inmueble> inmuebles = new ArrayList<>();
 
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception{
+		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 		dao = new DAOInmuebleImpl();
