@@ -12,7 +12,6 @@ import com.vaadin.annotations.Widgetset;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -30,7 +29,7 @@ import java.util.List;
 @Title("Addressbook")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-public class AddressbookView extends DefaultLayout implements View {
+public class ABMPersonView extends DefaultLayout implements View {
 
     /*
      * Hundreds of widgets. Vaadin's user interface components are just Java
@@ -42,13 +41,13 @@ public class AddressbookView extends DefaultLayout implements View {
     TextField filter = new TextField();
     private Grid<Person> grid = new Grid<>(Person.class);
     Button newItem = new Button("Nuevo");
-    Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
+    Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
 
 
 
     HorizontalLayout mainLayout;
-    // ContactForm is an example of a custom component class
-    ContactForm personForm = new ContactForm(this);
+    // PersonForm is an example of a custom component class
+    PersonForm personForm = new PersonForm(this);
    private boolean isonMobile=false;
 
     // ContactService is a in-memory mock DAO that mimics
@@ -57,7 +56,7 @@ public class AddressbookView extends DefaultLayout implements View {
     ContactService service = ContactService.getService();
 
 
-    public AddressbookView(){
+    public ABMPersonView(){
         super();
         buildLayout();
         configureComponents();

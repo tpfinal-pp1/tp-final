@@ -17,7 +17,7 @@ import com.vaadin.ui.TextField;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-    public class ContactForm extends FormLayout {
+    public class PersonForm extends FormLayout {
     private Person person;
     Button save = new Button("Guardar");
     Button delete = new Button("Eliminar");
@@ -30,7 +30,7 @@ import com.vaadin.ui.TextField;
     private NativeSelect<Person.Sex> sex = new NativeSelect<>("Sexo");
 
     ContactService service = ContactService.getService();
-    private AddressbookView addressbookView;
+    private ABMPersonView addressbookView;
     private Binder<Person> binder = new Binder<>(Person.class);
     VerticalLayout principal;
     TabSheet tabSheet;
@@ -43,7 +43,7 @@ import com.vaadin.ui.TextField;
         // Easily bind forms to beans and manage validation and buffering
 
 
-    public ContactForm(AddressbookView addressbook) {
+    public PersonForm(ABMPersonView addressbook) {
        // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
@@ -61,11 +61,12 @@ import com.vaadin.ui.TextField;
          */
         sex.setItems(Person.Sex.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
-        binder.bindInstanceFields(this);
+
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        binder.bindInstanceFields(this);
         setVisible(false);
     }
 
@@ -133,7 +134,7 @@ import com.vaadin.ui.TextField;
     
     
 
-    public AddressbookView getAddressbookView() {
+    public ABMPersonView getAddressbookView() {
         return addressbookView;
     }
 

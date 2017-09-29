@@ -1,6 +1,6 @@
 package com.TpFinal.view;
 
-import com.TpFinal.view.adressbook.AddressbookView;
+import com.TpFinal.view.adressbook.ABMPersonView;
 import com.TpFinal.view.dashboard.DashboardView;
 
 
@@ -8,12 +8,11 @@ import com.TpFinal.view.reports.ReportsView;
 import com.TpFinal.view.schedule.ScheduleView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
     INICIO("dashboard", DashboardView.class, VaadinIcons.HOME, true),PERSONAS(
-            "personas",AddressbookView.class, VaadinIcons.USER, false),REPORTES(
+            "personas",ABMPersonView.class, VaadinIcons.USER, false),REPORTES(
             "reportes", ReportsView.class, VaadinIcons.FILE, false), SCHEDULE(
             "calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
 
