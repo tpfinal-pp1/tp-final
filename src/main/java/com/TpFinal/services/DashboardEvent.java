@@ -1,7 +1,7 @@
 package com.TpFinal.services;
 
 
-import com.TpFinal.data.dto.Transaction;
+import com.TpFinal.domain.dummy.Transaction;
 import com.TpFinal.view.DashboardViewType;
 
 import java.util.Collection;

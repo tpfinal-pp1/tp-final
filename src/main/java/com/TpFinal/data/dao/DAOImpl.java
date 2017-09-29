@@ -2,12 +2,12 @@ package com.TpFinal.data.dao;
 
 
 
-import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.Person;
-import com.TpFinal.data.dto.User;
+import com.TpFinal.domain.DashboardNotification;
+import com.TpFinal.domain.persona.Persona;
+import com.TpFinal.domain.dummy.User;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAO;
-import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.domain.Identificable;
 
 
 import org.hibernate.HibernateException;
@@ -179,25 +179,25 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		return entidades;
 	}
 
-	@Override
-	public User authenticate(String userName, String password) {
-		return null;
-	}
+		@Override
+		public User authenticate(String userName, String password) {
+			return null;
+		}
 
-	@Override
-	public int getUnreadNotificationsCount() {
-		return 0;
-	}
+		@Override
+		public int getUnreadNotificationsCount() {
+			return 0;
+		}
 
-	@Override
-	public Collection<DashboardNotification> getNotifications() {
-		return null;
-	}
+		@Override
+		public Collection<DashboardNotification> getNotifications() {
+			return null;
+		}
 
 	public static void main(String[] args) {
-		DAOImpl<Person> dao = new DAOImpl<>(Person.class);
+		DAOImpl<Persona> dao = new DAOImpl<>(Persona.class);
 		System.out.println(dao.getClaseEntidad().getSimpleName());
-		Person p = new Person();
+		Persona p = new Persona();
 
 
 		dao.create(p);
@@ -205,7 +205,7 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		dao.readAll().forEach(System.out::println);
 		dao.delete(p);
 
-		p.setFirstName("Nombre Modificado");
+		p.setNombre("Nombre Modificado");
 		dao.update(p);
 		dao.readAll().forEach(System.out::println);
 		ConexionHibernate.close();

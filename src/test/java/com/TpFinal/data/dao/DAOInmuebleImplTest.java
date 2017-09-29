@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoInmueble;
+import com.TpFinal.domain.inmueble.ClaseInmueble;
+import com.TpFinal.domain.inmueble.Coordenada;
+import com.TpFinal.domain.inmueble.Direccion;
+import com.TpFinal.domain.inmueble.EstadoInmueble;
+import com.TpFinal.domain.inmueble.Inmueble;
+import com.TpFinal.domain.inmueble.TipoInmueble;
 
 public class DAOInmuebleImplTest {
 	DAOInmuebleImpl dao;

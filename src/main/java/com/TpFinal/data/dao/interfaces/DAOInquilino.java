@@ -1,7 +1,7 @@
 package com.TpFinal.data.dao.interfaces;
 
-import com.TpFinal.data.dto.InquilinoDTO;
+import com.TpFinal.domain.persona.Inquilino;
 
-public interface DAOInquilino extends DAO<InquilinoDTO>{
+public interface DAOInquilino extends DAO<Inquilino>{
 
 }

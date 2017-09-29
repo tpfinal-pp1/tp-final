@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.TpFinal.data.dao.DAOInquilinoImpl;
 import com.TpFinal.data.dao.interfaces.DAOInquilino;
-import com.TpFinal.data.dto.InquilinoDTO;
+import com.TpFinal.domain.persona.Inquilino;
 
 public class InquilinoService {
 
@@ -14,23 +14,23 @@ public class InquilinoService {
 		dao=new DAOInquilinoImpl();
 	}
 	
-	public List<InquilinoDTO> readAll() {
+	public List<Inquilino> readAll() {
 		return dao.readAll();
 	}
 
-	public boolean update(InquilinoDTO entidad) {
+	public boolean update(Inquilino entidad) {
 		return dao.update(entidad);
 	}
 
-	public boolean delete(InquilinoDTO entidad) {
+	public boolean delete(Inquilino entidad) {
 		return dao.delete(entidad);
 	}
 
-	public boolean save(InquilinoDTO entidad) {
+	public boolean save(Inquilino entidad) {
 		return dao.save(entidad);
 	}
 
-	public InquilinoDTO findById(Long id) {
+	public Inquilino findById(Long id) {
 		return dao.findById(id);
 	}
 
