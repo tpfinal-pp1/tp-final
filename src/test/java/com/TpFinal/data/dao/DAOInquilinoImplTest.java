@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.TpFinal.data.dto.persona.Inquilino;
@@ -16,10 +17,11 @@ public class DAOInquilinoImplTest {
 	DAOInquilinoImpl dao;
 	List<Inquilino>inquilinos= new ArrayList<>();
 	
-
+	
 	@Before
 	public void setUp() throws Exception {
 		dao= new DAOInquilinoImpl();
+		dao.readAll().forEach(dao::delete);
 		inquilinos.clear();
 	}
 	
