@@ -1,8 +1,8 @@
 package com.TpFinal.services;
 
 
-import com.TpFinal.data.dao.DAO;
 import com.TpFinal.data.dao.DAOImpl;
+import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dto.Person;
 import org.apache.commons.beanutils.BeanUtils;
 

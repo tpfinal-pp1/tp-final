@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Iterator;
 
-import com.TpFinal.component.TopTenMoviesTable;
 import com.TpFinal.component.TransactionsListing;
 import com.TpFinal.data.dto.Transaction;
 import com.TpFinal.component.InlineTextEditor;
@@ -181,9 +180,7 @@ public final class ReportEditor extends VerticalLayout {
             if (type == PaletteItemType.TEXT) {
                 result = new InlineTextEditor(prefillData != null
                         ? String.valueOf(prefillData) : null);
-            } else if (type == PaletteItemType.TABLE) {
-                result = new TopTenMoviesTable();
-            } else if (type == PaletteItemType.TRANSACTIONS) {
+            }  else if (type == PaletteItemType.TRANSACTIONS) {
                 result = new TransactionsListing(
                         (Collection<Transaction>) prefillData);
             }

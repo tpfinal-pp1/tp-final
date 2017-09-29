@@ -2,23 +2,20 @@ package com.TpFinal.view;
 
 import com.TpFinal.view.adressbook.AddressbookView;
 import com.TpFinal.view.dashboard.DashboardView;
-import com.TpFinal.view.map.MapView;
-import com.TpFinal.view.pdf.PDFView;
-import com.TpFinal.view.reports.ReportsView;
-import com.TpFinal.view.transactions.TransactionsView;
 
+
+import com.TpFinal.view.reports.ReportsView;
 import com.TpFinal.view.schedule.ScheduleView;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
-    INICIO("dashboard", DashboardView.class, FontAwesome.HOME, true),CONTACTOS(
-            "contactos",AddressbookView.class, FontAwesome.USER, false), MAPA("mapa", MapView.class, FontAwesome.MAP, false),PDF(
-            "PDF", PDFView.class, FontAwesome.FILE_PDF_O, false), TRANSACTIONS(
-            "transactions", TransactionsView.class, FontAwesome.TABLE, false), REPORTS(
-            "reports", ReportsView.class, FontAwesome.FILE_TEXT_O, true), SCHEDULE(
-            "schedule", ScheduleView.class, FontAwesome.CALENDAR_O, false);
+    INICIO("dashboard", DashboardView.class, VaadinIcons.HOME, true),PERSONAS(
+            "personas",AddressbookView.class, VaadinIcons.USER, false),REPORTES(
+            "reportes", ReportsView.class, VaadinIcons.FILE, false), SCHEDULE(
+            "calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
 
     private final String viewName;
     private final Class<? extends View> viewClass;
