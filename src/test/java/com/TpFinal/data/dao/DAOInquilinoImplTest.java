@@ -58,6 +58,8 @@ public class DAOInquilinoImplTest {
 	
 	@Test
 	public void update() {
+		inquilinos=dao.readAll();
+		inquilinos.forEach(dao::delete);
 		dao.save(instancia("1"));
 		dao.save(instancia("2"));
 		dao.save(instancia("3"));
