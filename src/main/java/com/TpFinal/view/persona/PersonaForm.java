@@ -23,9 +23,10 @@ import com.vaadin.ui.TextField;
     TextField nombre = new TextField("Nombre");
     TextField apellido = new TextField("Apellido");
     TextField DNI = new TextField("DNI");
-    TextField telefono = new TextField("Celular");
+    TextField telefono = new TextField("Telefono");
+    TextField telefono2 = new TextField("Celular");
     TextField mail = new TextField("Mail");
-    DateField FdeNac = new DateField("F.de Nac");
+    TextArea infoAdicional = new TextArea("Información Adicional");
    // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PersonaService service = PersonaService.getService();
@@ -76,11 +77,11 @@ import com.vaadin.ui.TextField;
 
         tabSheet=new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout(nombre, apellido, DNI, FdeNac);
-        VerticalLayout personao=new VerticalLayout(mail, telefono);
+        VerticalLayout principal=new VerticalLayout(nombre, apellido, DNI,mail );
+        VerticalLayout adicional=new VerticalLayout(telefono,telefono2,infoAdicional);
 
         tabSheet.addTab(principal,"Principal");
-        tabSheet.addTab(personao,"Contacto");
+        tabSheet.addTab(adicional,"Contacto");
 
         addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,delete);

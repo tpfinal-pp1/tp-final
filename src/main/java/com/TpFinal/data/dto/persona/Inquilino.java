@@ -6,37 +6,27 @@ import javax.persistence.*;
 @Table(name="inquilino")
 @PrimaryKeyJoinColumn(name="id")
 public class Inquilino extends Persona {
-
-	@Column(name="telefono2")
-	private String telefono2;
 	
 	public Inquilino() {super();}
 	
 	private Inquilino(Builder b) {
-		super(b.id,b.nombre,b.apellido,b.mail,b.telefono);
-		this.telefono2=b.telefono2;
+		super(b.id,b.nombre,b.apellido,b.mail,b.telefono,b.telefono2,b.DNI,b.infoAdicional);
 	}
 
-	public Inquilino(Long id, String nombre, String apellido, String mail, String telefono, String telefono2) {
-		super(id, nombre,apellido, mail,telefono);
-		this.telefono2 = telefono2;
+
+	public Inquilino(Long id, String nombre, String apellido, String mail, String telefono,String telefono2, String DNI,String infoAdicional) {
+		super(id, nombre,apellido, mail,telefono,telefono2,DNI,infoAdicional);
 	}
 
-	public String getTelefono2() {
-		return telefono2;
-	}
-
-	public void setTelefono2(String telefono2) {
-		this.telefono2 = telefono2;
-	}
-	
-	public static class Builder{
+		public static class Builder{
 		private Long id;
 		private String nombre;
 		private String apellido;
 		private String mail;
 		private String telefono;
 		private String telefono2;
+		private String DNI;
+		private String infoAdicional;
 		
 		public Builder setId(Long dato) {
 			this.id=dato;
@@ -62,13 +52,24 @@ public class Inquilino extends Persona {
 			this.telefono=dato;
 			return this;
 		}
-		
-		public Builder setTelefono2(String dato) {
-			this.telefono2=dato;
-			return this;
-		}
-		
-		public Inquilino buid() {
+			public Builder setTelefono2(String dato) {
+				this.telefono2=dato;
+				return this;
+			}
+			public Builder setDNI(String dato) {
+				this.DNI=dato;
+				return this;
+			}
+			public Builder setinfoAdicional(String dato) {
+				this.infoAdicional=dato;
+				return this;
+			}
+
+
+
+
+
+			public Inquilino buid() {
 			return new Inquilino(this);
 		}
 		

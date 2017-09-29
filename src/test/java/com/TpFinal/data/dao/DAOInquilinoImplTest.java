@@ -71,11 +71,13 @@ public class DAOInquilinoImplTest {
 			if(inq.getNombre().equals("nombre 1"))
 			{
 				inq.setNombre("sarasa");
+				inq.setInfoAdicional("info");
 				dao.update(inq);
 			}
 		});
 		
 		assertEquals("sarasa", dao.readAll().get(0).getNombre());
+		assertEquals("info", dao.readAll().get(0).getInfoAdicional());
 	}
 	
 	
@@ -85,7 +87,9 @@ public class DAOInquilinoImplTest {
 			.setApellido("apellido "+numero)
 			.setMail("mail "+numero)
 			.setTelefono("telefono "+numero)
-			.setTelefono("telefono "+numero)
+			.setTelefono2("telefono2 "+numero)
+				.setDNI("Dni"+numero)
+				.setinfoAdicional("Info Adicional"+ numero)
 			.buid();
 	}
 

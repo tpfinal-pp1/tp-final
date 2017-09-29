@@ -43,12 +43,15 @@ public class Persona implements Identificable {
 		}
 	}
 
-	public Persona(Long id, String nombre, String apellido, String mail, String telefono) {
+	public Persona(Long id, String nombre, String apellido, String mail, String telefono,String telefono2, String DNI,String infoAdicional) {
 		this.id=id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.mail = mail;
 		this.telefono = telefono;
+		this.DNI= DNI;
+		this.telefono2=telefono2;
+		this.infoAdicional=infoAdicional;
 
 	}
 
