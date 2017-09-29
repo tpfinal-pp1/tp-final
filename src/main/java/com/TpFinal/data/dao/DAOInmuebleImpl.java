@@ -15,8 +15,9 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
-	public DAOInmuebleImpl(Class<Inmueble> clase) {
-		super(clase);
+	
+	public DAOInmuebleImpl() {
+		super(Inmueble.class);
 	}
 
 	@Override
