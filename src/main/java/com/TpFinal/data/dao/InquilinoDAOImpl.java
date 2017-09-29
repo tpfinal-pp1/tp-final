@@ -3,6 +3,7 @@ package com.TpFinal.data.dao;
 import java.util.Collection;
 import java.util.List;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dto.DashboardNotification;
 import com.TpFinal.data.dto.InquilinoDTO;
 import com.TpFinal.data.dto.User;
@@ -59,5 +60,6 @@ public class InquilinoDAOImpl implements InquilinoDAO  {
 	public Collection<DashboardNotification> getNotifications() {
 		return dao.getNotifications();
 	}
+	
 
 }

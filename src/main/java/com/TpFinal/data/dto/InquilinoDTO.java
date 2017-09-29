@@ -12,8 +12,8 @@ public class InquilinoDTO extends PersonaDTO{
 	
 	public InquilinoDTO() {super();}
 
-	public InquilinoDTO(String nombre, String apellido, String mail, String telefono,String telefono2) {
-		super(nombre,apellido, mail,telefono);
+	public InquilinoDTO(Long id, String nombre, String apellido, String mail, String telefono,String telefono2) {
+		super(id, nombre,apellido, mail,telefono);
 		this.telefono2 = telefono2;
 	}
 
