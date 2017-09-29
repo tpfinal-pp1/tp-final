@@ -17,7 +17,7 @@
 		<property name="hibernate.c3p0.acquire_increment">1</property>
 		<property name="hibernate.c3p0.idle_test_period">3000</property>
 		<property name="hibernate.hbm2ddl.auto"> update</property>
-		<!-- crea o actualiza las tablas-->
+		<!-- crea o actualiza las tablas -->
 
 
 		<!-- Echo all executed SQL to stdout -->
@@ -27,12 +27,16 @@
 		<!-- Names the annotated entity class -->
 		<mapping class="com.TpFinal.data.dto.Person" />
 		<mapping class="com.TpFinal.data.dto.Address" />
-		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble"/>
-		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada"/>
-		<mapping class="com.TpFinal.data.dto.inmueble.Direccion"/>
-		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleAlquiler"/>
-		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleVenta"/>
-		
+		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
+		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
+		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
+		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleAlquiler" />
+		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleVenta" />
+		<!--
+		<mapping class="com.TpFinal.data.dto.PersonaDTO" />
+		<mapping class="com.TpFinal.data.dto.InquilinoDTO" />
+		-->
+
 
 
 	</session-factory>
