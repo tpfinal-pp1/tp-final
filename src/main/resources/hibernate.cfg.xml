@@ -35,6 +35,7 @@
 		<mapping class="com.TpFinal.domain.inmueble.Direccion" />
 		<mapping class="com.TpFinal.domain.persona.Persona" />
 		<mapping class="com.TpFinal.domain.persona.Inquilino" />
+		<mapping class="com.TpFinal.domain.persona.Propietario" />
 	
 
 
