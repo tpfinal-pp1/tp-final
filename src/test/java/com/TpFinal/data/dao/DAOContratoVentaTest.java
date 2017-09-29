@@ -40,6 +40,35 @@ public class DAOContratoVentaTest {
 		assertEquals(3, dao.readAll().size());
 	}
 	
+	@Test
+	public void delete() {
+		dao.save(instancia("1.00", null));
+		dao.save(instancia("2.00", null));
+		dao.save(instancia("3.00", null));
+		
+		dao.delete(dao.readAll().get(0));
+		assertEquals(dao.readAll().size(), 2);
+	}
+	
+	@Test
+	public void update() {
+		dao.save(instancia("1.00", null));
+		dao.save(instancia("2.00", null));
+		dao.save(instancia("3.00", null));
+		
+		dao.readAll().forEach(contrato -> {
+			contrato.setPrecioVenta(new BigDecimal("10.00"));
+			dao.update(contrato);
+		});
+		
+		dao.readAll().forEach(contrato -> {
+			assertEquals(new BigDecimal("10.00"), contrato.getPrecioVenta());
+		});
+		
+	}
+	
+	
+	
 	
 	public ContratoVentaDTO instancia(String numero, Blob doc) {
 		return new ContratoVentaDTO.Builder()
