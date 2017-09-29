@@ -2,16 +2,16 @@ package com.TpFinal.services;
 
 import java.util.List;
 
-import com.TpFinal.data.dao.InquilinoDAOImpl;
-import com.TpFinal.data.dao.interfaces.InquilinoDAO;
+import com.TpFinal.data.dao.DAOInquilinoImpl;
+import com.TpFinal.data.dao.interfaces.DAOInquilino;
 import com.TpFinal.data.dto.InquilinoDTO;
 
 public class InquilinoService {
 
-	private InquilinoDAO dao;
+	private DAOInquilino dao;
 	
 	public InquilinoService() {
-		dao=new InquilinoDAOImpl();
+		dao=new DAOInquilinoImpl();
 	}
 	
 	public List<InquilinoDTO> readAll() {

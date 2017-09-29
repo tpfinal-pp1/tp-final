@@ -4,17 +4,17 @@ import java.util.Collection;
 import java.util.List;
 
 import com.TpFinal.data.dao.interfaces.DAO;
-import com.TpFinal.data.dao.interfaces.InquilinoDAO;
+import com.TpFinal.data.dao.interfaces.DAOInquilino;
 import com.TpFinal.data.dto.DashboardNotification;
 import com.TpFinal.data.dto.InquilinoDTO;
 import com.TpFinal.data.dto.User;
 
 
-public class InquilinoDAOImpl implements InquilinoDAO  {
+public class DAOInquilinoImpl implements DAOInquilino  {
 	
 	private DAO<InquilinoDTO>dao;
 	
-	public InquilinoDAOImpl() {
+	public DAOInquilinoImpl() {
 		dao = new DAOImpl<>(InquilinoDTO.class);
 	}
 
