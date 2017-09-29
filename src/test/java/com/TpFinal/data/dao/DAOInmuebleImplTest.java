@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
+import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -62,13 +63,76 @@ public class DAOInmuebleImplTest {
 		assertTrue(modificado.getDireccion().getCoordenada()
 				.equals(dao.findById(modificado.getId()).getDireccion().getCoordenada()));
 	}
-	
+
 	@Test
 	public void findInmueblesbyEstado() {
 		int cantidadDeInmuebles = 3;
 		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
 		inmuebles = dao.findInmueblesbyEstado(EstadoInmueble.NoPublicado);
 		assertEquals(cantidadDeInmuebles, inmuebles.size());
+	}
+
+	@Test
+	public void findInmueblesByCriteria_Estado() {
+		int cantidadDeInmuebles = 3;
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder()
+				.setEstadoInmueble(EstadoInmueble.NoPublicado).build();
+
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(cantidadDeInmuebles, inmuebles.size());
+
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(EstadoInmueble.Alquilado).build();
+
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(0, inmuebles.size());
+
+	}
+
+	@Test
+	public void findInmueblesByCriteria_Ciudad() {
+		int cantidadDeInmuebles = 3;
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad")
+				.build();
+
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(cantidadDeInmuebles, inmuebles.size());
+
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").build();
+
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(0, inmuebles.size());
+
+	}
+
+	@Test
+	public void findInmueblesByCriteria_CiudadAndAireAcondicionado() {
+		int cantidadDeInmuebles = 3;
+
+		for (int x = 0; x < cantidadDeInmuebles; x++) {
+			Inmueble i = getInstanciaPrueba();
+			if (x % 2 == 0) {
+				i.setConAireAcondicionado(false);
+				i.setDireccion(new Direccion.Builder().setLocalidad("otra localidad").build());
+			}
+			dao.create(i);
+
+		}
+
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad")
+				.setConAireAcondicionado(true).build();
+
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(1, inmuebles.size());
+
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").setConAireAcondicionado(false).build();
+
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(2, inmuebles.size());
+
 	}
 
 	private Inmueble getInstanciaPrueba() {
