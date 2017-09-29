@@ -1,7 +1,13 @@
 package com.TpFinal.data.dto;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="inquilino")
+@PrimaryKeyJoinColumn(name="id")
 public class InquilinoDTO extends PersonaDTO{
 
+	@Column(name="telefono2")
 	public String telefono2;
 	
 	public InquilinoDTO() {super();}

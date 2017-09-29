@@ -1,10 +1,23 @@
 package com.TpFinal.data.dto;
 
-public class PersonaDTO {
+import javax.persistence.*;
+
+@Entity  
+@Table(name = "persona")  
+@Inheritance(strategy=InheritanceType.JOINED)  
+public class PersonaDTO implements Identificable {
 	
+	@Id  
+	@GeneratedValue(strategy=GenerationType.AUTO)  
+	@Column(name = "id")  
+	private Long id;
+	@Column(name="nombre")
 	private String nombre;
+	@Column(name="apellido")
 	private String apellido;
+	@Column(name="mail")
 	private String mail;
+	@Column(name="telefono")
 	private String telefono;
 	
 	public PersonaDTO() {}
@@ -47,7 +60,10 @@ public class PersonaDTO {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	
-	
+
+	@Override
+	public Long getId() {
+		return this.id;
+	}
 
 }
