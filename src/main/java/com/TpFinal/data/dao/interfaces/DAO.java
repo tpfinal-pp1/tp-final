@@ -18,7 +18,9 @@ public interface DAO<T extends Identificable> {
 	public boolean delete(T entidad);
 	public boolean save(T entidad);
 	public T findById(Long id);
-	public List<T> findByCriteria(DetachedCriteria criteria);
+	default public List<T> findByCriteria(DetachedCriteria criteria) {
+        throw new RuntimeException("Metodo FindById no Implementado!");
+    } 
 	User authenticate(String userName, String password);
 	int getUnreadNotificationsCount();
 	Collection<DashboardNotification> getNotifications();
