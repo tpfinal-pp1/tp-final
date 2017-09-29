@@ -9,12 +9,13 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.TpFinal.domain.persona.Inquilino;
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.dto.InquilinoDTO;
 
 public class DAOInquilinoImplTest {
 	
 	DAOInquilinoImpl dao;
-	List<Inquilino>inquilinos= new ArrayList<>();
+	List<InquilinoDTO>inquilinos= new ArrayList<>();
 	
 
 	@Before
@@ -64,7 +65,6 @@ public class DAOInquilinoImplTest {
 		dao.save(instancia("4"));
 		
 		dao.readAll().forEach(inq -> {
-			System.out.print(inq);
 			if(inq.getNombre().equals("nombre 1"))
 			{
 				inq.setNombre("sarasa");
@@ -76,13 +76,13 @@ public class DAOInquilinoImplTest {
 	}
 	
 	
-	public Inquilino instancia(String numero) {
-		return new Inquilino.Builder()
+	public InquilinoDTO instancia(String numero) {
+		return new InquilinoDTO.Builder()
 			.setNombre("nombre "+numero)
 			.setApellido("apellido "+numero)
 			.setMail("mail "+numero)
 			.setTelefono("telefono "+numero)
-			.setTelefono2("telefono "+numero)
+			.setTelefono("telefono "+numero)
 			.buid();
 	}
 

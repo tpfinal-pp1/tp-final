@@ -5,46 +5,46 @@ import java.util.List;
 
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOInquilino;
-import com.TpFinal.domain.DashboardNotification;
-import com.TpFinal.domain.persona.Inquilino;
-import com.TpFinal.domain.dummy.User;
+import com.TpFinal.data.dto.DashboardNotification;
+import com.TpFinal.data.dto.InquilinoDTO;
+import com.TpFinal.data.dto.User;
 
 
 public class DAOInquilinoImpl implements DAOInquilino  {
 	
-	private DAO<Inquilino>dao;
+	private DAO<InquilinoDTO>dao;
 	
 	public DAOInquilinoImpl() {
-		dao = new DAOImpl<>(Inquilino.class);
+		dao = new DAOImpl<>(InquilinoDTO.class);
 	}
 
 	@Override
-	public boolean create(Inquilino entidad) {
+	public boolean create(InquilinoDTO entidad) {
 		return dao.create(entidad);
 	}
 
 	@Override
-	public List<Inquilino> readAll() {
+	public List<InquilinoDTO> readAll() {
 		return dao.readAll();
 	}
 
 	@Override
-	public boolean update(Inquilino entidad) {
+	public boolean update(InquilinoDTO entidad) {
 		return dao.update(entidad);
 	}
 
 	@Override
-	public boolean delete(Inquilino entidad) {
+	public boolean delete(InquilinoDTO entidad) {
 		return dao.delete(entidad);
 	}
 
 	@Override
-	public boolean save(Inquilino entidad) {
+	public boolean save(InquilinoDTO entidad) {
 		return dao.save(entidad);
 	}
 
 	@Override
-	public Inquilino findById(Long id) {
+	public InquilinoDTO findById(Long id) {
 		return dao.findById(id);
 	}
 

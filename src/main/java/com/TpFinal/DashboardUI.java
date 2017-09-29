@@ -3,7 +3,7 @@ package com.TpFinal;
 
 
 import com.TpFinal.data.dao.dummy.DummyDataProvider;
-import com.TpFinal.domain.dummy.User;
+import com.TpFinal.data.dto.User;
 import com.TpFinal.data.dao.dummy.DataProvider;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;

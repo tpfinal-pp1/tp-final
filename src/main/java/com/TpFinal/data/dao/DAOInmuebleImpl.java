@@ -5,9 +5,10 @@ import java.util.List;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
-import com.TpFinal.domain.inmueble.EstadoInmueble;
-import com.TpFinal.domain.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.EstadoInmueble;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble{
 

@@ -3,8 +3,10 @@ package com.TpFinal.view;
 import com.TpFinal.services.DashboardEvent.UserLoginRequestedEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -21,7 +23,6 @@ public class LoginView extends VerticalLayout {
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
-
 
       /*  Notification notification = new Notification(
                 "Bienvenido!");
@@ -54,11 +55,11 @@ public class LoginView extends VerticalLayout {
         fields.addStyleName("fields");
 
         final TextField username = new TextField("Usuario");
-        username.setIcon(VaadinIcons.USER);
+        username.setIcon(FontAwesome.USER);
         username.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
         final PasswordField password = new PasswordField("Contraseña");
-        password.setIcon(VaadinIcons.LOCK);
+        password.setIcon(FontAwesome.LOCK);
         password.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
         final Button signin = new Button("Iniciar Sesión");

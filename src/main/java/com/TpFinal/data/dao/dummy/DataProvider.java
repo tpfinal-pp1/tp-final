@@ -2,10 +2,8 @@ package com.TpFinal.data.dao.dummy;
 
 import java.util.Collection;
 import java.util.Date;
-import com.TpFinal.domain.DashboardNotification;
-import com.TpFinal.domain.dummy.Movie;
-import com.TpFinal.domain.dummy.Transaction;
-import com.TpFinal.domain.dummy.User;
+
+import com.TpFinal.data.dto.*;
 
 /**
  * QuickTickets Dashboard backend API.
