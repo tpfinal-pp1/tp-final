@@ -27,6 +27,8 @@
 		<!-- Names the annotated entity class -->
 		<mapping class="com.TpFinal.data.dto.Person" />
 		<mapping class="com.TpFinal.data.dto.Address" />
+		<mapping class="com.TpFinal.data.dto.PersonaDTO" />
+		<mapping class="com.TpFinal.data.dto.InquilinoDTO" />
 
 
 	</session-factory>
