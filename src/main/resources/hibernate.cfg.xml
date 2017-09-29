@@ -32,10 +32,10 @@
 		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
 		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleAlquiler" />
 		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleVenta" />
-		<!--
+		
 		<mapping class="com.TpFinal.data.dto.PersonaDTO" />
 		<mapping class="com.TpFinal.data.dto.InquilinoDTO" />
-		-->
+	
 
 
 
