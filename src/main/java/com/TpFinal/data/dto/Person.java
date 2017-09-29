@@ -7,7 +7,6 @@ import org.apache.commons.beanutils.BeanUtils;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * A simple DTO for the address book example.
@@ -54,7 +53,6 @@ public class Person implements Serializable, Cloneable,Identificable {
     private Sex sex;
 
 
-
     public String getDNI() {
         return DNI;
     }
@@ -78,7 +76,6 @@ public class Person implements Serializable, Cloneable,Identificable {
     public void setSex(Sex sex) {
         this.sex = sex;
     }
-
 
 
     public enum Sex {
@@ -108,10 +105,7 @@ public class Person implements Serializable, Cloneable,Identificable {
             }
             return null;
         }
-
     }
-
-
 
     public Person(Long idd){
         id=idd;

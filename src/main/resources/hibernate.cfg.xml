@@ -35,7 +35,7 @@
 		
 		<mapping class="com.TpFinal.data.dto.PersonaDTO" />
 		<mapping class="com.TpFinal.data.dto.InquilinoDTO" />
-	
+		<mapping class="com.TpFinal.data.dto.PropietarioDTO" />
 
 
 

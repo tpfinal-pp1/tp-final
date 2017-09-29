@@ -68,7 +68,7 @@ public class InquilinoDTO extends PersonaDTO{
 			return this;
 		}
 		
-		public InquilinoDTO buid() {
+		public InquilinoDTO build() {
 			return new InquilinoDTO(this);
 		}
 		

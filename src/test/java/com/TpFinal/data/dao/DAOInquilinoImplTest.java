@@ -1,16 +1,14 @@
 package com.TpFinal.data.dao;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
+import com.TpFinal.data.dto.InquilinoDTO;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.data.dto.InquilinoDTO;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class DAOInquilinoImplTest {
 	
@@ -83,7 +81,7 @@ public class DAOInquilinoImplTest {
 			.setMail("mail "+numero)
 			.setTelefono("telefono "+numero)
 			.setTelefono("telefono "+numero)
-			.buid();
+			.build();
 	}
 
 }

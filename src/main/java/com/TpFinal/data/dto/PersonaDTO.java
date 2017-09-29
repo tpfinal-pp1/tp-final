@@ -23,7 +23,7 @@ public class PersonaDTO implements Identificable {
 	public PersonaDTO() {}
 	
 	public PersonaDTO(Long id, String nombre, String apellido, String mail, String telefono) {
-		this.id=id;
+		this.id = id;
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.mail = mail;
