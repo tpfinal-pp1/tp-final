@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,14 +36,10 @@ public class DAOInmuebleImplTest {
 
 	@Test
 	public void testCreate() {
-
 		Inmueble unInmueble = getInstanciaPrueba();
 		dao.create(unInmueble);
-
 		Inmueble mismoInmueble = dao.readAll().get(0);
-
 		assertEquals(unInmueble, mismoInmueble);
-
 	}
 
 	@Test
@@ -53,25 +50,26 @@ public class DAOInmuebleImplTest {
 		assertEquals(cantidadDeInmuebles, inmuebles.size());
 	}
 
-//	@Test
-//	public void testUpdate() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testSave() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testDelete() {
-//		fail("Not yet implemented");
-//	}
-//
-//	@Test
-//	public void testFindById() {
-//		fail("Not yet implemented");
-//	}
+	@Test
+	public void testUpdate() {
+		Inmueble original = getInstanciaPrueba();
+		dao.create(original);
+		Inmueble modificado = dao.readAll().get(0);
+		modificado.setCantidadAmbientes(10);
+		modificado.getDireccion().setCoordenada(new Coordenada(12.0, 10.2));
+		dao.update(modificado);
+		assertTrue(modificado.getCantidadAmbientes().equals(dao.findById(modificado.getId()).getCantidadAmbientes()));
+		assertTrue(modificado.getDireccion().getCoordenada()
+				.equals(dao.findById(modificado.getId()).getDireccion().getCoordenada()));
+	}
+	
+	@Test
+	public void findInmueblesbyEstado() {
+		int cantidadDeInmuebles = 3;
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+		inmuebles = dao.findInmueblesbyEstado(EstadoInmueble.NoPublicado);
+		assertEquals(cantidadDeInmuebles, inmuebles.size());
+	}
 
 	private Inmueble getInstanciaPrueba() {
 		return new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)

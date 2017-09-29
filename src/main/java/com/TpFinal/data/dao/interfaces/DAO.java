@@ -8,6 +8,8 @@ import com.TpFinal.data.dto.Identificable;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 
 public interface DAO<T extends Identificable> {
 	public boolean create(T entidad);
@@ -16,9 +18,11 @@ public interface DAO<T extends Identificable> {
 	public boolean delete(T entidad);
 	public boolean save(T entidad);
 	public T findById(Long id);
+	public List<T> findByCriteria(DetachedCriteria criteria);
 	User authenticate(String userName, String password);
 	int getUnreadNotificationsCount();
 	Collection<DashboardNotification> getNotifications();
+	
 
 
 }
