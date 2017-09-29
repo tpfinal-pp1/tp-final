@@ -2,7 +2,6 @@ package com.TpFinal.data.dao.interfaces;
 
 import java.util.List;
 
-import com.TpFinal.data.dto.InquilinoDTO;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;

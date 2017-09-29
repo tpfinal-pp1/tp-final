@@ -1,11 +1,9 @@
-package com.TpFinal.view;
+package com.TpFinal.view.component;
 
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.util.ArrayList;
 
 public abstract class DefaultLayout extends VerticalLayout {
 

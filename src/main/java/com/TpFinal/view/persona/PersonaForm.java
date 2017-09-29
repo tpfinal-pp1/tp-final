@@ -1,10 +1,9 @@
-package com.TpFinal.view.adressbook;
-import com.TpFinal.data.dto.Person;
-import com.TpFinal.services.ContactService;
+package com.TpFinal.view.persona;
+import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
@@ -17,22 +16,21 @@ import com.vaadin.ui.TextField;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-    public class PersonForm extends FormLayout {
-    private Person person;
+    public class PersonaForm extends FormLayout {
+    private Persona persona;
     Button save = new Button("Guardar");
     Button delete = new Button("Eliminar");
-    TextField firstName = new TextField("Nombre");
-    TextField lastName = new TextField("Apellido");
-    TextField dni = new TextField("DNI");
-    TextField phone = new TextField("Celular");
-    TextField email = new TextField("Mail");
-    DateField birthDate = new DateField("F.de Nac");
-    private NativeSelect<Person.Sex> sex = new NativeSelect<>("Sexo");
+    TextField nombre = new TextField("Nombre");
+    TextField apellido = new TextField("Apellido");
+    TextField DNI = new TextField("DNI");
+    TextField telefono = new TextField("Celular");
+    TextField mail = new TextField("Mail");
+    DateField FdeNac = new DateField("F.de Nac");
+   // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
-    ContactService service = ContactService.getService();
-    private ABMPersonView addressbookView;
-    private Binder<Person> binder = new Binder<>(Person.class);
-    VerticalLayout principal;
+    PersonaService service = PersonaService.getService();
+    private PersonaABMView addressbookView;
+    private Binder<Persona> binder = new Binder<>(Persona.class);
     TabSheet tabSheet;
 
 
@@ -43,7 +41,7 @@ import com.vaadin.ui.TextField;
         // Easily bind forms to beans and manage validation and buffering
 
 
-    public PersonForm(ABMPersonView addressbook) {
+    public PersonaForm(PersonaABMView addressbook) {
        // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
@@ -59,7 +57,9 @@ import com.vaadin.ui.TextField;
          *
          * and give it a keyoard shortcut for a better UX.
          */
-        sex.setItems(Person.Sex.values());
+
+     //   sexo.setEmptySelectionAllowed(false);
+      //  sexo.setItems(Persona.Sexo.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
 
         save.addClickListener(e -> this.save());
@@ -76,11 +76,11 @@ import com.vaadin.ui.TextField;
 
         tabSheet=new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout( firstName, lastName, dni,sex, birthDate);
-        VerticalLayout contacto=new VerticalLayout( email,phone);
+        VerticalLayout principal=new VerticalLayout(nombre, apellido, DNI, FdeNac);
+        VerticalLayout personao=new VerticalLayout(mail, telefono);
 
         tabSheet.addTab(principal,"Principal");
-        tabSheet.addTab(contacto,"Contacto");
+        tabSheet.addTab(personao,"Contacto");
 
         addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
@@ -91,42 +91,46 @@ import com.vaadin.ui.TextField;
     }
 
 
-    public void setPerson(Person person) {
-        this.person = person;
-        binder.setBean(person);
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+        binder.setBean(persona);
 
         // Show delete button for only Persons already in the database
-        delete.setVisible(person.getId()!=null);
+        delete.setVisible(persona.getId()!=null);
         setVisible(true);
         getAddressbookView().setComponentsVisible(false);
-        firstName.selectAll();
+        nombre.selectAll();
         if(getAddressbookView().isIsonMobile())
             tabSheet.focus();
 
     }
 
     private void delete() {
-        service.delete(person);
+        service.delete(persona);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
+                persona.getApellido());
+
     }
 
     private void save() {
-        service.save(person);
+        service.save(persona);
         addressbookView.updateList();
-        String msg = String.format("Guardado '%s %s'.", person.getFirstName(),
-                person.getLastName());
-        Notification.show(msg, Type.TRAY_NOTIFICATION);
+       /* String msg = String.format("Guardado '%s %s'.", persona.getNombre(),
+                persona.getApellido());*
+        Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().showSuccessNotification("Guardado: "+ persona.getNombre()+" "+
+                persona.getApellido());
 
 
 
     }
 
    public void cancel() {
-
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -134,7 +138,7 @@ import com.vaadin.ui.TextField;
     
     
 
-    public ABMPersonView getAddressbookView() {
+    public PersonaABMView getAddressbookView() {
         return addressbookView;
     }
 

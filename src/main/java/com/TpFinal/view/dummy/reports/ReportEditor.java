@@ -1,12 +1,10 @@
-package com.TpFinal.view.reports;
+package com.TpFinal.view.dummy.reports;
 
 import java.text.SimpleDateFormat;
-import java.util.Collection;
 import java.util.Iterator;
 
-import com.TpFinal.component.TransactionsListing;
-import com.TpFinal.data.dto.Transaction;
-import com.TpFinal.component.InlineTextEditor;
+
+import com.TpFinal.view.component.InlineTextEditor;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -17,7 +15,8 @@ import com.vaadin.event.dd.DropTarget;
 import com.vaadin.event.dd.TargetDetails;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.server.FontAwesome;
+
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.AbstractComponent;
@@ -85,7 +84,7 @@ public final class ReportEditor extends VerticalLayout {
     }
 
     private Component buildPaletteItem(final PaletteItemType type) {
-        Label caption = new Label(type.getIcon().getHtml() + type.getTitle(),
+        Label caption = new Label(type.getIcon().getHtml()+ type.getTitle(),
                 ContentMode.HTML);
         caption.setSizeUndefined();
 
@@ -180,9 +179,6 @@ public final class ReportEditor extends VerticalLayout {
             if (type == PaletteItemType.TEXT) {
                 result = new InlineTextEditor(prefillData != null
                         ? String.valueOf(prefillData) : null);
-            }  else if (type == PaletteItemType.TRANSACTIONS) {
-                result = new TransactionsListing(
-                        (Collection<Transaction>) prefillData);
             }
 
             return result;
@@ -297,15 +293,15 @@ public final class ReportEditor extends VerticalLayout {
     }
 
     public enum PaletteItemType {
-        TEXT("Text Block", FontAwesome.FONT), TABLE("Top 10 Movies",
-                FontAwesome.TABLE), CHART("Top 6 Revenue",
-                        FontAwesome.BAR_CHART_O), TRANSACTIONS(
+        TEXT("Text Block", VaadinIcons.FONT), TABLE("Top 10 Movies",
+                VaadinIcons.TABLE), CHART("Top 6 Revenue",
+                VaadinIcons.BAR_CHART), TRANSACTIONS(
                                 "Latest transactions", null);
 
         private final String title;
-        private final FontAwesome icon;
+        private final VaadinIcons icon;
 
-        PaletteItemType(final String title, final FontAwesome icon) {
+        PaletteItemType(final String title, final VaadinIcons icon) {
             this.title = title;
             this.icon = icon;
         }
@@ -314,7 +310,7 @@ public final class ReportEditor extends VerticalLayout {
             return title;
         }
 
-        public FontAwesome getIcon() {
+        public VaadinIcons getIcon() {
             return icon;
         }
 

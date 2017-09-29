@@ -1,10 +1,11 @@
-package com.TpFinal.view.adressbook;
+package com.TpFinal.view.persona;
 
 
-import com.TpFinal.data.dto.Person;
-import com.TpFinal.services.ContactService;
+
+import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.view.DefaultLayout;
+import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -14,6 +15,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -29,7 +31,7 @@ import java.util.List;
 @Title("Addressbook")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-public class ABMPersonView extends DefaultLayout implements View {
+public class PersonaABMView extends DefaultLayout implements View {
 
     /*
      * Hundreds of widgets. Vaadin's user interface components are just Java
@@ -39,30 +41,29 @@ public class ABMPersonView extends DefaultLayout implements View {
      * vaadin.com/directory.
      */
     TextField filter = new TextField();
-    private Grid<Person> grid = new Grid<>(Person.class);
+    private Grid<Persona> grid = new Grid<>(Persona.class);
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
 
 
 
     HorizontalLayout mainLayout;
-    // PersonForm is an example of a custom component class
-    PersonForm personForm = new PersonForm(this);
+    // PersonaForm is an example of a custom component class
+    PersonaForm personaForm = new PersonaForm(this);
    private boolean isonMobile=false;
 
-    // ContactService is a in-memory mock DAO that mimics
+    // PersonaService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    ContactService service = ContactService.getService();
+    PersonaService service = PersonaService.getService();
 
 
-    public ABMPersonView(){
+    public PersonaABMView(){
         super();
         buildLayout();
         configureComponents();
-        newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        filter.setIcon(VaadinIcons.SEARCH);
-        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
+
     }
 
 
@@ -77,7 +78,7 @@ public class ABMPersonView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-        newItem.addClickListener(e -> personForm.setPerson(new Person()));
+        newItem.addClickListener(e -> personaForm.setPersona(new Persona()));
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
@@ -89,28 +90,30 @@ public class ABMPersonView extends DefaultLayout implements View {
 
         newItem.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            personForm.setPerson(new Person());
+            personaForm.setPersona(new Persona());
         });
 
 
-        grid.setColumns("firstName", "lastName", "DNI");
+        grid.setColumns("nombre", "apellido", "DNI");
         grid.getColumn("DNI").setCaption("DNI");
-        grid.getColumn("firstName").setCaption("Nombre");
-        grid.getColumn("lastName").setCaption("Apellido ");
+        grid.getColumn("nombre").setCaption("Nombre");
+        grid.getColumn("apellido").setCaption("Apellido ");
 
 
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
-                personForm.setVisible(false);
+                personaForm.setVisible(false);
             } else {
-                personForm.setPerson(event.getValue());
+                personaForm.setPersona(event.getValue());
             }
         });
 
        // grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-
+        newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        filter.setIcon(VaadinIcons.SEARCH);
+        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         updateList();
     }
 
@@ -142,7 +145,7 @@ public class ABMPersonView extends DefaultLayout implements View {
 
         addComponent(buildToolbar("Personas",filtering, newItem));
         grid.setSizeFull();
-        mainLayout = new HorizontalLayout(grid, personForm);
+        mainLayout = new HorizontalLayout(grid, personaForm);
         mainLayout.setSizeFull();
         addComponent(mainLayout);
         this.setExpandRatio(mainLayout, 1);
@@ -158,8 +161,26 @@ public class ABMPersonView extends DefaultLayout implements View {
      * MVC, MVP or any other design pattern you choose.
      */
 
-        public void updateList() {
-            List<Person> customers = service.findAll(filter.getValue());
+    public void showErrorNotification(String notification){
+        Notification success = new Notification(
+                notification);
+        success.setDelayMsec(4000);
+        success.setStyleName("bar error small");
+        success.setPosition(Position.BOTTOM_CENTER);
+        success.show(Page.getCurrent());
+    }
+
+    public void showSuccessNotification(String notification){
+        Notification success = new Notification(
+                notification);
+        success.setDelayMsec(2000);
+        success.setStyleName("bar success small");
+        success.setPosition(Position.BOTTOM_CENTER);
+        success.show(Page.getCurrent());
+    }
+
+    public void updateList() {
+            List<Persona> customers = service.findAll(filter.getValue());
             grid.setItems(customers);
 
     }
@@ -169,9 +190,9 @@ public class ABMPersonView extends DefaultLayout implements View {
     }
 
     public void ClearFilterBtnAction(){
-            if(this.personForm.isVisible()){
+            if(this.personaForm.isVisible()){
                 newItem.focus();
-                personForm.cancel();
+                personaForm.cancel();
 
             }
             filter.clear();

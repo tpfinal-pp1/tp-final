@@ -1,10 +1,10 @@
-package com.TpFinal.component;
+package com.TpFinal.view.component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.TpFinal.data.dto.Movie;
 
+import com.TpFinal.data.dto.dummy.Movie;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -31,7 +31,7 @@ public final class MovieDetailsWindow extends Window {
     private final Label synopsis = new Label();
 
     private MovieDetailsWindow(final Movie movie, final Date startTime,
-            final Date endTime) {
+                               final Date endTime) {
         addStyleName("moviedetailswindow");
         Responsive.makeResponsive(this);
 

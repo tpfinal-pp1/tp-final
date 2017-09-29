@@ -9,13 +9,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.data.dto.InquilinoDTO;
+import com.TpFinal.data.dto.persona.Inquilino;
 
 public class DAOInquilinoImplTest {
 	
 	DAOInquilinoImpl dao;
-	List<InquilinoDTO>inquilinos= new ArrayList<>();
+	List<Inquilino>inquilinos= new ArrayList<>();
 	
 
 	@Before
@@ -76,8 +75,8 @@ public class DAOInquilinoImplTest {
 	}
 	
 	
-	public InquilinoDTO instancia(String numero) {
-		return new InquilinoDTO.Builder()
+	public Inquilino instancia(String numero) {
+		return new Inquilino.Builder()
 			.setNombre("nombre "+numero)
 			.setApellido("apellido "+numero)
 			.setMail("mail "+numero)

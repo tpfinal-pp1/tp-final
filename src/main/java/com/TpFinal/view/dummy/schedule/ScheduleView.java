@@ -1,4 +1,4 @@
-package com.TpFinal.view.schedule;
+package com.TpFinal.view.dummy.schedule;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,9 +9,9 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
 import com.TpFinal.DashboardUI;
-import com.TpFinal.component.MovieDetailsWindow;
-import com.TpFinal.data.dto.Movie;
-import com.TpFinal.data.dto.Transaction;
+import com.TpFinal.view.component.MovieDetailsWindow;
+import com.TpFinal.data.dto.dummy.Movie;
+import com.TpFinal.data.dto.dummy.Transaction;
 
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;

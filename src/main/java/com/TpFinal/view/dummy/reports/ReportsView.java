@@ -1,4 +1,4 @@
-package com.TpFinal.view.reports;
+package com.TpFinal.view.dummy.reports;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,8 +8,8 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
 
-import com.TpFinal.view.reports.ReportEditor.PaletteItemType;
-import com.TpFinal.view.reports.ReportEditor.ReportEditorListener;
+import com.TpFinal.view.dummy.reports.ReportEditor.PaletteItemType;
+import com.TpFinal.view.dummy.reports.ReportEditor.ReportEditorListener;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;

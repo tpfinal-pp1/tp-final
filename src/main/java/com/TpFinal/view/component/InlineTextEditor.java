@@ -1,6 +1,6 @@
-package com.TpFinal.component;
+package com.TpFinal.view.component;
 
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -36,7 +36,7 @@ public class InlineTextEditor extends CustomComponent {
         text.setValue(initialValue);
         text.setContentMode(ContentMode.HTML);
 
-        Button editButton = new Button(FontAwesome.EDIT);
+        Button editButton = new Button(VaadinIcons.EDIT);
         editButton.addStyleName(ValoTheme.BUTTON_SMALL);
         editButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
         editButton.addClickListener(event -> setCompositionRoot(editor));

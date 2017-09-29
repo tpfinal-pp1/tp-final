@@ -1,4 +1,4 @@
-package com.TpFinal.view.map;
+package com.TpFinal.view.dummy.map;
 
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;

@@ -1,4 +1,4 @@
-package com.TpFinal.data.dto;
+package com.TpFinal.data.dto.dummy;
 
 import java.util.Date;
 

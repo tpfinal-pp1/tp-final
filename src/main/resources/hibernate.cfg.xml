@@ -25,16 +25,14 @@
 -->
 
 		<!-- Names the annotated entity class -->
-		<mapping class="com.TpFinal.data.dto.Person" />
-		<mapping class="com.TpFinal.data.dto.Address" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
 		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleAlquiler" />
 		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleVenta" />
 		
-		<mapping class="com.TpFinal.data.dto.PersonaDTO" />
-		<mapping class="com.TpFinal.data.dto.InquilinoDTO" />
+		<mapping class="com.TpFinal.data.dto.persona.Persona" />
+		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
 	
 
 

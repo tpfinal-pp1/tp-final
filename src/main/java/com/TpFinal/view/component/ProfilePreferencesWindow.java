@@ -1,14 +1,14 @@
-package com.TpFinal.component;
+package com.TpFinal.view.component;
 
 import java.util.Arrays;
 
-import com.TpFinal.data.dto.User;
+import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.annotations.PropertyId;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.ThemeResource;
@@ -65,8 +65,6 @@ public class ProfilePreferencesWindow extends Window {
     private TextField locationField;
     @PropertyId("phone")
     private TextField phoneField;
-    @PropertyId("newsletterSubscription")
-    private OptionalSelect<Integer> newsletterField;
     @PropertyId("website")
     private TextField websiteField;
     @PropertyId("bio")
@@ -115,7 +113,7 @@ public class ProfilePreferencesWindow extends Window {
     private Component buildPreferencesTab() {
         VerticalLayout root = new VerticalLayout();
         root.setCaption("Preferences");
-        root.setIcon(FontAwesome.COGS);
+        root.setIcon(VaadinIcons.COGS);
         root.setSpacing(true);
         root.setMargin(true);
         root.setSizeFull();
@@ -132,7 +130,7 @@ public class ProfilePreferencesWindow extends Window {
     private Component buildProfileTab() {
         HorizontalLayout root = new HorizontalLayout();
         root.setCaption("Profile");
-        root.setIcon(FontAwesome.USER);
+        root.setIcon(VaadinIcons.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
         root.setMargin(true);
         root.addStyleName("profile-form");
@@ -171,12 +169,12 @@ public class ProfilePreferencesWindow extends Window {
         titleField.setPlaceholder("Please specify");
         details.addComponent(titleField);
 
-        sexField = new RadioButtonGroup<>("Sex", Arrays.asList(true, false));
+        sexField = new RadioButtonGroup<>("Sexo", Arrays.asList(true, false));
         sexField.setItemCaptionGenerator(item -> item ? "Male" : "Female");
         sexField.addStyleName("horizontal");
         details.addComponent(sexField);
 
-        Label section = new Label("Contact Info");
+        Label section = new Label("persona Info");
         section.addStyleName(ValoTheme.LABEL_H4);
         section.addStyleName(ValoTheme.LABEL_COLORED);
         details.addComponent(section);
@@ -197,11 +195,6 @@ public class ProfilePreferencesWindow extends Window {
         phoneField.setWidth("100%");
         details.addComponent(phoneField);
 
-        newsletterField = new OptionalSelect<Integer>();
-        newsletterField.addOption(0, "Daily");
-        newsletterField.addOption(1, "Weekly");
-        newsletterField.addOption(2, "Monthly");
-        details.addComponent(newsletterField);
 
         section = new Label("Additional Info");
         section.addStyleName(ValoTheme.LABEL_H4);

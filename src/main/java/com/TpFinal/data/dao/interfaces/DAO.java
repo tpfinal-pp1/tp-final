@@ -2,7 +2,7 @@ package com.TpFinal.data.dao.interfaces;
 
 
 import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.User;
+import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.dto.Identificable;
 
 import java.util.Collection;

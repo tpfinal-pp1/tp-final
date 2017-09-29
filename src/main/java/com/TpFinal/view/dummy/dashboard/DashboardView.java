@@ -1,4 +1,4 @@
-package com.TpFinal.view.dashboard;
+package com.TpFinal.view.dummy.dashboard;
 
 import com.TpFinal.DashboardUI;
 
@@ -10,9 +10,10 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.FontAwesome;
+
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
@@ -21,7 +22,6 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -164,22 +164,22 @@ public final class DashboardView extends Panel implements View{
 
         MenuBar tools = new MenuBar();
         tools.addStyleName(ValoTheme.MENUBAR_BORDERLESS);
-        MenuItem max = tools.addItem("", FontAwesome.EXPAND, new Command() {
+        MenuItem max = tools.addItem("", VaadinIcons.EXPAND, new Command() {
 
             @Override
             public void menuSelected(final MenuItem selectedItem) {
                 if (!slot.getStyleName().contains("max")) {
-                    selectedItem.setIcon(FontAwesome.COMPRESS);
+                    selectedItem.setIcon(VaadinIcons.COMPRESS);
                     toggleMaximized(slot, true);
                 } else {
                     slot.removeStyleName("max");
-                    selectedItem.setIcon(FontAwesome.EXPAND);
+                    selectedItem.setIcon(VaadinIcons.EXPAND);
                     toggleMaximized(slot, false);
                 }
             }
         });
         max.setStyleName("icon-only");
-        MenuItem root = tools.addItem("", FontAwesome.COG, null);
+        MenuItem root = tools.addItem("", VaadinIcons.COG, null);
         root.addItem("Configurar", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
@@ -305,7 +305,7 @@ public final class DashboardView extends Panel implements View{
         public static final String ID = "dashboard-notifications";
 
         public NotificationsButton() {
-            setIcon(FontAwesome.BELL);
+            setIcon(VaadinIcons.BELL);
             setId(ID);
             addStyleName("notifications");
             addStyleName(ValoTheme.BUTTON_ICON_ONLY);

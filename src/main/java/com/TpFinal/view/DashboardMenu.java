@@ -1,12 +1,14 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.component.ProfilePreferencesWindow;
-import com.TpFinal.data.dto.User;
+import com.TpFinal.data.dto.dummy.User;
+import com.TpFinal.view.component.ProfilePreferencesWindow;
+
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.server.FontAwesome;
+
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.ContentMode;
@@ -118,7 +120,7 @@ public final class DashboardMenu extends CustomComponent {
                 }
             }
         });
-        valoMenuToggleButton.setIcon(FontAwesome.LIST);
+        valoMenuToggleButton.setIcon(VaadinIcons.LIST);
         valoMenuToggleButton.addStyleName("valo-menu-toggle");
         valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
         valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_SMALL);
