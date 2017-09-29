@@ -20,9 +20,9 @@
 		<!-- crea o actualiza las tablas -->
 
 
-		<!-- Echo all executed SQL to stdout -->
+		<!-- Echo all executed SQL to stdout 
 		<property name="show_sql">true</property>
-
+-->
 
 		<!-- Names the annotated entity class -->
 		<mapping class="com.TpFinal.data.dto.Person" />
