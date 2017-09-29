@@ -13,6 +13,7 @@ import com.TpFinal.data.dto.Identificable;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -83,6 +84,7 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		} catch (HibernateException e) {
 			System.err.println("Error al leer");
 			e.printStackTrace();
+			tx.rollback();
 		} finally {
 			session.close();
 		}
@@ -127,6 +129,7 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		} catch (HibernateException e) {
 			System.err.println("Error al leer");
 			e.printStackTrace();
+			tx.rollback();
 		} finally {
 			session.close();
 		}
@@ -149,10 +152,31 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		} catch (HibernateException e) {
 			System.err.println("Error al leer");
 			e.printStackTrace();
+			tx.rollback();
 		} finally {
 			session.close();
 		}
 		return entidad;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<T> findByCriteria(DetachedCriteria criteria) {
+		List<T> entidades = new ArrayList<T>();
+		Session session = ConexionHibernate.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			entidades = criteria.getExecutableCriteria(session).list();
+			tx.commit();
+		} catch (HibernateException e) {
+			System.err.println("Error al leer");
+			e.printStackTrace();
+			tx.rollback();
+		} finally {
+			session.close();
+		}
+		return entidades;
 	}
 
 	@Override
