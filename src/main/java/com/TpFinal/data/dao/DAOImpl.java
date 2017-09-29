@@ -6,7 +6,7 @@ import com.TpFinal.data.dto.DashboardNotification;
 import com.TpFinal.data.dto.Person;
 import com.TpFinal.data.dto.User;
 import com.TpFinal.data.conexion.ConexionHibernate;
-
+import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dto.Identificable;
 
 
