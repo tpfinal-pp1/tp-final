@@ -2,16 +2,25 @@ package com.TpFinal.data.dao;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVentaDTO;
 
@@ -67,6 +76,38 @@ public class DAOContratoVentaTest {
 		
 	}
 	
+	@Test 
+	public void altaConDoc() throws SQLException, IOException {
+		String path="src\\main\\resources\\demo.pdf";
+		guardarArchivo(path);
+		assertEquals(1, dao.readAll().size());
+		//ahora lo traigo
+		ContratoVentaDTO c = dao.readAll().get(0);
+		leerArchivo(c, "src\\main\\resources\\demo1.pdf");
+		File pdf = new File("src\\main\\resources\\demo1.pdf");
+		assertTrue(pdf.exists());
+	}
+	
+	public void guardarArchivo(String path) throws FileNotFoundException {
+		File pdf = new File(path);
+		FileInputStream pdf2= new FileInputStream(pdf);
+		assertTrue(pdf.exists());
+		Blob archivo= Hibernate.getLobCreator(ConexionHibernate.openSession()).createBlob(pdf2, pdf.length());
+		dao.save(instancia("1", archivo));
+	}
+	
+	
+	public void leerArchivo(ContratoVentaDTO c, String path) throws SQLException, IOException {
+		Blob blob = c.getDocumento();
+		 byte[] blobBytes = blob.getBytes(1, (int) blob.length());
+		 guardar(path, blobBytes);
+	}
+	
+	public void guardar(String filePath, byte[] fileBytes) throws IOException {
+		 FileOutputStream outputStream = new FileOutputStream(filePath);
+	        outputStream.write(fileBytes);
+	        outputStream.close();
+	}
 	
 	
 	
