@@ -1,8 +1,8 @@
 package com.TpFinal.data.dao.dummy;
 
-import com.TpFinal.data.dao.dummy.DataProvider;
-import com.TpFinal.data.dto.*;
-
+import com.TpFinal.domain.dummy.Movie;
+import com.TpFinal.domain.dummy.Transaction;
+import com.TpFinal.domain.dummy.User;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.gson.JsonArray;
@@ -11,7 +11,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
-
+import com.TpFinal.domain.DashboardNotification;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;

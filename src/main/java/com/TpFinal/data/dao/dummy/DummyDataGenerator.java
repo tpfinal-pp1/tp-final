@@ -1,6 +1,6 @@
 package com.TpFinal.data.dao.dummy;
 
-import com.TpFinal.data.dto.DashboardNotification;
+import com.TpFinal.domain.DashboardNotification;
 
 
 import java.util.Arrays;

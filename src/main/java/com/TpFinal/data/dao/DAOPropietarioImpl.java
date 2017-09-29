@@ -4,47 +4,46 @@ import java.util.Collection;
 import java.util.List;
 
 import com.TpFinal.data.dao.interfaces.DAO;
-import com.TpFinal.data.dao.interfaces.DAOInquilino;
+import com.TpFinal.data.dao.interfaces.DAOPropietario;
 import com.TpFinal.domain.DashboardNotification;
-import com.TpFinal.domain.persona.Inquilino;
 import com.TpFinal.domain.dummy.User;
+import com.TpFinal.domain.persona.Propietario;
 
-
-public class DAOInquilinoImpl implements DAOInquilino  {
+public class DAOPropietarioImpl implements DAOPropietario{
 	
-	private DAO<Inquilino>dao;
+	private DAO<Propietario> dao;
 	
-	public DAOInquilinoImpl() {
-		dao = new DAOImpl<>(Inquilino.class);
+	public DAOPropietarioImpl() {
+		dao = new DAOImpl<>(Propietario.class);
 	}
 
 	@Override
-	public boolean create(Inquilino entidad) {
+	public boolean create(Propietario entidad) {
 		return dao.create(entidad);
 	}
 
 	@Override
-	public List<Inquilino> readAll() {
+	public List<Propietario> readAll() {
 		return dao.readAll();
 	}
 
 	@Override
-	public boolean update(Inquilino entidad) {
+	public boolean update(Propietario entidad) {
 		return dao.update(entidad);
 	}
 
 	@Override
-	public boolean delete(Inquilino entidad) {
+	public boolean delete(Propietario entidad) {
 		return dao.delete(entidad);
 	}
 
 	@Override
-	public boolean save(Inquilino entidad) {
+	public boolean save(Propietario entidad) {
 		return dao.save(entidad);
 	}
 
 	@Override
-	public Inquilino findById(Long id) {
+	public Propietario findById(Long id) {
 		return dao.findById(id);
 	}
 
@@ -63,5 +62,5 @@ public class DAOInquilinoImpl implements DAOInquilino  {
 		return dao.getNotifications();
 	}
 	
-
+	
 }
