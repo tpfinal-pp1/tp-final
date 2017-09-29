@@ -25,7 +25,7 @@ public class DAOInmuebleImplTest {
 
 	@Before
 	public void setUp() throws Exception {
-		dao = new DAOInmuebleImpl(Inmueble.class);
+		dao = new DAOInmuebleImpl();
 		inmuebles.clear();
 	}
 
@@ -128,11 +128,48 @@ public class DAOInmuebleImplTest {
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(1, inmuebles.size());
 
-		criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").setConAireAcondicionado(false).build();
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").setConAireAcondicionado(false)
+				.build();
 
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(2, inmuebles.size());
 
+	}
+
+	@Test
+	public void findInmueblesByCriteria_SupTotal() {
+		int cantidadDeInmuebles = 3;
+
+		for (int x = 1; x <= cantidadDeInmuebles; x++) {
+			Inmueble i = getInstanciaPrueba();
+			i.setSuperficieTotal(x * 100);
+			dao.create(i);
+
+		}
+
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(200).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(2, inmuebles.size());
+
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(250).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(2, inmuebles.size());
+		
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(300).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(3, inmuebles.size());
+		
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(100).setMaxSupTotal(300).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(3, inmuebles.size());
+		
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(400).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(0, inmuebles.size());
+
+		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(99).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(0, inmuebles.size());
 	}
 
 	private Inmueble getInstanciaPrueba() {
