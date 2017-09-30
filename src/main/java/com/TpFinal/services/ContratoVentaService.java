@@ -4,14 +4,18 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVentaDTO;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.List;
@@ -62,8 +66,30 @@ public class ContratoVentaService {
     	return archivo;
 	}
     
+    //Esto lo pasamos al FileDownloader de vaadin
+    public StreamResource getDocStreamResource(ContratoVentaDTO contrato, String nombreArchivoConExtension) {
+    	@SuppressWarnings("serial")
+		StreamSource ss = new StreamSource() {
+			@Override
+			public InputStream getStream() {
+				InputStream is=null;
+				try {
+					Blob docBlob=contrato.getDocumento();
+					byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
+					is = new ByteArrayInputStream(docBlobBytes);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return is;
+			}
+		};
+    	StreamResource sr= new StreamResource(ss, nombreArchivo);
+    	return sr;
+    }
+    
     @SuppressWarnings("resource")
 	public boolean downloadFile(ContratoVentaDTO contrato, String downloadPath) {
+    	//Este es para descargar directamente
     	boolean ret=true;
     	try {
 			Blob docBlob=contrato.getDocumento();
