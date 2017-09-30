@@ -48,20 +48,7 @@ public class DAOInquilinoImpl implements DAOInquilino  {
 		return dao.findById(id);
 	}
 
-	@Override
-	public User authenticate(String userName, String password) {
-		return dao.authenticate(userName, password);
-	}
 
-	@Override
-	public int getUnreadNotificationsCount() {
-		return dao.getUnreadNotificationsCount();
-	}
-
-	@Override
-	public Collection<DashboardNotification> getNotifications() {
-		return dao.getNotifications();
-	}
 	
 
 }

@@ -179,17 +179,17 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		return entidades;
 	}
 
-	@Override
+
 	public User authenticate(String userName, String password) {
 		return null;
 	}
 
-	@Override
+
 	public int getUnreadNotificationsCount() {
 		return 0;
 	}
 
-	@Override
+
 	public Collection<DashboardNotification> getNotifications() {
 		return null;
 	}

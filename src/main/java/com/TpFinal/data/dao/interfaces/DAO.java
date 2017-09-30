@@ -21,9 +21,7 @@ public interface DAO<T extends Identificable> {
 	default public List<T> findByCriteria(DetachedCriteria criteria) {
         throw new RuntimeException("Metodo FindByCriteria no Implementado!");
     } 
-	User authenticate(String userName, String password);
-	int getUnreadNotificationsCount();
-	Collection<DashboardNotification> getNotifications();
+
 	
 
 
