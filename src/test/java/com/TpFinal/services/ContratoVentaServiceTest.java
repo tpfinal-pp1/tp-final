@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +12,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.TpFinal.data.dto.contrato.ContratoVentaDTO;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
 
 
 public class ContratoVentaServiceTest {
 	ContratoVentaService service;
-	List<ContratoVentaDTO>contratos=new ArrayList<>();
+	List<ContratoVenta>contratos=new ArrayList<>();
 	
 	@Before
 	public void setUp() throws Exception {
@@ -47,7 +46,7 @@ public class ContratoVentaServiceTest {
 		File pdf = new File("src\\main\\resources\\demo.pdf");
 		assertTrue(pdf.exists());
 		service.save(instancia("1"), pdf);
-		ContratoVentaDTO c = service.readAll().get(0);
+		ContratoVenta c = service.readAll().get(0);
 		ContratoUtil cu = new ContratoUtil();
 		cu.downloadFile(c, "src\\main\\resources\\prueba.pdf");
 		pdf=new File("src\\main\\resources\\prueba.pdf");
@@ -55,8 +54,8 @@ public class ContratoVentaServiceTest {
 		pdf.delete();
 	}
 	
-	public ContratoVentaDTO instancia(String numero) {
-		return new ContratoVentaDTO.Builder()
+	public ContratoVenta instancia(String numero) {
+		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 				.setInmuebleVenta(null)
 				.setPrecioVenta(new BigDecimal(numero))

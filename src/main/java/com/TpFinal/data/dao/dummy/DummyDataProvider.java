@@ -1,8 +1,10 @@
 package com.TpFinal.data.dao.dummy;
 
-import com.TpFinal.data.dao.dummy.DataProvider;
 import com.TpFinal.data.dto.*;
 
+import com.TpFinal.data.dto.dummy.Movie;
+import com.TpFinal.data.dto.dummy.Transaction;
+import com.TpFinal.data.dto.dummy.User;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.gson.JsonArray;

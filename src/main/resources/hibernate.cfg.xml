@@ -20,24 +20,23 @@
 		<!-- crea o actualiza las tablas -->
 
 
-		<!-- Echo all executed SQL to stdout -->
+		<!-- Echo all executed SQL to stdout 
 		<property name="show_sql">true</property>
-
+-->
 
 		<!-- Names the annotated entity class -->
-		<mapping class="com.TpFinal.data.dto.Person" />
-		<mapping class="com.TpFinal.data.dto.Address" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
 		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleAlquiler" />
 		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleVenta" />
-		
-		<mapping class="com.TpFinal.data.dto.Persona" />
-		<mapping class="com.TpFinal.data.dto.Inquilino" />
 		<mapping class="com.TpFinal.data.dto.Propietario" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoDTO" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoVentaDTO" />
+		<mapping class="com.TpFinal.data.dto.contrato.Contrato" />
+		<mapping class="com.TpFinal.data.dto.contrato.ContratoVenta" />
+		<mapping class="com.TpFinal.data.dto.persona.Persona" />
+		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
+	
+
 
 
 

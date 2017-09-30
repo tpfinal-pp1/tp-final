@@ -21,6 +21,25 @@ import com.TpFinal.data.dto.Identificable;
 @Entity
 @Table(name = "Inmuebles")
 public class Inmueble implements Identificable {
+	public static final String pIdInmueble = "idInmueble";
+	public static final String pAEstrenar = "aEstrenar";
+	public static final String pCantAmbientes = "cantidadAmbientes";
+	public static final String pCantCocheras = "cantidadCocheras";
+	public static final String pCantDormitorios = "cantidadDormitorios";
+	public static final String pClaseInmb = "claseInmueble";
+	public static final String pConAireAcond = "conAireAcondicionado";
+	public static final String pConJardin = "conJardin";
+	public static final String pConParrilla = "conParrilla";
+	public static final String pConPileta = "conPileta";
+	public static final String pDireccion = "direccion";
+	public static final String pEstadoInmueble = "estadoInmueble";
+	public static final String pSupCubierta = "superficieCubierta";
+	public static final String pSupTotal = "superficieTotal";
+	public static final String pTipoInmb = "tipoInmueble";
+	
+	
+	
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")

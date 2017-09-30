@@ -13,6 +13,8 @@ import com.TpFinal.data.dto.Identificable;
 @Entity
 @Table(name = "direcciones")
 public class Direccion implements Identificable {
+	public static final String pLocalidad = "localidad";
+
 	@Id
 	@GeneratedValue
 	@Column(name = "idDireccion")

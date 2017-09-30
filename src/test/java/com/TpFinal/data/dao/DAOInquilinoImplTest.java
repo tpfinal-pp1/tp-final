@@ -1,24 +1,38 @@
 package com.TpFinal.data.dao;
 
-import com.TpFinal.data.dto.Inquilino;
+
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dto.persona.Inquilino;
+
+
 public class DAOInquilinoImplTest {
 	
 	DAOInquilinoImpl dao;
 	List<Inquilino>inquilinos= new ArrayList<>();
-	
 
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception{
+		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+	}
+
+	
 	@Before
 	public void setUp() throws Exception {
 		dao= new DAOInquilinoImpl();
+		dao.readAll().forEach(dao::delete);
 		inquilinos.clear();
 	}
 	
@@ -57,6 +71,8 @@ public class DAOInquilinoImplTest {
 	
 	@Test
 	public void update() {
+		inquilinos=dao.readAll();
+		inquilinos.forEach(dao::delete);
 		dao.save(instancia("1"));
 		dao.save(instancia("2"));
 		dao.save(instancia("3"));
@@ -66,11 +82,13 @@ public class DAOInquilinoImplTest {
 			if(inq.getNombre().equals("nombre 1"))
 			{
 				inq.setNombre("sarasa");
+				inq.setInfoAdicional("info");
 				dao.update(inq);
 			}
 		});
 		
 		assertEquals("sarasa", dao.readAll().get(0).getNombre());
+		assertEquals("info", dao.readAll().get(0).getInfoAdicional());
 	}
 	
 	
@@ -80,8 +98,13 @@ public class DAOInquilinoImplTest {
 			.setApellido("apellido "+numero)
 			.setMail("mail "+numero)
 			.setTelefono("telefono "+numero)
+
 			.setTelefono("telefono "+numero)
-			.build();
+				.setTelefono2("telefono2 "+numero)
+				.setDNI("Dni"+numero)
+				.setinfoAdicional("Info Adicional"+ numero)
+			.buid();
+
 	}
 
 }

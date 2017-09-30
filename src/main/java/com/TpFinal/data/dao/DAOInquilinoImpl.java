@@ -6,8 +6,8 @@ import java.util.List;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOInquilino;
 import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.Inquilino;
-import com.TpFinal.data.dto.User;
+import com.TpFinal.data.dto.persona.Inquilino;
+import com.TpFinal.data.dto.dummy.User;
 
 
 public class DAOInquilinoImpl implements DAOInquilino  {
@@ -48,20 +48,7 @@ public class DAOInquilinoImpl implements DAOInquilino  {
 		return dao.findById(id);
 	}
 
-	@Override
-	public User authenticate(String userName, String password) {
-		return dao.authenticate(userName, password);
-	}
 
-	@Override
-	public int getUnreadNotificationsCount() {
-		return dao.getUnreadNotificationsCount();
-	}
-
-	@Override
-	public Collection<DashboardNotification> getNotifications() {
-		return dao.getNotifications();
-	}
 	
 
 }

@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 
 import com.TpFinal.data.dto.*;
+import com.TpFinal.data.dto.dummy.Movie;
+import com.TpFinal.data.dto.dummy.Transaction;
+import com.TpFinal.data.dto.dummy.User;
 
 /**
  * QuickTickets Dashboard backend API.

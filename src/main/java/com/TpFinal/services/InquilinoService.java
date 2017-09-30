@@ -4,7 +4,8 @@ import java.util.List;
 
 import com.TpFinal.data.dao.DAOInquilinoImpl;
 import com.TpFinal.data.dao.interfaces.DAOInquilino;
-import com.TpFinal.data.dto.Inquilino;
+import com.TpFinal.data.dto.persona.Inquilino;
+
 
 public class InquilinoService {
 

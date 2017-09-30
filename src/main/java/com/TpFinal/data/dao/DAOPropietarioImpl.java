@@ -2,11 +2,9 @@ package com.TpFinal.data.dao;
 
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOPropietario;
-import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.Propietario;
-import com.TpFinal.data.dto.User;
 
-import java.util.Collection;
+import com.TpFinal.data.dto.Propietario;
+
 import java.util.List;
 
 /**
@@ -35,12 +33,5 @@ public class DAOPropietarioImpl implements DAOPropietario{
     @Override
     public Propietario findById(Long id) { return dao.findById(id); }
 
-    @Override
-    public User authenticate(String userName, String password) { return dao.authenticate(userName,password); }
 
-    @Override
-    public int getUnreadNotificationsCount() { return dao.getUnreadNotificationsCount(); }
-
-    @Override
-    public Collection<DashboardNotification> getNotifications() { return dao.getNotifications(); }
 }

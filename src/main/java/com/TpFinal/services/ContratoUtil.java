@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import org.hibernate.Hibernate;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.data.dto.contrato.ContratoDTO;
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
 
@@ -31,7 +31,7 @@ public class ContratoUtil {
 		}
 	    
 	    //Esto lo pasamos al FileDownloader de vaadin
-	    public StreamResource getDocStreamResource(ContratoDTO contrato, String nombreArchivoConExtension) {
+	    public StreamResource getDocStreamResource(Contrato contrato, String nombreArchivoConExtension) {
 	    	@SuppressWarnings("serial")
 			StreamSource ss = new StreamSource() {
 				@Override
@@ -52,7 +52,7 @@ public class ContratoUtil {
 	    }
 	    
 	    @SuppressWarnings("resource")
-		public boolean downloadFile(ContratoDTO contrato, String downloadPath) {
+		public boolean downloadFile(Contrato contrato, String downloadPath) {
 	    	//Este es para descargar directamente
 	    	boolean ret=true;
 	    	try {
@@ -68,7 +68,7 @@ public class ContratoUtil {
 	    }
 		
 		//No se usan los dejo como referencia 
-		public void leerArchivo(ContratoDTO c, String path) throws SQLException, IOException {
+		public void leerArchivo(Contrato c, String path) throws SQLException, IOException {
 			Blob blob = c.getDocumento();
 			 byte[] blobBytes = blob.getBytes(1, (int) blob.length());
 			 guardar(path, blobBytes);

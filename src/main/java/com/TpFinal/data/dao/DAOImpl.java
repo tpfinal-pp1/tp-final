@@ -3,8 +3,8 @@ package com.TpFinal.data.dao;
 
 
 import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.Person;
-import com.TpFinal.data.dto.User;
+
+import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dto.Identificable;
@@ -179,36 +179,21 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 		return entidades;
 	}
 
-	@Override
+
 	public User authenticate(String userName, String password) {
 		return null;
 	}
 
-	@Override
+
 	public int getUnreadNotificationsCount() {
 		return 0;
 	}
 
-	@Override
+
 	public Collection<DashboardNotification> getNotifications() {
 		return null;
 	}
 
-	public static void main(String[] args) {
-		DAOImpl<Person> dao = new DAOImpl<>(Person.class);
-		System.out.println(dao.getClaseEntidad().getSimpleName());
-		Person p = new Person();
 
-
-		dao.create(p);
-
-		dao.readAll().forEach(System.out::println);
-		dao.delete(p);
-
-		p.setFirstName("Nombre Modificado");
-		dao.update(p);
-		dao.readAll().forEach(System.out::println);
-		ConexionHibernate.close();
-	}
 
 }

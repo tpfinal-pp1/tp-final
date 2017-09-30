@@ -80,7 +80,7 @@ public class DAOPropietarioImplTest {
                 .setApellido("apellido "+numero)
                 .setMail("mail "+numero)
                 .setTelefono("telefono "+numero)
-                .setTelefono("telefono "+numero)
+                .setTelefono("telefono "+numero).setDNI("DNI"+numero)
                 .build();
     }
 }

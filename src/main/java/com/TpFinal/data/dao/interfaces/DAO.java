@@ -2,7 +2,7 @@ package com.TpFinal.data.dao.interfaces;
 
 
 import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.User;
+import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.dto.Identificable;
 
 import java.util.Collection;
@@ -19,11 +19,9 @@ public interface DAO<T extends Identificable> {
 	public boolean save(T entidad);
 	public T findById(Long id);
 	default public List<T> findByCriteria(DetachedCriteria criteria) {
-        throw new RuntimeException("Metodo FindById no Implementado!");
+        throw new RuntimeException("Metodo FindByCriteria no Implementado!");
     } 
-	User authenticate(String userName, String password);
-	int getUnreadNotificationsCount();
-	Collection<DashboardNotification> getNotifications();
+
 	
 
 

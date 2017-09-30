@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -22,11 +21,11 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
-import com.TpFinal.data.dto.contrato.ContratoVentaDTO;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
 
 public class DAOContratoVentaTest {
 	DAOContratoVenta dao;
-	List<ContratoVentaDTO>contratos=new ArrayList<>();
+	List<ContratoVenta>contratos=new ArrayList<>();
 
 	@Before
 	public void setUp() throws Exception {
@@ -86,7 +85,7 @@ public class DAOContratoVentaTest {
 		guardarArchivo(path);
 		assertEquals(1, dao.readAll().size());
 		//ahora lo traigo
-		ContratoVentaDTO c = dao.readAll().get(0);
+		ContratoVenta c = dao.readAll().get(0);
 		leerArchivo(c, "src\\main\\resources\\demo1.pdf");
 		File pdf = new File("src\\main\\resources\\demo1.pdf");
 		assertTrue(pdf.exists());
@@ -101,7 +100,7 @@ public class DAOContratoVentaTest {
 	}
 	
 	
-	public void leerArchivo(ContratoVentaDTO c, String path) throws SQLException, IOException {
+	public void leerArchivo(ContratoVenta c, String path) throws SQLException, IOException {
 		Blob blob = c.getDocumento();
 		 byte[] blobBytes = blob.getBytes(1, (int) blob.length());
 		 guardar(path, blobBytes);
@@ -115,8 +114,8 @@ public class DAOContratoVentaTest {
 	
 	
 	
-	public ContratoVentaDTO instancia(String numero, Blob doc) {
-		return new ContratoVentaDTO.Builder()
+	public ContratoVenta instancia(String numero, Blob doc) {
+		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 				.setDocumento(doc)
 				.setInmuebleVenta(null)
