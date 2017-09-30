@@ -83,17 +83,18 @@ public class DAOContratoVentaTest {
 		
 	}
 	
-	@Test 
+	@Test
 	public void altaConDoc() throws SQLException, IOException {
 		String path="Files"+File.separator+"demo1.pdf";
 		File f=new File(path);
 		f.createNewFile();  //lo creo
 		persistirenDB(path); //Lo guardo en db
 		f.delete();          //Lo borro del disco
-		assertFalse(f.exists());
 		assertEquals(1, dao.readAll().size());
 		ContratoVenta contrato = dao.readAll().get(0); //Lo traigo de DB
-		guardar(path, toBytes(contrato));  //Lo escribo en disco de nuevo
+		guardar(path+".test", toBytes(contrato));  //Lo escribo en disco de nuevo
+		path="Files"+File.separator+"demo1.pdf"+".test";
+		f=new File(path);
 		assertTrue(f.exists());
 
 	}
