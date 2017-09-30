@@ -6,6 +6,7 @@ import com.TpFinal.DashboardUI;
 import com.TpFinal.data.dto.DashboardNotification;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.view.dummy.pdf.PDFView;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -14,7 +15,9 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
+import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -23,6 +26,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -113,9 +117,25 @@ public final class DashboardView extends Panel implements View{
         dashboardPanels.addComponent(buildNotes());
 
 
+        Button pdfDownload = new Button("Download PDF");
+        StreamResource sr = getPDFStream();
+        FileDownloader fileDownloader = new FileDownloader(sr);
+        fileDownloader.extend(pdfDownload);
+        dashboardPanels.addComponent(pdfDownload);
+
+
         return dashboardPanels;
     }
 
+    private StreamResource getPDFStream() {
+       return new StreamResource(new StreamResource.StreamSource() {
+           public InputStream getStream() {
+               InputStream is = PDFView.class.getClassLoader().getResourceAsStream("demo.pdf");
+               return is;
+           }
+       }, "demo.pdf");
+
+    }
 
 
     private Component buildNotes() {
