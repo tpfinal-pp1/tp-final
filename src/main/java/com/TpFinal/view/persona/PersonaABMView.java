@@ -78,7 +78,7 @@ public class PersonaABMView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-        newItem.addClickListener(e -> personaForm.setPersona(new Persona()));
+    //    newItem.addClickListener(e -> personaForm.setPersona(new Persona()));
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);

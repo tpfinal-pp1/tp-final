@@ -43,18 +43,15 @@ public class PersonaService {
         if(stringFilter!=""){
 
             for (Persona persona : personas) {
-                try {
+
                     boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
                                             || persona.toString().toLowerCase()
                                             .contains(stringFilter.toLowerCase());
                     if (passesFilter) {
 
-                        arrayList.add(persona.clone());
+                        arrayList.add(persona);
                     }
-                } catch (CloneNotSupportedException ex) {
-                    Logger.getLogger(PersonaService.class.getName()).log(
-                            Level.SEVERE, null, ex);
-                }
+
             }
         }
         else{
@@ -80,11 +77,6 @@ public class PersonaService {
 
     public synchronized void save(Persona entry) {
 
-        try {
-            entry = (Persona) BeanUtils.cloneBean(entry);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
         DAO dao=new DAOImpl<Persona>(Persona.class);
         dao.save(entry);
     }

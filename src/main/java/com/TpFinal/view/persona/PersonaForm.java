@@ -2,17 +2,19 @@ package com.TpFinal.view.persona;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
+import com.vaadin.data.ValidationException;
+import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
 
 /* Create custom UI Components.
  *
  * Create your own Vaadin components by inheritance and composition.
  * This is a form component inherited from VerticalLayout. Use
- * Use BeanFieldGroup to bind data fields from DTO to UI fields.
+ * Use BeanFieldGroup to binding data fields from DTO to UI fields.
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
@@ -27,6 +29,7 @@ import com.vaadin.ui.TextField;
     TextField telefono2 = new TextField("Celular");
     TextField mail = new TextField("Mail");
     TextArea infoAdicional = new TextArea("Información Adicional");
+
    // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PersonaService service = PersonaService.getService();
@@ -39,13 +42,14 @@ import com.vaadin.ui.TextField;
 
 
 
-        // Easily bind forms to beans and manage validation and buffering
+        // Easily binding forms to beans and manage validation and buffering
 
 
     public PersonaForm(PersonaABMView addressbook) {
        // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
+        binding();
         buildLayout();
         addStyleName("v-scrollable");
     }
@@ -67,17 +71,44 @@ import com.vaadin.ui.TextField;
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        binder.bindInstanceFields(this);
+
+
+
+
+
         setVisible(false);
     }
 
+    
+    private void binding(){
+        //binder.bindInstanceFields(this); //Binding automatico
+        binder.forField(nombre).withValidator(new StringLengthValidator(
+                "El nombre debe estar entre 2 y 20 caracteres",
+                2, 20)).bind(Persona::getNombre,Persona::setNombre);
+
+        binder.forField(apellido).withValidator(new StringLengthValidator(
+                "El nombre debe estar entre 2 y 20 caracteres",
+                2, 20)).bind(Persona::getApellido,Persona::setApellido);
+
+        binder.forField(DNI).withValidator(new StringLengthValidator(
+                "El DNI de estar entre 2 y 20 caracteres",
+                2, 20)).bind(Persona::getDNI,Persona::setDNI);
+        binder.forField(telefono).bind(Persona::getTelefono,Persona::setTelefono);
+        binder.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
+        binder.forField(mail).withValidator(new EmailValidator(
+                "Introduzca un email valido!"
+                )).bind(Persona::getMail,Persona::setMail);
+        binder.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
+
+    }
+    
     private void buildLayout() {
         setSizeFull();
         setMargin(true);
 
         tabSheet=new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout(nombre, apellido, DNI,mail );
+        VerticalLayout principal=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
         VerticalLayout adicional=new VerticalLayout(telefono,telefono2,infoAdicional);
 
         tabSheet.addTab(principal,"Principal");
@@ -93,8 +124,9 @@ import com.vaadin.ui.TextField;
 
 
     public void setPersona(Persona persona) {
+        System.out.println("ID Inicial: "+persona.getId());
         this.persona = persona;
-        binder.setBean(persona);
+        binder.readBean(persona);
 
         // Show delete button for only Persons already in the database
         delete.setVisible(persona.getId()!=null);
@@ -117,7 +149,15 @@ import com.vaadin.ui.TextField;
     }
 
     private void save() {
-        service.save(persona);
+        System.out.println("ID Final: "+persona.getId());
+        try {
+            binder.writeBean(persona);
+            service.save(persona);
+        } catch (ValidationException e) {
+            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+            return;
+        }
+
         addressbookView.updateList();
        /* String msg = String.format("Guardado '%s %s'.", persona.getNombre(),
                 persona.getApellido());*
