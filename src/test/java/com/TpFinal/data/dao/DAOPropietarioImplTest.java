@@ -1,6 +1,6 @@
 package com.TpFinal.data.dao;
 
-import com.TpFinal.data.dto.PropietarioDTO;
+import com.TpFinal.data.dto.Propietario;
 import org.junit.*;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 public class DAOPropietarioImplTest {
 
     DAOPropietarioImpl dao;
-    List<PropietarioDTO> propietarios = new ArrayList<>();
+    List<Propietario> propietarios = new ArrayList<>();
 
 
     @Before
@@ -74,8 +74,8 @@ public class DAOPropietarioImplTest {
         assertEquals(dao.readAll().size(), 5);
     }
 
-    public PropietarioDTO instancia(String numero) {
-        return new PropietarioDTO.Builder()
+    public Propietario instancia(String numero) {
+        return new Propietario.Builder()
                 .setNombre("nombre "+numero)
                 .setApellido("apellido "+numero)
                 .setMail("mail "+numero)

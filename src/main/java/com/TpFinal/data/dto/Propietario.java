@@ -11,19 +11,19 @@ import javax.persistence.Table;
 @Entity
 @Table(name="inquilino")
 @PrimaryKeyJoinColumn(name="id")
-public class PropietarioDTO extends PersonaDTO{
+public class Propietario extends Persona {
 
     @Column(name="telefono2")
     private String telefono2;
 
-    public PropietarioDTO() {super();}
+    public Propietario() {super();}
 
-    private PropietarioDTO(Builder b) {
+    private Propietario(Builder b) {
         super(b.id,b.nombre,b.apellido,b.mail,b.telefono);
         this.telefono2=b.telefono2;
     }
 
-    public PropietarioDTO(Long id, String nombre, String apellido, String mail, String telefono,String telefono2) {
+    public Propietario(Long id, String nombre, String apellido, String mail, String telefono, String telefono2) {
         super(id, nombre,apellido, mail,telefono);
         this.telefono2 = telefono2;
     }
@@ -74,8 +74,8 @@ public class PropietarioDTO extends PersonaDTO{
             return this;
         }
 
-        public PropietarioDTO build() {
-            return new PropietarioDTO(this);
+        public Propietario build() {
+            return new Propietario(this);
         }
 
     }
