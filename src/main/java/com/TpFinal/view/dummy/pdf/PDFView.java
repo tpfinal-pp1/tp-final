@@ -68,10 +68,10 @@ public class PDFView extends VerticalLayout implements View {
 
             Embedded pdf = new Embedded("", new StreamResource(new StreamResource.StreamSource() {
                 public InputStream getStream() {
-                    InputStream is = PDFView.class.getClassLoader().getResourceAsStream("demo.pdf");
+                    InputStream is = PDFView.class.getClassLoader().getResourceAsStream("demo1.pdf");
                     return is;
                 }
-            }, "demo.pdf"));
+            }, "demo1.pdf"));
 
             pdf.setType(Embedded.TYPE_BROWSER);
             pdf.setMimeType("application/pdf");

@@ -23,24 +23,28 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 
+import javax.validation.constraints.AssertFalse;
+
 public class DAOContratoVentaTest {
 	DAOContratoVenta dao;
 	List<ContratoVenta>contratos=new ArrayList<>();
 
 	@Before
 	public void setUp() throws Exception {
-		File f = new File("src\\main\\resources\\demo1.pdf");
-		if(f.exists())f.delete();
+
+		File dir=new File("Files");
+		deleteDirectory(dir);
+		dir.mkdir();
 		dao=new DAOContratoVentaImpl();
 		contratos.clear();
 	}
+
 
 	@After
 	public void tearDown() throws Exception {
 		contratos=dao.readAll();
 		contratos.forEach(dao::delete);
-		File f = new File("src\\main\\resources\\demo1.pdf");
-		if(f.exists())f.delete();
+		deleteDirectory(new File("Files"));
 	}
 
 	@Test
@@ -81,30 +85,38 @@ public class DAOContratoVentaTest {
 	
 	@Test 
 	public void altaConDoc() throws SQLException, IOException {
-		String path="src\\main\\resources\\demo.pdf";
-		guardarArchivo(path);
+		String path="Files"+File.separator+"demo1.pdf";
+		File f=new File(path);
+		f.createNewFile();  //lo creo
+		persistirenDB(path); //Lo guardo en db
+		f.delete();          //Lo borro del disco
+		assertFalse(f.exists());
 		assertEquals(1, dao.readAll().size());
-		//ahora lo traigo
-		ContratoVenta c = dao.readAll().get(0);
-		leerArchivo(c, "src\\main\\resources\\demo1.pdf");
-		File pdf = new File("src\\main\\resources\\demo1.pdf");
-		
-		assertTrue(pdf.exists());
+		ContratoVenta contrato = dao.readAll().get(0); //Lo traigo de DB
+		guardar(path, toBytes(contrato));  //Lo escribo en disco de nuevo
+		assertTrue(f.exists());
+
 	}
 	
-	public void guardarArchivo(String path) throws FileNotFoundException {
+	public void persistirenDB(String path) throws FileNotFoundException {
 		File pdf = new File(path);
 		FileInputStream pdf2= new FileInputStream(pdf);
 		assertTrue(pdf.exists());
 		Blob archivo= Hibernate.getLobCreator(ConexionHibernate.openSession()).createBlob(pdf2, pdf.length());
 		dao.save(instancia("1", archivo));
+		try {
+			pdf2.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	
-	public void leerArchivo(ContratoVenta c, String path) throws SQLException, IOException {
+	public byte[] toBytes(ContratoVenta c) throws SQLException, IOException {
 		Blob blob = c.getDocumento();
-		 byte[] blobBytes = blob.getBytes(1, (int) blob.length());
-		 guardar(path, blobBytes);
+		return blob.getBytes(1, (int) blob.length());
+
 	}
 	
 	public void guardar(String filePath, byte[] fileBytes) throws IOException {
@@ -112,8 +124,20 @@ public class DAOContratoVentaTest {
 	        outputStream.write(fileBytes);
 	        outputStream.close();
 	}
-	
-	
+
+	static public boolean deleteDirectory(File path) {
+		if (path.exists()) {
+			File[] files = path.listFiles();
+			for (int i = 0; i < files.length; i++) {
+				if (files[i].isDirectory()) {
+					deleteDirectory(files[i]);
+				} else {
+					files[i].delete();
+				}
+			}
+		}
+		return (path.delete());
+	}
 	
 	public ContratoVenta instancia(String numero, Blob doc) {
 		return new ContratoVenta.Builder()

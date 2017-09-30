@@ -18,7 +18,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 import com.vaadin.server.Responsive;
-import com.vaadin.server.StreamResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -119,7 +118,7 @@ public final class DashboardView extends Panel implements View{
 
 
         UploadButton uploadButton=new UploadButton("Subir",new UploadReceiver());
-        DownloadButton downloadButton=new DownloadButton("Descargar", "demo.pdf");
+        DownloadButton downloadButton=new DownloadButton("Descargar", "demo1.pdf");
         dashboardPanels.addComponent(uploadButton);
         dashboardPanels.addComponent(downloadButton);
 

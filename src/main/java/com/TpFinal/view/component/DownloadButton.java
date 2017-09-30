@@ -32,7 +32,7 @@ public class DownloadButton extends Button {
             public InputStream getStream() {
                 InputStream is = null;
                 try {
-                    is = new FileInputStream("Uploads"+ File.separator+filename);
+                    is = new FileInputStream("Files"+ File.separator+filename);
                 } catch (FileNotFoundException e) {
                     System.err.println("No se ha encontrado el archivo a descargar");
                 }
