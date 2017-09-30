@@ -30,6 +30,11 @@ public class ContratoVentaService {
     public boolean delete(ContratoVenta entidad) {
         return dao.delete(entidad);
     }
+    
+    public boolean saveContrato(ContratoVenta entidad, File doc) {
+    		return dao.saveContrato(entidad,doc);
+    }
+    
 
     public boolean save(ContratoVenta entidad, File doc) {
     	//transformo el doc al tipo que necesita hibernate

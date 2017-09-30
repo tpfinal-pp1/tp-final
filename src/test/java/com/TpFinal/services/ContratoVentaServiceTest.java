@@ -55,7 +55,7 @@ public class ContratoVentaServiceTest {
 		File pdf = new File("Files"+File.separator+"demo1.pdf");
 		pdf.createNewFile();
 		assertTrue(pdf.exists());
-		service.save(instancia("1"), pdf);
+		service.saveContrato(instancia("1"), pdf);
 		ContratoVenta c = service.readAll().get(0);
 		ContratoUtil cu = new ContratoUtil();
 		cu.downloadFile(c, "Files"+File.separator+"demo1.pdf");
