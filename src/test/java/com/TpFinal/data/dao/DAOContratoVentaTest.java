@@ -30,6 +30,8 @@ public class DAOContratoVentaTest {
 
 	@Before
 	public void setUp() throws Exception {
+		File f = new File("src\\main\\resources\\demo1.pdf");
+		if(f.exists())f.delete();
 		dao=new DAOContratoVentaImpl();
 		contratos.clear();
 	}
@@ -38,6 +40,8 @@ public class DAOContratoVentaTest {
 	public void tearDown() throws Exception {
 		contratos=dao.readAll();
 		contratos.forEach(dao::delete);
+		File f = new File("src\\main\\resources\\demo1.pdf");
+		if(f.exists())f.delete();
 	}
 
 	@Test
