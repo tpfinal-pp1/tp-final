@@ -1,29 +1,33 @@
 package com.TpFinal.data.dao;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.persona.Inquilino;
+
 
 public class DAOInquilinoImplTest {
 	
 	DAOInquilinoImpl dao;
 	List<Inquilino>inquilinos= new ArrayList<>();
-	
+
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
 		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
 	}
+
 	
 	@Before
 	public void setUp() throws Exception {
@@ -94,10 +98,13 @@ public class DAOInquilinoImplTest {
 			.setApellido("apellido "+numero)
 			.setMail("mail "+numero)
 			.setTelefono("telefono "+numero)
-			.setTelefono2("telefono2 "+numero)
+
+			.setTelefono("telefono "+numero)
+				.setTelefono2("telefono2 "+numero)
 				.setDNI("Dni"+numero)
 				.setinfoAdicional("Info Adicional"+ numero)
 			.buid();
+
 	}
 
 }

@@ -5,4 +5,4 @@ Sistema para gestión inmobiliaria:
 
 
 ### Manven Goals: -Pproduction-mode jetty:run
-### Jasper master estuvo aqui ^ (mirada de quinteros)
+### Jasper master estuvo aqui ^ (mirada de Quinteros)
