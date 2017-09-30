@@ -88,6 +88,7 @@ public class DAOContratoVentaTest {
 		ContratoVenta c = dao.readAll().get(0);
 		leerArchivo(c, "src\\main\\resources\\demo1.pdf");
 		File pdf = new File("src\\main\\resources\\demo1.pdf");
+		
 		assertTrue(pdf.exists());
 	}
 	
