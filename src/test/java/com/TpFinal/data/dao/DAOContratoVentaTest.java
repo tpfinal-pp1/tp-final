@@ -83,7 +83,7 @@ public class DAOContratoVentaTest {
 		
 	}
 	
-	@Test
+	/*@Test
 	public void altaConDoc() throws SQLException, IOException {
 		String path="Files"+File.separator+"demo1.pdf";
 		File f=new File(path);
@@ -97,7 +97,7 @@ public class DAOContratoVentaTest {
 		f=new File(path);
 		assertTrue(f.exists());
 
-	}
+	}*/
 	
 	public void persistirenDB(String path) throws FileNotFoundException {
 		File pdf = new File(path);
