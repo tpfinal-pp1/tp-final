@@ -1,5 +1,6 @@
 package com.TpFinal.view.component;
 
+import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
 
 import java.io.File;
@@ -12,19 +13,32 @@ public class UploadReceiver implements Receiver {
     OutputStream outputFile = null;
 
     private String fileName;
+    private String filePath;
 
-    /*
-    public UploadReceiver(String fileName)
+
+    public UploadReceiver()
 
     {
-        this.fileName = fileName;
+        this.filePath="Uploads"+File.separator;
+        File dir = new File("Uploads");
+        dir.mkdir();
     }
-*/
+    public UploadReceiver(String filePath)
+
+    {
+        this.filePath=filePath;
+
+    }
+
+
+
+
+
     @Override
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
         File file=null;
         try {
-            this.setFileName(strFilename);
+            this.setFileName(filePath+strFilename);
 
             file = new File(this.getFileName());
 
