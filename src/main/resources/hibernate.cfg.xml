@@ -28,8 +28,9 @@
 		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
-		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleAlquiler" />
-		<mapping class="com.TpFinal.data.dto.inmueble.InmuebleVenta" />
+		<mapping class="com.TpFinal.data.dto.inmueble.Operacion" />
+		<mapping class="com.TpFinal.data.dto.inmueble.OperacionVenta" />
+		<mapping class="com.TpFinal.data.dto.inmueble.OperacionAlquiler" />
 		
 		<mapping class="com.TpFinal.data.dto.persona.Persona" />
 		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />

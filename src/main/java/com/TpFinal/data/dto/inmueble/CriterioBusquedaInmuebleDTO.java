@@ -202,6 +202,137 @@ public class CriterioBusquedaInmuebleDTO {
 		this.tipoInmueble = tipoInmueble;
 	}
 
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((aEstrenar == null) ? 0 : aEstrenar.hashCode());
+		result = prime * result + ((ciudad == null) ? 0 : ciudad.hashCode());
+		result = prime * result + ((clasesDeInmueble == null) ? 0 : clasesDeInmueble.hashCode());
+		result = prime * result + ((conAireAcondicionado == null) ? 0 : conAireAcondicionado.hashCode());
+		result = prime * result + ((conJardin == null) ? 0 : conJardin.hashCode());
+		result = prime * result + ((conParrilla == null) ? 0 : conParrilla.hashCode());
+		result = prime * result + ((conPileta == null) ? 0 : conPileta.hashCode());
+		result = prime * result + ((estadoInmueble == null) ? 0 : estadoInmueble.hashCode());
+		result = prime * result + ((maxCantAmbientes == null) ? 0 : maxCantAmbientes.hashCode());
+		result = prime * result + ((maxCantCocheras == null) ? 0 : maxCantCocheras.hashCode());
+		result = prime * result + ((maxCantDormitorios == null) ? 0 : maxCantDormitorios.hashCode());
+		result = prime * result + ((maxSupCubierta == null) ? 0 : maxSupCubierta.hashCode());
+		result = prime * result + ((maxSupTotal == null) ? 0 : maxSupTotal.hashCode());
+		result = prime * result + ((minCantAmbientes == null) ? 0 : minCantAmbientes.hashCode());
+		result = prime * result + ((minCantCocheras == null) ? 0 : minCantCocheras.hashCode());
+		result = prime * result + ((minCantDormitorios == null) ? 0 : minCantDormitorios.hashCode());
+		result = prime * result + ((minSupCubierta == null) ? 0 : minSupCubierta.hashCode());
+		result = prime * result + ((minSupTotal == null) ? 0 : minSupTotal.hashCode());
+		result = prime * result + ((tipoInmueble == null) ? 0 : tipoInmueble.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof CriterioBusquedaInmuebleDTO))
+			return false;
+		CriterioBusquedaInmuebleDTO other = (CriterioBusquedaInmuebleDTO) obj;
+		if (aEstrenar == null) {
+			if (other.aEstrenar != null)
+				return false;
+		} else if (!aEstrenar.equals(other.aEstrenar))
+			return false;
+		if (ciudad == null) {
+			if (other.ciudad != null)
+				return false;
+		} else if (!ciudad.equals(other.ciudad))
+			return false;
+		if (clasesDeInmueble == null) {
+			if (other.clasesDeInmueble != null)
+				return false;
+		} else if (!clasesDeInmueble.equals(other.clasesDeInmueble))
+			return false;
+		if (conAireAcondicionado == null) {
+			if (other.conAireAcondicionado != null)
+				return false;
+		} else if (!conAireAcondicionado.equals(other.conAireAcondicionado))
+			return false;
+		if (conJardin == null) {
+			if (other.conJardin != null)
+				return false;
+		} else if (!conJardin.equals(other.conJardin))
+			return false;
+		if (conParrilla == null) {
+			if (other.conParrilla != null)
+				return false;
+		} else if (!conParrilla.equals(other.conParrilla))
+			return false;
+		if (conPileta == null) {
+			if (other.conPileta != null)
+				return false;
+		} else if (!conPileta.equals(other.conPileta))
+			return false;
+		if (estadoInmueble != other.estadoInmueble)
+			return false;
+		if (maxCantAmbientes == null) {
+			if (other.maxCantAmbientes != null)
+				return false;
+		} else if (!maxCantAmbientes.equals(other.maxCantAmbientes))
+			return false;
+		if (maxCantCocheras == null) {
+			if (other.maxCantCocheras != null)
+				return false;
+		} else if (!maxCantCocheras.equals(other.maxCantCocheras))
+			return false;
+		if (maxCantDormitorios == null) {
+			if (other.maxCantDormitorios != null)
+				return false;
+		} else if (!maxCantDormitorios.equals(other.maxCantDormitorios))
+			return false;
+		if (maxSupCubierta == null) {
+			if (other.maxSupCubierta != null)
+				return false;
+		} else if (!maxSupCubierta.equals(other.maxSupCubierta))
+			return false;
+		if (maxSupTotal == null) {
+			if (other.maxSupTotal != null)
+				return false;
+		} else if (!maxSupTotal.equals(other.maxSupTotal))
+			return false;
+		if (minCantAmbientes == null) {
+			if (other.minCantAmbientes != null)
+				return false;
+		} else if (!minCantAmbientes.equals(other.minCantAmbientes))
+			return false;
+		if (minCantCocheras == null) {
+			if (other.minCantCocheras != null)
+				return false;
+		} else if (!minCantCocheras.equals(other.minCantCocheras))
+			return false;
+		if (minCantDormitorios == null) {
+			if (other.minCantDormitorios != null)
+				return false;
+		} else if (!minCantDormitorios.equals(other.minCantDormitorios))
+			return false;
+		if (minSupCubierta == null) {
+			if (other.minSupCubierta != null)
+				return false;
+		} else if (!minSupCubierta.equals(other.minSupCubierta))
+			return false;
+		if (minSupTotal == null) {
+			if (other.minSupTotal != null)
+				return false;
+		} else if (!minSupTotal.equals(other.minSupTotal))
+			return false;
+		if (tipoInmueble != other.tipoInmueble)
+			return false;
+		return true;
+	}
+
+
+
 	public static class Builder {
 		private Boolean aEstrenar;
 		private Integer minCantAmbientes;

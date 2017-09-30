@@ -1,23 +1,22 @@
 package com.TpFinal.data.dto.inmueble;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.TpFinal.data.dto.Identificable;
 
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipoOfrecimiento_inmueble")
 @Entity
 @Table(name = "Inmuebles")
 public class Inmueble implements Identificable {
@@ -36,13 +35,10 @@ public class Inmueble implements Identificable {
 	public static final String pSupCubierta = "superficieCubierta";
 	public static final String pSupTotal = "superficieTotal";
 	public static final String pTipoInmb = "tipoInmueble";
-	
-	
-	
-	
+
 	@Id
 	@GeneratedValue
-	@Column(name = "id")
+	@Column(name = "id_inmueble")
 	private Long idInmueble;
 
 	@Column(name = "cantidad_ambientes")
@@ -91,11 +87,13 @@ public class Inmueble implements Identificable {
 	@JoinColumn(name = "idDireccion")
 	private Direccion direccion;
 
+	@OneToMany(mappedBy = "inmueble")
+	protected Set<Operacion> operaciones = new HashSet<>();
+
 	public Inmueble() {
 		super();
 	}
-	
-	
+
 	private Inmueble(Builder inmuebleBuilder) {
 		this.idInmueble = null;
 		this.aEstrenar = inmuebleBuilder.aEstrenar;
@@ -110,7 +108,7 @@ public class Inmueble implements Identificable {
 		this.direccion = inmuebleBuilder.direccion;
 		this.estadoInmueble = inmuebleBuilder.estadoInmueble;
 		this.superficieCubierta = inmuebleBuilder.superficieCubierta;
-		this.superficieTotal =  inmuebleBuilder.superficieTotal;
+		this.superficieTotal = inmuebleBuilder.superficieTotal;
 		this.tipoInmueble = inmuebleBuilder.tipoInmueble;
 	}
 
@@ -119,6 +117,7 @@ public class Inmueble implements Identificable {
 		return idInmueble;
 	}
 
+	@SuppressWarnings("unused")
 	private void setIdInmueble(Long idInmueble) {
 		this.idInmueble = idInmueble;
 	}
@@ -235,6 +234,22 @@ public class Inmueble implements Identificable {
 		this.direccion = direccion;
 	}
 
+	public Set<Operacion> getOperaciones() {
+		return operaciones;
+	}
+
+	public void setOperaciones(Set<Operacion> operaciones) {
+		this.operaciones = operaciones;
+	}
+
+	public void addOperacion(Operacion operacion) {
+		if (operaciones.size()<2)
+		{operaciones.add(operacion);}
+		else {
+			throw new IllegalArgumentException("No se puede agregar más operaciones, el  máximo es 2.");
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -344,6 +359,8 @@ public class Inmueble implements Identificable {
 		private TipoInmueble tipoInmueble;
 		private ClaseInmueble claseInmueble;
 		private Direccion direccion;
+		private Set<Operacion> operaciones = new HashSet<>();
+		
 
 		public Builder setCantidadAmbientes(Integer cantidadAmbientes) {
 			this.cantidadAmbientes = cantidadAmbientes;
@@ -415,6 +432,11 @@ public class Inmueble implements Identificable {
 			return this;
 		}
 		
+		public Builder setOperaciones(Set<Operacion> operaciones) {
+			this.operaciones = operaciones;
+			return this;
+		}
+
 		public Inmueble build() {
 			return new Inmueble(this);
 		}
