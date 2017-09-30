@@ -23,7 +23,6 @@ public class ContratoUtil {
 	    	try {
 	    		FileInputStream docInputStream= new FileInputStream(doc);
 	    		 archivo= Hibernate.getLobCreator(ConexionHibernate.openSession()).createBlob(docInputStream, doc.length());
-	    		
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -60,6 +59,7 @@ public class ContratoUtil {
 				byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
 				FileOutputStream docFOS=new FileOutputStream(downloadPath);
 				docFOS.write(docBlobBytes);
+				docFOS.close();
 			} catch (Exception e) {
 				ret=false;
 				e.printStackTrace();
