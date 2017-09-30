@@ -50,8 +50,23 @@ public class ContratoVentaServiceTest {
 		}
 		return (path.delete());
 	}
-@Test
-	public void test() throws IOException {
+	
+	@Test
+	public void testSaveEnService() throws IOException {
+		File pdf = new File("Files"+File.separator+"demo1.pdf");
+		pdf.createNewFile();
+		assertTrue(pdf.exists());
+		service.save(instancia("1"), pdf);
+		ContratoVenta c = service.readAll().get(0);
+		ContratoUtil cu = new ContratoUtil();
+		cu.downloadFile(c, "Files"+File.separator+"demo1.pdf");
+		pdf=new File("Files"+File.separator+"demo1.pdf");
+		assertTrue(pdf.exists());
+		pdf.delete();
+	}
+	
+	@Test
+	public void testSaveContratoEnDao() throws IOException {
 		File pdf = new File("Files"+File.separator+"demo1.pdf");
 		pdf.createNewFile();
 		assertTrue(pdf.exists());

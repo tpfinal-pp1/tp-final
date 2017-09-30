@@ -2,6 +2,8 @@ package com.TpFinal.data.dao;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Blob;
 
 import org.hibernate.Hibernate;
@@ -22,37 +24,35 @@ public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOC
 
 	@Override
 	public boolean saveContrato(ContratoVenta entidad, File doc) {
-
-		// transformo el doc al tipo que necesita hibernate
-
-		// lo seteo en la entidad
-
-
 		boolean ret = false;
+		FileInputStream docInputStream = null;
 		Session session = ConexionHibernate.openSession();
 		Transaction tx = null;
 		try {
 			tx = session.beginTransaction();
 
 			Blob archivo = null;
-			try {
-				FileInputStream docInputStream = new FileInputStream(doc);
-				archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
+			docInputStream = new FileInputStream(doc);
+			archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
 
 			entidad.setDocumento(archivo);
 
 			session.saveOrUpdate(entidad);
 			tx.commit();
 			ret = true;
-		} catch (HibernateException e) {
+		} catch (HibernateException | FileNotFoundException e) {
 			System.err.println("Error al leer");
 			e.printStackTrace();
 			tx.rollback();
 		} finally {
 			session.close();
+			if (docInputStream != null)
+				try {
+					docInputStream.close();
+				} catch (IOException e) {
+
+				}
 		}
 		return ret;
 	}
