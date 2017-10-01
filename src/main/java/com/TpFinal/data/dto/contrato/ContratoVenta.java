@@ -1,12 +1,14 @@
 package com.TpFinal.data.dto.contrato;
 
+import com.TpFinal.data.dto.inmueble.InmuebleVenta;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
-
-import javax.persistence.*;
-
-import com.TpFinal.data.dto.inmueble.InmuebleVenta;
 
 @Entity
 @Table(name="contratoVenta")

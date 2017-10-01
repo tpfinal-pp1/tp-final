@@ -1,12 +1,14 @@
 package com.TpFinal.data.dao;
 
-import static org.junit.Assert.*;
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
+import org.hibernate.Hibernate;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.sql.SQLException;
@@ -14,16 +16,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.Hibernate;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-
-import javax.validation.constraints.AssertFalse;
+import static org.junit.Assert.*;
 
 public class DAOContratoVentaTest {
 	DAOContratoVenta dao;
