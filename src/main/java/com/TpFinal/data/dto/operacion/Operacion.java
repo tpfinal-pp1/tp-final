@@ -11,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -26,10 +28,12 @@ public abstract class Operacion implements Identificable {
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "id_operacion")
+	@Column(name = "idOperacion")
 	protected Long idOperacion;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = Inmueble.pIdInmueble)
+	@NotNull
 	protected Inmueble inmueble;
 	
 	@Column(name = "fecha_publicacion")

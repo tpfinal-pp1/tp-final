@@ -11,8 +11,11 @@ import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 
 
@@ -20,6 +23,11 @@ public class ContratoVentaServiceTest {
 	ContratoVentaService service;
 	List<ContratoVenta>contratos=new ArrayList<>();
 
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ConexionHibernate.setTipoConexion(TipoConexion.MariaDBTest);
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 		File dir=new File("Files");

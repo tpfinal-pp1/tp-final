@@ -1,8 +1,11 @@
 package com.TpFinal.services;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
@@ -22,6 +25,11 @@ public class ContratoAlquilerServiceTest {
     ContratoAlquilerService service;
     List<ContratoAlquiler> contratos=new ArrayList<>();
 
+    @BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ConexionHibernate.setTipoConexion(TipoConexion.MariaDBTest);
+	}
+    
     @Before
     public void setUp() throws Exception {
         File dir=new File("Files");

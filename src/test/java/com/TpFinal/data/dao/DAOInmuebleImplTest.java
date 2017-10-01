@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +24,7 @@ import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.data.dto.operacion.TipoOperacion;
 
@@ -34,17 +36,21 @@ public class DAOInmuebleImplTest {
 	public static void setUpBeforeClass() throws Exception {
 		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
 	}
-
+	
 	@Before
 	public void setUp() throws Exception {
 		dao = new DAOInmuebleImpl();
 		inmuebles.clear();
+		inmuebles = dao.readAll();
+		inmuebles.forEach(dao::delete);
 }
 
 	@After
 	public void tearDown() throws Exception {
-		inmuebles = dao.readAll();
-		inmuebles.forEach(dao::delete);
+//		inmuebles = dao.readAll();
+//		inmuebles.forEach(dao::delete);
+		dao.readAll().forEach(dao::delete);
+		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	}
 
 	@Test
@@ -184,10 +190,12 @@ public class DAOInmuebleImplTest {
 		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(99).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(0, inmuebles.size());
+		
+		
 	}
 	
-	
-//	@Test
+//TODO	
+	//@Test
 	public void findInmueblesByCriteria_PrecioAlquiler() {
 		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(System.out::println);
@@ -218,7 +226,7 @@ public class DAOInmuebleImplTest {
 	}
 
 	private Inmueble unInmuebleEnVenta() {
-		return new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
+		Inmueble inmueble = new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
 				.setCantidadDormitorios(1).setClaseInmueble(ClaseInmueble.Ph).setConAireAcondicionado(true)
 				.setConJardin(true).setConParilla(true).setConPileta(true)
 				.setDireccion(new Direccion.Builder().setCalle("Una calle").setCodPostal("asd123")
@@ -226,13 +234,18 @@ public class DAOInmuebleImplTest {
 						.setProvincia("Buenos Aires").build())
 				.setEstadoInmueble(EstadoInmueble.EnVenta).setSuperficieCubierta(200).setSuperficieTotal(400)
 				.setTipoInmueble(TipoInmueble.Vivienda)
-				.addOperacion(new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
-						.setMoneda(TipoMoneda.Pesos).setPrecio(BigDecimal.valueOf(12e3)).build())
 				.build();
+		inmueble.addOperacion(new OperacionVenta.Builder()
+								.setFechaPublicacion(LocalDate.of(2017, 10, 1))
+								.setMoneda(TipoMoneda.Pesos)
+								.setPrecio(BigDecimal.valueOf(12e3))
+								.setInmueble(inmueble)
+								.build());
+		return inmueble;
 	}
 
 	private Inmueble unInmuebleEnAlquiler() {
-		return new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
+		Inmueble inmueble =  new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
 				.setCantidadDormitorios(1).setClaseInmueble(ClaseInmueble.Consultorio).setConAireAcondicionado(true)
 				.setConJardin(true).setConParilla(true).setConPileta(true)
 				.setDireccion(new Direccion.Builder().setCalle("Una calle").setCodPostal("asd123")
@@ -240,9 +253,10 @@ public class DAOInmuebleImplTest {
 						.setProvincia("Buenos Aires").build())
 				.setEstadoInmueble(EstadoInmueble.EnAlquiler).setSuperficieCubierta(200).setSuperficieTotal(400)
 				.setTipoInmueble(TipoInmueble.Comercial)
-				.addOperacion(new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 9, 1))
-						.setMoneda(TipoMoneda.Dolares).setPrecio(BigDecimal.valueOf(1e3)).build())
 				.build();
+		inmueble.addOperacion(new OperacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 9, 1))
+				.setMoneda(TipoMoneda.Dolares).setValorCuota(BigDecimal.valueOf(1e3)).setInmueble(inmueble).build());
+		return inmueble;
 	}
 	
 

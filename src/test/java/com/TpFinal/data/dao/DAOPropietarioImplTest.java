@@ -1,5 +1,7 @@
 package com.TpFinal.data.dao;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.Propietario;
 import org.junit.*;
 
@@ -16,6 +18,10 @@ public class DAOPropietarioImplTest {
     DAOPropietarioImpl dao;
     List<Propietario> propietarios = new ArrayList<>();
 
+    @BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ConexionHibernate.setTipoConexion(TipoConexion.MariaDBTest);
+	}
 
     @Before
     public void setUp() throws Exception {

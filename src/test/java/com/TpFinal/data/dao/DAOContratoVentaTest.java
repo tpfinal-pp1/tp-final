@@ -1,6 +1,7 @@
 package com.TpFinal.data.dao;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
@@ -9,6 +10,7 @@ import com.TpFinal.data.dto.operacion.OperacionVenta;
 import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.*;
@@ -25,6 +27,11 @@ public class DAOContratoVentaTest {
 	DAOContratoVenta dao;
 	List<ContratoVenta>contratos=new ArrayList<>();
 
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		ConexionHibernate.setTipoConexion(TipoConexion.MariaDBTest);
+	}
+	
 	@Before
 	public void setUp() throws Exception {
 

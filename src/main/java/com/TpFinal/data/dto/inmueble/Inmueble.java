@@ -41,45 +41,45 @@ public class Inmueble implements Identificable {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id_inmueble")
+	@Column(name = Inmueble.pIdInmueble)
 	private Long idInmueble;
 
-	@Column(name = "cantidad_ambientes")
+	@Column(name = Inmueble.pCantAmbientes)
 	private Integer cantidadAmbientes;
 
-	@Column(name = "cantidad_dormitorios")
+	@Column(name = Inmueble.pCantDormitorios)
 	private Integer cantidadDormitorios;
 
-	@Column(name = "superficie_total")
+	@Column(name = Inmueble.pSupTotal)
 	private Integer superficieTotal;
 
-	@Column(name = "superficie_cubierta")
+	@Column(name = Inmueble.pSupCubierta)
 	private Integer superficieCubierta;
 
-	@Column(name = "a_estrenar")
+	@Column(name = Inmueble.pAEstrenar)
 	private Boolean aEstrenar;
 
-	@Column(name = "cantidad_cocheras")
+	@Column(name = Inmueble.pCantCocheras)
 	private Integer cantidadCocheras;
 
-	@Column(name = "con_aire_acondicionado")
+	@Column(name = Inmueble.pConAireAcond)
 	private Boolean conAireAcondicionado;
 
-	@Column(name = "con_jardin")
+	@Column(name = Inmueble.pConJardin)
 	private Boolean conJardin;
 
-	@Column(name = "con_parrilla")
+	@Column(name = Inmueble.pConParrilla)
 	private Boolean conParilla;
 
-	@Column(name = "con_pileta")
+	@Column(name = Inmueble.pConPileta)
 	private Boolean conPileta;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "estado_inmueble")
+	@Column(name = Inmueble.pEstadoInmueble)
 	private EstadoInmueble estadoInmueble;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "tipo_inmueble")
+	@Column(name = Inmueble.pTipoInmb)
 	private TipoInmueble tipoInmueble;
 
 	@Enumerated(EnumType.STRING)
@@ -91,7 +91,6 @@ public class Inmueble implements Identificable {
 	private Direccion direccion;
 
 	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	@Column(name = Inmueble.pOperaciones)
 	protected Set<Operacion> operaciones = new HashSet<>();
 
 	public Inmueble() {
