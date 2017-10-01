@@ -12,6 +12,7 @@ import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.operacion.TipoOperacion;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
@@ -111,9 +112,12 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		if (criterio.getTipoInmueble() != null) {
 			criteria.add(Restrictions.eq(Inmueble.pTipoInmb, criterio.getTipoInmueble()));
 		}
-// TODO		
+
 //		if (criterio.getTipoOperacion() != null) {
-//			criteria.add(Restrictions.eq)
+//			TipoOperacion to = criterio.getTipoOperacion();
+//			if (to == TipoOperacion.Alquiler) {
+//				criteria.add(criterion)
+//			}
 //		}
 
 		return findByCriteria(criteria);

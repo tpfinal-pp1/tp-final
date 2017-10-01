@@ -17,7 +17,7 @@ public enum TipoConexion {	H2Test("org.hibernate.dialect.H2Dialect"
 									,"root"
 									,"root"
 									,"false"
-									,"create-drop");
+									,"update");
 		
 	private final String dialect;
 	private final String driver;
