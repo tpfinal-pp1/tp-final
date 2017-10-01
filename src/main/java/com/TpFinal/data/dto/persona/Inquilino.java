@@ -2,6 +2,7 @@ package com.TpFinal.data.dto.persona;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name="inquilino")
 @PrimaryKeyJoinColumn(name="id")
@@ -10,6 +11,7 @@ public class Inquilino extends Persona {
 	@Enumerated(EnumType.STRING)
 	@Column(name="calificacion")
 	private Calificacion calificacion;
+	
 	
 	public Inquilino() {super();}
 	
