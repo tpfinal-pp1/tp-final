@@ -14,6 +14,7 @@ import static org.junit.Assert.assertEquals;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
 
 
@@ -98,7 +99,7 @@ public class DAOInquilinoImplTest {
 			.setApellido("apellido "+numero)
 			.setMail("mail "+numero)
 			.setTelefono("telefono "+numero)
-
+			.setCalificacion(Calificacion.A)
 			.setTelefono("telefono "+numero)
 				.setTelefono2("telefono2 "+numero)
 				.setDNI("Dni"+numero)

@@ -2,10 +2,15 @@ package com.TpFinal.data.dto.contrato;
 
 import com.TpFinal.data.dto.persona.Inquilino;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
@@ -32,6 +37,10 @@ public class ContratoAlquiler extends Contrato {
     private Integer diaDePago;
     @Column(name="fechaDePago")
     private LocalDate fechaDePago;
+    
+////    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+////    @Column()
+//    private Inquilino inquilinoContrato;
 
     public ContratoAlquiler() {super();}
 
@@ -44,7 +53,7 @@ public class ContratoAlquiler extends Contrato {
         this.intervaloDuracion = b.intervaloDuracion;
         this.diaDePago = b.diaDePago;
         this.fechaDePago = b.fechaDePago;
-       //this.inquilinoContrato = b.inquilinoContrato;
+        //this.inquilinoContrato = b.inquilinoContrato;
 
     }
 

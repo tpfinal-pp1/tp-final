@@ -7,6 +7,8 @@ import javax.persistence.*;
 @PrimaryKeyJoinColumn(name="id")
 public class Inquilino extends Persona {
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name="calificacion")
 	private Calificacion calificacion;
 	
 	public Inquilino() {super();}
