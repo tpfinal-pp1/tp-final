@@ -34,7 +34,7 @@ public class DAOContratoAlquilerTest {
 
     @BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ConexionHibernate.setTipoConexion(TipoConexion.MariaDBTest);
+		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
 	}
     
     @Before
