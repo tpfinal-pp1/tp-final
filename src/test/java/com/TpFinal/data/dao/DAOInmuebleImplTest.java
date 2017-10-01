@@ -187,7 +187,7 @@ public class DAOInmuebleImplTest {
 	}
 	
 	
-	@Test
+//	@Test
 	public void findInmueblesByCriteria_PrecioAlquiler() {
 		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler).build();
