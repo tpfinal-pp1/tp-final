@@ -346,6 +346,21 @@ public class Inmueble implements Identificable {
 			return false;
 		return true;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+		return "Inmueble \n[\nidInmueble=" + idInmueble + "\ncantidadAmbientes=" + cantidadAmbientes
+				+ "\ncantidadDormitorios=" + cantidadDormitorios + "\nsuperficieTotal=" + superficieTotal
+				+ "\nsuperficieCubierta=" + superficieCubierta + "\naEstrenar=" + aEstrenar + "\ncantidadCocheras="
+				+ cantidadCocheras + "\nconAireAcondicionado=" + conAireAcondicionado + "\nconJardin=" + conJardin
+				+ "\nconParilla=" + conParilla + "\nconPileta=" + conPileta + "\nestadoInmueble=" + estadoInmueble
+				+ "\ntipoInmueble=" + tipoInmueble + "\nclaseInmueble=" + claseInmueble + "\ndireccion=" + direccion
+				+ "\noperaciones=" + operaciones + "\n]";
+	}
+
+
 
 	public static class Builder {
 		private Integer cantidadAmbientes;

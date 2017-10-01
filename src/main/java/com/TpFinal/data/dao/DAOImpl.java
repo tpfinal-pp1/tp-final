@@ -42,7 +42,13 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 			tx.commit();
 			resultado = true;
 		} catch (HibernateException e) {
-			System.err.println("Error al leer");
+			System.err.println("---------------------------------------------");
+			System.err.println("---------------------------------------------");
+			System.err.println("Error al intentar crear: ");
+			System.err.println(entidad);
+			System.err.println("---------------------------------------------");
+			System.err.println("---------------------------------------------");
+			
 			e.printStackTrace();
 		} finally {
 			session.close();
