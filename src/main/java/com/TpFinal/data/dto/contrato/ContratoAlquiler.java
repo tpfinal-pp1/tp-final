@@ -1,5 +1,6 @@
 package com.TpFinal.data.dto.contrato;
 
+import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.persona.Inquilino;
 
 import javax.persistence.CascadeType;
@@ -37,6 +38,8 @@ public class ContratoAlquiler extends Contrato {
     private Integer diaDePago;
     @Column(name="fechaDePago")
     private LocalDate fechaDePago;
+    @OneToOne(cascade=CascadeType.ALL)
+    private OperacionAlquiler operacionAlquiler;
     
 ////    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 ////    @Column()
@@ -53,6 +56,7 @@ public class ContratoAlquiler extends Contrato {
         this.intervaloDuracion = b.intervaloDuracion;
         this.diaDePago = b.diaDePago;
         this.fechaDePago = b.fechaDePago;
+        this.operacionAlquiler=b.operacionAlquiler;
         //this.inquilinoContrato = b.inquilinoContrato;
 
     }
@@ -69,6 +73,7 @@ public class ContratoAlquiler extends Contrato {
         private Integer intervaloDuracion;
         private Integer diaDePago;
         private LocalDate fechaDePago;
+        private OperacionAlquiler operacionAlquiler;
 
         public Builder setId(Long dato) {
             this.id=dato;
@@ -113,6 +118,11 @@ public class ContratoAlquiler extends Contrato {
         public Builder setInteresPunitorio(Double interesPunitorio) {
             this.interesPunitorio = interesPunitorio;
             return this;
+        }
+        
+        public Builder setOperacionAlquiler(OperacionAlquiler op) {
+        	this.operacionAlquiler=op;
+        	return this;
         }
 
         public ContratoAlquiler build() {
@@ -160,5 +170,15 @@ public class ContratoAlquiler extends Contrato {
     public void setFechaDePago(LocalDate fechaDePago) {
         this.fechaDePago = fechaDePago;
     }
+
+	public OperacionAlquiler getOperacionAlquiler() {
+		return operacionAlquiler;
+	}
+
+	public void setOperacionAlquiler(OperacionAlquiler operacionAlquiler) {
+		this.operacionAlquiler = operacionAlquiler;
+	}
+    
+    
 
 }
