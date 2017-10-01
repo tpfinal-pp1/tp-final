@@ -19,8 +19,8 @@ public class UploadReceiver implements Receiver {
     public UploadReceiver()
 
     {
-        this.filePath="Uploads"+File.separator;
-        File dir = new File("Uploads");
+        this.filePath="Files"+File.separator;
+        File dir = new File("Files");
         dir.mkdir();
     }
     public UploadReceiver(String filePath)

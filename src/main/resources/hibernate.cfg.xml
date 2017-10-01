@@ -28,13 +28,14 @@
 		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
 		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
-		<mapping class="com.TpFinal.data.dto.inmueble.Operacion" />
-		<mapping class="com.TpFinal.data.dto.inmueble.OperacionVenta" />
-		<mapping class="com.TpFinal.data.dto.inmueble.OperacionAlquiler" />
-		
+		<mapping class="com.TpFinal.data.dto.Propietario" />
+		<mapping class="com.TpFinal.data.dto.contrato.Contrato" />
+		<mapping class="com.TpFinal.data.dto.contrato.ContratoVenta" />
+		<mapping class="com.TpFinal.data.dto.contrato.ContratoAlquiler" />
 		<mapping class="com.TpFinal.data.dto.persona.Persona" />
 		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
 	
+
 
 
 

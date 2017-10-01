@@ -1,3 +1,4 @@
+
 package com.TpFinal.data.dto.inmueble;
 
 import java.util.List;
@@ -438,3 +439,4 @@ public class CriterioBusquedaInmuebleDTO {
 	}
 
 }
+
