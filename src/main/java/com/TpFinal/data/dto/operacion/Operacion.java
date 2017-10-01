@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,6 +22,8 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 @Table(name = "operaciones")
 public abstract class Operacion implements Identificable {
 	
+	public static final String pTipoOperacion ="tipo_operacion";
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id_operacion")
@@ -30,6 +34,10 @@ public abstract class Operacion implements Identificable {
 	
 	@Column(name = "fecha_publicacion")
 	protected LocalDate fechaPublicacion;
+	
+	@Enumerated(EnumType.STRING)
+	@Column (name = Operacion.pTipoOperacion)
+	protected TipoOperacion tipoOperacion;
 	
 	@Override
 	public Long getId() {
@@ -55,7 +63,23 @@ public abstract class Operacion implements Identificable {
 
 	public void setFechaPublicacion(LocalDate fechaPublicacion) {
 		this.fechaPublicacion = fechaPublicacion;
+	}
+
+	public TipoOperacion getTipoOperacion() {
+		return tipoOperacion;
+	}
+
+	public void setTipoOperacion(TipoOperacion tipoOperacion) {
+		this.tipoOperacion = tipoOperacion;
+	}
+
+	@Override
+	public String toString() {
+		return "Operacion \n[\nidOperacion=" + idOperacion+"\nfechaPublicacion="
+				+ fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
 	}	
+	
+	
 	
 
 }

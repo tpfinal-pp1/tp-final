@@ -176,7 +176,12 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 			entidades = criteria.getExecutableCriteria(session).list();
 			tx.commit();
 		} catch (HibernateException e) {
-			System.err.println("Error al leer");
+			System.err.println("---------------------------------");
+			System.err.println("---------------------------------");
+			System.err.println("Error al ejecutar criteria Query");
+			System.err.println(criteria.toString());
+			System.err.println("---------------------------------");
+			System.err.println("---------------------------------");
 			e.printStackTrace();
 			tx.rollback();
 		} finally {

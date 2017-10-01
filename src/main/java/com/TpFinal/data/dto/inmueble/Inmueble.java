@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -36,7 +37,7 @@ public class Inmueble implements Identificable {
 	public static final String pSupCubierta = "superficieCubierta";
 	public static final String pSupTotal = "superficieTotal";
 	public static final String pTipoInmb = "tipoInmueble";
-	public static final String pOperaciones = "operaciones";
+	public static final String pOperaciones = "operacion";
 
 	@Id
 	@GeneratedValue
@@ -82,14 +83,15 @@ public class Inmueble implements Identificable {
 	private TipoInmueble tipoInmueble;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "clase_inmueble")
+	@Column(name = Inmueble.pClaseInmb)
 	private ClaseInmueble claseInmueble;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "idDireccion")
+	@JoinColumn(name = Inmueble.pDireccion)
 	private Direccion direccion;
 
-	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	@Column(name = Inmueble.pOperaciones)
 	protected Set<Operacion> operaciones = new HashSet<>();
 
 	public Inmueble() {
@@ -237,11 +239,11 @@ public class Inmueble implements Identificable {
 		this.direccion = direccion;
 	}
 
-	public Set<Operacion> getOperaciones() {
+	public Set<Operacion> getOperacion() {
 		return operaciones;
 	}
 
-	public void setOperaciones(Set<Operacion> operaciones) {
+	public void setOperacion(Set<Operacion> operaciones) {
 		this.operaciones = operaciones;
 	}
 

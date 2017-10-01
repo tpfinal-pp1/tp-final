@@ -183,11 +183,11 @@
 			<version>18.0</version>
 		</dependency>
 		<dependency>
-		    <groupId>com.google.code.gson</groupId>
-			    <artifactId>gson</artifactId>
-				    <version>2.7</version>
-					</dependency>
-        
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.7</version>
+		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
@@ -211,14 +211,21 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.39</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<version>2.1.2</version>
+		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.javamoney/moneta -->
 		<dependency>
-   		 	<groupId>org.javamoney</groupId>
-    		<artifactId>moneta</artifactId>
-    		<version>1.1</version>
+			<groupId>org.javamoney</groupId>
+			<artifactId>moneta</artifactId>
+			<version>1.1</version>
 		</dependency>
-		
-		
+
+
 	</dependencies>
 
 	<build>
@@ -265,9 +272,9 @@
 						</configuration>
 						<goals>
 							<goal>resources</goal>
-              <goal>update-theme</goal>
+							<goal>update-theme</goal>
 							<goal>update-widgetset</goal>
-              <goal>compile-theme</goal>
+							<goal>compile-theme</goal>
 							<goal>compile</goal>
 						</goals>
 					</execution>

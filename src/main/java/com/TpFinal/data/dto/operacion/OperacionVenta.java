@@ -35,6 +35,7 @@ public class OperacionVenta extends Operacion {
 	
 	public OperacionVenta() {
 		super();
+		tipoOperacion = TipoOperacion.Venta;
 	}
 	
 	private OperacionVenta(Builder b) {
@@ -43,6 +44,7 @@ public class OperacionVenta extends Operacion {
 		this.moneda = b.moneda;
 		this.precio = b.precio;
 		this.contratoVenta = b.contratoVenta;
+		tipoOperacion = TipoOperacion.Venta;
 	}
 	
 	public BigDecimal getPrecio() {

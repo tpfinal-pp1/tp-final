@@ -17,7 +17,14 @@ public enum TipoConexion {	H2Test("org.hibernate.dialect.H2Dialect"
 									,"root"
 									,"root"
 									,"false"
-									,"update");
+									,"update"),
+							MariaDBTest("org.hibernate.dialect.MariaDB53Dialect"
+									,"org.mariadb.jdbc.Driver"
+									,"jdbc:mysql://localhost:3306/prueba"
+									,"root"
+									,"root"
+									,"false"
+									,"create");
 		
 	private final String dialect;
 	private final String driver;
@@ -26,6 +33,7 @@ public enum TipoConexion {	H2Test("org.hibernate.dialect.H2Dialect"
 	private final String pass;
 	private final String useNewIdGeneratorMappings;
 	private final String hbm2ddlauto;
+	
 	
 	private TipoConexion(String dialect, String driver, String url, String user, String pass, String useNewIdGeneratorMappings, String hbm2ddlauto) {
 		this.dialect = dialect;

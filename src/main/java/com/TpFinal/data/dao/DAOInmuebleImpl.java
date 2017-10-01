@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
+import org.hibernate.criterion.Property;
 import org.hibernate.criterion.Restrictions;
 
 import com.TpFinal.data.dao.DAOImpl;
@@ -12,6 +13,7 @@ import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.operacion.Operacion;
 import com.TpFinal.data.dto.operacion.TipoOperacion;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
@@ -113,12 +115,25 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 			criteria.add(Restrictions.eq(Inmueble.pTipoInmb, criterio.getTipoInmueble()));
 		}
 
-//		if (criterio.getTipoOperacion() != null) {
-//			TipoOperacion to = criterio.getTipoOperacion();
+		if (criterio.getTipoOperacion() != null) {
+			
+			
+//					List =manager.createCriteria(Publisher.class)
+//					.add( Property.forName("publisherCode").eq(todaysBook) )
+//					.list();
+//			
+		
 //			if (to == TipoOperacion.Alquiler) {
-//				criteria.add(criterion)
+////				DetachedCriteria alquileres = DetachedCriteria.forClass(Operacion.class)
+////						.setProjection( (Projection) Property.forName(Operacion.pTipoOperacion).eq(TipoOperacion.Alquiler) );
+//				
+		
 //			}
-//		}
+			
+			TipoOperacion to = criterio.getTipoOperacion();
+			criteria.createCriteria(Inmueble.pOperaciones)
+			.add(Restrictions.eq(Operacion.pTipoOperacion,to));
+		}
 
 		return findByCriteria(criteria);
 	}

@@ -32,14 +32,14 @@ public class DAOInmuebleImplTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+		ConexionHibernate.setTipoConexion(TipoConexion.MariaDBTest);
 	}
 
 	@Before
 	public void setUp() throws Exception {
 		dao = new DAOInmuebleImpl();
 		inmuebles.clear();
-	}
+}
 
 	@After
 	public void tearDown() throws Exception {
@@ -190,7 +190,8 @@ public class DAOInmuebleImplTest {
 	@Test
 	public void findInmueblesByCriteria_PrecioAlquiler() {
 		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
-		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler).build();
+		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(System.out::println);
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(1, inmuebles.size());
 		
