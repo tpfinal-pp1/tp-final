@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -29,6 +30,7 @@ public class OperacionVenta extends Operacion {
 	private TipoMoneda moneda;
 	
 	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id")
 	ContratoVenta contratoVenta;
 	
 	public OperacionVenta() {

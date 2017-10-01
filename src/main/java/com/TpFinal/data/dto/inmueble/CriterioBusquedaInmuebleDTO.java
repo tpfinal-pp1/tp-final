@@ -4,6 +4,8 @@ package com.TpFinal.data.dto.inmueble;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.TpFinal.data.dto.operacion.TipoOperacion;
+
 public class CriterioBusquedaInmuebleDTO {
 	private Boolean aEstrenar;
 	private Integer minCantAmbientes;
