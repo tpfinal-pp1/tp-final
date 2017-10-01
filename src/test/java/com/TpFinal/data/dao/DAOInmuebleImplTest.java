@@ -23,6 +23,7 @@ import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.inmueble.TipoOperacion;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
 
 public class DAOInmuebleImplTest {
@@ -185,6 +186,15 @@ public class DAOInmuebleImplTest {
 		assertEquals(0, inmuebles.size());
 	}
 	
+	
+	@Test
+	public void findInmueblesByCriteria_PrecioAlquiler() {
+		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(1, inmuebles.size());
+		
+	}
 	
 	private List<Inmueble> unoNoPublicado_unoEnAlquiler_unoEnVenta() {
 		List<Inmueble> inmuebles = new ArrayList<>();
