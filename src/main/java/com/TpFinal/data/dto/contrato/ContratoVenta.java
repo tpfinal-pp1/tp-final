@@ -1,7 +1,5 @@
 package com.TpFinal.data.dto.contrato;
 
-import com.TpFinal.data.dto.inmueble.InmuebleVenta;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -50,7 +48,6 @@ public class ContratoVenta extends Contrato {
 			private Long id;
 			private LocalDate fechaCelebracion;
 			private Blob documento;
-			private InmuebleVenta inmuebleVenta;
 			private BigDecimal precioVenta;
 			
 			public Builder setId(Long dato) {
@@ -68,11 +65,7 @@ public class ContratoVenta extends Contrato {
 				return this;
 			}
 			
-			public Builder setInmuebleVenta(InmuebleVenta dato) {
-				this.inmuebleVenta=dato;
-				return this;
-			}
-			
+		
 			public Builder setPrecioVenta(BigDecimal dato) {
 				this.precioVenta=dato;
 				return this;

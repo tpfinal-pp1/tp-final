@@ -82,7 +82,6 @@ public class ContratoVentaServiceTest {
 	public ContratoVenta instancia(String numero) {
 		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
-				.setInmuebleVenta(null)
 				.setPrecioVenta(new BigDecimal(numero))
 				.build();
 	}

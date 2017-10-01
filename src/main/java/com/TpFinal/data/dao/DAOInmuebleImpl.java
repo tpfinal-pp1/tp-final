@@ -111,6 +111,10 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		if (criterio.getTipoInmueble() != null) {
 			criteria.add(Restrictions.eq(Inmueble.pTipoInmb, criterio.getTipoInmueble()));
 		}
+// TODO		
+//		if (criterio.getTipoOperacion() != null) {
+//			criteria.add(Restrictions.eq)
+//		}
 
 		return findByCriteria(criteria);
 	}

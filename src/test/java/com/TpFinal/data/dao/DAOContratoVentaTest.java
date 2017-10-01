@@ -138,7 +138,6 @@ public class DAOContratoVentaTest {
 		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 				.setDocumento(doc)
-				.setInmuebleVenta(null)
 				.setPrecioVenta(new BigDecimal(numero))
 				.build();
 	}
