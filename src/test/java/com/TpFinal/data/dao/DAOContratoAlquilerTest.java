@@ -3,6 +3,10 @@ package com.TpFinal.data.dao;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.operacion.OperacionAlquiler;
+import com.TpFinal.data.dto.operacion.OperacionVenta;
+
 import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
@@ -51,6 +55,8 @@ public class DAOContratoAlquilerTest {
         dao.save(instancia("3", null));
 
         assertEquals(3, dao.readAll().size());
+        
+        assertEquals(dao.readAll().get(0).getOperacionAlquiler().getFechaPublicacion(), instanciaOA().getFechaPublicacion());
     }
 
     @Test
@@ -165,8 +171,14 @@ public class DAOContratoAlquilerTest {
                 .setIntervaloDuracion(new Integer(numero))
                 .setInquilinoContrato(null)
                 .setFechaDePago(LocalDate.of(2017, 05, 12))
+                .setOperacionAlquiler(instanciaOA())
                 .build();
 
+    }
+    
+    private OperacionAlquiler instanciaOA() {
+    	return new OperacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
+    			.setMoneda(TipoMoneda.Pesos).setInmueble(null).build();
     }
 
 }

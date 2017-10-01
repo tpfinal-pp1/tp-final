@@ -2,15 +2,22 @@ package com.TpFinal.data.dto.persona;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name="inquilino")
 @PrimaryKeyJoinColumn(name="id")
 public class Inquilino extends Persona {
 	
+	@Enumerated(EnumType.STRING)
+	@Column(name="calificacion")
+	private Calificacion calificacion;
+	
+	
 	public Inquilino() {super();}
 	
 	private Inquilino(Builder b) {
 		super(b.id,b.nombre,b.apellido,b.mail,b.telefono,b.telefono2,b.DNI,b.infoAdicional);
+		this.calificacion=b.calificacion;
 	}
 
 
@@ -27,6 +34,7 @@ public class Inquilino extends Persona {
 		private String telefono2;
 		private String DNI;
 		private String infoAdicional;
+		private Calificacion calificacion;
 		
 		public Builder setId(Long dato) {
 			this.id=dato;
@@ -52,20 +60,26 @@ public class Inquilino extends Persona {
 			this.telefono=dato;
 			return this;
 		}
-			public Builder setTelefono2(String dato) {
+		
+		public Builder setTelefono2(String dato) {
 				this.telefono2=dato;
 				return this;
-			}
-			public Builder setDNI(String dato) {
+		}
+		
+		public Builder setDNI(String dato) {
 				this.DNI=dato;
 				return this;
-			}
-			public Builder setinfoAdicional(String dato) {
+		}
+		
+		public Builder setinfoAdicional(String dato) {
 				this.infoAdicional=dato;
 				return this;
 			}
 
-
+		public Builder setCalificacion(Calificacion dato) {
+			this.calificacion=dato;
+			return this;
+		}
 
 
 

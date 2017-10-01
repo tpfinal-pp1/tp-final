@@ -30,7 +30,6 @@ public class OperacionVenta extends Operacion {
 	private TipoMoneda moneda;
 	
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id")
 	ContratoVenta contratoVenta;
 	
 	public OperacionVenta() {
