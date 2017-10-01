@@ -1,17 +1,25 @@
-package com.TpFinal.data.dto.inmueble;
+package com.TpFinal.data.dto.operacion;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 
 @Entity
 @Table(name = "operaciones_venta")
 public class OperacionVenta extends Operacion {
+	
+	public static final String pPrecioVenta = "precioOperacionVenta";
 
 	@Column(name = "precio_operacion_venta")
 	private BigDecimal precio;
@@ -20,7 +28,8 @@ public class OperacionVenta extends Operacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 	
-	//TODO Linkear con contrato
+	@OneToOne(cascade = CascadeType.ALL)
+	ContratoVenta contratoVenta;
 	
 	public OperacionVenta() {
 		super();
@@ -31,6 +40,7 @@ public class OperacionVenta extends Operacion {
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.precio = b.precio;
+		this.contratoVenta = b.contratoVenta;
 	}
 	
 	public BigDecimal getPrecio() {
@@ -50,6 +60,7 @@ public class OperacionVenta extends Operacion {
 	}
 	
 	public static class Builder{
+		private ContratoVenta contratoVenta;
 		private Inmueble inmueble;
 		private LocalDate fechaPublicacion;
 		private BigDecimal precio;
@@ -67,6 +78,10 @@ public class OperacionVenta extends Operacion {
 		}
 		public Builder setMoneda(TipoMoneda moneda) {
 			this.moneda = moneda;return this;
+		}
+		public Builder setContratoVenta(ContratoVenta contratoVenta) {
+			this.contratoVenta = contratoVenta;
+			return this;
 		}
 		public OperacionVenta build() {
 			return new OperacionVenta(this);

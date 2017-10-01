@@ -16,6 +16,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.operacion.Operacion;
 
 @Entity
 @Table(name = "Inmuebles")
@@ -35,6 +36,7 @@ public class Inmueble implements Identificable {
 	public static final String pSupCubierta = "superficieCubierta";
 	public static final String pSupTotal = "superficieTotal";
 	public static final String pTipoInmb = "tipoInmueble";
+	public static final String pOperaciones = "operaciones";
 
 	@Id
 	@GeneratedValue
@@ -87,7 +89,7 @@ public class Inmueble implements Identificable {
 	@JoinColumn(name = "idDireccion")
 	private Direccion direccion;
 
-	@OneToMany(mappedBy = "inmueble")
+	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL)
 	protected Set<Operacion> operaciones = new HashSet<>();
 
 	public Inmueble() {
@@ -110,6 +112,7 @@ public class Inmueble implements Identificable {
 		this.superficieCubierta = inmuebleBuilder.superficieCubierta;
 		this.superficieTotal = inmuebleBuilder.superficieTotal;
 		this.tipoInmueble = inmuebleBuilder.tipoInmueble;
+		this.operaciones = inmuebleBuilder.operaciones;
 	}
 
 	@Override
@@ -434,6 +437,11 @@ public class Inmueble implements Identificable {
 		
 		public Builder setOperaciones(Set<Operacion> operaciones) {
 			this.operaciones = operaciones;
+			return this;
+		}
+		
+		public Builder addOperacion (Operacion operacion) {
+			this.operaciones.add(operacion);
 			return this;
 		}
 

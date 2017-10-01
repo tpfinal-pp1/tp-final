@@ -1,4 +1,4 @@
-package com.TpFinal.data.dto.inmueble;
+package com.TpFinal.data.dto.operacion;
 
 import java.time.LocalDate;
 
@@ -13,6 +13,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity

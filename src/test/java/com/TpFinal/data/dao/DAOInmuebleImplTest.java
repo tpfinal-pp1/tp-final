@@ -2,6 +2,8 @@ package com.TpFinal.data.dao;
 
 import static org.junit.Assert.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
@@ -20,16 +22,18 @@ import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.operacion.OperacionVenta;
 
 public class DAOInmuebleImplTest {
 	DAOInmuebleImpl dao;
 	List<Inmueble> inmuebles = new ArrayList<>();
 
 	@BeforeClass
-	public static void setUpBeforeClass() throws Exception{
+	public static void setUpBeforeClass() throws Exception {
 		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
 	}
-	
+
 	@Before
 	public void setUp() throws Exception {
 		dao = new DAOInmuebleImpl();
@@ -44,23 +48,25 @@ public class DAOInmuebleImplTest {
 
 	@Test
 	public void testCreate() {
-		Inmueble unInmueble = getInstanciaPrueba();
-		dao.create(unInmueble);
-		Inmueble mismoInmueble = dao.readAll().get(0);
-		assertEquals(unInmueble, mismoInmueble);
+		List<Inmueble> inmueblesAGuardar = unoNoPublicado_unoEnAlquiler_unoEnVenta();
+		inmueblesAGuardar.forEach(dao::create);
+		List<Inmueble> inmueblesEnBD = dao.readAll();
+		inmueblesEnBD.forEach(i -> assertEquals(i,inmueblesAGuardar.get(inmueblesEnBD.indexOf(i))));
 	}
+
+	
 
 	@Test
 	public void testReadAll() {
 		int cantidadDeInmuebles = 3;
-		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 		inmuebles = dao.readAll();
 		assertEquals(cantidadDeInmuebles, inmuebles.size());
 	}
 
 	@Test
 	public void testUpdate() {
-		Inmueble original = getInstanciaPrueba();
+		Inmueble original = unInmuebleNoPublicado();
 		dao.create(original);
 		Inmueble modificado = dao.readAll().get(0);
 		modificado.setCantidadAmbientes(10);
@@ -74,7 +80,7 @@ public class DAOInmuebleImplTest {
 	@Test
 	public void findInmueblesbyEstado() {
 		int cantidadDeInmuebles = 3;
-		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 		inmuebles = dao.findInmueblesbyEstado(EstadoInmueble.NoPublicado);
 		assertEquals(cantidadDeInmuebles, inmuebles.size());
 	}
@@ -82,7 +88,7 @@ public class DAOInmuebleImplTest {
 	@Test
 	public void findInmueblesByCriteria_Estado() {
 		int cantidadDeInmuebles = 3;
-		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 
 		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder()
 				.setEstadoInmueble(EstadoInmueble.NoPublicado).build();
@@ -100,7 +106,7 @@ public class DAOInmuebleImplTest {
 	@Test
 	public void findInmueblesByCriteria_Ciudad() {
 		int cantidadDeInmuebles = 3;
-		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(getInstanciaPrueba()));
+		Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 
 		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad")
 				.build();
@@ -120,7 +126,7 @@ public class DAOInmuebleImplTest {
 		int cantidadDeInmuebles = 3;
 
 		for (int x = 0; x < cantidadDeInmuebles; x++) {
-			Inmueble i = getInstanciaPrueba();
+			Inmueble i = unInmuebleNoPublicado();
 			if (x % 2 == 0) {
 				i.setConAireAcondicionado(false);
 				i.setDireccion(new Direccion.Builder().setLocalidad("otra localidad").build());
@@ -148,7 +154,7 @@ public class DAOInmuebleImplTest {
 		int cantidadDeInmuebles = 3;
 
 		for (int x = 1; x <= cantidadDeInmuebles; x++) {
-			Inmueble i = getInstanciaPrueba();
+			Inmueble i = unInmuebleNoPublicado();
 			i.setSuperficieTotal(x * 100);
 			dao.create(i);
 
@@ -161,15 +167,15 @@ public class DAOInmuebleImplTest {
 		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(250).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(2, inmuebles.size());
-		
+
 		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(300).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(3, inmuebles.size());
-		
+
 		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(100).setMaxSupTotal(300).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(3, inmuebles.size());
-		
+
 		criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(400).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(0, inmuebles.size());
@@ -178,8 +184,18 @@ public class DAOInmuebleImplTest {
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(0, inmuebles.size());
 	}
+	
+	
+	private List<Inmueble> unoNoPublicado_unoEnAlquiler_unoEnVenta() {
+		List<Inmueble> inmuebles = new ArrayList<>();
+		inmuebles.add(unInmuebleNoPublicado());
+		inmuebles.add(unInmuebleEnVenta());
+		inmuebles.add(unInmuebleEnAlquiler());
+		return inmuebles;
+	}
+	
 
-	private Inmueble getInstanciaPrueba() {
+	private Inmueble unInmuebleNoPublicado() {
 		return new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
 				.setCantidadDormitorios(1).setClaseInmueble(ClaseInmueble.Casa).setConAireAcondicionado(true)
 				.setConJardin(true).setConParilla(true).setConPileta(true)
@@ -189,5 +205,34 @@ public class DAOInmuebleImplTest {
 				.setEstadoInmueble(EstadoInmueble.NoPublicado).setSuperficieCubierta(200).setSuperficieTotal(400)
 				.setTipoInmueble(TipoInmueble.Vivienda).build();
 	}
+
+	private Inmueble unInmuebleEnVenta() {
+		return new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
+				.setCantidadDormitorios(1).setClaseInmueble(ClaseInmueble.Ph).setConAireAcondicionado(true)
+				.setConJardin(true).setConParilla(true).setConPileta(true)
+				.setDireccion(new Direccion.Builder().setCalle("Una calle").setCodPostal("asd123")
+						.setCoordenada(new Coordenada()).setLocalidad("una Localidad").setNro(123).setPais("Argentina")
+						.setProvincia("Buenos Aires").build())
+				.setEstadoInmueble(EstadoInmueble.EnVenta).setSuperficieCubierta(200).setSuperficieTotal(400)
+				.setTipoInmueble(TipoInmueble.Vivienda)
+				.addOperacion(new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
+						.setMoneda(TipoMoneda.Pesos).setPrecio(BigDecimal.valueOf(12e3)).build())
+				.build();
+	}
+
+	private Inmueble unInmuebleEnAlquiler() {
+		return new Inmueble.Builder().setaEstrenar(true).setCantidadAmbientes(2).setCantidadCocheras(3)
+				.setCantidadDormitorios(1).setClaseInmueble(ClaseInmueble.Consultorio).setConAireAcondicionado(true)
+				.setConJardin(true).setConParilla(true).setConPileta(true)
+				.setDireccion(new Direccion.Builder().setCalle("Una calle").setCodPostal("asd123")
+						.setCoordenada(new Coordenada()).setLocalidad("una Localidad").setNro(123).setPais("Argentina")
+						.setProvincia("Buenos Aires").build())
+				.setEstadoInmueble(EstadoInmueble.EnAlquiler).setSuperficieCubierta(200).setSuperficieTotal(400)
+				.setTipoInmueble(TipoInmueble.Comercial)
+				.addOperacion(new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 9, 1))
+						.setMoneda(TipoMoneda.Dolares).setPrecio(BigDecimal.valueOf(1e3)).build())
+				.build();
+	}
+	
 
 }

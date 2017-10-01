@@ -1,6 +1,7 @@
 
 package com.TpFinal.data.dto.inmueble;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class CriterioBusquedaInmuebleDTO {
@@ -23,6 +24,10 @@ public class CriterioBusquedaInmuebleDTO {
 	private Integer minSupTotal;
 	private Integer maxSupTotal;
 	private TipoInmueble tipoInmueble;
+	private BigDecimal minPrecio;
+	private BigDecimal maxPrecio;
+	private TipoMoneda tipoMoneda;
+	private TipoOperacion tipoOperacion;
 
 	public CriterioBusquedaInmuebleDTO() {
 		super();
@@ -49,6 +54,10 @@ public class CriterioBusquedaInmuebleDTO {
 		this.minSupTotal = builder.minSupTotal;
 		this.maxSupTotal = builder.maxSupTotal;
 		this.tipoInmueble = builder.tipoInmueble;
+		this.minPrecio = builder.minPrecio;
+		this.maxPrecio = builder.maxPrecio;
+		this.tipoMoneda = builder.tipoMoneda;
+		this.tipoOperacion = builder.tipoOperacion;
 	}
 
 	public Boolean getaEstrenar() {
@@ -203,8 +212,38 @@ public class CriterioBusquedaInmuebleDTO {
 		this.tipoInmueble = tipoInmueble;
 	}
 
-	
-	
+	public BigDecimal getMinPrecio() {
+		return minPrecio;
+	}
+
+	public void setMinPrecio(BigDecimal minPrecio) {
+		this.minPrecio = minPrecio;
+	}
+
+	public BigDecimal getMaxPrecio() {
+		return maxPrecio;
+	}
+
+	public void setMaxPrecio(BigDecimal maxPrecio) {
+		this.maxPrecio = maxPrecio;
+	}
+
+	public TipoMoneda getTipoMoneda() {
+		return tipoMoneda;
+	}
+
+	public void setTipoMoneda(TipoMoneda tipoMoneda) {
+		this.tipoMoneda = tipoMoneda;
+	}
+
+	public TipoOperacion getTipoOperacion() {
+		return tipoOperacion;
+	}
+
+	public void setTipoOperacion(TipoOperacion tipoOperacion) {
+		this.tipoOperacion = tipoOperacion;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -332,8 +371,6 @@ public class CriterioBusquedaInmuebleDTO {
 		return true;
 	}
 
-
-
 	public static class Builder {
 		private Boolean aEstrenar;
 		private Integer minCantAmbientes;
@@ -354,6 +391,10 @@ public class CriterioBusquedaInmuebleDTO {
 		private Integer minSupTotal;
 		private Integer maxSupTotal;
 		private TipoInmueble tipoInmueble;
+		private BigDecimal minPrecio;
+		private BigDecimal maxPrecio;
+		private TipoMoneda tipoMoneda;
+		private TipoOperacion tipoOperacion;
 
 		public Builder setaEstrenar(Boolean aEstrenar) {
 			this.aEstrenar = aEstrenar;
@@ -361,77 +402,115 @@ public class CriterioBusquedaInmuebleDTO {
 		}
 
 		public Builder setMinCantAmbientes(Integer minCantAmbientes) {
-			this.minCantAmbientes = minCantAmbientes;return this;
+			this.minCantAmbientes = minCantAmbientes;
+			return this;
 		}
 
 		public Builder setMaxCantAmbientes(Integer maxCantAmbientes) {
-			this.maxCantAmbientes = maxCantAmbientes;return this;
+			this.maxCantAmbientes = maxCantAmbientes;
+			return this;
 		}
 
 		public Builder setMinCantCocheras(Integer minCantCocheras) {
-			this.minCantCocheras = minCantCocheras;return this;
+			this.minCantCocheras = minCantCocheras;
+			return this;
 		}
 
 		public Builder setMaxCantCocheras(Integer maxCantCocheras) {
-			this.maxCantCocheras = maxCantCocheras;return this;
+			this.maxCantCocheras = maxCantCocheras;
+			return this;
 		}
 
 		public Builder setMinCantDormitorios(Integer minCantDormitorios) {
-			this.minCantDormitorios = minCantDormitorios;return this;
+			this.minCantDormitorios = minCantDormitorios;
+			return this;
 		}
 
 		public Builder setMaxCantDormitorios(Integer maxCantDormitorios) {
-			this.maxCantDormitorios = maxCantDormitorios;return this;
+			this.maxCantDormitorios = maxCantDormitorios;
+			return this;
 		}
 
 		public Builder setClasesDeInmueble(List<ClaseInmueble> clasesDeInmueble) {
-			this.clasesDeInmueble = clasesDeInmueble;return this;
+			this.clasesDeInmueble = clasesDeInmueble;
+			return this;
 		}
 
 		public Builder setConAireAcondicionado(Boolean conAireAcondicionado) {
-			this.conAireAcondicionado = conAireAcondicionado;return this;
+			this.conAireAcondicionado = conAireAcondicionado;
+			return this;
 		}
 
 		public Builder setConParrilla(Boolean conParrilla) {
-			this.conParrilla = conParrilla;return this;
+			this.conParrilla = conParrilla;
+			return this;
 		}
 
 		public Builder setConPileta(Boolean conPileta) {
-			this.conPileta = conPileta;return this;
+			this.conPileta = conPileta;
+			return this;
 		}
 
 		public Builder setConJardin(Boolean conJardin) {
-			this.conJardin = conJardin;return this;
+			this.conJardin = conJardin;
+			return this;
 		}
 
 		public Builder setCiudad(String ciudad) {
-			this.ciudad = ciudad;return this;
+			this.ciudad = ciudad;
+			return this;
 		}
 
 		public Builder setEstadoInmueble(EstadoInmueble estadoInmueble) {
-			this.estadoInmueble = estadoInmueble;return this;
+			this.estadoInmueble = estadoInmueble;
+			return this;
 		}
 
 		public Builder setMinSupCubierta(Integer minSupCubierta) {
-			this.minSupCubierta = minSupCubierta;return this;
+			this.minSupCubierta = minSupCubierta;
+			return this;
 		}
 
 		public Builder setMaxSupCubierta(Integer maxSupCubierta) {
-			this.maxSupCubierta = maxSupCubierta;return this;
+			this.maxSupCubierta = maxSupCubierta;
+			return this;
 		}
 
 		public Builder setMinSupTotal(Integer minSupTotal) {
-			this.minSupTotal = minSupTotal;return this;
+			this.minSupTotal = minSupTotal;
+			return this;
 		}
 
 		public Builder setMaxSupTotal(Integer maxSupTotal) {
-			this.maxSupTotal = maxSupTotal;return this;
+			this.maxSupTotal = maxSupTotal;
+			return this;
 		}
 
 		public Builder setTipoInmueble(TipoInmueble tipoInmueble) {
-			this.tipoInmueble = tipoInmueble;return this;
+			this.tipoInmueble = tipoInmueble;
+			return this;
 		}
-		
+
+		public Builder setMinPrecio(BigDecimal minPrecio) {
+			this.minPrecio = minPrecio;
+			return this;
+		}
+
+		public Builder setMaxPrecio(BigDecimal maxPrecio) {
+			this.maxPrecio = maxPrecio;
+			return this;
+		}
+
+		public Builder setTipoMoneda(TipoMoneda tipoMoneda) {
+			this.tipoMoneda = tipoMoneda;
+			return this;
+		}
+
+		public Builder setTipoOperacion(TipoOperacion tipoOperacion) {
+			this.tipoOperacion = tipoOperacion;
+			return this;
+		}
+
 		public CriterioBusquedaInmuebleDTO build() {
 			return new CriterioBusquedaInmuebleDTO(this);
 		}
@@ -439,4 +518,3 @@ public class CriterioBusquedaInmuebleDTO {
 	}
 
 }
-
