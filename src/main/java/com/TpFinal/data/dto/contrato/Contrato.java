@@ -13,7 +13,7 @@ import com.TpFinal.data.dto.Identificable;
 public class Contrato implements Identificable {
 	@Id  
 	@GeneratedValue(strategy=GenerationType.AUTO)  
-	@Column(name = "id")  
+	@Column(name = "id")
 	Long id;
 	@Column(name="fechaCelebracion")
 	LocalDate fechaCelebracion;

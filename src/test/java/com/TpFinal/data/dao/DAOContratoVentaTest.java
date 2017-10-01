@@ -3,6 +3,9 @@ package com.TpFinal.data.dao;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.operacion.OperacionVenta;
+
 import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
@@ -42,11 +45,14 @@ public class DAOContratoVentaTest {
 
 	@Test
 	public void agregarSinDocs() {
+		System.out.println(instancia("1.00", null).getOperacionVenta().getPrecio().toString());
 		dao.save(instancia("1.00", null));
 		dao.save(instancia("2.00", null));
 		dao.save(instancia("3.00", null));
 		
 		assertEquals(3, dao.readAll().size());
+		System.out.println(dao.readAll().get(0).getOperacionVenta().getPrecio());
+		assertEquals(instanciaOV().getFechaPublicacion(), dao.readAll().get(0).getOperacionVenta().getFechaPublicacion());
 	}
 	
 	@Test
@@ -139,7 +145,13 @@ public class DAOContratoVentaTest {
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 				.setDocumento(doc)
 				.setPrecioVenta(new BigDecimal(numero))
+				.setOperacionVenta(instanciaOV())
 				.build();
+	}
+	
+	public OperacionVenta instanciaOV() {
+		return new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
+		.setMoneda(TipoMoneda.Pesos).setPrecio(BigDecimal.valueOf(12e3)).setInmueble(null).build();
 	}
 
 }
