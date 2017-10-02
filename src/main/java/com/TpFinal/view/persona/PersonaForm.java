@@ -1,5 +1,7 @@
 package com.TpFinal.view.persona;
 import com.TpFinal.data.dao.dummy.DummyDataGenerator;
+import com.TpFinal.data.dto.Propietario;
+import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
@@ -36,7 +38,13 @@ import com.vaadin.ui.TextField;
 
     PersonaService service = PersonaService.getService();
     private PersonaABMView addressbookView;
-    private Binder<Persona> binder = new Binder<>(Persona.class);
+    private Binder<Persona> binderPersona = new Binder<>(Persona.class);
+    private Binder<Inquilino> binderInquilino = new Binder<>(Inquilino.class);
+
+
+
+
+
     TabSheet tabSheet;
 
 
@@ -87,23 +95,23 @@ import com.vaadin.ui.TextField;
         nombre.setRequiredIndicatorVisible(true);
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
-        binder.forField(nombre).withValidator(new StringLengthValidator(
+        binderPersona.forField(nombre).withValidator(new StringLengthValidator(
                 "El nombre debe estar entre 2 y 20 caracteres",
                 2, 20)).bind(Persona::getNombre,Persona::setNombre);
 
-        binder.forField(apellido).withValidator(new StringLengthValidator(
+        binderPersona.forField(apellido).withValidator(new StringLengthValidator(
                 "El nombre debe estar entre 2 y 20 caracteres",
                 2, 20)).bind(Persona::getApellido,Persona::setApellido);
 
-        binder.forField(DNI)./*withValidator(new StringLengthValidator(
+        binderPersona.forField(DNI)./*withValidator(new StringLengthValidator(
                 "El DNI de estar entre 2 y 20 caracteres",
                 2, 20)).*/bind(Persona::getDNI,Persona::setDNI);
-        binder.forField(telefono).bind(Persona::getTelefono,Persona::setTelefono);
-        binder.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
-        binder.forField(mail).withValidator(new EmailValidator(
+        binderPersona.forField(telefono).bind(Persona::getTelefono,Persona::setTelefono);
+        binderPersona.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
+        binderPersona.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido!"
                 )).bind(Persona::getMail,Persona::setMail);
-        binder.forField(infoAdicional).withValidator(new StringLengthValidator(
+        binderPersona.forField(infoAdicional).withValidator(new StringLengthValidator(
                 "El nombre debe estar entre 2 y 20 caracteres",
                 0, 255)).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
 
@@ -139,7 +147,7 @@ import com.vaadin.ui.TextField;
     public void setPersona(Persona persona) {
 
         this.persona = persona;
-        binder.readBean(persona);
+        binderPersona.readBean(persona);
 
         // Show delete button for only Persons already in the database
         delete.setVisible(persona.getId()!=null);
@@ -186,7 +194,7 @@ import com.vaadin.ui.TextField;
 
         boolean success=false;
         try {
-            binder.writeBean(persona);
+            binderPersona.writeBean(persona);
             service.save(persona);
             success=true;
 

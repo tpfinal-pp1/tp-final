@@ -1,8 +1,10 @@
 package com.TpFinal.data.dto.persona;
 
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.Propietario;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.*;
 
 @Entity  
@@ -47,6 +49,17 @@ public class Persona implements Identificable {
 
 	}
 
+
+
+	public Inquilino getInquilino(){
+		for (RolPersona rol:roles
+			 ) {
+			if(rol instanceof Inquilino){
+				return (Inquilino) rol;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public String toString() {
