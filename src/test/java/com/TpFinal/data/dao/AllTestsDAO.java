@@ -8,5 +8,4 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ DAOContratoAlquilerTest.class, DAOContratoVentaTest.class, DAOInmuebleImplTest.class,
 		DAOPersonaImplTest.class, DAOPropietarioImplTest.class })
 public class AllTestsDAO {
-
 }
