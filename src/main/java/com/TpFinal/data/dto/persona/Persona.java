@@ -1,8 +1,6 @@
 package com.TpFinal.data.dto.persona;
 
 import com.TpFinal.data.dto.Identificable;
-import com.TpFinal.data.dto.operacion.Operacion;
-import com.TpFinal.data.dto.persona.Inquilino.Builder;
 
 import javax.persistence.*;
 import java.util.*;

@@ -1,6 +1,5 @@
 package com.TpFinal.data.dto.persona;
 
-import com.TpFinal.data.dto.inmueble.Inmueble;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

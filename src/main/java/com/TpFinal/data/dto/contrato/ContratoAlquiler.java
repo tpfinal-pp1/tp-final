@@ -38,9 +38,10 @@ public class ContratoAlquiler extends Contrato {
     private LocalDate fechaDePago;
     @OneToOne(cascade=CascadeType.ALL)
     private OperacionAlquiler operacionAlquiler;
-//    @ManyToOne
-//    @JoinColumn(name = "nombreColumna")
-//    private Inquilino inquilino;
+    @ManyToOne(fetch=FetchType.EAGER, cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
+    		CascadeType.REFRESH})
+    @JoinColumn(name = "nombreColumna")
+    private Inquilino inquilinoContrato;
     
     public ContratoAlquiler() {super();}
 
@@ -54,7 +55,7 @@ public class ContratoAlquiler extends Contrato {
         this.diaDePago = b.diaDePago;
         this.fechaDePago = b.fechaDePago;
         this.operacionAlquiler=b.operacionAlquiler;
-        //this.inquilinoContrato = b.inquilinoContrato;
+        this.inquilinoContrato = b.inquilinoContrato;
 
     }
 
@@ -174,6 +175,14 @@ public class ContratoAlquiler extends Contrato {
 
 	public void setOperacionAlquiler(OperacionAlquiler operacionAlquiler) {
 		this.operacionAlquiler = operacionAlquiler;
+	}
+
+	public Inquilino getInquilinoContrato() {
+		return inquilinoContrato;
+	}
+
+	public void setInquilinoContrato(Inquilino inquilinoContrato) {
+		this.inquilinoContrato = inquilinoContrato;
 	}
     
     
