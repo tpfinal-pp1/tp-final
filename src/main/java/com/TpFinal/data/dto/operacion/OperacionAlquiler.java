@@ -22,7 +22,7 @@ public class OperacionAlquiler extends Operacion {
 	
 	public static final String pPrecioAlquiler = "valor_cuota";
 
-	@Column(name = "valor_cuota")
+	@Column(name = pPrecioAlquiler)
 	private BigDecimal valorCuota;
 
 	@Enumerated(EnumType.STRING)

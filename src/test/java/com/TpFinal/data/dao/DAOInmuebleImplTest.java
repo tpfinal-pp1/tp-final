@@ -41,16 +41,13 @@ public class DAOInmuebleImplTest {
 	public void setUp() throws Exception {
 		dao = new DAOInmuebleImpl();
 		inmuebles.clear();
-		inmuebles = dao.readAll();
-		inmuebles.forEach(dao::delete);
+		
 }
 
 	@After
 	public void tearDown() throws Exception {
-//		inmuebles = dao.readAll();
-//		inmuebles.forEach(dao::delete);
-		dao.readAll().forEach(dao::delete);
-		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
+		inmuebles = dao.readAll();
+		inmuebles.forEach(dao::delete);
 	}
 
 	@Test
@@ -194,14 +191,31 @@ public class DAOInmuebleImplTest {
 		
 	}
 	
-//TODO	
-	//@Test
-	public void findInmueblesByCriteria_PrecioAlquiler() {
+
+	@Test
+	public void findInmueblesByCriteria_InmueblesAlquilados() {
 		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
-		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(System.out::println);
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler).build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(1, inmuebles.size());
+		
+	}
+	
+	@Test
+	public void findInmueblesByCriteria_InmueblesEnVenta() {
+		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta).build();
 		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 		assertEquals(1, inmuebles.size());
+		
+	}
+	
+	@Test
+	public void findInmueblesByCriteria_TodosLosInmuebles() {
+		unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
+		CriterioBusquedaInmuebleDTO criterio = new CriterioBusquedaInmuebleDTO.Builder().build();
+		inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+		assertEquals(3, inmuebles.size());
 		
 	}
 	

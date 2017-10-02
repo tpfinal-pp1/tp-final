@@ -24,7 +24,7 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 @Table(name = "operaciones")
 public abstract class Operacion implements Identificable {
 	
-	public static final String pTipoOperacion ="tipo_operacion";
+	public static final String pTipoOperacion ="tipoOperacion";
 	
 	@Id
 	@GeneratedValue
@@ -32,7 +32,7 @@ public abstract class Operacion implements Identificable {
 	protected Long idOperacion;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = Inmueble.pIdInmueble)
+	@JoinColumn(name = "inmueble")
 	@NotNull
 	protected Inmueble inmueble;
 	
