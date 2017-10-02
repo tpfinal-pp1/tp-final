@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -22,11 +24,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name="contratoAlquiler")
 @PrimaryKeyJoinColumn(name="id")
-
 public class ContratoAlquiler extends Contrato {
-
-    //TODO agregar inquilino (propietario no se incluye?)
-    //Inquilino inquilinoContrato;
 
     @Column(name="interesPunitorio")
     private Double interesPunitorio;
@@ -40,11 +38,10 @@ public class ContratoAlquiler extends Contrato {
     private LocalDate fechaDePago;
     @OneToOne(cascade=CascadeType.ALL)
     private OperacionAlquiler operacionAlquiler;
+//    @ManyToOne
+//    @JoinColumn(name = "nombreColumna")
+//    private Inquilino inquilino;
     
-////    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-////    @Column()
-//    private Inquilino inquilinoContrato;
-
     public ContratoAlquiler() {super();}
 
     private ContratoAlquiler(Builder b) {
