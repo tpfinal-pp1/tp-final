@@ -1,4 +1,5 @@
 package com.TpFinal.view.persona;
+import com.TpFinal.data.dao.dummy.DummyDataGenerator;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
@@ -21,6 +22,7 @@ import com.vaadin.ui.TextField;
     public class PersonaForm extends FormLayout {
     private Persona persona;
     Button save = new Button("Guardar");
+    Button test = new Button("Test");
     Button delete = new Button("Eliminar");
     TextField nombre = new TextField("Nombre");
     TextField apellido = new TextField("Apellido");
@@ -66,8 +68,8 @@ import com.vaadin.ui.TextField;
      //   sexo.setEmptySelectionAllowed(false);
       //  sexo.setItems(Persona.Sexo.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
-
         save.addClickListener(e -> this.save());
+        test.addClickListener(e -> this.test());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -82,6 +84,9 @@ import com.vaadin.ui.TextField;
     
     private void binding(){
         //binder.bindInstanceFields(this); //Binding automatico
+        nombre.setRequiredIndicatorVisible(true);
+        apellido.setRequiredIndicatorVisible(true);
+        mail.setRequiredIndicatorVisible(true);
         binder.forField(nombre).withValidator(new StringLengthValidator(
                 "El nombre debe estar entre 2 y 20 caracteres",
                 2, 20)).bind(Persona::getNombre,Persona::setNombre);
@@ -90,15 +95,17 @@ import com.vaadin.ui.TextField;
                 "El nombre debe estar entre 2 y 20 caracteres",
                 2, 20)).bind(Persona::getApellido,Persona::setApellido);
 
-        binder.forField(DNI).withValidator(new StringLengthValidator(
+        binder.forField(DNI)./*withValidator(new StringLengthValidator(
                 "El DNI de estar entre 2 y 20 caracteres",
-                2, 20)).bind(Persona::getDNI,Persona::setDNI);
+                2, 20)).*/bind(Persona::getDNI,Persona::setDNI);
         binder.forField(telefono).bind(Persona::getTelefono,Persona::setTelefono);
         binder.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
-        binder.forField(mail)./*withValidator(new EmailValidator(  //por ahora suspendo validator Mail, si escribis algo depsuea al borrar sigue tirando error
+        binder.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido!"
-                )).*/bind(Persona::getMail,Persona::setMail);
-        binder.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
+                )).bind(Persona::getMail,Persona::setMail);
+        binder.forField(infoAdicional).withValidator(new StringLengthValidator(
+                "El nombre debe estar entre 2 y 20 caracteres",
+                0, 255)).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
 
 
 
@@ -121,7 +128,7 @@ import com.vaadin.ui.TextField;
         tabSheet.addTab(adicional,"Contacto");
 
         addComponent(tabSheet);
-        HorizontalLayout actions = new HorizontalLayout(save,delete);
+        HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         addComponent(actions);
         actions.setSpacing(true);
 
@@ -130,12 +137,13 @@ import com.vaadin.ui.TextField;
 
 
     public void setPersona(Persona persona) {
-        System.out.println("ID Inicial: "+persona.getId());
+
         this.persona = persona;
         binder.readBean(persona);
 
         // Show delete button for only Persons already in the database
         delete.setVisible(persona.getId()!=null);
+
         setVisible(true);
         getAddressbookView().setComponentsVisible(false);
         nombre.selectAll();
@@ -152,22 +160,46 @@ import com.vaadin.ui.TextField;
         getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
                 persona.getApellido());
 
+
+    }
+
+    private void test() {
+        nombre.setValue(DummyDataGenerator.randomFirstName());
+        apellido.setValue(DummyDataGenerator.randomLastName());
+        mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
+        DNI.setValue(DummyDataGenerator.randomNumber(8));
+        telefono.setValue(DummyDataGenerator.randomPhoneNumber());
+        telefono2.setValue(DummyDataGenerator.randomPhoneNumber());
+        String info=DummyDataGenerator.randomText(80);
+        if(info.length()>255){
+            info=info.substring(0,255);
+
+        }
+        infoAdicional.setValue(info);
+
+
+        save();
+
     }
 
     private void save() {
-        System.out.println("ID Final: "+persona.getId());
+
+        boolean success=false;
         try {
             binder.writeBean(persona);
             service.save(persona);
+            success=true;
+
+
         } catch (ValidationException e) {
             e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-            Notification.show("Error: "+e.getCause());
+           // Notification.show("Error: "+e.getCause());
             return;
         }
         catch (Exception e){
             e.printStackTrace();
-            Notification.show("Error: "+e.getCause());
+            Notification.show("Error: "+e.toString());
         }
 
         addressbookView.updateList();
@@ -176,8 +208,12 @@ import com.vaadin.ui.TextField;
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().showSuccessNotification("Guardado: "+ persona.getNombre()+" "+
+
+
+        if(success)
+            getAddressbookView().showSuccessNotification("Guardado: "+ persona.getNombre()+" "+
                 persona.getApellido());
+
 
 
 
