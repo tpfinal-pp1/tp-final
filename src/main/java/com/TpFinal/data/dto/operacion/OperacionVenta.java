@@ -20,7 +20,7 @@ import com.TpFinal.data.dto.inmueble.TipoMoneda;
 @Table(name = "operaciones_venta")
 public class OperacionVenta extends Operacion {
 	
-	public static final String pPrecioVenta = "precioOperacionVenta";
+	public static final String pPrecioVenta = "precio";
 
 	@Column(name = pPrecioVenta)
 	private BigDecimal precio;
@@ -89,6 +89,12 @@ public class OperacionVenta extends Operacion {
 		public OperacionVenta build() {
 			return new OperacionVenta(this);
 		}		
+	}
+	
+	@Override
+	public String toString() {
+		return "OperacionAlquiler \n[\nprecioVenta=" + precio + "\nmoneda=" + moneda + "\nidOperacion=" + idOperacion
+				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
 	}
 	
 
