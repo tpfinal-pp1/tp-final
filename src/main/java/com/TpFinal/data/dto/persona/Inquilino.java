@@ -15,7 +15,7 @@ public class Inquilino extends RolPersona {
 	@Enumerated(EnumType.STRING)
 	@Column(name="calificacion")
 	private Calificacion calificacion;
-	@OneToMany(mappedBy="inquilinoContrato", fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+	@OneToMany(mappedBy="inquilinoContrato", fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Set<ContratoAlquiler>contratos;
 	
 	public Inquilino() {
