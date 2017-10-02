@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
+import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
@@ -38,114 +39,119 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		DetachedCriteria query = null;
 		List<Inmueble> resultadoQuery = new ArrayList<>();
 
-		if (criterio.getTipoOperacion() != null) {
+		if (criterio.getTipoOperacion() != null || criterio.getTipoMoneda()!= null ) {
 			TipoOperacion to = criterio.getTipoOperacion();
+			query = DetachedCriteria.forClass(Operacion.class);		
+			
+			if (to != null){
+				query.add(Restrictions.eq(Operacion.pTipoOperacion, to));
+				if (to.equals(TipoOperacion.Alquiler)) {
+					addRestriccionesDeAlquiler(query, criterio);
 
-			query = DetachedCriteria.forClass(Operacion.class).add(Restrictions.eq(Operacion.pTipoOperacion, to));
-			if (to.equals(TipoOperacion.Alquiler)) {
-				addRestriccionesDeAlquiler(query, criterio);
-				DAOImpl<OperacionAlquiler> dao = new DAOImpl<>(OperacionAlquiler.class);
-				List<OperacionAlquiler> operaciones = dao.findByCriteria(query);
-				for (OperacionAlquiler o : operaciones) {
-					resultadoQuery.add(o.getInmueble());
-				}
-			} else {
-				addRestriccionesDeVenta(query, criterio);
-				DAOImpl<OperacionVenta> dao = new DAOImpl<>(OperacionVenta.class);
-				List<OperacionVenta> operaciones = dao.findByCriteria(query);
-				for (OperacionVenta o : operaciones) {
-					resultadoQuery.add(o.getInmueble());
+				} else {
+					addRestriccionesDeVenta(query, criterio);
 				}
 			}
-			query.createCriteria("inmueble");
-			addRestriccionesDeInmueble(query, criterio);
+			
+			if (criterio.getTipoMoneda()!= null) {
+				query.add(Restrictions.eq("moneda", criterio.getTipoMoneda()));
+			}
+			
+						
+			DAOImpl<Operacion> dao = new DAOImpl<>(Operacion.class);
+			query.createAlias("inmueble", "i");
+			addRestriccionesDeInmueble(query, criterio,"i.");
+			List<Operacion> operaciones = dao.findByCriteria(query);
+			System.out.println("Ejecutando Query: "+query);
+			for (Operacion o : operaciones) {
+				resultadoQuery.add(o.getInmueble());
+			}
+
 		} else {
 			query = DetachedCriteria.forClass(Inmueble.class);
-			addRestriccionesDeInmueble(query, criterio);
+			addRestriccionesDeInmueble(query, criterio,"");
 			resultadoQuery = findByCriteria(query);
 		}
 		return resultadoQuery;
 	}
 
-	private void addRestriccionesDeVenta(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
-		// TODO Auto-generated method stub
+	private void addRestriccionesDeInmueble(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio,
+			String alias) {
 
-	}
-
-	private void addRestriccionesDeInmueble(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
 		if (criterio.getaEstrenar() != null) {
-			query.add(Restrictions.eq(Inmueble.pAEstrenar, criterio.getaEstrenar()));
+			query.add(Restrictions.eq(alias + Inmueble.pAEstrenar, criterio.getaEstrenar()));
 		}
 
 		if (criterio.getConAireAcondicionado() != null) {
-			query.add(Restrictions.eq(Inmueble.pConAireAcond, criterio.getConAireAcondicionado()));
+			query.add(Restrictions.eq(alias + Inmueble.pConAireAcond, criterio.getConAireAcondicionado()));
 		}
 
 		if (criterio.getConJardin() != null) {
-			query.add(Restrictions.eq(Inmueble.pConJardin, criterio.getConJardin()));
+			query.add(Restrictions.eq(alias + Inmueble.pConJardin, criterio.getConJardin()));
 		}
 
 		if (criterio.getConParrilla() != null) {
-			query.add(Restrictions.eq(Inmueble.pConParrilla, criterio.getConParrilla()));
+			query.add(Restrictions.eq(alias + Inmueble.pConParrilla, criterio.getConParrilla()));
 		}
 
 		if (criterio.getConPileta() != null) {
-			query.add(Restrictions.eq(Inmueble.pConPileta, criterio.getConPileta()));
+			query.add(Restrictions.eq(alias + Inmueble.pConPileta, criterio.getConPileta()));
 		}
 
 		if (criterio.getCiudad() != null) {
-			query.createCriteria(Inmueble.pDireccion).add(Restrictions.eq(Direccion.pLocalidad, criterio.getCiudad()));
+			query.createCriteria(alias + Inmueble.pDireccion)
+					.add(Restrictions.eq(Direccion.pLocalidad, criterio.getCiudad()));
 		}
 
 		if (criterio.getClasesDeInmueble() != null) {
 			Disjunction disjuncion = Restrictions.disjunction();
 			criterio.getClasesDeInmueble()
-					.forEach(clase -> disjuncion.add(Restrictions.eq(Inmueble.pClaseInmb, clase)));
+					.forEach(clase -> disjuncion.add(Restrictions.eq(alias + Inmueble.pClaseInmb, clase)));
 			query.add(disjuncion);
 		}
 
 		if (criterio.getEstadoInmueble() != null) {
-			query.add(Restrictions.eq(Inmueble.pEstadoInmueble, criterio.getEstadoInmueble()));
+			query.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, criterio.getEstadoInmueble()));
 		}
 
 		if (criterio.getMaxCantAmbientes() != null) {
-			query.add(Restrictions.le(Inmueble.pCantAmbientes, criterio.getMaxCantAmbientes()));
+			query.add(Restrictions.le(alias + Inmueble.pCantAmbientes, criterio.getMaxCantAmbientes()));
 		}
 
 		if (criterio.getMaxCantCocheras() != null) {
-			query.add(Restrictions.le(Inmueble.pCantCocheras, criterio.getMaxCantCocheras()));
+			query.add(Restrictions.le(alias + Inmueble.pCantCocheras, criterio.getMaxCantCocheras()));
 		}
 
 		if (criterio.getMaxCantDormitorios() != null) {
-			query.add(Restrictions.le(Inmueble.pCantDormitorios, criterio.getMaxCantDormitorios()));
+			query.add(Restrictions.le(alias + Inmueble.pCantDormitorios, criterio.getMaxCantDormitorios()));
 		}
 
 		if (criterio.getMaxSupCubierta() != null) {
-			query.add(Restrictions.le(Inmueble.pSupCubierta, criterio.getMaxSupCubierta()));
+			query.add(Restrictions.le(alias + Inmueble.pSupCubierta, criterio.getMaxSupCubierta()));
 		}
 
 		if (criterio.getMaxSupTotal() != null) {
-			query.add(Restrictions.le(Inmueble.pSupTotal, criterio.getMaxSupTotal()));
+			query.add(Restrictions.le(alias + Inmueble.pSupTotal, criterio.getMaxSupTotal()));
 		}
 
 		if (criterio.getMinCantAmbientes() != null) {
-			query.add(Restrictions.ge(Inmueble.pCantAmbientes, criterio.getMinCantAmbientes()));
+			query.add(Restrictions.ge(alias + Inmueble.pCantAmbientes, criterio.getMinCantAmbientes()));
 		}
 
 		if (criterio.getMinCantCocheras() != null) {
-			query.add(Restrictions.ge(Inmueble.pCantCocheras, criterio.getMinCantCocheras()));
+			query.add(Restrictions.ge(alias + Inmueble.pCantCocheras, criterio.getMinCantCocheras()));
 		}
 
 		if (criterio.getMinCantDormitorios() != null) {
-			query.add(Restrictions.ge(Inmueble.pCantDormitorios, criterio.getMinCantDormitorios()));
+			query.add(Restrictions.ge(alias + Inmueble.pCantDormitorios, criterio.getMinCantDormitorios()));
 		}
 
 		if (criterio.getMinSupCubierta() != null) {
-			query.add(Restrictions.ge(Inmueble.pSupCubierta, criterio.getMinSupCubierta()));
+			query.add(Restrictions.ge(alias + Inmueble.pSupCubierta, criterio.getMinSupCubierta()));
 		}
 
 		if (criterio.getMinSupTotal() != null) {
-			query.add(Restrictions.ge(Inmueble.pSupTotal, criterio.getMinSupTotal()));
+			query.add(Restrictions.ge(alias + Inmueble.pSupTotal, criterio.getMinSupTotal()));
 		}
 
 		if (criterio.getTipoInmueble() != null) {
@@ -153,12 +159,24 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		}
 	}
 
-	private void addRestriccionesDeAlquiler(DetachedCriteria criteria, CriterioBusquedaInmuebleDTO criterio) {
-		// if (criterio.getMinPrecio() != null) {
-		// criteria.add(Restrictions.ge(OperacionAlquiler.pPrecioAlquiler,
-		// criterio.getMinPrecio()));
-		// }
+	private void addRestriccionesDeAlquiler(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
+		if (criterio.getMinPrecio() != null) {
+			query.add(Restrictions.ge(OperacionAlquiler.pPrecioAlquiler, criterio.getMinPrecio()));
+		}
 
+		if (criterio.getMaxPrecio() != null) {
+			query.add(Restrictions.le(OperacionAlquiler.pPrecioAlquiler, criterio.getMaxPrecio()));
+		}
+	}
+
+	private void addRestriccionesDeVenta(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
+		if (criterio.getMinPrecio() != null) {
+			query.add(Restrictions.ge(OperacionVenta.pPrecioVenta, criterio.getMinPrecio()));
+		}
+
+		if (criterio.getMaxPrecio() != null) {
+			query.add(Restrictions.le(OperacionVenta.pPrecioVenta, criterio.getMaxPrecio()));
+		}
 	}
 
 }
