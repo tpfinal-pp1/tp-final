@@ -46,7 +46,29 @@ public class Persona implements Identificable {
 
 
 	}
-	
+
+
+	@Override
+	public String toString() {
+		String rols="";
+		for (RolPersona rol: this.roles
+				) {
+			rols=rols+rol.RolPersona.toString()+" ," ;
+
+		}
+		return "{" +
+				"nombre='" + nombre + '\'' +
+				", apellido='" + apellido + '\'' +
+				", DNI='" + DNI + '\'' +
+				", roles=" + rols +
+				'}';
+
+
+
+	}
+
+
+
 	private Persona(Builder b) {
 		this.id=b.id;
 		this.nombre=b.nombre;

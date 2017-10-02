@@ -4,6 +4,8 @@ package com.TpFinal.data.dto.persona;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.TpFinal.data.dto.operacion.Operacion;
+import com.TpFinal.data.dto.operacion.TipoOperacion;
 import org.hibernate.annotations.OnDelete;
 
 @Entity
@@ -12,6 +14,10 @@ import org.hibernate.annotations.OnDelete;
 
 public abstract class RolPersona {
 
+	public static final String rp = "rolPersona";
+	public static final String idr = "idRol";
+
+
     @ManyToOne(fetch = FetchType.EAGER, cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "id")
     @NotNull
@@ -19,8 +25,23 @@ public abstract class RolPersona {
 
     @Id
     @GeneratedValue
-    @Column(name = "idRol")
+    @Column(name = idr)
     protected Long idRol;
+
+    @NotNull
+	@Enumerated(EnumType.STRING)
+	@Column (name = rp)
+	protected TipoRolPersona RolPersona;
+	
+
+
+	public TipoRolPersona getRolPersona() {
+		return RolPersona;
+	}
+
+	public void setRolPersona(TipoRolPersona rolPersona) {
+		RolPersona = rolPersona;
+	}
 
 	public Persona getPersona() {
 		return persona;
