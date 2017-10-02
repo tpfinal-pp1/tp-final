@@ -37,6 +37,7 @@
 		<mapping class="com.TpFinal.data.dto.contrato.ContratoVenta" />
 		<mapping class="com.TpFinal.data.dto.contrato.ContratoAlquiler" />
 		<mapping class="com.TpFinal.data.dto.persona.Persona" />
+		<mapping class="com.TpFinal.data.dto.persona.RolPersona" />
 		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
 		
 	
