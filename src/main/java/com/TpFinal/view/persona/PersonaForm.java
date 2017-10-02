@@ -95,10 +95,16 @@ import com.vaadin.ui.TextField;
                 2, 20)).bind(Persona::getDNI,Persona::setDNI);
         binder.forField(telefono).bind(Persona::getTelefono,Persona::setTelefono);
         binder.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
-        binder.forField(mail).withValidator(new EmailValidator(
+        binder.forField(mail)./*withValidator(new EmailValidator(  //por ahora suspendo validator Mail, si escribis algo depsuea al borrar sigue tirando error
                 "Introduzca un email valido!"
-                )).bind(Persona::getMail,Persona::setMail);
+                )).*/bind(Persona::getMail,Persona::setMail);
         binder.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
+
+
+
+
+
+
 
     }
     
@@ -154,8 +160,14 @@ import com.vaadin.ui.TextField;
             binder.writeBean(persona);
             service.save(persona);
         } catch (ValidationException e) {
+            e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+            Notification.show("Error: "+e.getCause());
             return;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            Notification.show("Error: "+e.getCause());
         }
 
         addressbookView.updateList();
