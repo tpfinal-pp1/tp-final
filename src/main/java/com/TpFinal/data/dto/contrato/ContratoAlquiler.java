@@ -38,9 +38,8 @@ public class ContratoAlquiler extends Contrato {
     private LocalDate fechaDePago;
     @OneToOne(cascade=CascadeType.ALL)
     private OperacionAlquiler operacionAlquiler;
-    @ManyToOne(fetch=FetchType.EAGER, cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-    		CascadeType.REFRESH})
-    @JoinColumn(name = "nombreColumna")
+    @ManyToOne(fetch=FetchType.EAGER, cascade= CascadeType.ALL)
+    @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
     
     public ContratoAlquiler() {super();}

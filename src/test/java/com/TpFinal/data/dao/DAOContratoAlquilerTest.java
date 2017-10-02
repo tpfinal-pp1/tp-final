@@ -7,6 +7,8 @@ import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
+import com.TpFinal.data.dto.persona.Inquilino;
+import com.TpFinal.data.dto.persona.Persona;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
@@ -125,6 +127,14 @@ public class DAOContratoAlquilerTest {
 		assertTrue(archivoPersistido.exists());
 		assertTrue(FileUtils.contentEquals(archivoOriginal, archivoPersistido));
     }
+    
+    @Test
+    public void contratoConInquilino() {
+    	ContratoAlquiler c = instancia("1");
+    	c.setInquilinoContrato(instanciaInq());
+    	dao.save(c);
+    	assertEquals(c.getInquilinoContrato(), dao.readAll().get(0).getInquilinoContrato());
+    }
 
     public byte[] blobToBytes(Blob c) throws SQLException, IOException {
         Blob blob =c;
@@ -165,6 +175,12 @@ public class DAOContratoAlquilerTest {
                 .build();
 
     }
+    
+    private Inquilino instanciaInq() {
+    	Inquilino i = new Inquilino();
+    	return i;
+    }
+    
     
     private OperacionAlquiler instanciaOA() {
     	return new OperacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))

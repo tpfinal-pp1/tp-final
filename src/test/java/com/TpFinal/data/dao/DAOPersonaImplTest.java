@@ -93,7 +93,7 @@ public class DAOPersonaImplTest {
     }
 
 
-    public Persona instancia(String numero) {
+    public static Persona instancia(String numero) {
         return new Persona.Builder()
                 .setNombre("nombre "+numero)
                 .setApellido("apellido "+numero)
