@@ -7,6 +7,8 @@ import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
@@ -52,10 +54,10 @@ public class DAOContratoVentaTest {
 
 	@Test
 	public void agregarSinDocs() {
-		System.out.println(instancia("1.00", null).getOperacionVenta().getPrecio().toString());
-		dao.save(instancia("1.00", null));
-		dao.save(instancia("2.00", null));
-		dao.save(instancia("3.00", null));
+		System.out.println(instancia("1.00").getOperacionVenta().getPrecio().toString());
+		dao.save(instancia("1.00"));
+		dao.save(instancia("2.00"));
+		dao.save(instancia("3.00"));
 		
 		assertEquals(3, dao.readAll().size());
 		System.out.println(dao.readAll().get(0).getOperacionVenta().getPrecio());
@@ -64,9 +66,9 @@ public class DAOContratoVentaTest {
 	
 	@Test
 	public void delete() {
-		dao.save(instancia("1.00", null));
-		dao.save(instancia("2.00", null));
-		dao.save(instancia("3.00", null));
+		dao.save(instancia("1.00"));
+		dao.save(instancia("2.00"));
+		dao.save(instancia("3.00"));
 		
 		dao.delete(dao.readAll().get(0));
 		assertEquals(dao.readAll().size(), 2);
@@ -74,9 +76,9 @@ public class DAOContratoVentaTest {
 	
 	@Test
 	public void update() {
-		dao.save(instancia("1.00", null));
-		dao.save(instancia("2.00", null));
-		dao.save(instancia("3.00", null));
+		dao.save(instancia("1.00"));
+		dao.save(instancia("2.00"));
+		dao.save(instancia("3.00"));
 		
 		dao.readAll().forEach(contrato -> {
 			contrato.setPrecioVenta(new BigDecimal("10.00"));
@@ -91,43 +93,28 @@ public class DAOContratoVentaTest {
 	
 	@Test
 	public void altaConDoc() throws SQLException, IOException {
-		String path="Files"+File.separator+"demo1.pdf";
-		File f=new File(path);
-		f.createNewFile();  //lo creo
-		persistirenDB(path); //Lo guardo en db
-		f.delete();          //Lo borro del disco
-		assertFalse(f.exists());
+		String pathOriginal="Files"+File.separator+"demo1.pdf";
+		File archivoOriginal=new File(pathOriginal);
+		archivoOriginal.createNewFile();  //lo creo
+		dao.saveContrato(instancia("1"), archivoOriginal);
 		assertEquals(1, dao.readAll().size());
-		ContratoVenta contrato = dao.readAll().get(0); //Lo traigo de DB
-		guardar(path+".test", toBytes(contrato));  //Lo escribo en disco de nuevo
-		path="Files"+File.separator+"demo1.pdf"+".test";
-		f=new File(path);
-		assertTrue(f.exists());
-
+		ContratoVenta contratoPersistido = dao.readAll().get(0); //Lo traigo de DB
+		String pathPersistido="Files"+File.separator+"demo2.pdf";
+		guardar(pathPersistido, blobToBytes(contratoPersistido.getDocumento()));  //Lo escribo en disco de nuevo
+		File archivoPersistido=new File(pathPersistido);
+		assertTrue(archivoPersistido.exists());
+		assertTrue(FileUtils.contentEquals(archivoOriginal, archivoPersistido));
 	}
 	
-	public void persistirenDB(String path) throws FileNotFoundException {
-		File pdf = new File(path);
-		FileInputStream pdf2= new FileInputStream(pdf);
-		assertTrue(pdf.exists());
-		Blob archivo= Hibernate.getLobCreator(ConexionHibernate.openSession()).createBlob(pdf2, pdf.length());
-		dao.save(instancia("1", archivo));
-		try {
-			pdf2.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-	}
 	
-	
-	public byte[] toBytes(ContratoVenta c) throws SQLException, IOException {
-		Blob blob = c.getDocumento();
+	private byte[] blobToBytes(Blob c) throws SQLException, IOException {
+		Blob blob = c;
 		return blob.getBytes(1, (int) blob.length());
 
 	}
 	
-	public void guardar(String filePath, byte[] fileBytes) throws IOException {
+	private void guardar(String filePath, byte[] fileBytes) throws IOException {
 		 FileOutputStream outputStream = new FileOutputStream(filePath);
 	        outputStream.write(fileBytes);
 	        outputStream.close();
@@ -147,16 +134,17 @@ public class DAOContratoVentaTest {
 		return (path.delete());
 	}
 	
-	public ContratoVenta instancia(String numero, Blob doc) {
+	private ContratoVenta instancia(String numero) {
 		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
-				.setDocumento(doc)
 				.setPrecioVenta(new BigDecimal(numero))
 				.setOperacionVenta(instanciaOV())
 				.build();
 	}
 	
-	public OperacionVenta instanciaOV() {
+	
+	
+	private OperacionVenta instanciaOV() {
 		return new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
 		.setMoneda(TipoMoneda.Pesos).setPrecio(BigDecimal.valueOf(12e3)).setInmueble(null).build();
 	}

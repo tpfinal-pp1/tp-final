@@ -8,6 +8,7 @@ import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
 
+import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
@@ -57,9 +58,9 @@ public class DAOContratoAlquilerTest {
 
     @Test
     public void agregarSinDocs() {
-        dao.save(instancia("1", null));
-        dao.save(instancia("2", null));
-        dao.save(instancia("3", null));
+        dao.save(instancia("1"));
+        dao.save(instancia("2"));
+        dao.save(instancia("3"));
 
         assertEquals(3, dao.readAll().size());
         
@@ -68,9 +69,9 @@ public class DAOContratoAlquilerTest {
 
     @Test
     public void delete() {
-        dao.save(instancia("1", null));
-        dao.save(instancia("2", null));
-        dao.save(instancia("3", null));
+        dao.save(instancia("1"));
+        dao.save(instancia("2"));
+        dao.save(instancia("3"));
 
         dao.delete(dao.readAll().get(0));
         assertEquals(dao.readAll().size(), 2);
@@ -78,9 +79,9 @@ public class DAOContratoAlquilerTest {
 
     @Test
     public void update() {
-        dao.save(instancia("1", null));
-        dao.save(instancia("2", null));
-        dao.save(instancia("3", null));
+        dao.save(instancia("1"));
+        dao.save(instancia("2"));
+        dao.save(instancia("3"));
 
         dao.readAll().forEach(contrato -> {
             contrato.setValorInicial(new BigDecimal("10.00"));
@@ -112,38 +113,21 @@ public class DAOContratoAlquilerTest {
 
     @Test
     public void altaConDoc() throws SQLException, IOException {
-        String path = "Files"+File.separator+"demo1.pdf";
-        File f = new File(path);
-        f.createNewFile();  //lo creo
-        persistirenDB(path); //Lo guardo en db
-        f.delete();          //Lo borro del disco
-        assertFalse(f.exists());
+        String pathOriginal = "Files"+File.separator+"demo1.pdf";
+        File archivoOriginal = new File(pathOriginal);
+        archivoOriginal.createNewFile();  //lo creo
+       	dao.saveContrato(instancia("1"), archivoOriginal); //Lo guardo en db
         assertEquals(1, dao.readAll().size());
-        ContratoAlquiler contrato = dao.readAll().get(0); //Lo traigo de DB
-        guardar(path+".test", toBytes(contrato));  //Lo escribo en disco de nuevo
-        path = "Files"+File.separator+"demo1.pdf"+".test";
-        f = new File(path);
-        assertTrue(f.exists());
-
+        ContratoAlquiler contratoPersistido = dao.readAll().get(0); //Lo traigo de DB
+        String pathPersistido="Files"+File.separator+"demo2.pdf";
+		guardar(pathPersistido, blobToBytes(contratoPersistido.getDocumento()));  //Lo escribo en disco de nuevo
+		File archivoPersistido=new File(pathPersistido);
+		assertTrue(archivoPersistido.exists());
+		assertTrue(FileUtils.contentEquals(archivoOriginal, archivoPersistido));
     }
 
-    public void persistirenDB(String path) throws FileNotFoundException {
-        File pdf = new File(path);
-        FileInputStream pdf2 = new FileInputStream(pdf);
-        assertTrue(pdf.exists());
-        Blob archivo= Hibernate.getLobCreator(ConexionHibernate.openSession()).createBlob(pdf2, pdf.length());
-        dao.save(instancia("1", archivo));
-        try {
-            pdf2.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-
-    public byte[] toBytes(ContratoAlquiler c) throws SQLException, IOException {
-        Blob blob = c.getDocumento();
+    public byte[] blobToBytes(Blob c) throws SQLException, IOException {
+        Blob blob =c;
         return blob.getBytes(1, (int) blob.length());
 
     }
@@ -168,10 +152,9 @@ public class DAOContratoAlquilerTest {
         return (path.delete());
     }
 
-    private ContratoAlquiler instancia(String numero, Blob doc) {
+    private ContratoAlquiler instancia(String numero) {
         return new ContratoAlquiler.Builder()
                 .setFechaCelebracion(LocalDate.of(2017, 05, 12))
-                .setDocumento(doc)
                 .setValorIncial(new BigDecimal(numero))
                 .setDiaDePago(new Integer(numero))
                 .setInteresPunitorio(new Double(numero))
