@@ -2,6 +2,7 @@ package com.TpFinal.data.dto.persona;
 
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.operacion.Operacion;
+import com.TpFinal.data.dto.persona.Inquilino.Builder;
 
 import javax.persistence.*;
 import java.util.*;
@@ -39,13 +40,25 @@ public class Persona implements Identificable {
 	@Column(name=infoPersona)
 	private String infoAdicional="";
 	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	protected Set<RolPersona> personas = new HashSet<>();
+	protected Set<RolPersona> roles = new HashSet<>();
 
 
 
 	public Persona() {
 
 
+	}
+	
+	private Persona(Builder b) {
+		this.id=b.id;
+		this.nombre=b.nombre;
+		this.apellido=b.apellido;
+		this.DNI=b.DNI;
+		this.mail=b.mail;
+		this.telefono=b.telefono;
+		this.telefono2=b.telefono2;
+		this.infoAdicional=b.infoAdicional;
+		this.roles=b.roles;
 	}
 
 	@Override
@@ -85,7 +98,6 @@ public class Persona implements Identificable {
 		this.DNI= DNI;
 		this.telefono2=telefono2;
 		this.infoAdicional=infoAdicional;
-
 
 	}
 
@@ -150,6 +162,68 @@ public class Persona implements Identificable {
 
 	public void setInfoAdicional(String infoAdicional) {
 		this.infoAdicional = infoAdicional;
+	}
+	
+	public static class Builder{
+		private Long id;
+		private String nombre;
+		private String apellido;
+		private String mail;
+		private String telefono;
+		private String telefono2;
+		private String DNI;
+		private String infoAdicional;
+		protected Set<RolPersona> roles = new HashSet<>();
+		
+		public Builder setId(Long dato) {
+			this.id=dato;
+			return this;
+		}
+		
+		public Builder setNombre(String dato) {
+			this.nombre=dato;
+			return this;
+		}
+		
+		public Builder setApellido(String dato) {
+			this.apellido=dato;
+			return this;
+		}
+		
+		public Builder setMail(String dato) {
+			this.mail=dato;
+			return this;
+		}
+		
+		public Builder setTelefono(String dato) {
+			this.telefono=dato;
+			return this;
+		}
+		
+		public Builder setTelefono2(String dato) {
+				this.telefono2=dato;
+				return this;
+		}
+		
+		public Builder setDNI(String dato) {
+				this.DNI=dato;
+				return this;
+		}
+		
+		public Builder setinfoAdicional(String dato) {
+				this.infoAdicional=dato;
+				return this;
+			}
+
+		public Builder setRoles(Set<RolPersona> dato) {
+			this.roles=dato;
+			return this;
+		}
+
+		public Persona buid() {
+			return new Persona(this);
+		}
+		
 	}
 
 

@@ -21,6 +21,23 @@ public abstract class RolPersona {
     @Column(name = "idRol")
     protected Long idRol;
 
+	public Persona getPersona() {
+		return persona;
+	}
+
+	public Long getIdRol() {
+		return idRol;
+	}
+
+	public void setPersona(Persona persona) {
+		this.persona = persona;
+	}
+
+	public void setIdRol(Long idRol) {
+		this.idRol = idRol;
+	}
+    
+    
 
 
 

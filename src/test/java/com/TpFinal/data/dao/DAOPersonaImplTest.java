@@ -45,23 +45,23 @@ public class DAOPersonaImplTest {
 
     @Test
     public void agregar() {
-    /*    dao.save(instancia("1"));
+    	dao.save(instancia("1"));
         dao.save(instancia("2"));
         dao.save(instancia("3"));
-        dao.save(instancia("4"));*/
+        dao.save(instancia("4"));
 
         assertEquals(dao.readAll().size(), 4);
     }
 
     @Test
     public void delete() {
-       /* dao.save(instancia("1"));
+    	dao.save(instancia("1"));
         dao.save(instancia("2"));
         dao.save(instancia("3"));
         dao.save(instancia("4"));
         dao.save(instancia("5"));
         dao.save(instancia("6"));
-*/
+
         dao.readAll().forEach(inq -> {
             if(inq.getNombre().equals("nombre 1"))
                 dao.delete(inq);
@@ -74,10 +74,10 @@ public class DAOPersonaImplTest {
     public void update() {
         Personas=dao.readAll();
         Personas.forEach(dao::delete);
-      /*  dao.save(instancia("1"));
+        dao.save(instancia("1"));
         dao.save(instancia("2"));
         dao.save(instancia("3"));
-        dao.save(instancia("4"));*/
+        dao.save(instancia("4"));
 
         dao.readAll().forEach(inq -> {
             if(inq.getNombre().equals("nombre 1"))
@@ -92,20 +92,19 @@ public class DAOPersonaImplTest {
         assertEquals("info", dao.readAll().get(0).getInfoAdicional());
     }
 
-/*
+
     public Persona instancia(String numero) {
         return new Persona.Builder()
                 .setNombre("nombre "+numero)
                 .setApellido("apellido "+numero)
                 .setMail("mail "+numero)
                 .setTelefono("telefono "+numero)
-                .setCalificacion(Calificacion.A)
                 .setTelefono("telefono "+numero)
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
                 .buid();
 
-    }*/
+    }
 
 }
