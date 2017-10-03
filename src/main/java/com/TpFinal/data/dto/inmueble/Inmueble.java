@@ -39,7 +39,7 @@ public class Inmueble implements Identificable,BorradoLogico {
 	public static final String pSupCubierta = "superficieCubierta";
 	public static final String pSupTotal = "superficieTotal";
 	public static final String pTipoInmb = "tipoInmueble";
-	public static final String pOperaciones = "operacion";
+	public static final String pOperaciones = "operaciones";
 
 	@Id
 	@GeneratedValue
@@ -243,7 +243,7 @@ public class Inmueble implements Identificable,BorradoLogico {
 		this.direccion = direccion;
 	}
 
-	public Set<Operacion> getOperacion() {
+	public Set<Operacion> getOperaciones() {
 		return operaciones;
 	}
 

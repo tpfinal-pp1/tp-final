@@ -1,5 +1,5 @@
 package com.TpFinal.data.dto.inmueble;
 
-public enum EstadoInmueble {NoPublicado,EnAlquiler,Alquilado,EnVenta,Vendido
+public enum EstadoInmueble {Alquilado,EnAlquiler,EnVenta,NoPublicado,Vendido
 
 }

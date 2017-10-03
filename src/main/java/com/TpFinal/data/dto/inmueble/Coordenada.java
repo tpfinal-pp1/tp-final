@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.TpFinal.data.dto.Identificable;
 
@@ -25,10 +26,11 @@ public class Coordenada implements Identificable{
 
 	@Id @GeneratedValue
 	private Long idCoordenada;
-	
+	@NotNull
 	@Column (name = "latitud")
 	private Double lat;
 	
+	@NotNull
 	@Column (name = "longitud")
 	private Double lon;
 	

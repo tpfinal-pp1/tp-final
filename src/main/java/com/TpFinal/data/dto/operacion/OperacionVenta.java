@@ -93,7 +93,7 @@ public class OperacionVenta extends Operacion {
 	
 	@Override
 	public String toString() {
-		return "OperacionAlquiler \n[\nprecioVenta=" + precio + "\nmoneda=" + moneda + "\nidOperacion=" + idOperacion
+		return "OperacionVenta \n[\nprecioVenta=" + precio + "\nmoneda=" + moneda + "\nidOperacion=" + idOperacion
 				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
 	}
 	

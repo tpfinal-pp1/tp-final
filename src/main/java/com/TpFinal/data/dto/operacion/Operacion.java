@@ -34,7 +34,7 @@ public abstract class Operacion implements Identificable,BorradoLogico {
 	protected Long idOperacion;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "inmueble")
+	@JoinColumn(name = "id_inmueble")
 	@NotNull
 	protected Inmueble inmueble;
 	
