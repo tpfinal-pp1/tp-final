@@ -3,6 +3,7 @@ package com.TpFinal.data.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
@@ -28,7 +29,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	@Override
 	public List<Inmueble> findInmueblesbyEstado(EstadoInmueble estado) {
 		DetachedCriteria criteria = DetachedCriteria.forClass(Inmueble.class)
-				.add(Restrictions.eq(Inmueble.pEstadoInmueble, estado));
+				.add(Restrictions.eq(Inmueble.pEstadoInmueble, estado)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 
 		return findByCriteria(criteria);
 	}
@@ -41,7 +42,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
 		if (criterio.getTipoOperacion() != null || criterio.getTipoMoneda()!= null ) {
 			TipoOperacion to = criterio.getTipoOperacion();
-			query = DetachedCriteria.forClass(Operacion.class);		
+			query = DetachedCriteria.forClass(Operacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);		
 			
 			if (to != null){
 				query.add(Restrictions.eq(Operacion.pTipoOperacion, to));
@@ -62,13 +63,12 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 			query.createAlias("inmueble", "i");
 			addRestriccionesDeInmueble(query, criterio,"i.");
 			List<Operacion> operaciones = dao.findByCriteria(query);
-			System.out.println("Ejecutando Query: "+query);
 			for (Operacion o : operaciones) {
 				resultadoQuery.add(o.getInmueble());
 			}
 
 		} else {
-			query = DetachedCriteria.forClass(Inmueble.class);
+			query = DetachedCriteria.forClass(Inmueble.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			addRestriccionesDeInmueble(query, criterio,"");
 			resultadoQuery = findByCriteria(query);
 		}

@@ -54,13 +54,11 @@ public class DAOContratoVentaTest {
 
 	@Test
 	public void agregarSinDocs() {
-		System.out.println(instancia("1.00").getOperacionVenta().getPrecio().toString());
 		dao.save(instancia("1.00"));
 		dao.save(instancia("2.00"));
 		dao.save(instancia("3.00"));
 		
 		assertEquals(3, dao.readAll().size());
-		System.out.println(dao.readAll().get(0).getOperacionVenta().getPrecio());
 		assertEquals(instanciaOV().getFechaPublicacion(), dao.readAll().get(0).getOperacionVenta().getFechaPublicacion());
 	}
 	

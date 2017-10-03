@@ -290,7 +290,7 @@ public class Persona implements Identificable, BorradoLogico {
 	
 	public void agregarRol(RolPersona r) {
 			this.roles.add(r);
-			System.out.println("largo "+this.roles.size());
+			//System.out.println("largo "+this.roles.size());
 	}
 
 	public Set<RolPersona> getRoles() {

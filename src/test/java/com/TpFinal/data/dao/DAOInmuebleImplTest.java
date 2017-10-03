@@ -61,7 +61,7 @@ public class DAOInmuebleImplTest {
 	List<Inmueble> inmueblesEnBD = dao.readAll();
 	inmueblesEnBD.forEach(i -> assertEquals(i, inmueblesAGuardar.get(inmueblesEnBD.indexOf(i))));
     }
-    
+
     @Test
     public void testReadAll() {
 	int cantidadDeInmuebles = 3;
@@ -328,7 +328,6 @@ public class DAOInmuebleImplTest {
 	assertTrue(inmuebles.get(0).getConPileta() == false);
     }
 
-   
     @Test
     public void findInmueblesByCriteria_EstadoInmueble() {
 
@@ -361,14 +360,14 @@ public class DAOInmuebleImplTest {
 	for (int i = 0; i < inmuebles.size(); i++) {
 	    assertEquals(inmuebles.get(i).getEstadoInmueble(), estados[i]);
 	}
-	
+
 	for (int i = 0; i < estados.length; i++) {
 	    criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(estados[i]).build();
 	    inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	    assertEquals(1,inmuebles.size());	    
+	    assertEquals(1, inmuebles.size());
 	    assertEquals(inmuebles.get(0).getEstadoInmueble(), estados[i]);
 	}
-	
+
     }
 
     @Test
@@ -519,8 +518,7 @@ public class DAOInmuebleImplTest {
 	assertEquals(6, inmuebles.size());
 
     }
-    
-    
+
     @Test
     public void testOperaciones() {
 	Inmueble i = unInmuebleNoPublicado();
@@ -532,8 +530,7 @@ public class DAOInmuebleImplTest {
 		.build());
 	dao.create(i);
 	inmuebles = dao.readAll();
-	assertEquals(1,inmuebles.get(0).getOperaciones().size());
-	System.out.println(inmuebles.get(0).getOperaciones());
+	assertEquals(1, inmuebles.get(0).getOperaciones().size());
     }
 
     private void crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(int cantidadDeInmuebles) {
