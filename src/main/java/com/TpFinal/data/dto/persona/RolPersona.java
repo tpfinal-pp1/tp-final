@@ -116,7 +116,7 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 		return true;
 	}
 	
-	public Rol giveMeYourRol() {
+	public Rol giveMeYourRole() {
 		Rol ret=Rol.PROPIETARIO;
 		if(this.getClass().equals(Inquilino.class))
 			ret= Rol.INQUILINO;

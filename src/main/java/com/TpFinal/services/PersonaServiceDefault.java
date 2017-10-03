@@ -16,16 +16,16 @@ import java.util.logging.Logger;
  */
 // Backend service class. This is just a typical Java backend implementation
 // class and nothing Vaadin specific.
-public class PersonaService {
+public class PersonaServiceDefault {
 
 
 
-    private static PersonaService instance;
+    private static PersonaServiceDefault instance;
 
-    public static PersonaService getService() {
+    public static PersonaServiceDefault getService() {
         if (instance == null) {
 
-            final PersonaService personaService = new PersonaService();
+            final PersonaServiceDefault personaService = new PersonaServiceDefault();
 
             instance = personaService;
         }

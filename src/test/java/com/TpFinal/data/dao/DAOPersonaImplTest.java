@@ -101,9 +101,7 @@ public class DAOPersonaImplTest {
     @Test
     public void personaConRoles() {
     	RolPersona rol = instanciaInquilino("1");
-    	System.out.println(rol.giveMeYourRol());
     	Persona p = instancia("1");
-    	System.out.println(p.getRoles().size());
     	rol.setPersona(p);
     	p.agregarRol(rol);
     	
@@ -113,6 +111,10 @@ public class DAOPersonaImplTest {
 
     	
     	assertEquals(1, dao.readAll().get(0).getRoles().size());
+    	
+    	Rol r = Rol.PROPIETARIO;
+    	for(RolPersona rp : dao.readAll().get(0).getRoles()) {r=rp.giveMeYourRole();}
+    	assertEquals(Rol.INQUILINO, r);
         
     }
     
