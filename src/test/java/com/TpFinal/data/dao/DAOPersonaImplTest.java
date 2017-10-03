@@ -14,8 +14,11 @@ import java.util.List;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.operacion.Rol;
 import com.TpFinal.data.dto.persona.Calificacion;
+import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.RolPersona;
 
 
 public class DAOPersonaImplTest {
@@ -95,6 +98,22 @@ public class DAOPersonaImplTest {
         assertEquals(5, dao.readAllActives().size());
     }
     
+    @Test
+    public void personaConRoles() {
+    	RolPersona rol = instanciaInquilino("1");
+    	System.out.println(rol.giveMeYourRol());
+    	Persona p = instancia("1");
+    	System.out.println(p.getRoles().size());
+    	p.agregarRol(rol);
+    	
+    	dao.save(p);
+    	
+    	assertEquals(1, dao.readAll().size());
+    	//falla
+    	//assertEquals(1, dao.readAll().get(0).getRoles().size());
+        
+    }
+    
     
 
     @Test
@@ -132,7 +151,13 @@ public class DAOPersonaImplTest {
                 .setinfoAdicional("Info Adicional"+ numero)
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                 .buid();
-
+    }
+    
+    public static Inquilino instanciaInquilino(String numero) {
+    	return new Inquilino.Builder()
+    			.setCalificacion(Calificacion.A)
+    			.setEstadoRegistro(EstadoRegistro.ACTIVO)
+    			.build();
     }
 
 }

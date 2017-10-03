@@ -5,6 +5,7 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.Propietario;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.operacion.Rol;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -14,10 +15,9 @@ import java.util.*;
 
 @Entity  
 @Table(name = "personas")
-@Inheritance(strategy=InheritanceType.JOINED)  
 public class Persona implements Identificable, BorradoLogico {
 
-	public static final String idPersona = "id";
+	public static final String idPersona = "idPersona";
 	public static final String nombrePersona = "nombre";
 	public static final String apellidoPersona = "apellido";
 	public static final String mailPersona = "mail";
@@ -45,8 +45,8 @@ public class Persona implements Identificable, BorradoLogico {
 	private String telefono2="";
 	@Column(name=infoPersona)
 	private String infoAdicional="";
-	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
-	protected Set<RolPersona> roles = new HashSet<>();
+	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Set<RolPersona> roles = new HashSet<>();
 	@Enumerated(EnumType.STRING)
 	@Column(name = Persona.estadoRegistroS)
 	@NotNull
@@ -88,7 +88,7 @@ public class Persona implements Identificable, BorradoLogico {
 		String rols="";
 		for (RolPersona rol: this.roles
 				) {
-			rols=rols+rol.rolPersona.toString()+" ," ;
+//			rols=rols+rol.RolPersona.toString()+" ," ;
 
 		}
 		return "{" +
@@ -287,6 +287,24 @@ public class Persona implements Identificable, BorradoLogico {
 	public EstadoRegistro getEstadoRegistro() {
 		return this.estadoRegistro;
 	}
+	
+	public void agregarRol(RolPersona r) {
+			this.roles.add(r);
+			System.out.println("largo "+this.roles.size());
+	}
 
+	public Set<RolPersona> getRoles() {
+		return roles;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setRoles(Set<RolPersona> roles) {
+		this.roles = roles;
+	}
+
+	
 
 }

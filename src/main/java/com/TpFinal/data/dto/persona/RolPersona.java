@@ -8,6 +8,7 @@ import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.operacion.Operacion;
+import com.TpFinal.data.dto.operacion.Rol;
 import com.TpFinal.data.dto.operacion.TipoOperacion;
 import org.hibernate.annotations.OnDelete;
 
@@ -21,10 +22,8 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	public static final String idr = "idRol";
 	private static final String estadoRegistroS="estadoRegistro";
 
-
     @ManyToOne(fetch = FetchType.EAGER, cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinColumn(name = "id")
-    @NotNull
+    @JoinColumn(name = "idp")
     private Persona persona;
 
     @Id
@@ -32,39 +31,33 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
     @Column(name = idr)
     protected Long idRol;
 
-    @NotNull
-	@Enumerated(EnumType.STRING)
-	@Column (name = rp)
-	protected TipoRolPersona rolPersona;
+//    @NotNull
+//	@Enumerated(EnumType.STRING)
+//	@Column (name = rp)
+//	protected TipoRolPersona rolPersona;
     
 	@Enumerated(EnumType.STRING)
 	@Column(name = estadoRegistroS)
 	@NotNull
 	private EstadoRegistro estadoRegistro;
-    
-    
-	
-	public RolPersona() {}
 
-	
+	public RolPersona() {}
 
 	public RolPersona(Persona persona, Long idRol, TipoRolPersona rolPersona, EstadoRegistro estadoRegistro) {
 		super();
 		this.persona = persona;
 		this.idRol = idRol;
-		this.rolPersona = rolPersona;
+//		this.rolPersona = rolPersona;
 		this.estadoRegistro = estadoRegistro;
 	}
 
-
-
-	public TipoRolPersona getRolPersona() {
-		return rolPersona;
-	}
-
-	public void setRolPersona(TipoRolPersona rolPersona) {
-		rolPersona = rolPersona;
-	}
+//	public TipoRolPersona getRolPersona() {
+//		return rolPersona;
+//	}
+//
+//	public void setRolPersona(TipoRolPersona rolPersona) {
+//		this.rolPersona = rolPersona;
+//	}
 
 	public Persona getPersona() {
 		return persona;
@@ -80,6 +73,22 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 
 	public void setIdRol(Long idRol) {
 		this.idRol = idRol;
+	}
+	
+	@Override
+	public Long getId() {
+		return this.idRol;
+	}
+
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+		this.estadoRegistro=estado;
+		
+	}
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+		return this.estadoRegistro;
 	}
 
 	@Override
@@ -107,24 +116,15 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 		return true;
 	}
 	
+	public Rol giveMeYourRol() {
+		Rol ret=Rol.PROPIETARIO;
+		if(this.getClass().equals(Inquilino.class))
+			ret= Rol.INQUILINO;
+		return ret;
+	}
 	
     
-	@Override
-	public Long getId() {
-		return this.idRol;
-	}
 
-	@Override
-	public void setEstadoRegistro(EstadoRegistro estado) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public EstadoRegistro getEstadoRegistro() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 

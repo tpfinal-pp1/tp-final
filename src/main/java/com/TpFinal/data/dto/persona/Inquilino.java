@@ -99,12 +99,12 @@ public class Inquilino extends RolPersona {
 			this.estadoRegistro=dato;
 			return this;
 		}
-		public Builder setContratos(EstadoRegistro dato) {
-			this.estadoRegistro=dato;
+		public Builder setPersona(Persona dato) {
+			this.persona=dato;
 			return this;
 		}
-		public Inquilino build(Builder b) {
-			return new Inquilino(b);
+		public Inquilino build() {
+			return new Inquilino(this);
 		}
 	}
 	
