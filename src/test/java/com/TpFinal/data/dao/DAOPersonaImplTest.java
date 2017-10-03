@@ -113,15 +113,15 @@ public class DAOPersonaImplTest {
     	dao.save(p);
     	
     	dao.readAllActives().forEach(persona -> {
-    		System.out.println(persona.getId()+" "+persona.getNombre());
+    		System.out.println("activos: "+persona.getId()+" "+persona.getNombre());
     	});
     	
     	dao.readAll().forEach(persona -> {
-    		System.out.println(persona.getId()+" "+persona.getNombre());
+    		System.out.println("todos: "+persona.getId()+" "+persona.getNombre());
     	});
     	
     	//falla
-    	//assertEquals(1, dao.readAllActives().size());
+    	assertEquals(1, dao.readAllActives().size());
     	
     	//pasa
     	assertEquals(1, dao.readAll().size());

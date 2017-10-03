@@ -11,7 +11,7 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dto.Identificable;
 
-
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -218,7 +218,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	@SuppressWarnings("unchecked")
 	public List<T> readAllActives(){
 		DetachedCriteria criteria = DetachedCriteria.forClass(getClaseEntidad())
-				.add(Restrictions.eq(estadoRegistro, EstadoRegistro.ACTIVO));
+				.add(Restrictions.eq(estadoRegistro, EstadoRegistro.ACTIVO)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		return findByCriteria(criteria);
 	}
 
