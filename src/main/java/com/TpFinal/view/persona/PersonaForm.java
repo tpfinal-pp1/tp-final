@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.Propietario;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.services.PersonaServiceDefault;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
@@ -36,7 +37,7 @@ import com.vaadin.ui.TextField;
 
    // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
-    PersonaService service = PersonaService.getService();
+    PersonaService service = new PersonaService();
     private PersonaABMView addressbookView;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
     private Binder<Inquilino> binderInquilino = new Binder<>(Inquilino.class);

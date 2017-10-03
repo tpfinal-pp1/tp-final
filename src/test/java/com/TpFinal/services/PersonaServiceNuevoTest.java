@@ -22,7 +22,7 @@ import com.TpFinal.data.dto.persona.RolPersona;
 
 public class PersonaServiceNuevoTest {
 	
-	PersonaServiceNuevo service;
+	PersonaService service;
 	List<Persona>persona= new ArrayList<>();
 	
 	@BeforeClass
@@ -32,14 +32,14 @@ public class PersonaServiceNuevoTest {
 	
 	@Before
 	public void set() {
-		service= new PersonaServiceNuevo();
-		service.readAll().forEach(p -> service.delete(p));
+		service= new PersonaService();
+		service.readAll().forEach(p -> service.seriusDelete(p));
 		persona.clear();
 	}
 	
 	@After
 	public void tearDown() {
-		service.readAll().forEach(p -> service.delete(p));
+		service.readAll().forEach(p -> service.seriusDelete(p));
 	}
 	
 	@Test
