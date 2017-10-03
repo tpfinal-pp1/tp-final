@@ -12,7 +12,7 @@ import java.io.File;
  */
 public class SeleniumTest {
 
-    @Test
+  //  @Test
     public void seleniumTest(){
         if(SystemUtils.IS_OS_LINUX){
             System.setProperty("webdriver.gecko.driver","GeckoDriver"+ File.separator+"geckodriver");
