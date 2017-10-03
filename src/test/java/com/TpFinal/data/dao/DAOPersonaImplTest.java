@@ -104,14 +104,15 @@ public class DAOPersonaImplTest {
     	System.out.println(rol.giveMeYourRol());
     	Persona p = instancia("1");
     	System.out.println(p.getRoles().size());
+    	rol.setPersona(p);
     	p.agregarRol(rol);
     	
     	dao.save(p);
     	
     	assertEquals(1, dao.readAll().size());
-    	//falla
+
     	
-    	//assertEquals(1, dao.readAll().get(0).getRoles().size());
+    	assertEquals(1, dao.readAll().get(0).getRoles().size());
         
     }
     
@@ -154,7 +155,7 @@ public class DAOPersonaImplTest {
                 .buid();
     }
     
-    public static Inquilino instanciaInquilino(String numero) {
+    private Inquilino instanciaInquilino(String numero) {
     	return new Inquilino.Builder()
     			.setCalificacion(Calificacion.A)
     			.setEstadoRegistro(EstadoRegistro.ACTIVO)
