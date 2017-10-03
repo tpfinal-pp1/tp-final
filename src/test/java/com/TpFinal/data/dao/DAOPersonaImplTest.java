@@ -143,7 +143,7 @@ public class DAOPersonaImplTest {
         });
 
         assertEquals("sarasa", dao.readAll().get(0).getNombre());
-        assertEquals("info", dao.readAll().get(0).getInfoAdicional());
+        assertEquals("info", dao.readAllActives().get(0).getInfoAdicional());
     }
 
 

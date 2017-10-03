@@ -95,10 +95,14 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((estadoRegistro == null) ? 0 : estadoRegistro.hashCode());
 		result = prime * result + ((idRol == null) ? 0 : idRol.hashCode());
+		result = prime * result + ((persona == null) ? 0 : persona.hashCode());
 		return result;
 	}
 
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -108,14 +112,21 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 		if (getClass() != obj.getClass())
 			return false;
 		RolPersona other = (RolPersona) obj;
+		if (estadoRegistro != other.estadoRegistro)
+			return false;
 		if (idRol == null) {
 			if (other.idRol != null)
 				return false;
 		} else if (!idRol.equals(other.idRol))
 			return false;
+		if (persona == null) {
+			if (other.persona != null)
+				return false;
+		} else if (!persona.equals(other.persona))
+			return false;
 		return true;
 	}
-	
+
 	public Rol giveMeYourRole() {
 		Rol ret=Rol.PROPIETARIO;
 		if(this.getClass().equals(Inquilino.class))

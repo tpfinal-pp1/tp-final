@@ -294,7 +294,7 @@ public class Persona implements Identificable, BorradoLogico {
 	}
 
 	public Set<RolPersona> getRoles() {
-		return roles;
+		return this.roles;
 	}
 
 	public void setId(Long id) {
