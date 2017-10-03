@@ -46,6 +46,7 @@ public class PersonaServiceTest {
     	p.agregarRol(instanciaInquilino(Calificacion.B));
     	p.agregarRol(instanciaInquilino(Calificacion.C));
     	
+    	
     	service.save(p);
     	
     	assertEquals(1,service.readAll().size());
