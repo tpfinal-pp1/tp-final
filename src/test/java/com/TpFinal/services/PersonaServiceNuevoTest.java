@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
@@ -13,11 +14,13 @@ import org.junit.Test;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.operacion.Rol;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.RolPersona;
 
-public class PersonaServiceTest {
+public class PersonaServiceNuevoTest {
 	
 	PersonaServiceNuevo service;
 	List<Persona>persona= new ArrayList<>();
@@ -48,10 +51,38 @@ public class PersonaServiceTest {
     	
     	
     	service.save(p);
-    	//FALLA
+    	assertEquals(1,service.readAllActives().size());
+    	assertEquals(3, service.readAllActives().get(0).getRoles().size());
+    	assertEquals(3, service.giveMeYourRoles(service.readAll().get(0)).size());
+    	assertEquals(Rol.INQUILINO, service.giveMeYourRoles(service.readAll().get(0)).get(0));
+	}
+	
+	@Test
+	public void editar() {
+		Persona p = instancia("1");
+    	p.agregarRol(instanciaInquilino(Calificacion.A));
+    	p.agregarRol(instanciaInquilino(Calificacion.B));
+    	p.agregarRol(instanciaInquilino(Calificacion.C));
     	
-    	//assertEquals(1,service.readAllActives().size());
-    	assertEquals(3, service.readAll().get(0).getRoles().size());
+    	
+    	service.save(p);
+    	
+    	p=service.readAllActives().get(0);
+    	p.getRoles().forEach(rol -> {
+    		if(rol.getClass().equals(Inquilino.class)){
+    			Inquilino i =(Inquilino) rol;
+    			if(i.getCalificacion().equals(Calificacion.C))
+    				i.setCalificacion(Calificacion.D);
+    		}
+    	});
+    	service.update(p);
+    	
+    	Set<RolPersona>roles=service.readAllActives().get(0).getRoles();
+    	boolean estaD=false;
+    	for(RolPersona r:roles) {
+    		Inquilino i = (Inquilino)r;
+    		estaD=estaD||i.getCalificacion().equals(Calificacion.D);
+    	}
 	}
 	
 	
