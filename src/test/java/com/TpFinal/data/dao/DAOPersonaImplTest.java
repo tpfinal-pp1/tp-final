@@ -110,6 +110,7 @@ public class DAOPersonaImplTest {
     	
     	assertEquals(1, dao.readAll().size());
     	//falla
+    	
     	//assertEquals(1, dao.readAll().get(0).getRoles().size());
         
     }
