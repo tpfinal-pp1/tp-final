@@ -7,5 +7,5 @@ Sistema para gestión inmobiliaria:
 ### Manven Goals: -Pproduction-mode jetty:run
 ### Jasper master estuvo aqui ^ (mirada de Quinteros)
 ### Misael testeameeeeeeeeeeeeeeeeeeeee
-### BRITOSSSSSSSSSSSSSSSSSSSSSSS
+### BRITOSSSSSSSSSSSSSSSSSSSSSSSs
 ### Es usted diabolico señor Britos
