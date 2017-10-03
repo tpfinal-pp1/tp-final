@@ -19,7 +19,7 @@ import com.TpFinal.data.dto.persona.Persona;
 
 public class PersonaServiceTest {
 	
-	PersonaService service;
+	PersonaServiceNuevo service;
 	List<Persona>persona= new ArrayList<>();
 	
 	@BeforeClass
@@ -29,7 +29,7 @@ public class PersonaServiceTest {
 	
 	@Before
 	public void set() {
-		service= new PersonaService();
+		service= new PersonaServiceNuevo();
 		service.readAll().forEach(p -> service.delete(p));
 		persona.clear();
 	}
