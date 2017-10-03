@@ -59,6 +59,18 @@ public class Persona implements Identificable, BorradoLogico {
 
 	}
 
+	private Persona(Builder b) {
+		this.id=b.id;
+		this.nombre=b.nombre;
+		this.apellido=b.apellido;
+		this.DNI=b.DNI;
+		this.mail=b.mail;
+		this.telefono=b.telefono;
+		this.telefono2=b.telefono2;
+		this.infoAdicional=b.infoAdicional;
+		this.roles=b.roles;
+		this.estadoRegistro=b.estadoRegistro;
+	}
 
 
 	public Inquilino getInquilino(){
@@ -76,7 +88,7 @@ public class Persona implements Identificable, BorradoLogico {
 		String rols="";
 		for (RolPersona rol: this.roles
 				) {
-			rols=rols+rol.RolPersona.toString()+" ," ;
+			rols=rols+rol.rolPersona.toString()+" ," ;
 
 		}
 		return "{" +
@@ -92,18 +104,7 @@ public class Persona implements Identificable, BorradoLogico {
 
 
 
-	private Persona(Builder b) {
-		this.id=b.id;
-		this.nombre=b.nombre;
-		this.apellido=b.apellido;
-		this.DNI=b.DNI;
-		this.mail=b.mail;
-		this.telefono=b.telefono;
-		this.telefono2=b.telefono2;
-		this.infoAdicional=b.infoAdicional;
-		this.roles=b.roles;
-		this.estadoRegistro=b.estadoRegistro;
-	}
+
 
 	@Override
 	public boolean equals(Object o) {

@@ -4,6 +4,9 @@ package com.TpFinal.data.dto.persona;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import com.TpFinal.data.dto.BorradoLogico;
+import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.operacion.Operacion;
 import com.TpFinal.data.dto.operacion.TipoOperacion;
 import org.hibernate.annotations.OnDelete;
@@ -12,10 +15,11 @@ import org.hibernate.annotations.OnDelete;
 @Table(name = "roles")
 @Inheritance(strategy = InheritanceType.JOINED)
 
-public abstract class RolPersona {
+public abstract class RolPersona implements Identificable, BorradoLogico{
 
 	public static final String rp = "rolPersona";
 	public static final String idr = "idRol";
+	private static final String estadoRegistroS="estadoRegistro";
 
 
     @ManyToOne(fetch = FetchType.EAGER, cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
@@ -31,16 +35,35 @@ public abstract class RolPersona {
     @NotNull
 	@Enumerated(EnumType.STRING)
 	@Column (name = rp)
-	protected TipoRolPersona RolPersona;
+	protected TipoRolPersona rolPersona;
+    
+	@Enumerated(EnumType.STRING)
+	@Column(name = estadoRegistroS)
+	@NotNull
+	private EstadoRegistro estadoRegistro;
+    
+    
 	
+	public RolPersona() {}
+
+	
+
+	public RolPersona(Persona persona, Long idRol, TipoRolPersona rolPersona, EstadoRegistro estadoRegistro) {
+		super();
+		this.persona = persona;
+		this.idRol = idRol;
+		this.rolPersona = rolPersona;
+		this.estadoRegistro = estadoRegistro;
+	}
+
 
 
 	public TipoRolPersona getRolPersona() {
-		return RolPersona;
+		return rolPersona;
 	}
 
 	public void setRolPersona(TipoRolPersona rolPersona) {
-		RolPersona = rolPersona;
+		rolPersona = rolPersona;
 	}
 
 	public Persona getPersona() {
@@ -86,7 +109,22 @@ public abstract class RolPersona {
 	
 	
     
-    
+	@Override
+	public Long getId() {
+		return this.idRol;
+	}
+
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 
 
