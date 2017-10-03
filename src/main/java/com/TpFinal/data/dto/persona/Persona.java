@@ -1,16 +1,21 @@
 package com.TpFinal.data.dto.persona;
 
+import com.TpFinal.data.dto.BorradoLogico;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.Propietario;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.validation.constraints.NotNull;
+
 import java.util.*;
 
 @Entity  
 @Table(name = "personas")
 @Inheritance(strategy=InheritanceType.JOINED)  
-public class Persona implements Identificable {
+public class Persona implements Identificable, BorradoLogico {
 
 	public static final String idPersona = "id";
 	public static final String nombrePersona = "nombre";
@@ -20,6 +25,7 @@ public class Persona implements Identificable {
 	public static final String telefonoPersona = "telefono";
 	public static final String telefono2Persona = "telefono2";
 	public static final String infoPersona = "infoAdicional";
+	private static final String estadoRegistroS="estadoRegistro";
 
 	@Id  
 	@GeneratedValue(strategy=GenerationType.AUTO)  
@@ -41,6 +47,10 @@ public class Persona implements Identificable {
 	private String infoAdicional="";
 	@OneToMany(mappedBy = "persona", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
 	protected Set<RolPersona> roles = new HashSet<>();
+	@Enumerated(EnumType.STRING)
+	@Column(name = Persona.estadoRegistroS)
+	@NotNull
+	private EstadoRegistro estadoRegistro;
 
 
 
@@ -92,6 +102,7 @@ public class Persona implements Identificable {
 		this.telefono2=b.telefono2;
 		this.infoAdicional=b.infoAdicional;
 		this.roles=b.roles;
+		this.estadoRegistro=b.estadoRegistro;
 	}
 
 	@Override
@@ -131,7 +142,6 @@ public class Persona implements Identificable {
 		this.DNI= DNI;
 		this.telefono2=telefono2;
 		this.infoAdicional=infoAdicional;
-
 	}
 
 	public String getNombre() {
@@ -207,6 +217,7 @@ public class Persona implements Identificable {
 		private String DNI;
 		private String infoAdicional;
 		protected Set<RolPersona> roles = new HashSet<>();
+		private EstadoRegistro estadoRegistro;
 		
 		public Builder setId(Long dato) {
 			this.id=dato;
@@ -252,11 +263,28 @@ public class Persona implements Identificable {
 			this.roles=dato;
 			return this;
 		}
+		
+		public Builder setEstadoRegistro(EstadoRegistro dato) {
+			this.estadoRegistro=dato;
+			return this;
+		}
 
 		public Persona buid() {
 			return new Persona(this);
 		}
 		
+	}
+
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+		this.estadoRegistro=estado;
+	}
+
+
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+		return this.estadoRegistro;
 	}
 
 

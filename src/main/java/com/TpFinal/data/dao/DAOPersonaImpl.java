@@ -48,6 +48,16 @@ public class DAOPersonaImpl implements DAOPersona  {
         return dao.findById(id);
     }
 
+	@Override
+	public List<Persona> readAllActives() {
+		return dao.readAllActives();
+	}
+
+	@Override
+	public boolean logicalDelete(Persona entidad) {
+		return dao.logicalDelete(entidad);
+	}
+
 
 
 

@@ -6,14 +6,14 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Persona;
 
@@ -69,6 +69,33 @@ public class DAOPersonaImplTest {
 
         assertEquals(dao.readAll().size(), 5);
     }
+    
+    @Test 
+    public void logicalDelete() {
+    	dao.save(instancia("1"));
+        dao.save(instancia("2"));
+        dao.save(instancia("3"));
+        dao.save(instancia("4"));
+        dao.save(instancia("5"));
+        dao.save(instancia("6"));
+        
+        dao.logicalDelete(dao.readAll().get(0));
+        //verifico si alguno esta en estado borrado
+        boolean b=false;
+        for(Persona p : dao.readAll()) {b=b||p.getEstadoRegistro().equals(EstadoRegistro.BORRADO);}
+        assertTrue(b);
+        
+        //verifico que no cambie a todos
+        assertEquals(6, dao.readAll().size());
+        boolean b1=true;
+        for(Persona p : dao.readAll()){b1=b1&&p.getEstadoRegistro().equals(EstadoRegistro.BORRADO);}
+        assertFalse(b1);
+        
+        //verifico los activos
+        assertEquals(5, dao.readAllActives().size());
+    }
+    
+    
 
     @Test
     public void update() {
@@ -103,6 +130,7 @@ public class DAOPersonaImplTest {
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
+                .setEstadoRegistro(EstadoRegistro.ACTIVO)
                 .buid();
 
     }

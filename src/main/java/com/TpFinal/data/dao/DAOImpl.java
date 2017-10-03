@@ -2,9 +2,11 @@ package com.TpFinal.data.dao;
 
 
 
+import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.DashboardNotification;
-
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.dummy.User;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dto.Identificable;
@@ -14,14 +16,16 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 
-public class DAOImpl<T extends Identificable> implements DAO<T> {
+public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> {
 	private Class<T> clase;
+	private static final String estadoRegistro="estadoRegistro";
 
 	private DAOImpl() {
 
@@ -188,6 +192,34 @@ public class DAOImpl<T extends Identificable> implements DAO<T> {
 			session.close();
 		}
 		return entidades;
+	}
+	
+	@Override
+	public boolean logicalDelete(T entidad) {
+		boolean ret = false;
+		Session session = ConexionHibernate.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			entidad.setEstadoRegistro(EstadoRegistro.BORRADO);
+			session.update(entidad);
+			tx.commit();
+			ret = true;
+		} catch (HibernateException e) {
+			System.err.println("Error al leer");
+			e.printStackTrace();
+			tx.rollback();
+		} finally {
+			session.close();
+		}
+		return ret;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<T> readAllActives(){
+		DetachedCriteria criteria = DetachedCriteria.forClass(getClaseEntidad())
+				.add(Restrictions.eq(estadoRegistro, EstadoRegistro.ACTIVO));
+		return findByCriteria(criteria);
 	}
 
 
