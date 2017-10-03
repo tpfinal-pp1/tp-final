@@ -131,9 +131,12 @@ public class DAOContratoAlquilerTest {
     @Test
     public void contratoConInquilino() {
     	ContratoAlquiler c = instancia("1");
-    	c.setInquilinoContrato(instanciaInq());
+    	Inquilino i = instanciaInq();
+    	c.setInquilinoContrato(i);
+    	
+    	i.getContratos().add(c);
     	dao.save(c);
-    	assertEquals(c.getInquilinoContrato(), dao.readAll().get(0).getInquilinoContrato());
+    	assertEquals(i, dao.readAll().get(0).getInquilinoContrato());
     }
 
     public byte[] blobToBytes(Blob c) throws SQLException, IOException {

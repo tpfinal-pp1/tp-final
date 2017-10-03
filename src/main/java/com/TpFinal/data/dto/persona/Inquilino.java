@@ -1,5 +1,6 @@
 package com.TpFinal.data.dto.persona;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -20,7 +21,7 @@ public class Inquilino extends RolPersona {
 	@Column(name="calificacion")
 	private Calificacion calificacion;
 	@OneToMany(mappedBy="inquilinoContrato", fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-	private Set<ContratoAlquiler>contratos;
+	private Set<ContratoAlquiler>contratos= new HashSet<>();
 
 	
 	public Inquilino() {super();}
@@ -52,14 +53,9 @@ public class Inquilino extends RolPersona {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((calificacion == null) ? 0 : calificacion.hashCode());
-		result = prime * result + ((contratos == null) ? 0 : contratos.hashCode());
 		return result;
 	}
 
-	
-
-
-	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -71,13 +67,12 @@ public class Inquilino extends RolPersona {
 		Inquilino other = (Inquilino) obj;
 		if (calificacion != other.calificacion)
 			return false;
-		if (contratos == null) {
-			if (other.contratos != null)
-				return false;
-		} else if (!contratos.equals(other.contratos))
-			return false;
 		return true;
 	}
+
+
+
+
 
 
 
