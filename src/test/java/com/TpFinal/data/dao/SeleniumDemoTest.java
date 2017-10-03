@@ -15,14 +15,14 @@ import static org.junit.Assert.*;
     import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.*;
 
-public class SeleniumDemo {
+public class SeleniumDemoTest {
         FirefoxDriver driver;
 
         @Before
         public void setUp() throws Exception {
 
             if(SystemUtils.IS_OS_LINUX){
-                System.setProperty("webdriver.gecko.driver","/usr/bin/geckodriver");
+                System.setProperty("webdriver.gecko.driver",File.separator+"usr"+ File.separator+"bin"+ File.separator+"geckodriver");
                 System.out.println("OS: LINUX");
             }
             if(SystemUtils.IS_OS_WINDOWS) {
