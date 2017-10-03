@@ -9,6 +9,7 @@ import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.operacion.Rol;
 import com.TpFinal.data.dto.persona.Persona;
 
@@ -22,6 +23,7 @@ public class PersonaService {
 	public boolean save(Persona p) {
 		if(p.getRoles()!=null || p.getRoles().size()!=0) 
 			p.getRoles().forEach(rol -> rol.setPersona(p));
+		p.setEstadoRegistro(EstadoRegistro.ACTIVO);
 		return dao.save(p);
 	}
 	
