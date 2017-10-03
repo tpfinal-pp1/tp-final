@@ -100,17 +100,21 @@ public class DAOPersonaImplTest {
     
     @Test
     public void personaConRoles() {
-    	RolPersona rol = instanciaInquilino("1");
     	Persona p = instancia("1");
-    	rol.setPersona(p);
-    	p.agregarRol(rol);
+    	
+    	p.agregarRol(instanciaInquilino(Calificacion.A));
+    	p.agregarRol(instanciaInquilino(Calificacion.B));
+    	p.agregarRol(instanciaInquilino(Calificacion.C));
+    	
+    	p.getRoles().forEach(r -> r.setPersona(p));
+    	
     	
     	dao.save(p);
     	
     	assertEquals(1, dao.readAll().size());
 
     	
-    	assertEquals(1, dao.readAll().get(0).getRoles().size());
+    	assertEquals(3, dao.readAll().get(0).getRoles().size());
     	
     	Rol r = Rol.PROPIETARIO;
     	for(RolPersona rp : dao.readAll().get(0).getRoles()) {r=rp.giveMeYourRole();}
@@ -160,6 +164,13 @@ public class DAOPersonaImplTest {
     private Inquilino instanciaInquilino(String numero) {
     	return new Inquilino.Builder()
     			.setCalificacion(Calificacion.A)
+    			.setEstadoRegistro(EstadoRegistro.ACTIVO)
+    			.build();
+    }
+    
+    private Inquilino instanciaInquilino(Calificacion c) {
+    	return new Inquilino.Builder()
+    			.setCalificacion(c)
     			.setEstadoRegistro(EstadoRegistro.ACTIVO)
     			.build();
     }
