@@ -16,12 +16,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.TpFinal.data.dto.BorradoLogico;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.operacion.Operacion;
 
 @Entity
 @Table(name = "Inmuebles")
-public class Inmueble implements Identificable {
+public class Inmueble implements Identificable,BorradoLogico {
 	public static final String pIdInmueble = "idInmueble";
 	public static final String pAEstrenar = "aEstrenar";
 	public static final String pCantAmbientes = "cantidadAmbientes";
@@ -69,7 +71,7 @@ public class Inmueble implements Identificable {
 	private Boolean conJardin;
 
 	@Column(name = Inmueble.pConParrilla)
-	private Boolean conParilla;
+	private Boolean conParrilla;
 
 	@Column(name = Inmueble.pConPileta)
 	private Boolean conPileta;
@@ -85,9 +87,12 @@ public class Inmueble implements Identificable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = Inmueble.pClaseInmb)
 	private ClaseInmueble claseInmueble;
+	
+	@Enumerated(EnumType.STRING)
+	private EstadoRegistro estadoRegistro;
 
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = Inmueble.pDireccion)
+	@JoinColumn(name = "id_direccion")
 	private Direccion direccion;
 
 	@OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
@@ -106,7 +111,7 @@ public class Inmueble implements Identificable {
 		this.claseInmueble = inmuebleBuilder.claseInmueble;
 		this.conAireAcondicionado = inmuebleBuilder.conAireAcondicionado;
 		this.conJardin = inmuebleBuilder.conJardin;
-		this.conParilla = inmuebleBuilder.conParilla;
+		this.conParrilla = inmuebleBuilder.conParilla;
 		this.conPileta = inmuebleBuilder.conPileta;
 		this.direccion = inmuebleBuilder.direccion;
 		this.estadoInmueble = inmuebleBuilder.estadoInmueble;
@@ -191,11 +196,11 @@ public class Inmueble implements Identificable {
 	}
 
 	public Boolean getConParilla() {
-		return conParilla;
+		return conParrilla;
 	}
 
 	public void setConParilla(Boolean conParilla) {
-		this.conParilla = conParilla;
+		this.conParrilla = conParilla;
 	}
 
 	public Boolean getConPileta() {
@@ -265,7 +270,7 @@ public class Inmueble implements Identificable {
 		result = prime * result + ((claseInmueble == null) ? 0 : claseInmueble.hashCode());
 		result = prime * result + ((conAireAcondicionado == null) ? 0 : conAireAcondicionado.hashCode());
 		result = prime * result + ((conJardin == null) ? 0 : conJardin.hashCode());
-		result = prime * result + ((conParilla == null) ? 0 : conParilla.hashCode());
+		result = prime * result + ((conParrilla == null) ? 0 : conParrilla.hashCode());
 		result = prime * result + ((conPileta == null) ? 0 : conPileta.hashCode());
 		result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
 		result = prime * result + ((estadoInmueble == null) ? 0 : estadoInmueble.hashCode());
@@ -316,10 +321,10 @@ public class Inmueble implements Identificable {
 				return false;
 		} else if (!conJardin.equals(other.conJardin))
 			return false;
-		if (conParilla == null) {
-			if (other.conParilla != null)
+		if (conParrilla == null) {
+			if (other.conParrilla != null)
 				return false;
-		} else if (!conParilla.equals(other.conParilla))
+		} else if (!conParrilla.equals(other.conParrilla))
 			return false;
 		if (conPileta == null) {
 			if (other.conPileta != null)
@@ -356,7 +361,7 @@ public class Inmueble implements Identificable {
 				+ "\ncantidadDormitorios=" + cantidadDormitorios + "\nsuperficieTotal=" + superficieTotal
 				+ "\nsuperficieCubierta=" + superficieCubierta + "\naEstrenar=" + aEstrenar + "\ncantidadCocheras="
 				+ cantidadCocheras + "\nconAireAcondicionado=" + conAireAcondicionado + "\nconJardin=" + conJardin
-				+ "\nconParilla=" + conParilla + "\nconPileta=" + conPileta + "\nestadoInmueble=" + estadoInmueble
+				+ "\nconParilla=" + conParrilla + "\nconPileta=" + conPileta + "\nestadoInmueble=" + estadoInmueble
 				+ "\ntipoInmueble=" + tipoInmueble + "\nclaseInmueble=" + claseInmueble + "\ndireccion=" + direccion
 				+ "\noperaciones=" + operaciones + "\n]";
 	}
@@ -465,6 +470,19 @@ public class Inmueble implements Identificable {
 			return new Inmueble(this);
 		}
 
+	}
+
+
+
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+	    this.estadoRegistro = estado;
+	    
+	}
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+	    return estadoRegistro;
 	}
 
 }

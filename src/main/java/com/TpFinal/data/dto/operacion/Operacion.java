@@ -16,13 +16,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.TpFinal.data.dto.BorradoLogico;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Table(name = "operaciones")
-public abstract class Operacion implements Identificable {
+public abstract class Operacion implements Identificable,BorradoLogico {
 	
 	public static final String pTipoOperacion ="tipoOperacion";
 	
@@ -42,6 +44,9 @@ public abstract class Operacion implements Identificable {
 	@Enumerated(EnumType.STRING)
 	@Column (name = Operacion.pTipoOperacion)
 	protected TipoOperacion tipoOperacion;
+	
+	@Enumerated(EnumType.STRING)
+	protected EstadoRegistro estadoRegistro;
 	
 	@Override
 	public Long getId() {
@@ -81,7 +86,18 @@ public abstract class Operacion implements Identificable {
 	public String toString() {
 		return "Operacion \n[\nidOperacion=" + idOperacion+"\nfechaPublicacion="
 				+ fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
-	}	
+	}
+	
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+	    this.estadoRegistro = estado;
+	    
+	}
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+	    return estadoRegistro;
+	}
 	
 	
 	
