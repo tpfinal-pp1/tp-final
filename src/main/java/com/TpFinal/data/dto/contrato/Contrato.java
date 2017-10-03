@@ -5,20 +5,25 @@ import java.time.LocalDate;
 
 import javax.persistence.*;
 
+import com.TpFinal.data.dto.BorradoLogico;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 
 @Entity
 @Table(name="contrato")
 @Inheritance(strategy=InheritanceType.JOINED)
-public class Contrato implements Identificable {
+public class Contrato implements Identificable, BorradoLogico {
 	@Id  
 	@GeneratedValue(strategy=GenerationType.AUTO)  
 	@Column(name = "id")
-	Long id;
+	protected Long id;
 	@Column(name="fechaCelebracion")
-	LocalDate fechaCelebracion;
+	protected LocalDate fechaCelebracion;
 	@Column(name="documento")
-	Blob documento;
+	protected Blob documento;
+	
+	protected EstadoRegistro estadoRegistro;
+	
 	
 	public Contrato() {}
 	
@@ -52,6 +57,17 @@ public class Contrato implements Identificable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+	    this.estadoRegistro = estado;
+	    
+	}
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+	    return estadoRegistro;
 	}
 	
 	
