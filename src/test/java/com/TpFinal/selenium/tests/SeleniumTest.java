@@ -19,11 +19,18 @@ public class SeleniumTest {
             System.out.println("OS: LINUX");
         }
         if(SystemUtils.IS_OS_WINDOWS) {
-            System.setProperty("webdriver.gecko.driver", "GeckoDriver"+ File.separator+"geckodriver.exe");
-            System.out.println("OS: Windows");
+            String systemArchitecture = System.getProperty("sun.arch.data.model");
+            if(systemArchitecture.equals("64")) {
+                System.setProperty("webdriver.gecko.driver", "GeckoDriver" + File.separator + "geckodriver.exe");
+                System.out.println("OS: Windows 64-bit");
+            }
+            else {
+                System.setProperty("webdriver.gecko.driver", "GeckoDriver-32-bits" + File.separator + "geckodriver.exe");
+                System.out.println("OS: Windows 32-bit");
+            }
         }
         WebDriver webDriver = new FirefoxDriver();
-        webDriver.get("http://inmobi.ddns.net/");
+        webDriver.get("http://google.com");
         webDriver.close();
         //webDriver.quit();
     }
