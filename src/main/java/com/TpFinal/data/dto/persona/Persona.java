@@ -71,6 +71,17 @@ public class Persona implements Identificable, BorradoLogico {
 		this.roles=b.roles;
 		this.estadoRegistro=b.estadoRegistro;
 	}
+	
+	public Persona(Long id, String nombre, String apellido, String mail, String telefono, String telefono2, String DNI, String infoAdicional) {
+		this.id=id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.mail = mail;
+		this.telefono = telefono;
+		this.DNI= DNI;
+		this.telefono2=telefono2;
+		this.infoAdicional=infoAdicional;
+	}
 
 
 	public Inquilino getInquilino(){
@@ -86,9 +97,8 @@ public class Persona implements Identificable, BorradoLogico {
 	@Override
 	public String toString() {
 		String rols="";
-		for (RolPersona rol: this.roles
-				) {
-//			rols=rols+rol.RolPersona.toString()+" ," ;
+		for (RolPersona rol: this.roles) {
+			rols=rols+rol.giveMeYourRole().toString()+" ," ;
 
 		}
 		return "{" +
@@ -97,14 +107,7 @@ public class Persona implements Identificable, BorradoLogico {
 				", DNI='" + DNI + '\'' +
 				", roles=" + rols +
 				'}';
-
-
-
 	}
-
-
-
-
 
 	@Override
 	public boolean equals(Object o) {
@@ -132,17 +135,6 @@ public class Persona implements Identificable, BorradoLogico {
 		result = 31 * result + (telefono2 != null ? telefono2.hashCode() : 0);
 		result = 31 * result + (infoAdicional != null ? infoAdicional.hashCode() : 0);
 		return result;
-	}
-
-	public Persona(Long id, String nombre, String apellido, String mail, String telefono, String telefono2, String DNI, String infoAdicional) {
-		this.id=id;
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.mail = mail;
-		this.telefono = telefono;
-		this.DNI= DNI;
-		this.telefono2=telefono2;
-		this.infoAdicional=infoAdicional;
 	}
 
 	public String getNombre() {
@@ -206,6 +198,32 @@ public class Persona implements Identificable, BorradoLogico {
 
 	public void setInfoAdicional(String infoAdicional) {
 		this.infoAdicional = infoAdicional;
+	}
+	
+	@Override
+	public void setEstadoRegistro(EstadoRegistro estado) {
+		this.estadoRegistro=estado;
+	}
+
+	@Override
+	public EstadoRegistro getEstadoRegistro() {
+		return this.estadoRegistro;
+	}
+	
+	public void agregarRol(RolPersona r) {
+			this.roles.add(r);
+	}
+
+	public Set<RolPersona> getRoles() {
+		return this.roles;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public void setRoles(Set<RolPersona> roles) {
+		this.roles = roles;
 	}
 	
 	public static class Builder{
@@ -276,35 +294,5 @@ public class Persona implements Identificable, BorradoLogico {
 		
 	}
 
-	@Override
-	public void setEstadoRegistro(EstadoRegistro estado) {
-		this.estadoRegistro=estado;
-	}
-
-
-
-	@Override
-	public EstadoRegistro getEstadoRegistro() {
-		return this.estadoRegistro;
-	}
-	
-	public void agregarRol(RolPersona r) {
-			this.roles.add(r);
-			//System.out.println("largo "+this.roles.size());
-	}
-
-	public Set<RolPersona> getRoles() {
-		return this.roles;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public void setRoles(Set<RolPersona> roles) {
-		this.roles = roles;
-	}
-
-	
 
 }
