@@ -18,7 +18,7 @@ import org.openqa.selenium.*;
 public class SeleniumDemoTest {
         FirefoxDriver driver;
 
-        @Before
+        //@Before
         public void setUp() throws Exception {
 
             if(SystemUtils.IS_OS_LINUX){
@@ -33,7 +33,7 @@ public class SeleniumDemoTest {
            // driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
         }
 
-        @Test
+        //@Test
         public void test(){
             driver.get("http://inmobi.ddns.net/");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -71,7 +71,7 @@ public class SeleniumDemoTest {
             driver.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/table/tbody/tr[2]/td[3]/div/div[1]/div")).click();
         }
 
-        @After
+      //  @After
         public void tearDown() {
             driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
             driver.quit();
