@@ -48,8 +48,8 @@ public class PersonaServiceTest {
     	
     	service.save(p);
     	
-    	assertEquals(1,service.readAllActives().size());
-    	assertEquals(3, service.readAllActives().get(0).getRoles().size());
+    	assertEquals(1,service.readAll().size());
+    	assertEquals(3, service.readAll().get(0).getRoles().size());
 	}
 	
 	
