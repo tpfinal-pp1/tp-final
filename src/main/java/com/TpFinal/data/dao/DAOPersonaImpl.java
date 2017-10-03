@@ -10,53 +10,17 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.dummy.User;
 
 
-public class DAOPersonaImpl implements DAOPersona  {
+public class DAOPersonaImpl extends DAOImpl<Persona> implements DAOPersona  {
 
-    private DAO<Persona>dao;
-
-    public DAOPersonaImpl() {
-        dao = new DAOImpl<>(Persona.class);
-    }
-
-    @Override
-    public boolean create(Persona entidad) {
-        return dao.create(entidad);
-    }
-
-    @Override
-    public List<Persona> readAll() {
-        return dao.readAll();
-    }
-
-    @Override
-    public boolean update(Persona entidad) {
-        return dao.update(entidad);
-    }
-
-    @Override
-    public boolean delete(Persona entidad) {
-        return dao.delete(entidad);
-    }
-
-    @Override
-    public boolean save(Persona entidad) {
-        return dao.save(entidad);
-    }
-
-    @Override
-    public Persona findById(Long id) {
-        return dao.findById(id);
-    }
-
-	@Override
-	public List<Persona> readAllActives() {
-		return dao.readAllActives();
+	
+	public DAOPersonaImpl() {
+		super(Persona.class);
 	}
 
-	@Override
-	public boolean logicalDelete(Persona entidad) {
-		return dao.logicalDelete(entidad);
-	}
+   
+
+	
+	
 
 
 
