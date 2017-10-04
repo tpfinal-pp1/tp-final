@@ -1,6 +1,6 @@
 package com.TpFinal.view.persona;
 import com.TpFinal.data.dao.dummy.DummyDataGenerator;
-import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
@@ -34,6 +34,9 @@ public class PersonaForm extends FormLayout {
     TextField telefono2 = new TextField("Celular");
     TextField mail = new TextField("Mail");
     TextArea infoAdicional = new TextArea("Información Adicional");
+
+    private NativeSelect<Calificacion> calificacion =
+            new NativeSelect<>("Calificacion Inquilino");
 
     // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
@@ -74,6 +77,9 @@ public class PersonaForm extends FormLayout {
          * and give it a keyoard shortcut for a better UX.
          */
 
+        calificacion.setItems(Calificacion.values());
+       calificacion.setEmptySelectionAllowed(true);
+       calificacion.setSelectedItem(Calificacion.A);
         //   sexo.setEmptySelectionAllowed(false);
         //  sexo.setItems(Persona.Sexo.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
@@ -133,14 +139,21 @@ public class PersonaForm extends FormLayout {
         VerticalLayout principal=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
         VerticalLayout adicional=new VerticalLayout(telefono,telefono2,infoAdicional);
 
+        VerticalLayout rol=new VerticalLayout(calificacion,new Label("Operaciones:"),
+                new Button("Ver Operaciones"),new Label("Busquedas:"),
+                new Button("Ver Busquedas"));
+        rol.setSpacing(true);
+
+        calificacion.setEnabled(false);
+
         tabSheet.addTab(principal,"Principal");
         tabSheet.addTab(adicional,"Contacto");
+        tabSheet.addTab(rol,"Operaciones");
 
         addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         addComponent(actions);
         actions.setSpacing(true);
-
 
     }
 
