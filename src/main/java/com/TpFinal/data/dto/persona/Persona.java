@@ -291,4 +291,8 @@ public class Persona implements Identificable, BorradoLogico {
 
     }
 
+    public void addRol(RolPersona rol) {
+	roles.add(rol);
+    }
+
 }

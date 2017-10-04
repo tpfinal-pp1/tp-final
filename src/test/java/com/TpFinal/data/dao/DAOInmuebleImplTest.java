@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.junit.After;
@@ -17,6 +16,7 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
@@ -29,6 +29,8 @@ import com.TpFinal.data.dto.operacion.Operacion;
 import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.data.dto.operacion.TipoOperacion;
+import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.Propietario;
 
 public class DAOInmuebleImplTest {
     DAOInmuebleImpl dao;
@@ -531,6 +533,27 @@ public class DAOInmuebleImplTest {
 	dao.create(i);
 	inmuebles = dao.readAll();
 	assertEquals(1, inmuebles.get(0).getOperaciones().size());
+    }
+    
+    @Test
+    public void testPropietarios() {
+	Inmueble i = unInmuebleNoPublicado();
+	Persona p = new Persona.Builder().setApellido("ape")
+		.setDNI("123")
+		.setEstadoRegistro(EstadoRegistro.ACTIVO)
+		.setinfoAdicional("Info adicional")
+		.setMail("a@b.com")
+		.setNombre("nom")
+		.setTelefono("123456")
+		.setTelefono2("321")
+		.buid();
+	Propietario rolPropietario = new Propietario.Builder()
+		.addInmueble(i)
+		.setEstadoRegistro(EstadoRegistro.ACTIVO)
+		.setPersona(p)
+		.build();
+	p.addRol(rolPropietario);
+	
     }
 
     private void crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(int cantidadDeInmuebles) {
