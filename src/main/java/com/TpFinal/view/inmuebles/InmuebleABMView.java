@@ -157,6 +157,14 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		grid.asSingleSelect().clear();
 		inmuebleForm.setInmueble(new Inmueble());
 	    });
+
+		grid.asSingleSelect().addValueChangeListener(event -> {
+			if (event.getValue() == null) {
+				inmuebleForm.setVisible(false);
+			} else {
+				inmuebleForm.setInmueble(event.getValue());
+			}
+		});
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
 	    grid.setColumns(Inmueble.pDireccion, Inmueble.pPropietario, Inmueble.pEstadoInmueble, Inmueble.pClaseInmb,
