@@ -36,6 +36,18 @@ public class ContratoService {
     	return ret;
     }
     
+    public boolean save(Contrato contrato) {
+    	boolean ret=false;
+    	if(contrato.getClass().equals(ContratoVenta.class)) {
+    		ContratoVenta c=(ContratoVenta)contrato;
+    		ret=daoVenta.save(c);
+    	}else {
+    		ContratoAlquiler c= (ContratoAlquiler)contrato;
+    		ret=daoAlquiler.save(c);
+    	}
+    	return ret;
+    }
+    
     public boolean delete(Contrato contrato) {
     	boolean ret=false;
     	if(contrato.getClass().equals(ContratoVenta.class)) {
@@ -56,6 +68,18 @@ public class ContratoService {
     	}else {
     		ContratoAlquiler c= (ContratoAlquiler)contrato;
     		ret=daoAlquiler.update(c);
+    	}
+    	return ret;
+    }
+    
+    public boolean update(Contrato contrato, File doc) {
+    	boolean ret=false;
+    	if(contrato.getClass().equals(ContratoVenta.class)) {
+    		ContratoVenta c=(ContratoVenta)contrato;
+    		ret=daoVenta.saveContrato(c, doc);
+    	}else {
+    		ContratoAlquiler c= (ContratoAlquiler)contrato;
+    		ret=daoAlquiler.saveContrato(c, doc);
     	}
     	return ret;
     }
