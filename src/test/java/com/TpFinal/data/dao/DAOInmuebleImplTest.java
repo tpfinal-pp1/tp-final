@@ -536,8 +536,9 @@ public class DAOInmuebleImplTest {
     }
     
     @Test
-    public void testPropietarios() {
+    public void testRelacionPropietarios() {
 	Inmueble i = unInmuebleNoPublicado();
+	dao.saveOrUpdate(i);
 	Persona p = new Persona.Builder().setApellido("ape")
 		.setDNI("123")
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
@@ -547,12 +548,24 @@ public class DAOInmuebleImplTest {
 		.setTelefono("123456")
 		.setTelefono2("321")
 		.buid();
-	Propietario rolPropietario = new Propietario.Builder()
+	Propietario propietario = new Propietario.Builder()
 		.addInmueble(i)
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setPersona(p)
 		.build();
-	p.addRol(rolPropietario);
+	p.addRol(propietario);
+	DAOPersonaImpl daop = new DAOPersonaImpl();
+//	Debe existir primero una persona en la bd a la que asignarle el rol de propietario.
+	daop.saveOrUpdate(p);
+	i.setPropietario(propietario);
+	
+	dao.saveOrUpdate(i);
+	inmuebles = dao.readAll();
+	assertEquals(propietario,i.getPropietario());
+	
+	propietario.setPersona(null);
+	//Hay que hacer esto para desvincular al propietario de la persona y asi poder borrarlo cuando se borra el inmueble.
+	daop.saveOrUpdate(p);
 	
     }
 
