@@ -39,8 +39,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
     public InmuebleABMView() {
 	super();
-	buildLayout();
-	GeneradorDeDatos.generarDatos(10);
+	buildLayout();	
 	controller.configureComponents();
 	
     }
@@ -137,10 +136,14 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
     public class Controller {
 
-	private InmuebleService imuebleService = new InmuebleService();
+	private InmuebleService inmuebleService = new InmuebleService();
 
 	public void configureComponents() {
 
+	  if (inmuebleService.readAll().size() == 0) {
+	      GeneradorDeDatos.generarDatos(10);
+	  }
+	    
 	    filter.addValueChangeListener(e -> updateList());
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);
 	    filter.setPlaceholder("Filtrar");
@@ -162,7 +165,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 	
 	public void updateList() {
-		List<Inmueble> inmuebles = imuebleService.readAll();
+		List<Inmueble> inmuebles = inmuebleService.readAll();
 		grid.setItems(inmuebles);
 
 	    }
