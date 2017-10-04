@@ -27,7 +27,9 @@ public class Inquilino extends RolPersona {
 	public Inquilino() {super();}
 	
 	private Inquilino(Builder b) {
-		super(b.persona, b.idRol, b.rolPersona, b.estadoRegistro);
+	    
+
+		super(b.persona, b.estadoRegistro);
 		this.contratos=b.contratos;
 		this.calificacion=b.calificacion;
 	}
@@ -81,8 +83,7 @@ public class Inquilino extends RolPersona {
 	public static class Builder{
 		private Set<ContratoAlquiler>contratos;
 		private Calificacion calificacion;
-		private Long idRol;
-		private TipoRolPersona rolPersona;
+		private TipoRolPersona rolPersona = TipoRolPersona.Inquilino;
 		private EstadoRegistro estadoRegistro;
 		private Persona persona;
 		
@@ -92,14 +93,6 @@ public class Inquilino extends RolPersona {
 		}
 		public Builder setCalificacion(Calificacion dato) {
 			this.calificacion=dato;
-			return this;
-		}
-		public Builder setIdRol(Long dato) {
-			this.idRol=dato;
-			return this;
-		}
-		public Builder setRolPersona(TipoRolPersona dato) {
-			this.rolPersona=dato;
 			return this;
 		}
 		public Builder setEstadoRegistro(EstadoRegistro dato) {

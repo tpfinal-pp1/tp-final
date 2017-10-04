@@ -43,10 +43,9 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 
 	public RolPersona() {}
 
-	public RolPersona(Persona persona, Long idRol, TipoRolPersona rolPersona, EstadoRegistro estadoRegistro) {
+	public RolPersona(Persona persona, EstadoRegistro estadoRegistro) {
 		super();
 		this.persona = persona;
-		this.idRol = idRol;
 //		this.rolPersona = rolPersona;
 		this.estadoRegistro = estadoRegistro;
 	}
@@ -93,38 +92,30 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((estadoRegistro == null) ? 0 : estadoRegistro.hashCode());
-		result = prime * result + ((idRol == null) ? 0 : idRol.hashCode());
-		result = prime * result + ((persona == null) ? 0 : persona.hashCode());
-		return result;
-	}
+	    final int prime = 31;
+	    int result = 1;
+	    result = prime * result + ((estadoRegistro == null) ? 0 : estadoRegistro.hashCode());
+	    result = prime * result + ((persona == null) ? 0 : persona.hashCode());
+	    return result;
+	}	
 
-	
-	
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		RolPersona other = (RolPersona) obj;
-		if (estadoRegistro != other.estadoRegistro)
-			return false;
-		if (idRol == null) {
-			if (other.idRol != null)
-				return false;
-		} else if (!idRol.equals(other.idRol))
-			return false;
-		if (persona == null) {
-			if (other.persona != null)
-				return false;
-		} else if (!persona.equals(other.persona))
-			return false;
+	    if (this == obj)
 		return true;
+	    if (obj == null)
+		return false;
+	    if (!(obj instanceof RolPersona))
+		return false;
+	    RolPersona other = (RolPersona) obj;
+	    if (estadoRegistro != other.estadoRegistro)
+		return false;
+	    if (persona == null) {
+		if (other.persona != null)
+		    return false;
+	    } else if (!persona.equals(other.persona))
+		return false;
+	    return true;
 	}
 
 	public Rol giveMeYourRole() {

@@ -32,13 +32,13 @@
 		<mapping class="com.TpFinal.data.dto.operacion.OperacionAlquiler" />
 		<mapping class="com.TpFinal.data.dto.operacion.OperacionVenta" />
 		<mapping class="com.TpFinal.data.dto.operacion.TipoOperacion" />
-		<mapping class="com.TpFinal.data.dto.Propietario" />
 		<mapping class="com.TpFinal.data.dto.contrato.Contrato" />
 		<mapping class="com.TpFinal.data.dto.contrato.ContratoVenta" />
 		<mapping class="com.TpFinal.data.dto.contrato.ContratoAlquiler" />
 		<mapping class="com.TpFinal.data.dto.persona.Persona" />
 		<mapping class="com.TpFinal.data.dto.persona.RolPersona" />
 		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
+		<mapping class="com.TpFinal.data.dto.persona.Propietario" />
 		
 	
 

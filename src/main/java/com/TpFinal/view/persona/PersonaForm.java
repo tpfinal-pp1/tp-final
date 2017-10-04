@@ -1,6 +1,6 @@
 package com.TpFinal.view.persona;
 import com.TpFinal.data.dao.dummy.DummyDataGenerator;
-import com.TpFinal.data.dto.Propietario;
+import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
