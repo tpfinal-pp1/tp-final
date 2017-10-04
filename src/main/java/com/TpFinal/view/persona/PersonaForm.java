@@ -1,17 +1,15 @@
 package com.TpFinal.view.persona;
 import com.TpFinal.data.dao.dummy.DummyDataGenerator;
+import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.PersonaService;
+
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.ClassResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
@@ -24,7 +22,7 @@ import com.vaadin.ui.TextField;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-    public class PersonaForm extends FormLayout {
+public class PersonaForm extends FormLayout {
     private Persona persona;
     Button save = new Button("Guardar");
     Button test = new Button("Test");
@@ -37,37 +35,34 @@ import com.vaadin.ui.TextField;
     TextField mail = new TextField("Mail");
     TextArea infoAdicional = new TextArea("Información Adicional");
 
-   // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
+    // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PersonaService service = new PersonaService();
     private PersonaABMView addressbookView;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
     private Binder<Inquilino> binderInquilino = new Binder<>(Inquilino.class);
-    private Binder<Propietario> binderPropieario = new Binder<>(Propietario.class);
 
 
 
 
-    TabSheet tabSheetGeneral;
-    TabSheet tabSheetPersona;
-    TabSheet tabSheetInquilino;
-    TabSheet  tabSheetPropietario;
+
+    TabSheet tabSheet;
 
 
 
 
 
 
-        // Easily binding forms to beans and manage validation and buffering
+    // Easily binding forms to beans and manage validation and buffering
 
 
     public PersonaForm(PersonaABMView addressbook) {
-       // setSizeUndefined();
+        // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
         binding();
         buildLayout();
-
+        addStyleName("v-scrollable");
     }
 
     private void configureComponents() {
@@ -79,8 +74,8 @@ import com.vaadin.ui.TextField;
          * and give it a keyoard shortcut for a better UX.
          */
 
-     //   sexo.setEmptySelectionAllowed(false);
-      //  sexo.setItems(Persona.Sexo.values());
+        //   sexo.setEmptySelectionAllowed(false);
+        //  sexo.setItems(Persona.Sexo.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         test.addClickListener(e -> this.test());
@@ -95,7 +90,7 @@ import com.vaadin.ui.TextField;
         setVisible(false);
     }
 
-    
+
     private void binding(){
         //binder.bindInstanceFields(this); //Binding automatico
         nombre.setRequiredIndicatorVisible(true);
@@ -116,7 +111,7 @@ import com.vaadin.ui.TextField;
         binderPersona.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
         binderPersona.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido!"
-                )).bind(Persona::getMail,Persona::setMail);
+        )).bind(Persona::getMail,Persona::setMail);
         binderPersona.forField(infoAdicional).withValidator(new StringLengthValidator(
                 "El nombre debe estar entre 2 y 20 caracteres",
                 0, 255)).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
@@ -128,51 +123,20 @@ import com.vaadin.ui.TextField;
 
 
     }
-    
+
     private void buildLayout() {
-        addStyleName("v-scrollable");
-        //setSizeFull();
-        //Para espaciar un poco los Tabsheet
+        setSizeFull();
         setMargin(true);
-        VerticalLayout spacingP= new VerticalLayout();
-        spacingP.setSpacing(true);
-        VerticalLayout spacingI= new VerticalLayout();
-        spacingI.setSpacing(true);
-        VerticalLayout spacingProp= new VerticalLayout();
-        spacingProp.setSpacing(true);
 
-        //Creando Tabs de Roles
-        tabSheetGeneral = new TabSheet();
-        tabSheetPersona =new TabSheet();
-        tabSheetInquilino =new TabSheet();
-        tabSheetPropietario = new TabSheet();
+        tabSheet=new TabSheet();
 
+        VerticalLayout principal=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
+        VerticalLayout adicional=new VerticalLayout(telefono,telefono2,infoAdicional);
 
-        //Creando Layouts por cada Categoria
-        //Persona
-        VerticalLayout principalPersonaLayout=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
-        tabSheetPersona.addTab(principalPersonaLayout,"Principal");
-        VerticalLayout adicionalPersonaLayout=new VerticalLayout(telefono,telefono2,infoAdicional);
-        tabSheetPersona.addTab(adicionalPersonaLayout,"Contacto");
+        tabSheet.addTab(principal,"Principal");
+        tabSheet.addTab(adicional,"Contacto");
 
-        //Propietario
-
-        //Inquilino
-        tabSheetInquilino.addTab(new VerticalLayout(new Button("")),"Principal");
-        //Mapeando los TabSheet a los Layouts espaciados
-        tabSheetGeneral.addTab(spacingP,"Persona");
-        tabSheetGeneral.addTab(spacingProp,"Propietario");
-        tabSheetGeneral.addTab(spacingI,"Inquilino");
-        VerticalLayout addRol=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
-
-        //
-
-        spacingP.addComponent(tabSheetPersona);
-        spacingProp.addComponent(tabSheetPropietario);
-        spacingI.addComponent(tabSheetInquilino);
-
-
-        addComponent(tabSheetGeneral);
+        addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         addComponent(actions);
         actions.setSpacing(true);
@@ -193,7 +157,7 @@ import com.vaadin.ui.TextField;
         getAddressbookView().setComponentsVisible(false);
         nombre.selectAll();
         if(getAddressbookView().isIsonMobile())
-            tabSheetPersona.focus();
+            tabSheet.focus();
 
     }
 
@@ -239,7 +203,7 @@ import com.vaadin.ui.TextField;
         } catch (ValidationException e) {
             e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-           // Notification.show("Error: "+e.getCause());
+            // Notification.show("Error: "+e.getCause());
             return;
         }
         catch (Exception e){
@@ -257,20 +221,20 @@ import com.vaadin.ui.TextField;
 
         if(success)
             getAddressbookView().showSuccessNotification("Guardado: "+ persona.getNombre()+" "+
-                persona.getApellido());
+                    persona.getApellido());
 
 
 
 
     }
 
-   public void cancel() {
+    public void cancel() {
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
     }
-    
-    
+
+
 
     public PersonaABMView getAddressbookView() {
         return addressbookView;
