@@ -7,10 +7,7 @@ import javax.validation.constraints.NotNull;
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
-import com.TpFinal.data.dto.operacion.Operacion;
 import com.TpFinal.data.dto.operacion.Rol;
-import com.TpFinal.data.dto.operacion.TipoOperacion;
-import org.hibernate.annotations.OnDelete;
 
 @Entity
 @Table(name = "roles")
@@ -119,9 +116,9 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	}
 
 	public Rol giveMeYourRole() {
-		Rol ret=Rol.PROPIETARIO;
+		Rol ret=Rol.Propietario;
 		if(this.getClass().equals(Inquilino.class))
-			ret= Rol.INQUILINO;
+			ret= Rol.Inquilino;
 		return ret;
 	}
 	

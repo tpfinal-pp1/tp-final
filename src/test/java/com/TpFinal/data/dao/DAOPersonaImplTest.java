@@ -121,9 +121,9 @@ public class DAOPersonaImplTest {
     	
     	assertEquals(3, dao.readAllActives().get(0).getRoles().size());
     	
-    	Rol r = Rol.PROPIETARIO;
+    	Rol r = Rol.Propietario;
     	for(RolPersona rp : dao.readAllActives().get(0).getRoles()) {r=rp.giveMeYourRole();}
-    	assertEquals(Rol.INQUILINO, r);
+    	assertEquals(Rol.Inquilino, r);
         
     }
     
