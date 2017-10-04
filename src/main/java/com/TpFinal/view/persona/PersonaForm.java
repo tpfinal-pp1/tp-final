@@ -159,7 +159,9 @@ public class PersonaForm extends FormLayout {
 
 
     public void setPersona(Persona persona) {
-
+        if(persona.getInquilino()!=null){
+            this.calificacion.setSelectedItem(persona.getInquilino().getCalificacion());
+        }
         this.persona = persona;
         binderPersona.readBean(persona);
 
