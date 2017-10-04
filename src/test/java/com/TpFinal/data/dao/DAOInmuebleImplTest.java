@@ -31,6 +31,7 @@ import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.data.dto.operacion.TipoOperacion;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.utils.GeneradorDeDatos;
 
 public class DAOInmuebleImplTest {
     DAOInmuebleImpl dao;
@@ -566,6 +567,20 @@ public class DAOInmuebleImplTest {
 	propietario.setPersona(null);
 	//Hay que hacer esto para desvincular al propietario de la persona y asi poder borrarlo cuando se borra el inmueble.
 	daop.saveOrUpdate(p);
+	
+    }
+    
+    @Test
+    public void testGeneradorDeDatos() {
+	GeneradorDeDatos.generarDatos(10);
+	inmuebles=dao.readAll();
+	assertEquals(10, inmuebles.size());
+	DAOPersonaImpl daop = new DAOPersonaImpl();
+	for(Inmueble i : inmuebles) {
+	    Persona p = i.getPropietario().getPersona();
+	    i.getPropietario().setPersona(null);
+	    daop.saveOrUpdate(p);
+	}
 	
     }
 
