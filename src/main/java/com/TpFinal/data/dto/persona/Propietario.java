@@ -18,7 +18,7 @@ public class Propietario extends RolPersona {
 	@OneToMany(mappedBy="propietario", fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Set<Inmueble>inmuebles= new HashSet<>();
 	
-	private String observaciones;
+	//private String observaciones;
 
 	
 	public Propietario() {super();}
@@ -26,11 +26,11 @@ public class Propietario extends RolPersona {
 	private Propietario(Builder b) {
 	 	super(b.persona, b.estadoRegistro);
 		this.inmuebles=b.inmuebles;
-		this.observaciones = b.observaciones;
+		//this.observaciones = b.observaciones;
 	}
 
 	public static class Builder{
-		private String observaciones;
+		//private String observaciones;
 		private Set<Inmueble>inmuebles = new HashSet<>();
 		private Persona persona;
 		private EstadoRegistro estadoRegistro;
@@ -55,11 +55,6 @@ public class Propietario extends RolPersona {
 		    return this;
 		}
 		
-		
-		public Builder setObservaciones(String observaciones) {
-		    this.observaciones = observaciones;
-		    return this;
-		}
 
 		public Propietario build() {
 			return new Propietario(this);

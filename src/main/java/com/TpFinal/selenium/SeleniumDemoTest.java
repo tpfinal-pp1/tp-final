@@ -1,4 +1,4 @@
-package com.TpFinal.selenium.tests;
+package com.TpFinal.selenium;
 
 
 

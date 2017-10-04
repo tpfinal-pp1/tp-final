@@ -54,7 +54,7 @@ public class PersonaServiceNuevoTest {
     	assertEquals(1,service.readAllActives().size());
     	assertEquals(3, service.readAllActives().get(0).getRoles().size());
     	assertEquals(3, service.giveMeYourRoles(service.readAll().get(0)).size());
-    	assertEquals(Rol.INQUILINO, service.giveMeYourRoles(service.readAll().get(0)).get(0));
+    	assertEquals(Rol.Inquilino, service.giveMeYourRoles(service.readAll().get(0)).get(0));
 	}
 	
 	@Test

@@ -8,6 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.operacion.Rol;
 
 
 @Entity
@@ -83,7 +84,7 @@ public class Inquilino extends RolPersona {
 	public static class Builder{
 		private Set<ContratoAlquiler>contratos;
 		private Calificacion calificacion;
-		private TipoRolPersona rolPersona = TipoRolPersona.Inquilino;
+		private Rol rolPersona = Rol.Inquilino;
 		private EstadoRegistro estadoRegistro;
 		private Persona persona;
 		

@@ -1,15 +1,17 @@
 package com.TpFinal.view.persona;
 import com.TpFinal.data.dao.dummy.DummyDataGenerator;
-import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.PersonaService;
-import com.TpFinal.services.PersonaServiceDefault;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.ClassResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
@@ -41,12 +43,15 @@ import com.vaadin.ui.TextField;
     private PersonaABMView addressbookView;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
     private Binder<Inquilino> binderInquilino = new Binder<>(Inquilino.class);
+    private Binder<Propietario> binderPropieario = new Binder<>(Propietario.class);
 
 
 
 
-
-    TabSheet tabSheet;
+    TabSheet tabSheetGeneral;
+    TabSheet tabSheetPersona;
+    TabSheet tabSheetInquilino;
+    TabSheet  tabSheetPropietario;
 
 
 
@@ -62,7 +67,7 @@ import com.vaadin.ui.TextField;
         configureComponents();
         binding();
         buildLayout();
-        addStyleName("v-scrollable");
+
     }
 
     private void configureComponents() {
@@ -125,18 +130,49 @@ import com.vaadin.ui.TextField;
     }
     
     private void buildLayout() {
-        setSizeFull();
+        addStyleName("v-scrollable");
+        //setSizeFull();
+        //Para espaciar un poco los Tabsheet
         setMargin(true);
+        VerticalLayout spacingP= new VerticalLayout();
+        spacingP.setSpacing(true);
+        VerticalLayout spacingI= new VerticalLayout();
+        spacingI.setSpacing(true);
+        VerticalLayout spacingProp= new VerticalLayout();
+        spacingProp.setSpacing(true);
 
-        tabSheet=new TabSheet();
+        //Creando Tabs de Roles
+        tabSheetGeneral = new TabSheet();
+        tabSheetPersona =new TabSheet();
+        tabSheetInquilino =new TabSheet();
+        tabSheetPropietario = new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
-        VerticalLayout adicional=new VerticalLayout(telefono,telefono2,infoAdicional);
 
-        tabSheet.addTab(principal,"Principal");
-        tabSheet.addTab(adicional,"Contacto");
+        //Creando Layouts por cada Categoria
+        //Persona
+        VerticalLayout principalPersonaLayout=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
+        tabSheetPersona.addTab(principalPersonaLayout,"Principal");
+        VerticalLayout adicionalPersonaLayout=new VerticalLayout(telefono,telefono2,infoAdicional);
+        tabSheetPersona.addTab(adicionalPersonaLayout,"Contacto");
 
-        addComponent(tabSheet);
+        //Propietario
+
+        //Inquilino
+        tabSheetInquilino.addTab(new VerticalLayout(new Button("")),"Principal");
+        //Mapeando los TabSheet a los Layouts espaciados
+        tabSheetGeneral.addTab(spacingP,"Persona");
+        tabSheetGeneral.addTab(spacingProp,"Propietario");
+        tabSheetGeneral.addTab(spacingI,"Inquilino");
+        VerticalLayout addRol=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
+
+        //
+
+        spacingP.addComponent(tabSheetPersona);
+        spacingProp.addComponent(tabSheetPropietario);
+        spacingI.addComponent(tabSheetInquilino);
+
+
+        addComponent(tabSheetGeneral);
         HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         addComponent(actions);
         actions.setSpacing(true);
@@ -157,7 +193,7 @@ import com.vaadin.ui.TextField;
         getAddressbookView().setComponentsVisible(false);
         nombre.selectAll();
         if(getAddressbookView().isIsonMobile())
-            tabSheet.focus();
+            tabSheetPersona.focus();
 
     }
 

@@ -1,3 +1,3 @@
 package com.TpFinal.data.dto.operacion;
 
-public enum Rol {INQUILINO, PROPIETARIO}
+public enum Rol {Inquilino, Propietario}
