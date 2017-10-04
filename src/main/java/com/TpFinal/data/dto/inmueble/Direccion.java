@@ -181,6 +181,15 @@ public class Direccion implements Identificable {
 			return false;
 		return true;
 	}
+	
+	
+
+	@Override
+	public String toString() {
+	    return calle + " " + nro + ", "+localidad+", "+provincia+", "+pais;
+	}
+
+
 
 	public static class Builder {
 		private Coordenada coordenada;

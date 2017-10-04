@@ -35,6 +35,16 @@ public class Propietario extends RolPersona {
 	public void setInmuebles(Set<Inmueble> inmuebles) {
 	    this.inmuebles = inmuebles;
 	}
+	
+	
+
+
+	@Override
+	public String toString() {
+	    return super.getPersona().getNombre() + " " + super.getPersona().getApellido();
+	}
+
+
 
 
 	public static class Builder{
