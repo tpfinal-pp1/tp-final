@@ -3,6 +3,7 @@ package com.TpFinal.view;
 import com.TpFinal.view.dummy.dashboard.DashboardView;
 import com.TpFinal.view.dummy.reports.ReportsView;
 import com.TpFinal.view.dummy.schedule.ScheduleView;
+import com.TpFinal.view.inmuebles.InmuebleABMView;
 import com.TpFinal.view.operacion.OperacionABMView;
 import com.TpFinal.view.persona.PersonaABMView;
 
@@ -13,7 +14,7 @@ import com.vaadin.server.Resource;
 public enum DashboardViewType {
     INICIO("dashboard", DashboardView.class, VaadinIcons.HOME, true),PERSONAS(
             "personas",PersonaABMView.class, VaadinIcons.USER, false),OPERACIONES(
-            "operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false),REPORTES(
+            "operaciones", OperacionABMView.class, VaadinIcons.HANDSHAKE, false),NMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),REPORTES(
             "reportes", ReportsView.class, VaadinIcons.FILE, false), SCHEDULE(
             "calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
 
