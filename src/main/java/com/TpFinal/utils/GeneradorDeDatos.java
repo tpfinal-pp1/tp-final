@@ -131,7 +131,8 @@ public class GeneradorDeDatos {
 				setPrecio(new BigDecimal((random.nextInt(500000) + 200000) )).
 				setMoneda(TipoMoneda.Dolares).build();
 
-		OPV.setContratoVenta(new ContratoVenta.Builder().
+		OPV.setContratoVenta(new ContratoVenta.Builder()
+			.setEstadoRegistro(EstadoRegistro.ACTIVO).
 				setFechaCelebracion(LocalDate.now()).setPublicacionVenta(OPV).setPrecioVenta(OPV.getPrecio()).build());
 
 
