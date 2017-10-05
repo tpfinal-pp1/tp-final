@@ -49,12 +49,6 @@ public class PersonaService {
 		return dao.readAll();
 	}
 	
-	public List<Rol> giveMeYourRoles(Persona p){
-		List<Rol>ret= new ArrayList<>();
-		p.getRoles().forEach(r -> ret.add(r.giveMeYourRole()));
-		return ret;
-	}
-	
 	 public synchronized List<Persona> findAll(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
 	        List<Persona> personas=dao.readAllActives();
