@@ -28,6 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
+@SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
     private InmuebleService inmbService = new InmuebleService();
     private Inmueble inmueble;
@@ -38,13 +39,20 @@ public class InmuebleForm extends FormLayout {
     private Button delete = new Button("Eliminar");
     
     //TabPrincipal
-    private TextField calle = new TextField("Calle");
-    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
-    private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
     private ComboBox<Propietario> propietario = new ComboBox<>();
     private Button nuevoPropietario  = new Button();
-    private ComboBox <ClaseInmueble> clasesInmueble = new ComboBox<>("Clase");
+    private ComboBox <ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
     private RadioButtonGroup <TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
+    
+    //TabDireccion
+    private TextField calle = new TextField("Calle");
+    private TextField nro = new TextField("Número");
+    private TextField codPostal = new TextField ("Código Postal");
+    
+    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
+    private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
+        
+
     
     //TabCaracteristicas 1
     private TextField ambientes = new TextField("Ambientes");
