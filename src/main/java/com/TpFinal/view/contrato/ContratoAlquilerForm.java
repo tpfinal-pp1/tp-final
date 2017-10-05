@@ -34,8 +34,7 @@ public class ContratoAlquilerForm extends FormLayout {
     Button delete = new Button("Eliminar");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
-
-    // private NativeSelect<ContratoAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
+// private NativeSelect<ContratoAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
 
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
@@ -132,12 +131,10 @@ public class ContratoAlquilerForm extends FormLayout {
             }
         });
 
-        VerticalLayout Roles=new VerticalLayout(personas
-                );
+        VerticalLayout Roles=new VerticalLayout(personas);
 
-
-
-        FormLayout principal=new FormLayout(otro, Roles);
+        fechaCelebracion.setWidth("100");
+        FormLayout principal=new FormLayout(otro, fechaCelebracion, Roles);
 
 
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);

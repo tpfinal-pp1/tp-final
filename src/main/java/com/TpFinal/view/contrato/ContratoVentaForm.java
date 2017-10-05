@@ -136,8 +136,9 @@ public class ContratoVentaForm extends FormLayout {
         VerticalLayout Roles=new VerticalLayout(personas);
 
 
+        fechaCelebracion.setWidth("100");
+        FormLayout principal=new FormLayout(otro, fechaCelebracion, Roles);
 
-        FormLayout principal=new FormLayout(otro, Roles);
 
 
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
