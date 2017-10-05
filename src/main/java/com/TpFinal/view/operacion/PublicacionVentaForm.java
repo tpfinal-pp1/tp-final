@@ -1,6 +1,6 @@
 package com.TpFinal.view.operacion;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-import com.TpFinal.services.OperacionService;
+import com.TpFinal.services.PublicacionService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.event.ShortcutAction;
@@ -15,19 +15,19 @@ import com.vaadin.ui.themes.ValoTheme;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-public class OperacionVentaForm extends FormLayout {
-    private PublicacionVenta OperacionVenta;
+public class PublicacionVentaForm extends FormLayout {
+    private PublicacionVenta PublicacionVenta;
 
     Button save = new Button("Guardar");
   //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
 
 
-    // private NativeSelect<OperacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
+    // private NativeSelect<PublicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
 
-    OperacionService service = new OperacionService();
-    private OperacionABMView addressbookView;
-    private Binder<PublicacionVenta> binderOperacionVenta = new Binder<>(PublicacionVenta.class);
+    PublicacionService service = new PublicacionService();
+    private PublicacionABMView addressbookView;
+    private Binder<PublicacionVenta> binderPublicacionVenta = new Binder<>(PublicacionVenta.class);
 
 
 
@@ -42,7 +42,7 @@ public class OperacionVentaForm extends FormLayout {
     // Easily binding forms to beans and manage validation and buffering
 
 
-    public OperacionVentaForm(OperacionABMView addressbook) {
+    public PublicacionVentaForm(PublicacionABMView addressbook) {
         // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
@@ -61,7 +61,7 @@ public class OperacionVentaForm extends FormLayout {
          */
 
         //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(OperacionVenta.Sexo.values());
+        //  sexo.setItems(PublicacionVenta.Sexo.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
@@ -110,13 +110,13 @@ public class OperacionVentaForm extends FormLayout {
 
     }
 
-    public void setOperacionVenta(PublicacionVenta OperacionVenta) {
+    public void setPublicacionVenta(PublicacionVenta PublicacionVenta) {
 
-        this.OperacionVenta = OperacionVenta;
-        binderOperacionVenta.readBean(OperacionVenta);
+        this.PublicacionVenta = PublicacionVenta;
+        binderPublicacionVenta.readBean(PublicacionVenta);
 
         // Show delete button for only Persons already in the database
-        delete.setVisible(OperacionVenta.getId()!=null);
+        delete.setVisible(PublicacionVenta.getId()!=null);
 
         setVisible(true);
         getAddressbookView().setComponentsVisible(false);
@@ -129,7 +129,7 @@ public class OperacionVentaForm extends FormLayout {
 
 
     private void delete() {
-        service.delete(OperacionVenta);
+        service.delete(PublicacionVenta);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -161,8 +161,8 @@ public class OperacionVentaForm extends FormLayout {
 
         boolean success=false;
         try {
-            binderOperacionVenta.writeBean(OperacionVenta);
-            service.save(OperacionVenta);
+            binderPublicacionVenta.writeBean(PublicacionVenta);
+            service.save(PublicacionVenta);
             success=true;
 
 
@@ -178,8 +178,8 @@ public class OperacionVentaForm extends FormLayout {
         }
 
         addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", OperacionVenta.getNombre(),
-                OperacionVenta.getApellido());*
+       /* String msg = String.format("Guardado '%s %s'.", PublicacionVenta.getNombre(),
+                PublicacionVenta.getApellido());*
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -201,7 +201,7 @@ public class OperacionVentaForm extends FormLayout {
 
 
 
-    public OperacionABMView getAddressbookView() {
+    public PublicacionABMView getAddressbookView() {
         return addressbookView;
     }
 

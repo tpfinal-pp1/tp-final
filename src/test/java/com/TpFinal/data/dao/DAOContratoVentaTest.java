@@ -59,7 +59,7 @@ public class DAOContratoVentaTest {
 		dao.save(instancia("3.00"));
 		
 		assertEquals(3, dao.readAll().size());
-		assertEquals(instanciaOV().getFechaPublicacion(), dao.readAll().get(0).getOperacionVenta().getFechaPublicacion());
+		assertEquals(instanciaOV().getFechaPublicacion(), dao.readAll().get(0).getPublicacionVenta().getFechaPublicacion());
 	}
 	
 	@Test
@@ -136,7 +136,7 @@ public class DAOContratoVentaTest {
 		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 				.setPrecioVenta(new BigDecimal(numero))
-				.setOperacionVenta(instanciaOV())
+				.setPublicacionVenta(instanciaOV())
 				.build();
 	}
 	

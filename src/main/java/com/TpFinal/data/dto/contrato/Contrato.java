@@ -12,7 +12,7 @@ import com.TpFinal.data.dto.Identificable;
 @Entity
 @Table(name="contrato")
 @Inheritance(strategy=InheritanceType.JOINED)
-public abstract class Contrato implements Identificable, BorradoLogico {
+public  class Contrato implements Identificable, BorradoLogico {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id")

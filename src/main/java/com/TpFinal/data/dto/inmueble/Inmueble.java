@@ -41,7 +41,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     public static final String pSupCubierta = "superficieCubierta";
     public static final String pSupTotal = "superficieTotal";
     public static final String pTipoInmb = "tipoInmueble";
-    public static final String pOperaciones = "operaciones";
+    public static final String pPublicaciones = "operaciones";
     public static final String pPropietario = "propietario";
 
     @Id
@@ -251,15 +251,15 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.direccion = direccion;
     }
 
-    public Set<Publicacion> getOperaciones() {
+    public Set<Publicacion> getPublicaciones() {
 	return operaciones;
     }
 
-    public void setOperaciones(Set<Publicacion> operaciones) {
+    public void setPublicaciones(Set<Publicacion> operaciones) {
 	this.operaciones = operaciones;
     }
 
-    public void addOperacion(Publicacion operacion) {
+    public void addPublicacion(Publicacion operacion) {
 	if (operaciones.size() < 2) {
 	    operaciones.add(operacion);
 	} else {
@@ -473,12 +473,12 @@ public String toString() {
 	    return this;
 	}
 
-	public Builder setOperaciones(Set<Publicacion> operaciones) {
+	public Builder setPublicaciones(Set<Publicacion> operaciones) {
 	    this.operaciones = operaciones;
 	    return this;
 	}
 
-	public Builder addOperacion(Publicacion operacion) {
+	public Builder addPublicacion(Publicacion operacion) {
 	    this.operaciones.add(operacion);
 	    return this;
 	}

@@ -22,24 +22,27 @@ public class ContratoVenta extends Contrato {
 		private BigDecimal precioVenta;
 		
 		@OneToOne(cascade=CascadeType.ALL)
-		private PublicacionVenta operacionVenta;
+		private PublicacionVenta publicacion;
 	
 		public ContratoVenta() {super();}
 		
 		private ContratoVenta(Builder b) {
 			super(b.id, b.fechaCelebracion, b.documento);
 			this.precioVenta=b.precioVenta;
-			this.operacionVenta=b.operacionVentaç;
+			this.publicacion =b.publicacionVenta;
 		}
 		
-		
-	
-		public PublicacionVenta getOperacionVenta() {
-			return operacionVenta;
+
+		@Override
+		public String toString(){
+			return this.publicacion.toString();
+		}
+		public PublicacionVenta getPublicacionVenta() {
+			return publicacion;
 		}
 
-		public void setOperacionVenta(PublicacionVenta operacionVenta) {
-			this.operacionVenta = operacionVenta;
+		public void setPublicacionVenta(PublicacionVenta operacionVenta) {
+			this.publicacion = operacionVenta;
 		}
 
 		public BigDecimal getPrecioVenta() {
@@ -58,7 +61,7 @@ public class ContratoVenta extends Contrato {
 			private LocalDate fechaCelebracion;
 			private Blob documento;
 			private BigDecimal precioVenta;
-			private PublicacionVenta operacionVentaç;
+			private PublicacionVenta publicacionVenta;
 			
 			public Builder setId(Long dato) {
 				this.id=dato;
@@ -81,8 +84,8 @@ public class ContratoVenta extends Contrato {
 				return this;
 			}
 			
-			public Builder setOperacionVenta(PublicacionVenta dato) {
-				this.operacionVentaç=dato;
+			public Builder setPublicacionVenta(PublicacionVenta dato) {
+				this.publicacionVenta =dato;
 				return this;
 			}
 			

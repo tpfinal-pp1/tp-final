@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
-import com.TpFinal.data.dao.DAOOperacionImpl;
+import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
@@ -56,7 +56,7 @@ public class GeneradorDeDatos {
     private static Random random = new Random();
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
-	private static DAOOperacionImpl daoope = new DAOOperacionImpl();
+	private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
 
     private static String getTelefeno() {
 	return Integer.toString(
@@ -132,7 +132,7 @@ public class GeneradorDeDatos {
 				setMoneda(TipoMoneda.Dolares).build();
 
 		OPV.setContratoVenta(new ContratoVenta.Builder().
-				setFechaCelebracion(LocalDate.now()).setOperacionVenta(OPV).setPrecioVenta(OPV.getPrecio()).build());
+				setFechaCelebracion(LocalDate.now()).setPublicacionVenta(OPV).setPrecioVenta(OPV.getPrecio()).build());
 
 
 

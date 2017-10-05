@@ -4,6 +4,7 @@ package com.TpFinal.view.component;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,11 +20,13 @@ public class DownloadButton extends Button {
         sr =streamResource;
         fileDownloader = new FileDownloader(sr);
         fileDownloader.extend(this);
+        addStyleName(ValoTheme.BUTTON_TINY);
     }
     public DownloadButton(String buttonName,String filename){
         super(buttonName);
         fileDownloader = new FileDownloader(fromPathtoSR(filename));
         fileDownloader.extend(this);
+        addStyleName(ValoTheme.BUTTON_TINY);
     }
 
     private StreamResource fromPathtoSR(String filename) {

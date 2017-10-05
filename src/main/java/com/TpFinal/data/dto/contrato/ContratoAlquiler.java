@@ -117,7 +117,7 @@ public class ContratoAlquiler extends Contrato {
             return this;
         }
         
-        public Builder setOperacionAlquiler(PublicacionAlquiler op) {
+        public Builder setPublicacionAlquiler(PublicacionAlquiler op) {
         	this.operacionAlquiler=op;
         	return this;
         }
@@ -168,11 +168,11 @@ public class ContratoAlquiler extends Contrato {
         this.fechaDePago = fechaDePago;
     }
 
-	public PublicacionAlquiler getOperacionAlquiler() {
+	public PublicacionAlquiler getPublicacionAlquiler() {
 		return operacionAlquiler;
 	}
 
-	public void setOperacionAlquiler(PublicacionAlquiler operacionAlquiler) {
+	public void setPublicacionAlquiler(PublicacionAlquiler operacionAlquiler) {
 		this.operacionAlquiler = operacionAlquiler;
 	}
 

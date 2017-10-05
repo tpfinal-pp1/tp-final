@@ -1,6 +1,6 @@
 package com.TpFinal.view.operacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.services.OperacionService;
+import com.TpFinal.services.PublicacionService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.event.ShortcutAction;
@@ -15,19 +15,19 @@ import com.vaadin.ui.themes.ValoTheme;
  * Similarly named field by naming convention or customized
  * with @PropertyId annotation.
  */
-public class OperacionAlquilerForm extends FormLayout {
-    private PublicacionAlquiler OperacionAlquiler;
+public class PublicacionAlquilerForm extends FormLayout {
+    private PublicacionAlquiler PublicacionAlquiler;
 
     Button save = new Button("Guardar");
   //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
 
 
-    // private NativeSelect<OperacionAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
+    // private NativeSelect<PublicacionAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
 
-    OperacionService service = new OperacionService();
-    private OperacionABMView addressbookView;
-    private Binder<PublicacionAlquiler> binderOperacionAlquiler = new Binder<>(PublicacionAlquiler.class);
+    PublicacionService service = new PublicacionService();
+    private PublicacionABMView addressbookView;
+    private Binder<PublicacionAlquiler> binderPublicacionAlquiler = new Binder<>(PublicacionAlquiler.class);
 
 
 
@@ -42,7 +42,7 @@ public class OperacionAlquilerForm extends FormLayout {
     // Easily binding forms to beans and manage validation and buffering
 
 
-    public OperacionAlquilerForm(OperacionABMView addressbook) {
+    public PublicacionAlquilerForm(PublicacionABMView addressbook) {
         // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
@@ -61,7 +61,7 @@ public class OperacionAlquilerForm extends FormLayout {
          */
 
         //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(OperacionAlquiler.Sexo.values());
+        //  sexo.setItems(PublicacionAlquiler.Sexo.values());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
@@ -110,13 +110,13 @@ public class OperacionAlquilerForm extends FormLayout {
 
     }
 
-    public void setOperacionAlquiler(PublicacionAlquiler OperacionAlquiler) {
+    public void setPublicacionAlquiler(PublicacionAlquiler PublicacionAlquiler) {
 
-        this.OperacionAlquiler = OperacionAlquiler;
-      //  binderOperacionAlquiler.readBean(OperacionAlquiler);
+        this.PublicacionAlquiler = PublicacionAlquiler;
+      //  binderPublicacionAlquiler.readBean(PublicacionAlquiler);
 
         // Show delete button for only Persons already in the database
-        delete.setVisible(OperacionAlquiler.getId()!=null);
+        delete.setVisible(PublicacionAlquiler.getId()!=null);
 
         setVisible(true);
 
@@ -129,7 +129,7 @@ public class OperacionAlquilerForm extends FormLayout {
 
 
     private void delete() {
-        service.delete(OperacionAlquiler);
+        service.delete(PublicacionAlquiler);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -161,8 +161,8 @@ public class OperacionAlquilerForm extends FormLayout {
 
         boolean success=false;
         try {
-            binderOperacionAlquiler.writeBean(OperacionAlquiler);
-            service.save(OperacionAlquiler);
+            binderPublicacionAlquiler.writeBean(PublicacionAlquiler);
+            service.save(PublicacionAlquiler);
             success=true;
 
 
@@ -178,8 +178,8 @@ public class OperacionAlquilerForm extends FormLayout {
         }
 
         addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", OperacionAlquiler.getNombre(),
-                OperacionAlquiler.getApellido());*
+       /* String msg = String.format("Guardado '%s %s'.", PublicacionAlquiler.getNombre(),
+                PublicacionAlquiler.getApellido());*
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -201,7 +201,7 @@ public class OperacionAlquilerForm extends FormLayout {
 
 
 
-    public OperacionABMView getAddressbookView() {
+    public PublicacionABMView getAddressbookView() {
         return addressbookView;
     }
 

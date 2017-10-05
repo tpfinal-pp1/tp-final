@@ -34,7 +34,7 @@ public class PublicacionAlquiler extends Publicacion {
 
 	public PublicacionAlquiler() {
 		super();
-		tipoOperacion = TipoPublicacion.Alquiler;
+		tipoPublicacion = TipoPublicacion.Alquiler;
 	}
 
 	private PublicacionAlquiler(Builder b) {
@@ -43,7 +43,7 @@ public class PublicacionAlquiler extends Publicacion {
 		this.moneda = b.moneda;
 		this.valorCuota = b.valorCuota;
 		this.contratoAlquiler = b.contratoAlquiler;
-		tipoOperacion = TipoPublicacion.Alquiler;
+		tipoPublicacion = TipoPublicacion.Alquiler;
 	}
 
 	public BigDecimal getPrecio() {
@@ -102,8 +102,8 @@ public class PublicacionAlquiler extends Publicacion {
 
 	@Override
 	public String toString() {
-		return "OperacionAlquiler \n[\nvalorCuota=" + valorCuota + "\nmoneda=" + moneda + "\nidOperacion=" + idOperacion
-				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
+		return "PublicacionAlquiler \n[\nvalorCuota=" + valorCuota + "\nmoneda=" + moneda + "\nidPublicacion=" + idPublicacion
+				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoPublicacion=" + tipoPublicacion + "\n]";
 	}
 	
 	

@@ -40,12 +40,12 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		DetachedCriteria query = null;
 		List<Inmueble> resultadoQuery = new ArrayList<>();
 
-		if (criterio.getTipoOperacion() != null || criterio.getTipoMoneda()!= null ) {
-			TipoPublicacion to = criterio.getTipoOperacion();
+		if (criterio.getTipoPublicacion() != null || criterio.getTipoMoneda()!= null ) {
+			TipoPublicacion to = criterio.getTipoPublicacion();
 			query = DetachedCriteria.forClass(Publicacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);		
 			
 			if (to != null){
-				query.add(Restrictions.eq(Publicacion.pTipoOperacion, to));
+				query.add(Restrictions.eq(Publicacion.pTipoPublicacion, to));
 				if (to.equals(TipoPublicacion.Alquiler)) {
 					addRestriccionesDeAlquiler(query, criterio);
 

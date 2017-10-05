@@ -66,7 +66,7 @@ public class DAOContratoAlquilerTest {
 
         assertEquals(3, dao.readAll().size());
         
-        assertEquals(dao.readAll().get(0).getOperacionAlquiler().getFechaPublicacion(), instanciaOA().getFechaPublicacion());
+        assertEquals(dao.readAll().get(0).getPublicacionAlquiler().getFechaPublicacion(), instanciaOA().getFechaPublicacion());
     }
 
     @Test
@@ -174,7 +174,7 @@ public class DAOContratoAlquilerTest {
                 .setIntervaloDuracion(new Integer(numero))
                 .setInquilinoContrato(null)
                 .setFechaDePago(LocalDate.of(2017, 05, 12))
-                .setOperacionAlquiler(instanciaOA())
+                .setPublicacionAlquiler(instanciaOA())
                 .build();
 
     }

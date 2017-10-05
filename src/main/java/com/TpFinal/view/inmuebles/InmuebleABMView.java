@@ -51,10 +51,10 @@ public class InmuebleABMView extends DefaultLayout implements View {
    
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
-	filtering.addComponents(filter, clearFilterTextBtn);
+	filtering.addComponents(filter, clearFilterTextBtn, newItem);
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-	addComponent(buildToolbar("Inmuebles", filtering, newItem));
+	addComponent(buildToolbar("Inmuebles", filtering));
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, inmuebleForm);
 	mainLayout.setSizeFull();
