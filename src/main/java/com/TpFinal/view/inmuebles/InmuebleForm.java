@@ -37,7 +37,7 @@ public class InmuebleForm extends FormLayout {
     private TextField calle = new TextField("Calle");
     private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
     private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
-    private ComboBox<Propietario> propietario = new ComboBox<>("Propietario");
+    private ComboBox<Propietario> propietario = new ComboBox<>();
     private Button nuevoPropietario  = new Button();
     private ComboBox <ClaseInmueble> clasesInmueble = new ComboBox<>("Clase");
     private RadioButtonGroup <TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
@@ -114,12 +114,16 @@ public class InmuebleForm extends FormLayout {
     private void buildLayout() {
 	addStyleName("v-scrollable");
 	
-	nuevoPropietario.setIcon(VaadinIcons.PLUS);	
+	nuevoPropietario.setIcon(VaadinIcons.PLUS);
+	
+	
 	CssLayout propietarioCombo = new CssLayout();
 	propietarioCombo.addComponents(propietario, nuevoPropietario);
 	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	propietarioCombo.setCaption("Propietario");
+	tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 	
-	FormLayout principal = new FormLayout(calle, localidades,propietarioCombo,clasesInmueble,tiposInmueble);
+	FormLayout principal = new FormLayout(calle, localidades,provincias,propietarioCombo,clasesInmueble,tiposInmueble);
 	FormLayout caracteristicas1 = new FormLayout(ambientes,cocheras,dormitorios,supTotal,supCubierta);
 	FormLayout caracteristicas2 = new FormLayout(aEstrenar,aireAcond,cJardin,cParrilla,cPpileta);
 	
