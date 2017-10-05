@@ -1,10 +1,19 @@
 package com.TpFinal.view.persona;
+import com.TpFinal.data.dao.DAOInmuebleImpl;
+import com.TpFinal.data.dto.contrato.Contrato;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.services.*;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.services.PersonaService;
 
+import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.TinyButton;
+import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
@@ -14,14 +23,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
 
-/* Create custom UI Components.
- *
- * Create your own Vaadin components by inheritance and composition.
- * This is a form component inherited from VerticalLayout. Use
- * Use BeanFieldGroup to binding data fields from DTO to UI fields.
- * Similarly named field by naming convention or customized
- * with @PropertyId annotation.
- */
+import java.util.List;
+
+
 public class PersonaForm extends FormLayout {
     private Persona persona;
     Button save = new Button("Guardar");
@@ -33,7 +37,7 @@ public class PersonaForm extends FormLayout {
     TextField telefono = new TextField("Telefono");
     TextField telefono2 = new TextField("Celular");
     TextField mail = new TextField("Mail");
-    TextArea infoAdicional = new TextArea("Información Adicional");
+    TextArea infoAdicional = new TextArea("Info");
 
     private NativeSelect<Calificacion> calificacion =
             new NativeSelect<>("Calificacion Inquilino");
@@ -43,12 +47,6 @@ public class PersonaForm extends FormLayout {
     PersonaService service = new PersonaService();
     private PersonaABMView addressbookView;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
-    private Binder<Inquilino> binderInquilino = new Binder<>(Inquilino.class);
-
-
-
-
-
     TabSheet tabSheet;
 
 
@@ -61,6 +59,7 @@ public class PersonaForm extends FormLayout {
 
     public PersonaForm(PersonaABMView addressbook) {
         // setSizeUndefined();
+
         addressbookView=addressbook;
         configureComponents();
         binding();
@@ -77,22 +76,17 @@ public class PersonaForm extends FormLayout {
          * and give it a keyoard shortcut for a better UX.
          */
 
+
+
         calificacion.setItems(Calificacion.values());
-       calificacion.setEmptySelectionAllowed(true);
-       calificacion.setSelectedItem(Calificacion.A);
-        //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(Persona.Sexo.values());
+        calificacion.setEmptySelectionAllowed(true);
+        calificacion.setSelectedItem(Calificacion.A);
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         test.addClickListener(e -> this.test());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
-
-
-
-
         setVisible(false);
     }
 
@@ -136,26 +130,61 @@ public class PersonaForm extends FormLayout {
 
         tabSheet=new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout(nombre, apellido,telefono,mail,DNI);
-        VerticalLayout adicional=new VerticalLayout(telefono,telefono2,infoAdicional);
 
-        VerticalLayout rol=new VerticalLayout(calificacion,new Label("Operaciones:"),
-                new Button("Ver Operaciones"),new Label("Busquedas:"),
-                new Button("Ver Busquedas"));
-        rol.setSpacing(true);
+        BlueLabel Publicaciones = new  BlueLabel("Publicaciones");
+        BlueLabel info = new  BlueLabel("Información Adicional");
+        BlueLabel contacto = new  BlueLabel("Contacto");
+        
+        TinyButton contratos=new TinyButton("Ver Contratos");
+        contratos.addClickListener(e -> new VentanaSelectora<ContratoVenta>() {
+                    @Override
+                    public void updateList() {
+                        ContratoVentaService ContratoVentaService=
+                                new ContratoVentaService();
+                        List<ContratoVenta> ContratoVentas = ContratoVentaService.readAll();
+                        grid.setItems(ContratoVentas);
+                    }
+
+                    @Override
+                    public void setGrid() {
+                        grid=new Grid<>(ContratoVenta.class);
+                    }
+
+                    @Override
+                    protected void recieveSelection(ContratoVenta objeto) {
+                    }
+                });
+        VerticalLayout Roles=new VerticalLayout(calificacion,contratos
+                ,
+                new TinyButton("Ver Busquedas"));
+
+
+
+        FormLayout principal=new FormLayout(nombre, apellido,DNI,contacto,mail,telefono,telefono2);
+        FormLayout adicional=new FormLayout(
+                Publicaciones, Roles
+                );
+        adicional.addComponent(info);
+        adicional.addComponent(infoAdicional);
+
+        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+
 
         calificacion.setEnabled(false);
+        calificacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
         tabSheet.addTab(principal,"Principal");
-        tabSheet.addTab(adicional,"Contacto");
-        tabSheet.addTab(rol,"Operaciones");
+        tabSheet.addTab(adicional,"Adicional");
 
         addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,test,delete);
+
         addComponent(actions);
+        this.setSpacing(false);
         actions.setSpacing(true);
 
-        addStyleName("v-scrollable");
+      //  addStyleName("v-scrollable");
 
     }
 

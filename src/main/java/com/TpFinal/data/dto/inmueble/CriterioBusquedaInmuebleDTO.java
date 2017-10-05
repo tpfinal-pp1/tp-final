@@ -29,7 +29,7 @@ public class CriterioBusquedaInmuebleDTO {
 	private BigDecimal minPrecio;
 	private BigDecimal maxPrecio;
 	private TipoMoneda tipoMoneda;
-	private TipoPublicacion tipoOperacion;
+	private TipoPublicacion tipoPublicacion;
 
 	public CriterioBusquedaInmuebleDTO() {
 		super();
@@ -59,7 +59,7 @@ public class CriterioBusquedaInmuebleDTO {
 		this.minPrecio = builder.minPrecio;
 		this.maxPrecio = builder.maxPrecio;
 		this.tipoMoneda = builder.tipoMoneda;
-		this.tipoOperacion = builder.tipoOperacion;
+		this.tipoPublicacion = builder.tipoPublicacion;
 	}
 
 	public Boolean getaEstrenar() {
@@ -238,12 +238,12 @@ public class CriterioBusquedaInmuebleDTO {
 		this.tipoMoneda = tipoMoneda;
 	}
 
-	public TipoPublicacion getTipoOperacion() {
-		return tipoOperacion;
+	public TipoPublicacion getTipoPublicacion() {
+		return tipoPublicacion;
 	}
 
-	public void setTipoOperacion(TipoPublicacion tipoOperacion) {
-		this.tipoOperacion = tipoOperacion;
+	public void setTipoPublicacion(TipoPublicacion tipoPublicacion) {
+		this.tipoPublicacion = tipoPublicacion;
 	}
 
 	@Override
@@ -396,7 +396,7 @@ public class CriterioBusquedaInmuebleDTO {
 		private BigDecimal minPrecio;
 		private BigDecimal maxPrecio;
 		private TipoMoneda tipoMoneda;
-		private TipoPublicacion tipoOperacion;
+		private TipoPublicacion tipoPublicacion;
 
 		public Builder setaEstrenar(Boolean aEstrenar) {
 			this.aEstrenar = aEstrenar;
@@ -508,8 +508,8 @@ public class CriterioBusquedaInmuebleDTO {
 			return this;
 		}
 
-		public Builder setTipoOperacion(TipoPublicacion tipoOperacion) {
-			this.tipoOperacion = tipoOperacion;
+		public Builder setTipoPublicacion(TipoPublicacion tipoPublicacion) {
+			this.tipoPublicacion = tipoPublicacion;
 			return this;
 		}
 

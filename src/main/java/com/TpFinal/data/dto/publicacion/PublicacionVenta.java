@@ -47,7 +47,7 @@ public class PublicacionVenta extends Publicacion {
 	
 	public PublicacionVenta() {
 		super();
-		tipoOperacion = TipoPublicacion.Venta;
+		tipoPublicacion = TipoPublicacion.Venta;
 	}
 	
 	private PublicacionVenta(Builder b) {
@@ -56,7 +56,7 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = b.moneda;
 		this.precio = b.precio;
 		this.contratoVenta = b.contratoVenta;
-		tipoOperacion = TipoPublicacion.Venta;
+		tipoPublicacion = TipoPublicacion.Venta;
 	}
 	
 	public BigDecimal getPrecio() {
@@ -106,8 +106,7 @@ public class PublicacionVenta extends Publicacion {
 	
 	@Override
 	public String toString() {
-		return "OperacionVenta \n[\nprecioVenta=" + precio + "\nmoneda=" + moneda + "\nidOperacion=" + idOperacion
-				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
+		return super.toString();
 	}
 	
 

@@ -1,6 +1,7 @@
 package com.TpFinal.view.component;
 
 import com.vaadin.ui.Upload;
+import com.vaadin.ui.themes.ValoTheme;
 
 public class UploadButton extends Upload {
 
@@ -12,6 +13,7 @@ public class UploadButton extends Upload {
     public UploadButton (String buttonCaption,UploadReceiver uploadReceiver){
         super("",uploadReceiver);
         this.setButtonCaption( buttonCaption);
+        addStyleName(ValoTheme.BUTTON_TINY);
     }
 
 

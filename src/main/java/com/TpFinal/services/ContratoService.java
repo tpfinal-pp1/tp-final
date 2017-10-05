@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
+import com.TpFinal.data.dao.DAOImpl;
+import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.Contrato;
@@ -18,10 +20,13 @@ import com.TpFinal.data.dto.persona.Persona;
 public class ContratoService {
 	private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
+
     
     public ContratoService() {
     	daoAlquiler=new DAOContratoAlquilerImpl();
         daoVenta= new DAOContratoVentaImpl();
+
+
     }
     
     public boolean save(Contrato contrato, File doc) {
@@ -122,8 +127,11 @@ public class ContratoService {
 	        });
 	        return arrayList;
 	    }
-	 
-	 public synchronized List<ContratoAlquiler> findAllVenta(String stringFilter) {
+
+
+
+
+	public synchronized List<ContratoAlquiler> findAllVenta(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
 	        List<ContratoVenta> contratos=daoVenta.readAllActives();
 	        if(stringFilter!=""){

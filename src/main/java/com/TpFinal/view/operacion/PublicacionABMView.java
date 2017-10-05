@@ -5,7 +5,7 @@ import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.OperacionService;
+import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -33,7 +33,7 @@ import java.util.List;
 @Title("Addressbook")
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
-public class OperacionABMView extends DefaultLayout implements View {
+public class PublicacionABMView extends DefaultLayout implements View {
 
     /*
      * Hundreds of widgets. Vaadin's user interface components are just Java
@@ -53,19 +53,19 @@ public class OperacionABMView extends DefaultLayout implements View {
 
 
     HorizontalLayout mainLayout;
-    // OperacionVentaForm is an example of a custom component class
-    OperacionVentaForm OperacionVentaForm = new OperacionVentaForm(this);
-    OperacionAlquilerForm OperacionAlquilerForm = new OperacionAlquilerForm(this);
+    // PublicacionVentaForm is an example of a custom component class
+    PublicacionVentaForm PublicacionVentaForm = new PublicacionVentaForm(this);
+    PublicacionAlquilerForm PublicacionAlquilerForm = new PublicacionAlquilerForm(this);
 
    private boolean isonMobile=false;
 
-    // OperacionService is a in-memory mock DAO that mimics
+    // PublicacionService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    OperacionService service = new OperacionService();
+    PublicacionService service = new PublicacionService();
 
 
-    public OperacionABMView(){
+    public PublicacionABMView(){
         super();
         buildLayout();
         configureComponents();
@@ -85,7 +85,7 @@ public class OperacionABMView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-    //    nuevaVenta.addClickListener(e -> OperacionVentaForm.setVenta(new Operacion()));
+    //    nuevaVenta.addClickListener(e -> PublicacionVentaForm.setVenta(new Publicacion()));
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
@@ -97,30 +97,30 @@ public class OperacionABMView extends DefaultLayout implements View {
 
         nuevaVenta.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            OperacionVentaForm.setOperacionVenta(new PublicacionVenta());
+            PublicacionVentaForm.setPublicacionVenta(new PublicacionVenta());
         });
 
         nuevoAlquiler.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            OperacionAlquilerForm.setOperacionAlquiler(new PublicacionAlquiler());
+            PublicacionAlquilerForm.setPublicacionAlquiler(new PublicacionAlquiler());
         });
 
-        grid.setColumns("inmueble", "tipoOperacion", "fechaPublicacion");
-        grid.getColumn("tipoOperacion").setCaption("Operación");
+        grid.setColumns("inmueble", "tipoPublicacion", "fechaPublicacion");
+        grid.getColumn("tipoPublicacion").setCaption("Operación");
         grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
 
 
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
-                OperacionVentaForm.setVisible(false);
+                PublicacionVentaForm.setVisible(false);
             } else {
 
                 if(event.getValue() instanceof PublicacionAlquiler)
-                    OperacionAlquilerForm.setOperacionAlquiler((PublicacionAlquiler) event.getValue());
+                    PublicacionAlquilerForm.setPublicacionAlquiler((PublicacionAlquiler) event.getValue());
 
                 else if(event.getValue() instanceof PublicacionVenta){
-                    OperacionVentaForm.setOperacionVenta((PublicacionVenta) event.getValue());
+                    PublicacionVentaForm.setPublicacionVenta((PublicacionVenta) event.getValue());
 
                 }
             }
@@ -159,9 +159,10 @@ public class OperacionABMView extends DefaultLayout implements View {
     private void buildLayout() {
 
         CssLayout filtering = new CssLayout();
-        filtering.addComponents(filter, clearFilterTextBtn);
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
         HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
+        filtering.addComponents(filter, clearFilterTextBtn,layout);
+        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
         if(checkIfOnMobile()) {
             filter.setWidth("58%");
@@ -174,9 +175,9 @@ public class OperacionABMView extends DefaultLayout implements View {
 
         }
 
-        addComponent(buildToolbar("Operaciones",filtering, layout));
+        addComponent(buildToolbar("Publicaciones",filtering, layout));
         grid.setSizeFull();
-        mainLayout = new HorizontalLayout(grid, OperacionVentaForm,OperacionAlquilerForm);
+        mainLayout = new HorizontalLayout(grid, PublicacionVentaForm,PublicacionAlquilerForm);
         mainLayout.setSizeFull();
         addComponent(mainLayout);
         this.setExpandRatio(mainLayout, 1);
@@ -221,14 +222,14 @@ public class OperacionABMView extends DefaultLayout implements View {
     }
 
     public void ClearFilterBtnAction(){
-            if(this.OperacionVentaForm.isVisible()){
+            if(this.PublicacionVentaForm.isVisible()){
                 nuevaVenta.focus();
-                OperacionVentaForm.cancel();
+                PublicacionVentaForm.cancel();
 
             }
-            else if(this.OperacionAlquilerForm.isVisible()){
+            else if(this.PublicacionAlquilerForm.isVisible()){
                 nuevoAlquiler.focus();
-                OperacionAlquilerForm.cancel();
+                PublicacionAlquilerForm.cancel();
             }
 
             filter.clear();

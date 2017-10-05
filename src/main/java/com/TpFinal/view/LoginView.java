@@ -18,7 +18,7 @@ public class LoginView extends VerticalLayout {
         setSizeFull();
         setMargin(false);
         setSpacing(false);
-        GeneradorDeDatos.generarDatos(20);
+
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);

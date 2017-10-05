@@ -1,20 +1,20 @@
 package com.TpFinal.services;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
-import com.TpFinal.data.dao.DAOOperacionImpl;
+import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
-import com.TpFinal.data.dao.interfaces.DAOOperacion;
+import com.TpFinal.data.dao.interfaces.DAOPublicacion;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 
 import java.util.List;
 
-public class OperacionService {
-    private DAOOperacion dao;
+public class PublicacionService {
+    private DAOPublicacion dao;
 
-    public OperacionService() {
-        dao = new DAOOperacionImpl();
+    public PublicacionService() {
+        dao = new DAOPublicacionImpl();
     }
 
     public List<Publicacion> findAll(String busqueda) {

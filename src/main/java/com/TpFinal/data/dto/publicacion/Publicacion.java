@@ -26,12 +26,12 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 @Table(name = "publicaciones")
 public abstract class Publicacion implements Identificable,BorradoLogico {
 	
-	public static final String pTipoOperacion ="tipoOperacion";
+	public static final String pTipoPublicacion ="tipoPublicacion";
 	
 	@Id
 	@GeneratedValue
-	@Column(name = "idOperacion")
-	protected Long idOperacion;
+	@Column(name = "idPublicacion")
+	protected Long idPublicacion;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_inmueble")
@@ -42,20 +42,20 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	protected LocalDate fechaPublicacion;
 	
 	@Enumerated(EnumType.STRING)
-	@Column (name = Publicacion.pTipoOperacion)
-	protected TipoPublicacion tipoOperacion;
+	@Column (name = Publicacion.pTipoPublicacion)
+	protected TipoPublicacion tipoPublicacion;
 	
 	@Enumerated(EnumType.STRING)
 	protected EstadoRegistro estadoRegistro;
 	
 	@Override
 	public Long getId() {
-		return idOperacion;
+		return idPublicacion;
 	}
 	
 	@SuppressWarnings("unused")
-	private void setIdOperacion(Long idOperacion) {
-		this.idOperacion = idOperacion;
+	private void setIdPublicacion(Long idPublicacion) {
+		this.idPublicacion = idPublicacion;
 	}
 
 	public Inmueble getInmueble() {
@@ -74,18 +74,17 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
-	public TipoPublicacion getTipoOperacion() {
-		return tipoOperacion;
+	public TipoPublicacion getTipoPublicacion() {
+		return tipoPublicacion;
 	}
 
-	public void setTipoOperacion(TipoPublicacion tipoOperacion) {
-		this.tipoOperacion = tipoOperacion;
+	public void setTipoPublicacion(TipoPublicacion tipoPublicacion) {
+		this.tipoPublicacion = tipoPublicacion;
 	}
 
 	@Override
 	public String toString() {
-		return "Operacion \n[\nidOperacion=" + idOperacion+"\nfechaPublicacion="
-				+ fechaPublicacion + "\ntipoOperacion=" + tipoOperacion + "\n]";
+		return inmueble+" "+tipoPublicacion;
 	}
 	
 	@Override
