@@ -34,8 +34,7 @@ public class ContratoAlquilerForm extends FormLayout {
     Button delete = new Button("Eliminar");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
-
-    // private NativeSelect<ContratoAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
+// private NativeSelect<ContratoAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
 
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
@@ -113,7 +112,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
         TinyButton personas=new TinyButton("Ver Personas");
 
-        personas.addClickListener(e -> new VentanaSelectora<Persona>() {
+        personas.addClickListener(e -> new VentanaSelectora<Persona>(new Persona()) {
             @Override
             public void updateList() {
                 PersonaService PersonaService=
@@ -127,17 +126,12 @@ public class ContratoAlquilerForm extends FormLayout {
                 grid=new Grid<>(Persona.class);
             }
 
-            @Override
-            protected void recieveSelection(Persona objeto) {
-            }
         });
 
-        VerticalLayout Roles=new VerticalLayout(personas
-                );
+        VerticalLayout Roles=new VerticalLayout(personas);
 
-
-
-        FormLayout principal=new FormLayout(otro, Roles);
+        fechaCelebracion.setWidth("100");
+        FormLayout principal=new FormLayout(otro, fechaCelebracion, Roles);
 
 
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
