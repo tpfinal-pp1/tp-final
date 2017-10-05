@@ -4,15 +4,18 @@ import java.sql.Blob;
 import java.time.LocalDate;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.persona.Persona;
 
 @Entity
 @Table(name="contrato")
 @Inheritance(strategy=InheritanceType.JOINED)
 public  class Contrato implements Identificable, BorradoLogico {
+    private static final String estadoRegistroS = "estadoRegistro";
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name = "id")
@@ -21,17 +24,19 @@ public  class Contrato implements Identificable, BorradoLogico {
 	protected LocalDate fechaCelebracion;
 	@Column(name="documento")
 	protected Blob documento;
-	
-	protected EstadoRegistro estadoRegistro;
+	 @Enumerated(EnumType.STRING)
+	 @Column(name = Contrato.estadoRegistroS)
+	 private EstadoRegistro estadoRegistro;
 	
 	
 	public Contrato() {}
 	
-	public Contrato(Long id, LocalDate fechaCelebracion, Blob documento) {
+	public Contrato(Long id, LocalDate fechaCelebracion, Blob documento, EstadoRegistro estado) {
 		super();
 		this.id = id;
 		this.fechaCelebracion = fechaCelebracion;
 		this.documento = documento;
+		this.estadoRegistro=estado;
 	}
 
 	@Override

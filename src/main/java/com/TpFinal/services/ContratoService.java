@@ -7,9 +7,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
+import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
 import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.interfaces.DAO;
+import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.Contrato;
@@ -20,13 +22,13 @@ import com.TpFinal.data.dto.persona.Persona;
 public class ContratoService {
 	private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
+    private DAOContrato daoContrato;
 
     
     public ContratoService() {
     	daoAlquiler=new DAOContratoAlquilerImpl();
         daoVenta= new DAOContratoVentaImpl();
-
-
+        daoContrato= new DAOContratoImpl();
     }
     
     public boolean save(Contrato contrato, File doc) {
@@ -65,6 +67,18 @@ public class ContratoService {
     	return ret;
     }
     
+    public boolean deleteSerious(Contrato contrato) {
+    	boolean ret=false;
+    	if(contrato.getClass().equals(ContratoVenta.class)) {
+    		ContratoVenta c=(ContratoVenta)contrato;
+    		ret=daoVenta.delete(c);
+    	}else {
+    		ContratoAlquiler c= (ContratoAlquiler)contrato;
+    		ret=daoAlquiler.delete(c);
+    	}
+    	return ret;
+    }
+    
     public boolean update(Contrato contrato) {
     	boolean ret=false;
     	if(contrato.getClass().equals(ContratoVenta.class)) {
@@ -95,6 +109,10 @@ public class ContratoService {
     
     public List<ContratoVenta>readAllVenta(){
     	return daoVenta.readAllActives();
+    }
+    
+    public List<Contrato>readAllContratos(){
+    	return daoContrato.readAllActives();
     }
     
 	 public synchronized List<ContratoAlquiler> findAllAlquiler(String stringFilter) {

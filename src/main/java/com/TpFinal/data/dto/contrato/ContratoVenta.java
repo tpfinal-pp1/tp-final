@@ -7,6 +7,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.contrato.ContratoAlquiler.Builder;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import java.math.BigDecimal;
@@ -27,7 +29,7 @@ public class ContratoVenta extends Contrato {
 		public ContratoVenta() {super();}
 		
 		private ContratoVenta(Builder b) {
-			super(b.id, b.fechaCelebracion, b.documento);
+			super(b.id, b.fechaCelebracion, b.documento, b.estadoRegistro);
 			this.precioVenta=b.precioVenta;
 			this.publicacion =b.publicacionVenta;
 		}
@@ -62,6 +64,7 @@ public class ContratoVenta extends Contrato {
 			private Blob documento;
 			private BigDecimal precioVenta;
 			private PublicacionVenta publicacionVenta;
+			private EstadoRegistro estadoRegistro;
 			
 			public Builder setId(Long dato) {
 				this.id=dato;
@@ -88,6 +91,11 @@ public class ContratoVenta extends Contrato {
 				this.publicacionVenta =dato;
 				return this;
 			}
+			
+			public Builder setEstadoRegistro(EstadoRegistro dato) {
+				this.estadoRegistro=dato;
+		        return this;
+		    }
 			
 			public ContratoVenta build() {
 				return new ContratoVenta(this);

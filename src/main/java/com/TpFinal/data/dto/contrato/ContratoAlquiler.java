@@ -1,5 +1,6 @@
 package com.TpFinal.data.dto.contrato;
 
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 
@@ -45,17 +46,14 @@ public class ContratoAlquiler extends Contrato {
     public ContratoAlquiler() {super();}
 
     private ContratoAlquiler(Builder b) {
-        this.id = b.id;
+    	super(b.id, b.fechaDePago, b.documento, b.estadoRegistro);
         this.fechaCelebracion = b.fechaCelebracion;
-        this.documento = b.documento;
         this.interesPunitorio = b.interesPunitorio;
         this.valorInicial = b.valorInicial;
         this.intervaloDuracion = b.intervaloDuracion;
         this.diaDePago = b.diaDePago;
-        this.fechaDePago = b.fechaDePago;
         this.operacionAlquiler=b.operacionAlquiler;
         this.inquilinoContrato = b.inquilinoContrato;
-
     }
 
 
@@ -71,6 +69,7 @@ public class ContratoAlquiler extends Contrato {
         private Integer diaDePago;
         private LocalDate fechaDePago;
         private PublicacionAlquiler operacionAlquiler;
+        private EstadoRegistro estadoRegistro;
 
         public Builder setId(Long dato) {
             this.id=dato;
@@ -119,6 +118,11 @@ public class ContratoAlquiler extends Contrato {
         
         public Builder setPublicacionAlquiler(PublicacionAlquiler op) {
         	this.operacionAlquiler=op;
+        	return this;
+        }
+        
+        public Builder setEstadoRegistro(EstadoRegistro dato) {
+        	this.estadoRegistro=dato;
         	return this;
         }
 
