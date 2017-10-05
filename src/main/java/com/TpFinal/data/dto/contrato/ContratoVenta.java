@@ -35,10 +35,7 @@ public class ContratoVenta extends Contrato {
 		}
 		
 
-		@Override
-		public String toString(){
-			return this.publicacion.toString();
-		}
+
 		public PublicacionVenta getPublicacionVenta() {
 			return publicacion;
 		}
