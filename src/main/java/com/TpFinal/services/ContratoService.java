@@ -1,23 +1,20 @@
 package com.TpFinal.services;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
-import com.TpFinal.data.dao.DAOImpl;
-import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.persona.Persona;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class ContratoService {
 	private DAOContratoAlquiler daoAlquiler;
@@ -48,10 +45,14 @@ public class ContratoService {
     	if(contrato.getClass().equals(ContratoVenta.class)) {
     		ContratoVenta c=(ContratoVenta)contrato;
     		ret=daoVenta.save(c);
-    	}else {
+    	}else if(contrato.getClass().equals(ContratoAlquiler.class)){
     		ContratoAlquiler c= (ContratoAlquiler)contrato;
     		ret=daoAlquiler.save(c);
     	}
+    	else{
+			Contrato c = contrato;
+			ret=daoContrato.save(c);
+		}
     	return ret;
     }
     

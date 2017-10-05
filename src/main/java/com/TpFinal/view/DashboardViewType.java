@@ -1,5 +1,6 @@
 package com.TpFinal.view;
 
+import com.TpFinal.view.ContratoView.ContratoABMView;
 import com.TpFinal.view.dummy.dashboard.DashboardView;
 import com.TpFinal.view.dummy.reports.ReportsView;
 import com.TpFinal.view.dummy.schedule.ScheduleView;
@@ -12,12 +13,13 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
-    INICIO("dashboard", DashboardView.class, VaadinIcons.HOME, true),PERSONAS(
-            "personas",PersonaABMView.class, VaadinIcons.USER, false),OPERACIONES(
-            "publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
-    INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),REPORTES(
-            "reportes", ReportsView.class, VaadinIcons.FILE, false), SCHEDULE(
-            "calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
+    INICIO("dashboard", DashboardView.class, VaadinIcons.HOME, true),
+    PERSONAS("personas",PersonaABMView.class, VaadinIcons.USER, false),
+    OPERACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
+    INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
+    REPORTES("reportes", ReportsView.class, VaadinIcons.FILE, false),
+    SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false),
+    CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.BOOKMARK_O, false);
 
     private final String viewName;
     private final Class<? extends View> viewClass;
