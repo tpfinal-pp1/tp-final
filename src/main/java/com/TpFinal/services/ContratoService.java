@@ -184,6 +184,7 @@ public class ContratoService {
 	public synchronized List<Contrato> findAll(String stringFilter) {
         ArrayList arrayList = new ArrayList();
         List<Contrato> contratos=daoContrato.readAllActives();
+		
         if(stringFilter!=""){
 
             for (Contrato contrato : contratos) {

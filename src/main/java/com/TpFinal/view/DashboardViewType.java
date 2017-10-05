@@ -17,9 +17,9 @@ public enum DashboardViewType {
     PERSONAS("personas",PersonaABMView.class, VaadinIcons.USER, false),
     OPERACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
     INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
+    CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
     REPORTES("reportes", ReportsView.class, VaadinIcons.FILE, false),
-    SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false),
-    CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false);
+    SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
 
     private final String viewName;
     private final Class<? extends View> viewClass;

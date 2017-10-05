@@ -213,11 +213,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-        List<Contrato> contratos = service.findAll("");
-        for (Contrato contrato:contratos
-             ) {
-            System.out.println(contrato);
-        }
+        List<Contrato> contratos = service.findAll(filter.getValue());
         grid.setItems(contratos);
 
     }
