@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOPersonaImpl;
+import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
@@ -32,14 +34,16 @@ public class PersonaServiceNuevoTest {
 	
 	@Before
 	public void set() {
-		service= new PersonaService();
-		service.readAll().forEach(p -> service.seriusDelete(p));
+		service=new PersonaService();
+		DAOPersona dao = new DAOPersonaImpl();
+		service.readAll().forEach(p -> dao.delete(p));
 		persona.clear();
 	}
 	
 	@After
 	public void tearDown() {
-		service.readAll().forEach(p -> service.seriusDelete(p));
+		DAOPersona dao = new DAOPersonaImpl();
+		service.readAll().forEach(p -> dao.delete(p));
 	}
 	
 	@Test
@@ -50,9 +54,9 @@ public class PersonaServiceNuevoTest {
     	p.agregarRol(instanciaInquilino(Calificacion.C));
     	
     	
-    	service.save(p);
-    	assertEquals(1,service.readAllActives().size());
-    	assertEquals(3, service.readAllActives().get(0).getRoles().size());
+    	service.saveOrUpdate(p);
+    	assertEquals(1,service.readAll().size());
+    	assertEquals(3, service.readAll().get(0).getRoles().size());
 	}
 	
 	@Test
@@ -63,9 +67,9 @@ public class PersonaServiceNuevoTest {
     	p.agregarRol(instanciaInquilino(Calificacion.C));
     	
     	
-    	service.save(p);
+    	service.saveOrUpdate(p);
     	
-    	p=service.readAllActives().get(0);
+    	p=service.readAll().get(0);
     	p.getRoles().forEach(rol -> {
     		if(rol.getClass().equals(Inquilino.class)){
     			Inquilino i =(Inquilino) rol;
@@ -73,9 +77,9 @@ public class PersonaServiceNuevoTest {
     				i.setCalificacion(Calificacion.D);
     		}
     	});
-    	service.update(p);
+    	service.saveOrUpdate(p);
     	
-    	Set<RolPersona>roles=service.readAllActives().get(0).getRoles();
+    	Set<RolPersona>roles=service.readAll().get(0).getRoles();
     	boolean estaD=false;
     	for(RolPersona r:roles) {
     		Inquilino i = (Inquilino)r;

@@ -20,33 +20,18 @@ public class PersonaService {
 		dao = new DAOPersonaImpl();
 	}
 	
-	public boolean save(Persona p) {
+	public boolean saveOrUpdate(Persona p) {
 		if(p.getRoles()!=null || p.getRoles().size()!=0) 
 			p.getRoles().forEach(rol -> rol.setPersona(p));
-		p.setEstadoRegistro(EstadoRegistro.ACTIVO);
-		return dao.save(p);
-	}
-	
-	public boolean update(Persona p) {
-		if(p.getRoles()!=null || p.getRoles().size()!=0) 
-			p.getRoles().forEach(rol -> rol.setPersona(p));
-		return dao.update(p);
+		return dao.saveOrUpdate(p);
 	}
 	
 	public boolean delete(Persona p) {
 		return dao.logicalDelete(p);
 	}
 	
-	public boolean seriusDelete(Persona p) {
-		return dao.delete(p);
-	}
-	
-	public List<Persona>readAllActives(){
-		return dao.readAllActives();
-	}
-	
 	public List<Persona>readAll(){
-		return dao.readAll();
+		return dao.readAllActives();
 	}
 	
 	 public synchronized List<Persona> findAll(String stringFilter) {

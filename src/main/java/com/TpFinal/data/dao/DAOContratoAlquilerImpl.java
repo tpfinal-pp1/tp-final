@@ -21,7 +21,7 @@ public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implement
     public DAOContratoAlquilerImpl() { super(ContratoAlquiler.class); }
 
     @Override
-    public boolean saveContrato(ContratoAlquiler entidad, File doc) {
+    public boolean saveOrUpdateContrato(ContratoAlquiler entidad, File doc) {
         boolean ret = false;
         FileInputStream docInputStream = null;
         Session session = ConexionHibernate.openSession();

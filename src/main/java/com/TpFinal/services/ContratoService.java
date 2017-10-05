@@ -28,31 +28,21 @@ public class ContratoService {
         daoContrato= new DAOContratoImpl();
     }
     
-    public boolean save(Contrato contrato, File doc) {
+    public boolean saveOrUpdate(Contrato contrato, File doc) {
     	boolean ret=false;
     	if(contrato.getClass().equals(ContratoVenta.class)) {
     		ContratoVenta c=(ContratoVenta)contrato;
-    		ret=daoVenta.saveContrato(c, doc);
+    		if(doc!=null)
+    			ret=daoVenta.saveOrUpdateContrato(c, doc);
+    		else
+    			ret=daoVenta.saveOrUpdate(c);
     	}else {
     		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		ret=daoAlquiler.saveContrato(c, doc);
+    		if(doc!=null)
+    			ret=daoAlquiler.saveOrUpdateContrato(c, doc);
+    		else
+    			ret=daoAlquiler.saveOrUpdate(c);
     	}
-    	return ret;
-    }
-    
-    public boolean save(Contrato contrato) {
-    	boolean ret=false;
-    	if(contrato.getClass().equals(ContratoVenta.class)) {
-    		ContratoVenta c=(ContratoVenta)contrato;
-    		ret=daoVenta.save(c);
-    	}else if(contrato.getClass().equals(ContratoAlquiler.class)){
-    		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		ret=daoAlquiler.save(c);
-    	}
-    	else{
-			Contrato c = contrato;
-			ret=daoContrato.save(c);
-		}
     	return ret;
     }
     
@@ -67,120 +57,11 @@ public class ContratoService {
     	}
     	return ret;
     }
-    
-    public boolean deleteSerious(Contrato contrato) {
-    	boolean ret=false;
-    	if(contrato.getClass().equals(ContratoVenta.class)) {
-    		ContratoVenta c=(ContratoVenta)contrato;
-    		ret=daoVenta.delete(c);
-    	}else {
-    		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		ret=daoAlquiler.delete(c);
-    	}
-    	return ret;
-    }
-    
-    public boolean update(Contrato contrato) {
-    	boolean ret=false;
-    	if(contrato.getClass().equals(ContratoVenta.class)) {
-    		ContratoVenta c=(ContratoVenta)contrato;
-    		ret=daoVenta.update(c);
-    	}else {
-    		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		ret=daoAlquiler.update(c);
-    	}
-    	return ret;
-    }
-    
-    public boolean update(Contrato contrato, File doc) {
-    	boolean ret=false;
-    	if(contrato.getClass().equals(ContratoVenta.class)) {
-    		ContratoVenta c=(ContratoVenta)contrato;
-    		ret=daoVenta.saveContrato(c, doc);
-    	}else {
-    		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		ret=daoAlquiler.saveContrato(c, doc);
-    	}
-    	return ret;
-    }
-    
-    public List<ContratoAlquiler>readAllAlquiler(){
-    	return daoAlquiler.readAllActives();
-    }
-    
-    public List<ContratoVenta>readAllVenta(){
-    	return daoVenta.readAllActives();
-    }
-    
-    public List<Contrato>readAllContratos(){
+
+    public List<Contrato>readAll(){
     	return daoContrato.readAllActives();
     }
     
-	 public synchronized List<ContratoAlquiler> findAllAlquiler(String stringFilter) {
-	        ArrayList arrayList = new ArrayList();
-	        List<ContratoAlquiler> contratos=daoAlquiler.readAllActives();
-	        if(stringFilter!=""){
-
-	            for (ContratoAlquiler contrato : contratos) {
-
-	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-	                                            || contrato.toString().toLowerCase()
-	                                            .contains(stringFilter.toLowerCase());
-	                    if (passesFilter) {
-
-	                        arrayList.add(contrato);
-	                    }
-
-	            }
-	        }
-	        else{
-	            arrayList.addAll(contratos);
-	        }
-
-	        Collections.sort(arrayList, new Comparator<ContratoAlquiler>() {
-
-				@Override
-				public int compare(ContratoAlquiler o1, ContratoAlquiler o2) {
-					return (int) (o2.getId() - o1.getId());
-				}
-	        });
-	        return arrayList;
-	    }
-
-
-
-
-	public synchronized List<ContratoAlquiler> findAllVenta(String stringFilter) {
-	        ArrayList arrayList = new ArrayList();
-	        List<ContratoVenta> contratos=daoVenta.readAllActives();
-	        if(stringFilter!=""){
-
-	            for (ContratoVenta contrato : contratos) {
-
-	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-	                                            || contrato.toString().toLowerCase()
-	                                            .contains(stringFilter.toLowerCase());
-	                    if (passesFilter) {
-
-	                        arrayList.add(contrato);
-	                    }
-
-	            }
-	        }
-	        else{
-	            arrayList.addAll(contratos);
-	        }
-
-	        Collections.sort(arrayList, new Comparator<ContratoVenta>() {
-
-				@Override
-				public int compare(ContratoVenta o1, ContratoVenta o2) {
-					return (int) (o2.getId() - o1.getId());
-				}
-	        });
-	        return arrayList;
-	    }
-
 	public synchronized List<Contrato> findAll(String stringFilter) {
         ArrayList arrayList = new ArrayList();
         List<Contrato> contratos=daoContrato.readAllActives();

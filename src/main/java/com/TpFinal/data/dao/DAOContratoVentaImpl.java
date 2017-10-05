@@ -14,7 +14,6 @@ import org.hibernate.Transaction;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.services.ContratoUtil;
 
 public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOContratoVenta {
 
@@ -23,7 +22,7 @@ public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOC
 	}
 
 	@Override
-	public boolean saveContrato(ContratoVenta entidad, File doc) {
+	public boolean saveOrUpdateContrato(ContratoVenta entidad, File doc) {
 		boolean ret = false;
 		FileInputStream docInputStream = null;
 		Session session = ConexionHibernate.openSession();

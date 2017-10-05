@@ -8,5 +8,5 @@ import java.io.File;
  * Created by Max on 9/30/2017.
  */
 public interface DAOContratoAlquiler extends DAO<ContratoAlquiler>{
-    boolean saveContrato(ContratoAlquiler entidad, File doc);
+    boolean saveOrUpdateContrato(ContratoAlquiler entidad, File doc);
 }

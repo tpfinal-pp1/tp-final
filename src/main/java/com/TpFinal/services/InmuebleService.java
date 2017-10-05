@@ -15,16 +15,8 @@ public class InmuebleService {
 		dao = new DAOInmuebleImpl();
 	}
 	
-	public List<Inmueble> readAllActives() {
-		return dao.readAllActives();
-	}
-	
 	public List<Inmueble> readAll() {
-		return dao.readAll();
-	}
-
-	public boolean update(Inmueble entidad) {
-		return dao.update(entidad);
+		return dao.readAllActives();
 	}
 	
 	public boolean saveOrUpdate(Inmueble entidad) {
@@ -35,14 +27,6 @@ public class InmuebleService {
 		return dao.logicalDelete(i);
 	}
 	
-	public boolean seriousDelete(Inmueble i) {
-		return dao.delete(i);
-	}
-
-	public boolean save(Inmueble entidad) {
-		return dao.save(entidad);
-	}
-
 	public Inmueble findById(Long id) {
 		return dao.findById(id);
 	}

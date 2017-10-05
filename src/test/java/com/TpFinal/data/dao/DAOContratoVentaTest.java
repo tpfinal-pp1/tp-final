@@ -94,7 +94,7 @@ public class DAOContratoVentaTest {
 		String pathOriginal="Files"+File.separator+"demo1.pdf";
 		File archivoOriginal=new File(pathOriginal);
 		archivoOriginal.createNewFile();  //lo creo
-		dao.saveContrato(instancia("1"), archivoOriginal);
+		dao.saveOrUpdateContrato(instancia("1"), archivoOriginal);
 		assertEquals(1, dao.readAll().size());
 		ContratoVenta contratoPersistido = dao.readAll().get(0); //Lo traigo de DB
 		String pathPersistido="Files"+File.separator+"demo2.pdf";

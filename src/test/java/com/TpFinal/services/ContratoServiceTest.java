@@ -14,6 +14,12 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
+import com.TpFinal.data.dao.DAOContratoImpl;
+import com.TpFinal.data.dao.DAOContratoVentaImpl;
+import com.TpFinal.data.dao.interfaces.DAOContrato;
+import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
+import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
@@ -22,6 +28,8 @@ import com.TpFinal.data.dto.contrato.ContratoVenta;
 public class ContratoServiceTest {
 	
 	private ContratoService service;
+	private DAOContratoVenta daoVenta;
+	private DAOContratoAlquiler daoAlquiler;
 	List<Contrato>contratos=new ArrayList<>();
 	
 	@BeforeClass
@@ -32,78 +40,82 @@ public class ContratoServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		service= new ContratoService();
-		service.readAllVenta().forEach(c -> service.deleteSerious(c));
-		service.readAllAlquiler().forEach(c -> service.deleteSerious(c));
+		daoVenta=new DAOContratoVentaImpl();
+		daoAlquiler=new DAOContratoAlquilerImpl();
+		daoVenta.readAll().forEach(c -> daoVenta.delete(c));
+		daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
 		contratos.clear();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		service.readAllVenta().forEach(c -> service.deleteSerious(c));
-		service.readAllAlquiler().forEach(c -> service.deleteSerious(c));
+		daoVenta.readAll().forEach(c -> daoVenta.delete(c));
+		daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
 	}
 
 	@Test
 	public void save() {
-		service.save(instanciaAlquiler("1"));
-		service.save(instanciaAlquiler("2"));
-		service.save(instanciaAlquiler("3"));
-		service.save(instanciaVenta("1"));
-		service.save(instanciaVenta("2"));
-		service.save(instanciaVenta("3"));
+		service.saveOrUpdate(instanciaAlquiler("1"),null);
+		service.saveOrUpdate(instanciaAlquiler("2"),null);
+		service.saveOrUpdate(instanciaAlquiler("3"),null);
+		service.saveOrUpdate(instanciaVenta("1"),null);
+		service.saveOrUpdate(instanciaVenta("2"),null);
+		service.saveOrUpdate(instanciaVenta("3"),null);
 		
-		assertEquals(6, service.readAllContratos().size());
-		assertEquals(3, service.readAllVenta().size());
-		assertEquals(3, service.readAllAlquiler().size());
+		assertEquals(6, service.readAll().size());
 	}
 	
 	@Test
 	public void logicalDelete() {
-		service.save(instanciaAlquiler("1"));
-		service.save(instanciaAlquiler("2"));
-		service.save(instanciaAlquiler("3"));
-		service.save(instanciaVenta("1"));
-		service.save(instanciaVenta("2"));
-		service.save(instanciaVenta("3"));
+		service.saveOrUpdate(instanciaAlquiler("1"),null);
+		service.saveOrUpdate(instanciaAlquiler("2"),null);
+		service.saveOrUpdate(instanciaAlquiler("3"),null);
+		service.saveOrUpdate(instanciaVenta("1"),null);
+		service.saveOrUpdate(instanciaVenta("2"),null);
+		service.saveOrUpdate(instanciaVenta("3"),null);
 		
-		service.delete(service.readAllAlquiler().get(0));
-		service.delete(service.readAllVenta().get(0));
+		service.delete(service.readAll().get(0));
+		service.delete(service.readAll().get(0));
 		
-		assertEquals(4, service.readAllContratos().size());
-		assertEquals(2, service.readAllVenta().size());
-		assertEquals(2, service.readAllAlquiler().size());
+		assertEquals(4, service.readAll().size());
 	}
 	
 	@Test 
 	public void update() {
-		service.save(instanciaAlquiler("1"));
-		service.save(instanciaAlquiler("2"));
-		service.save(instanciaAlquiler("3"));
-		service.save(instanciaVenta("1"));
-		service.save(instanciaVenta("2"));
-		service.save(instanciaVenta("3"));
+		service.saveOrUpdate(instanciaAlquiler("1"),null);
+		service.saveOrUpdate(instanciaAlquiler("2"),null);
+		service.saveOrUpdate(instanciaAlquiler("3"),null);
+		service.saveOrUpdate(instanciaVenta("1"),null);
+		service.saveOrUpdate(instanciaVenta("2"),null);
+		service.saveOrUpdate(instanciaVenta("3"),null);
 		
-		service.readAllAlquiler().forEach(a -> {
-			a.setValorInicial(new BigDecimal("100.00"));
-			service.update(a);
+		service.readAll().forEach(a -> {
+			if(a.getClass().equals(ContratoAlquiler.class)) {
+				ContratoAlquiler ca = (ContratoAlquiler)a;
+				ca.setValorInicial(new BigDecimal("100.00"));
+				service.saveOrUpdate(ca, null);
+			}else {
+				ContratoVenta cv = (ContratoVenta)a;
+				cv.setPrecioVenta(new BigDecimal("100.00"));
+				service.saveOrUpdate(cv, null);
+			}
+				
 		});
 		
-		service.readAllVenta().forEach(v -> {
-			v.setPrecioVenta(new BigDecimal("100.00"));
-			service.update(v);
+		service.readAll().forEach(a -> {
+			if(a.getClass().equals(ContratoAlquiler.class)) {
+				ContratoAlquiler ca = (ContratoAlquiler)a;
+				assertEquals(new BigDecimal("100.00"), ca.getValorInicial());
+			}else {
+				ContratoVenta ca = (ContratoVenta)a;
+				assertEquals(new BigDecimal("100.00"), ca.getPrecioVenta());
+			}
+			
+			
 		});
 		
-		service.readAllAlquiler().forEach(a -> {
-			assertEquals(new BigDecimal("100.00"), a.getValorInicial());
-		});
 		
-		service.readAllVenta().forEach(v -> {
-			assertEquals(new BigDecimal("100.00"), v.getPrecioVenta());
-		});
-		
-		assertEquals(6, service.readAllContratos().size());
-		assertEquals(3, service.readAllVenta().size());
-		assertEquals(3, service.readAllAlquiler().size());
+		assertEquals(6, service.readAll().size());
 	
 	}
 	
