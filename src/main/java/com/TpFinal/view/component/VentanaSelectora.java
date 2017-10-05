@@ -16,13 +16,6 @@ public abstract class VentanaSelectora<T>extends Window {
     public static final String ID = "profilepreferenceswindow";
 
 
-    /*
-     * Fields for ediing the User object are defined here as class members.
-     * They are later bound to a FieldGroup by calling
-     * fieldGroup.bindMemberFields(this). The Fields' values don't need to be
-     * explicitly set, calling fieldGroup.setItemDataSource(user) synchronizes
-     * the fields with the user object.
-     */
     public Grid<T> grid;
     private T objeto;
     public abstract void updateList();
@@ -33,36 +26,16 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
     public VentanaSelectora(T seleccion) {
-        objeto=seleccion;
-        addStyleName("profile-window");
-        setId(ID);
+            objeto=seleccion;
+            addStyleName("profile-window");
+            setId(ID);
 
-        Responsive.makeResponsive(this);
+            Responsive.makeResponsive(this);
 
-        setModal(true);
-        setCloseShortcut(KeyCode.ESCAPE, null);
-        setResizable(false);
-        setClosable(false);
-      /*  setHeight(90.0f, Unit.PERCENTAGE);
-
-        VerticalLayout content = new VerticalLayout();
-        content.setSizeFull();
-        content.setMargin(new MarginInfo(true, false, false, false));
-        content.setSpacing(false);
-        setContent(content);
-
-        TabSheet detailsWrapper = new TabSheet();
-        detailsWrapper.setSizeFull();
-        detailsWrapper.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
-        detailsWrapper.addStyleName(ValoTheme.TABSHEET_ICONS_ON_TOP);
-        detailsWrapper.addStyleName(ValoTheme.TABSHEET_CENTERED_TABS);
-        content.addComponent(detailsWrapper);
-        content.setExpandRatio(detailsWrapper, 1f);
-
-      //  detailsWrapper.addComponent(grid);
-      //  detailsWrapper.addComponent(buildPreferencesTab())
-        content.addComponent(grid);
-        content.addComponent(buildFooter());*/
+            setModal(true);
+            setCloseShortcut(KeyCode.ESCAPE, null);
+            setResizable(false);
+        setClosable(true);
         setGrid();
         setContent(new VerticalLayout(grid,buildFooter()));
 
@@ -85,111 +58,7 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
 
-/*
-    private Component buildPreferencesTab() {
-        VerticalLayout root = new VerticalLayout();
-        root.setCaption("Preferences");
-        root.setIcon(VaadinIcons.COGS);
-        root.setSpacing(true);
-        root.setMargin(true);
-        root.setSizeFull();
 
-        Label message = new Label("Not implemented in this demo");
-        message.setSizeUndefined();
-        message.addStyleName(ValoTheme.LABEL_LIGHT);
-        root.addComponent(message);
-        root.setComponentAlignment(message, Alignment.MIDDLE_CENTER);
-
-        return root;
-    }
-*//*
-    private Component buildProfileTab() {
-        HorizontalLayout root = new HorizontalLayout();
-        root.setCaption("Profile");
-        root.setIcon(VaadinIcons.USER);
-        root.setWidth(100.0f, Unit.PERCENTAGE);
-        root.setMargin(true);
-        root.addStyleName("profile-form");
-
-        VerticalLayout pic = new VerticalLayout();
-        pic.setSizeUndefined();
-        pic.setSpacing(true);
-        Image profilePic = new Image(null,
-                new ThemeResource("img/profile-pic-300px.jpg"));
-        profilePic.setWidth(100.0f, Unit.PIXELS);
-        pic.addComponent(profilePic);
-
-        Button upload = new Button("Change…", new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                Notification.show("Not implemented in this demo");
-            }
-        });
-        upload.addStyleName(ValoTheme.BUTTON_TINY);
-        pic.addComponent(upload);
-
-        root.addComponent(pic);
-
-        FormLayout details = new FormLayout();
-        details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        root.addComponent(details);
-        root.setExpandRatio(details, 1);
-
-        firstNameField = new TextField("First Name");
-        details.addComponent(firstNameField);
-        lastNameField = new TextField("Last Name");
-        details.addComponent(lastNameField);
-
-        titleField = new ComboBox<>("Title",
-                Arrays.asList("Mr.", "Mrs.", "Ms."));
-        titleField.setPlaceholder("Please specify");
-        details.addComponent(titleField);
-
-        sexField = new RadioButtonGroup<>("Sexo", Arrays.asList(true, false));
-        sexField.setItemCaptionGenerator(item -> item ? "Male" : "Female");
-        sexField.addStyleName("horizontal");
-        details.addComponent(sexField);
-
-        Label section = new Label("persona Info");
-        section.addStyleName(ValoTheme.LABEL_H4);
-        section.addStyleName(ValoTheme.LABEL_COLORED);
-        details.addComponent(section);
-
-        emailField = new TextField("Email");
-        emailField.setWidth("100%");
-        emailField.setRequiredIndicatorVisible(true);
-        // TODO add validation that not empty, use binder
-        details.addComponent(emailField);
-
-        locationField = new TextField("Location");
-        locationField.setWidth("100%");
-        locationField
-                .setComponentError(new UserError("This address doesn't exist"));
-        details.addComponent(locationField);
-
-        phoneField = new TextField("Phone");
-        phoneField.setWidth("100%");
-        details.addComponent(phoneField);
-
-
-        section = new Label("Additional Info");
-        section.addStyleName(ValoTheme.LABEL_H4);
-        section.addStyleName(ValoTheme.LABEL_COLORED);
-        details.addComponent(section);
-
-        websiteField = new TextField("Website");
-        websiteField.setPlaceholder("http://");
-        websiteField.setWidth("100%");
-        details.addComponent(websiteField);
-
-        bioField = new TextArea("Bio");
-        bioField.setWidth("100%");
-        bioField.setRows(4);
-        details.addComponent(bioField);
-
-        return root;
-    }
-*/
     private Component buildFooter() {
         HorizontalLayout footer = new HorizontalLayout();
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
@@ -231,10 +100,4 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
 
-  /*  public static void open() {
-        DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
-        Window w = new MiniVentana();
-        UI.getCurrent().addWindow(w);
-        w.focus();
-    }*/
 }
