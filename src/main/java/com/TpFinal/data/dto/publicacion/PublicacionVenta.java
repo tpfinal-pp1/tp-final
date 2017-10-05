@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
@@ -57,6 +58,7 @@ public class PublicacionVenta extends Publicacion {
 		this.precio = b.precio;
 		this.contratoVenta = b.contratoVenta;
 		tipoPublicacion = TipoPublicacion.Venta;
+		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
 	
 	public BigDecimal getPrecio() {

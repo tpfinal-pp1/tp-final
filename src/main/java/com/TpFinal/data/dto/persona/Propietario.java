@@ -22,7 +22,7 @@ public class Propietario extends RolPersona {
 	public Propietario() {super();}
 	
 	private Propietario(Builder b) {
-	 	super(b.persona, b.estadoRegistro);
+	 	super(b.persona, EstadoRegistro.ACTIVO);
 		this.inmuebles=b.inmuebles;
 	
 	}

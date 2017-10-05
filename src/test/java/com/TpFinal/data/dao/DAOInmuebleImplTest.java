@@ -542,7 +542,6 @@ public class DAOInmuebleImplTest {
 	dao.saveOrUpdate(i);
 	Persona p = new Persona.Builder().setApellido("ape")
 		.setDNI("123")
-		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setinfoAdicional("Info adicional")
 		.setMail("a@b.com")
 		.setNombre("nom")

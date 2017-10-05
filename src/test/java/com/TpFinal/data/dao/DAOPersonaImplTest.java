@@ -162,21 +162,18 @@ public class DAOPersonaImplTest {
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
-                .setEstadoRegistro(EstadoRegistro.ACTIVO)
                 .buid();
     }
     
     private Inquilino instanciaInquilino(String numero) {
     	return new Inquilino.Builder()
     			.setCalificacion(Calificacion.A)
-    			.setEstadoRegistro(EstadoRegistro.ACTIVO)
     			.build();
     }
     
     private Inquilino instanciaInquilino(Calificacion c) {
     	return new Inquilino.Builder()
     			.setCalificacion(c)
-    			.setEstadoRegistro(EstadoRegistro.ACTIVO)
     			.build();
     }
 

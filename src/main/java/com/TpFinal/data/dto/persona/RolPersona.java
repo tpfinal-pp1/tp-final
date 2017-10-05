@@ -28,11 +28,6 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
     @Column(name = idr)
     protected Long idRol;
 
-//    @NotNull
-//	@Enumerated(EnumType.STRING)
-//	@Column (name = rp)
-//	protected TipoRolPersona rolPersona;
-    
 	@Enumerated(EnumType.STRING)
 	@Column(name = estadoRegistroS)
 	@NotNull
@@ -43,17 +38,8 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	public RolPersona(Persona persona, EstadoRegistro estadoRegistro) {
 		super();
 		this.persona = persona;
-//		this.rolPersona = rolPersona;
-		this.estadoRegistro = estadoRegistro;
+		this.estadoRegistro = EstadoRegistro.ACTIVO;
 	}
-
-//	public TipoRolPersona getRolPersona() {
-//		return rolPersona;
-//	}
-//
-//	public void setRolPersona(TipoRolPersona rolPersona) {
-//		this.rolPersona = rolPersona;
-//	}
 
 	public Persona getPersona() {
 		return persona;
@@ -122,9 +108,5 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 		return ret;
 	}
 	
-    
-
-
-
 
 }

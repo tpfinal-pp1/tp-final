@@ -6,6 +6,8 @@ import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor;
+
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.publicacion.Rol;
@@ -28,9 +30,7 @@ public class Inquilino extends RolPersona {
 	public Inquilino() {super();}
 	
 	private Inquilino(Builder b) {
-	    
-
-		super(b.persona, b.estadoRegistro);
+		super(b.persona, EstadoRegistro.ACTIVO);
 		this.contratos=b.contratos;
 		this.calificacion=b.calificacion;
 	}
@@ -94,10 +94,6 @@ public class Inquilino extends RolPersona {
 		}
 		public Builder setCalificacion(Calificacion dato) {
 			this.calificacion=dato;
-			return this;
-		}
-		public Builder setEstadoRegistro(EstadoRegistro dato) {
-			this.estadoRegistro=dato;
 			return this;
 		}
 		public Builder setPersona(Persona dato) {

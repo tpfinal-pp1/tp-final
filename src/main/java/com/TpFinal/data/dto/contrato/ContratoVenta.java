@@ -29,7 +29,7 @@ public class ContratoVenta extends Contrato {
 		public ContratoVenta() {super();}
 		
 		private ContratoVenta(Builder b) {
-			super(b.id, b.fechaCelebracion, b.documento, b.estadoRegistro);
+			super(b.id, b.fechaCelebracion, b.documento, EstadoRegistro.ACTIVO);
 			this.precioVenta=b.precioVenta;
 			this.publicacion =b.publicacionVenta;
 		}
@@ -91,11 +91,6 @@ public class ContratoVenta extends Contrato {
 				this.publicacionVenta =dato;
 				return this;
 			}
-			
-			public Builder setEstadoRegistro(EstadoRegistro dato) {
-				this.estadoRegistro=dato;
-		        return this;
-		    }
 			
 			public ContratoVenta build() {
 				return new ContratoVenta(this);

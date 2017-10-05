@@ -64,7 +64,6 @@ public class PersonaTest {
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
-                .setEstadoRegistro(EstadoRegistro.ACTIVO)
                 .buid();
     }
 

@@ -108,7 +108,6 @@ public class GeneradorDeDatos {
 	    Persona p = new Persona.Builder()
 		    .setApellido(nombres[random.nextInt(nombres.length)])
 		    .setDNI(Integer.toString(i))
-		    .setEstadoRegistro(EstadoRegistro.ACTIVO)
 		    .setinfoAdicional("Bla bla bla")
 		    .setMail(nombres[random.nextInt(nombres.length)] + "@" + nombres[random.nextInt(nombres.length)]
 			    + ".mail.com")
@@ -132,8 +131,7 @@ public class GeneradorDeDatos {
 				setMoneda(TipoMoneda.Dolares).build();
 
 		OPV.setContratoVenta(new ContratoVenta.Builder()
-			.setEstadoRegistro(EstadoRegistro.ACTIVO).
-				setFechaCelebracion(LocalDate.now()).setPublicacionVenta(OPV).setPrecioVenta(OPV.getPrecio()).build());
+				.setFechaCelebracion(LocalDate.now()).setPublicacionVenta(OPV).setPrecioVenta(OPV.getPrecio()).build());
 
 
 

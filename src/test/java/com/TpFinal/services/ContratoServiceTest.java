@@ -111,7 +111,6 @@ public class ContratoServiceTest {
 		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 				.setPrecioVenta(new BigDecimal(numero))
-				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.build();
 	}
 	
@@ -124,7 +123,6 @@ public class ContratoServiceTest {
                 .setIntervaloDuracion(new Integer(numero))
                 .setInquilinoContrato(null)
                 .setFechaDePago(LocalDate.of(2017, 05, 12))
-                .setEstadoRegistro(EstadoRegistro.ACTIVO)
                 .build();
 
     }

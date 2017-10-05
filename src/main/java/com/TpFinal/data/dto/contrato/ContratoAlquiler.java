@@ -46,7 +46,7 @@ public class ContratoAlquiler extends Contrato {
     public ContratoAlquiler() {super();}
 
     private ContratoAlquiler(Builder b) {
-    	super(b.id, b.fechaDePago, b.documento, b.estadoRegistro);
+    	super(b.id, b.fechaDePago, b.documento, EstadoRegistro.ACTIVO);
         this.fechaCelebracion = b.fechaCelebracion;
         this.interesPunitorio = b.interesPunitorio;
         this.valorInicial = b.valorInicial;
@@ -118,11 +118,6 @@ public class ContratoAlquiler extends Contrato {
         
         public Builder setPublicacionAlquiler(PublicacionAlquiler op) {
         	this.operacionAlquiler=op;
-        	return this;
-        }
-        
-        public Builder setEstadoRegistro(EstadoRegistro dato) {
-        	this.estadoRegistro=dato;
         	return this;
         }
 

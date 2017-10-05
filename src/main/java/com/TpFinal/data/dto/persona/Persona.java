@@ -63,7 +63,7 @@ public class Persona implements Identificable, BorradoLogico {
 	this.telefono2 = b.telefono2;
 	this.infoAdicional = b.infoAdicional;
 	this.roles = b.roles;
-	this.estadoRegistro = b.estadoRegistro;
+	this.estadoRegistro = EstadoRegistro.ACTIVO;
     }
 
     public Persona(String nombre, String apellido, String mail, String telefono, String telefono2, String DNI,
@@ -288,11 +288,6 @@ public class Persona implements Identificable, BorradoLogico {
 	
 		public Builder setRoles(Set<RolPersona> dato) {
 		    this.roles = dato;
-		    return this;
-		}
-	
-		public Builder setEstadoRegistro(EstadoRegistro dato) {
-		    this.estadoRegistro = dato;
 		    return this;
 		}
 	
