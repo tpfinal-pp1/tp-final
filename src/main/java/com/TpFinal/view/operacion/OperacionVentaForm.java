@@ -1,13 +1,8 @@
 package com.TpFinal.view.operacion;
-import com.TpFinal.data.dto.operacion.Operacion;
-import com.TpFinal.data.dao.dummy.DummyDataGenerator;
-import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.services.OperacionService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;

@@ -22,7 +22,20 @@ public class OperacionVenta extends Operacion {
 	
 	public static final String pPrecioVenta = "precio";
 
+	public static String getpPrecioVenta() {
+		return pPrecioVenta;
+	}
+
+	public ContratoVenta getContratoVenta() {
+		return contratoVenta;
+	}
+
+	public void setContratoVenta(ContratoVenta contratoVenta) {
+		this.contratoVenta = contratoVenta;
+	}
+
 	@Column(name = pPrecioVenta)
+
 	private BigDecimal precio;
 	
 	@Enumerated(EnumType.STRING)

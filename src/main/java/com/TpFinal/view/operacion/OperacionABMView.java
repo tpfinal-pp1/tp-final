@@ -105,12 +105,10 @@ public class OperacionABMView extends DefaultLayout implements View {
             OperacionAlquilerForm.setOperacionAlquiler(new OperacionAlquiler());
         });
 
-        grid.removeColumn("id");
-     /*   grid.setColumns("nombre", "apellido", "DNI");
-        grid.getColumn("DNI").setCaption("DNI");
-        grid.getColumn("nombre").setCaption("Nombre");
-        grid.getColumn("apellido").setCaption("Apellido ");
-*/
+        grid.setColumns("inmueble", "tipoOperacion", "fechaPublicacion");
+        grid.getColumn("tipoOperacion").setCaption("Operación");
+        grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
+
 
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {

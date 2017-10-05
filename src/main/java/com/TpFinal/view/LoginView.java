@@ -2,6 +2,7 @@ package com.TpFinal.view;
 
 import com.TpFinal.services.DashboardEvent.UserLoginRequestedEvent;
 import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.utils.GeneradorDeDatos;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Responsive;
@@ -17,7 +18,7 @@ public class LoginView extends VerticalLayout {
         setSizeFull();
         setMargin(false);
         setSpacing(false);
-
+        GeneradorDeDatos.generarDatos(20);
         Component loginForm = buildLoginForm();
         addComponent(loginForm);
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);

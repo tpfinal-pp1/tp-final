@@ -1,4 +1,4 @@
-package com.TpFinal.data.dao.dummy;
+package com.TpFinal.utils;
 
 import com.TpFinal.data.dto.*;
 
@@ -59,9 +59,9 @@ public class DummyDataProvider implements DataProvider {
     }
 
     private void refreshStaticData() {
-        countryToCities = loadTheaterData();
+    //    countryToCities = loadTheaterData();
         movies = loadMoviesData();
-        transactions = generateTransactionsData();
+      //  transactions = generateTransactionsData();
 
     }
 

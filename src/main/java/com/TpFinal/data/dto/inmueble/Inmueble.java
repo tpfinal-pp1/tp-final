@@ -368,7 +368,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	    return false;
 	return true;
     }
-
+/*
     @Override
     public String toString() {
 	return "Inmueble \n[\nidInmueble=" + idInmueble + "\ncantidadAmbientes=" + cantidadAmbientes
@@ -378,7 +378,12 @@ public class Inmueble implements Identificable, BorradoLogico {
 		+ "\nconParilla=" + conParrilla + "\nconPileta=" + conPileta + "\nestadoInmueble=" + estadoInmueble
 		+ "\ntipoInmueble=" + tipoInmueble + "\nclaseInmueble=" + claseInmueble + "\ndireccion=" + direccion
 		+ "\noperaciones=" + operaciones + "\npropietario=" + propietario + "\n]";
-    }
+    }*/
+@Override
+public String toString() {
+	return  direccion.getCalle()+" "+direccion.getNro() +
+			" Propietario: " + propietario;
+}
 
     public static class Builder {
 	private Propietario propietario;

@@ -140,9 +140,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	public void configureComponents() {
 
-	  if (inmuebleService.readAll().size() == 0) {
-	      GeneradorDeDatos.generarDatos(10);
-	  }
 	    
 	    filter.addValueChangeListener(e -> updateList());
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);

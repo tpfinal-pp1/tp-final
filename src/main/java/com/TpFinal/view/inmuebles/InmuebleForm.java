@@ -1,22 +1,13 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dao.dummy.DummyDataGenerator;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
-import com.TpFinal.data.dto.persona.Inquilino;
-import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
-import com.vaadin.data.ValidationException;
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.ClassResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;

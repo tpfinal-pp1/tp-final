@@ -1,18 +1,18 @@
 package com.TpFinal.utils;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
+import com.TpFinal.data.dao.DAOOperacionImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoInmueble;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.*;
+import com.TpFinal.data.dto.operacion.Operacion;
+import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 
@@ -56,6 +56,7 @@ public class GeneradorDeDatos {
     private static Random random = new Random();
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
+	private static DAOOperacionImpl daoope = new DAOOperacionImpl();
 
     private static String getTelefeno() {
 	return Integer.toString(
@@ -119,13 +120,33 @@ public class GeneradorDeDatos {
 	    
 	    Propietario prop = new Propietario();
 	    prop.setEstadoRegistro(EstadoRegistro.ACTIVO);
-	    prop.setPersona(p);
+	   // prop.setPersona(p);
 	    p.addRol(prop);
-	    
-	    daoPer.saveOrUpdate(p);
+
+
+
+		OperacionVenta OPV=new OperacionVenta.Builder().
+				setFechaPublicacion(LocalDate.now()).
+				setInmueble(inmueble).
+				setPrecio(new BigDecimal((random.nextInt(500000) + 200000) )).
+				setMoneda(TipoMoneda.Dolares).build();
+
+		OPV.setContratoVenta(new ContratoVenta.Builder().
+				setFechaCelebracion(LocalDate.now()).setOperacionVenta(OPV).setPrecioVenta(OPV.getPrecio()).build());
+
+
+
+		daoPer.saveOrUpdate(p);
 	    daoInm.create(inmueble);
 	    inmueble.setPropietario(prop);
 	    daoInm.saveOrUpdate(inmueble);
+	    daoope.saveOrUpdate(OPV);
+
+
+
+
+
+
 	}
 	System.out.println("Agregados " + cantidad + " inmuebles a la base de datos.");
     }

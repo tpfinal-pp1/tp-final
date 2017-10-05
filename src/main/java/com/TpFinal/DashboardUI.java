@@ -2,9 +2,9 @@ package com.TpFinal;
 
 
 
-import com.TpFinal.data.dao.dummy.DummyDataProvider;
+import com.TpFinal.utils.DummyDataProvider;
 
-import com.TpFinal.data.dao.dummy.DataProvider;
+import com.TpFinal.utils.DataProvider;
 import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
