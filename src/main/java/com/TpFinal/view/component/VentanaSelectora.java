@@ -32,7 +32,8 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
 
-    public VentanaSelectora() {
+    public VentanaSelectora(T seleccion) {
+        objeto=seleccion;
         addStyleName("profile-window");
         setId(ID);
 
@@ -204,14 +205,19 @@ public abstract class VentanaSelectora<T>extends Window {
 
                     // Updated user should also be persisted to database. But
                     // not in this demo.
-
-                    Notification success = new Notification(
-                            "Seleccionado");
+                Notification success ;
+                    if (objeto==null){
+                       success = new Notification(
+                                "No Seleccionado");
+                    }
+                    else{
+                        success = new Notification(
+                                "Seleccionado");
+                    }
                     success.setDelayMsec(2000);
                     success.setStyleName("bar success small");
                     success.setPosition(Position.BOTTOM_CENTER);
                     success.show(Page.getCurrent());
-                    recieveSelection(objeto);
                     close();
 
 
@@ -223,7 +229,7 @@ public abstract class VentanaSelectora<T>extends Window {
         return footer;
     }
 
-    protected abstract void recieveSelection(T objeto);
+
 
   /*  public static void open() {
         DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());

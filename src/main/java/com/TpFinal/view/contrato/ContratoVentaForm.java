@@ -114,7 +114,7 @@ public class ContratoVentaForm extends FormLayout {
 
         TinyButton personas=new TinyButton("Ver Personas");
 
-        personas.addClickListener(e -> new VentanaSelectora<Persona>() {
+        personas.addClickListener(e -> new VentanaSelectora<Persona>(new Persona()) {
             @Override
             public void updateList() {
                 PersonaService PersonaService=
@@ -128,9 +128,6 @@ public class ContratoVentaForm extends FormLayout {
                 grid=new Grid<>(Persona.class);
             }
 
-            @Override
-            protected void recieveSelection(Persona objeto) {
-            }
         });
 
         VerticalLayout Roles=new VerticalLayout(personas);
