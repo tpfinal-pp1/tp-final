@@ -212,7 +212,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-            List<Publicacion> customers = service.findAll(filter.getValue());
+            List<Publicacion> customers = service.readAll(filter.getValue());
             grid.setItems(customers);
 
     }
