@@ -48,15 +48,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	return controller;
     }
 
-    public void setComponentsVisible(boolean b) {
-	newItem.setVisible(b);
-	filter.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
-	if (isonMobile)
-	    grid.setVisible(b);
-
-    }
-
+   
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
 	filtering.addComponents(filter, clearFilterTextBtn, newItem);
@@ -69,6 +61,21 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	addComponent(mainLayout);
 	this.setExpandRatio(mainLayout, 1);
     }
+    
+    /**
+     * Oculta o muestra los componentes de la grilla y su toolbar.
+     * @param b
+     * true para mostrar, false para ocultar
+     */
+    public void setComponentsVisible(boolean b) {
+   	newItem.setVisible(b);
+   	filter.setVisible(b);
+   	// clearFilterTextBtn.setVisible(b);
+   	if (isonMobile)
+   	    grid.setVisible(b);
+
+       }
+
 
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(

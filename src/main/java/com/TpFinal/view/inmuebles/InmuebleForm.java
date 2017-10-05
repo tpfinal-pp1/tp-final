@@ -1,5 +1,9 @@
 package com.TpFinal.view.inmuebles;
 
+import java.util.Collections;
+
+import com.TpFinal.data.dto.Localidad;
+import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
@@ -8,9 +12,9 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.TextField;
 
 /* Create custom UI Components.
  *
@@ -23,15 +27,35 @@ import com.vaadin.ui.TextField;
 public class InmuebleForm extends FormLayout {
     private InmuebleService inmbService = new InmuebleService();
     private Inmueble inmueble;
+    
+    //Acciones
     private Button save = new Button("Guardar");
     private Button test = new Button("Test");
     private Button delete = new Button("Eliminar");
     
+    //TabPrincipal
+    private TextField calle = new TextField("Calle");
+    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
+    private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
     private ComboBox<Propietario> propietario = new ComboBox<>();
-    private TextField direccion = new TextField("Direccion");
-    private ComboBox<TipoInmueble> tipoInmueble = new ComboBox<>();
-    private ComboBox<ClaseInmueble> claseInmueble = new ComboBox<>();
-
+    private Button nuevoPropietario  = new Button();
+    private ComboBox <ClaseInmueble> clasesInmueble = new ComboBox<>("Clase");
+    private RadioButtonGroup <TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
+    
+    //TabCaracteristicas 1
+    private TextField ambientes = new TextField("Ambientes");
+    private TextField cocheras = new TextField("Cocheras");
+    private TextField dormitorios = new TextField("Dormitorios");
+    private TextField supTotal = new TextField("Sup. Total");
+    private TextField supCubierta = new TextField("Sup. Cubierta");
+    
+    //TabCaracteristicas 2
+    private CheckBox aEstrenar = new CheckBox("A estrenar");
+    private CheckBox aireAcond = new CheckBox("Aire Acondicionado");
+    private CheckBox cJardin= new CheckBox("Jardín");
+    private CheckBox cParrilla = new CheckBox("Parrilla");
+    private CheckBox cPpileta = new CheckBox("Pileta");
+    
     PersonaService service = new PersonaService();
     private InmuebleABMView inmuebleABMView;
     private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
@@ -89,13 +113,27 @@ public class InmuebleForm extends FormLayout {
 
     private void buildLayout() {
 	addStyleName("v-scrollable");
-	//Creando el formulario
+	
+	nuevoPropietario.setIcon(VaadinIcons.PLUS);
 	
 	
-	addComponents(this.direccion,this.propietario,this.claseInmueble,this.tipoInmueble);
+	CssLayout propietarioCombo = new CssLayout();
+	propietarioCombo.addComponents(propietario, nuevoPropietario);
+	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	propietarioCombo.setCaption("Propietario");
+	tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+	
+	FormLayout principal = new FormLayout(calle, localidades,provincias,propietarioCombo,clasesInmueble,tiposInmueble);
+	FormLayout caracteristicas1 = new FormLayout(ambientes,cocheras,dormitorios,supTotal,supCubierta);
+	FormLayout caracteristicas2 = new FormLayout(aEstrenar,aireAcond,cJardin,cParrilla,cPpileta);
+	
+	TabSheet tabsheet = new TabSheet();
+	tabsheet.addTab(principal, "Datos Principales");
+	tabsheet.addTab(caracteristicas1, "Características 1");
+	tabsheet.addTab(caracteristicas2, "Características 2");
 	
 	HorizontalLayout actions = new HorizontalLayout(save, test, delete);
-	addComponent(actions);
+	addComponents(tabsheet,actions);
 	actions.setSpacing(true);
 		
     }
