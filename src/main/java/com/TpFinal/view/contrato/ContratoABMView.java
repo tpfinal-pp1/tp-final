@@ -1,12 +1,12 @@
-package com.TpFinal.view.ContratoView;
+package com.TpFinal.view.contrato;
 
-/**
- * Created by Max on 10/5/2017.
- */
+
 
 import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.services.ContratoService;
+import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.ContratoService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -24,7 +24,12 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
 
-
+/* User Interface written in Java.
+ *
+ * Define the user interface shown on the Vaadin generated web page by extending the UI class.
+ * By default, a new UI instance is automatically created when the page is loaded. To reuse
+ * the same instance, add @PreserveOnRefresh.
+ */
 
 @Title("Addressbook")
 @Theme("valo")
@@ -40,33 +45,37 @@ public class ContratoABMView extends DefaultLayout implements View {
      */
     TextField filter = new TextField();
     private Grid<Contrato> grid = new Grid<>(Contrato.class);
-    Button nuevoContrato = new Button("Nuevo Alquiler");
-
+    Button nuevoAlquiler = new Button("Nuevo Alquiler");
+    Button nuevaVenta = new Button("Nueva Venta");
 
 
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
 
 
+
     HorizontalLayout mainLayout;
-    // PublicacionVentaForm is an example of a custom component class
-    ContratoForm ContratoForm = new ContratoForm(this);
+    // ContratoVentaForm is an example of a custom component class
+    ContratoVentaForm ContratoVentaForm = new ContratoVentaForm(this);
+    ContratoAlquilerForm ContratoAlquilerForm = new ContratoAlquilerForm(this);
 
+    private boolean isonMobile=false;
 
-    private boolean isonMobile = false;
-
-    // PublicacionService is a in-memory mock DAO that mimics
+    // ContratoService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
     ContratoService service = new ContratoService();
 
 
-    public ContratoABMView() {
+    public ContratoABMView(){
         super();
         buildLayout();
         configureComponents();
 
 
     }
+
+
+
 
 
     private void configureComponents() {
@@ -77,7 +86,7 @@ public class ContratoABMView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-        //    nuevaVenta.addClickListener(e -> PublicacionVentaForm.setVenta(new Publicacion()));
+        //    nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new Contrato()));
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
@@ -87,31 +96,40 @@ public class ContratoABMView extends DefaultLayout implements View {
         clearFilterTextBtn.setDescription("Limpiar filtro");
         clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
-        nuevoContrato.addClickListener(e -> {
+        nuevaVenta.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            ContratoForm.setContrato(new Contrato());
+            ContratoVentaForm.setContratoVenta(new ContratoVenta());
         });
 
-        grid.setColumns("fechaCelebracion");
-        grid.setSizeFull();
+        nuevoAlquiler.addClickListener(e -> {
+            grid.asSingleSelect().clear();
+            ContratoAlquilerForm.setContratoAlquiler(new ContratoAlquiler());
+        });
 
+        //grid.setColumns("inmueble", "tipoContrato", "fechaContrato");
+      //  grid.getColumn("tipoContrato").setCaption("Operación");
+     //   grid.getColumn("fechaContrato").setCaption("Fecha Publicación");
 
 
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
-               ContratoForm.setVisible(false);
-            }
-            else {
+                ContratoVentaForm.setVisible(false);
+            } else {
 
-                if(event.getValue() instanceof Contrato)
-                    ContratoForm.setContrato((Contrato) event.getValue());
+                if(event.getValue() instanceof ContratoAlquiler)
+                    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) event.getValue());
+
+                else if(event.getValue() instanceof ContratoVenta){
+                    ContratoVentaForm.setContratoVenta((ContratoVenta) event.getValue());
+
                 }
+            }
         });
 
         // grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        nuevoContrato.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
         filter.setIcon(VaadinIcons.SEARCH);
         filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         updateList();
@@ -129,11 +147,12 @@ public class ContratoABMView extends DefaultLayout implements View {
      * choose to setup layout declaratively with Vaadin Designer, CSS and HTML.
      */
 
-    public void setComponentsVisible(boolean b) {
-        nuevoContrato.setVisible(b);
+    public void setComponentsVisible(boolean b){
+        nuevaVenta.setVisible(b);
+        nuevoAlquiler.setVisible(b);
         filter.setVisible(b);
         //clearFilterTextBtn.setVisible(b);
-        if (isonMobile)
+        if(isonMobile)
             grid.setVisible(b);
 
     }
@@ -142,13 +161,14 @@ public class ContratoABMView extends DefaultLayout implements View {
 
         CssLayout filtering = new CssLayout();
 
-        HorizontalLayout layout = new HorizontalLayout(nuevoContrato);
-        filtering.addComponents(filter, clearFilterTextBtn, layout);
+        HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
+        filtering.addComponents(filter, clearFilterTextBtn,layout);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        if (checkIfOnMobile()) {
+        if(checkIfOnMobile()) {
             filter.setWidth("58%");
-            nuevoContrato.setCaption("+ Alquiler");
+            nuevaVenta.setCaption("+ Venta");
+            nuevoAlquiler.setCaption("+ Alquiler");
             layout.setSpacing(false);
             layout.setMargin(false);
             layout.setResponsive(true);
@@ -156,10 +176,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 
         }
 
-        addComponent(buildToolbar("Publicaciones", filtering, layout));
+        addComponent(buildToolbar("Contratos",filtering, layout));
         grid.setSizeFull();
-        mainLayout = new HorizontalLayout(grid, ContratoForm);
-        //mainLayout.setSizeFull();
+        mainLayout = new HorizontalLayout(grid, ContratoVentaForm,ContratoAlquilerForm);
+        mainLayout.setSizeFull();
         addComponent(mainLayout);
         this.setExpandRatio(mainLayout, 1);
 
@@ -174,7 +194,7 @@ public class ContratoABMView extends DefaultLayout implements View {
      * MVC, MVP or any other design pattern you choose.
      */
 
-    public void showErrorNotification(String notification) {
+    public void showErrorNotification(String notification){
         Notification success = new Notification(
                 notification);
         success.setDelayMsec(4000);
@@ -183,7 +203,7 @@ public class ContratoABMView extends DefaultLayout implements View {
         success.show(Page.getCurrent());
     }
 
-    public void showSuccessNotification(String notification) {
+    public void showSuccessNotification(String notification){
         Notification success = new Notification(
                 notification);
         success.setDelayMsec(2000);
@@ -193,8 +213,12 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-        List<Contrato> contracts = service.findAll(filter.getValue());
-        grid.setItems(contracts);
+        List<Contrato> contratos = service.findAll("");
+        for (Contrato contrato:contratos
+             ) {
+            System.out.println(contrato);
+        }
+        grid.setItems(contratos);
 
     }
 
@@ -202,23 +226,29 @@ public class ContratoABMView extends DefaultLayout implements View {
         return isonMobile;
     }
 
-    public void ClearFilterBtnAction() {
-
-        if (this.ContratoForm.isVisible()) {
-            nuevoContrato.focus();
-            ContratoForm.cancel();
+    public void ClearFilterBtnAction(){
+        if(this.ContratoVentaForm.isVisible()){
+            nuevaVenta.focus();
+            ContratoVentaForm.cancel();
 
         }
+        else if(this.ContratoAlquilerForm.isVisible()){
+            nuevoAlquiler.focus();
+            ContratoAlquilerForm.cancel();
+        }
+
         filter.clear();
     }
 
 
-    public boolean checkIfOnMobile() {
+
+    public boolean checkIfOnMobile(){
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-            isonMobile = true;
+            isonMobile=true;
             return true;
-        } else {
-            isonMobile = false;
+        }
+        else{
+            isonMobile=false;
             return false;
 
         }
@@ -239,13 +269,13 @@ public class ContratoABMView extends DefaultLayout implements View {
         // navigated to so we'll need to clean up references to it on detach.
         com.TpFinal.services.DashboardEventBus.unregister(this);
     }
-
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-            isonMobile = true;
-        } else {
-            isonMobile = false;
+            isonMobile=true;
+        }
+        else{
+            isonMobile=false;
 
         }
 
@@ -255,4 +285,6 @@ public class ContratoABMView extends DefaultLayout implements View {
     public void enter(final ViewChangeListener.ViewChangeEvent event) {
 
     }
+
+
 }

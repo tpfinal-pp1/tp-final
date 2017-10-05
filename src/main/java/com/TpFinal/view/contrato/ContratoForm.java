@@ -1,4 +1,4 @@
-package com.TpFinal.view.ContratoView;
+package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.services.ContratoService;

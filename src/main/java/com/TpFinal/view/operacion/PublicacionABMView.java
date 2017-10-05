@@ -53,7 +53,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 
     HorizontalLayout mainLayout;
-    // PublicacionVentaForm is an example of a custom component class
+    // ContratoVentaForm is an example of a custom component class
     PublicacionVentaForm PublicacionVentaForm = new PublicacionVentaForm(this);
     PublicacionAlquilerForm PublicacionAlquilerForm = new PublicacionAlquilerForm(this);
 
@@ -85,7 +85,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-    //    nuevaVenta.addClickListener(e -> PublicacionVentaForm.setVenta(new Publicacion()));
+    //    nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new Publicacion()));
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
