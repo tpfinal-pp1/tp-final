@@ -27,12 +27,44 @@ public class SeleniumTest {
     @Test
     public void testCrearPersona() {
         driver.get("http://inmobi.ddns.net/#!personas");
-        assertTrue(driver.getTitle().equals("TpFinal"));
+        assertTrue(driver.getTitle().equals("Inmobi"));
         driver.findElement(By.xpath("//div[@class='v-expand']/div/div/div[3]/div/div[5]/div")).click();
         driver.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[1]/div/div[3]/div/div[3]/div")).click();
         driver.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/table/tbody/tr[2]/td[3]/div/div[3]/div")).click();
 
     }
+
+
+    public void test1 () {
+        driver.get("http://inmobi.ddns.net/");
+        driver.findElement(By.xpath("//div[@class='v-expand']/div/div/div[3]/div/div[5]/div")).click();
+        driver.findElement(By.xpath("//div[@id='dashboard-menu']//span[.='Personas']")).click();
+        driver.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[1]/div/div[3]/div/div[3]/div")).click();
+        driver.findElement(By.id("gwt-uid-17")).click();
+        driver.findElement(By.id("gwt-uid-17")).clear();
+        driver.findElement(By.id("gwt-uid-17")).sendKeys("Sel");
+        driver.findElement(By.id("gwt-uid-19")).click();
+        driver.findElement(By.id("gwt-uid-19")).clear();
+        driver.findElement(By.id("gwt-uid-19")).sendKeys("Enium");
+        driver.findElement(By.id("gwt-uid-21")).click();
+        driver.findElement(By.id("gwt-uid-21")).clear();
+        driver.findElement(By.id("gwt-uid-21")).sendKeys("sele@nium.com");
+        driver.findElement(By.id("gwt-uid-23")).click();
+        driver.findElement(By.id("gwt-uid-23")).clear();
+        driver.findElement(By.id("gwt-uid-23")).sendKeys("21234567");
+        driver.findElement(By.xpath("//div[@id='gwt-uid-25']//div[.='Contacto']")).click();
+        driver.findElement(By.id("gwt-uid-27")).click();
+        driver.findElement(By.id("gwt-uid-27")).clear();
+        driver.findElement(By.id("gwt-uid-27")).sendKeys("12345435");
+        driver.findElement(By.id("gwt-uid-29")).click();
+        driver.findElement(By.id("gwt-uid-29")).clear();
+        driver.findElement(By.id("gwt-uid-29")).sendKeys("234234324");
+        driver.findElement(By.id("gwt-uid-31")).click();
+        driver.findElement(By.id("gwt-uid-31")).clear();
+        driver.findElement(By.id("gwt-uid-31")).sendKeys("Hola soy Selenium y estoy testeando");
+        driver.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/table/tbody/tr[2]/td[3]/div/div[1]/div")).click();
+    }
+
 
 
 

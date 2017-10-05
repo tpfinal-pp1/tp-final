@@ -28,7 +28,7 @@ import java.util.Locale;
 
 @Theme("dashboard")
 @Widgetset("com.TpFinal.DashboardWidgetSet")
-@Title("TpFinal")
+@Title("Inmobi")
 @SuppressWarnings("serial")
 public final class DashboardUI extends UI {
 

@@ -65,7 +65,7 @@ public class PersonaForm extends FormLayout {
         configureComponents();
         binding();
         buildLayout();
-        addStyleName("v-scrollable");
+
     }
 
     private void configureComponents() {
@@ -154,6 +154,8 @@ public class PersonaForm extends FormLayout {
         HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         addComponent(actions);
         actions.setSpacing(true);
+
+        addStyleName("v-scrollable");
 
     }
 

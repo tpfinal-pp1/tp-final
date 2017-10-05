@@ -39,10 +39,12 @@ public abstract class DefaultLayout extends VerticalLayout {
 
         for(Component comp: Components){
             tools.addComponent(comp);
+
         }
         tools.setSpacing(true);
+        Responsive.makeResponsive(tools);
 
-       //tools.addStyleName("toolbar");
+       tools.addStyleName("toolbar");
         header.addComponent(tools);
 
 

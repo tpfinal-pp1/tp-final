@@ -159,11 +159,24 @@ public class OperacionABMView extends DefaultLayout implements View {
     }
 
     private void buildLayout() {
+
         CssLayout filtering = new CssLayout();
         filtering.addComponents(filter, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
 
-        addComponent(buildToolbar("Operaciones",filtering, nuevaVenta,nuevoAlquiler));
+        if(checkIfOnMobile()) {
+            filter.setWidth("58%");
+            nuevaVenta.setCaption("+ Venta");
+            nuevoAlquiler.setCaption("+ Alquiler");
+            layout.setSpacing(false);
+            layout.setMargin(false);
+            layout.setResponsive(true);
+            layout.setSizeUndefined();
+
+        }
+
+        addComponent(buildToolbar("Operaciones",filtering, layout));
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, OperacionVentaForm,OperacionAlquilerForm);
         mainLayout.setSizeFull();
@@ -225,6 +238,18 @@ public class OperacionABMView extends DefaultLayout implements View {
 
 
 
+    public boolean checkIfOnMobile(){
+        if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+            isonMobile=true;
+            return true;
+        }
+        else{
+            isonMobile=false;
+            return false;
+
+        }
+    }
+
     /*
 
      * Deployed as a Servlet or Portlet.
@@ -254,6 +279,7 @@ public class OperacionABMView extends DefaultLayout implements View {
 
     @Override
     public void enter(final ViewChangeListener.ViewChangeEvent event) {
+
     }
 
 

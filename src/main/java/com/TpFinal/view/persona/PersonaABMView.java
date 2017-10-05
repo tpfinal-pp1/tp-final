@@ -84,6 +84,7 @@ public class PersonaABMView extends DefaultLayout implements View {
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
 
+
         filter.setPlaceholder("Filtrar");
         filter.addValueChangeListener(e -> updateList());
         clearFilterTextBtn.setDescription("Limpiar filtro");
@@ -140,6 +141,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     private void buildLayout() {
+
         CssLayout filtering = new CssLayout();
         filtering.addComponents(filter, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
