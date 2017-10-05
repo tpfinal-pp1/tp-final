@@ -1,12 +1,8 @@
 package com.TpFinal.view.ContratoView;
 
 import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.services.ContratoService;
-import com.TpFinal.services.ContratoVentaService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.TinyButton;
-import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.DateRangeValidator;
@@ -15,7 +11,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -94,29 +89,7 @@ public class ContratoForm extends FormLayout {
         BlueLabel Publicaciones = new  BlueLabel("Publicaciones");
         BlueLabel info = new  BlueLabel("Información Adicional");
        // BlueLabel contacto = new  BlueLabel("Contacto");
-
-        TinyButton contratos=new TinyButton("Ver Contratos");
-        contratos.addClickListener(e -> new VentanaSelectora<ContratoVenta>() {
-            @Override
-            public void updateList() {
-                ContratoVentaService ContratoVentaService=
-                        new ContratoVentaService();
-                List<ContratoVenta> ContratoVentas = ContratoVentaService.readAll();
-                grid.setItems(ContratoVentas);
-            }
-
-            @Override
-            public void setGrid() {
-                grid=new Grid<>(ContratoVenta.class);
-            }
-
-            @Override
-            protected void recieveSelection(ContratoVenta objeto) {
-            }
-        });
-
-
-
+        
         FormLayout principal=new FormLayout(fechaCelebracion);
         FormLayout adicional=new FormLayout(Publicaciones);
         adicional.addComponent(info);
