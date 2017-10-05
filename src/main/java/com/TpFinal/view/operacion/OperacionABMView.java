@@ -1,9 +1,9 @@
 package com.TpFinal.view.operacion;
 
 
-import com.TpFinal.data.dto.operacion.Operacion;
-import com.TpFinal.data.dto.operacion.OperacionAlquiler;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
+import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.OperacionService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -43,7 +43,7 @@ public class OperacionABMView extends DefaultLayout implements View {
      * vaadin.com/directory.
      */
     TextField filter = new TextField();
-    private Grid<Operacion> grid = new Grid<>(Operacion.class);
+    private Grid<Publicacion> grid = new Grid<>(Publicacion.class);
     Button nuevoAlquiler = new Button("Nuevo Alquiler");
     Button nuevaVenta = new Button("Nueva Venta");
 
@@ -97,12 +97,12 @@ public class OperacionABMView extends DefaultLayout implements View {
 
         nuevaVenta.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            OperacionVentaForm.setOperacionVenta(new OperacionVenta());
+            OperacionVentaForm.setOperacionVenta(new PublicacionVenta());
         });
 
         nuevoAlquiler.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            OperacionAlquilerForm.setOperacionAlquiler(new OperacionAlquiler());
+            OperacionAlquilerForm.setOperacionAlquiler(new PublicacionAlquiler());
         });
 
         grid.setColumns("inmueble", "tipoOperacion", "fechaPublicacion");
@@ -116,11 +116,11 @@ public class OperacionABMView extends DefaultLayout implements View {
                 OperacionVentaForm.setVisible(false);
             } else {
 
-                if(event.getValue() instanceof OperacionAlquiler)
-                    OperacionAlquilerForm.setOperacionAlquiler((OperacionAlquiler) event.getValue());
+                if(event.getValue() instanceof PublicacionAlquiler)
+                    OperacionAlquilerForm.setOperacionAlquiler((PublicacionAlquiler) event.getValue());
 
-                else if(event.getValue() instanceof OperacionVenta){
-                    OperacionVentaForm.setOperacionVenta((OperacionVenta) event.getValue());
+                else if(event.getValue() instanceof PublicacionVenta){
+                    OperacionVentaForm.setOperacionVenta((PublicacionVenta) event.getValue());
 
                 }
             }
@@ -211,7 +211,7 @@ public class OperacionABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-            List<Operacion> customers = service.findAll(filter.getValue());
+            List<Publicacion> customers = service.findAll(filter.getValue());
             grid.setItems(customers);
 
     }

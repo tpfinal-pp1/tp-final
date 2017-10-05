@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.operacion.Rol;
+import com.TpFinal.data.dto.publicacion.Rol;
 
 
 @Entity

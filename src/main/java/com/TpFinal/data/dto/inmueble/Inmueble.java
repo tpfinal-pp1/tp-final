@@ -20,8 +20,8 @@ import javax.persistence.Table;
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
-import com.TpFinal.data.dto.operacion.Operacion;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.Publicacion;
 
 @Entity
 @Table(name = "Inmuebles")
@@ -103,7 +103,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     private Propietario propietario;
 
     @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    protected Set<Operacion> operaciones = new HashSet<>();
+    protected Set<Publicacion> operaciones = new HashSet<>();
 
     public Inmueble() {
 	super();
@@ -251,15 +251,15 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.direccion = direccion;
     }
 
-    public Set<Operacion> getOperaciones() {
+    public Set<Publicacion> getOperaciones() {
 	return operaciones;
     }
 
-    public void setOperaciones(Set<Operacion> operaciones) {
+    public void setOperaciones(Set<Publicacion> operaciones) {
 	this.operaciones = operaciones;
     }
 
-    public void addOperacion(Operacion operacion) {
+    public void addOperacion(Publicacion operacion) {
 	if (operaciones.size() < 2) {
 	    operaciones.add(operacion);
 	} else {
@@ -401,7 +401,7 @@ public String toString() {
 	private TipoInmueble tipoInmueble;
 	private ClaseInmueble claseInmueble;
 	private Direccion direccion;
-	private Set<Operacion> operaciones = new HashSet<>();
+	private Set<Publicacion> operaciones = new HashSet<>();
 
 	public Builder setCantidadAmbientes(Integer cantidadAmbientes) {
 	    this.cantidadAmbientes = cantidadAmbientes;
@@ -473,12 +473,12 @@ public String toString() {
 	    return this;
 	}
 
-	public Builder setOperaciones(Set<Operacion> operaciones) {
+	public Builder setOperaciones(Set<Publicacion> operaciones) {
 	    this.operaciones = operaciones;
 	    return this;
 	}
 
-	public Builder addOperacion(Operacion operacion) {
+	public Builder addOperacion(Publicacion operacion) {
 	    this.operaciones.add(operacion);
 	    return this;
 	}

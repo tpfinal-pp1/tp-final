@@ -1,5 +1,5 @@
 package com.TpFinal.view.operacion;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.OperacionService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -16,7 +16,7 @@ import com.vaadin.ui.themes.ValoTheme;
  * with @PropertyId annotation.
  */
 public class OperacionVentaForm extends FormLayout {
-    private OperacionVenta OperacionVenta;
+    private PublicacionVenta OperacionVenta;
 
     Button save = new Button("Guardar");
   //  Button test = new Button("Test");
@@ -27,7 +27,7 @@ public class OperacionVentaForm extends FormLayout {
 
     OperacionService service = new OperacionService();
     private OperacionABMView addressbookView;
-    private Binder<OperacionVenta> binderOperacionVenta = new Binder<>(OperacionVenta.class);
+    private Binder<PublicacionVenta> binderOperacionVenta = new Binder<>(PublicacionVenta.class);
 
 
 
@@ -110,7 +110,7 @@ public class OperacionVentaForm extends FormLayout {
 
     }
 
-    public void setOperacionVenta(OperacionVenta OperacionVenta) {
+    public void setOperacionVenta(PublicacionVenta OperacionVenta) {
 
         this.OperacionVenta = OperacionVenta;
         binderOperacionVenta.readBean(OperacionVenta);

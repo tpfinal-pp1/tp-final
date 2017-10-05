@@ -11,10 +11,10 @@ import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.*;
-import com.TpFinal.data.dto.operacion.Operacion;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 public class GeneradorDeDatos {
     private static String[] nombres = { "Elliott", "Albertha", "Wilburn", "Marquita", "Merrilee", "Rosy", "Williemae",
@@ -125,7 +125,7 @@ public class GeneradorDeDatos {
 
 
 
-		OperacionVenta OPV=new OperacionVenta.Builder().
+		PublicacionVenta OPV=new PublicacionVenta.Builder().
 				setFechaPublicacion(LocalDate.now()).
 				setInmueble(inmueble).
 				setPrecio(new BigDecimal((random.nextInt(500000) + 200000) )).

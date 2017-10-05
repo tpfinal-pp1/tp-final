@@ -15,10 +15,10 @@ import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.operacion.Operacion;
-import com.TpFinal.data.dto.operacion.OperacionAlquiler;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
-import com.TpFinal.data.dto.operacion.TipoOperacion;
+import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.data.dto.publicacion.TipoPublicacion;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
@@ -41,12 +41,12 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		List<Inmueble> resultadoQuery = new ArrayList<>();
 
 		if (criterio.getTipoOperacion() != null || criterio.getTipoMoneda()!= null ) {
-			TipoOperacion to = criterio.getTipoOperacion();
-			query = DetachedCriteria.forClass(Operacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);		
+			TipoPublicacion to = criterio.getTipoOperacion();
+			query = DetachedCriteria.forClass(Publicacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);		
 			
 			if (to != null){
-				query.add(Restrictions.eq(Operacion.pTipoOperacion, to));
-				if (to.equals(TipoOperacion.Alquiler)) {
+				query.add(Restrictions.eq(Publicacion.pTipoOperacion, to));
+				if (to.equals(TipoPublicacion.Alquiler)) {
 					addRestriccionesDeAlquiler(query, criterio);
 
 				} else {
@@ -59,11 +59,11 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 			}
 			
 						
-			DAOImpl<Operacion> dao = new DAOImpl<>(Operacion.class);
+			DAOImpl<Publicacion> dao = new DAOImpl<>(Publicacion.class);
 			query.createAlias("inmueble", "i");
 			addRestriccionesDeInmueble(query, criterio,"i.");
-			List<Operacion> operaciones = dao.findByCriteria(query);
-			for (Operacion o : operaciones) {
+			List<Publicacion> operaciones = dao.findByCriteria(query);
+			for (Publicacion o : operaciones) {
 				resultadoQuery.add(o.getInmueble());
 			}
 
@@ -161,21 +161,21 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
 	private void addRestriccionesDeAlquiler(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
 		if (criterio.getMinPrecio() != null) {
-			query.add(Restrictions.ge(OperacionAlquiler.pPrecioAlquiler, criterio.getMinPrecio()));
+			query.add(Restrictions.ge(PublicacionAlquiler.pPrecioAlquiler, criterio.getMinPrecio()));
 		}
 
 		if (criterio.getMaxPrecio() != null) {
-			query.add(Restrictions.le(OperacionAlquiler.pPrecioAlquiler, criterio.getMaxPrecio()));
+			query.add(Restrictions.le(PublicacionAlquiler.pPrecioAlquiler, criterio.getMaxPrecio()));
 		}
 	}
 
 	private void addRestriccionesDeVenta(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
 		if (criterio.getMinPrecio() != null) {
-			query.add(Restrictions.ge(OperacionVenta.pPrecioVenta, criterio.getMinPrecio()));
+			query.add(Restrictions.ge(PublicacionVenta.pPrecioVenta, criterio.getMinPrecio()));
 		}
 
 		if (criterio.getMaxPrecio() != null) {
-			query.add(Restrictions.le(OperacionVenta.pPrecioVenta, criterio.getMaxPrecio()));
+			query.add(Restrictions.le(PublicacionVenta.pPrecioVenta, criterio.getMaxPrecio()));
 		}
 	}
 

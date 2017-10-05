@@ -7,7 +7,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import com.TpFinal.data.dto.operacion.OperacionVenta;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import java.math.BigDecimal;
 import java.sql.Blob;
@@ -22,7 +22,7 @@ public class ContratoVenta extends Contrato {
 		private BigDecimal precioVenta;
 		
 		@OneToOne(cascade=CascadeType.ALL)
-		private OperacionVenta operacionVenta;
+		private PublicacionVenta operacionVenta;
 	
 		public ContratoVenta() {super();}
 		
@@ -34,11 +34,11 @@ public class ContratoVenta extends Contrato {
 		
 		
 	
-		public OperacionVenta getOperacionVenta() {
+		public PublicacionVenta getOperacionVenta() {
 			return operacionVenta;
 		}
 
-		public void setOperacionVenta(OperacionVenta operacionVenta) {
+		public void setOperacionVenta(PublicacionVenta operacionVenta) {
 			this.operacionVenta = operacionVenta;
 		}
 
@@ -58,7 +58,7 @@ public class ContratoVenta extends Contrato {
 			private LocalDate fechaCelebracion;
 			private Blob documento;
 			private BigDecimal precioVenta;
-			private OperacionVenta operacionVentaç;
+			private PublicacionVenta operacionVentaç;
 			
 			public Builder setId(Long dato) {
 				this.id=dato;
@@ -81,7 +81,7 @@ public class ContratoVenta extends Contrato {
 				return this;
 			}
 			
-			public Builder setOperacionVenta(OperacionVenta dato) {
+			public Builder setOperacionVenta(PublicacionVenta dato) {
 				this.operacionVentaç=dato;
 				return this;
 			}

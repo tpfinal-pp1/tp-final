@@ -4,7 +4,7 @@ package com.TpFinal.data.dto.inmueble;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.TpFinal.data.dto.operacion.TipoOperacion;
+import com.TpFinal.data.dto.publicacion.TipoPublicacion;
 
 public class CriterioBusquedaInmuebleDTO {
 	private Boolean aEstrenar;
@@ -29,7 +29,7 @@ public class CriterioBusquedaInmuebleDTO {
 	private BigDecimal minPrecio;
 	private BigDecimal maxPrecio;
 	private TipoMoneda tipoMoneda;
-	private TipoOperacion tipoOperacion;
+	private TipoPublicacion tipoOperacion;
 
 	public CriterioBusquedaInmuebleDTO() {
 		super();
@@ -238,11 +238,11 @@ public class CriterioBusquedaInmuebleDTO {
 		this.tipoMoneda = tipoMoneda;
 	}
 
-	public TipoOperacion getTipoOperacion() {
+	public TipoPublicacion getTipoOperacion() {
 		return tipoOperacion;
 	}
 
-	public void setTipoOperacion(TipoOperacion tipoOperacion) {
+	public void setTipoOperacion(TipoPublicacion tipoOperacion) {
 		this.tipoOperacion = tipoOperacion;
 	}
 
@@ -396,7 +396,7 @@ public class CriterioBusquedaInmuebleDTO {
 		private BigDecimal minPrecio;
 		private BigDecimal maxPrecio;
 		private TipoMoneda tipoMoneda;
-		private TipoOperacion tipoOperacion;
+		private TipoPublicacion tipoOperacion;
 
 		public Builder setaEstrenar(Boolean aEstrenar) {
 			this.aEstrenar = aEstrenar;
@@ -508,7 +508,7 @@ public class CriterioBusquedaInmuebleDTO {
 			return this;
 		}
 
-		public Builder setTipoOperacion(TipoOperacion tipoOperacion) {
+		public Builder setTipoOperacion(TipoPublicacion tipoOperacion) {
 			this.tipoOperacion = tipoOperacion;
 			return this;
 		}

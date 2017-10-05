@@ -14,11 +14,11 @@ import org.junit.Test;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.operacion.Rol;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.RolPersona;
+import com.TpFinal.data.dto.publicacion.Rol;
 
 public class PersonaServiceNuevoTest {
 	

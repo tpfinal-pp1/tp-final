@@ -1,7 +1,7 @@
 package com.TpFinal.data.dto.contrato;
 
-import com.TpFinal.data.dto.operacion.OperacionAlquiler;
 import com.TpFinal.data.dto.persona.Inquilino;
+import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -37,7 +37,7 @@ public class ContratoAlquiler extends Contrato {
     @Column(name="fechaDePago")
     private LocalDate fechaDePago;
     @OneToOne(cascade=CascadeType.ALL)
-    private OperacionAlquiler operacionAlquiler;
+    private PublicacionAlquiler operacionAlquiler;
     @ManyToOne(fetch=FetchType.EAGER, cascade= CascadeType.ALL)
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
@@ -70,7 +70,7 @@ public class ContratoAlquiler extends Contrato {
         private Integer intervaloDuracion;
         private Integer diaDePago;
         private LocalDate fechaDePago;
-        private OperacionAlquiler operacionAlquiler;
+        private PublicacionAlquiler operacionAlquiler;
 
         public Builder setId(Long dato) {
             this.id=dato;
@@ -117,7 +117,7 @@ public class ContratoAlquiler extends Contrato {
             return this;
         }
         
-        public Builder setOperacionAlquiler(OperacionAlquiler op) {
+        public Builder setOperacionAlquiler(PublicacionAlquiler op) {
         	this.operacionAlquiler=op;
         	return this;
         }
@@ -168,11 +168,11 @@ public class ContratoAlquiler extends Contrato {
         this.fechaDePago = fechaDePago;
     }
 
-	public OperacionAlquiler getOperacionAlquiler() {
+	public PublicacionAlquiler getOperacionAlquiler() {
 		return operacionAlquiler;
 	}
 
-	public void setOperacionAlquiler(OperacionAlquiler operacionAlquiler) {
+	public void setOperacionAlquiler(PublicacionAlquiler operacionAlquiler) {
 		this.operacionAlquiler = operacionAlquiler;
 	}
 

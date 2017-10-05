@@ -5,10 +5,10 @@ import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.operacion.OperacionAlquiler;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import org.apache.commons.io.FileUtils;
 import org.hibernate.Hibernate;
@@ -185,8 +185,8 @@ public class DAOContratoAlquilerTest {
     }
     
     
-    private OperacionAlquiler instanciaOA() {
-    	return new OperacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
+    private PublicacionAlquiler instanciaOA() {
+    	return new PublicacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
     			.setMoneda(TipoMoneda.Pesos).setInmueble(null).build();
     }
 

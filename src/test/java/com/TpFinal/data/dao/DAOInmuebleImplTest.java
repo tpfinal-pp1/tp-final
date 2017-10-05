@@ -25,12 +25,12 @@ import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.operacion.Operacion;
-import com.TpFinal.data.dto.operacion.OperacionAlquiler;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
-import com.TpFinal.data.dto.operacion.TipoOperacion;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.data.dto.publicacion.TipoPublicacion;
 import com.TpFinal.utils.GeneradorDeDatos;
 
 public class DAOInmuebleImplTest {
@@ -413,7 +413,7 @@ public class DAOInmuebleImplTest {
     @Test
     public void findInmueblesByCriteria_InmueblesAlquilados() {
 	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler).build();
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Alquiler).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
@@ -422,7 +422,7 @@ public class DAOInmuebleImplTest {
     @Test
     public void findInmueblesByCriteria_InmueblesEnVenta() {
 	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta).build();
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Venta).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
@@ -441,7 +441,7 @@ public class DAOInmuebleImplTest {
     public void findInmueblesByCriteria_InmueblesEnAlquilerAndValorCuotaMayorIgualA200() {
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(3);
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Alquiler)
 		.setMinPrecio(BigDecimal.valueOf(200)).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
@@ -452,7 +452,7 @@ public class DAOInmuebleImplTest {
 
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(3);
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Alquiler)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Alquiler)
 		.setMaxPrecio(BigDecimal.valueOf(100)).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
@@ -462,7 +462,7 @@ public class DAOInmuebleImplTest {
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Venta)
 		.setMinPrecio(BigDecimal.valueOf(200)).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
@@ -473,7 +473,7 @@ public class DAOInmuebleImplTest {
 
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Venta)
 		.setMaxPrecio(BigDecimal.valueOf(100)).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
@@ -486,7 +486,7 @@ public class DAOInmuebleImplTest {
 	i.setClaseInmueble(ClaseInmueble.Cochera);
 	dao.save(i);
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Venta)
 		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera)).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
@@ -500,7 +500,7 @@ public class DAOInmuebleImplTest {
 	i.setConPileta(false);
 	dao.save(i);
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoOperacion.Venta)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoOperacion(TipoPublicacion.Venta)
 		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera)).setConPileta(false).build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
@@ -526,7 +526,7 @@ public class DAOInmuebleImplTest {
     public void testOperaciones() {
 	Inmueble i = unInmuebleNoPublicado();
 	i.setEstadoInmueble(EstadoInmueble.EnVenta);
-	i.addOperacion(new OperacionVenta.Builder()
+	i.addOperacion(new PublicacionVenta.Builder()
 		.setFechaPublicacion(LocalDate.now())
 		.setInmueble(i)
 		.setPrecio(BigDecimal.valueOf(200))
@@ -587,9 +587,9 @@ public class DAOInmuebleImplTest {
     private void crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(int cantidadDeInmuebles) {
 	for (int x = 1; x <= cantidadDeInmuebles; x++) {
 	    Inmueble i = unInmuebleEnAlquilerEnDolares();
-	    for (Operacion o : i.getOperaciones()) {
-		if (o instanceof OperacionAlquiler) {
-		    OperacionAlquiler oa = ((OperacionAlquiler) o);
+	    for (Publicacion o : i.getOperaciones()) {
+		if (o instanceof PublicacionAlquiler) {
+		    PublicacionAlquiler oa = ((PublicacionAlquiler) o);
 		    oa.setPrecio(BigDecimal.valueOf(100 * x));
 		}
 	    }
@@ -600,9 +600,9 @@ public class DAOInmuebleImplTest {
     private void crearInmueblesEnVentaEnPesosConValorCuota100xN(int cantidadDeInmuebles) {
 	for (int x = 1; x <= cantidadDeInmuebles; x++) {
 	    Inmueble i = unInmuebleEnVentaEnPesos();
-	    for (Operacion o : i.getOperaciones()) {
-		if (o instanceof OperacionVenta) {
-		    OperacionVenta ov = ((OperacionVenta) o);
+	    for (Publicacion o : i.getOperaciones()) {
+		if (o instanceof PublicacionVenta) {
+		    PublicacionVenta ov = ((PublicacionVenta) o);
 		    ov.setPrecio(BigDecimal.valueOf(100 * x));
 		}
 	    }
@@ -669,7 +669,7 @@ public class DAOInmuebleImplTest {
 		.setSuperficieTotal(400)
 		.setTipoInmueble(TipoInmueble.Vivienda)
 		.build();
-	inmueble.addOperacion(new OperacionVenta.Builder()
+	inmueble.addOperacion(new PublicacionVenta.Builder()
 		.setFechaPublicacion(LocalDate.of(2017, 10, 1))
 		.setMoneda(TipoMoneda.Pesos)
 		.setPrecio(BigDecimal.valueOf(12e3))
@@ -703,7 +703,7 @@ public class DAOInmuebleImplTest {
 		.setSuperficieTotal(400)
 		.setTipoInmueble(TipoInmueble.Comercial)
 		.build();
-	inmueble.addOperacion(new OperacionAlquiler.Builder()
+	inmueble.addOperacion(new PublicacionAlquiler.Builder()
 		.setFechaPublicacion(LocalDate.of(2017, 9, 1))
 		.setMoneda(TipoMoneda.Dolares)
 		.setValorCuota(BigDecimal.valueOf(1e3))

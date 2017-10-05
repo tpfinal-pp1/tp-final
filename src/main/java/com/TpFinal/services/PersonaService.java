@@ -10,8 +10,8 @@ import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.operacion.Rol;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.publicacion.Rol;
 
 public class PersonaService {
 	DAOPersona dao;

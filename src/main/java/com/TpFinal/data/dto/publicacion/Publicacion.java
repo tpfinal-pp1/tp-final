@@ -1,4 +1,4 @@
-package com.TpFinal.data.dto.operacion;
+package com.TpFinal.data.dto.publicacion;
 
 import java.time.LocalDate;
 
@@ -23,8 +23,8 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
-@Table(name = "operaciones")
-public abstract class Operacion implements Identificable,BorradoLogico {
+@Table(name = "publicaciones")
+public abstract class Publicacion implements Identificable,BorradoLogico {
 	
 	public static final String pTipoOperacion ="tipoOperacion";
 	
@@ -42,8 +42,8 @@ public abstract class Operacion implements Identificable,BorradoLogico {
 	protected LocalDate fechaPublicacion;
 	
 	@Enumerated(EnumType.STRING)
-	@Column (name = Operacion.pTipoOperacion)
-	protected TipoOperacion tipoOperacion;
+	@Column (name = Publicacion.pTipoOperacion)
+	protected TipoPublicacion tipoOperacion;
 	
 	@Enumerated(EnumType.STRING)
 	protected EstadoRegistro estadoRegistro;
@@ -74,11 +74,11 @@ public abstract class Operacion implements Identificable,BorradoLogico {
 		this.fechaPublicacion = fechaPublicacion;
 	}
 
-	public TipoOperacion getTipoOperacion() {
+	public TipoPublicacion getTipoOperacion() {
 		return tipoOperacion;
 	}
 
-	public void setTipoOperacion(TipoOperacion tipoOperacion) {
+	public void setTipoOperacion(TipoPublicacion tipoOperacion) {
 		this.tipoOperacion = tipoOperacion;
 	}
 

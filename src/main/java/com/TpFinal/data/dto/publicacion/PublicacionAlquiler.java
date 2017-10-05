@@ -1,4 +1,4 @@
-package com.TpFinal.data.dto.operacion;
+package com.TpFinal.data.dto.publicacion;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,8 +17,8 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 
 @Entity
-@Table(name = "operaciones_alquiler")
-public class OperacionAlquiler extends Operacion {
+@Table(name = "publicaciones_alquiler")
+public class PublicacionAlquiler extends Publicacion {
 	
 	public static final String pPrecioAlquiler = "valorCuota";
 
@@ -32,18 +32,18 @@ public class OperacionAlquiler extends Operacion {
 	@OneToOne(cascade = CascadeType.ALL)
 	ContratoAlquiler contratoAlquiler;
 
-	public OperacionAlquiler() {
+	public PublicacionAlquiler() {
 		super();
-		tipoOperacion = TipoOperacion.Alquiler;
+		tipoOperacion = TipoPublicacion.Alquiler;
 	}
 
-	private OperacionAlquiler(Builder b) {
+	private PublicacionAlquiler(Builder b) {
 		this.fechaPublicacion = b.fechaPublicacion;
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.valorCuota = b.valorCuota;
 		this.contratoAlquiler = b.contratoAlquiler;
-		tipoOperacion = TipoOperacion.Alquiler;
+		tipoOperacion = TipoPublicacion.Alquiler;
 	}
 
 	public BigDecimal getPrecio() {
@@ -94,8 +94,8 @@ public class OperacionAlquiler extends Operacion {
 			return this;
 		}
 
-		public OperacionAlquiler build() {
-			return new OperacionAlquiler(this);
+		public PublicacionAlquiler build() {
+			return new PublicacionAlquiler(this);
 		}	
 		
 	}

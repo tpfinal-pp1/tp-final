@@ -5,7 +5,7 @@ import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.operacion.OperacionVenta;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -142,8 +142,8 @@ public class DAOContratoVentaTest {
 	
 	
 	
-	private OperacionVenta instanciaOV() {
-		return new OperacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
+	private PublicacionVenta instanciaOV() {
+		return new PublicacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
 		.setMoneda(TipoMoneda.Pesos).setPrecio(BigDecimal.valueOf(12e3)).setInmueble(null).build();
 	}
 
