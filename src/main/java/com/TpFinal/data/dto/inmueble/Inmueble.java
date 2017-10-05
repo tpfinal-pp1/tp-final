@@ -107,6 +107,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 
     public Inmueble() {
 	super();
+	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     private Inmueble(Builder inmuebleBuilder) {
@@ -127,6 +128,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.tipoInmueble = inmuebleBuilder.tipoInmueble;
 	this.operaciones = inmuebleBuilder.operaciones;
 	this.propietario = inmuebleBuilder.propietario;
+	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     @Override

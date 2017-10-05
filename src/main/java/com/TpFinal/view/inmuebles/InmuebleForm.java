@@ -12,6 +12,7 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
+import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigIntegerConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
@@ -187,12 +188,12 @@ public class InmuebleForm extends FormLayout {
     }
 
     private void delete() {
-//	service.delete(persona);
-//	inmuebleABMView.getController().updateList();
-//	setVisible(false);
-//	getAddressbookView().setComponentsVisible(true);
-//	getAddressbookView().showSuccessNotification("Borrado: " + persona.getNombre() + " " +
-//		persona.getApellido());
+	inmbService.delete(inmueble);
+	inmuebleABMView.getController().updateList();
+	setVisible(false);
+	getABMView().setComponentsVisible(true);
+	getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
+		inmueble.getPropietario().toString());
 
     }
 
@@ -215,35 +216,31 @@ public class InmuebleForm extends FormLayout {
     }
 
     private void save() {
-//
-//	boolean success = false;
-//	try {
-//	    binderPersona.writeBean(persona);
-//	    service.save(persona);
-//	    success = true;
-//
-//	} catch (ValidationException e) {
-//	    e.printStackTrace();
-//	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-//	    // Notification.show("Error: "+e.getCause());
-//	    return;
-//	} catch (Exception e) {
-//	    e.printStackTrace();
-//	    Notification.show("Error: " + e.toString());
-//	}
-//
-//	inmuebleABMView.getController().updateList();
-//	/*
-//	 * String msg = String.format("Guardado '%s %s'.", persona.getNombre(),
-//	 * persona.getApellido());* Notification.show(msg, Type.TRAY_NOTIFICATION);
-//	 */
-//	setVisible(false);
-//	getAddressbookView().setComponentsVisible(true);
-//
-//	if (success)
-//	    getAddressbookView().showSuccessNotification("Guardado: " + persona.getNombre() + " " +
-//		    persona.getApellido());
-//
+
+	boolean success = false;
+	try {
+	    binderInmueble.writeBean(inmueble);
+	    inmbService.saveOrUpdate(inmueble);
+	    success = true;
+
+	} catch (ValidationException e) {
+	    e.printStackTrace();
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+	    // Notification.show("Error: "+e.getCause());
+	    return;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    Notification.show("Error: " + e.toString());
+	}
+
+	inmuebleABMView.getController().updateList();
+	setVisible(false);
+	getABMView().setComponentsVisible(true);
+
+	if (success)
+	    getABMView().showSuccessNotification("Guardado: "  + inmueble.getDireccion().toString() + " de " +
+			inmueble.getPropietario().toString());
+
     }
 
     public void cancel() {

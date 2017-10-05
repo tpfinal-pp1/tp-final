@@ -6,12 +6,17 @@ import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.persona.Persona;
 
 public class InmuebleService {
 	private DAOInmueble dao;
 	
 	public InmuebleService() {
 		dao = new DAOInmuebleImpl();
+	}
+	
+	public List<Inmueble> readAllActives() {
+		return dao.readAllActives();
 	}
 	
 	public List<Inmueble> readAll() {
@@ -21,9 +26,17 @@ public class InmuebleService {
 	public boolean update(Inmueble entidad) {
 		return dao.update(entidad);
 	}
+	
+	public boolean saveOrUpdate(Inmueble entidad) {
+	    return dao.saveOrUpdate(entidad);
+	}
 
-	public boolean delete(Inmueble entidad) {
-		return dao.delete(entidad);
+	public boolean delete(Inmueble i) {
+		return dao.logicalDelete(i);
+	}
+	
+	public boolean seriousDelete(Inmueble i) {
+		return dao.delete(i);
 	}
 
 	public boolean save(Inmueble entidad) {
