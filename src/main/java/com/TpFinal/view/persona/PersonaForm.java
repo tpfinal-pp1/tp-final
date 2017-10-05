@@ -38,7 +38,7 @@ public class PersonaForm extends FormLayout {
     TextField telefono2 = new TextField("Celular");
     TextField mail = new TextField("Mail");
     TextArea infoAdicional = new TextArea("Info");
-
+    ContratoVenta aSeleccionar;
     private NativeSelect<Calificacion> calificacion =
             new NativeSelect<>("Calificacion Inquilino");
 
@@ -136,7 +136,10 @@ public class PersonaForm extends FormLayout {
         BlueLabel contacto = new  BlueLabel("Contacto");
         
         TinyButton contratos=new TinyButton("Ver Contratos");
-        contratos.addClickListener(e -> new VentanaSelectora<ContratoVenta>() {
+
+
+        aSeleccionar=new ContratoVenta();
+        contratos.addClickListener(e -> new VentanaSelectora<ContratoVenta>(aSeleccionar) {
                     @Override
                     public void updateList() {
                         ContratoVentaService ContratoVentaService=
@@ -148,11 +151,9 @@ public class PersonaForm extends FormLayout {
                     @Override
                     public void setGrid() {
                         grid=new Grid<>(ContratoVenta.class);
+                        grid.setColumns("");
                     }
 
-                    @Override
-                    protected void recieveSelection(ContratoVenta objeto) {
-                    }
                 });
         VerticalLayout Roles=new VerticalLayout(calificacion,contratos
                 ,
