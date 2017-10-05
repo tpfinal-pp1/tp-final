@@ -139,18 +139,18 @@ public class PersonaForm extends FormLayout {
 
 
         aSeleccionar=new ContratoVenta();
-        contratos.addClickListener(e -> new VentanaSelectora<ContratoVenta>(aSeleccionar) {
+        contratos.addClickListener(e -> new VentanaSelectora<Contrato>(aSeleccionar) {
                     @Override
                     public void updateList() {
-                        ContratoVentaService ContratoVentaService=
-                                new ContratoVentaService();
-                        List<ContratoVenta> ContratoVentas = ContratoVentaService.readAll();
-                        grid.setItems(ContratoVentas);
+                        ContratoService contratoService=
+                                new ContratoService();
+                        List<Contrato> Contratos = contratoService.readAll();
+                        grid.setItems(Contratos);
                     }
 
                     @Override
                     public void setGrid() {
-                        grid=new Grid<>(ContratoVenta.class);
+                        grid=new Grid<>(Contrato.class);
                         grid.setColumns("");
                     }
 
@@ -243,7 +243,7 @@ public class PersonaForm extends FormLayout {
         boolean success=false;
         try {
             binderPersona.writeBean(persona);
-            service.save(persona);
+            service.saveOrUpdate(persona);
             success=true;
 
 

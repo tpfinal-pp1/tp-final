@@ -177,7 +177,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 	
 	public void updateList() {
-		List<Inmueble> inmuebles = inmuebleService.readAllActives();
+		List<Inmueble> inmuebles = inmuebleService.readAll();
 		grid.setItems(inmuebles);
 
 	    }

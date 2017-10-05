@@ -207,7 +207,7 @@ public class ContratoVentaForm extends FormLayout {
         boolean success=false;
         try {
             binderContratoVenta.writeBean(ContratoVenta);
-            service.save(ContratoVenta);
+            service.saveOrUpdate(ContratoVenta, null);
             success=true;
 
 

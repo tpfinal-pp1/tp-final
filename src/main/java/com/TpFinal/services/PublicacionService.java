@@ -38,7 +38,7 @@ public class PublicacionService {
     }
     
     //TODO
-    public synchronized List<Contrato> findAll(String stringFilter) {
+    public synchronized List<Publicacion> findAll(String stringFilter) {
     	throw new IllegalArgumentException("Falta implementar");
 //        ArrayList arrayList = new ArrayList();
 //        List<Contrato> contratos=daoContrato.readAllActives();

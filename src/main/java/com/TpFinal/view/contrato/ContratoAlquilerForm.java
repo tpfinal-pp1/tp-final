@@ -204,7 +204,7 @@ public class ContratoAlquilerForm extends FormLayout {
         boolean success=false;
         try {
             binderContratoAlquiler.writeBean(ContratoAlquiler);
-            service.save(ContratoAlquiler);
+            service.saveOrUpdate(ContratoAlquiler,null);
             success=true;
 
 

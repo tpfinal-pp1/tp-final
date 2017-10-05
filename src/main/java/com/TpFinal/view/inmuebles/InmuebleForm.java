@@ -7,6 +7,7 @@ import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
+import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
@@ -17,6 +18,7 @@ import com.vaadin.data.converter.StringToBigIntegerConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -31,6 +33,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
     private InmuebleService inmbService = new InmuebleService();
+    private PersonaService personaService = new PersonaService();
     private Inmueble inmueble;
     
     //Acciones
@@ -39,7 +42,7 @@ public class InmuebleForm extends FormLayout {
     private Button delete = new Button("Eliminar");
     
     //TabPrincipal
-    private ComboBox<Propietario> propietario = new ComboBox<>();
+    private ComboBox<Persona> propietario = new ComboBox<>();
     private Button nuevoPropietario  = new Button();
     private ComboBox <ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
     private RadioButtonGroup <TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
@@ -47,10 +50,10 @@ public class InmuebleForm extends FormLayout {
     //TabDireccion
     private TextField calle = new TextField("Calle");
     private TextField nro = new TextField("Número");
-    private TextField codPostal = new TextField ("Código Postal");
-    
+    private TextField codPostal = new TextField ("Código Postal");    
     private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
     private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
+    private Button buscarUbicacion = new Button("Buscar Ubicación", VaadinIcons.MAP_MARKER);
         
 
     
@@ -123,11 +126,21 @@ public class InmuebleForm extends FormLayout {
 	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
 	.bind(Inmueble::getCantidadDormitorios,Inmueble::setCantidadDormitorios);
 	
+	binderInmueble.forField(this.codPostal).bind(inmueble -> inmueble.getDireccion().getCodPostal()
+		,(inmueble,cod) -> inmueble.getDireccion().setCodPostal(cod));
+	
+	binderInmueble.forField(this.nro)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.withValidator(n -> n>=0, "Debe ingresar una altura no negativa!")
+	.bind(inmueble -> inmueble.getDireccion().getNro()
+		,(inmueble,nro) -> inmueble.getDireccion().setNro(nro))	;
+	
 	//TODO
 //	binderInmueble.forField(this.localidades);
 //	binderInmueble.forField(this.provincias);
 	
-	binderInmueble.forField(this.propietario).bind(Inmueble::getPropietario,Inmueble::setPropietario);
+	binderInmueble.forField(this.propietario).bind(inmueble -> inmueble.getPropietario().getPersona()
+		,setPropietario());
 	
 	binderInmueble.forField(this.supCubierta)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
@@ -143,16 +156,19 @@ public class InmuebleForm extends FormLayout {
 	
     }
 
+    private Setter<Inmueble, Persona> setPropietario() {	
+	return (inmueble,persona) -> {
+	    
+	};
+    }
+
     private void buildLayout() {
 	addStyleName("v-scrollable");
 	
-	nuevoPropietario.setIcon(VaadinIcons.PLUS);
-	
-	
+	nuevoPropietario.setIcon(VaadinIcons.PLUS);	
 	propietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	nuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-	nuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-	
+	nuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);	
 	HorizontalLayout propietarioCombo = new HorizontalLayout();
 	propietarioCombo.addComponents(propietario, nuevoPropietario);
 	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
@@ -161,16 +177,22 @@ public class InmuebleForm extends FormLayout {
 	tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 	
 	
-	FormLayout principal = new FormLayout(calle, localidades,provincias,propietarioCombo,clasesInmueble,tiposInmueble);
+	
+	FormLayout principal = new FormLayout(propietarioCombo,clasesInmueble,tiposInmueble);
+	FormLayout direccion = new FormLayout(calle,nro,codPostal,localidades,provincias,buscarUbicacion);
 	FormLayout caracteristicas1 = new FormLayout(ambientes,cocheras,dormitorios,supTotal,supCubierta);
 	FormLayout caracteristicas2 = new FormLayout(aEstrenar,aireAcond,cJardin,cParrilla,cPpileta);
 	
+	this.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	direccion.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	caracteristicas1.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	caracteristicas2.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	
 	TabSheet tabsheet = new TabSheet();
 	tabsheet.addTab(principal, "Datos Principales");
+	tabsheet.addTab(direccion, "Dirección");
 	tabsheet.addTab(caracteristicas1, "Características 1");
 	tabsheet.addTab(caracteristicas2, "Características 2");
 	
