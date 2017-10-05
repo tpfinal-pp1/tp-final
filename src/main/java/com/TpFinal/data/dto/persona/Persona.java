@@ -3,6 +3,8 @@ package com.TpFinal.data.dto.persona;
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.publicacion.Rol;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -233,76 +235,121 @@ public class Persona implements Identificable, BorradoLogico {
     }
 
     public static class Builder {
-	private Long id;
-	private String nombre;
-	private String apellido;
-	private String mail;
-	private String telefono;
-	private String telefono2;
-	private String DNI;
-	private String infoAdicional;
-	protected Set<RolPersona> roles = new HashSet<>();
-	private EstadoRegistro estadoRegistro;
-
-	public Builder setId(Long dato) {
-	    this.id = dato;
-	    return this;
-	}
-
-	public Builder setNombre(String dato) {
-	    this.nombre = dato;
-	    return this;
-	}
-
-	public Builder setApellido(String dato) {
-	    this.apellido = dato;
-	    return this;
-	}
-
-	public Builder setMail(String dato) {
-	    this.mail = dato;
-	    return this;
-	}
-
-	public Builder setTelefono(String dato) {
-	    this.telefono = dato;
-	    return this;
-	}
-
-	public Builder setTelefono2(String dato) {
-	    this.telefono2 = dato;
-	    return this;
-	}
-
-	public Builder setDNI(String dato) {
-	    this.DNI = dato;
-	    return this;
-	}
-
-	public Builder setinfoAdicional(String dato) {
-	    this.infoAdicional = dato;
-	    return this;
-	}
-
-	public Builder setRoles(Set<RolPersona> dato) {
-	    this.roles = dato;
-	    return this;
-	}
-
-	public Builder setEstadoRegistro(EstadoRegistro dato) {
-	    this.estadoRegistro = dato;
-	    return this;
-	}
-
-	public Persona buid() {
-	    return new Persona(this);
-	}
+		private Long id;
+		private String nombre;
+		private String apellido;
+		private String mail;
+		private String telefono;
+		private String telefono2;
+		private String DNI;
+		private String infoAdicional;
+		protected Set<RolPersona> roles = new HashSet<>();
+		private EstadoRegistro estadoRegistro;
+	
+		public Builder setId(Long dato) {
+		    this.id = dato;
+		    return this;
+		}
+	
+		public Builder setNombre(String dato) {
+		    this.nombre = dato;
+		    return this;
+		}
+	
+		public Builder setApellido(String dato) {
+		    this.apellido = dato;
+		    return this;
+		}
+	
+		public Builder setMail(String dato) {
+		    this.mail = dato;
+		    return this;
+		}
+	
+		public Builder setTelefono(String dato) {
+		    this.telefono = dato;
+		    return this;
+		}
+	
+		public Builder setTelefono2(String dato) {
+		    this.telefono2 = dato;
+		    return this;
+		}
+	
+		public Builder setDNI(String dato) {
+		    this.DNI = dato;
+		    return this;
+		}
+	
+		public Builder setinfoAdicional(String dato) {
+		    this.infoAdicional = dato;
+		    return this;
+		}
+	
+		public Builder setRoles(Set<RolPersona> dato) {
+		    this.roles = dato;
+		    return this;
+		}
+	
+		public Builder setEstadoRegistro(EstadoRegistro dato) {
+		    this.estadoRegistro = dato;
+		    return this;
+		}
+	
+		public Persona buid() {
+		    return new Persona(this);
+		}
 
     }
 
     public void addRol(RolPersona rol) {
-	roles.add(rol);
-	rol.setPersona(this);
+		roles.add(rol);
+		rol.setPersona(this);
+    }
+    
+    public boolean addRol(Rol rol) {
+    	boolean ret;
+    	if(contiene(rol))
+    		ret= false;
+    	else {
+    		if(rol.equals(Rol.Inquilino))
+    			this.roles.add(new Inquilino());
+    		if(rol.equals(Rol.Propietario))
+    			this.roles.add(new Propietario());
+    		ret=true;
+    	}
+    	return ret;
+    }
+    
+    public RolPersona getRol(Rol rol) {
+    	List<RolPersona> ret=new ArrayList<>();
+    	this.roles.forEach(r -> {
+    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
+    			ret.add(r);
+    		} else if(rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
+    			ret.add(r);
+    		}
+    	});
+    	return ret.get(0);
+    }
+    
+    public List<Rol>giveMeYourRoles(){
+    	List<Rol>roles=new ArrayList<>();
+    	this.roles.forEach(r ->{
+    	if(r.getClass().equals(Inquilino.class))
+    		roles.add(Rol.Inquilino);
+    	else if(r.getClass().equals(Propietario.class))
+    		roles.add(Rol.Propietario);
+    	});
+    	return roles;
+    }
+    
+    private boolean contiene(Rol rol) {
+    	boolean ret=false;
+    	for(Rol r:giveMeYourRoles()) {
+    		ret=ret||r.equals(rol);
+    	}
+    	return ret;
     }
 
 }

@@ -180,6 +180,36 @@ public class ContratoService {
 	        return arrayList;
 	    }
 
+	public synchronized List<Contrato> findAll(String stringFilter) {
+        ArrayList arrayList = new ArrayList();
+        List<Contrato> contratos=daoContrato.readAllActives();
+        if(stringFilter!=""){
+
+            for (Contrato contrato : contratos) {
+
+                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+                                            || contrato.toString().toLowerCase()
+                                            .contains(stringFilter.toLowerCase());
+                    if (passesFilter) {
+
+                        arrayList.add(contrato);
+                    }
+
+            }
+        }
+        else{
+            arrayList.addAll(contratos);
+        }
+
+        Collections.sort(arrayList, new Comparator<Contrato>() {
+
+			@Override
+			public int compare(Contrato o1, Contrato o2) {
+				return (int) (o2.getId() - o1.getId());
+			}
+        });
+        return arrayList;
+    }
 
 	
 
