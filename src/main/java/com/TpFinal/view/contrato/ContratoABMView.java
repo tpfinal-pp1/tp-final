@@ -106,7 +106,7 @@ public class ContratoABMView extends DefaultLayout implements View {
             ContratoAlquilerForm.setContratoAlquiler(new ContratoAlquiler());
         });
 
-        //grid.setColumns("inmueble", "tipoContrato", "fechaContrato");
+        grid.setColumns("fechaCelebracion", "documento", "estadoRegistro");
       //  grid.getColumn("tipoContrato").setCaption("Operación");
      //   grid.getColumn("fechaContrato").setCaption("Fecha Publicación");
 
