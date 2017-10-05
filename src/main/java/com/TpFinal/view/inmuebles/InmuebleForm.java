@@ -10,7 +10,10 @@ import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.vaadin.data.BeanValidationBinder;
 import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToBigIntegerConverter;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
@@ -85,30 +88,50 @@ public class InmuebleForm extends FormLayout {
     }
 
     private void binding() {
-//	// binder.bindInstanceFields(this); //Binding automatico
-//	nombre.setRequiredIndicatorVisible(true);
-//	apellido.setRequiredIndicatorVisible(true);
-//	mail.setRequiredIndicatorVisible(true);
-//	binderPersona.forField(nombre).withValidator(new StringLengthValidator(
-//		"El nombre debe estar entre 2 y 20 caracteres",
-//		2, 20)).bind(Persona::getNombre, Persona::setNombre);
-//
-//	binderPersona.forField(apellido).withValidator(new StringLengthValidator(
-//		"El nombre debe estar entre 2 y 20 caracteres",
-//		2, 20)).bind(Persona::getApellido, Persona::setApellido);
-//
-//	binderPersona.forField(DNI)./*
-//				     * withValidator(new StringLengthValidator(
-//				     * "El DNI de estar entre 2 y 20 caracteres", 2, 20)).
-//				     */bind(Persona::getDNI, Persona::setDNI);
-//	binderPersona.forField(telefono).bind(Persona::getTelefono, Persona::setTelefono);
-//	binderPersona.forField(telefono2).bind(Persona::getTelefono2, Persona::setTelefono2);
-//	binderPersona.forField(mail).withValidator(new EmailValidator(
-//		"Introduzca un email valido!")).bind(Persona::getMail, Persona::setMail);
-//	binderPersona.forField(infoAdicional).withValidator(new StringLengthValidator(
-//		"El nombre debe estar entre 2 y 20 caracteres",
-//		0, 255)).bind(Persona::getInfoAdicional, Persona::setInfoAdicional);
-
+	binderInmueble.forField(calle).bind(inmueble -> inmueble.getDireccion().getCalle()
+		,(inmueble, street) -> inmueble.getDireccion().setCalle(street));
+	
+	binderInmueble.forField(this.aEstrenar).bind(Inmueble::getaEstrenar,Inmueble::setaEstrenar);
+	binderInmueble.forField(this.aireAcond).bind(Inmueble::getConAireAcondicionado,Inmueble::setConAireAcondicionado);
+	
+	binderInmueble.forField(this.ambientes)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
+	.bind(Inmueble::getCantidadAmbientes,Inmueble::setCantidadAmbientes);
+	
+	binderInmueble.forField(this.cJardin).bind(Inmueble::getConJardin, Inmueble::setConJardin);
+	binderInmueble.forField(this.clasesInmueble).bind(Inmueble::getClaseInmueble,Inmueble::setClaseInmueble);
+	binderInmueble.forField(this.cocheras)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
+	.bind(Inmueble::getCantidadCocheras,Inmueble::setCantidadCocheras);
+	
+	binderInmueble.forField(this.cParrilla).bind(Inmueble::getConParilla,Inmueble::setConParilla);
+	binderInmueble.forField(this.cPpileta).bind(Inmueble::getConPileta,Inmueble::setConPileta);
+	
+	binderInmueble.forField(this.dormitorios)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
+	.bind(Inmueble::getCantidadDormitorios,Inmueble::setCantidadDormitorios);
+	
+	//TODO
+//	binderInmueble.forField(this.localidades);
+//	binderInmueble.forField(this.provincias);
+	
+	binderInmueble.forField(this.propietario).bind(Inmueble::getPropietario,Inmueble::setPropietario);
+	
+	binderInmueble.forField(this.supCubierta)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
+	.bind(Inmueble::getSuperficieCubierta,Inmueble::setSuperficieCubierta);
+	
+	binderInmueble.forField(this.supTotal)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
+	.bind(Inmueble::getSuperficieTotal,Inmueble::setSuperficieTotal);
+	
+	binderInmueble.forField(this.tiposInmueble).bind(Inmueble::getTipoInmueble,Inmueble::setTipoInmueble);
+	
     }
 
     private void buildLayout() {
@@ -117,15 +140,25 @@ public class InmuebleForm extends FormLayout {
 	nuevoPropietario.setIcon(VaadinIcons.PLUS);
 	
 	
-	CssLayout propietarioCombo = new CssLayout();
+	propietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	nuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+	nuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+	
+	HorizontalLayout propietarioCombo = new HorizontalLayout();
 	propietarioCombo.addComponents(propietario, nuevoPropietario);
 	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	propietarioCombo.setCaption("Propietario");
+	propietarioCombo.setExpandRatio(propietario, 1f);
 	tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+	
 	
 	FormLayout principal = new FormLayout(calle, localidades,provincias,propietarioCombo,clasesInmueble,tiposInmueble);
 	FormLayout caracteristicas1 = new FormLayout(ambientes,cocheras,dormitorios,supTotal,supCubierta);
 	FormLayout caracteristicas2 = new FormLayout(aEstrenar,aireAcond,cJardin,cParrilla,cPpileta);
+	
+	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	caracteristicas1.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	caracteristicas2.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	
 	TabSheet tabsheet = new TabSheet();
 	tabsheet.addTab(principal, "Datos Principales");
