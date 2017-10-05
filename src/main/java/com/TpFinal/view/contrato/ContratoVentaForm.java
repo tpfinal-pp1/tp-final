@@ -1,4 +1,6 @@
 package com.TpFinal.view.contrato;
+
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
@@ -8,10 +10,12 @@ import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /* Create custom UI Components.
@@ -28,6 +32,7 @@ public class ContratoVentaForm extends FormLayout {
     Button save = new Button("Guardar");
   //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
+    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
 
     // private NativeSelect<ContratoVenta.Sexo> sexo = new NativeSelect<>("Sexo");
@@ -85,6 +90,9 @@ public class ContratoVentaForm extends FormLayout {
 
     private void binding(){
        //binder.bindInstanceFields(this); //Binding automatico
+        binderContratoVenta.forField(fechaCelebracion).withValidator(new DateRangeValidator(
+                "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
+        ).bind(Contrato::getFechaCelebracion,Contrato::setFechaCelebracion);
 
 
 
