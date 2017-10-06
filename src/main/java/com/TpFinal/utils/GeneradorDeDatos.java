@@ -105,7 +105,7 @@ public class GeneradorDeDatos {
 			else{
 				prov=provincias.get(prov.hashCode());
 			}
-			prov.addLocalidad(loc);
+			//prov.addLocalidad(loc);
 			//loc.setProvincia(prov); //FIXME
 			loc.setProvincia(prov.getNombre());
 			locs.add(loc);
