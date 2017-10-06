@@ -2,6 +2,7 @@ package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
@@ -250,6 +251,11 @@ public class ContratoVentaForm extends FormLayout {
             @Override
             public void setGrid() {
                 grid=new Grid<>(Persona.class);
+            }
+
+            @Override
+            public void seleccionado(Persona objeto) {
+                   person=objeto;
             }
 
 

@@ -249,8 +249,13 @@ public class ContratoAlquilerForm extends FormLayout {
                 grid=new Grid<>(Persona.class);
             }
 
+            @Override
+            public void seleccionado(Persona objeto) {
+                person =objeto;
+            }
+
 
         };
-        personaSelector.getSelectionButton().addClickListener(e -> person = personaSelector.getObjeto());
+
     }
 }
