@@ -106,7 +106,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Set<Publicacion> operaciones = new HashSet<>();
     
-    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
     protected Set<Contrato> contratos = new HashSet<>();
 
     public Inmueble() {
@@ -393,7 +393,7 @@ public String toString() {
 }
 
     public static class Builder {
-	private Set<Contrato> contratos;
+	private Set<Contrato> contratos = new HashSet<>();
 	private Propietario propietario;
 	private Integer cantidadAmbientes;
 	private Integer cantidadDormitorios;
@@ -522,5 +522,20 @@ public String toString() {
     public EstadoRegistro getEstadoRegistro() {
 	return estadoRegistro;
     }
+
+    public void addContrato(Contrato c) {
+	contratos.add(c);
+	
+    }
+
+    public Set<Contrato> getContratos() {
+        return contratos;
+    }
+
+    public void setContratos(Set<Contrato> contratos) {
+        this.contratos = contratos;
+    }
+    
+    
 
 }

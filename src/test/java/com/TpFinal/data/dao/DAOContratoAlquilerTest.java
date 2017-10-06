@@ -4,14 +4,16 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.inmueble.ClaseInmueble;
+import com.TpFinal.data.dto.inmueble.Coordenada;
+import com.TpFinal.data.dto.inmueble.Direccion;
+import com.TpFinal.data.dto.inmueble.EstadoInmueble;
+import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Inquilino;
-import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-
 import org.apache.commons.io.FileUtils;
-import org.hibernate.Hibernate;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -138,6 +140,31 @@ public class DAOContratoAlquilerTest {
     	dao.save(c);
     	assertEquals(i, dao.readAll().get(0).getInquilinoContrato());
     }
+    
+    @Test
+    public void testRelacionInmueble() {
+	DAOInmuebleImpl daoI = new DAOInmuebleImpl();
+	Inmueble i = unInmuebleNoPublicado();
+	ContratoAlquiler c = instancia("1");
+	
+	daoI.create(i);
+	c.setInmueble(i);
+	i.addContrato(c);
+	dao.create(c);
+	daoI.saveOrUpdate(i);
+	
+	
+	assertEquals(1, daoI.readAll().get(0).getContratos().size());
+	assertEquals(i,dao.readAll().get(0).getInmueble());
+	
+	i = daoI.readAll().get(0);
+	i.getContratos().remove(c);
+	daoI.saveOrUpdate(i);
+	dao.delete(c);
+	daoI.delete(i);
+	
+	
+    }
 
     public byte[] blobToBytes(Blob c) throws SQLException, IOException {
         Blob blob =c;
@@ -188,5 +215,31 @@ public class DAOContratoAlquilerTest {
     	return new PublicacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
     			.setMoneda(TipoMoneda.Pesos).setInmueble(null).build();
     }
+    
+    private Inmueble unInmuebleNoPublicado() {
+   	return new Inmueble.Builder()
+   		.setaEstrenar(true)
+   		.setCantidadAmbientes(2)
+   		.setCantidadCocheras(3)
+   		.setCantidadDormitorios(1)
+   		.setClaseInmueble(ClaseInmueble.Casa)
+   		.setConAireAcondicionado(true)
+   		.setConJardin(true).setConParilla(true).setConPileta(true)
+   		.setDireccion(
+   			new Direccion.Builder()
+   				.setCalle("Una calle")
+   				.setCodPostal("asd123")
+   				.setCoordenada(new Coordenada())
+   				.setLocalidad("una Localidad")
+   				.setNro(123)
+   				.setPais("Argentina")
+   				.setProvincia("Buenos Aires")
+   				.build())
+   		.setEstadoInmueble(EstadoInmueble.NoPublicado)
+   		.setSuperficieCubierta(200)
+   		.setSuperficieTotal(400)
+   		.setTipoInmueble(TipoInmueble.Vivienda)
+   		.build();
+       }
 
 }

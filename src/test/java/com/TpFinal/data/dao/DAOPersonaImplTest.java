@@ -165,6 +165,8 @@ public class DAOPersonaImplTest {
                 .buid();
     }
     
+    
+    @SuppressWarnings("unused")
     private Inquilino instanciaInquilino(String numero) {
     	return new Inquilino.Builder()
     			.setCalificacion(Calificacion.A)
