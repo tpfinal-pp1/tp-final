@@ -22,6 +22,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatos {
+
     private static String[] nombres = { "Elliott", "Albertha", "Wilburn", "Marquita", "Merrilee", "Rosy", "Williemae",
 	    "Loma", "Raymond", "Ardis", "Patrice", "Julie", "Maryjane", "Giselle", "Irena", "Hang", "Margarita",
 	    "Raymundo", "Zachariah", "Stephenie", "Freddy", "Natividad", "Tequila", "Ron", "Sunni", "Verlie", "Dennis",
@@ -29,13 +30,12 @@ public class GeneradorDeDatos {
 	    "Rosalina", "Narcisa", "Eun", "Alda", "Marilou", "Beatrice", "Marcy", "Margery",
 	    "Bradley			",
 	    "Raeann", "Katheryn", "Brandy", "Hulda" };
-   
+
     private static Random random = new Random();
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
     private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
-    private static ProvinciaService serviceProvincia= new ProvinciaService(CurrentInstance.get(VaadinRequest.class).getService().getBaseDirectory()+File.separator+"Localidades.json");
- 
+    private static ProvinciaService serviceProvincia;
 
     private static String getTelefeno() {
 	return Integer.toString(
@@ -44,15 +44,26 @@ public class GeneradorDeDatos {
 			+ random.nextInt(10));
 
     }
- 
+
+    public static String getpathJsonServer() {
+	return CurrentInstance.get(VaadinRequest.class).getService().getBaseDirectory() + File.separator
+		+ "Localidades.json";
+    }
+    
     public static void generarDatos(int cantidad) {
-	List<Provincia>provincias = serviceProvincia.getProvincias();
+	generarDatos(cantidad, ProvinciaService.modoLecturaJson.server);
+    }
+
+    public static void generarDatos(int cantidad, ProvinciaService.modoLecturaJson modoLectura) {
+
+	serviceProvincia = new ProvinciaService(modoLectura);
+
+	List<Provincia> provincias = serviceProvincia.getProvincias();
 
 	for (int i = 0; i < cantidad; i++) {
-	    
-	  
-	  Provincia provincia = provincias.get(random.nextInt(provincias.size()));
-	  Localidad localidad = provincia.getLocalidades().get(random.nextInt(provincia.getLocalidades().size()));
+
+	    Provincia provincia = provincias.get(random.nextInt(provincias.size()));
+	    Localidad localidad = provincia.getLocalidades().get(random.nextInt(provincia.getLocalidades().size()));
 	    Inmueble inmueble = new Inmueble.Builder()
 		    .setaEstrenar(random.nextBoolean())
 		    .setCantidadAmbientes(random.nextInt(10))

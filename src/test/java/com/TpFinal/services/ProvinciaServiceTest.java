@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.TpFinal.data.dto.Provincia;
 
 public class ProvinciaServiceTest {
-	ProvinciaService service=new ProvinciaService("src\\\\main\\\\webapp\\\\Localidades.json");
+	ProvinciaService service=new ProvinciaService(ProvinciaService.modoLecturaJson.local);
 	List<Provincia>provincias= new ArrayList<>();
 	
 	@Before

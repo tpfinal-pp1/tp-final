@@ -81,7 +81,7 @@ public class InmuebleForm extends FormLayout {
     PersonaService service = new PersonaService();
     private InmuebleABMView abmView;
     private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
-    private ProvinciaService serviceProvincia= new ProvinciaService("src"+File.separator+"main"+File.separator+"webapp"+File.separator+"Localidades.json");
+    private ProvinciaService serviceProvincia= new ProvinciaService();
 
     TabSheet tabSheet;
 

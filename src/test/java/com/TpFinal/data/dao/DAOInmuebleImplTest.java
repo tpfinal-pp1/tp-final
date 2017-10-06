@@ -31,6 +31,7 @@ import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.data.dto.publicacion.TipoPublicacion;
+import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.GeneradorDeDatos;
 
 public class DAOInmuebleImplTest {
@@ -571,7 +572,7 @@ public class DAOInmuebleImplTest {
     
     @Test
     public void testGeneradorDeDatos() {
-	GeneradorDeDatos.generarDatos(10);
+	GeneradorDeDatos.generarDatos(10,ProvinciaService.modoLecturaJson.local);
 	inmuebles=dao.readAll();
 	assertEquals(10, inmuebles.size());
 	DAOPersonaImpl daop = new DAOPersonaImpl();
