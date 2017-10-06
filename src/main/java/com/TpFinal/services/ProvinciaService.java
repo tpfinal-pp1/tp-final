@@ -22,7 +22,7 @@ public class ProvinciaService {
 	}
 	
 	private void getProvinciasJson(){
-		List<LocalidadRAW>localidades=json.leerRaw("src\\main\\webapp\\Localidades.json");
+		List<LocalidadRAW>localidades=json.leerRaw(path);
 		this.provincias=json.rawToProvincias(localidades);
 		
 	}
