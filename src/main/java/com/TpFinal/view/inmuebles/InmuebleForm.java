@@ -1,20 +1,19 @@
 package com.TpFinal.view.inmuebles;
 
-import java.util.Collections;
-
 import com.TpFinal.data.dto.Localidad;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
+import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
-import com.vaadin.data.BeanValidationBinder;
+import com.TpFinal.view.persona.PersonaFormWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
-import com.vaadin.data.converter.StringToBigIntegerConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
@@ -42,8 +41,9 @@ public class InmuebleForm extends FormLayout {
     private Button delete = new Button("Eliminar");
     
     //TabPrincipal
-    private ComboBox<Persona> propietario = new ComboBox<>();
-    private Button nuevoPropietario  = new Button();
+    private final ComboBox<Persona> comboPropietario = new ComboBox<>();
+    private Persona persona =new Persona();
+    private Button btnNuevoPropietario = new Button();
     private ComboBox <ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
     private RadioButtonGroup <TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
     
@@ -85,6 +85,7 @@ public class InmuebleForm extends FormLayout {
 	configureComponents();
 	binding();
 	buildLayout();
+	updateComboPersonas();
 
     }
 
@@ -93,15 +94,32 @@ public class InmuebleForm extends FormLayout {
 	save.addClickListener(e -> this.save());
 	test.addClickListener(e -> this.test());
 	delete.addClickListener(e -> this.delete());
+
+	btnNuevoPropietario.addClickListener(e->this.setNewPropietario());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
 	setVisible(false);
     }
 
-    private void binding() {
-	binderInmueble.forField(calle).bind(inmueble -> inmueble.getDireccion().getCalle()
-		,(inmueble, street) -> inmueble.getDireccion().setCalle(street));
+	private void setNewPropietario() {
+    	this.persona = new Persona();
+    	persona.addRol(Rol.Propietario);
+    	Propietario propietario= persona.getPropietario();
+    	propietario.addInmueble(this.inmueble);
+    	new PersonaFormWindow(this.persona) {
+			@Override
+			public void onSave() {
+				updateComboPersonas();
+				comboPropietario.setSelectedItem(persona);
+
+			}
+		};
+
+	}
+
+	private void binding() {
+
+	//binderInmueble.forField(calle).bind(Dire,Inmueble::setaEstrenar);
 	
 	binderInmueble.forField(this.aEstrenar).bind(Inmueble::getaEstrenar,Inmueble::setaEstrenar);
 	binderInmueble.forField(this.aireAcond).bind(Inmueble::getConAireAcondicionado,Inmueble::setConAireAcondicionado);
@@ -139,7 +157,7 @@ public class InmuebleForm extends FormLayout {
 //	binderInmueble.forField(this.localidades);
 //	binderInmueble.forField(this.provincias);
 	
-	binderInmueble.forField(this.propietario).bind(inmueble -> inmueble.getPropietario().getPersona()
+	binderInmueble.forField(this.comboPropietario).bind(inmueble -> inmueble.getPropietario().getPersona()
 		,setPropietario());
 	
 	binderInmueble.forField(this.supCubierta)
@@ -165,15 +183,15 @@ public class InmuebleForm extends FormLayout {
     private void buildLayout() {
 	addStyleName("v-scrollable");
 	
-	nuevoPropietario.setIcon(VaadinIcons.PLUS);	
-	propietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-	nuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-	nuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);	
+	btnNuevoPropietario.setIcon(VaadinIcons.PLUS);
+	comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 	HorizontalLayout propietarioCombo = new HorizontalLayout();
-	propietarioCombo.addComponents(propietario, nuevoPropietario);
+	propietarioCombo.addComponents(comboPropietario, btnNuevoPropietario);
 	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	propietarioCombo.setCaption("Propietario");
-	propietarioCombo.setExpandRatio(propietario, 1f);
+	propietarioCombo.setExpandRatio(comboPropietario, 1f);
 	tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 	
 	
@@ -216,6 +234,12 @@ public class InmuebleForm extends FormLayout {
 	    this.focus();
 
     }
+
+    private void updateComboPersonas(){
+    	PersonaService ps=new PersonaService();
+    	comboPropietario.setItems(ps.findAll(""));
+	}
+
 
     private void delete() {
 	inmbService.delete(inmueble);

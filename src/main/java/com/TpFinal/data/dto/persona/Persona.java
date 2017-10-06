@@ -98,7 +98,12 @@ public class Persona implements Identificable, BorradoLogico {
 		return null;
 	}
 
-    @Override
+   @Override
+   public String toString(){
+    	return this.getNombre()+" "+this.getApellido();
+   }
+
+    /*@Override
     public String toString() {
 	String rols = "";
 	for (RolPersona rol : this.roles) {
@@ -112,7 +117,7 @@ public class Persona implements Identificable, BorradoLogico {
 		", roles=" + rols +
 		'}';
     }
-
+*/
     @Override
     public boolean equals(Object o) {
 	if (this == o)

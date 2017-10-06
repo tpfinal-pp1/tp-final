@@ -1,20 +1,12 @@
 package com.TpFinal.view.persona;
-import com.TpFinal.data.dao.DAOInmuebleImpl;
-import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.publicacion.Publicacion;
-import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.*;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.data.dto.persona.Calificacion;
-import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.PersonaFormWindow;
 import com.TpFinal.view.component.TinyButton;
-import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
@@ -23,8 +15,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
-
-import java.util.List;
 
 
 public class PersonaForm extends FormLayout {
@@ -140,7 +130,8 @@ public class PersonaForm extends FormLayout {
 
 
         aSeleccionar=new ContratoVenta();
-        contratos.addClickListener(e -> new PersonaFormWindow(new Persona()));
+     /*   contratos.addClickListener(e ->
+                new PersonaFormWindow(new Persona()));*/
         VerticalLayout Roles=new VerticalLayout(calificacion,contratos
                 ,
                 new TinyButton("Ver Busquedas"));

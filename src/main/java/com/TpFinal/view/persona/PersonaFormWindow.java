@@ -1,4 +1,4 @@
-package com.TpFinal.view.component;
+package com.TpFinal.view.persona;
 
 import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.dto.persona.Persona;
@@ -29,7 +29,7 @@ import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException;
 import java.util.Arrays;
 
 @SuppressWarnings("serial")
-public class PersonaFormWindow extends Window {
+public abstract class PersonaFormWindow extends Window {
 
     public static final String ID = "profilepreferenceswindow";
 
@@ -60,7 +60,7 @@ public class PersonaFormWindow extends Window {
         UI.getCurrent().addWindow(this);
         this.focus();
     }
-
+    public abstract void onSave();
     private void configureComponents(){
 
 
@@ -138,6 +138,7 @@ public class PersonaFormWindow extends Window {
         try {
             binderPersona.writeBean(persona);
             service.saveOrUpdate(persona);
+            onSave();
             success=true;
 
 

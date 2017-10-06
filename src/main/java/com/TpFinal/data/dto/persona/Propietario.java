@@ -26,7 +26,10 @@ public class Propietario extends RolPersona {
 		this.inmuebles=b.inmuebles;
 	
 	}
-	
+	public void addInmueble(Inmueble i) {
+		inmuebles.add(i);
+		i.setPropietario(this);
+	}
 
 	public Set<Inmueble> getInmuebles() {
 	    return inmuebles;
