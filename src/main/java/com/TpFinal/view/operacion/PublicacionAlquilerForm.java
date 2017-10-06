@@ -10,6 +10,8 @@ import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
@@ -94,7 +96,16 @@ public class PublicacionAlquilerForm extends FormLayout {
         binderPublicacionAlquiler.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
-       //TODO BIDING DE HERENCIA binderPublicacionAlquiler.forField(moneda).bind(PublicacionAlquiler::getMoneda,PublicacionAlquiler::setMoneda);
+
+       binderPublicacionAlquiler.forField(moneda).bind("moneda"); //MAGIC
+  binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
+
+
+
+
+
+
+
     }
 
     private void buildLayout() {
@@ -102,9 +113,11 @@ public class PublicacionAlquilerForm extends FormLayout {
         setMargin(true);
 
         tabSheet=new TabSheet();
-
-        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector);
+      // HorizontalLayout horizontalLayout;
+        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector,
+                valorCuota,moneda);
         HorizontalLayout adicional=new HorizontalLayout(propietario,nombrePropietario);
+
         principal.setSpacing(true);
         adicional.setSpacing(true);
         FormLayout mainLayout = new FormLayout(principal,adicional);

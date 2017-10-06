@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by Max on 10/5/2017.
  */
-public enum EstadoPublicacion { ACTIVA,TERMINADA;
+public enum EstadoPublicacion { Activa,Terminada;
 
     public static List<EstadoPublicacion> toList() {
         EstadoPublicacion[] tipos = EstadoPublicacion.values();

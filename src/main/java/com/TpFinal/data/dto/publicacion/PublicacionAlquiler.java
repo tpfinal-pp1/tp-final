@@ -15,6 +15,14 @@ public class PublicacionAlquiler extends Publicacion {
 	
 	public static final String pPrecioAlquiler = "valorCuota";
 
+	public BigDecimal getValorCuota() {
+		return valorCuota;
+	}
+
+	public void setValorCuota(BigDecimal valorCuota) {
+		this.valorCuota = valorCuota;
+	}
+
 	@Column(name = pPrecioAlquiler)
 	private BigDecimal valorCuota;
 

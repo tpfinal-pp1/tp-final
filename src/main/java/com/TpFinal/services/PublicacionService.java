@@ -67,7 +67,7 @@ public class PublicacionService {
                 p.setPropietarioPublicacion(p.getInmueble().getPropietario());
             }
             if(p.getEstadoPublicacion() == null)
-                p.setEstadoPublicacion(EstadoPublicacion.ACTIVA);
+                p.setEstadoPublicacion(EstadoPublicacion.Activa);
         }
         return arrayList;
 

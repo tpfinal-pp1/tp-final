@@ -10,6 +10,7 @@ import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
@@ -103,7 +104,9 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
-     //FIXME   binderPublicacionVenta.forField(moneda).bind(PublicacionVenta::getMoneda,PublicacionVenta::setMoneda);
+        binderPublicacionVenta.forField(moneda).bind("moneda");
+        binderPublicacionVenta.forField(precio).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precio");
+       //binderPublicacionVenta.forField(precio).bind("precio");
 
 
     }
@@ -114,7 +117,7 @@ public class PublicacionVentaForm extends FormLayout {
 
         tabSheet=new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector);
+        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector,moneda,precio);
         HorizontalLayout adicional=new HorizontalLayout(propietario,nombrePropietario);
         principal.setSpacing(true);
         adicional.setSpacing(true);

@@ -38,6 +38,10 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	@Column (name = "estado_publicacion")
 	protected EstadoPublicacion estadoPublicacion;
 
+	public static String getpTipoPublicacion() {
+		return pTipoPublicacion;
+	}
+
 	@Enumerated(EnumType.STRING)
 	protected EstadoRegistro estadoRegistro;
 

@@ -267,11 +267,18 @@ public class Inmueble implements Identificable, BorradoLogico {
     }
 
     public void addPublicacion(Publicacion operacion) {
-	if (operaciones.size() < 2) {
-	    operaciones.add(operacion);
-	} else {
-	    throw new IllegalArgumentException("No se puede agregar más operaciones, el  máximo es 2.");
-	}
+
+
+		if (operaciones.size() < 2) {
+				operaciones.add(operacion);
+		}
+		else{
+			operaciones.clear();
+			operaciones.add(operacion);
+			throw new IllegalArgumentException("Se borro la publicacion anterior y se reemplazo por una nueva");
+		}
+
+
     }
 
     public Propietario getPropietario() {
