@@ -36,7 +36,7 @@ public class PublicacionService {
 
     public List<Publicacion> readAll(String stringFilter) {
         ArrayList <Publicacion> arrayList = new ArrayList();
-        List<Publicacion> publicaciones=dao.readAll(); //TODO cambiar a readAllActives() cuando se setean a activos?
+        List<Publicacion> publicaciones=dao.readAllActives();
         if(stringFilter!=""){
 
             for (Publicacion publicacion : publicaciones) {

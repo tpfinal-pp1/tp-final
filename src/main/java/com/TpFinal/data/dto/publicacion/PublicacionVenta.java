@@ -1,21 +1,13 @@
 package com.TpFinal.data.dto.publicacion;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "publicaciones_venta")
@@ -49,6 +41,7 @@ public class PublicacionVenta extends Publicacion {
 	public PublicacionVenta() {
 		super();
 		tipoPublicacion = TipoPublicacion.Venta;
+		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
 	
 	private PublicacionVenta(Builder b) {
