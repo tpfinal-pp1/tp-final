@@ -1,6 +1,6 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.Localidad;
+import com.TpFinal.data.dto.LocalidadRAW;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
@@ -59,8 +59,8 @@ public class InmuebleForm extends FormLayout {
     // TabDireccion
     private TextField calle = new TextField("Calle");
     private TextField nro = new TextField("Número");
-    private TextField codPostal = new TextField("Código Postal");
-    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
+    private TextField codPostal = new TextField("Código postal");
+    private ComboBox<LocalidadRAW> localidades = new ComboBox<>("Localidad");
     private ComboBox<Provincia> provincias = new ComboBox<>("Provincia");
     private TinyButton buscarUbicacion = new TinyButton("Buscar Ubicación", VaadinIcons.MAP_MARKER);
 
@@ -116,17 +116,18 @@ public class InmuebleForm extends FormLayout {
 		Provincia provincia = valueChangeEvent.getValue();
 		if (provincia != null && !provincia.equals(provincias.getSelectedItem())) {
 		    if (valueChangeEvent.getOldValue() != null) {
-			localidades.setItems(provincia.getLocalidades());
-			localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			//FIXME
+//			localidades.setItems(provincia.getLocalidades());
+//			localidades.setSelectedItem(provincia.getLocalidades().get(0));
 		    }
 		}
 
 	    }
 	});
 
-	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
+	localidades.addValueChangeListener(new HasValue.ValueChangeListener<LocalidadRAW>() {
 	    @Override
-	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
+	    public void valueChange(HasValue.ValueChangeEvent<LocalidadRAW> valueChangeEvent) {
 
 		if (valueChangeEvent.getValue() != null) {
 		    // provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
@@ -162,11 +163,11 @@ public class InmuebleForm extends FormLayout {
 	// binderInmueble.forField(calle).bind(Dire,Inmueble::setaEstrenar);
 
 	binderInmueble.forField(this.aEstrenar)
-		
+
 		.bind(Inmueble::getaEstrenar, Inmueble::setaEstrenar);
 
 	binderInmueble.forField(this.aireAcond)
-		
+
 		.bind(Inmueble::getConAireAcondicionado, Inmueble::setConAireAcondicionado);
 
 	binderInmueble.forField(this.ambientes).withNullRepresentation("")
@@ -176,11 +177,11 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getCantidadAmbientes, Inmueble::setCantidadAmbientes);
 
 	binderInmueble.forField(this.cJardin)
-		
+
 		.bind(Inmueble::getConJardin, Inmueble::setConJardin);
 
 	binderInmueble.forField(this.clasesInmueble)
-		
+
 		.bind(Inmueble::getClaseInmueble, Inmueble::setClaseInmueble);
 
 	binderInmueble.forField(this.cocheras)
@@ -191,11 +192,11 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
 
 	binderInmueble.forField(this.cParrilla)
-		
+
 		.bind(Inmueble::getConParilla, Inmueble::setConParilla);
 
 	binderInmueble.forField(this.cPpileta)
-		
+
 		.bind(Inmueble::getConPileta, Inmueble::setConPileta);
 
 	binderInmueble.forField(this.dormitorios)
@@ -315,8 +316,7 @@ public class InmuebleForm extends FormLayout {
     public void setInmueble(Inmueble inmueble) {
 
 	this.inmueble = inmueble;
-	
-		
+
 	System.out.println(this.inmueble);
 	binderInmueble.readBean(this.inmueble);
 

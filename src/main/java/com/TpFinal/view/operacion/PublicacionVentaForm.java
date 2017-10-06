@@ -1,6 +1,7 @@
 package com.TpFinal.view.operacion;
 
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
@@ -37,7 +38,10 @@ public class PublicacionVentaForm extends FormLayout {
     Label propietario = new Label ("Propietario: ");
     Label nombrePropietario = new Label();
     Inmueble inmuebleSeleccionado;
+    TextField precio = new TextField("Precio");
+    RadioButtonGroup <TipoMoneda> moneda = new RadioButtonGroup<>("Tipo moneda", TipoMoneda.toList());
 
+    //TODO una vez que este contrato venta ContratoVenta contratoVenta;
     // private NativeSelect<PublicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PublicacionService service = new PublicacionService();
@@ -99,6 +103,8 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
+     //FIXME   binderPublicacionVenta.forField(moneda).bind(PublicacionVenta::getMoneda,PublicacionVenta::setMoneda);
+
 
     }
 
@@ -135,6 +141,7 @@ public class PublicacionVentaForm extends FormLayout {
         inmuebleSeleccionado = PublicacionVenta.getInmueble();
         if(inmuebleSeleccionado == null)
             inmuebleSeleccionado = new Inmueble();
+
 
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionVenta.getId()!=null);
@@ -179,7 +186,7 @@ public class PublicacionVentaForm extends FormLayout {
     }*/
 
    private void displayInmuebleSelector(){
-      VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
+           VentanaSelectora<Inmueble> inmueblesSelector= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
            @Override
            public void updateList() {
                InmuebleService InmuebleService=
@@ -194,17 +201,21 @@ public class PublicacionVentaForm extends FormLayout {
                grid=new Grid<Inmueble>(Inmueble.class);
            }
 
-       };
-
+           };
+          inmueblesSelector.getSelectionButton().addClickListener(e -> inmuebleSeleccionado = inmueblesSelector.getObjeto());
    }
 
     private void save() {
 
         boolean success=false;
         try {
+
+
+            this.PublicacionVenta.setInmueble(inmuebleSeleccionado);
+            this.PublicacionVenta.getInmueble().addPublicacion(this.PublicacionVenta);
             this.PublicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
-            binderPublicacionVenta.writeBean(PublicacionVenta);
-            service.save(PublicacionVenta);
+            binderPublicacionVenta.writeBean(this.PublicacionVenta);
+            service.save(this.PublicacionVenta);
             success=true;
 
 

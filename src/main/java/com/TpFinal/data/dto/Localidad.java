@@ -1,62 +1,89 @@
 package com.TpFinal.data.dto;
 
+import javax.persistence.Entity;
+
+@Entity
+
 public class Localidad {
-   private String loc_nombre="";
-    private String loc_cpostal;
-    private String prv_nombre;
 
+	 
+		private String nombre;
+	    private String codigoPostal;
+	    private Provincia provincia;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+	    public Localidad() {}
+	    
+	    public Localidad(String nombre, String codPosta){
+	        this.nombre=nombre;
+	        this.codigoPostal=codPosta;
+	    }
 
-        Localidad localidad = (Localidad) o;
+	    @Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Localidad other = (Localidad) obj;
+			if (codigoPostal == null) {
+				if (other.codigoPostal != null)
+					return false;
+			} else if (!codigoPostal.equals(other.codigoPostal))
+				return false;
+			if (nombre == null) {
+				if (other.nombre != null)
+					return false;
+			} else if (!nombre.equals(other.nombre))
+				return false;
+			if (provincia == null) {
+				if (other.provincia != null)
+					return false;
+			} else if (!provincia.equals(other.provincia))
+				return false;
+			return true;
+		}
 
-        if (loc_nombre != null ? !loc_nombre.equals(localidad.loc_nombre) : localidad.loc_nombre != null) return false;
-        if (loc_cpostal != null ? !loc_cpostal.equals(localidad.loc_cpostal) : localidad.loc_cpostal != null) return false;
-        return prv_nombre != null ? prv_nombre.equals(localidad.prv_nombre) : localidad.prv_nombre == null;
-    }
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + ((codigoPostal == null) ? 0 : codigoPostal.hashCode());
+			result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+			result = prime * result + ((provincia == null) ? 0 : provincia.hashCode());
+			return result;
+		}
 
-    @Override
-    public int hashCode() {
-        int result = loc_nombre != null ? loc_nombre.hashCode() : 0;
-        result = 31 * result + (loc_cpostal != null ? loc_cpostal.hashCode() : 0);
-        result = 31 * result + (prv_nombre != null ? prv_nombre.hashCode() : 0);
-        return result;
-    }
+	    @Override
+	    public String toString() {
+	        return nombre;
+	    }
 
-    @Override
-    public String toString() {
-        return loc_nombre;
-    }
+		public String getNombre() {
+			return nombre;
+		}
 
-    public Localidad(String nombre, String codPosta){
-        this.loc_nombre=nombre;
-        this.loc_cpostal=codPosta;
-    }
-    public String getNombre() {
-        return loc_nombre;
-    }
+		public String getCodigoPostal() {
+			return codigoPostal;
+		}
 
-    public void setNombre(String nombre) {
-        this.loc_nombre = nombre;
-    }
+		public Provincia getProvincia() {
+			return provincia;
+		}
 
-    public String getCodPosta() {
-        return loc_cpostal;
-    }
+		public void setNombre(String nombre) {
+			this.nombre = nombre;
+		}
 
-    public void setCodPosta(String codPosta) {
-        this.loc_cpostal = codPosta;
-    }
+		public void setCodigoPostal(String codigoPostal) {
+			this.codigoPostal = codigoPostal;
+		}
 
-    public String getProvincia() {
-        return prv_nombre;
-    }
+		public void setProvincia(Provincia provincia) {
+			this.provincia = provincia;
+		}
 
-    public void setProvincia(String provincia) {
-        this.prv_nombre = provincia;
-    }
+	  
+
 }
-

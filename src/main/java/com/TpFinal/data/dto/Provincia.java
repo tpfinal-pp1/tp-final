@@ -1,12 +1,19 @@
 package com.TpFinal.data.dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Provincia {
     String nombre ="";
-    ArrayList<Localidad> localidades=new ArrayList<>();
+    List<Localidad> localidades=new ArrayList<>();
 
-    public ArrayList<Localidad> getLocalidades() {
+   public Provincia() {}
+   
+   public Provincia(String nombre){
+       this.nombre=nombre;
+   }
+    
+    public List<Localidad> getLocalidades() {
         return localidades;
     }
 
@@ -36,10 +43,6 @@ public class Provincia {
         return nombre != null ? nombre.hashCode() : 0;
     }
 
-    public Provincia(String nombre){
-        this.nombre=nombre;
-
-    }
     public String getNombre() {
         return nombre;
     }
