@@ -103,7 +103,7 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
-        binderPublicacionVenta.forField(moneda).bind(PublicacionVenta::getMoneda,PublicacionVenta::setMoneda);
+     //FIXME   binderPublicacionVenta.forField(moneda).bind(PublicacionVenta::getMoneda,PublicacionVenta::setMoneda);
 
 
     }

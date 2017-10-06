@@ -44,7 +44,12 @@ public class Propietario extends RolPersona {
 
 	@Override
 	public String toString() {
-	    return super.getPersona().getNombre() + " " + super.getPersona().getApellido();
+	    
+	    String ret = "";
+	    if (super.getPersona() != null) {
+		ret = super.getPersona().getNombre() + " " + super.getPersona().getApellido();
+	    }
+	    return ret;
 	}
 
 
