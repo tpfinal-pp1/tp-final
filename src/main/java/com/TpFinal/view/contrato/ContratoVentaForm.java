@@ -33,7 +33,7 @@ public class ContratoVentaForm extends FormLayout {
   //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
-
+    Persona person = new Persona();  // TODO ver donde se usa persona person.
 
     // private NativeSelect<ContratoVenta.Sexo> sexo = new NativeSelect<>("Sexo");
 
@@ -114,21 +114,7 @@ public class ContratoVentaForm extends FormLayout {
 
         TinyButton personas=new TinyButton("Ver Personas");
 
-        personas.addClickListener(e -> new VentanaSelectora<Persona>(new Persona()) {
-            @Override
-            public void updateList() {
-                PersonaService PersonaService=
-                        new PersonaService();
-                List<Persona> Personas = PersonaService.readAll();
-                grid.setItems(Personas);
-            }
-
-            @Override
-            public void setGrid() {
-                grid=new Grid<>(Persona.class);
-            }
-
-        });
+        personas.addClickListener(e -> getPersonaSelector());
 
         VerticalLayout Roles=new VerticalLayout(personas);
 
@@ -250,6 +236,26 @@ public class ContratoVentaForm extends FormLayout {
         return addressbookView;
     }
 
+
+    private void getPersonaSelector() {
+        VentanaSelectora<Persona> personaSelector = new VentanaSelectora<Persona>(person) {
+            @Override
+            public void updateList() {
+                PersonaService PersonaService=
+                        new PersonaService();
+                List<Persona> Personas = PersonaService.readAll();
+                grid.setItems(Personas);
+            }
+
+            @Override
+            public void setGrid() {
+                grid=new Grid<>(Persona.class);
+            }
+
+
+        };
+        personaSelector.getSelectionButton().addClickListener(e -> person = personaSelector.getObjeto());
+    }
 
 
 }
