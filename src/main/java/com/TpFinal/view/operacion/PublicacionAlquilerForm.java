@@ -1,11 +1,22 @@
 package com.TpFinal.view.operacion;
+
+import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
+import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
+import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /* Create custom UI Components.
  *
@@ -21,7 +32,16 @@ public class PublicacionAlquilerForm extends FormLayout {
     Button save = new Button("Guardar");
   //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
+    DateField fechaPublicacion = new DateField("Fecha publicacion");
+    RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
+    Button inmuebleSelector = new Button("Seleccionar inmueble");
+    Label propietario = new Label ("Propietario: ");
+    Label nombrePropietario = new Label();
+    Inmueble inmuebleSeleccionado;
+    TextField valorCuota = new TextField("Valor de cuota");
+    RadioButtonGroup <TipoMoneda> moneda = new RadioButtonGroup<>("Tipo moneda", TipoMoneda.toList());
 
+   // TODO una vez que este contrato ContratoAlquiler contratoAlquiler;
 
     // private NativeSelect<PublicacionAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
 
@@ -29,14 +49,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     private PublicacionABMView addressbookView;
     private Binder<PublicacionAlquiler> binderPublicacionAlquiler = new Binder<>(PublicacionAlquiler.class);
 
-
-
-
     TabSheet tabSheet;
-
-
-
-
 
 
     // Easily binding forms to beans and manage validation and buffering
@@ -62,13 +75,12 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         //   sexo.setEmptySelectionAllowed(false);
         //  sexo.setItems(PublicacionAlquiler.Sexo.values());
+        inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
-
 
 
 
@@ -78,13 +90,11 @@ public class PublicacionAlquilerForm extends FormLayout {
 
     private void binding(){
        //binder.bindInstanceFields(this); //Binding automatico
-
-
-
-
-
-
-
+        binderPublicacionAlquiler.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
+        binderPublicacionAlquiler.forField(fechaPublicacion).withValidator(new DateRangeValidator(
+                "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
+        ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
+       //TODO BIDING DE HERENCIA binderPublicacionAlquiler.forField(moneda).bind(PublicacionAlquiler::getMoneda,PublicacionAlquiler::setMoneda);
     }
 
     private void buildLayout() {
@@ -93,17 +103,19 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         tabSheet=new TabSheet();
 
-        VerticalLayout principal=new VerticalLayout();
-        VerticalLayout adicional=new VerticalLayout();
-
-
-
+        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector);
+        HorizontalLayout adicional=new HorizontalLayout(propietario,nombrePropietario);
+        principal.setSpacing(true);
+        adicional.setSpacing(true);
+        FormLayout mainLayout = new FormLayout(principal,adicional);
 
         tabSheet.addTab(principal,"Alquiler");
         tabSheet.addTab(adicional,"Contrato");
 
 
+
         addComponent(tabSheet);
+        addComponent(mainLayout);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
         actions.setSpacing(true);
@@ -113,7 +125,11 @@ public class PublicacionAlquilerForm extends FormLayout {
     public void setPublicacionAlquiler(PublicacionAlquiler PublicacionAlquiler) {
 
         this.PublicacionAlquiler = PublicacionAlquiler;
-      //  binderPublicacionAlquiler.readBean(PublicacionAlquiler);
+        binderPublicacionAlquiler.readBean(PublicacionAlquiler);
+
+        inmuebleSeleccionado = PublicacionAlquiler.getInmueble();
+        if(inmuebleSeleccionado == null)
+            inmuebleSeleccionado = new Inmueble();
 
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionAlquiler.getId()!=null);
@@ -156,6 +172,27 @@ public class PublicacionAlquilerForm extends FormLayout {
         save();
 
     }*/
+
+    private void displayInmuebleSelector(){
+        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
+            @Override
+            public void updateList() {
+                InmuebleService InmuebleService=
+                        new InmuebleService();
+                List<Inmueble> inmuebles = InmuebleService.readAll();
+                grid.setItems(inmuebles);
+
+            }
+
+            @Override
+            public void setGrid() {
+                grid=new Grid<Inmueble>(Inmueble.class);
+            }
+
+        };
+
+    }
+
 
     private void save() {
 

@@ -1,12 +1,8 @@
 package com.TpFinal.services;
 
-import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
-import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
-import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 
 import java.util.ArrayList;
@@ -21,12 +17,12 @@ public class PublicacionService {
         dao = new DAOPublicacionImpl();
     }
 
-    public List<Publicacion> readAll(String busqueda) {
+    public List<Publicacion> readAll() {
         return dao.readAll();
     }
 
     public boolean delete(Publicacion entidad) {
-        return dao.delete(entidad);
+        return dao.logicalDelete(entidad);
     }
 
     public boolean save(Publicacion entidad) {
@@ -36,7 +32,46 @@ public class PublicacionService {
     public Publicacion findById(Long id) {
         return dao.findById(id);
     }
-    
+
+
+    public List<Publicacion> readAll(String stringFilter) {
+        ArrayList <Publicacion> arrayList = new ArrayList();
+        List<Publicacion> publicaciones=dao.readAll(); //TODO cambiar a readAllActives() cuando se setean a activos?
+        if(stringFilter!=""){
+
+            for (Publicacion publicacion : publicaciones) {
+
+                boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+                        || publicacion.toString().toLowerCase()
+                        .contains(stringFilter.toLowerCase());
+                if (passesFilter) {
+
+                    arrayList.add(publicacion);
+                }
+
+            }
+        }
+        else{
+            arrayList.addAll(publicaciones);
+        }
+
+        Collections.sort(arrayList, new Comparator<Publicacion>() {
+
+            @Override
+            public int compare(Publicacion o1, Publicacion o2) {
+                return (int) (o2.getId() - o1.getId());
+            }
+        });
+        for(Publicacion p : arrayList){
+            if(p.getInmueble() != null){
+                p.setPropietarioPublicacion(p.getInmueble().getPropietario());
+            }
+            if(p.getEstadoPublicacion() == null)
+                p.setEstadoPublicacion(EstadoPublicacion.ACTIVA);
+        }
+        return arrayList;
+
+    }
 
 
 

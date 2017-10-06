@@ -4,7 +4,6 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -97,7 +96,6 @@ public abstract class VentanaSelectora<T>extends Window {
         footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
         return footer;
     }
-
 
 
 }

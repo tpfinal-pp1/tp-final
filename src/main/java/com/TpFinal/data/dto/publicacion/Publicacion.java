@@ -1,25 +1,14 @@
 package com.TpFinal.data.dto.publicacion;
 
-import java.time.LocalDate;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.persona.Propietario;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -44,10 +33,19 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	@Enumerated(EnumType.STRING)
 	@Column (name = Publicacion.pTipoPublicacion)
 	protected TipoPublicacion tipoPublicacion;
-	
+
+	@Enumerated(EnumType.STRING)
+	@Column (name = "estado_publicacion")
+	protected EstadoPublicacion estadoPublicacion;
+
 	@Enumerated(EnumType.STRING)
 	protected EstadoRegistro estadoRegistro;
-	
+
+	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.REMOVE})
+	@JoinColumn(name = "id_proppietario")
+	protected Propietario propietarioPublicacion;
+
+
 	@Override
 	public Long getId() {
 		return idPublicacion;
@@ -81,6 +79,14 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	public void setTipoPublicacion(TipoPublicacion tipoPublicacion) {
 		this.tipoPublicacion = tipoPublicacion;
 	}
+
+	public EstadoPublicacion getEstadoPublicacion() { return estadoPublicacion; }
+
+	public void setEstadoPublicacion(EstadoPublicacion estadoPublicacion) { this.estadoPublicacion = estadoPublicacion; }
+
+	public Propietario getPropietarioPublicacion() { return propietarioPublicacion; }
+
+	public void setPropietarioPublicacion(Propietario propietarioPublicacion) { this.propietarioPublicacion = propietarioPublicacion; }
 
 	@Override
 	public String toString() {

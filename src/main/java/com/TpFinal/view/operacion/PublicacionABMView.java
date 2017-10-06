@@ -105,9 +105,10 @@ public class PublicacionABMView extends DefaultLayout implements View {
             PublicacionAlquilerForm.setPublicacionAlquiler(new PublicacionAlquiler());
         });
 
-        grid.setColumns("inmueble", "tipoPublicacion", "fechaPublicacion");
+        grid.setColumns("inmueble","propietarioPublicacion","tipoPublicacion","fechaPublicacion","estadoPublicacion");
         grid.getColumn("tipoPublicacion").setCaption("Operación");
         grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
+        grid.getColumn("propietarioPublicacion").setCaption("Propietario");
 
 
         Responsive.makeResponsive(this);
