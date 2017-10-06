@@ -110,18 +110,21 @@ public class InmuebleForm extends FormLayout {
 
 	localidades.setItems(GeneradorDeDatos.getLocalidades());
 	provincias.setItems(GeneradorDeDatos.getProvincias());
+
 	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
 		@Override
 		public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
 			Provincia provincia=valueChangeEvent.getValue();
 			if( provincia!=null&& !provincia.equals(provincias.getSelectedItem())) {
-				localidades.setSelectedItem(null);
-				localidades.setItems(provincia.getLocalidades());
-				localidades.setSelectedItem(provincia.getLocalidades().get(0));
+				if(valueChangeEvent.getOldValue()!=null) {
+					localidades.setItems(provincia.getLocalidades());
+					localidades.setSelectedItem(provincia.getLocalidades().get(0));
+				}
 			}
 
 		}
 	});
+
 	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
 		@Override
 		public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {

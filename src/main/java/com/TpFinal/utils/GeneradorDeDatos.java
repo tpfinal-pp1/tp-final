@@ -35,6 +35,9 @@ public class GeneradorDeDatos {
     private static String[] calles = { "lima", "buenos aires", "gaspar campos", "ecuador", "colombia", "san mart�n",
 	    "quito", "calle 1", "calle2", "calle 3" };
 
+
+
+
     private static Random random = new Random();
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
