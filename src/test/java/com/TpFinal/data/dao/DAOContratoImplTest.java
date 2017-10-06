@@ -76,10 +76,9 @@ public class DAOContratoImplTest {
                 .setValorIncial(new BigDecimal(numero))
                 .setDiaDePago(new Integer(numero))
                 .setInteresPunitorio(new Double(numero))
-                .setIntervaloDuracion(new Integer(numero))
+                .setIntervaloActualizacion(new Integer(numero))
                 .setInquilinoContrato(null)
-                .setFechaDePago(LocalDate.of(2017, 05, 12))
-                .build();
+                               .build();
 
     }
 	

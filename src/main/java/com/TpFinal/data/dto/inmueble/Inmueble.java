@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 
@@ -104,6 +105,9 @@ public class Inmueble implements Identificable, BorradoLogico {
 
     @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Set<Publicacion> operaciones = new HashSet<>();
+    
+    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    protected Set<Contrato> contratos = new HashSet<>();
 
     public Inmueble() {
 	super();
@@ -128,6 +132,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.tipoInmueble = inmuebleBuilder.tipoInmueble;
 	this.operaciones = inmuebleBuilder.operaciones;
 	this.propietario = inmuebleBuilder.propietario;
+	this.contratos = inmuebleBuilder.contratos;
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
@@ -388,6 +393,7 @@ public String toString() {
 }
 
     public static class Builder {
+	private Set<Contrato> contratos;
 	private Propietario propietario;
 	private Integer cantidadAmbientes;
 	private Integer cantidadDormitorios;
@@ -487,6 +493,16 @@ public String toString() {
 
 	public Builder setPropietario(Propietario propietario) {
 	    this.propietario = propietario;
+	    return this;
+	}
+	
+	public Builder setContratos(Set<Contrato> contratos) {
+	    this.contratos = contratos;
+	    return this;
+	}
+	
+	public Builder addContrato(Contrato contrato) {
+	    contratos.add(contrato);
 	    return this;
 	}
 
