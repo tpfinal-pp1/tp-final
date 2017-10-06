@@ -126,7 +126,6 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         this.PublicacionAlquiler = PublicacionAlquiler;
         binderPublicacionAlquiler.readBean(PublicacionAlquiler);
-
         inmuebleSeleccionado = PublicacionAlquiler.getInmueble();
         if(inmuebleSeleccionado == null)
             inmuebleSeleccionado = new Inmueble();
@@ -174,6 +173,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     }*/
 
     private void displayInmuebleSelector(){
+
         VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
             @Override
             public void updateList() {

@@ -19,6 +19,7 @@ public abstract class VentanaSelectora<T>extends Window {
     private T objeto;
     public abstract void updateList();
     public abstract void setGrid();
+    private Button ok = new Button("Seleccionar");
 
 
 
@@ -64,7 +65,7 @@ public abstract class VentanaSelectora<T>extends Window {
         footer.setWidth(100.0f, Unit.PERCENTAGE);
         footer.setSpacing(false);
 
-        Button ok = new Button("Seleccionar");
+
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
         ok.addClickListener(new ClickListener() {
             @Override
@@ -98,4 +99,7 @@ public abstract class VentanaSelectora<T>extends Window {
     }
 
 
+    public Button getSelectionButton(){ return this.ok; }
+
+    public T getReturnedObject(){ return this.objeto; }
 }

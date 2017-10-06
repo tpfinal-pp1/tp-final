@@ -136,6 +136,7 @@ public class PublicacionVentaForm extends FormLayout {
         if(inmuebleSeleccionado == null)
             inmuebleSeleccionado = new Inmueble();
 
+
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionVenta.getId()!=null);
 
@@ -179,7 +180,7 @@ public class PublicacionVentaForm extends FormLayout {
     }*/
 
    private void displayInmuebleSelector(){
-      VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
+           VentanaSelectora<Inmueble> inmueblesSelector= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
            @Override
            public void updateList() {
                InmuebleService InmuebleService=
@@ -196,15 +197,20 @@ public class PublicacionVentaForm extends FormLayout {
 
        };
 
+
    }
 
     private void save() {
 
         boolean success=false;
         try {
+
+            binderPublicacionVenta.writeBean(this.PublicacionVenta);
+            service.save(this.PublicacionVenta);
+            this.PublicacionVenta.setInmueble(inmuebleSeleccionado);
+            this.PublicacionVenta.getInmueble().addPublicacion(this.PublicacionVenta);
             this.PublicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
-            binderPublicacionVenta.writeBean(PublicacionVenta);
-            service.save(PublicacionVenta);
+            service.save(this.PublicacionVenta);
             success=true;
 
 
