@@ -1,20 +1,28 @@
 package com.TpFinal.utils;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.Random;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.Localidad;
+import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.*;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.google.gson.*;
+
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatos {
     private static String[] nombres = { "Elliott", "Albertha", "Wilburn", "Marquita", "Merrilee", "Rosy", "Williemae",
@@ -26,37 +34,13 @@ public class GeneradorDeDatos {
 	    "Raeann", "Katheryn", "Brandy", "Hulda" };
     private static String[] calles = { "lima", "buenos aires", "gaspar campos", "ecuador", "colombia", "san mart�n",
 	    "quito", "calle 1", "calle2", "calle 3" };
-    private static String[] localidades = { "17 de Agosto", "25 de Mayo", "9 de Julio / La Ni�a", "Acassuso",
-	    "Aguas Verdes",
-	    "Alberti", "Arenas Verdes", "Arrecifes", "Avellaneda", "Ayacucho", "Azul", "Bah�a Blanca", "Bah�a San Blas",
-	    "Balcarce", "Balneario Marisol", "Balneario Orense", "Balneario Reta", "Balneario San Cayetano", "Baradero",
-	    "Bella Vista", "Benito Ju�rez", "Berazategui", "Berisso", "Boulogne", "Bragado", "Brandsen", "Campana",
-	    "Capilla del Se�or", "Capital Federal", "Capit�n Sarmiento", "Carapachay", "Carhue", "Carhu�",
-	    "Carlos Keen", "Carmen de Areco", "Carmen de Patagones", "Caseros", "Castelar", "Castelli", "Chacabuco",
-	    "Chascom�s", "Chivilcoy", "City Bell", "Ciudadela", "Claromec�", "Col�n", "Coronel Dorrego",
-	    "Coronel Pringles", "Coronel Su�rez", "Darregueira", "Dunamar", "Escobar", "Ezeiza", "Florencio Varela",
-	    "Florida", "Fort�n Mercedes", "Garin", "General Arenales", "General Belgrano", "General Madariaga",
-	    "General Villegas", "Gral. Daniel Cerri", "Gran Buenos Aires", "Guamin�", "Haedo", "Huanguelen",
-	    "Hurlingham", "Isla Mart�n Garc�a", "Ituzaingo", "Jun�n", "La Plata", "La Tablada", "Laferrere", "Lanus",
-	    "Laprida", "Las Flores", "Las Gaviotas", "Las Toninas", "Lima", "Lisandro Olmos", "Llavallol", "Lobos",
-	    "Lomas de Zamora", "Los Toldos - Gral. Viamonte", "Los Polvorines", "Lucila del Mar", "Luis Guill�n",
-	    "Luj�n", "Magdalena", "Maip�", "Mar Azul", "Mar Chiquita", "Mar de Aj�", "Mar de Cobo", "Mar del Plata",
-	    "Mar del Sud", "Mar del Tuy�", "Martinez", "M�danos / Laguna Chasic�", "Mercedes", "Merlo", "Miramar",
-	    "Monte Hermoso", "Moreno", "Mor�n", "Munro", "Navarro", "Necochea", "Nueva Atlantis", "Olavarr�a", "Olivos",
-	    "Open Door", "Ostende", "Pedro Luro", "Pehuaj�", "Pehuen C�", "Pergamino", "Pig��", "Pilar", "Pinamar",
-	    "Provincia de Buenos Aires", "Puan", "Punta Alta", "Punta Indio", "Punta Lara", "Quequ�n", "Quilmes",
-	    "Ramallo", "Ramos Mej�a", "Ranchos", "Rauch", "Rivadavia", "Rojas", "Roque P�rez", "Saenz Pe�a",
-	    "Saladillo", "Salto", "San Antonio de Areco", "San Bernardo", "San Cayetano", "San Clemente del Tuy�",
-	    "San Fernando", "San Isidro", "San Justo", "San Martin", "San Miguel del Monte", "San Nicol�s", "San Pedro",
-	    "San Vicente", "Santa Clara del Mar", "Santa Teresita", "Sarand�", "Sierra de la Ventana",
-	    "Sierra de los Padres", "Sierras de los Padres", "Tandil", "Tapalqu�", "Temperley", "Tigre",
-	    "Tornquist / Ruta Prov. 76", "Trenque Lauquen", "Tres Arroyos", "Turdera", "Valentin Alsina",
-	    "Vicente Lopez", "Victoria", "Villa Ballester", "Villa Gesell", "Villa Lynch", "Villa Serrana La Gruta",
-	    "Villa Ventana", "Villalonga", "Wilde", "Z�rate" };
+
     private static Random random = new Random();
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
 	private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
+	private static ArrayList<Localidad> localidades;
+	private static ArrayList<Provincia> provincias;
 
     private static String getTelefeno() {
 	return Integer.toString(
@@ -65,6 +49,92 @@ public class GeneradorDeDatos {
 			+ random.nextInt(10));
 
     }
+
+	public static ArrayList<Localidad> getLocalidades() {
+		return localidades;
+	}
+
+
+	public static ArrayList<Provincia> getProvincias() {
+		return provincias;
+	}
+
+	public static void setProvincias(ArrayList<Provincia> provincias) {
+		GeneradorDeDatos.provincias = provincias;
+	}
+
+
+
+
+
+	public static ArrayList<Localidad> CargarLocalidadesyProvincias() {
+
+		JsonArray json = null;
+		File file;
+		VaadinRequest vaadinRequest = CurrentInstance.get(VaadinRequest.class);
+
+		File baseDirectory = vaadinRequest.getService().getBaseDirectory();
+		file = new File(baseDirectory + "/"+"Localidades.json");
+		try {
+			json = readJsonArrayFromFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<Localidad> locs = new ArrayList<Localidad>();
+		HashMap<Integer,Provincia> provincias = new HashMap<Integer,Provincia>();
+		ArrayList<Provincia> arrayProvs=new ArrayList<Provincia>();
+
+
+
+		for (int i = 0; i < json.size(); i++) {
+			JsonObject objeto = json.get(i).getAsJsonObject();
+			JsonPrimitive provincia=objeto.getAsJsonPrimitive("prv_nombre");
+			JsonPrimitive localidad=objeto.getAsJsonPrimitive("loc_nombre");
+			JsonPrimitive codPostal=objeto.getAsJsonPrimitive("loc_cpostal");
+			Localidad loc=new Localidad(localidad.getAsString(),codPostal.getAsString());
+			Provincia prov=new Provincia(provincia.getAsString());
+
+			if(!provincias.containsKey(prov.hashCode())){
+
+				provincias.put(prov.hashCode(),prov);
+				arrayProvs.add(prov);
+
+
+			}
+			else{
+				prov=provincias.get(prov.hashCode());
+			}
+			prov.addLocalidad(loc);
+			loc.setProvincia(prov);
+			locs.add(loc);
+
+
+		}
+		System.out.println(locs.get(100));
+		GeneradorDeDatos.provincias=arrayProvs;
+		GeneradorDeDatos.localidades=locs;
+		return locs;
+	}
+
+
+	/* JSON utility method */
+	private static String readAll(Reader rd) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		while ((cp = rd.read()) != -1) {
+			sb.append((char) cp);
+		}
+		return sb.toString();
+	}
+
+	private static JsonArray readJsonArrayFromFile(File path) throws IOException {
+		BufferedReader rd = new BufferedReader(new FileReader(path));
+		String jsonText = readAll(rd);
+		JsonElement jelement = new JsonParser().parse(jsonText);
+		return jelement.getAsJsonArray();
+
+	}
 
     private static int getAltura() {
 	return random.nextInt(3000);
@@ -95,7 +165,7 @@ public class GeneradorDeDatos {
 			    .setCalle("calle " + i)
 			    .setCodPostal(Integer.toString(random.nextInt(9999)))
 			    .setCoordenada(new Coordenada(random.nextDouble(), random.nextDouble()))
-			    .setLocalidad(localidades[random.nextInt(localidades.length)])
+			    .setLocalidad(localidades.get(random.nextInt(localidades.size())).getNombre())
 			    .setNro(random.nextInt(10) * 1000 + random.nextInt(10) * 100)
 			    .setPais("Argentina")
 			    .setProvincia("Buenos Aires")

@@ -3,7 +3,6 @@ package com.TpFinal.view.inmuebles;
 import com.TpFinal.data.dto.Localidad;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
@@ -11,10 +10,12 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.persona.PersonaFormWindow;
 import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
@@ -22,6 +23,8 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.time.LocalDate;
 
 /* Create custom UI Components.
  *
@@ -91,6 +94,8 @@ public class InmuebleForm extends FormLayout {
 
     }
 
+
+
     private void configureComponents() {
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
@@ -101,6 +106,34 @@ public class InmuebleForm extends FormLayout {
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 	setVisible(false);
+
+
+	localidades.setItems(GeneradorDeDatos.getLocalidades());
+	provincias.setItems(GeneradorDeDatos.getProvincias());
+	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
+		@Override
+		public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
+			Provincia provincia=valueChangeEvent.getValue();
+			if( provincia!=null&& !provincia.equals(provincias.getSelectedItem())) {
+				localidades.setSelectedItem(null);
+				localidades.setItems(provincia.getLocalidades());
+				localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			}
+
+		}
+	});
+	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
+		@Override
+		public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
+
+			if(valueChangeEvent.getValue()!=null) {
+				provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
+				codPostal.setValue(valueChangeEvent.getValue().getCodPosta());
+			}
+
+		}
+	});
+		codPostal.setEnabled(false);
 
 
     }
@@ -160,10 +193,12 @@ public class InmuebleForm extends FormLayout {
 
 	binderInmueble.forField(this.calle).bind(inmueble -> inmueble.getDireccion().getCalle()
 						,(inmueble,calle) -> inmueble.getDireccion().setCalle(calle));
-		/*binderInmueble.forField(this.localidades).bind(inmueble -> inmueble.getDireccion().getLocalidad()
-				,(inmueble,localidad) -> inmueble.getDireccion().setLocalidad(localidad));*/
 
-	//TODO
+/*
+	binderInmueble.forField(this.localidades).bind(inmueble -> inmueble.getDireccion()
+				,(inmueble,calle) -> inmueble.getDireccion().setCalle(calle));
+*/
+	//TODO*/
 //	binderInmueble.forField(this.localidades);
 //	binderInmueble.forField(this.provincias);
 

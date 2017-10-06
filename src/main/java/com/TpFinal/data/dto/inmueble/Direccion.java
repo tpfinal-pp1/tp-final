@@ -1,14 +1,9 @@
 package com.TpFinal.data.dto.inmueble;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.Provincia;
 
 @Entity
 @Table(name = "direcciones")
@@ -34,6 +29,7 @@ public class Direccion implements Identificable {
 
 	@Column(name = "cod_postal")
 	private String codPostal;
+
 
 	@Column(name = "provincia")
 	private String provincia;

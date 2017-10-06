@@ -7,10 +7,7 @@ import com.TpFinal.data.dto.dummy.Transaction;
 import com.TpFinal.data.dto.dummy.User;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
@@ -170,6 +167,10 @@ public class DummyDataProvider implements DataProvider {
         return result;
     }
 
+
+
+
+
     /* JSON utility method */
     private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
@@ -179,7 +180,6 @@ public class DummyDataProvider implements DataProvider {
         }
         return sb.toString();
     }
-
     /* JSON utility method */
     private static JsonObject readJsonFromUrl(String url) throws IOException {
         InputStream is = new URL(url).openStream();

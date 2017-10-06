@@ -46,7 +46,10 @@ public final class DashboardUI extends UI {
 
         @Override
         protected void init(final VaadinRequest request) {
+            System.out.println("Cargando Localidades...");
+            GeneradorDeDatos.CargarLocalidadesyProvincias();
             GeneradorDeDatos.generarDatos(20);
+            System.out.println("Generando Datos...");
             setLocale(Locale.US);
 
             DashboardEventBus.register(this);
@@ -54,6 +57,7 @@ public final class DashboardUI extends UI {
             addStyleName(ValoTheme.UI_WITH_MENU);
 
             updateContent();
+
 
             // Some views need to be aware of browser resize events so a
             // BrowserResizeEvent gets fired to the event bus on every occasion.
