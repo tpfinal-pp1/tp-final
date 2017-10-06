@@ -140,7 +140,7 @@ public class PersonaForm extends FormLayout {
 
 
         aSeleccionar=new ContratoVenta();
-       // contratos.addClickListener(e -> );
+        contratos.addClickListener(e -> new PersonaFormWindow(new Persona()));
         VerticalLayout Roles=new VerticalLayout(calificacion,contratos
                 ,
                 new TinyButton("Ver Busquedas"));

@@ -139,7 +139,7 @@ public class GeneradorDeDatos {
 	    daoInm.create(inmueble);
 	    inmueble.setPropietario(prop);
 	    daoInm.saveOrUpdate(inmueble);
-	    daoope.saveOrUpdate(OPV);
+		daoope.saveOrUpdate(OPV);
 
 
 

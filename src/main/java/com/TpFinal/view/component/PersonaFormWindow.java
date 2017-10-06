@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.services.PersonaService;
 import com.vaadin.annotations.PropertyId;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -42,6 +43,7 @@ public class PersonaFormWindow extends Window {
      */
     private Persona persona;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
+    PersonaService service = new PersonaService();
     TextField nombre = new TextField("Nombre");
     TextField apellido = new TextField("Apellido");
     TextField DNI = new TextField("DNI");
@@ -132,19 +134,52 @@ public class PersonaFormWindow extends Window {
 
     }
     private void save(){
+        boolean success=false;
         try {
             binderPersona.writeBean(persona);
+            service.saveOrUpdate(persona);
+            success=true;
 
 
         } catch (ValidationException e) {
-            e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
             // Notification.show("Error: "+e.getCause());
             return;
         }
 
-    }
 
+        if(success) {
+            Notification exito = new Notification(
+                    "Guardado: " + persona.getNombre() + " " +
+                            persona.getApellido());
+            exito.setDelayMsec(2000);
+            exito.setStyleName("bar success small");
+            exito.setPosition(Position.BOTTOM_CENTER);
+            exito.show(Page.getCurrent());
+            close();
+        }
+
+    }
+    private Component buildFooter() {
+        HorizontalLayout footer = new HorizontalLayout();
+        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+        footer.setWidth(100.0f, Unit.PERCENTAGE);
+        footer.setSpacing(false);
+
+        Button ok = new Button("Guardar");
+        ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
+        ok.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event) {
+                save();
+
+            }
+        });
+        ok.focus();
+        footer.addComponent(ok);
+        footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
+        return footer;
+    }
 
 
     private Component buildProfileTab() {
@@ -199,26 +234,7 @@ public class PersonaFormWindow extends Window {
         return root;
     }
 
-    private Component buildFooter() {
-        HorizontalLayout footer = new HorizontalLayout();
-        footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-        footer.setWidth(100.0f, Unit.PERCENTAGE);
-        footer.setSpacing(false);
 
-        Button ok = new Button("Guardar");
-        ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
-        ok.addClickListener(new ClickListener() {
-            @Override
-            public void buttonClick(ClickEvent event) {
-                save();
-
-            }
-        });
-        ok.focus();
-        footer.addComponent(ok);
-        footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
-        return footer;
-    }
 
 
 }

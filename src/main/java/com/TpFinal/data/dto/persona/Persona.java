@@ -51,6 +51,7 @@ public class Persona implements Identificable, BorradoLogico {
 
     public Persona() {
 	super();
+	setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     private Persona(Builder b) {
@@ -77,7 +78,9 @@ public class Persona implements Identificable, BorradoLogico {
 	this.infoAdicional = infoAdicional;
     }
 
-    public Inquilino getInquilino() {
+
+
+	public Inquilino getInquilino() {
 		for (RolPersona rol : roles) {
 			if (rol instanceof Inquilino) {
 				return (Inquilino) rol;
