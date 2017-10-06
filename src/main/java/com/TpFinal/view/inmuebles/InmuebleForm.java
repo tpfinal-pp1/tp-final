@@ -3,9 +3,6 @@ package com.TpFinal.view.inmuebles;
 import com.TpFinal.data.dto.LocalidadRAW;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
@@ -19,7 +16,6 @@ import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.persona.PersonaFormWindow;
 import com.vaadin.data.Binder;
-import com.vaadin.data.Binder.BindingBuilder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
@@ -30,7 +26,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
-import java.time.LocalDate;
 
 /* Create custom UI Components.
  *
@@ -81,17 +76,15 @@ public class InmuebleForm extends FormLayout {
     private CheckBox cPpileta = new CheckBox("Pileta");
 
     PersonaService service = new PersonaService();
-    private InmuebleABMView inmuebleABMView;
+    private InmuebleABMView abmView;
     private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
     private ProvinciaService serviceProvincia= new ProvinciaService("src"+File.separator+"main"+File.separator+"webapp"+File.separator+"Localidades.json");
 
     TabSheet tabSheet;
 
-    // Easily binding forms to beans and manage validation and buffering
-
+   
     public InmuebleForm(InmuebleABMView abmView) {
-	// setSizeUndefined();
-	inmuebleABMView = abmView;
+	this.abmView = abmView;
 	configureComponents();
 	binding();
 	buildLayout();
@@ -275,7 +268,7 @@ public class InmuebleForm extends FormLayout {
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
-	if (this.inmuebleABMView.isIsonMobile()) {
+	if (this.abmView.isIsonMobile()) {
 
 	    localidades.setWidth("55%");
 	    provincias.setWidth("55%");
@@ -340,7 +333,7 @@ public class InmuebleForm extends FormLayout {
 
     private void delete() {
 	inmbService.delete(inmueble);
-	inmuebleABMView.getController().updateList();
+	abmView.getController().updateList();
 	setVisible(false);
 	getABMView().setComponentsVisible(true);
 	getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
@@ -384,7 +377,7 @@ public class InmuebleForm extends FormLayout {
 	    Notification.show("Error: " + e.toString());
 	}
 
-	inmuebleABMView.getController().updateList();
+	abmView.getController().updateList();
 	setVisible(false);
 	getABMView().setComponentsVisible(true);
 
@@ -395,13 +388,13 @@ public class InmuebleForm extends FormLayout {
     }
 
     public void cancel() {
-	inmuebleABMView.getController().updateList();
+	abmView.getController().updateList();
 	setVisible(false);
 	getABMView().setComponentsVisible(true);
     }
 
     public InmuebleABMView getABMView() {
-	return inmuebleABMView;
+	return abmView;
     }
 
 }

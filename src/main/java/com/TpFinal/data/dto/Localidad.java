@@ -13,9 +13,15 @@ public class Localidad {
 
 	    public Localidad() {}
 	    
-	    public Localidad(String nombre, String codPosta){
+	    public Localidad(String nombre, String codPostal){
 	        this.nombre=nombre;
-	        this.codigoPostal=codPosta;
+	        this.codigoPostal=codPostal;
+	    }
+	    
+	    public Localidad(String nombre, String codPostal, Provincia provincia){
+	        this.nombre=nombre;
+	        this.codigoPostal=codPostal;
+	        this.provincia = provincia;
 	    }
 
 	    @Override
