@@ -194,9 +194,13 @@ public class PublicacionVentaForm extends FormLayout {
            public void setGrid() {
                grid=new Grid<Inmueble>(Inmueble.class);
            }
+               @Override
+               public void seleccionado(Inmueble seleccion) {
+                   inmuebleSeleccionado=seleccion;
+               }
 
            };
-          inmueblesSelector.getSelectionButton().addClickListener(e -> inmuebleSeleccionado = inmueblesSelector.getObjeto());
+
    }
 
     private void save() {

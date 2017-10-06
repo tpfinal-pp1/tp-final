@@ -19,6 +19,7 @@ public abstract class VentanaSelectora<T>extends Window {
     private T objeto;
     public abstract void updateList();
     public abstract void setGrid();
+    public abstract void seleccionado(T objeto);
 
     private Button ok = new Button("Seleccionar");
 
@@ -60,6 +61,8 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
 
+
+
     private Component buildFooter() {
         HorizontalLayout footer = new HorizontalLayout();
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
@@ -83,6 +86,8 @@ public abstract class VentanaSelectora<T>extends Window {
                     else{
                         success = new Notification(
                                 "Seleccionado");
+                        seleccionado(objeto);
+
 
                     }
                     success.setDelayMsec(2000);

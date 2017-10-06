@@ -189,9 +189,13 @@ public class PublicacionAlquilerForm extends FormLayout {
                 grid=new Grid<Inmueble>(Inmueble.class);
             }
 
+            @Override
+            public void seleccionado(Inmueble seleccion) {
+                inmuebleSeleccionado=seleccion;
+            }
+
 
         };
-        inmuebles.getSelectionButton().addClickListener(e -> inmuebleSeleccionado = inmuebles.getObjeto());
     }
 
 
