@@ -19,6 +19,7 @@ public abstract class VentanaSelectora<T>extends Window {
     private T objeto;
     public abstract void updateList();
     public abstract void setGrid();
+
     private Button ok = new Button("Seleccionar");
 
 
@@ -26,7 +27,7 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
     public VentanaSelectora(T seleccion) {
-            objeto=seleccion;
+            objeto = seleccion;
             addStyleName("profile-window");
             setId(ID);
 
@@ -42,7 +43,7 @@ public abstract class VentanaSelectora<T>extends Window {
         grid.setSizeFull();
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-               objeto=event.getValue();
+               objeto =event.getValue();
             }
         });
 
@@ -82,6 +83,7 @@ public abstract class VentanaSelectora<T>extends Window {
                     else{
                         success = new Notification(
                                 "Seleccionado");
+
                     }
                     success.setDelayMsec(2000);
                     success.setStyleName("bar success small");
@@ -99,7 +101,10 @@ public abstract class VentanaSelectora<T>extends Window {
     }
 
 
-    public Button getSelectionButton(){ return this.ok; }
 
-    public T getReturnedObject(){ return this.objeto; }
+    public T getObjeto(){return this.objeto;}
+
+    public Button getSelectionButton(){return this.ok;}
 }
+
+

@@ -189,8 +189,9 @@ public class PublicacionAlquilerForm extends FormLayout {
                 grid=new Grid<Inmueble>(Inmueble.class);
             }
 
-        };
 
+        };
+        inmuebles.getSelectionButton().addClickListener(e -> inmuebleSeleccionado = inmuebles.getObjeto());
     }
 
 

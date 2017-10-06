@@ -195,9 +195,8 @@ public class PublicacionVentaForm extends FormLayout {
                grid=new Grid<Inmueble>(Inmueble.class);
            }
 
-       };
-
-
+           };
+          inmueblesSelector.getSelectionButton().addClickListener(e -> inmuebleSeleccionado = inmueblesSelector.getObjeto());
    }
 
     private void save() {
@@ -205,11 +204,11 @@ public class PublicacionVentaForm extends FormLayout {
         boolean success=false;
         try {
 
-            binderPublicacionVenta.writeBean(this.PublicacionVenta);
-            service.save(this.PublicacionVenta);
+
             this.PublicacionVenta.setInmueble(inmuebleSeleccionado);
             this.PublicacionVenta.getInmueble().addPublicacion(this.PublicacionVenta);
             this.PublicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
+            binderPublicacionVenta.writeBean(this.PublicacionVenta);
             service.save(this.PublicacionVenta);
             success=true;
 
