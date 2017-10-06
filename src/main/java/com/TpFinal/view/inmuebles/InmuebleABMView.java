@@ -129,6 +129,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
 	if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+		System.out.println("Mobile!");
 	    isonMobile = true;
 	} else {
 	    isonMobile = false;

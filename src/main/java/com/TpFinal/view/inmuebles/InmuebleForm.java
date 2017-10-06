@@ -11,6 +11,8 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.persona.PersonaFormWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -53,7 +55,7 @@ public class InmuebleForm extends FormLayout {
     private TextField codPostal = new TextField ("Código Postal");    
     private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
     private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
-    private Button buscarUbicacion = new Button("Buscar Ubicación", VaadinIcons.MAP_MARKER);
+    private TinyButton buscarUbicacion = new TinyButton("Buscar Ubicación", VaadinIcons.MAP_MARKER);
         
 
     
@@ -99,6 +101,8 @@ public class InmuebleForm extends FormLayout {
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 	setVisible(false);
+
+
     }
 
 	private void setNewPropietario() {
@@ -112,6 +116,7 @@ public class InmuebleForm extends FormLayout {
 				updateComboPersonas();
 				comboPropietario.setSelectedItem(persona);
 
+
 			}
 		};
 
@@ -120,58 +125,63 @@ public class InmuebleForm extends FormLayout {
 	private void binding() {
 
 	//binderInmueble.forField(calle).bind(Dire,Inmueble::setaEstrenar);
-	
+
 	binderInmueble.forField(this.aEstrenar).bind(Inmueble::getaEstrenar,Inmueble::setaEstrenar);
 	binderInmueble.forField(this.aireAcond).bind(Inmueble::getConAireAcondicionado,Inmueble::setConAireAcondicionado);
-	
+
 	binderInmueble.forField(this.ambientes)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
 	.bind(Inmueble::getCantidadAmbientes,Inmueble::setCantidadAmbientes);
-	
+
 	binderInmueble.forField(this.cJardin).bind(Inmueble::getConJardin, Inmueble::setConJardin);
 	binderInmueble.forField(this.clasesInmueble).bind(Inmueble::getClaseInmueble,Inmueble::setClaseInmueble);
 	binderInmueble.forField(this.cocheras)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
 	.bind(Inmueble::getCantidadCocheras,Inmueble::setCantidadCocheras);
-	
+
 	binderInmueble.forField(this.cParrilla).bind(Inmueble::getConParilla,Inmueble::setConParilla);
 	binderInmueble.forField(this.cPpileta).bind(Inmueble::getConPileta,Inmueble::setConPileta);
-	
+
 	binderInmueble.forField(this.dormitorios)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
 	.bind(Inmueble::getCantidadDormitorios,Inmueble::setCantidadDormitorios);
-	
+
 	binderInmueble.forField(this.codPostal).bind(inmueble -> inmueble.getDireccion().getCodPostal()
 		,(inmueble,cod) -> inmueble.getDireccion().setCodPostal(cod));
-	
+
 	binderInmueble.forField(this.nro)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 	.withValidator(n -> n>=0, "Debe ingresar una altura no negativa!")
 	.bind(inmueble -> inmueble.getDireccion().getNro()
 		,(inmueble,nro) -> inmueble.getDireccion().setNro(nro))	;
-	
+
+	binderInmueble.forField(this.calle).bind(inmueble -> inmueble.getDireccion().getCalle()
+						,(inmueble,calle) -> inmueble.getDireccion().setCalle(calle));
+		/*binderInmueble.forField(this.localidades).bind(inmueble -> inmueble.getDireccion().getLocalidad()
+				,(inmueble,localidad) -> inmueble.getDireccion().setLocalidad(localidad));*/
+
 	//TODO
 //	binderInmueble.forField(this.localidades);
 //	binderInmueble.forField(this.provincias);
-	
+
 	binderInmueble.forField(this.comboPropietario).bind(inmueble -> inmueble.getPropietario().getPersona()
 		,setPropietario());
-	
+
 	binderInmueble.forField(this.supCubierta)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
 	.bind(Inmueble::getSuperficieCubierta,Inmueble::setSuperficieCubierta);
-	
+
 	binderInmueble.forField(this.supTotal)
 	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 	.withValidator(n -> n>=0, "Debe ingresar un número no negativo")
 	.bind(Inmueble::getSuperficieTotal,Inmueble::setSuperficieTotal);
-	
+
 	binderInmueble.forField(this.tiposInmueble).bind(Inmueble::getTipoInmueble,Inmueble::setTipoInmueble);
-	
+
     }
 
     private Setter<Inmueble, Persona> setPropietario() {	
@@ -181,38 +191,55 @@ public class InmuebleForm extends FormLayout {
     }
 
     private void buildLayout() {
-	addStyleName("v-scrollable");
-	
+	//addStyleName("v-scrollable");
+
 	btnNuevoPropietario.setIcon(VaadinIcons.PLUS);
 	comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+
+	if(this.inmuebleABMView.isIsonMobile()) {
+
+		localidades.setWidth("55%");
+		provincias.setWidth("55%");
+		clasesInmueble.setWidth("58%");
+	}
+	else{
+		tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+		localidades.setWidth("72%");
+		provincias.setWidth("72%");
+		clasesInmueble.setWidth("72%");
+
+	}
+
+	
 	HorizontalLayout propietarioCombo = new HorizontalLayout();
 	propietarioCombo.addComponents(comboPropietario, btnNuevoPropietario);
 	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	propietarioCombo.setCaption("Propietario");
 	propietarioCombo.setExpandRatio(comboPropietario, 1f);
-	tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
 	
 	
 	
-	FormLayout principal = new FormLayout(propietarioCombo,clasesInmueble,tiposInmueble);
-	FormLayout direccion = new FormLayout(calle,nro,codPostal,localidades,provincias,buscarUbicacion);
-	FormLayout caracteristicas1 = new FormLayout(ambientes,cocheras,dormitorios,supTotal,supCubierta);
-	FormLayout caracteristicas2 = new FormLayout(aEstrenar,aireAcond,cJardin,cParrilla,cPpileta);
+	FormLayout principal = new FormLayout(propietarioCombo,clasesInmueble,tiposInmueble,
+			new BlueLabel("Direccion"),calle,nro,codPostal,localidades,provincias,buscarUbicacion);
+
+	FormLayout caracteristicas1 = new FormLayout(ambientes,cocheras,dormitorios,supTotal,
+			supCubierta,new BlueLabel("Adiconales"),aEstrenar,aireAcond,cJardin,cParrilla,cPpileta);
+
 	
 	this.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-	direccion.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+
 	caracteristicas1.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-	caracteristicas2.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+
 	
 	TabSheet tabsheet = new TabSheet();
 	tabsheet.addTab(principal, "Datos Principales");
-	tabsheet.addTab(direccion, "Dirección");
-	tabsheet.addTab(caracteristicas1, "Características 1");
-	tabsheet.addTab(caracteristicas2, "Características 2");
+	tabsheet.addTab(caracteristicas1, "Características");
+
 	
 	HorizontalLayout actions = new HorizontalLayout(save, test, delete);
 	addComponents(tabsheet,actions);
