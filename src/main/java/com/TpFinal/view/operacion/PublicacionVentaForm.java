@@ -1,6 +1,7 @@
 package com.TpFinal.view.operacion;
 
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
@@ -37,7 +38,10 @@ public class PublicacionVentaForm extends FormLayout {
     Label propietario = new Label ("Propietario: ");
     Label nombrePropietario = new Label();
     Inmueble inmuebleSeleccionado;
+    TextField precio = new TextField("Precio");
+    RadioButtonGroup <TipoMoneda> moneda = new RadioButtonGroup<>("Tipo moneda", TipoMoneda.toList());
 
+    //TODO una vez que este contrato venta ContratoVenta contratoVenta;
     // private NativeSelect<PublicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PublicacionService service = new PublicacionService();
@@ -99,6 +103,8 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
+        binderPublicacionVenta.forField(moneda).bind(PublicacionVenta::getMoneda,PublicacionVenta::setMoneda);
+
 
     }
 
