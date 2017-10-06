@@ -2,7 +2,7 @@ package com.TpFinal.data.dto;
 
 public class Localidad {
    private String loc_nombre="";
-    private Integer loc_cpostal;
+    private String loc_cpostal;
     private String prv_nombre;
 
 
@@ -31,7 +31,7 @@ public class Localidad {
         return loc_nombre;
     }
 
-    public Localidad(String nombre, Integer codPosta){
+    public Localidad(String nombre, String codPosta){
         this.loc_nombre=nombre;
         this.loc_cpostal=codPosta;
     }
@@ -43,11 +43,11 @@ public class Localidad {
         this.loc_nombre = nombre;
     }
 
-    public Integer getCodPosta() {
+    public String getCodPosta() {
         return loc_cpostal;
     }
 
-    public void setCodPosta(Integer codPosta) {
+    public void setCodPosta(String codPosta) {
         this.loc_cpostal = codPosta;
     }
 

@@ -130,7 +130,7 @@ public class InmuebleForm extends FormLayout {
 		public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
 
 			if(valueChangeEvent.getValue()!=null) {
-				provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
+			//	provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia()); //FIXME
 				codPostal.setValue(valueChangeEvent.getValue().getCodPosta());
 			}
 
