@@ -8,7 +8,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler.Builder;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import java.math.BigDecimal;
@@ -29,7 +29,7 @@ public class ContratoVenta extends Contrato {
 		public ContratoVenta() {super();}
 		
 		private ContratoVenta(Builder b) {
-			super(b.id, b.fechaCelebracion, b.documento, EstadoRegistro.ACTIVO);
+			super(b.id, b.fechaCelebracion, b.documento, b.estadoRegistro, b.inmueble);
 			this.precioVenta=b.precioVenta;
 			this.publicacion =b.publicacionVenta;
 		}
@@ -56,12 +56,13 @@ public class ContratoVenta extends Contrato {
 
 		public static class Builder{
 			
+			private Inmueble inmueble;
 			private Long id;
 			private LocalDate fechaCelebracion;
 			private Blob documento;
 			private BigDecimal precioVenta;
 			private PublicacionVenta publicacionVenta;
-			private EstadoRegistro estadoRegistro;
+			private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
 			
 			public Builder setId(Long dato) {
 				this.id=dato;
@@ -87,6 +88,16 @@ public class ContratoVenta extends Contrato {
 			public Builder setPublicacionVenta(PublicacionVenta dato) {
 				this.publicacionVenta =dato;
 				return this;
+			}
+			
+			public Builder setEstadoRegistro(EstadoRegistro estadoRegistro) {
+			    this.estadoRegistro = estadoRegistro;
+			    return this;
+			}
+			
+			public Builder setInmueble(Inmueble inmueble) {
+			    this.inmueble = inmueble;
+			    return this;
 			}
 			
 			public ContratoVenta build() {
