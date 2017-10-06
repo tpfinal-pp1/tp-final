@@ -1,6 +1,6 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.Localidad;
+import com.TpFinal.data.dto.LocalidadRAW;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -56,7 +56,7 @@ public class InmuebleForm extends FormLayout {
     private TextField calle = new TextField("Calle");
     private TextField nro = new TextField("Número");
     private TextField codPostal = new TextField ("Código Postal");    
-    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
+    private ComboBox<LocalidadRAW> localidades = new ComboBox<>("Localidad");
     private ComboBox <Provincia> provincias = new ComboBox<>("Provincia");
     private TinyButton buscarUbicacion = new TinyButton("Buscar Ubicación", VaadinIcons.MAP_MARKER);
         
@@ -125,9 +125,9 @@ public class InmuebleForm extends FormLayout {
 		}
 	});
 
-	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
+	localidades.addValueChangeListener(new HasValue.ValueChangeListener<LocalidadRAW>() {
 		@Override
-		public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
+		public void valueChange(HasValue.ValueChangeEvent<LocalidadRAW> valueChangeEvent) {
 
 			if(valueChangeEvent.getValue()!=null) {
 			//	provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia()); //FIXME

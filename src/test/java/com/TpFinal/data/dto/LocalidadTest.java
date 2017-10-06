@@ -18,12 +18,32 @@ public class LocalidadTest {
 	public void tearDown() throws Exception {
 	}
 
+//	@Test
+//	public void test() {
+//		LocalidadJson gson = new LocalidadJson();
+//		List<LocalidadRAW>localidades=gson.leer("src\\main\\webapp\\Localidades.json");
+//		System.out.println(localidades.size());
+//		localidades.forEach( l -> System.out.println(l.getNombre()+" "+l.getProvincia()+" "+l.getCodPosta()));
+//	}
+	
 	@Test
-	public void test() {
+	public void transformar() {
 		LocalidadJson gson = new LocalidadJson();
-		List<Localidad>localidades=gson.leer("src\\main\\webapp\\Localidades.json");
-		System.out.println(localidades.size());
-		localidades.forEach( l -> System.out.println(l.getNombre()+" "+l.getProvincia()));
+		//traigo las localidades "feas"
+		List<LocalidadRAW>localidades=gson.leerRaw("src\\main\\webapp\\Localidades.json");
+		//lo paso al modelo de provincias(cada provincia con una lista de localidades
+		List<Provincia>provincias=gson.rawToProvincias(localidades);
+		System.out.println(provincias.size());
+		//imprimo resultados
+		provincias.forEach(p ->{
+			p.getLocalidades().forEach(l -> System.out.println(p.getNombre()+": "+l.getNombre()));
+		});
+		
+		
+	}
+	
+	public void transformar2() {
+		
 	}
 
 }

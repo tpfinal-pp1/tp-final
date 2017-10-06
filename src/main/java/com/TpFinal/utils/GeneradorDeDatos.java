@@ -12,7 +12,7 @@ import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.Localidad;
+import com.TpFinal.data.dto.LocalidadRAW;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.*;
@@ -42,7 +42,7 @@ public class GeneradorDeDatos {
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
 	private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
-	private static ArrayList<Localidad> localidades;
+	private static ArrayList<LocalidadRAW> localidades;
 	private static ArrayList<Provincia> provincias;
 
     private static String getTelefeno() {
@@ -53,7 +53,7 @@ public class GeneradorDeDatos {
 
     }
 
-	public static ArrayList<Localidad> getLocalidades() {
+	public static ArrayList<LocalidadRAW> getLocalidades() {
 		return localidades;
 	}
 
@@ -69,7 +69,7 @@ public class GeneradorDeDatos {
 
 
 
-	public static ArrayList<Localidad> CargarLocalidadesyProvincias() {
+	public static ArrayList<LocalidadRAW> CargarLocalidadesyProvincias() {
 
 		JsonArray json = null;
 		File file;
@@ -82,7 +82,7 @@ public class GeneradorDeDatos {
 			e.printStackTrace();
 		}
 
-		ArrayList<Localidad> locs = new ArrayList<Localidad>();
+		ArrayList<LocalidadRAW> locs = new ArrayList<LocalidadRAW>();
 		HashMap<Integer,Provincia> provincias = new HashMap<Integer,Provincia>();
 		ArrayList<Provincia> arrayProvs=new ArrayList<Provincia>();
 
@@ -92,7 +92,7 @@ public class GeneradorDeDatos {
 			JsonPrimitive provincia=objeto.getAsJsonPrimitive("prv_nombre");
 			JsonPrimitive localidad=objeto.getAsJsonPrimitive("loc_nombre");
 			JsonPrimitive codPostal=objeto.getAsJsonPrimitive("loc_cpostal");
-    		Localidad loc=new Localidad(localidad.getAsString(),codPostal.getAsString());
+    		LocalidadRAW loc=new LocalidadRAW(localidad.getAsString(),codPostal.getAsString());
 			Provincia prov=new Provincia(provincia.getAsString());
 
 			if(!provincias.containsKey(prov.hashCode())){
