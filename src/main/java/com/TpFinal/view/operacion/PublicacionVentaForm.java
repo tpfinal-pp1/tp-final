@@ -119,10 +119,8 @@ public class PublicacionVentaForm extends FormLayout {
     }
 
     private void buildLayout() {
-      // setSizeFull();
-
-
-
+        setMargin(false);
+        setSpacing(false);
 
         inmuebleSelector.setIcon(VaadinIcons.SEARCH);
         visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
@@ -133,30 +131,21 @@ public class PublicacionVentaForm extends FormLayout {
         hl.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         hl.setCaption("Inmueble");
         hl.setExpandRatio(visualizadorInmueble, 1f);
-
+        visualizadorInmueble.setCaption(null);
 
 
         moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
         precio.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
 
-        precio.setCaption(null);
-        moneda.setCaption(null);
-        visualizadorInmueble.setCaption(null);
-        HorizontalLayout hl2 = new HorizontalLayout();
-        hl2.addComponents(precio,moneda);
-        precio.setSizeUndefined();
-        moneda.setSizeUndefined();
-        hl2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        hl2.setCaption("Precio");
-        hl2.setExpandRatio(moneda, 1f);
-        hl2.setWidth("100%");
-
+        precio.setCaption("Precio");
+        moneda.setCaption("Moneda");
         moneda.setEmptySelectionAllowed(false);
-        tabSheet=new TabSheet();
-        fechaPublicacion.setWidth("20%");
 
-        FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,new BlueLabel("Inmueble"),hl,hl2);
-        moneda.setWidth("34%");
+        tabSheet=new TabSheet();
+        fechaPublicacion.setWidth("40%");
+        moneda.setWidth("30%");
+        FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,
+                new BlueLabel("Inmueble"),hl,precio,moneda);
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 
