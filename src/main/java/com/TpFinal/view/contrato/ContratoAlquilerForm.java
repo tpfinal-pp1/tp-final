@@ -39,7 +39,7 @@ public class ContratoAlquilerForm extends FormLayout {
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
-
+    Persona person = new Persona(); //TODO ver donde se usa persona p.
 
 
 
@@ -112,21 +112,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
         TinyButton personas=new TinyButton("Ver Personas");
 
-        personas.addClickListener(e -> new VentanaSelectora<Persona>(new Persona()) {
-            @Override
-            public void updateList() {
-                PersonaService PersonaService=
-                        new PersonaService();
-                List<Persona> Personas = PersonaService.readAll();
-                grid.setItems(Personas);
-            }
-
-            @Override
-            public void setGrid() {
-                grid=new Grid<>(Persona.class);
-            }
-
-        });
+        personas.addClickListener(e -> getPersonaSelector());
 
         VerticalLayout Roles=new VerticalLayout(personas);
 
@@ -248,5 +234,23 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
 
+    private void getPersonaSelector() {
+        VentanaSelectora<Persona> personaSelector = new VentanaSelectora<Persona>(person) {
+            @Override
+            public void updateList() {
+                PersonaService PersonaService=
+                        new PersonaService();
+                List<Persona> Personas = PersonaService.readAll();
+                grid.setItems(Personas);
+            }
 
+            @Override
+            public void setGrid() {
+                grid=new Grid<>(Persona.class);
+            }
+
+
+        };
+        personaSelector.getSelectionButton().addClickListener(e -> person = personaSelector.getObjeto());
+    }
 }
