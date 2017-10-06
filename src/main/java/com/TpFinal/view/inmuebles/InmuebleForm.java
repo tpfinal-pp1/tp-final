@@ -13,6 +13,7 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.TinyButton;
@@ -28,6 +29,7 @@ import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.io.File;
 import java.time.LocalDate;
 
 /* Create custom UI Components.
@@ -81,6 +83,7 @@ public class InmuebleForm extends FormLayout {
     PersonaService service = new PersonaService();
     private InmuebleABMView inmuebleABMView;
     private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
+    private ProvinciaService serviceProvincia= new ProvinciaService("src"+File.separator+"main"+File.separator+"webapp"+File.separator+"Localidades.json");
 
     TabSheet tabSheet;
 
