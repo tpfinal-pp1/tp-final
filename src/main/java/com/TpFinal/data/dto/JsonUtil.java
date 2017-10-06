@@ -30,6 +30,7 @@ public class JsonUtil {
 	
 	public List<LocalidadRAW> leerRaw(String path)
 	{
+	    	
 		List<LocalidadRAW> ret=null;
 		Gson gson=new Gson();
 		 try

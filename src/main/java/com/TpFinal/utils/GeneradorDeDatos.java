@@ -18,6 +18,8 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.ProvinciaService;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatos {
     private static String[] nombres = { "Elliott", "Albertha", "Wilburn", "Marquita", "Merrilee", "Rosy", "Williemae",
@@ -32,7 +34,7 @@ public class GeneradorDeDatos {
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
     private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
-    private static ProvinciaService serviceProvincia= new ProvinciaService("src"+File.separator+"main"+File.separator+"webapp"+File.separator+"Localidades.json");
+    private static ProvinciaService serviceProvincia= new ProvinciaService(CurrentInstance.get(VaadinRequest.class).getService().getBaseDirectory()+File.separator+"Localidades.json");
  
 
     private static String getTelefeno() {

@@ -47,7 +47,7 @@ public final class DashboardUI extends UI {
         @Override
         protected void init(final VaadinRequest request) {
             System.out.println("Cargando Localidades...");
-            
+            GeneradorDeDatos.generarDatos(20);
             System.out.println("Generando Datos...");
             setLocale(Locale.US);
 
@@ -87,7 +87,7 @@ public final class DashboardUI extends UI {
         } else {
             setContent(new LoginView());
             addStyleName("loginview");
-            GeneradorDeDatos.generarDatos(20);
+           
         }
     }
 
