@@ -26,7 +26,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
 
-public class LocalidadJson {
+public class JsonUtil {
 	
 	public List<LocalidadRAW> leerRaw(String path)
 	{

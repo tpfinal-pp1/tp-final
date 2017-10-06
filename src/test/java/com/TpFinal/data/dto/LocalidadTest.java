@@ -28,7 +28,7 @@ public class LocalidadTest {
 	
 	@Test
 	public void transformar() {
-		LocalidadJson gson = new LocalidadJson();
+		JsonUtil gson = new JsonUtil();
 		//traigo las localidades "feas"
 		List<LocalidadRAW>localidades=gson.leerRaw("src\\main\\webapp\\Localidades.json");
 		//lo paso al modelo de provincias(cada provincia con una lista de localidades
