@@ -7,12 +7,16 @@ import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
+import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -35,12 +39,14 @@ public class PublicacionVentaForm extends FormLayout {
     Button delete = new Button("Eliminar");
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
-    Button inmuebleSelector = new Button("Seleccionar inmueble");
+   Button inmuebleSelector = new Button("");
     Label propietario = new Label ("Propietario: ");
     Label nombrePropietario = new Label();
     Inmueble inmuebleSeleccionado;
-    TextField precio = new TextField("Precio");
-    RadioButtonGroup <TipoMoneda> moneda = new RadioButtonGroup<>("Tipo moneda", TipoMoneda.toList());
+    TextField precio = new TextField("");
+    ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
+    ComboBox <String> visualizadorInmueble= new ComboBox <String>("");
+
 
     //TODO una vez que este contrato venta ContratoVenta contratoVenta;
     // private NativeSelect<PublicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
@@ -107,20 +113,55 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(moneda).bind("moneda");
         binderPublicacionVenta.forField(precio).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precio");
        //binderPublicacionVenta.forField(precio).bind("precio");
+        visualizadorInmueble.setEnabled(false);
 
 
     }
 
     private void buildLayout() {
-        setSizeFull();
-        setMargin(true);
+      // setSizeFull();
 
+
+
+
+        inmuebleSelector.setIcon(VaadinIcons.SEARCH);
+        visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+        inmuebleSelector.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+        inmuebleSelector.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        HorizontalLayout hl = new HorizontalLayout();
+        hl.addComponents(visualizadorInmueble, inmuebleSelector);
+        hl.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        hl.setCaption("Inmueble");
+        hl.setExpandRatio(visualizadorInmueble, 1f);
+
+
+
+        moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+        precio.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+
+        precio.setCaption(null);
+        moneda.setCaption(null);
+        visualizadorInmueble.setCaption(null);
+        HorizontalLayout hl2 = new HorizontalLayout();
+        hl2.addComponents(precio,moneda);
+        precio.setSizeUndefined();
+        moneda.setSizeUndefined();
+        hl2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        hl2.setCaption("Precio");
+        hl2.setExpandRatio(moneda, 1f);
+        hl2.setWidth("100%");
+
+        moneda.setEmptySelectionAllowed(false);
         tabSheet=new TabSheet();
+        fechaPublicacion.setWidth("20%");
 
-        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector,moneda,precio);
-        HorizontalLayout adicional=new HorizontalLayout(propietario,nombrePropietario);
-        principal.setSpacing(true);
-        adicional.setSpacing(true);
+        FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,new BlueLabel("Inmueble"),hl,hl2);
+        moneda.setWidth("34%");
+        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+
+
+        FormLayout adicional=new FormLayout(propietario,nombrePropietario);
+        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         FormLayout mainLayout = new FormLayout(principal,adicional);
 
 
@@ -144,7 +185,9 @@ public class PublicacionVentaForm extends FormLayout {
         inmuebleSeleccionado = PublicacionVenta.getInmueble();
         if(inmuebleSeleccionado == null)
             inmuebleSeleccionado = new Inmueble();
-
+        else {
+            visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+        }
 
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionVenta.getId()!=null);
@@ -206,6 +249,9 @@ public class PublicacionVentaForm extends FormLayout {
                @Override
                public void seleccionado(Inmueble seleccion) {
                    inmuebleSeleccionado=seleccion;
+                   visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+
+
                }
 
            };

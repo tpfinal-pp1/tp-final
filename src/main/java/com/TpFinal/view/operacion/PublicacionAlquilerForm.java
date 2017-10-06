@@ -7,6 +7,7 @@ import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
+import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -14,6 +15,7 @@ import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -41,7 +43,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     Label nombrePropietario = new Label();
     Inmueble inmuebleSeleccionado;
     TextField valorCuota = new TextField("Valor de cuota");
-    RadioButtonGroup <TipoMoneda> moneda = new RadioButtonGroup<>("Tipo moneda", TipoMoneda.toList());
+    ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
    // TODO una vez que este contrato ContratoAlquiler contratoAlquiler;
 
@@ -50,7 +52,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     PublicacionService service = new PublicacionService();
     private PublicacionABMView addressbookView;
     private Binder<PublicacionAlquiler> binderPublicacionAlquiler = new Binder<>(PublicacionAlquiler.class);
-
+    ComboBox <String> visualizadorInmueble= new ComboBox <String>("");
     TabSheet tabSheet;
 
 
@@ -109,22 +111,50 @@ public class PublicacionAlquilerForm extends FormLayout {
     }
 
     private void buildLayout() {
-        setSizeFull();
-        setMargin(true);
+        inmuebleSelector.setIcon(VaadinIcons.SEARCH);
+        visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+        inmuebleSelector.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+        inmuebleSelector.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+        HorizontalLayout hl = new HorizontalLayout();
+        hl.addComponents(visualizadorInmueble, inmuebleSelector);
+        hl.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        hl.setCaption("Inmueble");
+        hl.setExpandRatio(visualizadorInmueble, 1f);
 
+
+
+        moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+       valorCuota.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+
+        valorCuota.setCaption(null);
+        moneda.setCaption(null);
+        visualizadorInmueble.setCaption(null);
+        HorizontalLayout hl2 = new HorizontalLayout();
+        hl2.addComponents(valorCuota,moneda);
+        valorCuota.setSizeUndefined();
+        moneda.setSizeUndefined();
+        hl2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        hl2.setCaption("Precio");
+        hl2.setExpandRatio(moneda, 1f);
+        hl2.setWidth("100%");
+
+        moneda.setEmptySelectionAllowed(false);
         tabSheet=new TabSheet();
-      // HorizontalLayout horizontalLayout;
-        VerticalLayout principal=new VerticalLayout(fechaPublicacion,estadoPublicacion,inmuebleSelector,
-                valorCuota,moneda);
-        HorizontalLayout adicional=new HorizontalLayout(propietario,nombrePropietario);
+        fechaPublicacion.setWidth("20%");
 
-        principal.setSpacing(true);
-        adicional.setSpacing(true);
+        FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,new BlueLabel("Inmueble"),hl,hl2);
+        moneda.setWidth("34%");
+        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+
+
+        FormLayout adicional=new FormLayout(propietario,nombrePropietario);
+        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         FormLayout mainLayout = new FormLayout(principal,adicional);
 
-        tabSheet.addTab(principal,"Alquiler");
-        tabSheet.addTab(adicional,"Contrato");
 
+
+        tabSheet.addTab(principal,"Venta");
+        tabSheet.addTab(adicional,"Contrato");
 
 
         addComponent(tabSheet);
@@ -132,6 +162,7 @@ public class PublicacionAlquilerForm extends FormLayout {
         HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
         actions.setSpacing(true);
+
 
     }
 
