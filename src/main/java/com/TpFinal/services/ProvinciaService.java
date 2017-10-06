@@ -15,8 +15,10 @@ public class ProvinciaService {
     public enum modoLecturaJson {
 	server, local
     };
-    private static final String pathTest = "src"+File.separator+"main"+File.separator+"webapp"+File.separator+"Localidades.json";
-    
+
+    private static final String pathTest = "src" + File.separator + "main" + File.separator + "webapp" + File.separator
+	    + "Localidades.json";
+
     private JsonUtil json;
     private String path;
     private List<Provincia> provincias;
@@ -33,7 +35,7 @@ public class ProvinciaService {
 	getProvinciasJson();
 
     }
-    
+
     public ProvinciaService() {
 	this(modoLecturaJson.server);
     }
@@ -54,6 +56,20 @@ public class ProvinciaService {
 
     public List<Localidad> getLocalidades() {
 	return localidades;
+    }
+
+    public Localidad getLocalidadFromCodPostal(String codPostal) {
+	for (Localidad l : localidades) {
+	    if (l.getCodigoPostal() == codPostal)
+		return l;
+	}
+	return null;
+
+    }
+
+    public Object getProvinciaFromString(String provincia) {
+	// TODO Auto-generated method stub
+	return null;
     }
 
 }

@@ -1,13 +1,14 @@
 package com.TpFinal.view.inmuebles;
 
-
 import com.TpFinal.data.dto.Localidad;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
+import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.persona.RolPersona;
 import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
@@ -81,11 +82,10 @@ public class InmuebleForm extends FormLayout {
     PersonaService service = new PersonaService();
     private InmuebleABMView abmView;
     private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
-    private ProvinciaService serviceProvincia= new ProvinciaService();
+    private ProvinciaService provinciaService = new ProvinciaService();
 
     TabSheet tabSheet;
 
-   
     public InmuebleForm(InmuebleABMView abmView) {
 	this.abmView = abmView;
 	configureComponents();
@@ -104,9 +104,9 @@ public class InmuebleForm extends FormLayout {
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-	setVisible(false);	
-	localidades.setItems(serviceProvincia.getLocalidades());
-	provincias.setItems(serviceProvincia.getProvincias());
+	setVisible(false);
+	localidades.setItems(provinciaService.getLocalidades());
+	provincias.setItems(provinciaService.getProvincias());
 
 	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
 	    @Override
@@ -114,9 +114,9 @@ public class InmuebleForm extends FormLayout {
 		Provincia provincia = valueChangeEvent.getValue();
 		if (provincia != null && !provincia.equals(provincias.getSelectedItem())) {
 		    if (valueChangeEvent.getOldValue() != null) {
-			//FIXME
-//			localidades.setItems(provincia.getLocalidades());
-//			localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			localidades.clear();
+			localidades.setItems(provincia.getLocalidades());
+			localidades.setSelectedItem(provincia.getLocalidades().get(0));
 		    }
 		}
 
@@ -144,9 +144,12 @@ public class InmuebleForm extends FormLayout {
 	persona.addRol(Rol.Propietario);
 	Propietario propietario = persona.getPropietario();
 	propietario.addInmueble(this.inmueble);
+
 	new PersonaFormWindow(this.persona) {
 	    @Override
 	    public void onSave() {
+		// XXX
+		personaService.saveOrUpdate(persona);
 		updateComboPersonas();
 		comboPropietario.setSelectedItem(persona);
 
@@ -160,31 +163,25 @@ public class InmuebleForm extends FormLayout {
 	// binderInmueble.forField(calle).bind(Dire,Inmueble::setaEstrenar);
 
 	binderInmueble.forField(this.aEstrenar)
-
 		.bind(Inmueble::getaEstrenar, Inmueble::setaEstrenar);
 
 	binderInmueble.forField(this.aireAcond)
-
 		.bind(Inmueble::getConAireAcondicionado, Inmueble::setConAireAcondicionado);
 
 	binderInmueble.forField(this.ambientes).withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withNullRepresentation(0)
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getCantidadAmbientes, Inmueble::setCantidadAmbientes);
 
 	binderInmueble.forField(this.cJardin)
-
 		.bind(Inmueble::getConJardin, Inmueble::setConJardin);
 
 	binderInmueble.forField(this.clasesInmueble)
-
 		.bind(Inmueble::getClaseInmueble, Inmueble::setClaseInmueble);
 
 	binderInmueble.forField(this.cocheras)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withNullRepresentation(0)
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
 
@@ -199,7 +196,6 @@ public class InmuebleForm extends FormLayout {
 	binderInmueble.forField(this.dormitorios)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withNullRepresentation(0)
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 
 		.bind(Inmueble::getCantidadDormitorios, Inmueble::setCantidadDormitorios);
@@ -212,7 +208,6 @@ public class InmuebleForm extends FormLayout {
 	binderInmueble.forField(this.nro)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withNullRepresentation(0)
 		.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
 
 		.bind(inmueble -> inmueble.getDireccion().getNro(),
@@ -228,9 +223,22 @@ public class InmuebleForm extends FormLayout {
 	 * inmueble.getDireccion() ,(inmueble,calle) ->
 	 * inmueble.getDireccion().setCalle(calle));
 	 */
-	// TODO*/
-	// binderInmueble.forField(this.localidades);
-	// binderInmueble.forField(this.provincias);
+	// XXX
+	binderInmueble.forField(this.localidades).bind(inmueble -> {
+	    Direccion dir = inmueble.getDireccion();
+	    return dir!=null? provinciaService.getLocalidadFromCodPostal(dir.getCodPostal()) : null;
+	},
+		(inmueble, localidad) -> {
+		    if (inmueble.getDireccion() == null)
+			inmueble.setDireccion(new Direccion());
+		    inmueble.getDireccion().setLocalidad(localidad.getNombre());
+		    inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
+		});
+
+//	binderInmueble.forField(this.provincias).bind(inmueble -> {
+//	    Direccion dir = inmueble.getDireccion();
+//	    return dir!=null? provinciaService.getProvinciaFromString(inmueble.getDireccion().getProvincia()) : null;
+//	},(inmueble, localidad) -> {});
 
 	binderInmueble.forField(this.comboPropietario)
 		.withNullRepresentation(new Persona())
@@ -239,14 +247,12 @@ public class InmuebleForm extends FormLayout {
 	binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withNullRepresentation(0)
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getSuperficieCubierta, Inmueble::setSuperficieCubierta);
 
 	binderInmueble.forField(this.supTotal)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withNullRepresentation(0)
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getSuperficieTotal, Inmueble::setSuperficieTotal);
 
@@ -255,9 +261,16 @@ public class InmuebleForm extends FormLayout {
 
     }
 
+    // XXX
     private Setter<Inmueble, Persona> setPropietario() {
 	return (inmueble, persona) -> {
-
+	    Propietario rolP;
+	    if (persona.contiene(Rol.Propietario) == false) {
+		persona.addRol(Rol.Propietario);
+	    }
+	    rolP = (Propietario) persona.getRol(Rol.Propietario);
+	    rolP.addInmueble(inmueble);
+	    inmueble.setPropietario(rolP);
 	};
     }
 
@@ -365,6 +378,9 @@ public class InmuebleForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderInmueble.writeBean(inmueble);
+	    inmueble.getPropietario().addInmueble(inmueble);
+	    personaService.saveOrUpdate(inmueble.getPropietario().getPersona());
+
 	    inmbService.saveOrUpdate(inmueble);
 	    success = true;
 
