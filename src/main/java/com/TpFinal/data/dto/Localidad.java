@@ -1,9 +1,9 @@
 package com.TpFinal.data.dto;
 
 public class Localidad {
-    String nombre="";
-    String codPosta="";
-    Provincia provincia;
+   private String loc_nombre="";
+    private Integer loc_cpostal;
+    private String prv_nombre;
 
 
     @Override
@@ -13,50 +13,50 @@ public class Localidad {
 
         Localidad localidad = (Localidad) o;
 
-        if (nombre != null ? !nombre.equals(localidad.nombre) : localidad.nombre != null) return false;
-        if (codPosta != null ? !codPosta.equals(localidad.codPosta) : localidad.codPosta != null) return false;
-        return provincia != null ? provincia.equals(localidad.provincia) : localidad.provincia == null;
+        if (loc_nombre != null ? !loc_nombre.equals(localidad.loc_nombre) : localidad.loc_nombre != null) return false;
+        if (loc_cpostal != null ? !loc_cpostal.equals(localidad.loc_cpostal) : localidad.loc_cpostal != null) return false;
+        return prv_nombre != null ? prv_nombre.equals(localidad.prv_nombre) : localidad.prv_nombre == null;
     }
 
     @Override
     public int hashCode() {
-        int result = nombre != null ? nombre.hashCode() : 0;
-        result = 31 * result + (codPosta != null ? codPosta.hashCode() : 0);
-        result = 31 * result + (provincia != null ? provincia.hashCode() : 0);
+        int result = loc_nombre != null ? loc_nombre.hashCode() : 0;
+        result = 31 * result + (loc_cpostal != null ? loc_cpostal.hashCode() : 0);
+        result = 31 * result + (prv_nombre != null ? prv_nombre.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return nombre;
+        return loc_nombre;
     }
 
-    public Localidad(String nombre, String codPosta){
-        this.nombre=nombre;
-        this.codPosta=codPosta;
+    public Localidad(String nombre, Integer codPosta){
+        this.loc_nombre=nombre;
+        this.loc_cpostal=codPosta;
     }
     public String getNombre() {
-        return nombre;
+        return loc_nombre;
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
+        this.loc_nombre = nombre;
     }
 
-    public String getCodPosta() {
-        return codPosta;
+    public Integer getCodPosta() {
+        return loc_cpostal;
     }
 
-    public void setCodPosta(String codPosta) {
-        this.codPosta = codPosta;
+    public void setCodPosta(Integer codPosta) {
+        this.loc_cpostal = codPosta;
     }
 
-    public Provincia getProvincia() {
-        return provincia;
+    public String getProvincia() {
+        return prv_nombre;
     }
 
-    public void setProvincia(Provincia provincia) {
-        this.provincia = provincia;
+    public void setProvincia(String provincia) {
+        this.prv_nombre = provincia;
     }
 }
 
