@@ -69,59 +69,57 @@ public class GeneradorDeDatos {
 
 
 
+	public static ArrayList<Localidad> CargarLocalidadesyProvincias() {
 
-//	public static ArrayList<Localidad> CargarLocalidadesyProvincias() {
-//
-//		JsonArray json = null;
-//		File file;
-//		VaadinRequest vaadinRequest = CurrentInstance.get(VaadinRequest.class);
-//
-//		File baseDirectory = vaadinRequest.getService().getBaseDirectory();
-//		file = new File(baseDirectory + "/"+"Localidades.json");
-//		try {
-//			json = readJsonArrayFromFile(file);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//
-//		ArrayList<Localidad> locs = new ArrayList<Localidad>();
-//		HashMap<Integer,Provincia> provincias = new HashMap<Integer,Provincia>();
-//		ArrayList<Provincia> arrayProvs=new ArrayList<Provincia>();
-//
-//
-//
-//		for (int i = 0; i < json.size(); i++) {
-//			JsonObject objeto = json.get(i).getAsJsonObject();
-//			JsonPrimitive provincia=objeto.getAsJsonPrimitive("prv_nombre");
-//			JsonPrimitive localidad=objeto.getAsJsonPrimitive("loc_nombre");
-//			JsonPrimitive codPostal=objeto.getAsJsonPrimitive("loc_cpostal");
-//			Localidad loc=new Localidad(localidad.getAsString(),codPostal.getAsString());
-//			Provincia prov=new Provincia(provincia.getAsString());
-//
-//			if(!provincias.containsKey(prov.hashCode())){
-//
-//				provincias.put(prov.hashCode(),prov);
-//				arrayProvs.add(prov);
-//
-//
-//			}
-//			else{
-//				prov=provincias.get(prov.hashCode());
-//			}
-//			prov.addLocalidad(loc);
-//			loc.setProvincia(prov);
-//			locs.add(loc);
-//
-//
-//		}
-//		System.out.println(locs.get(100));
-//		GeneradorDeDatos.provincias=arrayProvs;
-//		GeneradorDeDatos.localidades=locs;
-//		return locs;
-//	}
+		JsonArray json = null;
+		File file;
+		VaadinRequest vaadinRequest = CurrentInstance.get(VaadinRequest.class);
+		File baseDirectory = vaadinRequest.getService().getBaseDirectory();
+		file = new File(baseDirectory + "/"+"Localidades.json");
+		try {
+			json = readJsonArrayFromFile(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<Localidad> locs = new ArrayList<Localidad>();
+		HashMap<Integer,Provincia> provincias = new HashMap<Integer,Provincia>();
+		ArrayList<Provincia> arrayProvs=new ArrayList<Provincia>();
 
 
-	/* JSON utility method */
+		for (int i = 0; i < json.size(); i++) {
+			JsonObject objeto = json.get(i).getAsJsonObject();
+			JsonPrimitive provincia=objeto.getAsJsonPrimitive("prv_nombre");
+			JsonPrimitive localidad=objeto.getAsJsonPrimitive("loc_nombre");
+			JsonPrimitive codPostal=objeto.getAsJsonPrimitive("loc_cpostal");
+    		Localidad loc=new Localidad(localidad.getAsString(),codPostal.getAsString());
+			Provincia prov=new Provincia(provincia.getAsString());
+
+			if(!provincias.containsKey(prov.hashCode())){
+
+				provincias.put(prov.hashCode(),prov);
+				arrayProvs.add(prov);
+
+
+			}
+			else{
+				prov=provincias.get(prov.hashCode());
+			}
+			prov.addLocalidad(loc);
+			//loc.setProvincia(prov); //FIXME
+			loc.setProvincia(prov.getNombre());
+			locs.add(loc);
+
+
+		}
+		System.out.println(locs.get(100));
+		GeneradorDeDatos.provincias=arrayProvs;
+		GeneradorDeDatos.localidades=locs;
+		return locs;
+	}
+
+
+
 	private static String readAll(Reader rd) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		int cp;

@@ -129,11 +129,13 @@ public class InmuebleForm extends FormLayout {
 	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
 
 		if (valueChangeEvent.getValue() != null) {
-		    provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
+		    // provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
+		    // //FIXME
 		    codPostal.setValue(valueChangeEvent.getValue().getCodPosta());
 		}
 
 	    }
+
 	});
 	codPostal.setEnabled(false);
 
@@ -160,11 +162,11 @@ public class InmuebleForm extends FormLayout {
 	// binderInmueble.forField(calle).bind(Dire,Inmueble::setaEstrenar);
 
 	binderInmueble.forField(this.aEstrenar)
-		.withNullRepresentation(false)
+		
 		.bind(Inmueble::getaEstrenar, Inmueble::setaEstrenar);
 
 	binderInmueble.forField(this.aireAcond)
-		.withNullRepresentation(false)
+		
 		.bind(Inmueble::getConAireAcondicionado, Inmueble::setConAireAcondicionado);
 
 	binderInmueble.forField(this.ambientes).withNullRepresentation("")
@@ -174,11 +176,11 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getCantidadAmbientes, Inmueble::setCantidadAmbientes);
 
 	binderInmueble.forField(this.cJardin)
-		.withNullRepresentation(false)
+		
 		.bind(Inmueble::getConJardin, Inmueble::setConJardin);
 
 	binderInmueble.forField(this.clasesInmueble)
-		.withNullRepresentation(ClaseInmueble.Casa)
+		
 		.bind(Inmueble::getClaseInmueble, Inmueble::setClaseInmueble);
 
 	binderInmueble.forField(this.cocheras)
@@ -189,11 +191,11 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
 
 	binderInmueble.forField(this.cParrilla)
-		.withNullRepresentation(false)
+		
 		.bind(Inmueble::getConParilla, Inmueble::setConParilla);
 
 	binderInmueble.forField(this.cPpileta)
-		.withNullRepresentation(false)
+		
 		.bind(Inmueble::getConPileta, Inmueble::setConPileta);
 
 	binderInmueble.forField(this.dormitorios)
@@ -251,7 +253,6 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getSuperficieTotal, Inmueble::setSuperficieTotal);
 
 	binderInmueble.forField(this.tiposInmueble)
-		.withNullRepresentation(TipoInmueble.Vivienda)
 		.bind(Inmueble::getTipoInmueble, Inmueble::setTipoInmueble);
 
     }
@@ -314,31 +315,8 @@ public class InmuebleForm extends FormLayout {
     public void setInmueble(Inmueble inmueble) {
 
 	this.inmueble = inmueble;
-	this.inmueble = new Inmueble.Builder()
-		.setaEstrenar(false)
-		.setCantidadAmbientes(0)
-		.setCantidadCocheras(0)
-		.setCantidadDormitorios(0)
-		.setClaseInmueble(ClaseInmueble.OtroInmueble)
-		.setConAireAcondicionado(false)
-		.setConJardin(false)
-		.setConParilla(false)
-		.setConPileta(false)
-		.setDireccion(new Direccion.Builder()
-			.setCalle("")
-			.setCodPostal("")
-			.setCoordenada(new Coordenada())
-			.setLocalidad("")
-			.setNro(0)
-			.setPais("Argentina")
-			.setProvincia("")
-			.build())
-		.setEstadoInmueble(EstadoInmueble.NoPublicado)
-		.setPropietario(new Propietario())
-		.setSuperficieCubierta(0)
-		.setSuperficieTotal(0)
-		.setTipoInmueble(TipoInmueble.Vivienda)
-		.build();
+	
+		
 	System.out.println(this.inmueble);
 	binderInmueble.readBean(this.inmueble);
 

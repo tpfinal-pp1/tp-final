@@ -1,8 +1,13 @@
 package com.TpFinal.view.inmuebles;
 
+import com.TpFinal.data.dto.inmueble.ClaseInmueble;
+import com.TpFinal.data.dto.inmueble.Coordenada;
+import com.TpFinal.data.dto.inmueble.Direccion;
+import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
-
+import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
@@ -39,16 +44,15 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
     public InmuebleABMView() {
 	super();
-	buildLayout();	
+	buildLayout();
 	controller.configureComponents();
-	
+
     }
-    
+
     public Controller getController() {
 	return controller;
     }
 
-   
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
 	filtering.addComponents(filter, clearFilterTextBtn, newItem);
@@ -61,21 +65,21 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	addComponent(mainLayout);
 	this.setExpandRatio(mainLayout, 1);
     }
-    
+
     /**
      * Oculta o muestra los componentes de la grilla y su toolbar.
+     * 
      * @param b
-     * true para mostrar, false para ocultar
+     *            true para mostrar, false para ocultar
      */
     public void setComponentsVisible(boolean b) {
-   	newItem.setVisible(b);
-   	filter.setVisible(b);
-   	// clearFilterTextBtn.setVisible(b);
-   	if (isonMobile)
-   	    grid.setVisible(b);
+	newItem.setVisible(b);
+	filter.setVisible(b);
+	// clearFilterTextBtn.setVisible(b);
+	if (isonMobile)
+	    grid.setVisible(b);
 
-       }
-
+    }
 
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(
@@ -94,8 +98,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	success.setPosition(Position.BOTTOM_CENTER);
 	success.show(Page.getCurrent());
     }
-
-    
 
     public boolean isIsonMobile() {
 	return isonMobile;
@@ -129,7 +131,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
 	if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-		System.out.println("Mobile!");
+	    System.out.println("Mobile!");
 	    isonMobile = true;
 	} else {
 	    isonMobile = false;
@@ -148,7 +150,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	public void configureComponents() {
 
-	    
 	    filter.addValueChangeListener(e -> updateList());
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);
 	    filter.setPlaceholder("Filtrar");
@@ -160,28 +161,52 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	    newItem.addClickListener(e -> {
 		grid.asSingleSelect().clear();
-		inmuebleForm.setInmueble(new Inmueble());
+		inmuebleForm.setInmueble(new Inmueble.Builder()
+			.setaEstrenar(false)
+			.setCantidadAmbientes(0)
+			.setCantidadCocheras(0)
+			.setCantidadDormitorios(0)
+			.setClaseInmueble(ClaseInmueble.OtroInmueble)
+			.setConAireAcondicionado(false)
+			.setConJardin(false)
+			.setConParilla(false)
+			.setConPileta(false)
+			.setDireccion(new Direccion.Builder()
+				.setCalle("")
+				.setCodPostal("")
+				.setCoordenada(new Coordenada())
+				.setLocalidad("")
+				.setNro(0)
+				.setPais("Argentina")
+				.setProvincia("")
+				.build())
+			.setEstadoInmueble(EstadoInmueble.NoPublicado)
+			.setPropietario(new Propietario())
+			.setSuperficieCubierta(0)
+			.setSuperficieTotal(0)
+			.setTipoInmueble(TipoInmueble.Vivienda)
+			.build());
 	    });
 
-		grid.asSingleSelect().addValueChangeListener(event -> {
-			if (event.getValue() == null) {
-				inmuebleForm.setVisible(false);
-			} else {
-				inmuebleForm.setInmueble(event.getValue());
-			}
-		});
+	    grid.asSingleSelect().addValueChangeListener(event -> {
+		if (event.getValue() == null) {
+		    inmuebleForm.setVisible(false);
+		} else {
+		    inmuebleForm.setInmueble(event.getValue());
+		}
+	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
 	    grid.setColumns(Inmueble.pDireccion, Inmueble.pPropietario, Inmueble.pEstadoInmueble, Inmueble.pClaseInmb,
 		    Inmueble.pTipoInmb);
 	    updateList();
 	}
-	
-	public void updateList() {
-		List<Inmueble> inmuebles = inmuebleService.readAll();
-		grid.setItems(inmuebles);
 
-	    }
+	public void updateList() {
+	    List<Inmueble> inmuebles = inmuebleService.readAll();
+	    grid.setItems(inmuebles);
+
+	}
 
     }
 
