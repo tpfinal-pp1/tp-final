@@ -64,6 +64,37 @@ public class PersonaService {
 	        });
 	        return arrayList;
 	    }
+	 
+	 public synchronized List<Persona> findForRole(String stringFilter) {
+	        ArrayList arrayList = new ArrayList();
+	        List<Persona> personas=dao.readAllActives();
+	        if(stringFilter!=""){
+
+	            for (Persona persona : personas) {
+
+	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+	                                            || persona.roles().toLowerCase()
+	                                            .contains(stringFilter.toLowerCase());
+	                    if (passesFilter) {
+
+	                        arrayList.add(persona);
+	                    }
+
+	            }
+	        }
+	        else{
+	            arrayList.addAll(personas);
+	        }
+
+	        Collections.sort(arrayList, new Comparator<Persona>() {
+
+	            @Override
+	            public int compare(Persona o1, Persona o2) {
+	                return (int) (o2.getId() - o1.getId());
+	            }
+	        });
+	        return arrayList;
+	    }
 	
 	
 

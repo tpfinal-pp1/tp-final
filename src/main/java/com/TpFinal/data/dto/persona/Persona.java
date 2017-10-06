@@ -347,6 +347,14 @@ public class Persona implements Identificable, BorradoLogico {
     	return roles;
     }
     
+    public String roles() {
+    	String ret="";
+    	for(Rol r : giveMeYourRoles()) {
+    		ret+=r.toString()+" ";
+    	}
+    	return ret;
+    }
+    
     private boolean contiene(Rol rol) {
     	boolean ret=false;
     	for(Rol r:giveMeYourRoles()) {

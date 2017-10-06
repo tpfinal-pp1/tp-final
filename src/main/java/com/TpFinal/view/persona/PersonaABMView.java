@@ -3,7 +3,7 @@ package com.TpFinal.view.persona;
 
 
 import com.TpFinal.data.dto.persona.Persona;
-
+import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -45,7 +45,8 @@ public class PersonaABMView extends DefaultLayout implements View {
     private Grid<Persona> grid = new Grid<>(Persona.class);
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-
+    RadioButtonGroup<String>filtroRoles= new RadioButtonGroup<>();
+   
 
 
     HorizontalLayout mainLayout;
@@ -94,7 +95,13 @@ public class PersonaABMView extends DefaultLayout implements View {
             grid.asSingleSelect().clear();
             personaForm.setPersona(new Persona());
         });
-
+        
+        filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
+        filtroRoles.addValueChangeListener(l ->{
+        	System.out.println(l.getValue());
+        	String valor=l.getValue();
+        	filter(valor);
+        });
 
         grid.setColumns("nombre", "apellido", "DNI");
         grid.getColumn("DNI").setCaption("DNI");
@@ -143,10 +150,14 @@ public class PersonaABMView extends DefaultLayout implements View {
     private void buildLayout() {
 
         CssLayout filtering = new CssLayout();
+        HorizontalLayout hl= new HorizontalLayout();
         filtering.addComponents(filter, clearFilterTextBtn,newItem);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        hl.addComponent(filtroRoles);
+        hl.addComponent(filtering);
+        
 
-        addComponent(buildToolbar("Personas",filtering));
+        addComponent(buildToolbar("Personas",hl));
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, personaForm);
         mainLayout.setSizeFull();
@@ -185,7 +196,17 @@ public class PersonaABMView extends DefaultLayout implements View {
     public void updateList() {
             List<Persona> customers = service.findAll(filter.getValue());
             grid.setItems(customers);
-
+    }
+    
+    public void filter(String valor) {
+    	List<Persona> customers=null;
+    	if(valor.equals("Todos"))
+    			customers = service.findAll(filter.getValue());
+    	else if(valor.equals("Inquilinos")) 
+    			customers = service.findForRole(Rol.Inquilino.toString());
+    	else if(valor.equals("Propietarios"))
+    			customers = service.findForRole(Rol.Propietario.toString());
+    	grid.setItems(customers);
     }
 
     public boolean isIsonMobile() {
