@@ -2,6 +2,7 @@ package com.TpFinal.data.dto;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.util.List;
 
 import org.junit.After;
@@ -30,7 +31,7 @@ public class LocalidadTest {
 	public void transformar() {
 		JsonUtil gson = new JsonUtil();
 		//traigo las localidades "feas"
-		List<LocalidadRAW>localidades=gson.leerRaw("src\\main\\webapp\\Localidades.json");
+		List<LocalidadRAW>localidades=gson.leerRaw("src"+File.separator+"main"+File.separator+"webapp"+File.separator+"Localidades.json");
 		//lo paso al modelo de provincias(cada provincia con una lista de localidades
 		List<Provincia>provincias=gson.rawToProvincias(localidades);
 		System.out.println(provincias.size());
