@@ -1,6 +1,7 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.LocalidadRAW;
+
+import com.TpFinal.data.dto.Localidad;
 import com.TpFinal.data.dto.Provincia;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -15,6 +16,7 @@ import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.persona.PersonaFormWindow;
+import com.google.common.util.concurrent.Service;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
@@ -26,6 +28,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
+import java.util.List;
 
 /* Create custom UI Components.
  *
@@ -57,7 +60,7 @@ public class InmuebleForm extends FormLayout {
     private TextField calle = new TextField("Calle");
     private TextField nro = new TextField("Número");
     private TextField codPostal = new TextField("Código postal");
-    private ComboBox<LocalidadRAW> localidades = new ComboBox<>("Localidad");
+    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
     private ComboBox<Provincia> provincias = new ComboBox<>("Provincia");
     private TinyButton buscarUbicacion = new TinyButton("Buscar Ubicación", VaadinIcons.MAP_MARKER);
 
@@ -101,10 +104,9 @@ public class InmuebleForm extends FormLayout {
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-	setVisible(false);
-
-	localidades.setItems(GeneradorDeDatos.getLocalidades());
-	provincias.setItems(GeneradorDeDatos.getProvincias());
+	setVisible(false);	
+	localidades.setItems(serviceProvincia.getLocalidades());
+	provincias.setItems(serviceProvincia.getProvincias());
 
 	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
 	    @Override
@@ -121,14 +123,13 @@ public class InmuebleForm extends FormLayout {
 	    }
 	});
 
-	localidades.addValueChangeListener(new HasValue.ValueChangeListener<LocalidadRAW>() {
+	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
 	    @Override
-	    public void valueChange(HasValue.ValueChangeEvent<LocalidadRAW> valueChangeEvent) {
+	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
 
 		if (valueChangeEvent.getValue() != null) {
-		    // provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
-		    // //FIXME
-		    codPostal.setValue(valueChangeEvent.getValue().getCodPosta());
+		    provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
+		    codPostal.setValue(valueChangeEvent.getValue().getCodigoPostal());
 		}
 
 	    }
