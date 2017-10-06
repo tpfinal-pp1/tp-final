@@ -20,6 +20,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
 import java.util.List;
 
 /* User Interface written in Java.
@@ -46,13 +47,17 @@ public class PersonaABMView extends DefaultLayout implements View {
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     RadioButtonGroup<String>filtroRoles= new RadioButtonGroup<>();
+    Button seleccionFiltro=new Button("Filtros");
+    Window sw = new Window("Filtrar");
+    HorizontalLayout hlSw = new HorizontalLayout();
+   
    
 
 
     HorizontalLayout mainLayout;
     // PersonaForm is an example of a custom component class
     PersonaForm personaForm = new PersonaForm(this);
-   private boolean isonMobile=false;
+    private boolean isonMobile=false;
 
     // PersonaService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
@@ -96,12 +101,21 @@ public class PersonaABMView extends DefaultLayout implements View {
             personaForm.setPersona(new Persona());
         });
         
-        filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
-        filtroRoles.addValueChangeListener(l ->{
-        	System.out.println(l.getValue());
-        	String valor=l.getValue();
-        	filter(valor);
+        seleccionFiltro.addClickListener(event -> {
+        	
+        	sw.setContent(new HorizontalLayout(filtroRoles));
+        	 filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
+             filtroRoles.addValueChangeListener(l ->{
+             	System.out.println(l.getValue());
+             	String valor=l.getValue();
+             	filter(valor);
+             });
+             sw.setVisible(true);
+             UI.getCurrent().addWindow(sw);
+             sw.focus();
         });
+        
+       
 
         grid.setColumns("nombre", "apellido", "DNI");
         grid.getColumn("DNI").setCaption("DNI");
@@ -153,7 +167,8 @@ public class PersonaABMView extends DefaultLayout implements View {
         HorizontalLayout hl= new HorizontalLayout();
         filtering.addComponents(filter, clearFilterTextBtn,newItem);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        hl.addComponent(filtroRoles);
+        hl.addComponent(hlSw);
+        hl.addComponent(seleccionFiltro);
         hl.addComponent(filtering);
         
 
