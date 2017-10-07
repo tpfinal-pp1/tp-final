@@ -116,7 +116,12 @@ public class InmuebleForm extends FormLayout {
 		    if (valueChangeEvent.getOldValue() != null) {
 			localidades.clear();
 			localidades.setItems(provincia.getLocalidades());
-			localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			if (inmueble.getDireccion().getLocalidad() == "") {
+			    localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			} else {
+			    localidades.setSelectedItem(provinciaService.getLocalidadFromNombreAndProvincia(inmueble
+				    .getDireccion().getLocalidad(), inmueble.getDireccion().getProvincia()));
+			}
 		    }
 		}
 
@@ -226,19 +231,24 @@ public class InmuebleForm extends FormLayout {
 	// XXX
 	binderInmueble.forField(this.localidades).bind(inmueble -> {
 	    Direccion dir = inmueble.getDireccion();
-	    return dir!=null? provinciaService.getLocalidadFromCodPostal(dir.getCodPostal()) : null;
+	    Notification.show(dir.getCodPostal());
+	    return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
+		    .getProvincia()) : null;
 	},
 		(inmueble, localidad) -> {
 		    if (inmueble.getDireccion() == null)
 			inmueble.setDireccion(new Direccion());
 		    inmueble.getDireccion().setLocalidad(localidad.getNombre());
 		    inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
+		    inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
 		});
 
-//	binderInmueble.forField(this.provincias).bind(inmueble -> {
-//	    Direccion dir = inmueble.getDireccion();
-//	    return dir!=null? provinciaService.getProvinciaFromString(inmueble.getDireccion().getProvincia()) : null;
-//	},(inmueble, localidad) -> {});
+	// binderInmueble.forField(this.provincias).bind(inmueble -> {
+	// Direccion dir = inmueble.getDireccion();
+	// return dir!=null?
+	// provinciaService.getProvinciaFromString(inmueble.getDireccion().getProvincia())
+	// : null;
+	// },(inmueble, localidad) -> {});
 
 	binderInmueble.forField(this.comboPropietario)
 		.withNullRepresentation(new Persona())

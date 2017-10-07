@@ -58,11 +58,14 @@ public class ProvinciaService {
 	return localidades;
     }
 
-    public Localidad getLocalidadFromCodPostal(String codPostal) {
+    public Localidad getLocalidadFromNombreAndProvincia(String nombreLocalidad, String nombreProvincia) {
 	for (Localidad l : localidades) {
-	    if (l.getCodigoPostal() == codPostal)
+	    if (l.getNombre().equalsIgnoreCase(nombreLocalidad) && l.getProvincia().getNombre().equalsIgnoreCase(nombreProvincia)) {
+		System.out.println("Localidad Encontrada!");
 		return l;
+	    }
 	}
+	System.out.print("Localidad no Encontrada");
 	return null;
 
     }
