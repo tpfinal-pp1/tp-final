@@ -114,12 +114,17 @@ public class ContratoABMView extends DefaultLayout implements View {
 	grid.asSingleSelect().addValueChangeListener(event -> {
 	    if (event.getValue() == null) {
 		ContratoVentaForm.setVisible(false);
+		ContratoAlquilerForm.setVisible(false);
 	    } else {
 
-		if (event.getValue() instanceof ContratoAlquiler)
+		if (event.getValue() instanceof ContratoAlquiler) {
+		    ContratoVentaForm.setVisible(false);
 		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) event.getValue());
+		    
+		}
 
 		else if (event.getValue() instanceof ContratoVenta) {
+		    ContratoAlquilerForm.setVisible(false);
 		    ContratoVentaForm.setContratoVenta((ContratoVenta) event.getValue());
 
 		}
