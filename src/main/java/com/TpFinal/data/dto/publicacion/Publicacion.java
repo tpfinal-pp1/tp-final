@@ -61,10 +61,16 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	}
 
 	public void setInmueble(Inmueble inmueble) {
-
-			this.inmueble = inmueble;
-			this.inmueble.addPublicacion(this);
-
+	if(inmueble!=null) {
+		this.inmueble = inmueble;
+		this.inmueble.addPublicacion(this);
+	}
+	else{
+		if(this.inmueble!=null) {
+			this.inmueble.removePublicacion(this);
+			this.inmueble = null;
+		}
+	}
 		}
 
 	public LocalDate getFechaPublicacion() {

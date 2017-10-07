@@ -1,4 +1,4 @@
-package com.TpFinal.view.operacion;
+package com.TpFinal.view.publicacion;
 
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;

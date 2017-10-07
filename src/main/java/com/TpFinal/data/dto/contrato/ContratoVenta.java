@@ -48,8 +48,8 @@ public class ContratoVenta extends Contrato {
 	return publicacion;
     }
 
-    public void setPublicacionVenta(PublicacionVenta operacionVenta) {
-	this.publicacion = operacionVenta;
+    public void setPublicacionVenta(PublicacionVenta publicacionVenta) {
+	this.publicacion = publicacionVenta;
     }
 
     public BigDecimal getPrecioVenta() {
