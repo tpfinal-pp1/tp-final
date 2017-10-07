@@ -5,11 +5,9 @@ import com.TpFinal.data.dao.interfaces.DAOPublicacion;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.*;
+import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
-import com.TpFinal.data.dto.publicacion.Publicacion;
-import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.data.dto.publicacion.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -97,6 +95,8 @@ public class PublicacionService {
     }
 
      static PublicacionAlquiler InstanciaPublicacionAlquiler() {
+        Persona p= new Persona();
+        p.addRol(Rol.Propietario);
 
       return  new PublicacionAlquiler.Builder()
                  .setValorCuota(new BigDecimal("0"))
@@ -123,7 +123,7 @@ public class PublicacionService {
                                  .setProvincia("")
                                  .build())
                          .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                         .setPropietario(new Propietario())
+                         .setPropietario(p.getPropietario())
                          .setSuperficieCubierta(0)
                          .setSuperficieTotal(0)
                          .setTipoInmueble(TipoInmueble.Vivienda)
@@ -132,6 +132,8 @@ public class PublicacionService {
     }
 
     static  PublicacionVenta InstanciaPublicacionVenta(){
+        Persona p= new Persona();
+        p.addRol(Rol.Propietario);
         PublicacionVenta PV=new PublicacionVenta.Builder()
                 .setPrecio(new BigDecimal("0"))
                 .setFechaPublicacion(LocalDate.now())
@@ -157,7 +159,7 @@ public class PublicacionService {
                                 .setProvincia("")
                                 .build())
                         .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                        .setPropietario(new Propietario())
+                        .setPropietario(p.getPropietario())
                         .setSuperficieCubierta(0)
                         .setSuperficieTotal(0)
                         .setTipoInmueble(TipoInmueble.Vivienda)

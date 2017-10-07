@@ -103,9 +103,10 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(precio).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precio");
         visualizadorInmueble.setEnabled(false);
         //LAMBDA rober-MAGIX
-        binderPublicacionVenta.forField(this.nombrePropietario)
+
+    /*    binderPublicacionVenta.forField(this.nombrePropietario)
                 .withNullRepresentation("")
-                .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().getPersona().toString(),null);
+                .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().getPersona().toString(),null);*/
 
         binderPublicacionVenta.forField(this.visualizadorInmueble)
                 .withNullRepresentation("")
@@ -272,7 +273,6 @@ public class PublicacionVentaForm extends FormLayout {
             if(inmuebleSeleccionado.getId() != null) {
                 this.publicacionVenta.setInmueble(inmuebleSeleccionado);
                 this.publicacionVenta.getInmueble().addPublicacion(this.publicacionVenta);
-                this.publicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
                 binderPublicacionVenta.writeBean(publicacionVenta);
                 service.save(publicacionVenta);
                 success = true;
