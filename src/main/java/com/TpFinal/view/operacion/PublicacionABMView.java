@@ -111,10 +111,14 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
         });
 
-        grid.setColumns("inmueble","propietarioPublicacion","tipoPublicacion","fechaPublicacion","estadoPublicacion");
+
+
+        grid.setColumns("inmueble","tipoPublicacion","fechaPublicacion","estadoPublicacion");
         grid.getColumn("tipoPublicacion").setCaption("Operación");
         grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
-        grid.getColumn("propietarioPublicacion").setCaption("Propietario");
+        grid.addColumn(Publicacion-> Publicacion.getInmueble().getPropietario()).setCaption("Propietario");
+
+       // grid.getColumn("propietarioPublicacion").setCaption("Propietario");
 
 
         Responsive.makeResponsive(this);
