@@ -93,7 +93,8 @@ public class PublicacionServiceTest {
 		
 		pa.setInmueble(null);
 		pv.setInmueble(null);
-		
+
+
 		servicePub.updateBidireccioal(pa);
 		servicePub.updateBidireccioal(pv);
 		
