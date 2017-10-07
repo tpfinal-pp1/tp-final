@@ -2,7 +2,6 @@ package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
@@ -17,6 +16,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /* Create custom UI Components.
@@ -245,6 +246,13 @@ public class ContratoVentaForm extends FormLayout {
                 PersonaService PersonaService=
                         new PersonaService();
                 List<Persona> Personas = PersonaService.readAll();
+                Collections.sort(Personas, new Comparator<Persona>() {
+
+                    @Override
+                    public int compare(Persona o1, Persona o2) {
+                        return (int) (o2.getId() - o1.getId());
+                    }
+                });
                 grid.setItems(Personas);
             }
 

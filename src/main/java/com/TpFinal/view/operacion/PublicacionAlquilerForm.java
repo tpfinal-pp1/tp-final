@@ -19,6 +19,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /* Create custom UI Components.
@@ -224,6 +226,13 @@ public class PublicacionAlquilerForm extends FormLayout {
                 InmuebleService InmuebleService=
                         new InmuebleService();
                 List<Inmueble> inmuebles = InmuebleService.readAll();
+                Collections.sort(inmuebles, new Comparator<Inmueble>() {
+
+                    @Override
+                    public int compare(Inmueble o1, Inmueble o2) {
+                        return (int) (o2.getId() - o1.getId());
+                    }
+                });
                 grid.setItems(inmuebles);
 
             }

@@ -1,12 +1,11 @@
 package com.TpFinal.services;
 
-import java.util.List;
-
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.persona.Persona;
+
+import java.util.List;
 
 public class InmuebleService {
 	private DAOInmueble dao;
@@ -25,7 +24,7 @@ public class InmuebleService {
 	 * @return
 	 */
 	public boolean saveOrUpdate(Inmueble entidad) {
-		if(entidad.getPropietario()!=null)
+		//if(entidad.getPropietario()!=null)
 			entidad.getPropietario().addInmueble(entidad);
 	    return dao.saveOrUpdate(entidad);
 	}

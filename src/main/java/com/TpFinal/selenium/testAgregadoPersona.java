@@ -17,7 +17,7 @@ public class testAgregadoPersona {
     @Before
     public void setUp() throws Exception {
         if(SystemUtils.IS_OS_LINUX){
-            System.setProperty("webdriver.gecko.driver","GeckoDriver"+ File.separator+"geckodriver");
+            System.setProperty("webdriver.gecko.wd","GeckoDriver"+ File.separator+"geckodriver");
             System.out.println("OS: LINUX");
         }
         if(SystemUtils.IS_OS_WINDOWS) {
