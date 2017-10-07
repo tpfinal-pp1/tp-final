@@ -41,8 +41,8 @@ public class PublicacionVentaForm extends FormLayout {
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
     Button inmuebleSelector = new Button("");
     TextField nombrePropietario = new TextField();
-    Inmueble inmuebleSeleccionado;
-    TextField precio = new TextField("Valor de Precio");
+
+    TextField precio = new TextField("Precio");
     ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
     // TODO una vez que este contrato ContratoVenta contratoVenta;
@@ -103,8 +103,7 @@ public class PublicacionVentaForm extends FormLayout {
         binderPublicacionVenta.forField(precio).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precio");
         visualizadorInmueble.setEnabled(false);
         //LAMBDA rober-MAGIX
-
-       binderPublicacionVenta.forField(this.nombrePropietario)
+        binderPublicacionVenta.forField(this.nombrePropietario)
                 .withNullRepresentation("")
                 .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().toString(),null);
 
@@ -175,14 +174,7 @@ public class PublicacionVentaForm extends FormLayout {
 
         this.publicacionVenta = PublicacionVenta;
         binderPublicacionVenta.readBean(PublicacionVenta);
-        inmuebleSeleccionado = PublicacionVenta.getInmueble();
-        if(inmuebleSeleccionado == null) {
-            nombrePropietario.setValue("");
-            inmuebleSeleccionado = new Inmueble();
-        }
-        else {
-            visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
-        }
+
 
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionVenta.getId()!=null);
@@ -229,7 +221,7 @@ public class PublicacionVentaForm extends FormLayout {
 
     private void displayInmuebleSelector(){
 
-        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
+        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(this.publicacionVenta.getInmueble()) {
             @Override
             public void updateList() {
                 InmuebleService InmuebleService=
@@ -254,10 +246,16 @@ public class PublicacionVentaForm extends FormLayout {
 
             @Override
             public void seleccionado(Inmueble seleccion) {
-                inmuebleSeleccionado=seleccion;
-                publicacionVenta.setInmueble(seleccion);
 
-                //   visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+                try {
+                    binderPublicacionVenta.writeBean(publicacionVenta);
+                } catch (ValidationException e) {
+                    Notification.show("Error al guardar cambios");
+                    e.printStackTrace();
+                }
+                publicacionVenta.setInmueble(seleccion);
+                binderPublicacionVenta.readBean(publicacionVenta);
+
             }
 
 
@@ -270,14 +268,12 @@ public class PublicacionVentaForm extends FormLayout {
 
         boolean success=false;
         try {
-            if(inmuebleSeleccionado.getId() != null) {
-                this.publicacionVenta.setInmueble(inmuebleSeleccionado);
-                this.publicacionVenta.getInmueble().addPublicacion(this.publicacionVenta);
-                binderPublicacionVenta.writeBean(publicacionVenta);
-                service.save(publicacionVenta);
-                success = true;
 
-            }
+            binderPublicacionVenta.writeBean(publicacionVenta);
+            service.save(publicacionVenta);
+            success = true;
+
+
         } catch (ValidationException e) {
             e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");

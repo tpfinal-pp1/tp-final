@@ -255,17 +255,15 @@ public class Inmueble implements Identificable, BorradoLogico {
 
     public void addPublicacion(Publicacion operacion) {
 
-
-		//if (operaciones.size() < 2) {
-				operaciones.add(operacion);
-		////}
-		/*else{
-			operaciones.clear();
-			operaciones.add(operacion);
-			throw new IllegalArgumentException("Se borro la publicacion anterior y se reemplazo por una nueva");
+    	if(operacion.getId()!=null) {
+			for (Publicacion publicacion : operaciones
+					) {
+				if (publicacion.getId() == operacion.getId()) {
+					operaciones.remove(publicacion);
+				}
+			}
 		}
-	*/
-
+		operaciones.add(operacion);
     }
 
     public Propietario getPropietario() {
