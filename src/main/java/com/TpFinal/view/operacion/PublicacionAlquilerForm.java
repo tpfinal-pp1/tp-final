@@ -250,8 +250,7 @@ public class PublicacionAlquilerForm extends FormLayout {
         boolean success=false;
         try {
             if(inmuebleSeleccionado.getId() != null) {
-                if (inmuebleSeleccionado.equals(new Inmueble()))
-                    this.PublicacionAlquiler.setInmueble(inmuebleSeleccionado);
+                this.PublicacionAlquiler.setInmueble(inmuebleSeleccionado);
                 this.PublicacionAlquiler.getInmueble().addPublicacion(this.PublicacionAlquiler);
                 this.PublicacionAlquiler.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
                 binderPublicacionAlquiler.writeBean(PublicacionAlquiler);

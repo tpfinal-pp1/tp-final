@@ -93,7 +93,7 @@ public class PublicacionVentaForm extends FormLayout {
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-
+        moneda.setId("combo");
 
 
 
