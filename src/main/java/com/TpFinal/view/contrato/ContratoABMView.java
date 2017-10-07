@@ -25,6 +25,7 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /* User Interface written in Java.
@@ -135,7 +136,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     private void setearColumnas() {
 	grid.removeAllColumns();
 	contratos = service.findAll(filter.getValue());
-	
+
 	Column<Contrato, String> tipoCol = grid.addColumn(contrato -> {
 	    String ret = "";
 	    if (contrato instanceof ContratoVenta) {
@@ -145,34 +146,38 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	    return ret;
 	});
-	
-	Column<Contrato, LocalDate> fechaCelebracionCol = grid.addColumn(Contrato::getFechaCelebracion);
-	
+
+	Column<Contrato, String> fechaCelebracionCol = grid.addColumn(contrato -> {
+	    return contrato.getFechaCelebracion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+	});
+
 	Column<Contrato, EstadoRegistro> estadoCol = grid.addColumn(Contrato::getEstadoRegistro).setCaption("Estado");
-	
-	Column<Contrato, String> direccionCol = grid.addColumn(contrato ->{
-	    String ret="";
+
+	Column<Contrato, String> direccionCol = grid.addColumn(contrato -> {
+	    String ret = "";
 	    Direccion dir = contrato.getInmueble().getDireccion();
-	    ret = dir.getCalle() +" " + dir.getNro() + ", " + dir.getProvincia();
+	    ret = dir.getCalle() + " " + dir.getNro() + ", " + dir.getProvincia();
 	    return ret;
 	});
-	
-	Column<Contrato, String> intervinientesCol = grid.addColumn(contrato ->{
-	    String ret ="";
+
+	Column<Contrato, String> intervinientesCol = grid.addColumn(contrato -> {
+	    String ret = "";
 	    if (contrato instanceof ContratoVenta) {
 		ContratoVenta c = (ContratoVenta) contrato;
 		Persona propietario = c.getInmueble().getPropietario().getPersona();
 		Persona comprador = c.getComprador();
-		ret = propietario.getNombre() + " " + propietario.getApellido() +", " + comprador.getNombre() + " " + comprador.getApellido();
-	    }else {
+		ret = propietario.getNombre() + " " + propietario.getApellido() + ", " + comprador.getNombre() + " "
+			+ comprador.getApellido();
+	    } else {
 		ContratoAlquiler c = (ContratoAlquiler) contrato;
 		Persona propietario = c.getInmueble().getPropietario().getPersona();
 		Persona inquilino = c.getInquilinoContrato().getPersona();
-		ret = propietario.getNombre() + " " + propietario.getApellido() +", " + inquilino.getNombre() + " " + inquilino.getApellido();
-		
+		ret = propietario.getNombre() + " " + propietario.getApellido() + ", " + inquilino.getNombre() + " "
+			+ inquilino.getApellido();
+
 	    }
-	    return ret;});
-	
+	    return ret;
+	});
 
 	tipoCol.setCaption("Tipo");
 	fechaCelebracionCol.setCaption("Fecha de Celebración");

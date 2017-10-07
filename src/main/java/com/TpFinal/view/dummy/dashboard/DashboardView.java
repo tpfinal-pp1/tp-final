@@ -18,13 +18,14 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 
 import com.vaadin.server.Responsive;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
-
+import com.vaadin.util.CurrentInstance;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -133,7 +134,7 @@ public final class DashboardView extends Panel implements View{
         //notes.setValue("Notas:\n-Una nota ");
         String text="";
         try {
-            for (String line : Files.readAllLines(Paths.get("README.md"))) {
+            for (String line : Files.readAllLines(Paths.get(CurrentInstance.get(VaadinRequest.class).getService().getBaseDirectory() + File.separator + "Readme.md"))) {
                 text=text+"\n"+line;
             }
             notes.setValue(text);
