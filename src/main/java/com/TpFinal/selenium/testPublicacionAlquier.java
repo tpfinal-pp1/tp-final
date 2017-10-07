@@ -53,19 +53,21 @@ public class testPublicacionAlquier {
         wd.findElement(By.xpath("//div[@class='v-expand']/div/div/div[3]/div/div[5]/div")).click();
         wd.get("http://inmobi.ddns.net/#!publicaciones");
         wd.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[1]/div/div[3]/div/div[3]/div/div[3]/div")).click();
+        wd.findElement(By.cssSelector("button.v-datefield-button")).click();
+        wd.findElement(By.xpath("//td[@class='v-datefield-calendarpanel-body']//span[.='22']")).click();
+        wd.findElement(By.xpath("//label[@for='gwt-uid-27']")).click();
         if (!wd.findElement(By.id("gwt-uid-27")).isSelected()) {
             wd.findElement(By.id("gwt-uid-27")).click();
         }
         wd.findElement(By.xpath("//div[@id='gwt-uid-19']/div[3]/div")).click();
-        wd.findElement(By.xpath("//div[@class='v-window-contents']//td[.='Julie Charlene']")).click();
+        wd.findElement(By.xpath("//div[@class='v-window-contents']//td[.='Rosy Julie']")).click();
         wd.findElement(By.xpath("//div[@class='v-window-contents']/div/div/div[3]/div/div/div/div")).click();
+        wd.findElement(By.id("gwt-uid-23")).click();
         wd.findElement(By.xpath("//div[@class='v-tabsheet-tabsheetpanel']/div/div/table/tbody/tr[6]/td[3]/div/div")).click();
-
         wd.findElement(By.xpath("//div[@class='v-filterselect-suggestmenu']//span[.='Pesos']")).click();
-        wd.findElement(By.id("gwt-uid-21")).click();
-        wd.findElement(By.id("gwt-uid-21")).clear();
-        wd.findElement(By.id("gwt-uid-21")).sendKeys("1000");
         wd.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/table/tbody/tr[3]/td[3]/div/div/div")).click();
+
+
     }
     
     @After

@@ -69,6 +69,7 @@ public class testPublicacionVenta {
         wd.findElement(By.xpath("//div[@class='v-filterselect-suggestmenu']//span[.='Dolares']")).click();
         wd.findElement(By.xpath("//div[@id='ROOT-2521314']/div/div[2]/div/div[2]/div/div/div/div[2]/div/div/div[3]/div/table/tbody/tr[3]/td[3]/div/div/div")).click();
 
+
     }
 
 
