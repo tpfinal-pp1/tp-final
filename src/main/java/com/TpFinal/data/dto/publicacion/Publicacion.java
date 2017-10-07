@@ -44,9 +44,6 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 
 	@Enumerated(EnumType.STRING)
 	protected EstadoRegistro estadoRegistro;
-	
-	@Transient
-	protected Propietario propietarioPublicacion;
 
 
 	@Override
@@ -87,9 +84,6 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 
 	public void setEstadoPublicacion(EstadoPublicacion estadoPublicacion) { this.estadoPublicacion = estadoPublicacion; }
 
-	public Propietario getPropietarioPublicacion() { return propietarioPublicacion; }
-
-	public void setPropietarioPublicacion(Propietario propietarioPublicacion) { }
 
 	@Override
 	public String toString() {

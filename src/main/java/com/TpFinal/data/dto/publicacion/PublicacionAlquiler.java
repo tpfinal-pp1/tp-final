@@ -46,7 +46,6 @@ public class PublicacionAlquiler extends Publicacion {
 		this.moneda = b.moneda;
 		this.valorCuota = b.valorCuota;
 		this.contratoAlquiler = b.contratoAlquiler;
-		this.propietarioPublicacion = this.inmueble.getPropietario();
 		tipoPublicacion = TipoPublicacion.Alquiler;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
