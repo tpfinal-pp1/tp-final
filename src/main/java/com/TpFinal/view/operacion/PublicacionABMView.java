@@ -132,6 +132,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
                                 .setPropietario(new Propietario())
                                 .build()
             );
+            grid.setEnabled(false);
         });
 
         nuevoAlquiler.addClickListener(e -> {
@@ -169,7 +170,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
                             .setPropietario(new Propietario())
                             .build()
             );
-
+            grid.setEnabled(false);
         });
 
         grid.setColumns("inmueble","propietarioPublicacion","tipoPublicacion","fechaPublicacion","estadoPublicacion");
@@ -184,12 +185,14 @@ public class PublicacionABMView extends DefaultLayout implements View {
                 PublicacionVentaForm.setVisible(false);
             } else {
 
-                if(event.getValue() instanceof PublicacionAlquiler)
+                if(event.getValue() instanceof PublicacionAlquiler) {
                     PublicacionAlquilerForm.setPublicacionAlquiler((PublicacionAlquiler) event.getValue());
+                    grid.setEnabled(false);
+                }
 
                 else if(event.getValue() instanceof PublicacionVenta){
                     PublicacionVentaForm.setPublicacionVenta((PublicacionVenta) event.getValue());
-
+                    grid.setEnabled(false);
                 }
             }
         });
@@ -350,4 +353,5 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
 
+    public void enableGrid() { grid.setEnabled(true);}
 }

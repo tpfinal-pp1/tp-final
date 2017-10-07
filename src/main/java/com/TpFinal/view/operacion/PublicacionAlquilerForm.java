@@ -192,6 +192,7 @@ public class PublicacionAlquilerForm extends FormLayout {
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
         getAddressbookView().showSuccessNotification("Borrado");
+        getAddressbookView().enableGrid();
 
 
     }
@@ -248,14 +249,16 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         boolean success=false;
         try {
-            this.PublicacionAlquiler.setInmueble(inmuebleSeleccionado);
-            this.PublicacionAlquiler.getInmueble().addPublicacion(this.PublicacionAlquiler);
-            this.PublicacionAlquiler.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
-            binderPublicacionAlquiler.writeBean(PublicacionAlquiler);
-            service.save(PublicacionAlquiler);
-            success=true;
+            if(inmuebleSeleccionado.getId() != null) {
+                if (inmuebleSeleccionado.equals(new Inmueble()))
+                    this.PublicacionAlquiler.setInmueble(inmuebleSeleccionado);
+                this.PublicacionAlquiler.getInmueble().addPublicacion(this.PublicacionAlquiler);
+                this.PublicacionAlquiler.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
+                binderPublicacionAlquiler.writeBean(PublicacionAlquiler);
+                service.save(PublicacionAlquiler);
+                success = true;
 
-
+            }
         } catch (ValidationException e) {
             e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
@@ -273,6 +276,7 @@ public class PublicacionAlquilerForm extends FormLayout {
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().enableGrid();
 
 
         if(success)
@@ -287,6 +291,7 @@ public class PublicacionAlquilerForm extends FormLayout {
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
+        //getAddressbookView().enableGrid();
     }
 
 

@@ -1,28 +1,15 @@
 package com.TpFinal.data.dto.inmueble;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-
-
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
+
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "Inmuebles")
@@ -269,15 +256,15 @@ public class Inmueble implements Identificable, BorradoLogico {
     public void addPublicacion(Publicacion operacion) {
 
 
-		if (operaciones.size() < 2) {
+		//if (operaciones.size() < 2) {
 				operaciones.add(operacion);
-		}
-		else{
+		////}
+		/*else{
 			operaciones.clear();
 			operaciones.add(operacion);
 			throw new IllegalArgumentException("Se borro la publicacion anterior y se reemplazo por una nueva");
 		}
-
+	*/
 
     }
 

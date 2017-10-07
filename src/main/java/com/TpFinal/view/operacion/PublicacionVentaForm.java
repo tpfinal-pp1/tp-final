@@ -1,7 +1,6 @@
 package com.TpFinal.view.operacion;
 
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.inmueble.*;
 import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
@@ -198,7 +197,7 @@ public class PublicacionVentaForm extends FormLayout {
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
         getAddressbookView().showSuccessNotification("Borrado");
-
+        getAddressbookView().enableGrid();
 
     }
 
@@ -254,14 +253,14 @@ public class PublicacionVentaForm extends FormLayout {
         boolean success=false;
         try {
 
-
-            this.PublicacionVenta.setInmueble(inmuebleSeleccionado);
-            this.PublicacionVenta.getInmueble().addPublicacion(this.PublicacionVenta);
-            this.PublicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
-            binderPublicacionVenta.writeBean(this.PublicacionVenta);
-            service.save(this.PublicacionVenta);
-            success=true;
-
+            if( inmuebleSeleccionado.getId() != null) {
+                this.PublicacionVenta.setInmueble(inmuebleSeleccionado);
+                this.PublicacionVenta.getInmueble().addPublicacion(this.PublicacionVenta);
+                this.PublicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
+                binderPublicacionVenta.writeBean(this.PublicacionVenta);
+                service.save(this.PublicacionVenta);
+                success = true;
+            }
 
         } catch (ValidationException e) {
             e.printStackTrace();
@@ -280,7 +279,7 @@ public class PublicacionVentaForm extends FormLayout {
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
-
+        getAddressbookView().enableGrid();
 
         if(success)
             getAddressbookView().showSuccessNotification("Guardado");
@@ -294,6 +293,7 @@ public class PublicacionVentaForm extends FormLayout {
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().enableGrid();
     }
 
 
