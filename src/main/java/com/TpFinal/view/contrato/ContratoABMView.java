@@ -1,7 +1,5 @@
 package com.TpFinal.view.contrato;
 
-
-
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
@@ -37,151 +35,152 @@ import java.util.List;
 public class ContratoABMView extends DefaultLayout implements View {
 
     /*
-     * Hundreds of widgets. Vaadin's user interface components are just Java
-     * objects that encapsulate and handle cross-browser support and
-     * client-server communication. The default Vaadin components are in the
-     * com.vaadin.ui package and there are over 500 more in
-     * vaadin.com/directory.
+     * Hundreds of widgets. Vaadin's user interface components are just Java objects
+     * that encapsulate and handle cross-browser support and client-server
+     * communication. The default Vaadin components are in the com.vaadin.ui package
+     * and there are over 500 more in vaadin.com/directory.
      */
-    TextField filter = new TextField();
+    private TextField filter = new TextField();
     private Grid<Contrato> grid = new Grid<>(Contrato.class);
-    Button nuevoAlquiler = new Button("Nuevo Alquiler");
-    Button nuevaVenta = new Button("Nueva Venta");
+    private Button nuevoAlquiler = new Button("Nuevo Alquiler");
+    private Button nuevaVenta = new Button("Nueva Venta");
+    private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
+    private HorizontalLayout mainLayout;
 
+    // Forms
+    private ContratoVentaForm ContratoVentaForm = new ContratoVentaForm(this);
+    private ContratoAlquilerForm ContratoAlquilerForm = new ContratoAlquilerForm(this);
 
-    Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-
-
-
-    HorizontalLayout mainLayout;
-    // ContratoVentaForm is an example of a custom component class
-    ContratoVentaForm ContratoVentaForm = new ContratoVentaForm(this);
-    ContratoAlquilerForm ContratoAlquilerForm = new ContratoAlquilerForm(this);
-
-    private boolean isonMobile=false;
+    private boolean isonMobile = false;
 
     // ContratoService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
     ContratoService service = new ContratoService();
+    private List<Contrato> contratos;
 
-
-    public ContratoABMView(){
-        super();
-        buildLayout();
-        configureComponents();
-
+    public ContratoABMView() {
+	super();
+	buildLayout();
+	configureComponents();
 
     }
 
-
-
-
-
     private void configureComponents() {
-        /*
-         * Synchronous event handling.
-         *
-         * Receive user interaction events on the server-side. This allows you
-         * to synchronously handle those events. Vaadin automatically sends only
-         * the needed changes to the web page without loading a new page.
-         */
-        //    nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new Contrato()));
+	/*
+	 * Synchronous event handling.
+	 *
+	 * Receive user interaction events on the server-side. This allows you to
+	 * synchronously handle those events. Vaadin automatically sends only the needed
+	 * changes to the web page without loading a new page.
+	 */
+	// nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new Contrato()));
 
-        filter.addValueChangeListener(e -> updateList());
-        filter.setValueChangeMode(ValueChangeMode.LAZY);
+	filter.addValueChangeListener(e -> updateList());
+	filter.setValueChangeMode(ValueChangeMode.LAZY);
+	filter.setPlaceholder("Filtrar");
+	filter.addValueChangeListener(e -> updateList());
+	clearFilterTextBtn.setDescription("Limpiar filtro");
+	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
-        filter.setPlaceholder("Filtrar");
-        filter.addValueChangeListener(e -> updateList());
-        clearFilterTextBtn.setDescription("Limpiar filtro");
-        clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+	nuevaVenta.addClickListener(e -> {
+	    grid.asSingleSelect().clear();
+	    ContratoVentaForm.setContratoVenta(new ContratoVenta());
+	});
 
-        nuevaVenta.addClickListener(e -> {
-            grid.asSingleSelect().clear();
-            ContratoVentaForm.setContratoVenta(new ContratoVenta());
-        });
+	nuevoAlquiler.addClickListener(e -> {
+	    grid.asSingleSelect().clear();
+	    ContratoAlquilerForm.setContratoAlquiler(new ContratoAlquiler());
+	});
 
-        nuevoAlquiler.addClickListener(e -> {
-            grid.asSingleSelect().clear();
-            ContratoAlquilerForm.setContratoAlquiler(new ContratoAlquiler());
-        });
+	
+	contratos = service.findAll(filter.getValue());
+	grid.addColumn( contrato -> {
+	    String ret ="";
+	    if (contrato instanceof ContratoVenta) {
+		ret ="Venta";
+	    }
+	    else {
+		ret ="Alquiler";
+	    }
+	    return ret;
+	}
+	);
+	
+	// grid.getColumn("tipoContrato").setCaption("Operación");
+	// grid.getColumn("fechaContrato").setCaption("Fecha Publicación");
 
-        grid.setColumns("fechaCelebracion", "documento", "estadoRegistro");
-      //  grid.getColumn("tipoContrato").setCaption("Operación");
-     //   grid.getColumn("fechaContrato").setCaption("Fecha Publicación");
+	Responsive.makeResponsive(this);
+	grid.asSingleSelect().addValueChangeListener(event -> {
+	    if (event.getValue() == null) {
+		ContratoVentaForm.setVisible(false);
+	    } else {
 
+		if (event.getValue() instanceof ContratoAlquiler)
+		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) event.getValue());
 
-        Responsive.makeResponsive(this);
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() == null) {
-                ContratoVentaForm.setVisible(false);
-            } else {
+		else if (event.getValue() instanceof ContratoVenta) {
+		    ContratoVentaForm.setContratoVenta((ContratoVenta) event.getValue());
 
-                if(event.getValue() instanceof ContratoAlquiler)
-                    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) event.getValue());
+		}
+	    }
+	});
 
-                else if(event.getValue() instanceof ContratoVenta){
-                    ContratoVentaForm.setContratoVenta((ContratoVenta) event.getValue());
+	// grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-                }
-            }
-        });
-
-        // grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-
-        nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        filter.setIcon(VaadinIcons.SEARCH);
-        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-        updateList();
+	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	filter.setIcon(VaadinIcons.SEARCH);
+	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+	updateList();
     }
 
     /*
      * Robust layouts.
      *
      * Layouts are components that contain other components. HorizontalLayout
-     * contains TextField and Button. It is wrapped with a Grid into
-     * VerticalLayout for the left side of the screen. Allow user to resize the
-     * components with a SplitPanel.
+     * contains TextField and Button. It is wrapped with a Grid into VerticalLayout
+     * for the left side of the screen. Allow user to resize the components with a
+     * SplitPanel.
      *
-     * In addition to programmatically building layout in Java, you may also
-     * choose to setup layout declaratively with Vaadin Designer, CSS and HTML.
+     * In addition to programmatically building layout in Java, you may also choose
+     * to setup layout declaratively with Vaadin Designer, CSS and HTML.
      */
 
-    public void setComponentsVisible(boolean b){
-        nuevaVenta.setVisible(b);
-        nuevoAlquiler.setVisible(b);
-        filter.setVisible(b);
-        //clearFilterTextBtn.setVisible(b);
-        if(isonMobile)
-            grid.setVisible(b);
+    public void setComponentsVisible(boolean b) {
+	nuevaVenta.setVisible(b);
+	nuevoAlquiler.setVisible(b);
+	filter.setVisible(b);
+	// clearFilterTextBtn.setVisible(b);
+	if (isonMobile)
+	    grid.setVisible(b);
 
     }
 
     private void buildLayout() {
 
-        CssLayout filtering = new CssLayout();
+	CssLayout filtering = new CssLayout();
 
-        HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
-        filtering.addComponents(filter, clearFilterTextBtn,layout);
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	HorizontalLayout layout = new HorizontalLayout(nuevaVenta, nuevoAlquiler);
+	filtering.addComponents(filter, clearFilterTextBtn, layout);
+	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        if(checkIfOnMobile()) {
-            filter.setWidth("58%");
-            nuevaVenta.setCaption("+ Venta");
-            nuevoAlquiler.setCaption("+ Alquiler");
-            layout.setSpacing(false);
-            layout.setMargin(false);
-            layout.setResponsive(true);
-            layout.setSizeUndefined();
+	if (checkIfOnMobile()) {
+	    filter.setWidth("58%");
+	    nuevaVenta.setCaption("+ Venta");
+	    nuevoAlquiler.setCaption("+ Alquiler");
+	    layout.setSpacing(false);
+	    layout.setMargin(false);
+	    layout.setResponsive(true);
+	    layout.setSizeUndefined();
 
-        }
+	}
 
-        addComponent(buildToolbar("Contratos",filtering, layout));
-        grid.setSizeFull();
-        mainLayout = new HorizontalLayout(grid, ContratoVentaForm,ContratoAlquilerForm);
-        mainLayout.setSizeFull();
-        addComponent(mainLayout);
-        this.setExpandRatio(mainLayout, 1);
+	addComponent(buildToolbar("Contratos", filtering, layout));
+	grid.setSizeFull();
+	mainLayout = new HorizontalLayout(grid, ContratoVentaForm, ContratoAlquilerForm);
+	mainLayout.setSizeFull();
+	addComponent(mainLayout);
+	this.setExpandRatio(mainLayout, 1);
 
     }
 
@@ -189,91 +188,87 @@ public class ContratoABMView extends DefaultLayout implements View {
      * Choose the design patterns you like.
      *
      * It is good practice to have separate data access methods that handle the
-     * back-end access and/or the user interface updates. You can further split
-     * your code into classes to easier maintenance. With Vaadin you can follow
-     * MVC, MVP or any other design pattern you choose.
+     * back-end access and/or the user interface updates. You can further split your
+     * code into classes to easier maintenance. With Vaadin you can follow MVC, MVP
+     * or any other design pattern you choose.
      */
 
-    public void showErrorNotification(String notification){
-        Notification success = new Notification(
-                notification);
-        success.setDelayMsec(4000);
-        success.setStyleName("bar error small");
-        success.setPosition(Position.BOTTOM_CENTER);
-        success.show(Page.getCurrent());
+    public void showErrorNotification(String notification) {
+	Notification success = new Notification(
+		notification);
+	success.setDelayMsec(4000);
+	success.setStyleName("bar error small");
+	success.setPosition(Position.BOTTOM_CENTER);
+	success.show(Page.getCurrent());
     }
 
-    public void showSuccessNotification(String notification){
-        Notification success = new Notification(
-                notification);
-        success.setDelayMsec(2000);
-        success.setStyleName("bar success small");
-        success.setPosition(Position.BOTTOM_CENTER);
-        success.show(Page.getCurrent());
+    public void showSuccessNotification(String notification) {
+	Notification success = new Notification(
+		notification);
+	success.setDelayMsec(2000);
+	success.setStyleName("bar success small");
+	success.setPosition(Position.BOTTOM_CENTER);
+	success.show(Page.getCurrent());
     }
 
     public void updateList() {
-        List<Contrato> contratos = service.findAll(filter.getValue());
-        grid.setItems(contratos);
+	contratos = service.findAll(filter.getValue());
+	grid.setItems(contratos);
 
     }
 
     public boolean isIsonMobile() {
-        return isonMobile;
+	return isonMobile;
     }
 
-    public void ClearFilterBtnAction(){
-        if(this.ContratoVentaForm.isVisible()){
-            nuevaVenta.focus();
-            ContratoVentaForm.cancel();
+    public void ClearFilterBtnAction() {
+	if (this.ContratoVentaForm.isVisible()) {
+	    nuevaVenta.focus();
+	    ContratoVentaForm.cancel();
 
-        }
-        else if(this.ContratoAlquilerForm.isVisible()){
-            nuevoAlquiler.focus();
-            ContratoAlquilerForm.cancel();
-        }
+	} else if (this.ContratoAlquilerForm.isVisible()) {
+	    nuevoAlquiler.focus();
+	    ContratoAlquilerForm.cancel();
+	}
 
-        filter.clear();
+	filter.clear();
     }
 
+    public boolean checkIfOnMobile() {
+	if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+	    isonMobile = true;
+	    return true;
+	} else {
+	    isonMobile = false;
+	    return false;
 
-
-    public boolean checkIfOnMobile(){
-        if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-            isonMobile=true;
-            return true;
-        }
-        else{
-            isonMobile=false;
-            return false;
-
-        }
+	}
     }
 
     /*
-
+     * 
      * Deployed as a Servlet or Portlet.
      *
-     * You can specify additional servlet parameters like the URI and UI class
-     * name and turn on production mode when you have finished developing the
+     * You can specify additional servlet parameters like the URI and UI class name
+     * and turn on production mode when you have finished developing the
      * application.
      */
     @Override
     public void detach() {
-        super.detach();
-        // A new instance of TransactionsView is created every time it's
-        // navigated to so we'll need to clean up references to it on detach.
-        com.TpFinal.services.DashboardEventBus.unregister(this);
+	super.detach();
+	// A new instance of TransactionsView is created every time it's
+	// navigated to so we'll need to clean up references to it on detach.
+	com.TpFinal.services.DashboardEventBus.unregister(this);
     }
+
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
-        if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-            isonMobile=true;
-        }
-        else{
-            isonMobile=false;
+	if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+	    isonMobile = true;
+	} else {
+	    isonMobile = false;
 
-        }
+	}
 
     }
 
@@ -281,6 +276,5 @@ public class ContratoABMView extends DefaultLayout implements View {
     public void enter(final ViewChangeListener.ViewChangeEvent event) {
 
     }
-
 
 }

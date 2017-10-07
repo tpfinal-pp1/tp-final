@@ -144,16 +144,19 @@ public class ContratoAlquiler extends Contrato {
 	    return this;
 	}
 
-	public void setDuracionContrato(DuracionContrato duracionContrato) {
+	public Builder setDuracionContrato(DuracionContrato duracionContrato) {
 	    this.duracionContrato = duracionContrato;
+	    return this;
 	}
 
-	public void setTipoInteresPunitorio(TipoInteres tipoInteresPunitorio) {
+	public Builder setTipoInteresPunitorio(TipoInteres tipoInteresPunitorio) {
 	    this.tipoInteresPunitorio = tipoInteresPunitorio;
+	    return this;
 	}
 
-	public void setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
+	public Builder setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
 	    this.tipoIncrementoCuota = tipoIncrementoCuota;
+	    return this;
 	}
 
 	public ContratoAlquiler build() {
