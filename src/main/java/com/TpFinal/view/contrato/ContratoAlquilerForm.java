@@ -10,15 +10,12 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.shared.ui.Orientation;
-import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.risto.stepper.IntStepper;
@@ -27,11 +24,6 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.vaadin.risto.stepper.IntStepper;
-
-
-
 
 /* Create custom UI Components.
  *
@@ -42,6 +34,11 @@ import org.vaadin.risto.stepper.IntStepper;
  * with @PropertyId annotation.
  */
 public class ContratoAlquilerForm extends FormLayout {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     private ContratoAlquiler ContratoAlquiler;
 
     // Actions
@@ -53,28 +50,25 @@ public class ContratoAlquilerForm extends FormLayout {
     TextField tfPropietario = new TextField("Propietario");
     ComboBox<Persona> cbInquilino = new ComboBox<>("Inquilino");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
-    
-    //Documento
+
+    // Documento
     TextField tfDocumento = new TextField();
     Button btCargar = new Button(VaadinIcons.UPLOAD);
     Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
-    
-    //Condiciones
-    Slider slDiaDePago = crearSliderInteger(1,28,"Día de Pago" , "dias");
-    Slider slPagoFueraDeTermino = crearSliderDouble(0,100,"", "%");
-    ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>();
+
+    // Condiciones
+    TextField tfDiaDePago = new TextField("Día de Pago");
+    TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio");
+    ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>("Tipo Interes");
     ComboBox<DuracionContrato> cbDuracionContrato = new ComboBox<>("Duración");
-    IntStepper stIncremento = new IntStepper();
-    
-    Slider slPActualizacion = crearSliderDouble(0,100,"", "%");
-    ComboBox<TipoInteres> cbPActualizacion = new ComboBox<>();
+    IntStepper stIncremento = new IntStepper("Frecuencia de Incremento (meses)");
+
+  
+    TextField tfPActualizacion = new TextField("Aumento por Actualización");
+    ComboBox<TipoInteres> cbPActualizacion = new ComboBox<>("Tipo Interes");
     TextField tfValorInicial = new TextField("Valor Inicial $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
-    
-    
 
-    // private NativeSelect<ContratoAlquiler.Sexo> sexo = new
-    // NativeSelect<>("Sexo");
 
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
@@ -91,28 +85,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	buildLayout();
 	addStyleName("v-scrollable");
     }
-    
-    private Slider crearSliderInteger(int limiteInferior, int limiteSuperior, String descripcion, String unidad) {
-		Slider slider = new Slider(limiteInferior, limiteSuperior);
-		slider.setOrientation(SliderOrientation.HORIZONTAL);
-		slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
-		slider.addValueChangeListener(e -> {
-			slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
-		});
-		return slider;
-	}
 
-    private Slider crearSliderDouble(int limiteInferior, int limiteSuperior, String descripcion, String unidad) {
-	Slider slider = new Slider(limiteInferior, limiteSuperior, 1);
-	slider.setOrientation(SliderOrientation.HORIZONTAL);
-	slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
-	slider.addValueChangeListener(e -> {
-		slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
-	});
-	return slider;
-}
-
-    
     private void configureComponents() {
 	/*
 	 * Highlight primary actions.
@@ -147,51 +120,40 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	tabSheet = new TabSheet();
 
-	BlueLabel blCondiciones = new BlueLabel("Condiciones");
-//	BlueLabel info = new BlueLabel("Información Adicional");
-//
-//	TinyButton personas = new TinyButton("Ver Personas");
-//
-//	personas.addClickListener(e -> getPersonaSelector());
-//	
-//	VerticalLayout Roles = new VerticalLayout(personas);
-//
-//	fechaCelebracion.setWidth("100");
-	
+	BlueLabel seccionDoc = new BlueLabel("Documento Word");
+	//
+	// TinyButton personas = new TinyButton("Ver Personas");
+	//
+	// personas.addClickListener(e -> getPersonaSelector());
+	//
+	// VerticalLayout Roles = new VerticalLayout(personas);
+	//
+	// fechaCelebracion.setWidth("100");
+
 	stIncremento.setValue(1);
 	stIncremento.setStepAmount(2);
-	
-	HorizontalLayout documentoRow = new HorizontalLayout();
-	documentoRow.addComponents(tfDocumento, btCargar,btDescargar);
-	documentoRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	documentoRow.setCaption("Documento");
-	documentoRow.setExpandRatio(tfDocumento, 1f);
-	FormLayout principal = new FormLayout(cbInmuebles,tfPropietario,cbInquilino,fechaCelebracion,documentoRow);
-	
-	HorizontalLayout fueraDeTerminoRow = new HorizontalLayout();
-	fueraDeTerminoRow.addComponents(slPagoFueraDeTermino,cbInteresFueraDeTermino);
-	
-	fueraDeTerminoRow.setCaption("Interes Fuera de Termino");
-	
-	
-	HorizontalLayout actualizacionRow = new HorizontalLayout();
-	actualizacionRow.addComponents(slPActualizacion,cbPActualizacion);
-	
-	actualizacionRow.setCaption("Actualizacion Valor");
+	stIncremento.setWidth("77%");
+	rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 
-	
-	FormLayout condiciones = new FormLayout(slDiaDePago,fueraDeTerminoRow,cbDuracionContrato,
-		stIncremento,actualizacionRow,tfValorInicial,rbgTipoMoneda);
+	HorizontalLayout documentoButtonsRow = new HorizontalLayout();
+	documentoButtonsRow.addComponents(btCargar, btDescargar);
+	documentoButtonsRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	tfDocumento.setCaption("Nombre");
+	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
-//	FormLayout condiciones = new FormLayout(slDiaDePago,slPagoFueraDeTermino,cbInteresFueraDeTermino,cbDuracionContrato,
-//		stIncremento,slPActualizacion,cbPActualizacion,tfValorInicial,rbgTipoMoneda);
+	FormLayout principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
+		tfDocumento,
+		documentoButtonsRow);
 
-	
+	FormLayout condiciones = new FormLayout(tfDiaDePago, tfPagoFueraDeTermino, cbDuracionContrato,
+		stIncremento, tfPActualizacion, cbPActualizacion, tfValorInicial, rbgTipoMoneda);
+
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	condiciones.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 	tabSheet.addTab(principal, "Principal");
 	tabSheet.addTab(condiciones, "Condiciones");
-		
 
 	addComponent(tabSheet);
 	HorizontalLayout actions = new HorizontalLayout(save, delete);
@@ -228,8 +190,6 @@ public class ContratoAlquilerForm extends FormLayout {
 	getAddressbookView().showSuccessNotification("Borrado");
 
     }
-
-  
 
     private void save() {
 
@@ -279,13 +239,13 @@ public class ContratoAlquilerForm extends FormLayout {
 	    public void updateList() {
 		PersonaService PersonaService = new PersonaService();
 		List<Persona> Personas = PersonaService.readAll();
-			Collections.sort(Personas, new Comparator<Persona>() {
+		Collections.sort(Personas, new Comparator<Persona>() {
 
-				@Override
-				public int compare(Persona o1, Persona o2) {
-					return (int) (o2.getId() - o1.getId());
-				}
-			});
+		    @Override
+		    public int compare(Persona o1, Persona o2) {
+			return (int) (o2.getId() - o1.getId());
+		    }
+		});
 		grid.setItems(Personas);
 	    }
 

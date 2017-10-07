@@ -71,7 +71,7 @@ public class PersonaForm extends FormLayout {
 
         calificacion.setItems(Calificacion.values());
         calificacion.setEmptySelectionAllowed(true);
-        calificacion.setSelectedItem(Calificacion.A);
+        calificacion.setSelectedItem(Calificacion.C);
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         test.addClickListener(e -> this.test());
@@ -226,7 +226,7 @@ public class PersonaForm extends FormLayout {
 
         } catch (ValidationException e) {
             e.printStackTrace();
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+            Notification.show("Error al guardar, por favor revise los campos e intente de nuevo");
             // Notification.show("Error: "+e.getCause());
             return;
         }
