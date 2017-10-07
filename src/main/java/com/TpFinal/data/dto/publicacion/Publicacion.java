@@ -89,7 +89,7 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 
 	public Propietario getPropietarioPublicacion() { return propietarioPublicacion; }
 
-	public void setPropietarioPublicacion(Propietario propietarioPublicacion) {  }
+	public void setPropietarioPublicacion(Propietario propietarioPublicacion) { }
 
 	@Override
 	public String toString() {

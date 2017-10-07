@@ -128,7 +128,6 @@ public class PublicacionService {
                          .setSuperficieTotal(0)
                          .setTipoInmueble(TipoInmueble.Vivienda)
                          .build())
-                 .setPropietario(new Propietario())
                  .build();
     }
 
@@ -163,7 +162,6 @@ public class PublicacionService {
                         .setSuperficieTotal(0)
                         .setTipoInmueble(TipoInmueble.Vivienda)
                         .build())
-                .setPropietario(new Propietario())
                 .build();
         return PV;
 
