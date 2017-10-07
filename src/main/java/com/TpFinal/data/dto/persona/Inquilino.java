@@ -74,7 +74,15 @@ public class Inquilino extends RolPersona {
 	}
 
 
-
+	@Override
+	public String toString() {
+	    
+	    String ret = "";
+	    if (super.getPersona() != null) {
+		ret = super.getPersona().getNombre() + " " + super.getPersona().getApellido();
+	    }
+	    return ret;
+	}
 
 
 
