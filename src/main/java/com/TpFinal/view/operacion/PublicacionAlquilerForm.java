@@ -32,7 +32,7 @@ import java.util.List;
  * with @PropertyId annotation.
  */
 public class PublicacionAlquilerForm extends FormLayout {
-    private PublicacionAlquiler PublicacionAlquiler;
+    private PublicacionAlquiler publicacionAlquiler;
 
     Button save = new Button("Guardar");
   //  Button test = new Button("Test");
@@ -40,15 +40,14 @@ public class PublicacionAlquilerForm extends FormLayout {
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
     Button inmuebleSelector = new Button("");
-    Label propietario = new Label ("Propietario: ");
-    Label nombrePropietario = new Label();
+    TextField nombrePropietario = new TextField();
     Inmueble inmuebleSeleccionado;
     TextField valorCuota = new TextField("Valor de cuota");
     ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
    // TODO una vez que este contrato ContratoAlquiler contratoAlquiler;
 
-    // private NativeSelect<PublicacionAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
+    // private NativeSelect<publicacionAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PublicacionService service = new PublicacionService();
     private PublicacionABMView addressbookView;
@@ -79,7 +78,7 @@ public class PublicacionAlquilerForm extends FormLayout {
          */
 
         //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(PublicacionAlquiler.Sexo.values());
+        //  sexo.setItems(publicacionAlquiler.Sexo.values());
         inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
@@ -103,6 +102,14 @@ public class PublicacionAlquilerForm extends FormLayout {
        binderPublicacionAlquiler.forField(moneda).bind("moneda"); //MAGIC//
        binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
        visualizadorInmueble.setEnabled(false);
+      //LAMBDA rober-MAGIX
+        binderPublicacionAlquiler.forField(this.nombrePropietario)
+                .withNullRepresentation("")
+                .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().getPersona().toString(),null);
+
+        binderPublicacionAlquiler.forField(this.visualizadorInmueble)
+                .withNullRepresentation("")
+                .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().toString(),null);
 
 
 
@@ -130,16 +137,17 @@ public class PublicacionAlquilerForm extends FormLayout {
         moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
         valorCuota.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
 
-        valorCuota.setCaption("Precio");
+        valorCuota.setCaption("Cuota");
         moneda.setCaption("Moneda");
         moneda.setEmptySelectionAllowed(false);
 
         tabSheet=new TabSheet();
         fechaPublicacion.setWidth("40%");
         moneda.setWidth("30%");
-        HorizontalLayout propietarioLayout = new HorizontalLayout(propietario,nombrePropietario);
+        nombrePropietario.setCaption("Propietario: ");
         FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,
-                new BlueLabel("Inmueble"),hl,valorCuota,moneda,propietarioLayout);
+                new BlueLabel("Inmueble"),hl,nombrePropietario,valorCuota,moneda
+                );
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 
@@ -164,7 +172,7 @@ public class PublicacionAlquilerForm extends FormLayout {
 
     public void setPublicacionAlquiler(PublicacionAlquiler PublicacionAlquiler) {
 
-        this.PublicacionAlquiler = PublicacionAlquiler;
+        this.publicacionAlquiler = PublicacionAlquiler;
         binderPublicacionAlquiler.readBean(PublicacionAlquiler);
         inmuebleSeleccionado = PublicacionAlquiler.getInmueble();
         if(inmuebleSeleccionado == null) {
@@ -189,7 +197,7 @@ public class PublicacionAlquilerForm extends FormLayout {
 
 
     private void delete() {
-        service.delete(PublicacionAlquiler);
+        service.delete(publicacionAlquiler);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -230,7 +238,8 @@ public class PublicacionAlquilerForm extends FormLayout {
 
                     @Override
                     public int compare(Inmueble o1, Inmueble o2) {
-                        return (int) (o2.getPropietario().getPersona().getNombre().compareTo(o2.getPropietario().getPersona().getNombre()) );
+                        return (int) (o2.getPropietario().getPersona().getNombre().
+                                compareTo(o2.getPropietario().getPersona().getNombre()) );
                     }
                 });
                 grid.setItems(inmuebles);
@@ -245,12 +254,14 @@ public class PublicacionAlquilerForm extends FormLayout {
             @Override
             public void seleccionado(Inmueble seleccion) {
                 inmuebleSeleccionado=seleccion;
-                visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
-                nombrePropietario.setValue(inmuebleSeleccionado.getPropietario().getPersona().getNombre());
+                publicacionAlquiler.setInmueble(seleccion);
+
+             //   visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
             }
 
 
         };
+
     }
 
 
@@ -259,11 +270,11 @@ public class PublicacionAlquilerForm extends FormLayout {
         boolean success=false;
         try {
             if(inmuebleSeleccionado.getId() != null) {
-                this.PublicacionAlquiler.setInmueble(inmuebleSeleccionado);
-                this.PublicacionAlquiler.getInmueble().addPublicacion(this.PublicacionAlquiler);
-                this.PublicacionAlquiler.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
-                binderPublicacionAlquiler.writeBean(PublicacionAlquiler);
-                service.save(PublicacionAlquiler);
+                this.publicacionAlquiler.setInmueble(inmuebleSeleccionado);
+                this.publicacionAlquiler.getInmueble().addPublicacion(this.publicacionAlquiler);
+                this.publicacionAlquiler.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
+                binderPublicacionAlquiler.writeBean(publicacionAlquiler);
+                service.save(publicacionAlquiler);
                 success = true;
 
             }
@@ -279,12 +290,11 @@ public class PublicacionAlquilerForm extends FormLayout {
         }
 
         addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", PublicacionAlquiler.getNombre(),
-                PublicacionAlquiler.getApellido());*
+       /* String msg = String.format("Guardado '%s %s'.", publicacionAlquiler.getNombre(),
+                publicacionAlquiler.getApellido());*
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().enableGrid();
 
 
         if(success)
