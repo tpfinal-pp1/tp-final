@@ -11,89 +11,94 @@ import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class ContratoService {
-	private DAOContratoAlquiler daoAlquiler;
+    private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
     private DAOContrato daoContrato;
 
-    
     public ContratoService() {
-    	daoAlquiler=new DAOContratoAlquilerImpl();
-        daoVenta= new DAOContratoVentaImpl();
-        daoContrato= new DAOContratoImpl();
+	daoAlquiler = new DAOContratoAlquilerImpl();
+	daoVenta = new DAOContratoVentaImpl();
+	daoContrato = new DAOContratoImpl();
     }
-    
+
     public boolean saveOrUpdate(Contrato contrato, File doc) {
-    	boolean ret=false;
-    	if(contrato.getClass().equals(ContratoVenta.class)) {
-    		ContratoVenta c=(ContratoVenta)contrato;
-    		if(doc!=null)
-    			ret=daoVenta.saveOrUpdateContrato(c, doc);
-    		else
-    			ret=daoVenta.saveOrUpdate(c);
-    	}else {
-    		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		if(doc!=null)
-    			ret=daoAlquiler.saveOrUpdateContrato(c, doc);
-    		else
-    			ret=daoAlquiler.saveOrUpdate(c);
-    	}
-    	return ret;
+	boolean ret = false;
+	if (contrato.getClass().equals(ContratoVenta.class)) {
+	    ContratoVenta c = (ContratoVenta) contrato;
+	    if (doc != null)
+		ret = daoVenta.saveOrUpdateContrato(c, doc);
+	    else
+		ret = daoVenta.saveOrUpdate(c);
+	} else {
+	    ContratoAlquiler c = (ContratoAlquiler) contrato;
+	    if (doc != null)
+		ret = daoAlquiler.saveOrUpdateContrato(c, doc);
+	    else
+		ret = daoAlquiler.saveOrUpdate(c);
+	}
+	return ret;
     }
-    
+
     public boolean delete(Contrato contrato) {
-    	boolean ret=false;
-    	if(contrato.getClass().equals(ContratoVenta.class)) {
-    		ContratoVenta c=(ContratoVenta)contrato;
-    		ret=daoVenta.logicalDelete(c);
-    	}else {
-    		ContratoAlquiler c= (ContratoAlquiler)contrato;
-    		ret=daoAlquiler.logicalDelete(c);
-    	}
-    	return ret;
+	boolean ret = false;
+	if (contrato.getClass().equals(ContratoVenta.class)) {
+	    ContratoVenta c = (ContratoVenta) contrato;
+	    ret = daoVenta.logicalDelete(c);
+	} else {
+	    ContratoAlquiler c = (ContratoAlquiler) contrato;
+	    ret = daoAlquiler.logicalDelete(c);
+	}
+	return ret;
     }
 
-    public List<Contrato>readAll(){
-    	return daoContrato.readAllActives();
-    }
-    
-	public synchronized List<Contrato> findAll(String stringFilter) {
-        ArrayList arrayList = new ArrayList();
-        List<Contrato> contratos=daoContrato.readAllActives();
-		
-        if(stringFilter!=""){
-
-            for (Contrato contrato : contratos) {
-
-                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-                                            || contrato.toString().toLowerCase()
-                                            .contains(stringFilter.toLowerCase());
-                    if (passesFilter) {
-
-                        arrayList.add(contrato);
-                    }
-
-            }
-        }
-        else{
-            arrayList.addAll(contratos);
-        }
-
-        Collections.sort(arrayList, new Comparator<Contrato>() {
-
-			@Override
-			public int compare(Contrato o1, Contrato o2) {
-				return (int) (o2.getId() - o1.getId());
-			}
-        });
-        return arrayList;
+    public List<Contrato> readAll() {
+	return daoContrato.readAllActives();
     }
 
-	
+    public synchronized List<Contrato> findAll(String stringFilter) {
+	ArrayList arrayList = new ArrayList();
+	List<Contrato> contratos = daoContrato.readAllActives();
+
+	if (stringFilter != "") {
+
+	    for (Contrato contrato : contratos) {
+
+		boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+			|| contrato.toString().toLowerCase()
+				.contains(stringFilter.toLowerCase());
+		if (passesFilter) {
+
+		    arrayList.add(contrato);
+		}
+
+	    }
+	} else {
+	    arrayList.addAll(contratos);
+	}
+
+	Collections.sort(arrayList, new Comparator<Contrato>() {
+
+	    @Override
+	    public int compare(Contrato o1, Contrato o2) {
+		return (int) (o2.getId() - o1.getId());
+	    }
+	});
+	return arrayList;
+    }
+
+    public static LocalDate getFechaVencimiento(ContratoAlquiler c) {
+	LocalDate ret;
+	ret = c.getFechaCelebracion().plus(c.getDuracionContrato().getDuracion(), ChronoUnit.MONTHS);
+
+	return ret;
+    }
 
 }

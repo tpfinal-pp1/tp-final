@@ -1,8 +1,11 @@
 package com.TpFinal.view.contrato;
 
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.Direccion;
+import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -18,8 +21,10 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.LocalDate;
 import java.util.List;
 
 /* User Interface written in Java.
@@ -93,20 +98,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    ContratoAlquilerForm.setContratoAlquiler(new ContratoAlquiler());
 	});
 
-	
-	contratos = service.findAll(filter.getValue());
-	grid.addColumn( contrato -> {
-	    String ret ="";
-	    if (contrato instanceof ContratoVenta) {
-		ret ="Venta";
-	    }
-	    else {
-		ret ="Alquiler";
-	    }
-	    return ret;
-	}
-	);
-	
+	setearColumnas();
+
 	// grid.getColumn("tipoContrato").setCaption("Operación");
 	// grid.getColumn("fechaContrato").setCaption("Fecha Publicación");
 
@@ -120,7 +113,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		if (event.getValue() instanceof ContratoAlquiler) {
 		    ContratoVentaForm.setVisible(false);
 		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) event.getValue());
-		    
+
 		}
 
 		else if (event.getValue() instanceof ContratoVenta) {
@@ -137,6 +130,54 @@ public class ContratoABMView extends DefaultLayout implements View {
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 	updateList();
+    }
+
+    private void setearColumnas() {
+	grid.removeAllColumns();
+	contratos = service.findAll(filter.getValue());
+	
+	Column<Contrato, String> tipoCol = grid.addColumn(contrato -> {
+	    String ret = "";
+	    if (contrato instanceof ContratoVenta) {
+		ret = "Venta";
+	    } else {
+		ret = "Alquiler";
+	    }
+	    return ret;
+	});
+	
+	Column<Contrato, LocalDate> fechaCelebracionCol = grid.addColumn(Contrato::getFechaCelebracion);
+	
+	Column<Contrato, EstadoRegistro> estadoCol = grid.addColumn(Contrato::getEstadoRegistro).setCaption("Estado");
+	
+	Column<Contrato, String> direccionCol = grid.addColumn(contrato ->{
+	    String ret="";
+	    Direccion dir = contrato.getInmueble().getDireccion();
+	    ret = dir.getCalle() +" " + dir.getNro() + ", " + dir.getProvincia();
+	    return ret;
+	});
+	
+	Column<Contrato, String> intervinientesCol = grid.addColumn(contrato ->{
+	    String ret ="";
+	    if (contrato instanceof ContratoVenta) {
+		ContratoVenta c = (ContratoVenta) contrato;
+		Persona propietario = c.getInmueble().getPropietario().getPersona();
+		Persona comprador = c.getComprador();
+		ret = propietario.getNombre() + " " + propietario.getApellido() +", " + comprador.getNombre() + " " + comprador.getApellido();
+	    }else {
+		ContratoAlquiler c = (ContratoAlquiler) contrato;
+		Persona propietario = c.getInmueble().getPropietario().getPersona();
+		Persona inquilino = c.getInquilinoContrato().getPersona();
+		ret = propietario.getNombre() + " " + propietario.getApellido() +", " + inquilino.getNombre() + " " + inquilino.getApellido();
+		
+	    }
+	    return ret;});
+	
+
+	tipoCol.setCaption("Tipo");
+	fechaCelebracionCol.setCaption("Fecha de Celebración");
+	direccionCol.setCaption("Dirección");
+	intervinientesCol.setCaption("Intervinientes");
     }
 
     /*

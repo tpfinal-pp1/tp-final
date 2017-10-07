@@ -184,7 +184,7 @@ public class ContratoAlquiler extends Contrato {
 	return intervaloActualizacion;
     }
 
-    public void setIntervaloDuracion(Integer intervaloActualizacion) {
+    public void setIntervaloActualizacion(Integer intervaloActualizacion) {
 	this.intervaloActualizacion = intervaloActualizacion;
     }
 
@@ -211,5 +211,46 @@ public class ContratoAlquiler extends Contrato {
     public void setInquilinoContrato(Inquilino inquilinoContrato) {
 	this.inquilinoContrato = inquilinoContrato;
     }
+
+    public TipoInteres getTipoInteresPunitorio() {
+        return tipoInteresPunitorio;
+    }
+
+    public void setTipoInteresPunitorio(TipoInteres tipoInteresPunitorio) {
+        this.tipoInteresPunitorio = tipoInteresPunitorio;
+    }
+
+    public TipoInteres getTipoIncrementoCuota() {
+        return tipoIncrementoCuota;
+    }
+
+    public void setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
+        this.tipoIncrementoCuota = tipoIncrementoCuota;
+    }
+
+    public Double getPorcentajeIncrementoCuota() {
+        return porcentajeIncrementoCuota;
+    }
+
+    public void setPorcentajeIncrementoCuota(Double porcentajeIncrementoCuota) {
+        this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
+    }
+
+    public DuracionContrato getDuracionContrato() {
+        return duracionContrato;
+    }
+
+    public void setDuracionContrato(DuracionContrato duracionContrato) {
+        this.duracionContrato = duracionContrato;
+    }
+
+    public PublicacionAlquiler getOperacionAlquiler() {
+        return operacionAlquiler;
+    }
+
+    public void setOperacionAlquiler(PublicacionAlquiler operacionAlquiler) {
+        this.operacionAlquiler = operacionAlquiler;
+    }
+    
 
 }

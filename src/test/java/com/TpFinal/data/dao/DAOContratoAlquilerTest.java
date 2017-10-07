@@ -106,7 +106,7 @@ public class DAOContratoAlquilerTest {
         });
 
         dao.readAll().forEach(contrato -> {
-            contrato.setIntervaloDuracion(3);
+            contrato.setIntervaloActualizacion(3);
             dao.update(contrato);
         });
 

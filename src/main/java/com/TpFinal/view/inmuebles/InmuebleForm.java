@@ -119,7 +119,7 @@ public class InmuebleForm extends FormLayout {
 			if (inmueble.getDireccion().getProvincia() == provincia.getNombre()) {
 			    localidades.setSelectedItem(provinciaService.getLocalidadFromNombreAndProvincia(inmueble
 				    .getDireccion().getLocalidad(), inmueble.getDireccion().getProvincia()));
-			}else {
+			} else {
 			    localidades.setSelectedItem(provincia.getLocalidades().get(0));
 			}
 		    }
@@ -153,11 +153,9 @@ public class InmuebleForm extends FormLayout {
 	new PersonaFormWindow(this.persona) {
 	    @Override
 	    public void onSave() {
-		// XXX
 		personaService.saveOrUpdate(persona);
 		updateComboPersonas();
 		comboPropietario.setSelectedItem(persona);
-
 	    }
 	};
 
@@ -191,18 +189,15 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
 
 	binderInmueble.forField(this.cParrilla)
-
 		.bind(Inmueble::getConParilla, Inmueble::setConParilla);
 
 	binderInmueble.forField(this.cPpileta)
-
 		.bind(Inmueble::getConPileta, Inmueble::setConPileta);
 
 	binderInmueble.forField(this.dormitorios)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-
 		.bind(Inmueble::getCantidadDormitorios, Inmueble::setCantidadDormitorios);
 
 	binderInmueble.forField(this.codPostal)
@@ -214,7 +209,6 @@ public class InmuebleForm extends FormLayout {
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
-
 		.bind(inmueble -> inmueble.getDireccion().getNro(),
 			(inmueble, nro) -> inmueble.getDireccion().setNro(nro));
 
@@ -391,7 +385,7 @@ public class InmuebleForm extends FormLayout {
 	    binderInmueble.writeBean(inmueble);
 	    inmueble.getPropietario().addInmueble(inmueble);
 	    System.out.println("guardando persona");
-	    if (inmueble.getPropietario()== null) {
+	    if (inmueble.getPropietario() == null) {
 		System.out.println("El Propietario es nulo.");
 	    }
 	    if (inmueble.getPropietario().getPersona() == null) {
