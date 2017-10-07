@@ -12,7 +12,9 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
+import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
@@ -24,31 +26,32 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Rol;
 
-public class InmuebleServiceTest {
+public class InmuebleServicePruebasTest {
 	
-	InmuebleService service;
-	List<Inmueble>inmuebles=new ArrayList<>();
+	DAOInmueble dao;
+	List<Inmueble>inmuebles= new ArrayList<>();
 	List<Persona>personas= new ArrayList<>();
 	DAOPersona daoPer;
-	
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
 		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
 	 }
-
+	
 	@Before
 	public void setUp() throws Exception {
-		service= new InmuebleService();
-		service.readAll().forEach(i -> service.delete(i));
+		dao=new DAOInmuebleImpl();
 		daoPer=new DAOPersonaImpl();
 		daoPer.readAll().forEach(p -> daoPer.logicalDelete(p));
+		dao.readAll().forEach(i -> dao.logicalDelete(i));
 		inmuebles.clear();
+		personas.clear();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		service.readAll().forEach(i -> service.delete(i));
 		daoPer.readAll().forEach(p -> daoPer.logicalDelete(p));
+		dao.readAll().forEach(i -> dao.logicalDelete(i));
 	}
 
 	@Test
@@ -66,17 +69,26 @@ public class InmuebleServiceTest {
 		pro.addInmueble(in);
 		assertEquals(1, pro.getInmuebles().size());
 		//guardo el inmueble
-		assertTrue(service.saveOrUpdate(in));
+		assertTrue(dao.saveOrUpdate(in));
 		
-		Inmueble inm = service.readAll().get(0);
-		inm.setPropietario(null);
-		assertTrue(service.updateBidireccional(inm));
+		Inmueble nuevo= dao.readAllActives().get(0);
+		nuevo.setPropietario(null);
 		
-
-		assertEquals(null, service.readAll().get(0).getPropietario());
+		Inmueble inBd=dao.readAllActives().get(0);
+		//si los propietarios no son iguales y si no lo son remuevo el inmueble 
+		if(nuevo.getPropietario()==null || !nuevo.getPropietario().equals(inBd.getPropietario())){
+			inBd.getPropietario().getInmuebles().remove(inBd);
+		}
+		//guardo quitando el inmueble de la lista de propietarios
+		assertTrue(dao.saveOrUpdate(inBd));
+		//guardo el nuevo sin el inmueble
+		assertTrue(dao.saveOrUpdate(nuevo));
+		
+		assertEquals(null, dao.readAllActives().get(0).getPropietario());
 		Propietario p= (Propietario)daoPer.readAllActives().get(0).getRol(Rol.Propietario);
 		
 		assertEquals(0, p.getInmuebles().size());
+		
 	}
 	
 	  private Inmueble unInmuebleNoPublicado() {

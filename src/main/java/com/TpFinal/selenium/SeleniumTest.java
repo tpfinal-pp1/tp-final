@@ -79,15 +79,15 @@ public class SeleniumTest {
         /*button.click();
         final WebElement button2 = findButtonByCaption("Nuevo");
         button2.click();
-        driver.manage().timeouts()
+        wd.manage().timeouts()
                 .implicitlyWait(2, TimeUnit.SECONDS);
 
         final List<WebElement> elements =
-                driver.findElements(By.id("Nombre"));
+                wd.findElements(By.id("Nombre"));
         if (elements.isEmpty()) {
             throw new RuntimeException("No Label found");
         }
-        driver.manage().timeouts()
+        wd.manage().timeouts()
                 .implicitlyWait(5, TimeUnit.SECONDS);
         final String value = elements.get(0).getText();
         Assert.assertEquals("Clicked", value);*/
@@ -108,20 +108,20 @@ public class SeleniumTest {
     @Before
     public void setUp() throws Exception {
         if(SystemUtils.IS_OS_LINUX){
-            System.setProperty("webdriver.gecko.driver","GeckoDriver"+ File.separator+"geckodriver");
+            System.setProperty("webdriver.gecko.wd","GeckoDriver"+ File.separator+"geckodriver");
             System.out.println("OS: LINUX");
         }
         if(SystemUtils.IS_OS_WINDOWS) {
             String systemArchitecture = System.getProperty("sun.arch.data.model");
             if(systemArchitecture.equals("64")) {
-                System.setProperty("webdriver.gecko.driver", "GeckoDriver" + File.separator + "geckodriver.exe");
+                System.setProperty("webdriver.gecko.wd", "GeckoDriver" + File.separator + "geckodriver.exe");
 
 
 
                 System.out.println("OS: Windows 64-bit");
             }
             else {
-                System.setProperty("webdriver.gecko.driver", "GeckoDriver-32-bits" + File.separator + "geckodriver.exe");
+                System.setProperty("webdriver.gecko.wd", "GeckoDriver-32-bits" + File.separator + "geckodriver.exe");
                 System.out.println("OS: Windows 32-bit");
             }
         }

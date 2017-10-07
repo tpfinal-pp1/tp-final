@@ -21,11 +21,15 @@ import com.vaadin.shared.ui.Orientation;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.risto.stepper.IntStepper;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.vaadin.risto.stepper.IntStepper;
+
 
 
 
@@ -275,6 +279,13 @@ public class ContratoAlquilerForm extends FormLayout {
 	    public void updateList() {
 		PersonaService PersonaService = new PersonaService();
 		List<Persona> Personas = PersonaService.readAll();
+			Collections.sort(Personas, new Comparator<Persona>() {
+
+				@Override
+				public int compare(Persona o1, Persona o2) {
+					return (int) (o2.getId() - o1.getId());
+				}
+			});
 		grid.setItems(Personas);
 	    }
 

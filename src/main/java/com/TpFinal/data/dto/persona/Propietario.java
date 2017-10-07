@@ -41,7 +41,6 @@ public class Propietario extends RolPersona {
 	
 	
 
-
 	@Override
 	public String toString() {
 	    
@@ -51,6 +50,8 @@ public class Propietario extends RolPersona {
 	    }
 	    return ret;
 	}
+	
+	
 
 
 
