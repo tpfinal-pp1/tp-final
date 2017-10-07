@@ -25,7 +25,7 @@ public class InmuebleService {
 	 */
 	public boolean saveOrUpdate(Inmueble entidad) {
 		//if(entidad.getPropietario()!=null)
-			entidad.getPropietario().addInmueble(entidad);
+			//entidad.getPropietario().addInmueble(entidad);
 	    return dao.saveOrUpdate(entidad);
 	}
 	
