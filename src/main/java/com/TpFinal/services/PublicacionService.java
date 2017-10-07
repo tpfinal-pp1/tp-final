@@ -28,6 +28,17 @@ public class PublicacionService {
     public boolean save(Publicacion entidad) {
         return dao.saveOrUpdate(entidad);
     }
+    
+    public boolean updateBidireccioal(Publicacion p) {
+    	boolean ret=true;
+    	Publicacion publicacion = dao.findById(p.getId());
+    	if(p.getInmueble()==null || !p.getInmueble().equals(publicacion.getInmueble())) {
+    		publicacion.getInmueble().getPublicaciones().remove(publicacion);
+    	}
+    	dao.saveOrUpdate(publicacion);
+    	dao.saveOrUpdate(p);
+    	return ret;
+    }
 
     public Publicacion findById(Long id) {
         return dao.findById(id);
@@ -64,7 +75,7 @@ public class PublicacionService {
         });
         for(Publicacion p : arrayList){
             if(p.getInmueble() != null){
-                p.setPropietarioPublicacion(p.getInmueble().getPropietario());
+                //p.setPropietarioPublicacion(p.getInmueble().getPropietario());
             }
             if(p.getEstadoPublicacion() == null)
                 p.setEstadoPublicacion(EstadoPublicacion.Activa);
