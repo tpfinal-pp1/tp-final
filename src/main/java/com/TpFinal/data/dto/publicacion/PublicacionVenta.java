@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.persona.Propietario;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -50,6 +51,7 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = b.moneda;
 		this.precio = b.precio;
 		this.contratoVenta = b.contratoVenta;
+		this.propietarioPublicacion = b.propietario;
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -76,6 +78,7 @@ public class PublicacionVenta extends Publicacion {
 		private LocalDate fechaPublicacion;
 		private BigDecimal precio;
 		private TipoMoneda moneda;
+		private Propietario propietario;
 		
 		
 		public Builder setInmueble(Inmueble inmueble) {
@@ -92,6 +95,10 @@ public class PublicacionVenta extends Publicacion {
 		}
 		public Builder setContratoVenta(ContratoVenta contratoVenta) {
 			this.contratoVenta = contratoVenta;
+			return this;
+		}
+		public Builder setPropietario(Propietario propietario){
+			this.propietario = propietario;
 			return this;
 		}
 		public PublicacionVenta build() {

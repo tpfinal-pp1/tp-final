@@ -8,7 +8,6 @@ import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -16,7 +15,6 @@ import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -144,12 +142,13 @@ public class PublicacionVentaForm extends FormLayout {
         tabSheet=new TabSheet();
         fechaPublicacion.setWidth("40%");
         moneda.setWidth("30%");
+        HorizontalLayout propietarioLayout = new HorizontalLayout(propietario,nombrePropietario);
         FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,
-                new BlueLabel("Inmueble"),hl,precio,moneda);
+                new BlueLabel("Inmueble"),hl,precio,moneda,propietarioLayout);
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 
-        FormLayout adicional=new FormLayout(propietario,nombrePropietario);
+        FormLayout adicional=new FormLayout();
         adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         FormLayout mainLayout = new FormLayout(principal,adicional);
 
@@ -172,8 +171,10 @@ public class PublicacionVentaForm extends FormLayout {
         this.PublicacionVenta = PublicacionVenta;
         binderPublicacionVenta.readBean(PublicacionVenta);
         inmuebleSeleccionado = PublicacionVenta.getInmueble();
-        if(inmuebleSeleccionado == null)
+        if(inmuebleSeleccionado == null) {
+            nombrePropietario.setValue("");
             inmuebleSeleccionado = new Inmueble();
+        }
         else {
             visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
         }
@@ -239,6 +240,7 @@ public class PublicacionVentaForm extends FormLayout {
                public void seleccionado(Inmueble seleccion) {
                    inmuebleSeleccionado=seleccion;
                    visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+                   nombrePropietario.setValue(inmuebleSeleccionado.getPropietario().getPersona().getNombre());
 
 
                }

@@ -12,7 +12,6 @@ import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
@@ -38,7 +37,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     Button delete = new Button("Eliminar");
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
-    Button inmuebleSelector = new Button("Seleccionar inmueble");
+    Button inmuebleSelector = new Button("");
     Label propietario = new Label ("Propietario: ");
     Label nombrePropietario = new Label();
     Inmueble inmuebleSeleccionado;
@@ -99,9 +98,9 @@ public class PublicacionAlquilerForm extends FormLayout {
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
 
-       binderPublicacionAlquiler.forField(moneda).bind("moneda"); //MAGIC
-  binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
-
+       binderPublicacionAlquiler.forField(moneda).bind("moneda"); //MAGIC//
+       binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
+       visualizadorInmueble.setEnabled(false);
 
 
 
@@ -136,12 +135,13 @@ public class PublicacionAlquilerForm extends FormLayout {
         tabSheet=new TabSheet();
         fechaPublicacion.setWidth("40%");
         moneda.setWidth("30%");
+        HorizontalLayout propietarioLayout = new HorizontalLayout(propietario,nombrePropietario);
         FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,
-                new BlueLabel("Inmueble"),hl,valorCuota,moneda);
+                new BlueLabel("Inmueble"),hl,valorCuota,moneda,propietarioLayout);
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 
-        FormLayout adicional=new FormLayout(propietario,nombrePropietario);
+        FormLayout adicional=new FormLayout();
         adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         FormLayout mainLayout = new FormLayout(principal,adicional);
 
@@ -165,8 +165,13 @@ public class PublicacionAlquilerForm extends FormLayout {
         this.PublicacionAlquiler = PublicacionAlquiler;
         binderPublicacionAlquiler.readBean(PublicacionAlquiler);
         inmuebleSeleccionado = PublicacionAlquiler.getInmueble();
-        if(inmuebleSeleccionado == null)
+        if(inmuebleSeleccionado == null) {
+            nombrePropietario.setValue("");
             inmuebleSeleccionado = new Inmueble();
+        }
+        else {
+            visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+        }
 
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionAlquiler.getId()!=null);
@@ -230,6 +235,8 @@ public class PublicacionAlquilerForm extends FormLayout {
             @Override
             public void seleccionado(Inmueble seleccion) {
                 inmuebleSeleccionado=seleccion;
+                visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+                nombrePropietario.setValue(inmuebleSeleccionado.getPropietario().getPersona().getNombre());
             }
 
 
@@ -241,6 +248,9 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         boolean success=false;
         try {
+            this.PublicacionAlquiler.setInmueble(inmuebleSeleccionado);
+            this.PublicacionAlquiler.getInmueble().addPublicacion(this.PublicacionAlquiler);
+            this.PublicacionAlquiler.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
             binderPublicacionAlquiler.writeBean(PublicacionAlquiler);
             service.save(PublicacionAlquiler);
             success=true;

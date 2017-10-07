@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.persona.Propietario;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -45,6 +46,7 @@ public class PublicacionAlquiler extends Publicacion {
 		this.moneda = b.moneda;
 		this.valorCuota = b.valorCuota;
 		this.contratoAlquiler = b.contratoAlquiler;
+		this.propietarioPublicacion = b.propietario;
 		tipoPublicacion = TipoPublicacion.Alquiler;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -71,6 +73,7 @@ public class PublicacionAlquiler extends Publicacion {
 		private LocalDate fechaPublicacion;
 		private BigDecimal valorCuota;
 		private TipoMoneda moneda;
+		private Propietario propietario;
 
 		public Builder setInmueble(Inmueble inmueble) {
 			this.inmueble = inmueble;
@@ -97,6 +100,10 @@ public class PublicacionAlquiler extends Publicacion {
 			return this;
 		}
 
+		public Builder setPropietario(Propietario propietario){
+			this.propietario = propietario;
+			return this;
+		}
 		public PublicacionAlquiler build() {
 			return new PublicacionAlquiler(this);
 		}	
