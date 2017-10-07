@@ -32,37 +32,28 @@ import java.util.List;
  * with @PropertyId annotation.
  */
 public class PublicacionVentaForm extends FormLayout {
-    private PublicacionVenta PublicacionVenta;
+    private PublicacionVenta publicacionVenta;
 
     Button save = new Button("Guardar");
-  //  Button test = new Button("Test");
+    //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
-   Button inmuebleSelector = new Button("");
-    Label propietario = new Label ("Propietario: ");
-    Label nombrePropietario = new Label();
+    Button inmuebleSelector = new Button("");
+    TextField nombrePropietario = new TextField();
     Inmueble inmuebleSeleccionado;
-    TextField precio = new TextField("");
+    TextField precio = new TextField("Valor de Precio");
     ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
-    ComboBox <String> visualizadorInmueble= new ComboBox <String>("");
 
+    // TODO una vez que este contrato ContratoVenta contratoVenta;
 
-    //TODO una vez que este contrato venta ContratoVenta contratoVenta;
-    // private NativeSelect<PublicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
+    // private NativeSelect<publicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
 
     PublicacionService service = new PublicacionService();
     private PublicacionABMView addressbookView;
     private Binder<PublicacionVenta> binderPublicacionVenta = new Binder<>(PublicacionVenta.class);
-
-
-
-
+    ComboBox <String> visualizadorInmueble= new ComboBox <String>("");
     TabSheet tabSheet;
-
-
-
-
 
 
     // Easily binding forms to beans and manage validation and buffering
@@ -70,7 +61,6 @@ public class PublicacionVentaForm extends FormLayout {
 
     public PublicacionVentaForm(PublicacionABMView addressbook) {
         // setSizeUndefined();
-
         addressbookView=addressbook;
         configureComponents();
         binding();
@@ -88,15 +78,13 @@ public class PublicacionVentaForm extends FormLayout {
          */
 
         //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(PublicacionVenta.Sexo.values());
+        //  sexo.setItems(publicacionVenta.Sexo.values());
         inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
-        moneda.setId("combo");
 
 
 
@@ -105,15 +93,27 @@ public class PublicacionVentaForm extends FormLayout {
 
 
     private void binding(){
-       //binder.bindInstanceFields(this); //Binding automatico
+        //binder.bindInstanceFields(this); //Binding automatico
         binderPublicacionVenta.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
         binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
-        binderPublicacionVenta.forField(moneda).bind("moneda");
+
+        binderPublicacionVenta.forField(moneda).bind("moneda"); //MAGIC//
         binderPublicacionVenta.forField(precio).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precio");
-       //binderPublicacionVenta.forField(precio).bind("precio");
         visualizadorInmueble.setEnabled(false);
+        //LAMBDA rober-MAGIX
+        binderPublicacionVenta.forField(this.nombrePropietario)
+                .withNullRepresentation("")
+                .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().getPersona().toString(),null);
+
+        binderPublicacionVenta.forField(this.visualizadorInmueble)
+                .withNullRepresentation("")
+                .bind(publicacionVenta -> publicacionVenta.getInmueble().toString(),null);
+
+
+
+
 
 
     }
@@ -144,9 +144,10 @@ public class PublicacionVentaForm extends FormLayout {
         tabSheet=new TabSheet();
         fechaPublicacion.setWidth("40%");
         moneda.setWidth("30%");
-        HorizontalLayout propietarioLayout = new HorizontalLayout(propietario,nombrePropietario);
+        nombrePropietario.setCaption("Propietario: ");
         FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,
-                new BlueLabel("Inmueble"),hl,precio,moneda,propietarioLayout);
+                new BlueLabel("Inmueble"),hl,nombrePropietario,precio,moneda
+        );
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 
@@ -166,11 +167,12 @@ public class PublicacionVentaForm extends FormLayout {
         addComponent(actions);
         actions.setSpacing(true);
 
+
     }
 
     public void setPublicacionVenta(PublicacionVenta PublicacionVenta) {
 
-        this.PublicacionVenta = PublicacionVenta;
+        this.publicacionVenta = PublicacionVenta;
         binderPublicacionVenta.readBean(PublicacionVenta);
         inmuebleSeleccionado = PublicacionVenta.getInmueble();
         if(inmuebleSeleccionado == null) {
@@ -185,8 +187,8 @@ public class PublicacionVentaForm extends FormLayout {
         delete.setVisible(PublicacionVenta.getId()!=null);
 
         setVisible(true);
-        getAddressbookView().setComponentsVisible(false);
 
+        getAddressbookView().setComponentsVisible(false);
         if(getAddressbookView().isIsonMobile())
             tabSheet.focus();
 
@@ -195,12 +197,13 @@ public class PublicacionVentaForm extends FormLayout {
 
 
     private void delete() {
-        service.delete(PublicacionVenta);
+        service.delete(publicacionVenta);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
         getAddressbookView().showSuccessNotification("Borrado");
         getAddressbookView().enableGrid();
+
 
     }
 
@@ -223,55 +226,58 @@ public class PublicacionVentaForm extends FormLayout {
 
     }*/
 
-   private void displayInmuebleSelector(){
-           VentanaSelectora<Inmueble> inmueblesSelector= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
-           @Override
-           public void updateList() {
-               InmuebleService InmuebleService=
-                       new InmuebleService();
-               List<Inmueble> inmuebles = InmuebleService.readAll();
-               Collections.sort(inmuebles, new Comparator<Inmueble>() {
+    private void displayInmuebleSelector(){
 
-                   @Override
-                   public int compare(Inmueble o1, Inmueble o2) {
-                       return (int) (o2.getPropietario().getPersona().getNombre().compareTo(o2.getPropietario().getPersona().getNombre()) );
-                   }
-               });
-               grid.setItems(inmuebles);
+        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
+            @Override
+            public void updateList() {
+                InmuebleService InmuebleService=
+                        new InmuebleService();
+                List<Inmueble> inmuebles = InmuebleService.readAll();
+                Collections.sort(inmuebles, new Comparator<Inmueble>() {
 
-           }
+                    @Override
+                    public int compare(Inmueble o1, Inmueble o2) {
+                        return (int) (o2.getPropietario().getPersona().getNombre().
+                                compareTo(o2.getPropietario().getPersona().getNombre()) );
+                    }
+                });
+                grid.setItems(inmuebles);
 
-           @Override
-           public void setGrid() {
-               grid=new Grid<Inmueble>(Inmueble.class);
-           }
-               @Override
-               public void seleccionado(Inmueble seleccion) {
-                   inmuebleSeleccionado=seleccion;
-                   visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
-                   nombrePropietario.setValue(inmuebleSeleccionado.getPropietario().getPersona().getNombre());
+            }
+
+            @Override
+            public void setGrid() {
+                grid=new Grid<Inmueble>(Inmueble.class);
+            }
+
+            @Override
+            public void seleccionado(Inmueble seleccion) {
+                inmuebleSeleccionado=seleccion;
+                publicacionVenta.setInmueble(seleccion);
+
+                //   visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+            }
 
 
-               }
+        };
 
-           };
+    }
 
-   }
 
     private void save() {
 
         boolean success=false;
         try {
-
-            if( inmuebleSeleccionado.getId() != null) {
-                this.PublicacionVenta.setInmueble(inmuebleSeleccionado);
-                this.PublicacionVenta.getInmueble().addPublicacion(this.PublicacionVenta);
-                this.PublicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
-                binderPublicacionVenta.writeBean(this.PublicacionVenta);
-                service.save(this.PublicacionVenta);
+            if(inmuebleSeleccionado.getId() != null) {
+                this.publicacionVenta.setInmueble(inmuebleSeleccionado);
+                this.publicacionVenta.getInmueble().addPublicacion(this.publicacionVenta);
+                this.publicacionVenta.setPropietarioPublicacion(inmuebleSeleccionado.getPropietario());
+                binderPublicacionVenta.writeBean(publicacionVenta);
+                service.save(publicacionVenta);
                 success = true;
-            }
 
+            }
         } catch (ValidationException e) {
             e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
@@ -284,12 +290,12 @@ public class PublicacionVentaForm extends FormLayout {
         }
 
         addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", PublicacionVenta.getNombre(),
-                PublicacionVenta.getApellido());*
+       /* String msg = String.format("Guardado '%s %s'.", publicacionVenta.getNombre(),
+                publicacionVenta.getApellido());*
         Notification.show(msg, Type.TRAY_NOTIFICATION);*/
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().enableGrid();
+
 
         if(success)
             getAddressbookView().showSuccessNotification("Guardado");
@@ -303,7 +309,7 @@ public class PublicacionVentaForm extends FormLayout {
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().enableGrid();
+        //getAddressbookView().enableGrid();
     }
 
 
