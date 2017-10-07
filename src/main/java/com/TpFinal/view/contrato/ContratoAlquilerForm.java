@@ -3,7 +3,9 @@ package com.TpFinal.view.contrato;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.DuracionContrato;
+import com.TpFinal.data.dto.contrato.TipoInteres;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
@@ -15,6 +17,7 @@ import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.shared.ui.Orientation;
 import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -23,6 +26,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.vaadin.risto.stepper.IntStepper;
+
+
 
 /* Create custom UI Components.
  *
@@ -46,16 +51,22 @@ public class ContratoAlquilerForm extends FormLayout {
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
     
     //Documento
-    TextField tfDocumento = new TextField("Documento");
+    TextField tfDocumento = new TextField();
     Button btCargar = new Button(VaadinIcons.UPLOAD);
     Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
     
     //Condiciones
     Slider slDiaDePago = crearSliderInteger(1,28,"Día de Pago" , "dias");
+    Slider slPagoFueraDeTermino = crearSliderDouble(0,100,"", "%");
+    ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>();
     ComboBox<DuracionContrato> cbDuracionContrato = new ComboBox<>("Duración");
-    IntStepper stIncremento = new IntStepper("Intervalo incremento");
-    //XXX
-    //Slider slPActualizacion
+    IntStepper stIncremento = new IntStepper();
+    
+    Slider slPActualizacion = crearSliderDouble(0,100,"", "%");
+    ComboBox<TipoInteres> cbPActualizacion = new ComboBox<>();
+    TextField tfValorInicial = new TextField("Valor Inicial $");
+    RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
+    
     
 
     // private NativeSelect<ContratoAlquiler.Sexo> sexo = new
@@ -67,8 +78,6 @@ public class ContratoAlquilerForm extends FormLayout {
     Persona person = new Persona(); // TODO ver donde se usa persona p.
 
     TabSheet tabSheet;
-
-    // Easily binding forms to beans and manage validation and buffering
 
     public ContratoAlquilerForm(ContratoABMView addressbook) {
 	// setSizeUndefined();
@@ -89,6 +98,17 @@ public class ContratoAlquilerForm extends FormLayout {
 		return slider;
 	}
 
+    private Slider crearSliderDouble(int limiteInferior, int limiteSuperior, String descripcion, String unidad) {
+	Slider slider = new Slider(limiteInferior, limiteSuperior, 1);
+	slider.setOrientation(SliderOrientation.HORIZONTAL);
+	slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
+	slider.addValueChangeListener(e -> {
+		slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
+	});
+	return slider;
+}
+
+    
     private void configureComponents() {
 	/*
 	 * Highlight primary actions.
@@ -123,21 +143,51 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	tabSheet = new TabSheet();
 
-	BlueLabel otro = new BlueLabel("Alquiler");
-	BlueLabel info = new BlueLabel("Información Adicional");
+	BlueLabel blCondiciones = new BlueLabel("Condiciones");
+//	BlueLabel info = new BlueLabel("Información Adicional");
+//
+//	TinyButton personas = new TinyButton("Ver Personas");
+//
+//	personas.addClickListener(e -> getPersonaSelector());
+//	
+//	VerticalLayout Roles = new VerticalLayout(personas);
+//
+//	fechaCelebracion.setWidth("100");
+	
+	stIncremento.setValue(1);
+	stIncremento.setStepAmount(2);
+	
+	HorizontalLayout documentoRow = new HorizontalLayout();
+	documentoRow.addComponents(tfDocumento, btCargar,btDescargar);
+	documentoRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	documentoRow.setCaption("Documento");
+	documentoRow.setExpandRatio(tfDocumento, 1f);
+	FormLayout principal = new FormLayout(cbInmuebles,tfPropietario,cbInquilino,fechaCelebracion,documentoRow);
+	
+	HorizontalLayout fueraDeTerminoRow = new HorizontalLayout();
+	fueraDeTerminoRow.addComponents(slPagoFueraDeTermino,cbInteresFueraDeTermino);
+	
+	fueraDeTerminoRow.setCaption("Interes Fuera de Termino");
+	
+	
+	HorizontalLayout actualizacionRow = new HorizontalLayout();
+	actualizacionRow.addComponents(slPActualizacion,cbPActualizacion);
+	
+	actualizacionRow.setCaption("Actualizacion Valor");
 
-	TinyButton personas = new TinyButton("Ver Personas");
+	
+	FormLayout condiciones = new FormLayout(slDiaDePago,fueraDeTerminoRow,cbDuracionContrato,
+		stIncremento,actualizacionRow,tfValorInicial,rbgTipoMoneda);
 
-	personas.addClickListener(e -> getPersonaSelector());
+//	FormLayout condiciones = new FormLayout(slDiaDePago,slPagoFueraDeTermino,cbInteresFueraDeTermino,cbDuracionContrato,
+//		stIncremento,slPActualizacion,cbPActualizacion,tfValorInicial,rbgTipoMoneda);
 
-	VerticalLayout Roles = new VerticalLayout(personas);
-
-	fechaCelebracion.setWidth("100");
-	FormLayout principal = new FormLayout(otro, fechaCelebracion, Roles);
-
+	
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 	tabSheet.addTab(principal, "Principal");
+	tabSheet.addTab(condiciones, "Condiciones");
+		
 
 	addComponent(tabSheet);
 	HorizontalLayout actions = new HorizontalLayout(save, delete);
@@ -175,23 +225,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
     }
 
-    /*
-     * private void test() { nombre.setValue(DummyDataGenerator.randomFirstName());
-     * apellido.setValue(DummyDataGenerator.randomLastName());
-     * mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
-     * DNI.setValue(DummyDataGenerator.randomNumber(8));
-     * telefono.setValue(DummyDataGenerator.randomPhoneNumber());
-     * telefono2.setValue(DummyDataGenerator.randomPhoneNumber()); String
-     * info=DummyDataGenerator.randomText(80); if(info.length()>255){
-     * info=info.substring(0,255);
-     * 
-     * } infoAdicional.setValue(info);
-     * 
-     * 
-     * save();
-     * 
-     * }
-     */
+  
 
     private void save() {
 
