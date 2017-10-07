@@ -234,7 +234,7 @@ public class PublicacionVentaForm extends FormLayout {
 
                    @Override
                    public int compare(Inmueble o1, Inmueble o2) {
-                       return (int) (o2.getId() - o1.getId());
+                       return (int) (o2.getPropietario().getPersona().getNombre().compareTo(o2.getPropietario().getPersona().getNombre()) );
                    }
                });
                grid.setItems(inmuebles);
