@@ -237,13 +237,7 @@ public class InmuebleForm extends FormLayout {
 		    inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
 		});
 
-	// binderInmueble.forField(this.provincias).bind(inmueble -> {
-	// Direccion dir = inmueble.getDireccion();
-	// return dir!=null?
-	// provinciaService.getProvinciaFromString(inmueble.getDireccion().getProvincia())
-	// : null;
-	// },(inmueble, localidad) -> {});
-
+	
 	binderInmueble.forField(this.comboPropietario)
 		.withNullRepresentation(new Persona())
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());

@@ -2,6 +2,8 @@ package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.contrato.DuracionContrato;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
@@ -12,11 +14,15 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.shared.ui.slider.SliderOrientation;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import org.vaadin.risto.stepper.IntStepper;
 
 /* Create custom UI Components.
  *
@@ -29,233 +35,226 @@ import java.util.List;
 public class ContratoAlquilerForm extends FormLayout {
     private ContratoAlquiler ContratoAlquiler;
 
+    // Actions
     Button save = new Button("Guardar");
-  //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
-    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
-// private NativeSelect<ContratoAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
+    // TabPrincipal
+    ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
+    TextField tfPropietario = new TextField("Propietario");
+    ComboBox<Persona> cbInquilino = new ComboBox<>("Inquilino");
+    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
+    
+    //Documento
+    TextField tfDocumento = new TextField("Documento");
+    Button btCargar = new Button(VaadinIcons.UPLOAD);
+    Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
+    
+    //Condiciones
+    Slider slDiaDePago = crearSliderInteger(1,28,"Día de Pago" , "dias");
+    ComboBox<DuracionContrato> cbDuracionContrato = new ComboBox<>("Duración");
+    IntStepper stIncremento = new IntStepper("Intervalo incremento");
+    //XXX
+    //Slider slPActualizacion
+    
+
+    // private NativeSelect<ContratoAlquiler.Sexo> sexo = new
+    // NativeSelect<>("Sexo");
 
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
-    Persona person = new Persona(); //TODO ver donde se usa persona p.
-
-
+    Persona person = new Persona(); // TODO ver donde se usa persona p.
 
     TabSheet tabSheet;
 
-
-
-
-
-
     // Easily binding forms to beans and manage validation and buffering
 
-
     public ContratoAlquilerForm(ContratoABMView addressbook) {
-        // setSizeUndefined();
-        addressbookView=addressbook;
-        configureComponents();
-        binding();
-        buildLayout();
-        addStyleName("v-scrollable");
+	// setSizeUndefined();
+	addressbookView = addressbook;
+	configureComponents();
+	binding();
+	buildLayout();
+	addStyleName("v-scrollable");
     }
+    
+    private Slider crearSliderInteger(int limiteInferior, int limiteSuperior, String descripcion, String unidad) {
+		Slider slider = new Slider(limiteInferior, limiteSuperior);
+		slider.setOrientation(SliderOrientation.HORIZONTAL);
+		slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
+		slider.addValueChangeListener(e -> {
+			slider.setCaption(descripcion + " " + slider.getValue().intValue() + " " + unidad);
+		});
+		return slider;
+	}
 
     private void configureComponents() {
-        /*
-         * Highlight primary actions.
-         *
-         * With Vaadin built-in styles you can highlight the primary save button
-         *
-         * and give it a keyoard shortcut for a better UX.
-         */
+	/*
+	 * Highlight primary actions.
+	 *
+	 * With Vaadin built-in styles you can highlight the primary save button
+	 *
+	 * and give it a keyoard shortcut for a better UX.
+	 */
 
-        //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(ContratoAlquiler.Sexo.values());
-        delete.setStyleName(ValoTheme.BUTTON_DANGER);
-        save.addClickListener(e -> this.save());
-        delete.addClickListener(e -> this.delete());
-        save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	// sexo.setEmptySelectionAllowed(false);
+	// sexo.setItems(ContratoAlquiler.Sexo.values());
+	delete.setStyleName(ValoTheme.BUTTON_DANGER);
+	save.addClickListener(e -> this.save());
+	delete.addClickListener(e -> this.delete());
+	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-
-
-
-
-        setVisible(false);
+	setVisible(false);
     }
 
-
-    private void binding(){
-       //binder.bindInstanceFields(this); //Binding automatico
-        binderContratoAlquiler.forField(fechaCelebracion).withValidator(new DateRangeValidator(
-                "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
-        ).bind(Contrato::getFechaCelebracion,Contrato::setFechaCelebracion);
-
-
-
-
-
+    private void binding() {
+	// binder.bindInstanceFields(this); //Binding automatico
+	binderContratoAlquiler.forField(fechaCelebracion).withValidator(new DateRangeValidator(
+		"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365))).bind(
+			Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
 
     }
 
     private void buildLayout() {
-        setSizeFull();
-        setMargin(true);
+	setSizeFull();
+	setMargin(true);
 
-        tabSheet=new TabSheet();
+	tabSheet = new TabSheet();
 
+	BlueLabel otro = new BlueLabel("Alquiler");
+	BlueLabel info = new BlueLabel("Información Adicional");
 
-        BlueLabel otro = new  BlueLabel("Alquiler");
-        BlueLabel info = new  BlueLabel("Información Adicional");
+	TinyButton personas = new TinyButton("Ver Personas");
 
-        TinyButton personas=new TinyButton("Ver Personas");
+	personas.addClickListener(e -> getPersonaSelector());
 
-        personas.addClickListener(e -> getPersonaSelector());
+	VerticalLayout Roles = new VerticalLayout(personas);
 
-        VerticalLayout Roles=new VerticalLayout(personas);
+	fechaCelebracion.setWidth("100");
+	FormLayout principal = new FormLayout(otro, fechaCelebracion, Roles);
 
-        fechaCelebracion.setWidth("100");
-        FormLayout principal=new FormLayout(otro, fechaCelebracion, Roles);
+	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
+	tabSheet.addTab(principal, "Principal");
 
-        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	addComponent(tabSheet);
+	HorizontalLayout actions = new HorizontalLayout(save, delete);
 
+	addComponent(actions);
+	this.setSpacing(false);
+	actions.setSpacing(true);
 
-
-        tabSheet.addTab(principal,"Principal");
-
-        addComponent(tabSheet);
-        HorizontalLayout actions = new HorizontalLayout(save,delete);
-
-        addComponent(actions);
-        this.setSpacing(false);
-        actions.setSpacing(true);
-
-        //  addStyleName("v-scrollable");
-        
+	// addStyleName("v-scrollable");
 
     }
 
     public void setContratoAlquiler(ContratoAlquiler ContratoAlquiler) {
 
-        this.ContratoAlquiler = ContratoAlquiler;
-      //  binderContratoAlquiler.readBean(ContratoAlquiler);
+	this.ContratoAlquiler = ContratoAlquiler;
+	// binderContratoAlquiler.readBean(ContratoAlquiler);
 
-        // Show delete button for only Persons already in the database
-        delete.setVisible(ContratoAlquiler.getId()!=null);
+	// Show delete button for only Persons already in the database
+	delete.setVisible(ContratoAlquiler.getId() != null);
 
-        setVisible(true);
+	setVisible(true);
 
-        getAddressbookView().setComponentsVisible(false);
-        if(getAddressbookView().isIsonMobile())
-            tabSheet.focus();
+	getAddressbookView().setComponentsVisible(false);
+	if (getAddressbookView().isIsonMobile())
+	    tabSheet.focus();
 
     }
-
-
 
     private void delete() {
-        service.delete(ContratoAlquiler);
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().showSuccessNotification("Borrado");
-
+	service.delete(ContratoAlquiler);
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
+	getAddressbookView().showSuccessNotification("Borrado");
 
     }
 
-   /* private void test() {
-        nombre.setValue(DummyDataGenerator.randomFirstName());
-        apellido.setValue(DummyDataGenerator.randomLastName());
-        mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
-        DNI.setValue(DummyDataGenerator.randomNumber(8));
-        telefono.setValue(DummyDataGenerator.randomPhoneNumber());
-        telefono2.setValue(DummyDataGenerator.randomPhoneNumber());
-        String info=DummyDataGenerator.randomText(80);
-        if(info.length()>255){
-            info=info.substring(0,255);
-
-        }
-        infoAdicional.setValue(info);
-
-
-        save();
-
-    }*/
+    /*
+     * private void test() { nombre.setValue(DummyDataGenerator.randomFirstName());
+     * apellido.setValue(DummyDataGenerator.randomLastName());
+     * mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
+     * DNI.setValue(DummyDataGenerator.randomNumber(8));
+     * telefono.setValue(DummyDataGenerator.randomPhoneNumber());
+     * telefono2.setValue(DummyDataGenerator.randomPhoneNumber()); String
+     * info=DummyDataGenerator.randomText(80); if(info.length()>255){
+     * info=info.substring(0,255);
+     * 
+     * } infoAdicional.setValue(info);
+     * 
+     * 
+     * save();
+     * 
+     * }
+     */
 
     private void save() {
 
-        boolean success=false;
-        try {
-            binderContratoAlquiler.writeBean(ContratoAlquiler);
-            service.saveOrUpdate(ContratoAlquiler,null);
-            success=true;
+	boolean success = false;
+	try {
+	    binderContratoAlquiler.writeBean(ContratoAlquiler);
+	    service.saveOrUpdate(ContratoAlquiler, null);
+	    success = true;
 
+	} catch (ValidationException e) {
+	    e.printStackTrace();
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+	    // Notification.show("Error: "+e.getCause());
+	    return;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    Notification.show("Error: " + e.toString());
+	}
 
-        } catch (ValidationException e) {
-            e.printStackTrace();
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-            // Notification.show("Error: "+e.getCause());
-            return;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Notification.show("Error: "+e.toString());
-        }
+	addressbookView.updateList();
+	/*
+	 * String msg = String.format("Guardado '%s %s'.", ContratoAlquiler.getNombre(),
+	 * ContratoAlquiler.getApellido());* Notification.show(msg,
+	 * Type.TRAY_NOTIFICATION);
+	 */
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
 
-        addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", ContratoAlquiler.getNombre(),
-                ContratoAlquiler.getApellido());*
-        Notification.show(msg, Type.TRAY_NOTIFICATION);*/
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-
-
-        if(success)
-            getAddressbookView().showSuccessNotification("Guardado");
-
-
-
+	if (success)
+	    getAddressbookView().showSuccessNotification("Guardado");
 
     }
 
     public void cancel() {
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
     }
-
-
 
     public ContratoABMView getAddressbookView() {
-        return addressbookView;
+	return addressbookView;
     }
 
-
     private void getPersonaSelector() {
-        VentanaSelectora<Persona> personaSelector = new VentanaSelectora<Persona>(person) {
-            @Override
-            public void updateList() {
-                PersonaService PersonaService=
-                        new PersonaService();
-                List<Persona> Personas = PersonaService.readAll();
-                grid.setItems(Personas);
-            }
+	VentanaSelectora<Persona> personaSelector = new VentanaSelectora<Persona>(person) {
+	    @Override
+	    public void updateList() {
+		PersonaService PersonaService = new PersonaService();
+		List<Persona> Personas = PersonaService.readAll();
+		grid.setItems(Personas);
+	    }
 
-            @Override
-            public void setGrid() {
-                grid=new Grid<>(Persona.class);
-            }
+	    @Override
+	    public void setGrid() {
+		grid = new Grid<>(Persona.class);
+	    }
 
-            @Override
-            public void seleccionado(Persona objeto) {
-                person =objeto;
-            }
+	    @Override
+	    public void seleccionado(Persona objeto) {
+		person = objeto;
+	    }
 
-
-        };
+	};
 
     }
 }

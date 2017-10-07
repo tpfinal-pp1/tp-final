@@ -40,7 +40,7 @@ public class GeneradorDeDatos {
 	    "Bradley			",
 	    "Raeann", "Katheryn", "Brandy", "Hulda" };
 
-    private static Random random = new Random();
+    private static Random random = new Random(100);
     private static DAOInmuebleImpl daoInm = new DAOInmuebleImpl();
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
     private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
