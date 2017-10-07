@@ -99,78 +99,16 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
         nuevaVenta.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            PublicacionVentaForm.setPublicacionVenta(new PublicacionVenta.Builder()
-                                .setPrecio(new BigDecimal("0"))
-                                .setFechaPublicacion(LocalDate.now())
-                                .setMoneda(TipoMoneda.Pesos)
-                                .setContratoVenta(new ContratoVenta())
-                                .setInmueble(new Inmueble.Builder()
-                                        .setaEstrenar(false)
-                                        .setCantidadAmbientes(0)
-                                        .setCantidadCocheras(0)
-                                        .setCantidadDormitorios(0)
-                                        .setClaseInmueble(ClaseInmueble.OtroInmueble)
-                                        .setConAireAcondicionado(false)
-                                        .setConJardin(false)
-                                        .setConParilla(false)
-                                        .setConPileta(false)
-                                        .setDireccion(new Direccion.Builder()
-                                                .setCalle("")
-                                                .setCodPostal("")
-                                                .setCoordenada(new Coordenada())
-                                                .setLocalidad("")
-                                                .setNro(0)
-                                                .setPais("Argentina")
-                                                .setProvincia("")
-                                                .build())
-                                        .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                                        .setPropietario(new Propietario())
-                                        .setSuperficieCubierta(0)
-                                        .setSuperficieTotal(0)
-                                        .setTipoInmueble(TipoInmueble.Vivienda)
-                                        .build())
-                                .setPropietario(new Propietario())
-                                .build()
+            PublicacionVentaForm.setPublicacionVenta(PublicacionService.INSTANCIA_VENTA
             );
-            grid.setEnabled(false);
+
         });
 
         nuevoAlquiler.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            PublicacionAlquilerForm.setPublicacionAlquiler(new PublicacionAlquiler.Builder()
-                            .setValorCuota(new BigDecimal("0"))
-                            .setFechaPublicacion(LocalDate.now())
-                            .setMoneda(TipoMoneda.Pesos)
-                            .setContratoAlquiler(new ContratoAlquiler())
-                            .setInmueble(new Inmueble.Builder()
-                                    .setaEstrenar(false)
-                                    .setCantidadAmbientes(0)
-                                    .setCantidadCocheras(0)
-                                    .setCantidadDormitorios(0)
-                                    .setClaseInmueble(ClaseInmueble.OtroInmueble)
-                                    .setConAireAcondicionado(false)
-                                    .setConJardin(false)
-                                    .setConParilla(false)
-                                    .setConPileta(false)
-                                    .setDireccion(new Direccion.Builder()
-                                            .setCalle("")
-                                            .setCodPostal("")
-                                            .setCoordenada(new Coordenada())
-                                            .setLocalidad("")
-                                            .setNro(0)
-                                            .setPais("Argentina")
-                                            .setProvincia("")
-                                            .build())
-                                    .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                                    .setPropietario(new Propietario())
-                                    .setSuperficieCubierta(0)
-                                    .setSuperficieTotal(0)
-                                    .setTipoInmueble(TipoInmueble.Vivienda)
-                                    .build())
-                            .setPropietario(new Propietario())
-                            .build()
+            PublicacionAlquilerForm.setPublicacionAlquiler(PublicacionService.INSTANCIA_ALQUILER
             );
-            grid.setEnabled(false);
+
         });
 
         grid.setColumns("inmueble","propietarioPublicacion","tipoPublicacion","fechaPublicacion","estadoPublicacion");
@@ -183,16 +121,19 @@ public class PublicacionABMView extends DefaultLayout implements View {
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
                 PublicacionVentaForm.setVisible(false);
+                PublicacionAlquilerForm.setVisible(false);
             } else {
 
                 if(event.getValue() instanceof PublicacionAlquiler) {
                     PublicacionAlquilerForm.setPublicacionAlquiler((PublicacionAlquiler) event.getValue());
-                    grid.setEnabled(false);
+                    PublicacionVentaForm.setVisible(false);
+
                 }
 
                 else if(event.getValue() instanceof PublicacionVenta){
                     PublicacionVentaForm.setPublicacionVenta((PublicacionVenta) event.getValue());
-                    grid.setEnabled(false);
+                    PublicacionAlquilerForm.setVisible(false);
+
                 }
             }
         });
@@ -205,17 +146,12 @@ public class PublicacionABMView extends DefaultLayout implements View {
         updateList();
     }
 
-    /*
-     * Robust layouts.
-     *
-     * Layouts are components that contain other components. HorizontalLayout
-     * contains TextField and Button. It is wrapped with a Grid into
-     * VerticalLayout for the left side of the screen. Allow user to resize the
-     * components with a SplitPanel.
-     *
-     * In addition to programmatically building layout in Java, you may also
-     * choose to setup layout declaratively with Vaadin Designer, CSS and HTML.
-     */
+
+
+
+
+
+
 
     public void setComponentsVisible(boolean b){
         nuevaVenta.setVisible(b);

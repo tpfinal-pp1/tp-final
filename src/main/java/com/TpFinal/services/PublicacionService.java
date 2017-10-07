@@ -2,9 +2,17 @@ package com.TpFinal.services;
 
 import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
+import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.*;
+import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,6 +20,10 @@ import java.util.List;
 
 public class PublicacionService {
     private DAOPublicacion dao;
+    public final static PublicacionVenta INSTANCIA_VENTA= InstanciaPublicacionVenta();
+   public final static PublicacionAlquiler INSTANCIA_ALQUILER= InstanciaPublicacionAlquiler();
+
+
 
     public PublicacionService() {
         dao = new DAOPublicacionImpl();
@@ -84,7 +96,78 @@ public class PublicacionService {
 
     }
 
+     static PublicacionAlquiler InstanciaPublicacionAlquiler() {
 
+      return  new PublicacionAlquiler.Builder()
+                 .setValorCuota(new BigDecimal("0"))
+                 .setFechaPublicacion(LocalDate.now())
+                 .setMoneda(TipoMoneda.Pesos)
+                 .setContratoAlquiler(new ContratoAlquiler())
+                 .setInmueble(new Inmueble.Builder()
+                         .setaEstrenar(false)
+                         .setCantidadAmbientes(0)
+                         .setCantidadCocheras(0)
+                         .setCantidadDormitorios(0)
+                         .setClaseInmueble(ClaseInmueble.OtroInmueble)
+                         .setConAireAcondicionado(false)
+                         .setConJardin(false)
+                         .setConParilla(false)
+                         .setConPileta(false)
+                         .setDireccion(new Direccion.Builder()
+                                 .setCalle("")
+                                 .setCodPostal("")
+                                 .setCoordenada(new Coordenada())
+                                 .setLocalidad("")
+                                 .setNro(0)
+                                 .setPais("Argentina")
+                                 .setProvincia("")
+                                 .build())
+                         .setEstadoInmueble(EstadoInmueble.NoPublicado)
+                         .setPropietario(new Propietario())
+                         .setSuperficieCubierta(0)
+                         .setSuperficieTotal(0)
+                         .setTipoInmueble(TipoInmueble.Vivienda)
+                         .build())
+                 .setPropietario(new Propietario())
+                 .build();
+    }
+
+    static  PublicacionVenta InstanciaPublicacionVenta(){
+        PublicacionVenta PV=new PublicacionVenta.Builder()
+                .setPrecio(new BigDecimal("0"))
+                .setFechaPublicacion(LocalDate.now())
+                .setMoneda(TipoMoneda.Pesos)
+                .setContratoVenta(new ContratoVenta())
+                .setInmueble(new Inmueble.Builder()
+                        .setaEstrenar(false)
+                        .setCantidadAmbientes(0)
+                        .setCantidadCocheras(0)
+                        .setCantidadDormitorios(0)
+                        .setClaseInmueble(ClaseInmueble.OtroInmueble)
+                        .setConAireAcondicionado(false)
+                        .setConJardin(false)
+                        .setConParilla(false)
+                        .setConPileta(false)
+                        .setDireccion(new Direccion.Builder()
+                                .setCalle("")
+                                .setCodPostal("")
+                                .setCoordenada(new Coordenada())
+                                .setLocalidad("")
+                                .setNro(0)
+                                .setPais("Argentina")
+                                .setProvincia("")
+                                .build())
+                        .setEstadoInmueble(EstadoInmueble.NoPublicado)
+                        .setPropietario(new Propietario())
+                        .setSuperficieCubierta(0)
+                        .setSuperficieTotal(0)
+                        .setTipoInmueble(TipoInmueble.Vivienda)
+                        .build())
+                .setPropietario(new Propietario())
+                .build();
+        return PV;
+
+    }
 
 
 }
