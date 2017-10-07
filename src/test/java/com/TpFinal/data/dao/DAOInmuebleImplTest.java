@@ -570,7 +570,7 @@ public class DAOInmuebleImplTest {
 	
     }
     
-    @Test
+    //@Test
     public void testGeneradorDeDatos() {
 	GeneradorDeDatos.generarDatos(10,ProvinciaService.modoLecturaJson.local);
 	inmuebles=dao.readAll();
