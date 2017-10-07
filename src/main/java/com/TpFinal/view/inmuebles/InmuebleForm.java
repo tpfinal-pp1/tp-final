@@ -280,6 +280,7 @@ public class InmuebleForm extends FormLayout {
 	    }
 	    rolP = (Propietario) persona.getRol(Rol.Propietario);
 	    rolP.addInmueble(inmueble);
+	    rolP.setPersona(persona);
 	    inmueble.setPropietario(rolP);
 	};
     }
@@ -389,8 +390,16 @@ public class InmuebleForm extends FormLayout {
 	try {
 	    binderInmueble.writeBean(inmueble);
 	    inmueble.getPropietario().addInmueble(inmueble);
+	    System.out.println("guardando persona");
+	    if (inmueble.getPropietario()== null) {
+		System.out.println("El Propietario es nulo.");
+	    }
+	    if (inmueble.getPropietario().getPersona() == null) {
+		System.out.println("La persona es nula.");
+	    }
 	    personaService.saveOrUpdate(inmueble.getPropietario().getPersona());
 
+	    System.out.println("guardando Inmueble");
 	    inmbService.saveOrUpdate(inmueble);
 	    success = true;
 
