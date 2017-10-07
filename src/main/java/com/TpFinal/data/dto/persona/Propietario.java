@@ -39,30 +39,7 @@ public class Propietario extends RolPersona {
 	    this.inmuebles = inmuebles;
 	}
 	
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((inmuebles == null) ? 0 : inmuebles.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (!super.equals(obj))
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Propietario other = (Propietario) obj;
-		if (inmuebles == null) {
-			if (other.inmuebles != null)
-				return false;
-		} else if (!inmuebles.equals(other.inmuebles))
-			return false;
-		return true;
-	}
+	
 
 	@Override
 	public String toString() {
