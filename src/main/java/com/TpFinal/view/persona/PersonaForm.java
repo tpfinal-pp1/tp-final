@@ -226,7 +226,7 @@ public class PersonaForm extends FormLayout {
 
         } catch (ValidationException e) {
             e.printStackTrace();
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+            Notification.show("Error al guardar, por favor revise los campos e intente de nuevo");
             // Notification.show("Error: "+e.getCause());
             return;
         }
