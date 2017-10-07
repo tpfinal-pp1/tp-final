@@ -104,9 +104,9 @@ public class PublicacionVentaForm extends FormLayout {
         visualizadorInmueble.setEnabled(false);
         //LAMBDA rober-MAGIX
 
-    /*    binderPublicacionVenta.forField(this.nombrePropietario)
+       binderPublicacionVenta.forField(this.nombrePropietario)
                 .withNullRepresentation("")
-                .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().getPersona().toString(),null);*/
+                .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().toString(),null);
 
         binderPublicacionVenta.forField(this.visualizadorInmueble)
                 .withNullRepresentation("")

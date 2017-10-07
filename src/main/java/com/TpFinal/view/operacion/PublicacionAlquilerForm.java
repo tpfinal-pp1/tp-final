@@ -103,9 +103,9 @@ public class PublicacionAlquilerForm extends FormLayout {
        binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
        visualizadorInmueble.setEnabled(false);
       //LAMBDA rober-MAGIX
-     /*   binderPublicacionAlquiler.forField(this.nombrePropietario)
+        binderPublicacionAlquiler.forField(this.nombrePropietario)
                 .withNullRepresentation("")
-                .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().getPersona().toString(),null);*/
+                .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().toString(),null);
 
         binderPublicacionAlquiler.forField(this.visualizadorInmueble)
                 .withNullRepresentation("")

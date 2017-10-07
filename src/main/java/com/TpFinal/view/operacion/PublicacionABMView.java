@@ -124,8 +124,8 @@ public class PublicacionABMView extends DefaultLayout implements View {
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
-             //   PublicacionVentaForm.setVisible(false);
-            //    PublicacionAlquilerForm.setVisible(false);
+                PublicacionVentaForm.setVisible(false);
+               PublicacionAlquilerForm.setVisible(false);
             } else {
 
                 if(event.getValue() instanceof PublicacionAlquiler) {
