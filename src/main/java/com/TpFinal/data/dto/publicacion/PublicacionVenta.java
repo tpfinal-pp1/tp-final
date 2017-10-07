@@ -51,7 +51,7 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = b.moneda;
 		this.precio = b.precio;
 		this.contratoVenta = b.contratoVenta;
-		this.propietarioPublicacion = b.propietario;
+		this.propietarioPublicacion = this.inmueble.getPropietario();
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -72,14 +72,14 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = moneda;
 	}
 	
+	
+	
 	public static class Builder{
 		private ContratoVenta contratoVenta;
 		private Inmueble inmueble;
 		private LocalDate fechaPublicacion;
 		private BigDecimal precio;
 		private TipoMoneda moneda;
-		private Propietario propietario;
-		
 		
 		public Builder setInmueble(Inmueble inmueble) {
 			this.inmueble = inmueble;return this;
@@ -95,10 +95,6 @@ public class PublicacionVenta extends Publicacion {
 		}
 		public Builder setContratoVenta(ContratoVenta contratoVenta) {
 			this.contratoVenta = contratoVenta;
-			return this;
-		}
-		public Builder setPropietario(Propietario propietario){
-			this.propietario = propietario;
 			return this;
 		}
 		public PublicacionVenta build() {

@@ -44,9 +44,8 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 
 	@Enumerated(EnumType.STRING)
 	protected EstadoRegistro estadoRegistro;
-
-	@ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.REMOVE})
-	@JoinColumn(name = "id_proppietario")
+	
+	@Transient
 	protected Propietario propietarioPublicacion;
 
 
@@ -90,7 +89,7 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 
 	public Propietario getPropietarioPublicacion() { return propietarioPublicacion; }
 
-	public void setPropietarioPublicacion(Propietario propietarioPublicacion) { this.propietarioPublicacion = propietarioPublicacion; }
+	public void setPropietarioPublicacion(Propietario propietarioPublicacion) { }
 
 	@Override
 	public String toString() {
