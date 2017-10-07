@@ -66,8 +66,10 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 		this.inmueble.addPublicacion(this);
 	}
 	else{
-		this.inmueble.getPublicaciones().remove(this);
-		this.inmueble=null;
+		if(this.inmueble!=null) {
+			this.inmueble.removePublicacion(this);
+			this.inmueble = null;
+		}
 	}
 		}
 

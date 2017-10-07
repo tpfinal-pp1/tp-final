@@ -5,7 +5,7 @@ import com.TpFinal.view.dummy.dashboard.DashboardView;
 import com.TpFinal.view.dummy.reports.ReportsView;
 import com.TpFinal.view.dummy.schedule.ScheduleView;
 import com.TpFinal.view.inmuebles.InmuebleABMView;
-import com.TpFinal.view.operacion.PublicacionABMView;
+import com.TpFinal.view.publicacion.PublicacionABMView;
 import com.TpFinal.view.persona.PersonaABMView;
 
 import com.vaadin.icons.VaadinIcons;

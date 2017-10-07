@@ -50,7 +50,7 @@ public class ContratoAlquiler extends Contrato {
     private DuracionContrato duracionContrato;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private PublicacionAlquiler operacionAlquiler;
+    private PublicacionAlquiler publicacionAlquiler;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
@@ -65,7 +65,7 @@ public class ContratoAlquiler extends Contrato {
 	this.valorInicial = b.valorInicial;
 	this.intervaloActualizacion = b.intervaloActualizacion;
 	this.diaDePago = b.diaDePago;
-	this.operacionAlquiler = b.operacionAlquiler;
+	this.publicacionAlquiler = b.publicacionAlquiler;
 	this.inquilinoContrato = b.inquilinoContrato;
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
@@ -86,7 +86,7 @@ public class ContratoAlquiler extends Contrato {
 	private Double interesPunitorio;
 	private Integer intervaloActualizacion;
 	private Integer diaDePago;
-	private PublicacionAlquiler operacionAlquiler;
+	private PublicacionAlquiler publicacionAlquiler;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
 
 	public Builder setId(Long dato) {
@@ -130,7 +130,7 @@ public class ContratoAlquiler extends Contrato {
 	}
 
 	public Builder setPublicacionAlquiler(PublicacionAlquiler op) {
-	    this.operacionAlquiler = op;
+	    this.publicacionAlquiler = op;
 	    return this;
 	}
 
@@ -197,11 +197,11 @@ public class ContratoAlquiler extends Contrato {
     }
 
     public PublicacionAlquiler getPublicacionAlquiler() {
-	return operacionAlquiler;
+	return publicacionAlquiler;
     }
 
-    public void setPublicacionAlquiler(PublicacionAlquiler operacionAlquiler) {
-	this.operacionAlquiler = operacionAlquiler;
+    public void setPublicacionAlquiler(PublicacionAlquiler publicacionAlquiler) {
+	this.publicacionAlquiler = publicacionAlquiler;
     }
 
     public Inquilino getInquilinoContrato() {
@@ -245,11 +245,11 @@ public class ContratoAlquiler extends Contrato {
     }
 
     public PublicacionAlquiler getOperacionAlquiler() {
-        return operacionAlquiler;
+        return publicacionAlquiler;
     }
 
-    public void setOperacionAlquiler(PublicacionAlquiler operacionAlquiler) {
-        this.operacionAlquiler = operacionAlquiler;
+    public void setOperacionAlquiler(PublicacionAlquiler publicacionAlquiler) {
+        this.publicacionAlquiler = publicacionAlquiler;
     }
     
 

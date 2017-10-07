@@ -29,7 +29,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     public static final String pSupCubierta = "superficieCubierta";
     public static final String pSupTotal = "superficieTotal";
     public static final String pTipoInmb = "tipoInmueble";
-    public static final String pPublicaciones = "operaciones";
+    public static final String pPublicaciones = "publicaciones";
     public static final String pPropietario = "propietario";
 
     @Id
@@ -91,7 +91,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     private Propietario propietario;
 
     @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    protected Set<Publicacion> operaciones = new HashSet<>();
+    protected Set<Publicacion> publicaciones = new HashSet<>();
     
     @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
     protected Set<Contrato> contratos = new HashSet<>();
@@ -117,7 +117,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.superficieCubierta = inmuebleBuilder.superficieCubierta;
 	this.superficieTotal = inmuebleBuilder.superficieTotal;
 	this.tipoInmueble = inmuebleBuilder.tipoInmueble;
-	this.operaciones = inmuebleBuilder.operaciones;
+	this.publicaciones = inmuebleBuilder.publicaciones;
 	this.propietario = inmuebleBuilder.propietario;
 	this.contratos = inmuebleBuilder.contratos;
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
@@ -246,26 +246,29 @@ public class Inmueble implements Identificable, BorradoLogico {
     }
 
     public Set<Publicacion> getPublicaciones() {
-	return operaciones;
+	return publicaciones;
     }
 
-    public void setPublicaciones(Set<Publicacion> operaciones) {
-	this.operaciones = operaciones;
+
+    public void addPublicacion(Publicacion publicacion) {
+
+    	removePublicacion(publicacion);
+		publicaciones.add(publicacion);
     }
 
-    public void addPublicacion(Publicacion operacion) {
+	public void removePublicacion(Publicacion publicacion) {
 
-    	if(operacion.getId()!=null) {
-			for (Publicacion publicacion : operaciones
+
+		if(publicacion.getId()!=null) {
+			for (Publicacion publi: publicaciones
 					) {
-				if (publicacion.getId() == operacion.getId()) {
-					operaciones.remove(publicacion);
+				if (publi.getId() == publicacion.getId()) {
+					publicaciones.remove(publicacion);
+					return; //Ojo con el concurrent modification si se saca esto
 				}
 			}
 		}
-		operaciones.add(operacion);
-    }
-
+	}
     public Propietario getPropietario() {
 	return propietario;
     }
@@ -376,14 +379,16 @@ public class Inmueble implements Identificable, BorradoLogico {
 		+ cantidadCocheras + "\nconAireAcondicionado=" + conAireAcondicionado + "\nconJardin=" + conJardin
 		+ "\nconParilla=" + conParrilla + "\nconPileta=" + conPileta + "\nestadoInmueble=" + estadoInmueble
 		+ "\ntipoInmueble=" + tipoInmueble + "\nclaseInmueble=" + claseInmueble + "\ndireccion=" + direccion
-		+ "\noperaciones=" + operaciones + "\npropietario=" + propietario + "\n]";
+		+ "\npublicaciones=" + publicaciones + "\npropietario=" + propietario + "\n]";
     }*/
 @Override
 public String toString() {
 	return  direccion.getCalle()+" "+direccion.getNro();
 }
 
-    public static class Builder {
+
+
+	public static class Builder {
 	private Set<Contrato> contratos = new HashSet<>();
 	private Propietario propietario;
 	private Integer cantidadAmbientes;
@@ -400,7 +405,7 @@ public String toString() {
 	private TipoInmueble tipoInmueble;
 	private ClaseInmueble claseInmueble;
 	private Direccion direccion;
-	private Set<Publicacion> operaciones = new HashSet<>();
+	private Set<Publicacion> publicaciones = new HashSet<>();
 
 	public Builder setCantidadAmbientes(Integer cantidadAmbientes) {
 	    this.cantidadAmbientes = cantidadAmbientes;
@@ -472,13 +477,14 @@ public String toString() {
 	    return this;
 	}
 
-	public Builder setPublicaciones(Set<Publicacion> operaciones) {
-	    this.operaciones = operaciones;
+	public Builder setPublicaciones(Set<Publicacion> publicaciones) {
+	    this.publicaciones = publicaciones;
 	    return this;
 	}
 
-	public Builder addPublicacion(Publicacion operacion) {
-	    this.operaciones.add(operacion);
+
+	public Builder addPublicacion(Publicacion publicacion) {
+	    this.publicaciones.add(publicacion);
 	    return this;
 	}
 
