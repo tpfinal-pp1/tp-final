@@ -2,16 +2,18 @@ package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -31,13 +33,23 @@ import java.util.List;
 public class ContratoVentaForm extends FormLayout {
     private ContratoVenta ContratoVenta;
 
+    // Actions
     Button save = new Button("Guardar");
-  //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
-    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
-    Persona person = new Persona();  // TODO ver donde se usa persona person.
 
-    // private NativeSelect<ContratoVenta.Sexo> sexo = new NativeSelect<>("Sexo");
+    // TabPrincipal
+    ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
+    ComboBox<Persona> cbVendedor = new ComboBox<>("Vendedor");
+    ComboBox<Persona> cbComprador = new ComboBox<>("Comprador");
+    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
+
+    // Documento
+    TextField tfDocumento = new TextField();
+    Button btCargar = new Button(VaadinIcons.UPLOAD);
+    Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
+
+    TextField tfPrecioDeVenta = new TextField("Valor de venta $");
+    RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
 
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
@@ -48,7 +60,7 @@ public class ContratoVentaForm extends FormLayout {
 
     TabSheet tabSheet;
 
-
+    Persona person ; //TODO ver que hacer con persona
 
 
 
@@ -110,25 +122,36 @@ public class ContratoVentaForm extends FormLayout {
 
         tabSheet=new TabSheet();
 
+        BlueLabel seccionDoc = new BlueLabel("Documento Word");
+        //
+        // TinyButton personas = new TinyButton("Ver Personas");
+        //
+        // personas.addClickListener(e -> getPersonaSelector());
+        //
+        // VerticalLayout Roles = new VerticalLayout(personas);
+        //
+        // fechaCelebracion.setWidth("100");
+
+
+        rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
+        HorizontalLayout documentoButtonsRow = new HorizontalLayout();
+        documentoButtonsRow.addComponents(btCargar, btDescargar);
+        documentoButtonsRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        tfDocumento.setCaption("Nombre");
+        btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+        btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
         BlueLabel otro = new  BlueLabel("Venta");
         BlueLabel info = new  BlueLabel("Información Adicional");
 
-        TinyButton personas=new TinyButton("Ver Personas");
-
-        personas.addClickListener(e -> getPersonaSelector());
-
-        VerticalLayout Roles=new VerticalLayout(personas);
-
-
-        fechaCelebracion.setWidth("100");
-        FormLayout principal=new FormLayout(otro, fechaCelebracion, Roles);
-
-
+        FormLayout principal = new FormLayout(otro,cbInmuebles, cbVendedor, cbComprador, fechaCelebracion, seccionDoc,
+                tfDocumento,
+                documentoButtonsRow, rbgTipoMoneda);
 
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-
+        fechaCelebracion.setWidth("100");
 
         tabSheet.addTab(principal,"Principal");
 
