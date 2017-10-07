@@ -46,15 +46,13 @@ public final class DashboardUI extends UI {
 
         @Override
         protected void init(final VaadinRequest request) {
-            System.out.println("Cargando Localidades...");
             GeneradorDeDatos.generarDatos(20);
-            System.out.println("Generando Datos...");
             setLocale(Locale.US);
 
             DashboardEventBus.register(this);
             Responsive.makeResponsive(this);
             addStyleName(ValoTheme.UI_WITH_MENU);
-
+            
             updateContent();
             
 

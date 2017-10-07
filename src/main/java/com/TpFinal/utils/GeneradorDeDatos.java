@@ -106,7 +106,12 @@ public class GeneradorDeDatos {
 	    
 
 	}
-	System.out.println("Agregados " + cantidad + " inmuebles a la base de datos.");
+	System.out.println("Agregados\n"
+	+ daoInm.readAll().size() +" inmuebles.\n"
+	+ daoope.readAll().size() +" publicaciones.\n"
+	+ daoContratos.readAll().size() +" contratos.\n"
+	+ daoPer.readAll().size() +" personas.\n"
+	+ "a la base de datos.");
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {

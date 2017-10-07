@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.utils.GeneradorDeDatos;
 
 /**
  * Application Lifecycle Listener implementation class initListener
@@ -30,7 +31,10 @@ public class initListener implements ServletContextListener {
      * @see ServletContextListener#contextInitialized(ServletContextEvent)
      */
     public void contextInitialized(ServletContextEvent arg0)  { 
-         // TODO Auto-generated method stub
+         System.out.println("Iniciando Server..");
+         System.out.println("Generando Datos...");
+         
+         
     }
 	
 }
