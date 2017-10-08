@@ -2,6 +2,7 @@ package com.TpFinal.view.inmuebles;
 
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
+import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -75,7 +76,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
 	filter.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
+	//clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
 
@@ -150,7 +151,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	public void configureComponents() {
 
-	    filter.addValueChangeListener(e -> updateList());
+	    filter.addValueChangeListener(e -> filtrarPorCalle(filter.getValue()));
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);
 	    filter.setPlaceholder("Filtrar");
 	    filter.setIcon(VaadinIcons.SEARCH);
@@ -182,7 +183,11 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	public void updateList() {
 	    List<Inmueble> inmuebles = inmuebleService.readAll();
 	    grid.setItems(inmuebles);
-
+	}
+	
+	public void filtrarPorCalle(String filtro) {
+	    List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
+	    grid.setItems(inmuebles);
 	}
 
     }
