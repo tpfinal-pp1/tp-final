@@ -13,7 +13,10 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Rol;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class InmuebleService {
     private DAOInmueble dao;
@@ -139,6 +142,22 @@ public class InmuebleService {
 	    ret = dao.saveOrUpdate(inmueble);
 	}
 	return ret;
+    }
+
+    public List<Inmueble> filtrarPorCalle(String filtro) {
+	List<Inmueble> inmuebles = dao.readAllActives().stream()
+		.filter( i -> {return filtro == null || filtro.isEmpty()
+                || i.getDireccion().getCalle().toLowerCase().contains(filtro.toLowerCase());})
+		.collect(Collectors.toList());
+	Collections.sort(inmuebles, new Comparator<Inmueble>(){
+
+	    @Override
+	    public int compare(Inmueble o1, Inmueble o2) {
+		return o1.getDireccion().getCalle().compareTo(o2.getDireccion().getCalle());
+	    }
+	    
+	});
+	return inmuebles;
     }
 
 }
