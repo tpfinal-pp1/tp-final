@@ -53,7 +53,7 @@ public class ContratoABMView extends DefaultLayout implements View {
      * and there are over 500 more in vaadin.com/directory.
      */
     private TextField filter = new TextField();
-    private Grid<Contrato> grid = new Grid<>(Contrato.class);
+    private Grid<Contrato> grid = new Grid<>();
     private Button nuevoAlquiler = new Button("Nuevo Alquiler");
     private Button nuevaVenta = new Button("Nueva Venta");
     private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
@@ -169,7 +169,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void setearColumnas() {
-	grid.removeAllColumns();
+	//grid.removeAllColumns();
 
 	contratos = service.findAll(filter.getValue());
 

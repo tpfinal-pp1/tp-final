@@ -11,6 +11,7 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -110,8 +111,15 @@ public class PersonaABMView extends DefaultLayout implements View {
              	String valor=l.getValue();
              	filter(valor);
              });
+            Responsive.makeResponsive(sw);
+
+            sw.setModal(true);
+            sw.setResizable(false);
+           sw.setClosable(true);
              sw.setVisible(true);
+
              UI.getCurrent().addWindow(sw);
+
              sw.focus();
         });
         
@@ -155,6 +163,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b){
         newItem.setVisible(b);
         filter.setVisible(b);
+        seleccionFiltro.setVisible(b);
         //clearFilterTextBtn.setVisible(b);
         if(isonMobile)
             grid.setVisible(b);
