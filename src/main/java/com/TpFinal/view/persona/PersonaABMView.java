@@ -134,6 +134,8 @@ public class PersonaABMView extends DefaultLayout implements View {
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
+        	if (personaForm.isVisible())
+        	    setComponentsVisible(true);
                 personaForm.setVisible(false);
             } else {
                 personaForm.setPersona(event.getValue());

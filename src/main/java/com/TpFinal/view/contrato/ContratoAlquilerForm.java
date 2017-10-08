@@ -27,6 +27,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.risto.stepper.IntStepper;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -396,5 +397,22 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	};
 
+    }
+    
+    public void clearFields() {
+	this.cbDuracionContrato.setValue(null);
+	this.cbInmuebles.setValue(null);
+	this.cbInquilino.setValue(null);
+	this.cbInteresFueraDeTermino.setValue(null);
+	this.cbtipointeres.setValue(null);
+	this.fechaCelebracion.setValue(LocalDate.now());
+	this.rbgTipoMoneda.setValue(null);
+	this.stIncremento.setValue(null);
+	this.tfDiaDePago.setValue(null);
+	this.tfDocumento.setValue(null);
+	this.tfPActualizacion.setValue(null);
+	this.tfPagoFueraDeTermino.setValue(null);
+	this.tfPropietario.setValue(null);
+	this.tfValorInicial.setValue(null);
     }
 }
