@@ -140,6 +140,10 @@ public class ContratoAlquilerForm extends FormLayout {
 			else {
 			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
 				    .setPersona(inquilino).build();
+			    System.out.println("vinculando entidades");			    
+			    System.out.println("inquilino:" +i);
+			    System.out.println("set:"+i.getContratos());
+			    System.out.println("contrato:" +contratoAlquiler);
 			    i.getContratos().add(contratoAlquiler);
 			    inquilino.addRol(i);
 			}
@@ -154,16 +158,16 @@ public class ContratoAlquilerForm extends FormLayout {
 
     private void binding() {
 
-	binderContratoAlquiler.forField(this.fechaCelebracion).withNullRepresentation(null)
+	binderContratoAlquiler.forField(this.fechaCelebracion)
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
 
-	binderContratoAlquiler.forField(this.cbDuracionContrato).withNullRepresentation(null)
+	binderContratoAlquiler.forField(this.cbDuracionContrato)
 		.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
 
-	binderContratoAlquiler.forField(this.cbInmuebles).withNullRepresentation(null)
+	binderContratoAlquiler.forField(this.cbInmuebles).withNullRepresentation(new Inmueble())
 		.bind(ContratoAlquiler::getInmueble, ContratoAlquiler::setInmueble);
 
-	binderContratoAlquiler.forField(this.cbInquilino).withNullRepresentation(null)
+	binderContratoAlquiler.forField(this.cbInquilino).withNullRepresentation(new Persona())
 		.withValidator(p -> p.equals(contratoAlquiler.getPropietario()) == false,
 			"No pueden ser la misma persona")
 		.bind(contrato -> contrato.getInquilinoContrato().getPersona(),
@@ -187,8 +191,9 @@ public class ContratoAlquilerForm extends FormLayout {
 	binderContratoAlquiler.forField(this.cbPActualizacion).withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoIncrementoCuota, ContratoAlquiler::setTipoIncrementoCuota);
 
-	binderContratoAlquiler.forField(this.rbgTipoMoneda).withNullRepresentation(null)
-		.bind(Contrato::getMoneda, Contrato::setMoneda);
+	
+	binderContratoAlquiler.forField(rbgTipoMoneda).bind("moneda");
+
 
 	binderContratoAlquiler.forField(this.stIncremento).withNullRepresentation(null)
 		.bind(ContratoAlquiler::getIntervaloActualizacion, ContratoAlquiler::setIntervaloActualizacion);
@@ -284,11 +289,13 @@ public class ContratoAlquilerForm extends FormLayout {
 
     public void setContratoAlquiler(ContratoAlquiler ContratoAlquiler) {
 
+	if (ContratoAlquiler != null) {
 	this.contratoAlquiler = ContratoAlquiler;
 	binderContratoAlquiler.readBean(ContratoAlquiler);
-
-	// Show delete button for only Persons already in the database
 	delete.setVisible(ContratoAlquiler.getId() != null);
+	}
+	else
+	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 
 	setVisible(true);
 

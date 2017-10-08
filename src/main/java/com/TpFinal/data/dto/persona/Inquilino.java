@@ -90,7 +90,7 @@ public class Inquilino extends RolPersona {
 
 
 	public static class Builder{
-		private Set<ContratoAlquiler>contratos;
+		private Set<ContratoAlquiler>contratos = new HashSet<>();
 		private Calificacion calificacion;
 		private Rol rolPersona = Rol.Inquilino;
 		private EstadoRegistro estadoRegistro;

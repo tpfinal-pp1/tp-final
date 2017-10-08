@@ -333,7 +333,7 @@ public class Persona implements Identificable, BorradoLogico {
     			ret.add(r);
     		}
     	});
-    	return ret.get(0);
+    	return ret.size()!= 0 ?ret.get(0) : null;
     }
     
     public List<Rol>giveMeYourRoles(){

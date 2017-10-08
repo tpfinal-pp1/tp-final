@@ -225,7 +225,6 @@ public class InmuebleForm extends FormLayout {
 	// XXX
 	binderInmueble.forField(this.localidades).bind(inmueble -> {
 	    Direccion dir = inmueble.getDireccion();
-	    Notification.show(dir.getCodPostal());
 	    return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
 		    .getProvincia()) : null;
 	},
