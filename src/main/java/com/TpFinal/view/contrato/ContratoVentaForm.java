@@ -170,7 +170,7 @@ public class ContratoVentaForm extends FormLayout {
         };
         binderContratoVenta.forField(cbComprador).withValidator(personaValidator)
                 .withNullRepresentation(new Persona())
-                .bind(contratoVenta -> contratoVenta.getVendedor(), (contratoVenta, persona) -> contratoVenta.setComprador(persona));
+                .bind(contratoVenta -> contratoVenta.getComprador(), (contratoVenta, persona) -> contratoVenta.setComprador(persona));
 
         /*binderContratoVenta.forField(lblVendedor)
                 .withNullRepresentation("")
