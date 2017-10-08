@@ -10,6 +10,8 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.contrato.DuracionContrato;
+import com.TpFinal.data.dto.contrato.TipoInteres;
 import com.TpFinal.data.dto.persona.Persona;
 
 import java.io.File;
@@ -105,15 +107,20 @@ public class ContratoService {
 	return ret;
     }
 
-    public static ContratoVenta getInstanciaAlquiler() {
-	return new ContratoVenta.Builder()
-		.setComprador(new Persona())
+    public static ContratoAlquiler getInstanciaAlquiler() {
+	return new ContratoAlquiler.Builder()
+		.setDiaDePago(1)
+		.setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+		.setInquilinoContrato(PersonaService.getPersonaConInquilino())
+		.setInteresPunitorio(0.0)
+		.setIntervaloActualizacion(24)
+		.setTipoIncrementoCuota(TipoInteres.Acumulativo)
+		.setTipoInteresPunitorio(TipoInteres.Simple)
+		.setValorIncial(BigDecimal.ZERO)
 		.setDocumento(null)
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setFechaCelebracion(LocalDate.now())
 		.setInmueble(InmuebleService.getInstancia())
-		.setPrecioVenta(BigDecimal.ZERO)
-		.setPublicacionVenta(PublicacionService.INSTANCIA_VENTA)
 		.build();
     }
 

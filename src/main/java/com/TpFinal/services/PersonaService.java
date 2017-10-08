@@ -10,6 +10,7 @@ import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.publicacion.Rol;
 
@@ -95,6 +96,13 @@ public class PersonaService {
 	        });
 	        return arrayList;
 	    }
+
+	public static Inquilino getPersonaConInquilino() {
+	    Persona p = new Persona();
+	    Inquilino i = new Inquilino.Builder().setPersona(p).build();
+	    p.getRoles().add(i);
+	    return i;
+	}
 	
 	
 

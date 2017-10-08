@@ -16,6 +16,7 @@ import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.converter.StringToDoubleConverter;
@@ -95,7 +96,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void configureComponents() {
-
+	tfPropietario.setEnabled(false);
 	cbDuracionContrato.setItems(DuracionContrato.toList());
 	cbInmuebles.setItems(inmuebleService.readAll());
 	cbInquilino.setItems(personaService.readAll());
@@ -107,6 +108,46 @@ public class ContratoAlquilerForm extends FormLayout {
 	delete.addClickListener(e -> this.delete());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+
+	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
+	    @Override
+	    public void valueChange(HasValue.ValueChangeEvent<Inmueble> valueChangeEvent) {
+		if (valueChangeEvent != null) {
+		    Inmueble inmueble = (Inmueble) valueChangeEvent.getValue();
+		    if (inmueble == null) {
+			contratoAlquiler.setInmueble(null);
+			tfPropietario.setValue("No seleccionado");
+		    } else {
+			Persona propietario = inmueble.getPropietario().getPersona();
+			tfPropietario.setValue(propietario.getNombre());
+			contratoAlquiler.setInmueble(inmueble);
+			contratoAlquiler.setPropietario(propietario);
+			;
+		    }
+		}
+	    }
+	});
+
+	cbInquilino.addValueChangeListener(new HasValue.ValueChangeListener<Persona>() {
+	    @Override
+	    public void valueChange(HasValue.ValueChangeEvent<Persona> valueChangeEvent) {
+		if (valueChangeEvent != null) {
+		    Persona inquilino = (Persona) valueChangeEvent.getValue();
+		    if (inquilino != null) {
+			if (inquilino.getRol(Rol.Inquilino) != null) {
+			    contratoAlquiler.setInquilinoContrato(inquilino.getInquilino());
+			}
+			else {
+			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
+				    .setPersona(inquilino).build();
+			    i.getContratos().add(contratoAlquiler);
+			    inquilino.addRol(i);
+			}
+		    } else
+			contratoAlquiler.setInquilinoContrato(null);
+		}
+	    }
+	});
 
 	setVisible(false);
     }

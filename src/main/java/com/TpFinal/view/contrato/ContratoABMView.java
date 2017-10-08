@@ -131,7 +131,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	nuevoAlquiler.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
-	    ContratoAlquilerForm.setContratoAlquiler(new ContratoAlquiler());
+	    ContratoAlquilerForm.setContratoAlquiler(ContratoService.getInstanciaAlquiler());
 	});
 
 	setearColumnas();
