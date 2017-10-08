@@ -166,6 +166,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	    grid.asSingleSelect().addValueChangeListener(event -> {
 		if (event.getValue() == null) {
+		    if (inmuebleForm.isVisible()) setComponentsVisible(true);
 		    inmuebleForm.setVisible(false);
 		} else {
 		    inmuebleForm.setInmueble(event.getValue());
