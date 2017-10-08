@@ -58,7 +58,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	filtering.addComponents(filter, clearFilterTextBtn, newItem);
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-	addComponent(buildToolbar("Inmuebles", filtering));
+	buildToolbar("Inmuebles", filtering);
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, inmuebleForm);
 	mainLayout.setSizeFull();
