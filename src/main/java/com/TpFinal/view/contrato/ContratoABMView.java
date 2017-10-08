@@ -237,6 +237,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	nuevaVenta.setVisible(b);
 	nuevoAlquiler.setVisible(b);
 	filter.setVisible(b);
+	if(checkIfOnMobile()){
+			clearFilterTextBtn.setVisible(!b);}
 	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
@@ -245,29 +247,42 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private void buildLayout() {
 
-	CssLayout filtering = new CssLayout();
+		CssLayout filtering = new CssLayout();
 
-	HorizontalLayout layout = new HorizontalLayout(nuevaVenta, nuevoAlquiler);
-	filtering.addComponents(filter, clearFilterTextBtn, layout);
-	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+		nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
-	if (checkIfOnMobile()) {
-	    filter.setWidth("58%");
-	    nuevaVenta.setCaption("+ Venta");
-	    nuevoAlquiler.setCaption("+ Alquiler");
-	    layout.setSpacing(false);
-	    layout.setMargin(false);
-	    layout.setResponsive(true);
-	    layout.setSizeUndefined();
+		if(checkIfOnMobile()) {
 
-	}
+			//    layout.setSpacing(false);
+			//  layout.setResponsive(true);
+			filter.setSizeUndefined();
+			//  Responsive.makeResponsive(layout);
+			//filter.setWidth("58%");
+			nuevaVenta.setCaption("Venta");
+			nuevoAlquiler.setCaption("Alquiler");
+			//  nuevaVenta.addStyleName(ValoTheme.BUTTON_TINY);
+			//   nuevoAlquiler.addStyleName(ValoTheme.BUTTON_TINY);
 
-	addComponent(buildToolbar("Contratos", filtering, layout));
-	grid.setSizeFull();
-	mainLayout = new HorizontalLayout(grid, ContratoVentaForm, ContratoAlquilerForm);
-	mainLayout.setSizeFull();
-	addComponent(mainLayout);
-	this.setExpandRatio(mainLayout, 1);
+			//  layout.setMargin(false);
+			//    layout.setSizeUndefined();
+			filtering.addComponents(filter, clearFilterTextBtn,nuevaVenta,nuevoAlquiler);
+			clearFilterTextBtn.setVisible(false);
+
+		}
+		else {
+			HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
+			filtering.addComponents(filter, clearFilterTextBtn,layout);
+
+		}
+
+
+		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+		buildToolbar("Contratos",filtering);
+		grid.setSizeFull();
+		mainLayout = new HorizontalLayout(grid, ContratoVentaForm,ContratoAlquilerForm);
+		mainLayout.setSizeFull();
+		addComponent(mainLayout);
+		this.setExpandRatio(mainLayout, 1);
 
     }
 

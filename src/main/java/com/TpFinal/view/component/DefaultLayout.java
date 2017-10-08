@@ -1,13 +1,15 @@
 package com.TpFinal.view.component;
 
 import com.TpFinal.services.DashboardEventBus;
+import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 public abstract class DefaultLayout extends VerticalLayout {
 
-    HorizontalLayout toolbar;
+    HorizontalLayout tools;
+    HorizontalLayout header;
 
 
     public DefaultLayout(){
@@ -23,10 +25,9 @@ public abstract class DefaultLayout extends VerticalLayout {
 
 
 
+    public void buildToolbar(String Title, Component... Components ){
 
-    public HorizontalLayout buildToolbar(String Title, Component... Components ){
-
-        HorizontalLayout header = new HorizontalLayout();
+        header = new HorizontalLayout();
         header.addStyleName("viewheader");
         Responsive.makeResponsive(header);
 
@@ -35,7 +36,7 @@ public abstract class DefaultLayout extends VerticalLayout {
         title.addStyleName(ValoTheme.LABEL_H1);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         header.addComponent(title);
-        HorizontalLayout tools =new HorizontalLayout();
+        tools =new HorizontalLayout();
 
         for(Component comp: Components){
             tools.addComponent(comp);
@@ -45,10 +46,21 @@ public abstract class DefaultLayout extends VerticalLayout {
         Responsive.makeResponsive(tools);
 
        tools.addStyleName("toolbar");
-        header.addComponent(tools);
 
 
-        return header;
+       if(Page.getCurrent().getBrowserWindowWidth() < 800) {
+           tools.setSpacing(false);
+           this.addComponent(header);
+           this.addComponent(tools);
+
+       }
+
+       else {
+           header.addComponent(tools);
+           this.addComponent(header);
+       }
+
+
     }
 
 

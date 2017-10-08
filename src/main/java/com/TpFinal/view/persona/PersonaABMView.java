@@ -7,6 +7,7 @@ import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.TinyButton;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -48,9 +49,9 @@ public class PersonaABMView extends DefaultLayout implements View {
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     RadioButtonGroup<String>filtroRoles= new RadioButtonGroup<>();
-    Button seleccionFiltro=new Button("Filtros");
+    Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
-    HorizontalLayout hlSw = new HorizontalLayout();
+
    
    
 
@@ -67,6 +68,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 
     public PersonaABMView(){
+
         super();
         buildLayout();
         configureComponents();
@@ -90,8 +92,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
-
-
         filter.setPlaceholder("Filtrar");
         filter.addValueChangeListener(e -> updateList());
         clearFilterTextBtn.setDescription("Limpiar filtro");
@@ -140,11 +140,17 @@ public class PersonaABMView extends DefaultLayout implements View {
             }
         });
 
-       // grid.setSelectionMode(Grid.SelectionMode.SINGLE);
+       // grid.setSelectionMode(Grid.SelectionMod
+        //
+        // e.SINGLE);
 
+        if(isonMobile){
+            filter.setWidth("100%");
+        }
         newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        filter.setIcon(VaadinIcons.SEARCH);
-        filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+        //filter.setIcon(VaadinIcons.SEARCH);
+       //filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
         updateList();
     }
 
@@ -174,14 +180,12 @@ public class PersonaABMView extends DefaultLayout implements View {
 
         CssLayout filtering = new CssLayout();
         HorizontalLayout hl= new HorizontalLayout();
-        filtering.addComponents(filter, clearFilterTextBtn,newItem);
+        filtering.addComponents(seleccionFiltro,filter, clearFilterTextBtn,newItem);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        hl.addComponent(hlSw);
-        hl.addComponent(seleccionFiltro);
         hl.addComponent(filtering);
         
 
-        addComponent(buildToolbar("Personas",hl));
+       buildToolbar("Personas",hl);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, personaForm);
         mainLayout.setSizeFull();
@@ -266,6 +270,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
         if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+
             isonMobile=true;
     }
         else{

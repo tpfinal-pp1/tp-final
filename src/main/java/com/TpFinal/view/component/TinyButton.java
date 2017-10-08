@@ -21,4 +21,8 @@ public class TinyButton extends Button {
 
     }
 
+    public TinyButton(VaadinIcons icons) {
+        super(icons);
+        addStyleName(ValoTheme.BUTTON_TINY);
+    }
 }

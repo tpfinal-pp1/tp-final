@@ -11,6 +11,7 @@ import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.TinyButton;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -146,7 +147,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
        // grid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
-        nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
+
         filter.setIcon(VaadinIcons.SEARCH);
         filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         updateList();
@@ -163,6 +164,8 @@ public class PublicacionABMView extends DefaultLayout implements View {
         nuevaVenta.setVisible(b);
         nuevoAlquiler.setVisible(b);
         filter.setVisible(b);
+        if(checkIfOnMobile())
+            clearFilterTextBtn.setVisible(!b);
         //clearFilterTextBtn.setVisible(b);
         if(isonMobile)
             grid.setVisible(b);
@@ -170,25 +173,37 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     private void buildLayout() {
-
         CssLayout filtering = new CssLayout();
 
-        HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
-        filtering.addComponents(filter, clearFilterTextBtn,layout);
-        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
         if(checkIfOnMobile()) {
-            filter.setWidth("58%");
-            nuevaVenta.setCaption("+ Venta");
-            nuevoAlquiler.setCaption("+ Alquiler");
-            layout.setSpacing(false);
-            layout.setMargin(false);
-            layout.setResponsive(true);
-            layout.setSizeUndefined();
+
+        //    layout.setSpacing(false);
+         //  layout.setResponsive(true);
+            filter.setSizeUndefined();
+          //  Responsive.makeResponsive(layout);
+            //filter.setWidth("58%");
+            nuevaVenta.setCaption("Venta");
+            nuevoAlquiler.setCaption("Alquiler");
+          //  nuevaVenta.addStyleName(ValoTheme.BUTTON_TINY);
+         //   nuevoAlquiler.addStyleName(ValoTheme.BUTTON_TINY);
+
+          //  layout.setMargin(false);
+        //    layout.setSizeUndefined();
+            filtering.addComponents(filter, clearFilterTextBtn,nuevaVenta,nuevoAlquiler);
+            clearFilterTextBtn.setVisible(false);
+
+        }
+        else {
+            HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
+            filtering.addComponents(filter, clearFilterTextBtn,layout);
 
         }
 
-        addComponent(buildToolbar("Publicaciones",filtering, layout));
+
+        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        buildToolbar("Publicaciones",filtering/*, layout*/);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, PublicacionVentaForm,PublicacionAlquilerForm);
         mainLayout.setSizeFull();
