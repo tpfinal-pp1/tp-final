@@ -39,7 +39,7 @@ public class ContratoAlquilerForm extends FormLayout {
      */
     private static final long serialVersionUID = 1L;
 
-    private ContratoAlquiler ContratoAlquiler;
+    private ContratoAlquiler contratoAlquiler;
 
     // Actions
     Button save = new Button("Guardar");
@@ -87,16 +87,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void configureComponents() {
-	/*
-	 * Highlight primary actions.
-	 *
-	 * With Vaadin built-in styles you can highlight the primary save button
-	 *
-	 * and give it a keyoard shortcut for a better UX.
-	 */
-
-	// sexo.setEmptySelectionAllowed(false);
-	// sexo.setItems(ContratoAlquiler.Sexo.values());
+	
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
 	delete.addClickListener(e -> this.delete());
@@ -107,13 +98,17 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void binding() {
-	// binder.bindInstanceFields(this); //Binding automatico
-	binderContratoAlquiler.forField(fechaCelebracion).withValidator(new DateRangeValidator(
-		"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365))).bind(
-			Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
-
+	
+	System.out.println("Bindeando Contrato :" + contratoAlquiler );
+//	binderContratoAlquiler.forField(fechaCelebracion).withValidator(new DateRangeValidator(
+//		"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365))).bind(
+//			Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
+//	
+	binderContratoAlquiler.forField(this.fechaCelebracion).bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
+//	binderContratoAlquiler.forField(this.rbgTipoMoneda).bind(contrato -> {
+//	    Contrato c = (Contrato) contrato;
+//	});
     }
-
     private void buildLayout() {
 	setSizeFull();
 	setMargin(true);
@@ -168,8 +163,8 @@ public class ContratoAlquilerForm extends FormLayout {
 
     public void setContratoAlquiler(ContratoAlquiler ContratoAlquiler) {
 
-	this.ContratoAlquiler = ContratoAlquiler;
-	// binderContratoAlquiler.readBean(ContratoAlquiler);
+	this.contratoAlquiler = ContratoAlquiler;
+	binderContratoAlquiler.readBean(ContratoAlquiler);
 
 	// Show delete button for only Persons already in the database
 	delete.setVisible(ContratoAlquiler.getId() != null);
@@ -183,7 +178,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void delete() {
-	service.delete(ContratoAlquiler);
+	service.delete(contratoAlquiler);
 	addressbookView.updateList();
 	setVisible(false);
 	getAddressbookView().setComponentsVisible(true);
@@ -195,8 +190,8 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	boolean success = false;
 	try {
-	    binderContratoAlquiler.writeBean(ContratoAlquiler);
-	    service.saveOrUpdate(ContratoAlquiler, null);
+	    binderContratoAlquiler.writeBean(contratoAlquiler);
+	    service.saveOrUpdate(contratoAlquiler, null);
 	    success = true;
 
 	} catch (ValidationException e) {
