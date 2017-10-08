@@ -91,7 +91,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	nuevaVenta.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
-	    ContratoVentaForm.setContratoVenta(new ContratoVenta());
+	    ContratoVentaForm.setContratoVenta(ContratoService.getInstanciaAlquiler());
 	});
 
 	nuevoAlquiler.addClickListener(e -> {
@@ -135,6 +135,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private void setearColumnas() {
 	grid.removeAllColumns();
+	
 	contratos = service.findAll(filter.getValue());
 
 	Column<Contrato, String> tipoCol = grid.addColumn(contrato -> {

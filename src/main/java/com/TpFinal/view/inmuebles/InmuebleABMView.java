@@ -161,31 +161,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	    newItem.addClickListener(e -> {
 		grid.asSingleSelect().clear();
-		inmuebleForm.setInmueble(new Inmueble.Builder()
-			.setaEstrenar(false)
-			.setCantidadAmbientes(0)
-			.setCantidadCocheras(0)
-			.setCantidadDormitorios(0)
-			.setClaseInmueble(ClaseInmueble.OtroInmueble)
-			.setConAireAcondicionado(false)
-			.setConJardin(false)
-			.setConParilla(false)
-			.setConPileta(false)
-			.setDireccion(new Direccion.Builder()
-				.setCalle("")
-				.setCodPostal("")
-				.setCoordenada(new Coordenada())
-				.setLocalidad("")
-				.setNro(0)
-				.setPais("Argentina")
-				.setProvincia("")
-				.build())
-			.setEstadoInmueble(EstadoInmueble.NoPublicado)
-			.setPropietario(new Propietario())
-			.setSuperficieCubierta(0)
-			.setSuperficieTotal(0)
-			.setTipoInmueble(TipoInmueble.Vivienda)
-			.build());
+		inmuebleForm.setInmueble(InmuebleService.getInstancia());
 	    });
 
 	    grid.asSingleSelect().addValueChangeListener(event -> {

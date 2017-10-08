@@ -11,16 +11,21 @@ import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
+import com.vaadin.data.converter.StringToDoubleConverter;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.time.LocalDate;
@@ -66,14 +71,14 @@ public class ContratoAlquilerForm extends FormLayout {
     ComboBox<DuracionContrato> cbDuracionContrato = new ComboBox<>("Duración");
     IntStepper stIncremento = new IntStepper("Frecuencia de Incremento (meses)");
 
-  
     TextField tfPActualizacion = new TextField("Aumento por Actualización");
     ComboBox<TipoInteres> cbPActualizacion = new ComboBox<>("Tipo Interes");
     TextField tfValorInicial = new TextField("Valor Inicial $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
 
-
     ContratoService service = new ContratoService();
+    InmuebleService inmuebleService = new InmuebleService();
+    PersonaService personaService = new PersonaService();
     private ContratoABMView addressbookView;
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
     Persona person = new Persona(); // TODO ver donde se usa persona p.
@@ -90,7 +95,13 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void configureComponents() {
-	
+
+	cbDuracionContrato.setItems(DuracionContrato.toList());
+	cbInmuebles.setItems(inmuebleService.readAll());
+	cbInquilino.setItems(personaService.readAll());
+	cbInteresFueraDeTermino.setItems(TipoInteres.toList());
+	cbPActualizacion.setItems(TipoInteres.toList());
+
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
 	delete.addClickListener(e -> this.delete());
@@ -100,44 +111,83 @@ public class ContratoAlquilerForm extends FormLayout {
 	setVisible(false);
     }
 
-    private void binding() {	
-	
-	binderContratoAlquiler.forField(this.fechaCelebracion)
-	.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
-	
-	binderContratoAlquiler.forField(this.cbDuracionContrato)
-	.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
-	
-	binderContratoAlquiler.forField(this.cbInmuebles)
-	.bind(ContratoAlquiler::getInmueble, ContratoAlquiler::setInmueble);
-	
-	binderContratoAlquiler.forField(this.cbInquilino)
-	.withValidator(p -> p.equals(contratoAlquiler.getPropietario()) == false, "No pueden ser la misma persona")
-	.bind(contrato -> contrato.getInquilinoContrato().getPersona(), 
-		(contrato, persona)->{
-		    Inquilino i;
-		    if (persona.contiene(Rol.Inquilino)) {
-			i = (Inquilino) persona.getRol(Rol.Inquilino);
-			i.getContratos().add(contrato);
-		    }else {
-			i = new Inquilino.Builder()
-				.setCalificacion(Calificacion.C)
-				.setPersona(persona)
-				.build();			
+    private void binding() {
+
+	binderContratoAlquiler.forField(this.fechaCelebracion).withNullRepresentation(null)
+		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
+
+	binderContratoAlquiler.forField(this.cbDuracionContrato).withNullRepresentation(null)
+		.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
+
+	binderContratoAlquiler.forField(this.cbInmuebles).withNullRepresentation(null)
+		.bind(ContratoAlquiler::getInmueble, ContratoAlquiler::setInmueble);
+
+	binderContratoAlquiler.forField(this.cbInquilino).withNullRepresentation(null)
+		.withValidator(p -> p.equals(contratoAlquiler.getPropietario()) == false,
+			"No pueden ser la misma persona")
+		.bind(contrato -> contrato.getInquilinoContrato().getPersona(),
+			(contrato, persona) -> {
+			    Inquilino i;
+			    if (persona.contiene(Rol.Inquilino)) {
+				i = (Inquilino) persona.getRol(Rol.Inquilino);
+				i.getContratos().add(contrato);
+			    } else {
+				i = new Inquilino.Builder()
+					.setCalificacion(Calificacion.C)
+					.setPersona(persona)
+					.build();
+			    }
+			    i.getContratos().add(contrato);
+			    contrato.setInquilinoContrato(i);
+			});
+	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino).withNullRepresentation(null)
+		.bind(ContratoAlquiler::getTipoInteresPunitorio, ContratoAlquiler::setTipoInteresPunitorio);
+
+	binderContratoAlquiler.forField(this.cbPActualizacion).withNullRepresentation(null)
+		.bind(ContratoAlquiler::getTipoIncrementoCuota, ContratoAlquiler::setTipoIncrementoCuota);
+
+	binderContratoAlquiler.forField(this.rbgTipoMoneda).withNullRepresentation(null)
+		.bind(Contrato::getMoneda, Contrato::setMoneda);
+
+	binderContratoAlquiler.forField(this.stIncremento).withNullRepresentation(null)
+		.bind(ContratoAlquiler::getIntervaloActualizacion, ContratoAlquiler::setIntervaloActualizacion);
+
+	binderContratoAlquiler.forField(this.tfDiaDePago).withNullRepresentation("")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.bind(ContratoAlquiler::getDiaDePago, ContratoAlquiler::setDiaDePago);
+
+	binderContratoAlquiler.forField(this.tfDocumento).withNullRepresentation("")
+		.bind(contrato -> {
+		    if (contrato.getDocumento() != null)
+			return "Documento Cargado";
+		    return "Documento no Cargado";
+		}, (contrato, text) -> {
+		});
+
+	binderContratoAlquiler.forField(this.tfPActualizacion).withNullRepresentation("")
+		.withConverter(new StringToDoubleConverter("Debe ingresar un coeficiente"))
+		.bind(ContratoAlquiler::getPorcentajeIncrementoCuota, ContratoAlquiler::setPorcentajeIncrementoCuota);
+
+	binderContratoAlquiler.forField(this.tfPagoFueraDeTermino).withNullRepresentation("")
+		.withConverter(new StringToDoubleConverter("Debe ingresar un coeficiente"))
+		.bind(ContratoAlquiler::getPorcentajeIncrementoCuota, ContratoAlquiler::setPorcentajeIncrementoCuota);
+
+	binderContratoAlquiler.forField(this.tfPropietario).withNullRepresentation("")
+		.bind(contrato -> {
+		    String ret = "";
+		    if (contrato.getPropietario() != null) {
+			ret = contrato.getPropietario().getNombre() + " " + contrato.getPropietario().getApellido();
 		    }
-		    i.getContratos().add(contrato);
-		    contrato.setInquilinoContrato(i);
-	});
-	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino)
-	.bind(ContratoAlquiler::getTipoInteresPunitorio,ContratoAlquiler::setTipoInteresPunitorio);
-	
-	binderContratoAlquiler.forField(this.cbPActualizacion)
-	.bind(ContratoAlquiler::getTipoIncrementoCuota,ContratoAlquiler::setTipoIncrementoCuota);
-	
-	binderContratoAlquiler.forField(this.rbgTipoMoneda)
-	.bind(Contrato::getMoneda,Contrato::setMoneda);
-	
+		    return ret;
+		}, (contrato, persona) -> {
+		});
+
+	binderContratoAlquiler.forField(this.tfValorInicial).withNullRepresentation("")
+		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
+		.bind(ContratoAlquiler::getValorInicial, ContratoAlquiler::setValorInicial);
+
     }
+
     private void buildLayout() {
 	setSizeFull();
 	setMargin(true);
@@ -155,7 +205,8 @@ public class ContratoAlquilerForm extends FormLayout {
 	// fechaCelebracion.setWidth("100");
 
 	stIncremento.setValue(1);
-	stIncremento.setStepAmount(2);
+	// TODO setear el step como divisor de la duracion.
+	stIncremento.setStepAmount(1);
 	stIncremento.setWidth("77%");
 	rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 

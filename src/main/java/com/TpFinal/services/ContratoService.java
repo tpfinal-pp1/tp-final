@@ -6,11 +6,14 @@ import com.TpFinal.data.dao.DAOContratoVentaImpl;
 import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
+import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.persona.Persona;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,6 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContratoService {
+    public static enum instancia{venta,alquiler};
     private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
     private DAOContrato daoContrato;
@@ -99,6 +103,18 @@ public class ContratoService {
 	ret = c.getFechaCelebracion().plus(c.getDuracionContrato().getDuracion(), ChronoUnit.MONTHS);
 
 	return ret;
+    }
+
+    public static ContratoVenta getInstanciaAlquiler() {
+	return new ContratoVenta.Builder()
+		.setComprador(new Persona())
+		.setDocumento(null)
+		.setEstadoRegistro(EstadoRegistro.ACTIVO)
+		.setFechaCelebracion(LocalDate.now())
+		.setInmueble(InmuebleService.getInstancia())
+		.setPrecioVenta(BigDecimal.ZERO)
+		.setPublicacionVenta(PublicacionService.INSTANCIA_VENTA)
+		.build();
     }
 
 }
