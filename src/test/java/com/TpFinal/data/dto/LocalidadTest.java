@@ -35,10 +35,10 @@ public class LocalidadTest {
 		//lo paso al modelo de provincias(cada provincia con una lista de localidades
 		List<Provincia>provincias=gson.rawToProvincias(localidades);
 		System.out.println(provincias.size());
-		//imprimo resultados
-		provincias.forEach(p ->{
+		//imprimo resultados(consume mucho)
+	/*	provincias.forEach(p ->{
 			p.getLocalidades().forEach(l -> System.out.println(p.getNombre()+": "+l.getNombre()));
-		});
+		});*/
 		
 		
 	}
