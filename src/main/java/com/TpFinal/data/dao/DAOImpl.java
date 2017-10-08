@@ -20,7 +20,9 @@ import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> {
@@ -240,7 +242,15 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	public List<T> readAllActives(){
 		DetachedCriteria criteria = DetachedCriteria.forClass(getClaseEntidad())
 				.add(Restrictions.eq(estadoRegistro, EstadoRegistro.ACTIVO)).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		return findByCriteria(criteria);
+		return borrarRepetidos(findByCriteria(criteria));
+	}
+	
+	private List<T>borrarRepetidos(List<T>lista){
+		Set<T>conjunto=new HashSet<>();
+		List<T>ret= new ArrayList<>();
+		lista.forEach(elemento -> conjunto.add(elemento));
+		conjunto.forEach(elemento -> ret.add(elemento));
+		return ret;
 	}
 
 

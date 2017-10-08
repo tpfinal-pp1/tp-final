@@ -146,9 +146,17 @@ public class DAOPersonaImplTest {
                 dao.update(inq);
             }
         });
-
-        assertEquals("sarasa", dao.readAllActives().get(0).getNombre());
-        assertEquals("info", dao.readAllActives().get(0).getInfoAdicional());
+        System.out.println(dao.readAllActives().size());
+        boolean estaSarasa=false;
+        boolean estaInfo=false;
+        for(Persona p : dao.readAllActives()) {
+        	estaSarasa=estaSarasa||p.getNombre().equals("sarasa");
+        	estaInfo=estaInfo||p.getInfoAdicional().equals("info");
+        }
+        assertTrue(estaSarasa&&estaInfo);
+        
+//        assertEquals("sarasa", dao.readAllActives().get(2).getNombre());
+//        assertEquals("info", dao.readAllActives().get(2).getInfoAdicional());
     }
 
 
