@@ -2,20 +2,21 @@ package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.component.VentanaSelectora;
-import com.vaadin.data.Binder;
-import com.vaadin.data.ValidationException;
-import com.vaadin.data.validator.DateRangeValidator;
+import com.vaadin.data.*;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -31,13 +32,24 @@ import java.util.List;
 public class ContratoVentaForm extends FormLayout {
     private ContratoVenta ContratoVenta;
 
+    // Actions
     Button save = new Button("Guardar");
-  //  Button test = new Button("Test");
     Button delete = new Button("Eliminar");
-    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
-    Persona person = new Persona();  // TODO ver donde se usa persona person.
 
-    // private NativeSelect<ContratoVenta.Sexo> sexo = new NativeSelect<>("Sexo");
+    // TabPrincipal
+    ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
+
+    Label lblNombreVendedor = new Label("No seleccionado");
+    ComboBox<Persona> cbComprador = new ComboBox<>("Comprador");
+    DateField fechaCelebracion = new DateField("Fecha de Celebracion");
+
+    // Documento
+    TextField tfDocumento = new TextField();
+    Button btCargar = new Button(VaadinIcons.UPLOAD);
+    Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
+
+    TextField tfPrecioDeVenta = new TextField("Valor de venta $");
+    RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
 
     ContratoService service = new ContratoService();
     private ContratoABMView addressbookView;
@@ -48,7 +60,7 @@ public class ContratoVentaForm extends FormLayout {
 
     TabSheet tabSheet;
 
-
+    Persona person ; //TODO ver que hacer con persona
 
 
 
@@ -62,6 +74,8 @@ public class ContratoVentaForm extends FormLayout {
         configureComponents();
         binding();
         buildLayout();
+        updateComboInmuebles();
+        updateComboCompradores();
         addStyleName("v-scrollable");
     }
 
@@ -82,6 +96,38 @@ public class ContratoVentaForm extends FormLayout {
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
+        cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
+            @Override
+            public void valueChange(HasValue.ValueChangeEvent<Inmueble> valueChangeEvent) {
+                if(valueChangeEvent != null){
+                    Inmueble inmueble = (Inmueble) valueChangeEvent.getValue();
+                    if(inmueble == null) {
+                        ContratoVenta.setInmueble(null);
+                        lblNombreVendedor.setValue("No seleccionado");
+                    }
+                    else {
+                        Persona vendedor = inmueble.getPropietario().getPersona();
+                        lblNombreVendedor.setValue(vendedor.getNombre());
+                        ContratoVenta.setInmueble(inmueble);
+                        ContratoVenta.setVendedor(vendedor);
+                    }
+                }
+            }
+        });
+
+        cbComprador.addValueChangeListener(new HasValue.ValueChangeListener<Persona>() {
+            @Override
+            public void valueChange(HasValue.ValueChangeEvent<Persona> valueChangeEvent) {
+                if(valueChangeEvent != null){
+                    Persona comprador = (Persona) valueChangeEvent.getValue();
+                    if(comprador != null) {
+                        ContratoVenta.setComprador(comprador);
+                    }
+                    else
+                        ContratoVenta.setComprador(null);
+                }
+            }
+        });
 
 
 
@@ -92,16 +138,63 @@ public class ContratoVentaForm extends FormLayout {
 
     private void binding(){
        //binder.bindInstanceFields(this); //Binding automatico
-        binderContratoVenta.forField(fechaCelebracion).withValidator(new DateRangeValidator(
-                "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
-        ).bind(Contrato::getFechaCelebracion,Contrato::setFechaCelebracion);
+        binderContratoVenta.forField(fechaCelebracion).bind(Contrato::getFechaCelebracion,Contrato::setFechaCelebracion);
+        binderContratoVenta.forField(rbgTipoMoneda).bind("moneda");
+        binderContratoVenta.forField(cbInmuebles)
+                .withNullRepresentation(new Inmueble())
+                .bind(Contrato::getInmueble, Contrato::setInmueble);
+
+        Validator<Persona> personaValidator = new Validator<Persona>() {
+            @Override
+            public ValidationResult apply(Persona persona, ValueContext valueContext) {
+                ValidationResult result = new ValidationResult() {
+                    @Override
+                    public String getErrorMessage() {
+                        if(ContratoVenta.getInmueble().getId() != null)
+                        if(ContratoVenta.getInmueble().getPropietario().getPersona().getId().equals(persona.getId()))
+                            return "Error: No se puede seleccionar al vendedor como comprador";
+                        return "No se detectaron errores";
+                    }
+
+                    @Override
+                    public boolean isError() {
+                        if(ContratoVenta.getInmueble().getId() != null)
+                            if(persona != null)
+                            if(ContratoVenta.getInmueble().getPropietario().getPersona().getId().equals(persona.getId()))
+                                return true;
+                        return false;
+                    }
+                };
+                return result;
+            }
+        };
+        binderContratoVenta.forField(cbComprador).withValidator(personaValidator)
+                .withNullRepresentation(new Persona())
+                .bind(contratoVenta -> contratoVenta.getVendedor(), (contratoVenta, persona) -> contratoVenta.setComprador(persona));
+
+        /*binderContratoVenta.forField(lblVendedor)
+                .withNullRepresentation("")
+                .bind( (inmueble) -> inmueble.getVendedor().getNombre(), (inmueble,nombre) -> inmueble.getVendedor().setNombre(nombre));
+        */
+
+        binderContratoVenta.forField(tfPrecioDeVenta)
+                .withNullRepresentation("")
+                .withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precioVenta");
 
 
 
 
+    }
 
 
+    private void updateComboInmuebles() {
+        InmuebleService is = new InmuebleService();
+        cbInmuebles.setItems(is.readAll());
+    }
 
+        private void updateComboCompradores() {
+        PersonaService ps = new PersonaService();
+        cbComprador.setItems(ps.readAll());
     }
 
     private void buildLayout() {
@@ -110,25 +203,39 @@ public class ContratoVentaForm extends FormLayout {
 
         tabSheet=new TabSheet();
 
+        BlueLabel seccionDoc = new BlueLabel("Documento Word");
+        //
+        // TinyButton personas = new TinyButton("Ver Personas");
+        //
+        // personas.addClickListener(e -> getPersonaSelector());
+        //
+        // VerticalLayout Roles = new VerticalLayout(personas);
+        //
+        // fechaCelebracion.setWidth("100");
+
+
+        rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
+        HorizontalLayout documentoButtonsRow = new HorizontalLayout();
+        documentoButtonsRow.addComponents(btCargar, btDescargar);
+        documentoButtonsRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        tfDocumento.setCaption("Nombre");
+        btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+        btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
         BlueLabel otro = new  BlueLabel("Venta");
         BlueLabel info = new  BlueLabel("Información Adicional");
 
-        TinyButton personas=new TinyButton("Ver Personas");
 
-        personas.addClickListener(e -> getPersonaSelector());
-
-        VerticalLayout Roles=new VerticalLayout(personas);
-
-
-        fechaCelebracion.setWidth("100");
-        FormLayout principal=new FormLayout(otro, fechaCelebracion, Roles);
-
-
+        HorizontalLayout hl = new HorizontalLayout( lblNombreVendedor);
+        hl.setCaption("Vendedor");
+        FormLayout principal = new FormLayout(otro,cbInmuebles, cbComprador, fechaCelebracion, hl, tfPrecioDeVenta, seccionDoc,
+                tfDocumento,
+                documentoButtonsRow, rbgTipoMoneda);
 
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-
+        fechaCelebracion.setWidth("100");
 
         tabSheet.addTab(principal,"Principal");
 
@@ -194,10 +301,13 @@ public class ContratoVentaForm extends FormLayout {
 
         boolean success=false;
         try {
-            binderContratoVenta.writeBean(ContratoVenta);
-            service.saveOrUpdate(ContratoVenta, null);
-            success=true;
-
+            if(ContratoVenta.getInmueble() != null && ContratoVenta.getComprador() != null && ContratoVenta.getVendedor() != null) {
+                if (ContratoVenta.getInmueble().getId() != null && ContratoVenta.getComprador().getId() != null && ContratoVenta.getVendedor().getId() != null) {
+                    binderContratoVenta.writeBean(ContratoVenta);
+                    service.saveOrUpdate(ContratoVenta, null);
+                    success = true;
+                }
+            }
 
         } catch (ValidationException e) {
             e.printStackTrace();
