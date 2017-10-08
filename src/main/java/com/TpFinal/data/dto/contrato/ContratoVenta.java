@@ -32,7 +32,7 @@ public class ContratoVenta extends Contrato {
     @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinColumn(name = "id_comprador")
     private Persona comprador;
-    
+
     @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
     @JoinColumn(name = "id_vendedor")
     private Persona vendedor;
@@ -46,7 +46,7 @@ public class ContratoVenta extends Contrato {
 	this.precioVenta = b.precioVenta;
 	this.publicacion = b.publicacionVenta;
 	this.comprador = b.comprador;
-	if(b.inmueble != null) {
+	if (b.inmueble != null) {
 	    this.vendedor = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 	    this.inmueble = b.inmueble;
 	}
@@ -57,15 +57,16 @@ public class ContratoVenta extends Contrato {
     }
 
     public Persona getVendedor() {
-        return vendedor;
+	return vendedor;
     }
 
     public void setVendedor(Persona vendedor) {
-        this.vendedor = vendedor;
+	this.vendedor = vendedor;
     }
 
-    public void setPublicacionVenta(PublicacionVenta operacionVenta) {
-	this.publicacion = operacionVenta;
+    public void setPublicacionVenta(PublicacionVenta publicacionVenta) {
+	this.publicacion = publicacionVenta;
+
     }
 
     public BigDecimal getPrecioVenta() {

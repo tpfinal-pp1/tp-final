@@ -1,4 +1,4 @@
-package com.TpFinal.view.operacion;
+package com.TpFinal.view.publicacion;
 
 
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
@@ -124,19 +124,21 @@ public class PublicacionABMView extends DefaultLayout implements View {
         Responsive.makeResponsive(this);
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() == null) {
-             //   PublicacionVentaForm.setVisible(false);
-            //    PublicacionAlquilerForm.setVisible(false);
+                PublicacionVentaForm.setVisible(false);
+               PublicacionAlquilerForm.setVisible(false);
             } else {
 
                 if(event.getValue() instanceof PublicacionAlquiler) {
-                    PublicacionAlquilerForm.setPublicacionAlquiler((PublicacionAlquiler) event.getValue());
                     PublicacionVentaForm.setVisible(false);
+                    PublicacionAlquilerForm.setVisible(false);
+                    PublicacionAlquilerForm.setPublicacionAlquiler((PublicacionAlquiler) event.getValue());
 
                 }
 
                 else if(event.getValue() instanceof PublicacionVenta){
-                    PublicacionVentaForm.setPublicacionVenta((PublicacionVenta) event.getValue());
+                    PublicacionVentaForm.setVisible(false);
                     PublicacionAlquilerForm.setVisible(false);
+                    PublicacionVentaForm.setPublicacionVenta((PublicacionVenta) event.getValue());
 
                 }
             }

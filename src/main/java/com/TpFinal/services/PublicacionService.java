@@ -38,7 +38,7 @@ public class PublicacionService {
     public boolean save(Publicacion entidad) {
         return dao.saveOrUpdate(entidad);
     }
-    
+    @Deprecated
     public boolean updateBidireccioal(Publicacion p) {
     	boolean ret=true;
     	Publicacion publicacion = dao.findById(p.getId());

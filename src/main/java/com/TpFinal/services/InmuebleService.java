@@ -34,6 +34,7 @@ public class InmuebleService {
 	 * @param inmueble
 	 * @return
 	 */
+	@Deprecated
 	public boolean updateBidireccional(Inmueble inmueble) {
 		boolean ret=true;
 		Inmueble inmBd=dao.findById(inmueble.getId());

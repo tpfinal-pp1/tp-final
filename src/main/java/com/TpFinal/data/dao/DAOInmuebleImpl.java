@@ -62,8 +62,8 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 			DAOImpl<Publicacion> dao = new DAOImpl<>(Publicacion.class);
 			query.createAlias("inmueble", "i");
 			addRestriccionesDeInmueble(query, criterio,"i.");
-			List<Publicacion> operaciones = dao.findByCriteria(query);
-			for (Publicacion o : operaciones) {
+			List<Publicacion> publicaciones = dao.findByCriteria(query);
+			for (Publicacion o : publicaciones) {
 				resultadoQuery.add(o.getInmueble());
 			}
 

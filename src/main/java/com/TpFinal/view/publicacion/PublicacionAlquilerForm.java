@@ -1,4 +1,4 @@
-package com.TpFinal.view.operacion;
+package com.TpFinal.view.publicacion;
 
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
@@ -41,8 +41,8 @@ public class PublicacionAlquilerForm extends FormLayout {
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
     Button inmuebleSelector = new Button("");
     TextField nombrePropietario = new TextField();
-    Inmueble inmuebleSeleccionado;
-    TextField valorCuota = new TextField("Valor de cuota");
+
+    TextField valorCuota = new TextField("Cuota");
     ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
    // TODO una vez que este contrato ContratoAlquiler contratoAlquiler;
@@ -103,9 +103,9 @@ public class PublicacionAlquilerForm extends FormLayout {
        binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
        visualizadorInmueble.setEnabled(false);
       //LAMBDA rober-MAGIX
-     /*   binderPublicacionAlquiler.forField(this.nombrePropietario)
+        binderPublicacionAlquiler.forField(this.nombrePropietario)
                 .withNullRepresentation("")
-                .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().getPersona().toString(),null);*/
+                .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().toString(),null);
 
         binderPublicacionAlquiler.forField(this.visualizadorInmueble)
                 .withNullRepresentation("")
@@ -174,14 +174,7 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         this.publicacionAlquiler = PublicacionAlquiler;
         binderPublicacionAlquiler.readBean(PublicacionAlquiler);
-        inmuebleSeleccionado = PublicacionAlquiler.getInmueble();
-        if(inmuebleSeleccionado == null) {
-            nombrePropietario.setValue("");
-            inmuebleSeleccionado = new Inmueble();
-        }
-        else {
-            visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
-        }
+
 
         // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionAlquiler.getId()!=null);
@@ -228,7 +221,7 @@ public class PublicacionAlquilerForm extends FormLayout {
 
     private void displayInmuebleSelector(){
 
-        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(inmuebleSeleccionado) {
+        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(this.publicacionAlquiler.getInmueble()) {
             @Override
             public void updateList() {
                 InmuebleService InmuebleService=
@@ -253,10 +246,16 @@ public class PublicacionAlquilerForm extends FormLayout {
 
             @Override
             public void seleccionado(Inmueble seleccion) {
-                inmuebleSeleccionado=seleccion;
-                publicacionAlquiler.setInmueble(seleccion);
 
-             //   visualizadorInmueble.setValue(inmuebleSeleccionado.toString());
+                try {
+                    binderPublicacionAlquiler.writeBean(publicacionAlquiler);
+                } catch (ValidationException e) {
+                    Notification.show("Error al guardar cambios");
+                    e.printStackTrace();
+                }
+                publicacionAlquiler.setInmueble(seleccion);
+                binderPublicacionAlquiler.readBean(publicacionAlquiler);
+
             }
 
 
@@ -269,15 +268,12 @@ public class PublicacionAlquilerForm extends FormLayout {
 
         boolean success=false;
         try {
-            if(inmuebleSeleccionado.getId() != null) {
-                this.publicacionAlquiler.setInmueble(inmuebleSeleccionado);
-                this.publicacionAlquiler.getInmueble().addPublicacion(this.publicacionAlquiler);
 
                 binderPublicacionAlquiler.writeBean(publicacionAlquiler);
                 service.save(publicacionAlquiler);
                 success = true;
 
-            }
+
         } catch (ValidationException e) {
             e.printStackTrace();
             Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
