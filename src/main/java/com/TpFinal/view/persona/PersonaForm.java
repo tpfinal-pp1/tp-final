@@ -11,7 +11,6 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -41,11 +40,6 @@ public class PersonaForm extends FormLayout {
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
     TabSheet tabSheet;
 
-
-
-
-
-
     // Easily binding forms to beans and manage validation and buffering
 
 
@@ -67,8 +61,6 @@ public class PersonaForm extends FormLayout {
          *
          * and give it a keyoard shortcut for a better UX.
          */
-
-
 
         calificacion.setItems(Calificacion.values());
         calificacion.setEmptySelectionAllowed(true);
@@ -96,20 +88,18 @@ public class PersonaForm extends FormLayout {
 
         binderPersona.forField(DNI).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         		).bind(Persona::getDNI,Persona::setDNI);
+        
         binderPersona.forField(telefono).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
         		).bind(Persona::getTelefono,Persona::setTelefono);
+        
         binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
         		).bind(Persona::getTelefono2,Persona::setTelefono2);
+        
         binderPersona.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido!"
         )).bind(Persona::getMail,Persona::setMail);
+        
         binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
-
-
-
-
-
-
 
     }
 
@@ -246,8 +236,6 @@ public class PersonaForm extends FormLayout {
                     persona.getApellido());
 
 
-
-
     }
 
     public void cancel() {
@@ -261,7 +249,5 @@ public class PersonaForm extends FormLayout {
     public PersonaABMView getAddressbookView() {
         return addressbookView;
     }
-
-
 
 }
