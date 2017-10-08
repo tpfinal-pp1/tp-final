@@ -1,10 +1,10 @@
 package com.TpFinal.view.persona;
+
 import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.services.*;
-import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Persona;
-
+import com.TpFinal.services.PersonaService;
+import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
@@ -14,7 +14,6 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.TextField;
 
 
 public class PersonaForm extends FormLayout {
@@ -80,10 +79,10 @@ public class PersonaForm extends FormLayout {
         nombre.setRequiredIndicatorVisible(true);
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
-        binderPersona.forField(nombre).withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        binderPersona.forField(nombre).withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getNombre,Persona::setNombre);
 
-        binderPersona.forField(apellido).withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        binderPersona.forField(apellido).withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getApellido,Persona::setApellido);
 
         binderPersona.forField(DNI).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
@@ -94,10 +93,9 @@ public class PersonaForm extends FormLayout {
         
         binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
         		).bind(Persona::getTelefono2,Persona::setTelefono2);
-        
+
         binderPersona.forField(mail).withValidator(new EmailValidator(
-                "Introduzca un email valido!"
-        )).bind(Persona::getMail,Persona::setMail);
+                "Introduzca un email valido!" )).bind(Persona::getMail,Persona::setMail);
         
         binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
 
