@@ -1,11 +1,7 @@
 package com.TpFinal.view.persona;
 
-import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.PersonaService;
-import com.vaadin.annotations.PropertyId;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
@@ -14,19 +10,12 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.server.UserError;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.data.fieldgroup.BeanFieldGroup;
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException;
-
-import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public abstract class PersonaFormWindow extends Window {
@@ -101,20 +90,20 @@ public abstract class PersonaFormWindow extends Window {
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
         
-        binderPersona.forField(nombre).asRequired("Ingrese un nombre").withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getNombre,Persona::setNombre);
         
-        binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getApellido,Persona::setApellido);
 
         binderPersona.forField(DNI).asRequired("Ingrese el DNI").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         		).bind(Persona::getDNI,Persona::setDNI);
         
-        binderPersona.forField(telefono).asRequired("Ingrese al menos un teléfono").withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        binderPersona.forField(telefono).asRequired("Ingrese al menos un teléfono").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         		).bind(Persona::getTelefono,Persona::setTelefono);
         
         binderPersona.forField(telefono2).withNullRepresentation("")
-        .withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+"))
+        .withValidator(new RegexpValidator("No se pueden ingresar letras","^(?:[0-9]+|)$"))
         .bind(Persona::getTelefono2,Persona::setTelefono2);
         
         binderPersona.forField(mail).withValidator(new EmailValidator(

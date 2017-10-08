@@ -88,10 +88,10 @@ public class PersonaForm extends FormLayout {
         binderPersona.forField(DNI).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         		).bind(Persona::getDNI,Persona::setDNI);
         
-        binderPersona.forField(telefono).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        binderPersona.forField(telefono).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         		).bind(Persona::getTelefono,Persona::setTelefono);
         
-        binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","^(?:[0-9]+|)$")
         		).bind(Persona::getTelefono2,Persona::setTelefono2);
 
         binderPersona.forField(mail).withValidator(new EmailValidator(
