@@ -3,6 +3,7 @@ package com.TpFinal.data.dto.contrato;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Inquilino;
+import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 
 import javax.persistence.CascadeType;
@@ -55,6 +56,10 @@ public class ContratoAlquiler extends Contrato {
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
 
+    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @JoinColumn(name = "id_propietario")
+    private Persona propietario;
+
     public ContratoAlquiler() {
 	super();
     }
@@ -70,6 +75,10 @@ public class ContratoAlquiler extends Contrato {
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
 	this.duracionContrato = b.duracionContrato;
+	
+	if (b.inmueble != null) {
+	    this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
+	}
     }
 
     public static class Builder {
@@ -180,14 +189,6 @@ public class ContratoAlquiler extends Contrato {
 	this.valorInicial = valorInicial;
     }
 
-    public Integer getIntervaloActualizacionn() {
-	return intervaloActualizacion;
-    }
-
-    public void setIntervaloActualizacion(Integer intervaloActualizacion) {
-	this.intervaloActualizacion = intervaloActualizacion;
-    }
-
     public Integer getDiaDePago() {
 	return diaDePago;
     }
@@ -213,44 +214,62 @@ public class ContratoAlquiler extends Contrato {
     }
 
     public TipoInteres getTipoInteresPunitorio() {
-        return tipoInteresPunitorio;
+	return tipoInteresPunitorio;
     }
 
     public void setTipoInteresPunitorio(TipoInteres tipoInteresPunitorio) {
-        this.tipoInteresPunitorio = tipoInteresPunitorio;
+	this.tipoInteresPunitorio = tipoInteresPunitorio;
     }
 
     public TipoInteres getTipoIncrementoCuota() {
-        return tipoIncrementoCuota;
+	return tipoIncrementoCuota;
     }
 
     public void setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
-        this.tipoIncrementoCuota = tipoIncrementoCuota;
+	this.tipoIncrementoCuota = tipoIncrementoCuota;
     }
 
     public Double getPorcentajeIncrementoCuota() {
-        return porcentajeIncrementoCuota;
+	return porcentajeIncrementoCuota;
     }
 
     public void setPorcentajeIncrementoCuota(Double porcentajeIncrementoCuota) {
-        this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
+	this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
     }
 
     public DuracionContrato getDuracionContrato() {
-        return duracionContrato;
+	return duracionContrato;
     }
 
     public void setDuracionContrato(DuracionContrato duracionContrato) {
-        this.duracionContrato = duracionContrato;
+	this.duracionContrato = duracionContrato;
     }
 
     public PublicacionAlquiler getOperacionAlquiler() {
-        return publicacionAlquiler;
+	return publicacionAlquiler;
     }
 
     public void setOperacionAlquiler(PublicacionAlquiler publicacionAlquiler) {
-        this.publicacionAlquiler = publicacionAlquiler;
+	this.publicacionAlquiler = publicacionAlquiler;
+    }
+
+    public Persona getPropietario() {
+        return propietario;
+    }
+
+    public void setPropietario(Persona propietario) {
+        this.propietario = propietario;
+    }
+
+    public Integer getIntervaloActualizacion() {
+        return intervaloActualizacion;
+    }
+
+    public void setIntervaloActualizacion(Integer intervaloActualizacion) {
+        this.intervaloActualizacion = intervaloActualizacion;
     }
     
 
+    
+    
 }
