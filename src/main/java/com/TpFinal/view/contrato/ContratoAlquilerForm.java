@@ -6,7 +6,10 @@ import com.TpFinal.data.dto.contrato.DuracionContrato;
 import com.TpFinal.data.dto.contrato.TipoInteres;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
+import com.TpFinal.data.dto.persona.Calificacion;
+import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
@@ -97,17 +100,43 @@ public class ContratoAlquilerForm extends FormLayout {
 	setVisible(false);
     }
 
-    private void binding() {
+    private void binding() {	
 	
-	System.out.println("Bindeando Contrato :" + contratoAlquiler );
-//	binderContratoAlquiler.forField(fechaCelebracion).withValidator(new DateRangeValidator(
-//		"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365))).bind(
-//			Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
-//	
-	binderContratoAlquiler.forField(this.fechaCelebracion).bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
-//	binderContratoAlquiler.forField(this.rbgTipoMoneda).bind(contrato -> {
-//	    Contrato c = (Contrato) contrato;
-//	});
+	binderContratoAlquiler.forField(this.fechaCelebracion)
+	.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
+	
+	binderContratoAlquiler.forField(this.cbDuracionContrato)
+	.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
+	
+	binderContratoAlquiler.forField(this.cbInmuebles)
+	.bind(ContratoAlquiler::getInmueble, ContratoAlquiler::setInmueble);
+	
+	binderContratoAlquiler.forField(this.cbInquilino)
+	.withValidator(p -> p.equals(contratoAlquiler.getPropietario()) == false, "No pueden ser la misma persona")
+	.bind(contrato -> contrato.getInquilinoContrato().getPersona(), 
+		(contrato, persona)->{
+		    Inquilino i;
+		    if (persona.contiene(Rol.Inquilino)) {
+			i = (Inquilino) persona.getRol(Rol.Inquilino);
+			i.getContratos().add(contrato);
+		    }else {
+			i = new Inquilino.Builder()
+				.setCalificacion(Calificacion.C)
+				.setPersona(persona)
+				.build();			
+		    }
+		    i.getContratos().add(contrato);
+		    contrato.setInquilinoContrato(i);
+	});
+	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino)
+	.bind(ContratoAlquiler::getTipoInteresPunitorio,ContratoAlquiler::setTipoInteresPunitorio);
+	
+	binderContratoAlquiler.forField(this.cbPActualizacion)
+	.bind(ContratoAlquiler::getTipoIncrementoCuota,ContratoAlquiler::setTipoIncrementoCuota);
+	
+	binderContratoAlquiler.forField(this.rbgTipoMoneda)
+	.bind(Contrato::getMoneda,Contrato::setMoneda);
+	
     }
     private void buildLayout() {
 	setSizeFull();

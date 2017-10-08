@@ -111,7 +111,7 @@ public class DAOContratoAlquilerTest {
         });
 
         dao.readAll().forEach(contrato -> {
-            assertEquals(new Integer (3), contrato.getIntervaloActualizacionn());
+            assertEquals(new Integer (3), contrato.getIntervaloActualizacion());
         });
     }
 

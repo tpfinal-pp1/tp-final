@@ -10,6 +10,7 @@ import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Persona;
 
 @Entity
@@ -32,6 +33,9 @@ public class Contrato implements Identificable, BorradoLogico {
     @JoinColumn(name = "id_inmueble")
     @NotNull
     protected Inmueble inmueble;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "moneda")
+    private TipoMoneda moneda;
 
     public Contrato() {
     }
@@ -43,11 +47,21 @@ public class Contrato implements Identificable, BorradoLogico {
 	this.documento = documento;
 	this.estadoRegistro = estado;
 	this.inmueble = inmueble;
+	this.moneda = TipoMoneda.Pesos;
     }
 
     @Override
-    public Long getId() {	
+    public Long getId() {
 	return this.id;
+    }
+    
+
+    public TipoMoneda getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(TipoMoneda moneda) {
+        this.moneda = moneda;
     }
 
     public LocalDate getFechaCelebracion() {
