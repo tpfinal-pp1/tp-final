@@ -96,14 +96,14 @@ public abstract class PersonaFormWindow extends Window {
         binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getApellido,Persona::setApellido);
 
-        binderPersona.forField(DNI).asRequired("Ingrese el DNI").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
+        binderPersona.forField(DNI).asRequired("Ingrese el DNI").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]{8}")
         		).bind(Persona::getDNI,Persona::setDNI);
         
-        binderPersona.forField(telefono).asRequired("Ingrese al menos un teléfono").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
+        binderPersona.forField(telefono).asRequired("Ingrese al menos un teléfono").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]{8}")
         		).bind(Persona::getTelefono,Persona::setTelefono);
         
         binderPersona.forField(telefono2).withNullRepresentation("")
-        .withValidator(new RegexpValidator("No se pueden ingresar letras","^(?:[0-9]+|)$"))
+        .withValidator(new RegexpValidator("No se pueden ingresar letras","^(?:[0-9]{10}|)$"))
         .bind(Persona::getTelefono2,Persona::setTelefono2);
         
         binderPersona.forField(mail).withValidator(new EmailValidator(
