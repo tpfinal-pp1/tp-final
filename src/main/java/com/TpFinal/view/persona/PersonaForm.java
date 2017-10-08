@@ -10,6 +10,7 @@ import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
@@ -87,25 +88,22 @@ public class PersonaForm extends FormLayout {
         nombre.setRequiredIndicatorVisible(true);
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
-        binderPersona.forField(nombre).withValidator(new StringLengthValidator(
-                "El nombre debe estar entre 2 y 20 caracteres",
-                2, 20)).bind(Persona::getNombre,Persona::setNombre);
+        binderPersona.forField(nombre).withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        		).bind(Persona::getNombre,Persona::setNombre);
 
-        binderPersona.forField(apellido).withValidator(new StringLengthValidator(
-                "El nombre debe estar entre 2 y 20 caracteres",
-                2, 20)).bind(Persona::getApellido,Persona::setApellido);
+        binderPersona.forField(apellido).withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        		).bind(Persona::getApellido,Persona::setApellido);
 
-        binderPersona.forField(DNI)./*withValidator(new StringLengthValidator(
-                "El DNI de estar entre 2 y 20 caracteres",
-                2, 20)).*/bind(Persona::getDNI,Persona::setDNI);
-        binderPersona.forField(telefono).bind(Persona::getTelefono,Persona::setTelefono);
-        binderPersona.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
+        binderPersona.forField(DNI).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
+        		).bind(Persona::getDNI,Persona::setDNI);
+        binderPersona.forField(telefono).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        		).bind(Persona::getTelefono,Persona::setTelefono);
+        binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        		).bind(Persona::getTelefono2,Persona::setTelefono2);
         binderPersona.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido!"
         )).bind(Persona::getMail,Persona::setMail);
-        binderPersona.forField(infoAdicional).withValidator(new StringLengthValidator(
-                "El nombre debe estar entre 2 y 20 caracteres",
-                0, 255)).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
+        binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
 
 
 
