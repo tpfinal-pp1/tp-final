@@ -8,4 +8,5 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({PersonaServiceNuevoTest.class, ContratoServiceTest.class, ProvinciaServiceTest.class, InmuebleServicePruebasTest.class, InmuebleServiceTest.class,
 	PublicacionServiceTest.class})
 public class AllTests {
+	
 }
