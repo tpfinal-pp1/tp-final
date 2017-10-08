@@ -383,7 +383,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     }*/
 @Override
 public String toString() {
-	return  direccion.getCalle()+" "+direccion.getNro();
+	return  direccion.getCalle()+" N°"+direccion.getNro() + "," + direccion.getLocalidad();
 }
 
 

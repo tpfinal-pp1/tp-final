@@ -101,20 +101,21 @@ public abstract class PersonaFormWindow extends Window {
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
         
-        binderPersona.forField(nombre).withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
         		).bind(Persona::getNombre,Persona::setNombre);
         
-        binderPersona.forField(apellido).withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
+        binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("No se pueden ingresar numeros","[^0-9]+")
         		).bind(Persona::getApellido,Persona::setApellido);
 
-        binderPersona.forField(DNI).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
+        binderPersona.forField(DNI).asRequired("Ingrese el DNI").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         		).bind(Persona::getDNI,Persona::setDNI);
         
-        binderPersona.forField(telefono).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        binderPersona.forField(telefono).asRequired("Ingrese al menos un teléfono").withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
         		).bind(Persona::getTelefono,Persona::setTelefono);
         
-        binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
-        		).bind(Persona::getTelefono2,Persona::setTelefono2);
+        binderPersona.forField(telefono2).withNullRepresentation("")
+        .withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+"))
+        .bind(Persona::getTelefono2,Persona::setTelefono2);
         
         binderPersona.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido!"

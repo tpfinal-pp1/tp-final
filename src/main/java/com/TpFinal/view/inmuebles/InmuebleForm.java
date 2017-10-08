@@ -8,16 +8,13 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.persona.RolPersona;
 import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
-import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.persona.PersonaFormWindow;
-import com.google.common.util.concurrent.Service;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
@@ -28,17 +25,6 @@ import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.io.File;
-import java.util.List;
-
-/* Create custom UI Components.
- *
- * Create your own Vaadin components by inheritance and composition.
- * This is a form component inherited from VerticalLayout. Use
- * Use BeanFieldGroup to binding data fields from DTO to UI fields.
- * Similarly named field by naming convention or customized
- * with @PropertyId annotation.
- */
 @SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
     private InmuebleService inmbService = new InmuebleService();
@@ -47,7 +33,6 @@ public class InmuebleForm extends FormLayout {
 
     // Acciones
     private Button save = new Button("Guardar");
-    private Button test = new Button("Test");
     private Button delete = new Button("Eliminar");
 
     // TabPrincipal
@@ -98,7 +83,6 @@ public class InmuebleForm extends FormLayout {
     private void configureComponents() {
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
-	test.addClickListener(e -> this.test());
 	delete.addClickListener(e -> this.delete());
 
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
@@ -163,8 +147,6 @@ public class InmuebleForm extends FormLayout {
 
     private void binding() {
 
-	// binderInmueble.forField(calle).bind(Dire,Inmueble::setaEstrenar);
-
 	binderInmueble.forField(this.aEstrenar)
 		.bind(Inmueble::getaEstrenar, Inmueble::setaEstrenar);
 
@@ -217,12 +199,6 @@ public class InmuebleForm extends FormLayout {
 		.bind(inmueble -> inmueble.getDireccion().getCalle(),
 			(inmueble, calle) -> inmueble.getDireccion().setCalle(calle));
 
-	/*
-	 * binderInmueble.forField(this.localidades).bind(inmueble ->
-	 * inmueble.getDireccion() ,(inmueble,calle) ->
-	 * inmueble.getDireccion().setCalle(calle));
-	 */
-	// XXX
 	binderInmueble.forField(this.localidades).bind(inmueble -> {
 	    Direccion dir = inmueble.getDireccion();
 	    return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
@@ -231,13 +207,15 @@ public class InmuebleForm extends FormLayout {
 		(inmueble, localidad) -> {
 		    if (inmueble.getDireccion() == null)
 			inmueble.setDireccion(new Direccion());
-		    inmueble.getDireccion().setLocalidad(localidad.getNombre());
-		    inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
-		    inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
+		    if (localidad != null) {
+			inmueble.getDireccion().setLocalidad(localidad.getNombre());
+			inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
+			inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
+		    }
 		});
 
-	
-	binderInmueble.forField(this.comboPropietario)
+	binderInmueble.forField(this.comboPropietario).asRequired(
+		"Debe seleccionar o cargar un propietario del inmueble!")
 		.withNullRepresentation(new Persona())
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
 
@@ -258,18 +236,20 @@ public class InmuebleForm extends FormLayout {
 
     }
 
-    // XXX
     private Setter<Inmueble, Persona> setPropietario() {
 	return (inmueble, persona) -> {
-	    Propietario rolP;
-	    if (persona.contiene(Rol.Propietario) == false) {
-		persona.addRol(Rol.Propietario);
+	    if (persona != null) {
+		Propietario rolP;
+		if (persona.contiene(Rol.Propietario) == false) {
+		    persona.addRol(Rol.Propietario);
+		}
+		rolP = (Propietario) persona.getRol(Rol.Propietario);
+		rolP.addInmueble(inmueble);
+		rolP.setPersona(persona);
+		inmueble.setPropietario(rolP);
 	    }
-	    rolP = (Propietario) persona.getRol(Rol.Propietario);
-	    rolP.addInmueble(inmueble);
-	    rolP.setPersona(persona);
-	    inmueble.setPropietario(rolP);
 	};
+
     }
 
     private void buildLayout() {
@@ -315,7 +295,7 @@ public class InmuebleForm extends FormLayout {
 	tabsheet.addTab(principal, "Datos Principales");
 	tabsheet.addTab(caracteristicas1, "Características");
 
-	HorizontalLayout actions = new HorizontalLayout(save, test, delete);
+	HorizontalLayout actions = new HorizontalLayout(save, delete);
 	addComponents(tabsheet, actions);
 	actions.setSpacing(true);
 
@@ -353,47 +333,21 @@ public class InmuebleForm extends FormLayout {
 
     }
 
-    private void test() {
-	// nombre.setValue(DummyDataGenerator.randomFirstName());
-	// apellido.setValue(DummyDataGenerator.randomLastName());
-	// mail.setValue(nombre.getValue() + "@" + apellido.getValue() + ".com");
-	// DNI.setValue(DummyDataGenerator.randomNumber(8));
-	// telefono.setValue(DummyDataGenerator.randomPhoneNumber());
-	// telefono2.setValue(DummyDataGenerator.randomPhoneNumber());
-	// String info = DummyDataGenerator.randomText(80);
-	// if (info.length() > 255) {
-	// info = info.substring(0, 255);
-	//
-	// }
-	// infoAdicional.setValue(info);
-	//
-	// save();
-	//
-    }
-
     private void save() {
 
 	boolean success = false;
 	try {
 	    binderInmueble.writeBean(inmueble);
-	    inmueble.getPropietario().addInmueble(inmueble);
-	    System.out.println("guardando persona");
-	    if (inmueble.getPropietario() == null) {
-		System.out.println("El Propietario es nulo.");
-	    }
-	    if (inmueble.getPropietario().getPersona() == null) {
-		System.out.println("La persona es nula.");
-	    }
-	    personaService.saveOrUpdate(inmueble.getPropietario().getPersona());
-
-	    System.out.println("guardando Inmueble");
-	    inmbService.saveOrUpdate(inmueble);
-	    success = true;
-
+	    if (inmueble.getPropietario().getPersona() != null) 
+		success = inmbService.save(inmueble);
+		if (success)
+		    getABMView().showSuccessNotification("Inmuble Guardado");
+		else
+		    getABMView().showSuccessNotification("No se han realizado modificaciones");
+	    
 	} catch (ValidationException e) {
 	    e.printStackTrace();
 	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-	    // Notification.show("Error: "+e.getCause());
 	    return;
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -404,9 +358,7 @@ public class InmuebleForm extends FormLayout {
 	setVisible(false);
 	getABMView().setComponentsVisible(true);
 
-	if (success)
-	    getABMView().showSuccessNotification("Guardado: " + inmueble.getDireccion().toString() + " de " +
-		    inmueble.getPropietario().toString());
+	
 
     }
 

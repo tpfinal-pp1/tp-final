@@ -119,7 +119,7 @@ public class ContratoAlquilerForm extends FormLayout {
 			tfPropietario.setValue("No seleccionado");
 		    } else {
 			Persona propietario = inmueble.getPropietario().getPersona();
-			tfPropietario.setValue(propietario.getNombre());
+			tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
 			contratoAlquiler.setInmueble(inmueble);
 			contratoAlquiler.setPropietario(propietario);
 			;
@@ -136,14 +136,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		    if (inquilino != null) {
 			if (inquilino.getRol(Rol.Inquilino) != null) {
 			    contratoAlquiler.setInquilinoContrato(inquilino.getInquilino());
-			}
-			else {
+			} else {
 			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
 				    .setPersona(inquilino).build();
-			    System.out.println("vinculando entidades");			    
-			    System.out.println("inquilino:" +i);
-			    System.out.println("set:"+i.getContratos());
-			    System.out.println("contrato:" +contratoAlquiler);
 			    i.getContratos().add(contratoAlquiler);
 			    inquilino.addRol(i);
 			}
@@ -191,9 +186,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	binderContratoAlquiler.forField(this.cbPActualizacion).withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoIncrementoCuota, ContratoAlquiler::setTipoIncrementoCuota);
 
-	
 	binderContratoAlquiler.forField(rbgTipoMoneda).bind("moneda");
-
 
 	binderContratoAlquiler.forField(this.stIncremento).withNullRepresentation(null)
 		.bind(ContratoAlquiler::getIntervaloActualizacion, ContratoAlquiler::setIntervaloActualizacion);
@@ -290,11 +283,10 @@ public class ContratoAlquilerForm extends FormLayout {
     public void setContratoAlquiler(ContratoAlquiler ContratoAlquiler) {
 
 	if (ContratoAlquiler != null) {
-	this.contratoAlquiler = ContratoAlquiler;
-	binderContratoAlquiler.readBean(ContratoAlquiler);
-	delete.setVisible(ContratoAlquiler.getId() != null);
-	}
-	else
+	    this.contratoAlquiler = ContratoAlquiler;
+	    binderContratoAlquiler.readBean(ContratoAlquiler);
+	    delete.setVisible(ContratoAlquiler.getId() != null);
+	} else
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 
 	setVisible(true);
