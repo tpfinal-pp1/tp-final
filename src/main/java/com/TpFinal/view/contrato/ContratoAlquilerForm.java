@@ -21,7 +21,6 @@ import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
-import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
@@ -29,7 +28,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.risto.stepper.IntStepper;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -70,10 +68,10 @@ public class ContratoAlquilerForm extends FormLayout {
     TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio");
     ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>("Tipo Interes");
     ComboBox<DuracionContrato> cbDuracionContrato = new ComboBox<>("Duración");
-    IntStepper stIncremento = new IntStepper("Frecuencia de Incremento (meses)");
+    IntStepper stIncremento = new IntStepper("");
 
-    TextField tfPActualizacion = new TextField("Aumento por Actualización");
-    ComboBox<TipoInteres> cbPActualizacion = new ComboBox<>("Tipo Interes");
+    TextField tfPActualizacion = new TextField("");
+    ComboBox<TipoInteres> cbtipointeres = new ComboBox<>("Tipo Interes");
     TextField tfValorInicial = new TextField("Valor Inicial $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
 
@@ -101,7 +99,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	cbInmuebles.setItems(inmuebleService.readAll());
 	cbInquilino.setItems(personaService.readAll());
 	cbInteresFueraDeTermino.setItems(TipoInteres.toList());
-	cbPActualizacion.setItems(TipoInteres.toList());
+	cbtipointeres.setItems(TipoInteres.toList());
 
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
@@ -183,7 +181,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino).withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoInteresPunitorio, ContratoAlquiler::setTipoInteresPunitorio);
 
-	binderContratoAlquiler.forField(this.cbPActualizacion).withNullRepresentation(null)
+	binderContratoAlquiler.forField(this.cbtipointeres).withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoIncrementoCuota, ContratoAlquiler::setTipoIncrementoCuota);
 
 	binderContratoAlquiler.forField(rbgTipoMoneda).bind("moneda");
@@ -199,7 +197,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(contrato -> {
 		    if (contrato.getDocumento() != null)
 			return "Documento Cargado";
-		    return "Documento no Cargado";
+		    return "Documento No Cargado";
 		}, (contrato, text) -> {
 		});
 
@@ -228,10 +226,13 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void buildLayout() {
-	setSizeFull();
-	setMargin(true);
 
-	tabSheet = new TabSheet();
+	//setSizeFull();
+//	setMargin(true);
+		stIncremento.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+
+
+				tabSheet = new TabSheet();
 
 	BlueLabel seccionDoc = new BlueLabel("Documento Word");
 	//
@@ -247,7 +248,17 @@ public class ContratoAlquilerForm extends FormLayout {
 	// TODO setear el step como divisor de la duracion.
 	stIncremento.setStepAmount(1);
 	stIncremento.setWidth("77%");
-	rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+	if (!this.addressbookView.checkIfOnMobile()) {
+		rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+		stIncremento.setCaption("Frecuencia de Incremento(meses)");
+		tfPActualizacion.setCaption("Aumento por Actualización");
+	}
+	else{
+		fechaCelebracion.setCaption("Fecha");
+		stIncremento.setCaption("Frecuencia");
+		tfPActualizacion.setCaption("Monto");
+		rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_SMALL);
+	}
 
 	HorizontalLayout documentoButtonsRow = new HorizontalLayout();
 	documentoButtonsRow.addComponents(btCargar, btDescargar);
@@ -260,13 +271,14 @@ public class ContratoAlquilerForm extends FormLayout {
 		tfDocumento,
 		documentoButtonsRow);
 
-	FormLayout condiciones = new FormLayout(tfDiaDePago, tfPagoFueraDeTermino, cbDuracionContrato,
-		stIncremento, tfPActualizacion, cbPActualizacion, tfValorInicial, rbgTipoMoneda);
-
+	FormLayout condiciones = new FormLayout(cbDuracionContrato,tfDiaDePago, tfPagoFueraDeTermino, cbtipointeres ,new BlueLabel("Monto e Incremento"),
+		stIncremento, tfPActualizacion, tfValorInicial, rbgTipoMoneda);
+	condiciones.setMargin(true);
+	condiciones.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	condiciones.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-	tabSheet.addTab(principal, "Principal");
+	tabSheet.addTab(principal, "Alquiler");
 	tabSheet.addTab(condiciones, "Condiciones");
 
 	addComponent(tabSheet);

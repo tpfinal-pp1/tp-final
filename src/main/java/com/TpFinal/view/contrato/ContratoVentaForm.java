@@ -199,7 +199,6 @@ public class ContratoVentaForm extends FormLayout {
 
     private void buildLayout() {
         setSizeFull();
-        setMargin(true);
 
         tabSheet=new TabSheet();
 
@@ -214,7 +213,14 @@ public class ContratoVentaForm extends FormLayout {
         // fechaCelebracion.setWidth("100");
 
 
-        rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+        if (this.addressbookView.checkIfOnMobile())
+            rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_SMALL);
+
+        else
+            rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
+
+
 
         HorizontalLayout documentoButtonsRow = new HorizontalLayout();
         documentoButtonsRow.addComponents(btCargar, btDescargar);
@@ -223,13 +229,13 @@ public class ContratoVentaForm extends FormLayout {
         btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
         btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
-        BlueLabel otro = new  BlueLabel("Venta");
+
         BlueLabel info = new  BlueLabel("Información Adicional");
 
 
         HorizontalLayout hl = new HorizontalLayout( lblNombreVendedor);
         hl.setCaption("Vendedor");
-        FormLayout principal = new FormLayout(otro,cbInmuebles, cbComprador, fechaCelebracion, hl, tfPrecioDeVenta, seccionDoc,
+        FormLayout principal = new FormLayout(cbInmuebles, cbComprador, fechaCelebracion, hl, tfPrecioDeVenta, seccionDoc,
                 tfDocumento,
                 documentoButtonsRow, rbgTipoMoneda);
 
@@ -237,7 +243,7 @@ public class ContratoVentaForm extends FormLayout {
 
         fechaCelebracion.setWidth("100");
 
-        tabSheet.addTab(principal,"Principal");
+        tabSheet.addTab(principal,"Venta");
 
         addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
