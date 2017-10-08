@@ -6,18 +6,16 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.VentanaSelectora;
-import com.vaadin.data.Binder;
-import com.vaadin.data.ValidationException;
-import com.vaadin.data.validator.DateRangeValidator;
+import com.vaadin.data.*;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +37,8 @@ public class ContratoVentaForm extends FormLayout {
 
     // TabPrincipal
     ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
-    ComboBox<Persona> cbVendedor = new ComboBox<>("Vendedor");
+    Label lblVendedor = new Label("Vendedor");
+    Label lblNombreVendedor = new Label("No seleccionado");
     ComboBox<Persona> cbComprador = new ComboBox<>("Comprador");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
@@ -74,6 +73,8 @@ public class ContratoVentaForm extends FormLayout {
         configureComponents();
         binding();
         buildLayout();
+        updateComboInmuebles();
+        updateComboCompradores();
         addStyleName("v-scrollable");
     }
 
@@ -94,6 +95,16 @@ public class ContratoVentaForm extends FormLayout {
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
+        cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
+            @Override
+            public void valueChange(HasValue.ValueChangeEvent<Inmueble> valueChangeEvent) {
+                if(valueChangeEvent != null){
+                    Inmueble inmueble = (Inmueble) valueChangeEvent.getValue();
+                    Persona vendedor = inmueble.getPropietario().getPersona();
+                    lblNombreVendedor.setValue(vendedor.getNombre());
+                }
+            }
+        });
 
 
 
@@ -104,16 +115,58 @@ public class ContratoVentaForm extends FormLayout {
 
     private void binding(){
        //binder.bindInstanceFields(this); //Binding automatico
-        binderContratoVenta.forField(fechaCelebracion).withValidator(new DateRangeValidator(
-                "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
-        ).bind(Contrato::getFechaCelebracion,Contrato::setFechaCelebracion);
+        binderContratoVenta.forField(fechaCelebracion).bind(Contrato::getFechaCelebracion,Contrato::setFechaCelebracion);
+        //binderContratoVenta.forField(rbgTipoMoneda).bind("moneda");
+        binderContratoVenta.forField(cbInmuebles)
+                .withNullRepresentation(new Inmueble())
+                .bind(Contrato::getInmueble, Contrato::setInmueble);
+
+        Validator<Persona> personaValidator = new Validator<Persona>() {
+            @Override
+            public ValidationResult apply(Persona persona, ValueContext valueContext) {
+                ValidationResult result = new ValidationResult() {
+                    @Override
+                    public String getErrorMessage() {
+                        if(ContratoVenta.getVendedor().getId().equals(persona.getId()))
+                            return "Error: No se puede seleccionar al vendedor como comprador";
+                        return "No se detectaron errores";
+                    }
+
+                    @Override
+                    public boolean isError() {
+                        if(ContratoVenta.getVendedor().getId().equals(persona.getId()))
+                            return true;
+                        return false;
+                    }
+                };
+                return result;
+            }
+        };
+        binderContratoVenta.forField(cbComprador).withValidator(personaValidator)
+                .withNullRepresentation(new Persona())
+                .bind(contratoVenta -> contratoVenta.getVendedor(), (contratoVenta, persona) -> contratoVenta.setComprador(persona));
+
+        /*binderContratoVenta.forField(lblVendedor)
+                .withNullRepresentation("")
+                .bind( (inmueble) -> inmueble.getVendedor().getNombre(), (inmueble,nombre) -> inmueble.getVendedor().setNombre(nombre));
+        */
+
+       // binderContratoVenta.forField(tfDocumento).with;
 
 
 
 
+    }
 
 
+    private void updateComboInmuebles() {
+        InmuebleService is = new InmuebleService();
+        cbInmuebles.setItems(is.readAll());
+    }
 
+        private void updateComboCompradores() {
+        PersonaService ps = new PersonaService();
+        cbComprador.setItems(ps.readAll());
     }
 
     private void buildLayout() {
@@ -145,7 +198,10 @@ public class ContratoVentaForm extends FormLayout {
         BlueLabel otro = new  BlueLabel("Venta");
         BlueLabel info = new  BlueLabel("Información Adicional");
 
-        FormLayout principal = new FormLayout(otro,cbInmuebles, cbVendedor, cbComprador, fechaCelebracion, seccionDoc,
+        HorizontalLayout hl = new HorizontalLayout(lblVendedor, lblNombreVendedor);
+        hl.setSpacing(true);
+
+        FormLayout principal = new FormLayout(otro,cbInmuebles, lblVendedor, cbComprador, fechaCelebracion, hl,seccionDoc,
                 tfDocumento,
                 documentoButtonsRow, rbgTipoMoneda);
 
