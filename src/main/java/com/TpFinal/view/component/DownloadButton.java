@@ -1,6 +1,7 @@
 package com.TpFinal.view.component;
 
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
 import com.vaadin.ui.Button;
@@ -15,6 +16,7 @@ import java.io.InputStream;
 public class DownloadButton extends Button {
     StreamResource sr;
     FileDownloader fileDownloader;
+    @Deprecated
     public DownloadButton(String buttonName,StreamResource streamResource){
         super(buttonName);
         sr =streamResource;
@@ -22,12 +24,35 @@ public class DownloadButton extends Button {
         fileDownloader.extend(this);
         addStyleName(ValoTheme.BUTTON_TINY);
     }
+   /* @Deprecated
     public DownloadButton(String buttonName,String filename){
         super(buttonName);
         fileDownloader = new FileDownloader(fromPathtoSR(filename));
         fileDownloader.extend(this);
         addStyleName(ValoTheme.BUTTON_TINY);
+
+    }*/
+    public DownloadButton(){
+        super();
+        this.setIcon(VaadinIcons.DOWNLOAD);
+        this.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+
     }
+    public DownloadButton(String filename){
+        super();
+        fileDownloader = new FileDownloader(fromPathtoSR(filename));
+        fileDownloader.extend(this);
+        this.setIcon(VaadinIcons.DOWNLOAD);
+        this.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+
+    }
+    public void setFile(String filename){
+        fileDownloader = new FileDownloader(fromPathtoSR(filename));
+        fileDownloader.extend(this);
+    }
+
+
+
 
     private StreamResource fromPathtoSR(String filename) {
 

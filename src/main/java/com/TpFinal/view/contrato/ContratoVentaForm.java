@@ -8,8 +8,7 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
-import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.VentanaSelectora;
+import com.TpFinal.view.component.*;
 import com.vaadin.data.*;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.event.ShortcutAction;
@@ -17,6 +16,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -44,9 +44,21 @@ public class ContratoVentaForm extends FormLayout {
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
     // Documento
+    public String nombreArchivo="";
     TextField tfDocumento = new TextField();
-    Button btCargar = new Button(VaadinIcons.UPLOAD);
-    Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
+    File archivo;
+
+    DownloadButton btDescargar = new DownloadButton();
+    UploadButton btCargar = new UploadButton(new UploadReceiver() {
+        @Override
+        public void onSuccessfullUpload(String filename) {
+            nombreArchivo=filename;
+            tfDocumento.setValue(filename);
+            btDescargar.setFile(filename);
+            archivo=new File(this.getPathAndName());
+
+        }
+    });
 
     TextField tfPrecioDeVenta = new TextField("Valor de venta $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
@@ -235,9 +247,9 @@ public class ContratoVentaForm extends FormLayout {
 
         HorizontalLayout hl = new HorizontalLayout( lblNombreVendedor);
         hl.setCaption("Vendedor");
-        FormLayout principal = new FormLayout(cbInmuebles, cbComprador, fechaCelebracion, hl, tfPrecioDeVenta, seccionDoc,
+        FormLayout principal = new FormLayout(cbInmuebles, cbComprador, fechaCelebracion, hl, tfPrecioDeVenta, rbgTipoMoneda,seccionDoc,
                 tfDocumento,
-                documentoButtonsRow, rbgTipoMoneda);
+                documentoButtonsRow);
 
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
@@ -310,8 +322,13 @@ public class ContratoVentaForm extends FormLayout {
             if(ContratoVenta.getInmueble() != null && ContratoVenta.getComprador() != null && ContratoVenta.getVendedor() != null) {
                 if (ContratoVenta.getInmueble().getId() != null && ContratoVenta.getComprador().getId() != null && ContratoVenta.getVendedor().getId() != null) {
                     binderContratoVenta.writeBean(ContratoVenta);
-                    service.saveOrUpdate(ContratoVenta, null);
-                    success = true;
+                    if(!archivo.exists())
+                        service.saveOrUpdate(ContratoVenta, null);
+                    else{
+                        service.saveOrUpdate(ContratoVenta, archivo);
+
+                    }
+                        success = true;
                 }
             }
 

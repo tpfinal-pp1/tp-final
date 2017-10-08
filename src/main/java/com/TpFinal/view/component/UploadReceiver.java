@@ -1,6 +1,5 @@
 package com.TpFinal.view.component;
 
-import com.vaadin.ui.Upload;
 import com.vaadin.ui.Upload.Receiver;
 
 import java.io.File;
@@ -8,20 +7,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class UploadReceiver implements Receiver {
+public abstract class UploadReceiver implements Receiver {
     private static final long serialVersionUID = 2215337036540966711L;
     OutputStream outputFile = null;
 
-    private String fileName;
+    private String pathAndName;
     private String filePath;
 
 
     public UploadReceiver()
 
     {
+
         this.filePath="Files"+File.separator;
         File dir = new File("Files");
         dir.mkdir();
+
     }
     public UploadReceiver(String filePath)
 
@@ -32,20 +33,21 @@ public class UploadReceiver implements Receiver {
 
 
 
-
+    public abstract void onSuccessfullUpload(String filename);
 
     @Override
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
         File file=null;
         try {
-            this.setFileName(filePath+strFilename);
+            this.setPathAndName(filePath+strFilename);
 
-            file = new File(this.getFileName());
+            file = new File(this.getPathAndName());
 
             if(!file.exists()) {
                 file.createNewFile();
             }
             outputFile =  new FileOutputStream(file);
+            onSuccessfullUpload(strFilename);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,11 +65,11 @@ public class UploadReceiver implements Receiver {
         }
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getPathAndName() {
+        return pathAndName;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setPathAndName(String fileName) {
+        this.pathAndName = fileName;
     }
 }

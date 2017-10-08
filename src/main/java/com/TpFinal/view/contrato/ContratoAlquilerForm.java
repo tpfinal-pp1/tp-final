@@ -13,8 +13,7 @@ import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
-import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.VentanaSelectora;
+import com.TpFinal.view.component.*;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
@@ -57,11 +56,20 @@ public class ContratoAlquilerForm extends FormLayout {
     TextField tfPropietario = new TextField("Propietario");
     ComboBox<Persona> cbInquilino = new ComboBox<>("Inquilino");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
+    public String nombreArchivo="";
 
     // Documento
     TextField tfDocumento = new TextField();
-    Button btCargar = new Button(VaadinIcons.UPLOAD);
-    Button btDescargar = new Button(VaadinIcons.DOWNLOAD);
+    UploadButton btCargar = new UploadButton(new UploadReceiver() {
+		@Override
+		public void onSuccessfullUpload(String filename) {
+			nombreArchivo=filename;
+			tfDocumento.setValue(filename);
+			System.out.println(filename);
+			btDescargar.setFile(filename);
+		}
+	});
+    DownloadButton btDescargar = new DownloadButton();
 
     // Condiciones
     TextField tfDiaDePago = new TextField("Día de Pago");

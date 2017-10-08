@@ -118,10 +118,11 @@ public final class DashboardView extends Panel implements View{
         dashboardPanels.addComponent(buildNotes());
 
 
-        UploadButton uploadButton=new UploadButton("Subir",new UploadReceiver());
+     /*   UploadButton uploadButton=new UploadButton("Subir",new UploadReceiver());
         DownloadButton downloadButton=new DownloadButton("Descargar", "demo1.pdf");
         dashboardPanels.addComponent(uploadButton);
         dashboardPanels.addComponent(downloadButton);
+        */
 
         return dashboardPanels;
     }
