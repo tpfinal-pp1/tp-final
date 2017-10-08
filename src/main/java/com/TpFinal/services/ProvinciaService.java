@@ -70,8 +70,14 @@ public class ProvinciaService {
 
     }
 
-    public Object getProvinciaFromString(String provincia) {
-	// TODO Auto-generated method stub
+    public Provincia getProvinciaFromString(String provincia) {
+	for (Provincia p : provincias) {
+	    if (p.getNombre().equalsIgnoreCase(provincia)) {
+		System.out.println("Provincia Encontrada!");
+		return p;
+	    }
+	}
+	System.out.print("Provincia no Encontrada");
 	return null;
     }
 

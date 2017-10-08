@@ -187,19 +187,19 @@ public class InmuebleForm extends FormLayout {
 		.bind(inmueble -> inmueble.getDireccion().getCodPostal(),
 			(inmueble, cod) -> inmueble.getDireccion().setCodPostal(cod));
 
-	binderInmueble.forField(this.nro)
+	binderInmueble.forField(this.nro).asRequired("Ingrese la altura")
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
 		.bind(inmueble -> inmueble.getDireccion().getNro(),
 			(inmueble, nro) -> inmueble.getDireccion().setNro(nro));
 
-	binderInmueble.forField(this.calle)
+	binderInmueble.forField(this.calle).asRequired("Ingrese el nombre de la calle")
 		.withNullRepresentation("")
 		.bind(inmueble -> inmueble.getDireccion().getCalle(),
 			(inmueble, calle) -> inmueble.getDireccion().setCalle(calle));
 
-	binderInmueble.forField(this.localidades).bind(inmueble -> {
+	binderInmueble.forField(this.localidades).asRequired("Seleccione una localidad").bind(inmueble -> {
 	    Direccion dir = inmueble.getDireccion();
 	    return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
 		    .getProvincia()) : null;
@@ -211,6 +211,19 @@ public class InmuebleForm extends FormLayout {
 			inmueble.getDireccion().setLocalidad(localidad.getNombre());
 			inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
 			inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
+		    }
+		});
+
+	binderInmueble.forField(this.provincias).asRequired("Seleccione una provincia")
+	.bind(inmueble -> {
+	    Direccion dir = inmueble.getDireccion();
+	    return dir != null ? provinciaService.getProvinciaFromString(dir.getProvincia()) : null;
+	},
+		(inmueble, provincia) -> {
+		    if (inmueble.getDireccion() == null)
+			inmueble.setDireccion(new Direccion());
+		    if (provincia != null) {			
+			inmueble.getDireccion().setProvincia(provincia.getNombre());
 		    }
 		});
 
@@ -280,7 +293,7 @@ public class InmuebleForm extends FormLayout {
 	propietarioCombo.setExpandRatio(comboPropietario, 1f);
 
 	FormLayout principal = new FormLayout(propietarioCombo, clasesInmueble, tiposInmueble,
-		new BlueLabel("Direccion"), calle, nro, codPostal, localidades, provincias, buscarUbicacion);
+		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal, buscarUbicacion);
 
 	FormLayout caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
 		supCubierta, new BlueLabel("Adiconales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
@@ -338,13 +351,13 @@ public class InmuebleForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderInmueble.writeBean(inmueble);
-	    if (inmueble.getPropietario().getPersona() != null) 
+	    if (inmueble.getPropietario().getPersona() != null)
 		success = inmbService.save(inmueble);
-		if (success)
-		    getABMView().showSuccessNotification("Inmuble Guardado");
-		else
-		    getABMView().showSuccessNotification("No se han realizado modificaciones");
-	    
+	    if (success)
+		getABMView().showSuccessNotification("Inmuble Guardado");
+	    else
+		getABMView().showSuccessNotification("No se han realizado modificaciones");
+
 	} catch (ValidationException e) {
 	    e.printStackTrace();
 	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
@@ -357,8 +370,6 @@ public class InmuebleForm extends FormLayout {
 	abmView.getController().updateList();
 	setVisible(false);
 	getABMView().setComponentsVisible(true);
-
-	
 
     }
 
