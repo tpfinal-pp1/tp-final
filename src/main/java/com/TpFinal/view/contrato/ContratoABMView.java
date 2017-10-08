@@ -4,10 +4,15 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.inmueble.ClaseInmueble;
+import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.Direccion;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -24,6 +29,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -91,7 +97,37 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	nuevaVenta.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
-	    ContratoVentaForm.setContratoVenta(new ContratoVenta());
+	    ContratoVentaForm.setContratoVenta(new ContratoVenta.Builder()
+						.setPrecioVenta(new BigDecimal("0"))
+						.setFechaCelebracion(LocalDate.now())
+						.setPublicacionVenta(new PublicacionVenta())
+						.setDocumento(null)
+						.setInmueble(new Inmueble.Builder()
+								.setaEstrenar(false)
+								.setCantidadAmbientes(0)
+								.setCantidadCocheras(0)
+								.setCantidadDormitorios(0)
+								.setClaseInmueble(ClaseInmueble.OtroInmueble)
+								.setConAireAcondicionado(false)
+								.setConJardin(false)
+								.setConParilla(false)
+								.setConPileta(false)
+								.setDireccion(new Direccion.Builder()
+										.setCalle("")
+										.setCodPostal("")
+										.setCoordenada(new Coordenada())
+										.setLocalidad("")
+										.setNro(0)
+										.setPais("Argentina")
+										.setProvincia("")
+										.build())
+								.setPropietario(new Propietario.Builder()
+										.setPersona(new Persona())
+										.build())
+								.build())
+						.setEstadoRegistro(EstadoRegistro.ACTIVO)
+						.build()
+		);
 	});
 
 	nuevoAlquiler.addClickListener(e -> {
