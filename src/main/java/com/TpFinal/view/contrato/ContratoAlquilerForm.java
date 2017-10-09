@@ -344,17 +344,18 @@ public class ContratoAlquilerForm extends FormLayout {
 	try {
 		 if(contratoAlquiler.getInmueble() != null && contratoAlquiler.getInquilinoContrato() != null) {
              if (contratoAlquiler.getInmueble().getId() != null && contratoAlquiler.getInquilinoContrato().getId() != null && contratoAlquiler.getPropietario() != null) {
-                 binderContratoAlquiler.writeBean(contratoAlquiler);
+                 
                  //if(!archivo.exists()) TODO
                  if(!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Alquilado)
                 		 &&!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Vendido)) {
                 	 
                 	 contratoAlquiler.getInmueble().setEstadoInmueble(EstadoInmueble.Alquilado);
+                	 binderContratoAlquiler.writeBean(contratoAlquiler);
                 	 if(archivo.exists())
                 		 	service.saveOrUpdate(contratoAlquiler, archivo);
                 	 else
                 		 service.saveOrUpdate(contratoAlquiler, null);
-             	    	success = true;
+             	    success=true;
                  }
 	    
              }
