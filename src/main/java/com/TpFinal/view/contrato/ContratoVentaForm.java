@@ -182,11 +182,20 @@ public class ContratoVentaForm extends FormLayout {
 	 * (inmueble) -> inmueble.getVendedor().getNombre(), (inmueble,nombre) ->
 	 * inmueble.getVendedor().setNombre(nombre));
 	 */
-
+	
+	
 	binderContratoVenta.forField(tfPrecioDeVenta)
 		.withNullRepresentation("")
 		.withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precioVenta");
 
+	tfDocumento.setEnabled(false);
+	binderContratoVenta.forField(this.tfDocumento).withNullRepresentation("")
+	.bind(contrato -> {
+	    if (contrato.getDocumento() != null)
+		return "Documento Cargado";
+	    return "Documento No Cargado";
+	}, (contrato, text) -> {
+	});
     }
 
     private void updateComboInmuebles() {
