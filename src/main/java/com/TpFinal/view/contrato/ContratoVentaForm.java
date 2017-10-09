@@ -182,20 +182,19 @@ public class ContratoVentaForm extends FormLayout {
 	 * (inmueble) -> inmueble.getVendedor().getNombre(), (inmueble,nombre) ->
 	 * inmueble.getVendedor().setNombre(nombre));
 	 */
-	
-	
+
 	binderContratoVenta.forField(tfPrecioDeVenta)
 		.withNullRepresentation("")
 		.withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precioVenta");
 
 	tfDocumento.setEnabled(false);
 	binderContratoVenta.forField(this.tfDocumento).withNullRepresentation("")
-	.bind(contrato -> {
-	    if (contrato.getDocumento() != null)
-		return "Documento Cargado";
-	    return "Documento No Cargado";
-	}, (contrato, text) -> {
-	});
+		.bind(contrato -> {
+		    if (contrato.getDocumento() != null)
+			return "Documento Cargado";
+		    return "Documento No Cargado";
+		}, (contrato, text) -> {
+		});
     }
 
     private void updateComboInmuebles() {
@@ -314,11 +313,13 @@ public class ContratoVentaForm extends FormLayout {
 		    .getVendedor() != null) {
 		if (ContratoVenta.getInmueble().getId() != null && ContratoVenta.getComprador().getId() != null
 			&& ContratoVenta.getVendedor().getId() != null) {
-		    if (!archivo.exists())
-			service.saveOrUpdate(ContratoVenta, null);
-		    else {
-			service.saveOrUpdate(ContratoVenta, archivo);
+		    if (archivo != null) {
+			if (!archivo.exists())
+			    service.saveOrUpdate(ContratoVenta, null);
+			else {
+			    service.saveOrUpdate(ContratoVenta, archivo);
 
+			}
 		    }
 		    success = true;
 		}

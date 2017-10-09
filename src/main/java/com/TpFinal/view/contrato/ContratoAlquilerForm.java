@@ -156,12 +156,20 @@ public class ContratoAlquilerForm extends FormLayout {
 	    }
 	});
 
+	cbDuracionContrato.addValueChangeListener(e -> {
+	    if (e != null) {
+		DuracionContrato duracion = e.getValue();
+		if (duracion != null)
+		    stIncremento.setMaxValue(duracion.getDuracion());
+	    }
+	});
+
 	setVisible(false);
     }
 
     private void binding() {
 
-	binderContratoAlquiler.forField(this.fechaCelebracion)
+	binderContratoAlquiler.forField(this.fechaCelebracion).asRequired("Seleccione una fecha de celebración")
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
 
 	binderContratoAlquiler.forField(this.cbDuracionContrato).asRequired("Seleccione una Duración")
@@ -190,19 +198,19 @@ public class ContratoAlquilerForm extends FormLayout {
 			    i.getContratos().add(contrato);
 			    contrato.setInquilinoContrato(i);
 			});
-	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino).asRequired("Seleccione un Tipo de Interes")
+	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino)// .asRequired("Seleccione un Tipo de Interes")
 		.withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoInteresPunitorio, ContratoAlquiler::setTipoInteresPunitorio);
 
-	binderContratoAlquiler.forField(this.cbtipointeres).asRequired("Seleccione un Tipo de Interes")
+	binderContratoAlquiler.forField(this.cbtipointeres)// .asRequired("Seleccione un Tipo de Interes")
 		.withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoIncrementoCuota, ContratoAlquiler::setTipoIncrementoCuota);
 
-	binderContratoAlquiler.forField(rbgTipoMoneda).asRequired("Seleccione un Tipo de Moneda")
+	binderContratoAlquiler.forField(rbgTipoMoneda)// .asRequired("Seleccione un Tipo de Moneda")
 		.bind("moneda");
 
-	binderContratoAlquiler.forField(this.stIncremento).asRequired(
-		"Ingrese una frecuencia de incremento de la cuota")
+	binderContratoAlquiler.forField(this.stIncremento)// .asRequired("Ingrese una frecuencia de incremento de la
+							  // cuota")
 		.withNullRepresentation(null).withValidator(v -> {
 		    DuracionContrato d = this.cbDuracionContrato.getValue();
 		    if (d != null) {
@@ -251,24 +259,15 @@ public class ContratoAlquilerForm extends FormLayout {
 
     private void buildLayout() {
 
-	// setSizeFull();
-	// setMargin(true);
 	stIncremento.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
 	tabSheet = new TabSheet();
 
 	BlueLabel seccionDoc = new BlueLabel("Documento Word");
-	//
-	// TinyButton personas = new TinyButton("Ver Personas");
-	//
-	// personas.addClickListener(e -> getPersonaSelector());
-	//
-	// VerticalLayout Roles = new VerticalLayout(personas);
-	//
-	// fechaCelebracion.setWidth("100");
 
 	stIncremento.setValue(1);
-	// TODO setear el step como divisor de la duracion.
+	stIncremento.setMinValue(1);
+	stIncremento.setMaxValue(36);
 	stIncremento.setStepAmount(1);
 	stIncremento.setWidth("77%");
 	if (!this.addressbookView.checkIfOnMobile()) {
@@ -311,18 +310,20 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.setSpacing(false);
 	actions.setSpacing(true);
 
-	// addStyleName("v-scrollable");
-
     }
 
-    public void setContratoAlquiler(ContratoAlquiler ContratoAlquiler) {
+    public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
 
-	if (ContratoAlquiler != null) {
-	    this.contratoAlquiler = ContratoAlquiler;
-	    binderContratoAlquiler.readBean(ContratoAlquiler);
-	    delete.setVisible(ContratoAlquiler.getId() != null);
+	if (contratoAlquiler != null) {
+	    this.contratoAlquiler = contratoAlquiler;
+	    binderContratoAlquiler.readBean(contratoAlquiler);
+	    delete.setVisible(contratoAlquiler.getId() != null);
+	    if (contratoAlquiler.getDuracionContrato() != null) {
+		stIncremento.setMaxValue(contratoAlquiler.getDuracionContrato().getDuracion());
+	    }
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
+	    stIncremento.setValue(1);
 	    delete.setVisible(false);
 	}
 
@@ -347,41 +348,28 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	boolean success = false;
 	try {
-	    if (contratoAlquiler.getInmueble() != null && contratoAlquiler.getInquilinoContrato() != null) {
-		if (contratoAlquiler.getInmueble().getId() != null && contratoAlquiler.getInquilinoContrato()
-			.getId() != null && contratoAlquiler.getPropietario() != null) {
-		    binderContratoAlquiler.writeBean(contratoAlquiler);
-		    // if(!archivo.exists()) TODO
-		    if (!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Alquilado)
-			    && !contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Vendido)) {
-
-			contratoAlquiler.getInmueble().setEstadoInmueble(EstadoInmueble.Alquilado);
-			service.saveOrUpdate(contratoAlquiler, null);
-			success = true;
-		    }
-
-		}
-	    }
-	    if (!success) {
-		Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-		return;
-	    }
-
+	    binderContratoAlquiler.writeBean(contratoAlquiler);
+	    service.saveOrUpdate(contratoAlquiler, null);
+	    success = true;
 	} catch (ValidationException e) {
 	    Notification.show("Errores de validación, porfavor revise los campos e intente de nuevo");
-	    e.printStackTrace();
+	    // e.printStackTrace();
 	    return;
 	} catch (Exception e) {
-	    e.printStackTrace();
+	    // e.printStackTrace();
 	    Notification.show("Error: " + e.toString());
 	}
 
 	addressbookView.updateList();
+
 	setVisible(false);
 	getAddressbookView().setComponentsVisible(true);
 
 	if (success)
 	    getAddressbookView().showSuccessNotification("Guardado");
+	else {
+	    getAddressbookView().showErrorNotification("No se realizaron cambios");
+	}
 
     }
 
