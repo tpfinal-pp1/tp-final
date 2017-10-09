@@ -319,9 +319,6 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.setSpacing(false);
 	actions.setSpacing(true);
 
-	btDescargar.addClickListener(event -> {
-	    btDescargar.descargar(contratoAlquiler, "contrato.doc");
-	});
 
     }
 
