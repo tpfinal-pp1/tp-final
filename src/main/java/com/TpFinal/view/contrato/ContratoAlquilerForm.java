@@ -338,7 +338,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		 if(contratoAlquiler.getInmueble() != null && contratoAlquiler.getInquilinoContrato() != null) {
              if (contratoAlquiler.getInmueble().getId() != null && contratoAlquiler.getInquilinoContrato().getId() != null && contratoAlquiler.getPropietario() != null) {
                  binderContratoAlquiler.writeBean(contratoAlquiler);
-                 //if(!archivo.exists())
+                 //if(!archivo.exists()) TODO
                  if(!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Alquilado)
                 		 &&!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Vendido)) {
                 	 
