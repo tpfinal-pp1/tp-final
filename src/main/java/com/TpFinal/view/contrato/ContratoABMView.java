@@ -131,7 +131,9 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	nuevoAlquiler.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
+	    ContratoAlquilerForm.clearFields();
 	    ContratoAlquilerForm.setContratoAlquiler(null);
+	   
 	});
 
 	setearColumnas();
@@ -142,6 +144,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	Responsive.makeResponsive(this);
 	grid.asSingleSelect().addValueChangeListener(event -> {
 	    if (event.getValue() == null) {
+		if (ContratoVentaForm.isVisible() || ContratoAlquilerForm.isVisible())
+		    setComponentsVisible(true);
 		ContratoVentaForm.setVisible(false);
 		ContratoAlquilerForm.setVisible(false);
 	    } else {
@@ -169,7 +173,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void setearColumnas() {
-	//grid.removeAllColumns();
+	// grid.removeAllColumns();
 
 	contratos = service.findAll(filter.getValue());
 
@@ -237,8 +241,9 @@ public class ContratoABMView extends DefaultLayout implements View {
 	nuevaVenta.setVisible(b);
 	nuevoAlquiler.setVisible(b);
 	filter.setVisible(b);
-	if(checkIfOnMobile()){
-			clearFilterTextBtn.setVisible(!b);}
+	if (checkIfOnMobile()) {
+	    clearFilterTextBtn.setVisible(!b);
+	}
 	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
@@ -247,42 +252,40 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private void buildLayout() {
 
-		CssLayout filtering = new CssLayout();
+	CssLayout filtering = new CssLayout();
 
-		nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
-		if(checkIfOnMobile()) {
+	if (checkIfOnMobile()) {
 
-			//    layout.setSpacing(false);
-			//  layout.setResponsive(true);
-			filter.setSizeUndefined();
-			//  Responsive.makeResponsive(layout);
-			//filter.setWidth("58%");
-			nuevaVenta.setCaption("Venta");
-			nuevoAlquiler.setCaption("Alquiler");
-			//  nuevaVenta.addStyleName(ValoTheme.BUTTON_TINY);
-			//   nuevoAlquiler.addStyleName(ValoTheme.BUTTON_TINY);
+	    // layout.setSpacing(false);
+	    // layout.setResponsive(true);
+	    filter.setSizeUndefined();
+	    // Responsive.makeResponsive(layout);
+	    // filter.setWidth("58%");
+	    nuevaVenta.setCaption("Venta");
+	    nuevoAlquiler.setCaption("Alquiler");
+	    // nuevaVenta.addStyleName(ValoTheme.BUTTON_TINY);
+	    // nuevoAlquiler.addStyleName(ValoTheme.BUTTON_TINY);
 
-			//  layout.setMargin(false);
-			//    layout.setSizeUndefined();
-			filtering.addComponents(filter, clearFilterTextBtn,nuevaVenta,nuevoAlquiler);
-			clearFilterTextBtn.setVisible(false);
+	    // layout.setMargin(false);
+	    // layout.setSizeUndefined();
+	    filtering.addComponents(filter, clearFilterTextBtn, nuevaVenta, nuevoAlquiler);
+	    clearFilterTextBtn.setVisible(false);
 
-		}
-		else {
-			HorizontalLayout layout=new HorizontalLayout(nuevaVenta,nuevoAlquiler);
-			filtering.addComponents(filter, clearFilterTextBtn,layout);
+	} else {
+	    HorizontalLayout layout = new HorizontalLayout(nuevaVenta, nuevoAlquiler);
+	    filtering.addComponents(filter, clearFilterTextBtn, layout);
 
-		}
+	}
 
-
-		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		buildToolbar("Contratos",filtering);
-		grid.setSizeFull();
-		mainLayout = new HorizontalLayout(grid, ContratoVentaForm,ContratoAlquilerForm);
-		mainLayout.setSizeFull();
-		addComponent(mainLayout);
-		this.setExpandRatio(mainLayout, 1);
+	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	buildToolbar("Contratos", filtering);
+	grid.setSizeFull();
+	mainLayout = new HorizontalLayout(grid, ContratoVentaForm, ContratoAlquilerForm);
+	mainLayout.setSizeFull();
+	addComponent(mainLayout);
+	this.setExpandRatio(mainLayout, 1);
 
     }
 
