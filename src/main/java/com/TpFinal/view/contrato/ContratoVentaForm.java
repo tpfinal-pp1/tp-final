@@ -53,8 +53,8 @@ public class ContratoVentaForm extends FormLayout {
         @Override
         public void onSuccessfullUpload(String filename) {
             nombreArchivo=filename;
-            tfDocumento.setValue(filename);
-            //btDescargar.setFile(filename);
+            tfDocumento.setValue("Documento cargado");
+            btDescargar.setFile(filename);
             archivo=new File(this.getPathAndName());
 
         }

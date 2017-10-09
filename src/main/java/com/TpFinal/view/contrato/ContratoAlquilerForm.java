@@ -66,8 +66,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		@Override
 		public void onSuccessfullUpload(String filename) {
 			nombreArchivo=filename;
-			tfDocumento.setValue(filename);
-			System.out.println(filename);
+			tfDocumento.setValue("Documento cargado");
 			btDescargar.setFile(filename);
 		}
 	});
@@ -207,6 +206,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(contrato -> {
 		    if (contrato.getDocumento() != null)
 			return "Documento Cargado";
+		    else
 		    return "Documento No Cargado";
 		}, (contrato, text) -> {
 		});
