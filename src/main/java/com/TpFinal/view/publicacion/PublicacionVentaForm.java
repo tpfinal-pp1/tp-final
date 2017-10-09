@@ -142,11 +142,15 @@ public class PublicacionVentaForm extends FormLayout {
 	tabSheet.addTab(principal, "Venta");
 	// tabSheet.addTab(adicional,"Contrato");
 
-	addComponent(tabSheet);
-	addComponent(mainLayout);
-	HorizontalLayout actions = new HorizontalLayout(save, delete);
-	addComponent(actions);
-	actions.setSpacing(true);
+
+
+        tabSheet.addTab(principal,"Venta");
+
+        addComponent(tabSheet);
+        HorizontalLayout actions = new HorizontalLayout(save,delete);
+        addComponent(actions);
+        actions.setSpacing(true);
+
 
     }
 

@@ -70,6 +70,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	buildLayout();
 	configureComponents();
 
+
     }
 
     private void configureComponents() {
