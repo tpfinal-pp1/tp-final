@@ -100,12 +100,12 @@ public class InmuebleForm extends FormLayout {
 		    if (valueChangeEvent.getOldValue() != null) {
 				localidades.clear();
 				localidades.setItems(provincia.getLocalidades());
-		/*	if (inmueble.getDireccion().getProvincia() == provincia.getNombre()) {
+			if (inmueble.getDireccion().getProvincia() == provincia.getNombre()) {
 			    localidades.setSelectedItem(provinciaService.getLocalidadFromNombreAndProvincia(inmueble
 				    .getDireccion().getLocalidad(), inmueble.getDireccion().getProvincia()));
 			} else {
 			    localidades.setSelectedItem(provincia.getLocalidades().get(0));
-			}*/
+			}
 		    }
 		}
 
