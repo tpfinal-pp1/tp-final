@@ -19,7 +19,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class PersonaForm extends FormLayout {
     private Persona persona;
     Button save = new Button("Guardar");
-    Button test = new Button("Test");
+    //Button test = new Button("Test");
     Button delete = new Button("Eliminar");
     TextField nombre = new TextField("Nombre");
     TextField apellido = new TextField("Apellido");
@@ -66,7 +66,7 @@ public class PersonaForm extends FormLayout {
         calificacion.setSelectedItem(Calificacion.A);
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
-        test.addClickListener(e -> this.test());
+        //test.addClickListener(e -> this.test());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -148,8 +148,8 @@ public class PersonaForm extends FormLayout {
         tabSheet.addTab(adicional,"Adicional");
 
         addComponent(tabSheet);
-        HorizontalLayout actions = new HorizontalLayout(save,test,delete);
-
+        //HorizontalLayout actions = new HorizontalLayout(save,test,delete);
+        HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
         this.setSpacing(false);
         actions.setSpacing(true);
