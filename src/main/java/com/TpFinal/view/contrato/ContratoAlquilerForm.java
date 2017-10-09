@@ -293,6 +293,9 @@ public class ContratoAlquilerForm extends FormLayout {
 	tfDocumento.setCaption("Estado documento");
 	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+	btDescargar.addClickListener(event ->{
+		btDescargar.descargar(contratoAlquiler, "Contrato.doc");
+	});
 
 	FormLayout principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
 		tfDocumento,
