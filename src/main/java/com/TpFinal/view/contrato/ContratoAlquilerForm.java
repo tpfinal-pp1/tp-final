@@ -28,6 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.risto.stepper.IntStepper;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -59,7 +60,7 @@ public class ContratoAlquilerForm extends FormLayout {
     ComboBox<Persona> cbInquilino = new ComboBox<>("Inquilino");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
     public String nombreArchivo="";
-
+    File archivo;
     // Documento
     TextField tfDocumento = new TextField();
     UploadButton btCargar = new UploadButton(new UploadReceiver() {
@@ -68,6 +69,7 @@ public class ContratoAlquilerForm extends FormLayout {
 			nombreArchivo=filename;
 			tfDocumento.setValue("Documento cargado");
 			btDescargar.setFile(filename);
+			archivo=new File(this.getPathAndName());
 		}
 	});
     DownloadButton btDescargar = new DownloadButton();
@@ -90,6 +92,7 @@ public class ContratoAlquilerForm extends FormLayout {
     private ContratoABMView addressbookView;
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
     Persona person = new Persona(); // TODO ver donde se usa persona p.
+   
 
     TabSheet tabSheet;
 
@@ -347,7 +350,10 @@ public class ContratoAlquilerForm extends FormLayout {
                 		 &&!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Vendido)) {
                 	 
                 	 contratoAlquiler.getInmueble().setEstadoInmueble(EstadoInmueble.Alquilado);
-                	 service.saveOrUpdate(contratoAlquiler, null);
+                	 if(archivo.exists())
+                		 	service.saveOrUpdate(contratoAlquiler, archivo);
+                	 else
+                		 service.saveOrUpdate(contratoAlquiler, null);
              	    	success = true;
                  }
 	    
