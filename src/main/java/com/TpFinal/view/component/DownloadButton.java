@@ -1,16 +1,20 @@
 package com.TpFinal.view.component;
 
 
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.sql.Blob;
 
 
 public class DownloadButton extends Button {
@@ -51,7 +55,10 @@ public class DownloadButton extends Button {
         fileDownloader.extend(this);
     }
 
-
+    public void setFile(Contrato contrato, String filename) {
+    	 fileDownloader = new FileDownloader(fromPathtoSR(contrato,filename));
+         fileDownloader.extend(this);
+    }
 
 
     private StreamResource fromPathtoSR(String filename) {
@@ -68,5 +75,65 @@ public class DownloadButton extends Button {
             }
         }, filename);
 
+    }
+    
+    private StreamResource fromPathtoSR(Contrato contrato, String filename) {
+
+        return new StreamResource(new StreamResource.StreamSource() {
+            public InputStream getStream() {
+                InputStream is = null;
+                try {
+                	Blob docBlob=contrato.getDocumento();
+					byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
+					is = new ByteArrayInputStream(docBlobBytes);
+                } catch (Exception e) {
+                    System.err.println("No se ha encontrado el archivo a descargar");
+                }
+                return is;
+            }
+        }, filename);
+
+    }
+    
+//    public void setFile(Contrato contrato, String nombreArchivoConExtension) {
+//    	@SuppressWarnings("serial")
+//		StreamSource ss = new StreamSource() {
+//			@Override
+//			public InputStream getStream() {
+//				InputStream is=null;
+//				try {
+//					Blob docBlob=contrato.getDocumento();
+//					byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
+//					is = new ByteArrayInputStream(docBlobBytes);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//				return is;
+//			}
+//		};
+//    	StreamResource sr= new StreamResource(ss, nombreArchivoConExtension);
+//    	fileDownloader = new FileDownloader(sr);
+//    	fileDownloader.extend(this);
+//    }
+    
+    //Esto lo pasamos al FileDownloader de vaadin
+    public StreamResource getDocStreamResource(Contrato contrato, String nombreArchivoConExtension) {
+    	@SuppressWarnings("serial")
+		StreamSource ss = new StreamSource() {
+			@Override
+			public InputStream getStream() {
+				InputStream is=null;
+				try {
+					Blob docBlob=contrato.getDocumento();
+					byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
+					is = new ByteArrayInputStream(docBlobBytes);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return is;
+			}
+		};
+    	StreamResource sr= new StreamResource(ss, nombreArchivoConExtension);
+    	return sr;
     }
 }

@@ -54,7 +54,7 @@ public class ContratoVentaForm extends FormLayout {
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
 	    tfDocumento.setValue(filename);
-	    btDescargar.setFile(filename);
+	    // btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 
 	}
@@ -132,7 +132,10 @@ public class ContratoVentaForm extends FormLayout {
 	    }
 	});
 
+	btDescargar.setFile(ContratoVenta, "Screenshot_8.jpg");
+
 	setVisible(false);
+
     }
 
     private void binding() {
@@ -301,7 +304,7 @@ public class ContratoVentaForm extends FormLayout {
 	    if (ContratoVenta.getInmueble() != null && ContratoVenta.getComprador() != null && ContratoVenta
 		    .getVendedor() != null) {
 		if (ContratoVenta.getInmueble().getId() != null && ContratoVenta.getComprador().getId() != null
-			&& ContratoVenta.getVendedor().getId() != null) {		    
+			&& ContratoVenta.getVendedor().getId() != null) {
 		    if (!archivo.exists())
 			service.saveOrUpdate(ContratoVenta, null);
 		    else {
