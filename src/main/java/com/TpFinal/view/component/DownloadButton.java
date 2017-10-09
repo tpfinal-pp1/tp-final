@@ -62,9 +62,9 @@ public class DownloadButton extends Button {
     
     public void descargar(Contrato contrato, String filename) {
     	if(contrato.getDocumento()!=null) {
-    		 fileDownloader = new FileDownloader(fromPathtoSR(contrato,filename));
-             fileDownloader.extend(this);
-             fileDownloader.getFileDownloadResource();
+    		FileDownloader fileDownloader = new FileDownloader(fromPathtoSR(contrato,filename));
+            fileDownloader.extend(this);
+            fileDownloader.getFileDownloadResource();
     	}
     }
 

@@ -297,6 +297,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	addComponent(actions);
 	this.setSpacing(false);
 	actions.setSpacing(true);
+	
+	btDescargar.addClickListener(event ->{
+		btDescargar.descargar(contratoAlquiler, "contrato.doc");
+	});
 
 	// addStyleName("v-scrollable");
 
