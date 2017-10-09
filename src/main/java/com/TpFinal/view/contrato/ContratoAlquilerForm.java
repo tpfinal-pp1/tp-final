@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.DuracionContrato;
 import com.TpFinal.data.dto.contrato.TipoInteres;
+import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Calificacion;
@@ -334,9 +335,20 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	boolean success = false;
 	try {
-	    binderContratoAlquiler.writeBean(contratoAlquiler);
-	    service.saveOrUpdate(contratoAlquiler, null);
-	    success = true;
+		 if(contratoAlquiler.getInmueble() != null && contratoAlquiler.getInquilinoContrato() != null) {
+             if (contratoAlquiler.getInmueble().getId() != null && contratoAlquiler.getInquilinoContrato().getId() != null && contratoAlquiler.getPropietario() != null) {
+                 binderContratoAlquiler.writeBean(contratoAlquiler);
+                 //if(!archivo.exists())
+                 if(!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Alquilado)
+                		 &&!contratoAlquiler.getInmueble().getEstadoInmueble().equals(EstadoInmueble.Vendido)) {
+                	 
+                	 contratoAlquiler.getInmueble().setEstadoInmueble(EstadoInmueble.Alquilado);
+                	 service.saveOrUpdate(contratoAlquiler, null);
+             	    	success = true;
+                 }
+	    
+             }
+		 }
 
 	} catch (ValidationException e) {
 	    e.printStackTrace();
