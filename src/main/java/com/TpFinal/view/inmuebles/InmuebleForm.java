@@ -96,20 +96,13 @@ public class InmuebleForm extends FormLayout {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
 		Provincia provincia = valueChangeEvent.getValue();
-		if (provincia != null && !provincia.equals(provincias.getSelectedItem())) {
-		    if (valueChangeEvent.getOldValue() != null) {
-				localidades.clear();
-				localidades.setItems(provincia.getLocalidades());
-		/*	if (inmueble.getDireccion().getProvincia() == provincia.getNombre()) {
-			    localidades.setSelectedItem(provinciaService.getLocalidadFromNombreAndProvincia(inmueble
-				    .getDireccion().getLocalidad(), inmueble.getDireccion().getProvincia()));
-			} else {
-			    localidades.setSelectedItem(provincia.getLocalidades().get(0));
-			}*/
-		    }
+		if (provincia != null) {
+		    localidades.setItems(provincia.getLocalidades());
+		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
 		}
-
+		
 	    }
+
 	});
 
 	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
@@ -117,7 +110,6 @@ public class InmuebleForm extends FormLayout {
 	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
 
 		if (valueChangeEvent.getValue() != null) {
-		    provincias.setSelectedItem(valueChangeEvent.getValue().getProvincia());
 		    codPostal.setValue(valueChangeEvent.getValue().getCodigoPostal());
 		}
 
@@ -215,17 +207,17 @@ public class InmuebleForm extends FormLayout {
 		});
 
 	binderInmueble.forField(this.provincias).asRequired("Seleccione una provincia")
-	.bind(inmueble -> {
-	    Direccion dir = inmueble.getDireccion();
-	    return dir != null ? provinciaService.getProvinciaFromString(dir.getProvincia()) : null;
-	},
-		(inmueble, provincia) -> {
-		    if (inmueble.getDireccion() == null)
-			inmueble.setDireccion(new Direccion());
-		    if (provincia != null) {			
-			inmueble.getDireccion().setProvincia(provincia.getNombre());
-		    }
-		});
+		.bind(inmueble -> {
+		    Direccion dir = inmueble.getDireccion();
+		    return dir != null ? provinciaService.getProvinciaFromString(dir.getProvincia()) : null;
+		},
+			(inmueble, provincia) -> {
+			    if (inmueble.getDireccion() == null)
+				inmueble.setDireccion(new Direccion());
+			    if (provincia != null) {
+				inmueble.getDireccion().setProvincia(provincia.getNombre());
+			    }
+			});
 
 	binderInmueble.forField(this.comboPropietario).asRequired(
 		"Debe seleccionar o cargar un propietario del inmueble!")

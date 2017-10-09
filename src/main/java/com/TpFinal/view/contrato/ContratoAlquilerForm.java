@@ -296,6 +296,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.addClickListener(event ->{
 		btDescargar.descargar(contratoAlquiler, "Contrato.doc");
+		   getAddressbookView().showSuccessNotification("Archivo guardado en carpeta Descargas.");
 	});
 
 	FormLayout principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
