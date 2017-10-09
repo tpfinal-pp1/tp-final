@@ -111,12 +111,12 @@ public class PersonaForm extends FormLayout {
         tabSheet=new TabSheet();
 
 
-        BlueLabel Publicaciones = new  BlueLabel("Publicaciones");
+        BlueLabel Publicaciones = new  BlueLabel("Operaciones");
         BlueLabel info = new  BlueLabel("Información Adicional");
         BlueLabel contacto = new  BlueLabel("Contacto");
         
         TinyButton contratos=new TinyButton("Ver Contratos");
-        contacto.setEnabled(false);
+        contratos.setEnabled(false);
         TinyButton busquedas= new TinyButton("Ver Busquedas");
         busquedas.setEnabled(false);
 
@@ -160,15 +160,15 @@ public class PersonaForm extends FormLayout {
 
 
     public void setPersona(Persona persona) {
-        if(persona.getInquilino()!=null){
+   /*   if(persona.getInquilino()!=null){
             this.calificacion.setVisible(true);
             calificacion.setSelectedItem(Calificacion.A);
             this.calificacion.setSelectedItem(persona.getInquilino().getCalificacion());
         }
         else{
             this.calificacion.setVisible(false);
-        }
-
+        }*/
+        this.calificacion.setVisible(false);
         this.persona = persona;
         binderPersona.readBean(persona);
 
