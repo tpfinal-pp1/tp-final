@@ -273,7 +273,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	HorizontalLayout documentoButtonsRow = new HorizontalLayout();
 	documentoButtonsRow.addComponents(btCargar, btDescargar);
 	documentoButtonsRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	tfDocumento.setCaption("Nombre");
+	tfDocumento.setCaption("Estado documento");
 	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
