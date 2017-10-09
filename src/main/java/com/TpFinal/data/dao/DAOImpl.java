@@ -76,7 +76,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 			tx.commit();
 		} catch (HibernateException e) {
 			System.err.println("Error al leer");
-			e.printStackTrace();
+			//e.printStackTrace();
 		} finally {
 			session.close();
 		}

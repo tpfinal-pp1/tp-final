@@ -70,48 +70,55 @@ public class GeneradorDeDatos {
 	serviceProvincia = new ProvinciaService(modoLectura);
 
 	List<Provincia> provincias = serviceProvincia.getProvincias();
+	try {
+	if(daoInm.readAll().size()==0) {
+	    for (int i = 0; i < cantidad; i++) {
 
-	for (int i = 0; i < cantidad; i++) {
+		    Provincia provincia = provinciaRandom(provincias);
+		    Localidad localidad = localidadRandom(provincia);
+		    Inmueble inmueble = inmuebleRandom(provincia, localidad);
+		    Persona p = personaRandom();
+		    daoPer.create(p);
+		    Propietario prop = asignarRolPropietarioA(p);
 
-	    Provincia provincia = provinciaRandom(provincias);
-	    Localidad localidad = localidadRandom(provincia);
-	    Inmueble inmueble = inmuebleRandom(provincia, localidad);
-	    Persona p = personaRandom();
-	    daoPer.create(p);
-	    Propietario prop = asignarRolPropietarioA(p);
+		    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);
+		    PublicacionAlquiler pubAlquiler = publicacionAlquilerRandom(inmueble);
+		    Persona comprador = personaRandom();
+		    Persona inquilino = personaRandom();
+		    daoPer.saveOrUpdate(comprador);
+		    
+		    Inquilino inq = asignarRolInquilinoA(inquilino);
+		    daoPer.saveOrUpdate(inquilino);
 
-	    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);
-	    PublicacionAlquiler pubAlquiler = publicacionAlquilerRandom(inmueble);
-	    Persona comprador = personaRandom();
-	    Persona inquilino = personaRandom();
-	    daoPer.saveOrUpdate(comprador);
+		    pubVenta.setContratoVenta(contratoVentaDe(inmueble, pubVenta, comprador));
+		    
+		    
+		    daoPer.saveOrUpdate(p);
+		    daoInm.create(inmueble);
+		    inmueble.setPropietario(prop);
+		    daoInm.saveOrUpdate(inmueble);
+		    daoope.saveOrUpdate(pubVenta);
+		    daoope.saveOrUpdate(pubAlquiler);
+		    inmueble.addContrato(pubVenta.getContratoVenta());
+		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
+		    inmueble.addContrato(contratoAlquiler);
+		    daoContratos.saveOrUpdate(contratoAlquiler);
+		    daoInm.saveOrUpdate(inmueble);
+		    
+
+		}
+		System.out.println("Agregados\n"
+		+ daoInm.readAll().size() +" inmuebles.\n"
+		+ daoope.readAll().size() +" publicaciones.\n"
+		+ daoContratos.readAll().size() +" contratos.\n"
+		+ daoPer.readAll().size() +" personas.\n"
+		+ "a la base de datos.");
 	    
-	    Inquilino inq = asignarRolInquilinoA(inquilino);
-	    daoPer.saveOrUpdate(inquilino);
-
-	    pubVenta.setContratoVenta(contratoVentaDe(inmueble, pubVenta, comprador));
-	    
-	    
-	    daoPer.saveOrUpdate(p);
-	    daoInm.create(inmueble);
-	    inmueble.setPropietario(prop);
-	    daoInm.saveOrUpdate(inmueble);
-	    daoope.saveOrUpdate(pubVenta);
-	    daoope.saveOrUpdate(pubAlquiler);
-	    inmueble.addContrato(pubVenta.getContratoVenta());
-	    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
-	    inmueble.addContrato(contratoAlquiler);
-	    daoContratos.saveOrUpdate(contratoAlquiler);
-	    daoInm.saveOrUpdate(inmueble);
-	    
-
 	}
-	System.out.println("Agregados\n"
-	+ daoInm.readAll().size() +" inmuebles.\n"
-	+ daoope.readAll().size() +" publicaciones.\n"
-	+ daoContratos.readAll().size() +" contratos.\n"
-	+ daoPer.readAll().size() +" personas.\n"
-	+ "a la base de datos.");
+	} catch(Exception e){
+	    
+	}
+	
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {

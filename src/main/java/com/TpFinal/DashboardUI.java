@@ -46,6 +46,7 @@ public final class DashboardUI extends UI {
 
         @Override
         protected void init(final VaadinRequest request) {
+            
             GeneradorDeDatos.generarDatos(20);
             setLocale(Locale.forLanguageTag("es-AR"));
 
