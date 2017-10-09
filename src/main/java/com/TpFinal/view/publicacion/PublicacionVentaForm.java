@@ -60,7 +60,6 @@ public class PublicacionVentaForm extends FormLayout {
 
 
     public PublicacionVentaForm(PublicacionABMView addressbook) {
-        // setSizeUndefined();
         addressbookView=addressbook;
         configureComponents();
         binding();
@@ -69,16 +68,6 @@ public class PublicacionVentaForm extends FormLayout {
     }
 
     private void configureComponents() {
-        /*
-         * Highlight primary actions.
-         *
-         * With Vaadin built-in styles you can highlight the primary save button
-         *
-         * and give it a keyoard shortcut for a better UX.
-         */
-
-        //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(publicacionVenta.Sexo.values());
         inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
@@ -93,21 +82,27 @@ public class PublicacionVentaForm extends FormLayout {
 
 
     private void binding(){
-        //binder.bindInstanceFields(this); //Binding automatico
+     
         binderPublicacionVenta.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
         binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
 
-        binderPublicacionVenta.forField(moneda).bind("moneda"); //MAGIC//
-        binderPublicacionVenta.forField(precio).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precio");
-        visualizadorInmueble.setEnabled(false);
-        //LAMBDA rober-MAGIX
+        binderPublicacionVenta.forField(moneda).bind("moneda"); 
+        binderPublicacionVenta.forField(precio).asRequired("Debe Ingresar El precio de Venta")
+        .withConverter(new StringToBigDecimalConverter("Ingrese un numero"))
+        .bind("precio");
+       
+     
+        nombrePropietario.setEnabled(false);
         binderPublicacionVenta.forField(this.nombrePropietario)
+        	.asRequired("Debe Seleccionar un Inmueble")
                 .withNullRepresentation("")
                 .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().toString(),null);
-
+        
+        visualizadorInmueble.setEnabled(false);
         binderPublicacionVenta.forField(this.visualizadorInmueble)
+        	.asRequired("Debe Seleccionar un Inmueble")
                 .withNullRepresentation("")
                 .bind(publicacionVenta -> publicacionVenta.getInmueble().toString(),null);
 
