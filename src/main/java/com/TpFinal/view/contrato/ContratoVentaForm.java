@@ -134,8 +134,7 @@ public class ContratoVentaForm extends FormLayout {
 	});
 
 	btDescargar.addClickListener(event -> {
-	    btDescargar.descargar(ContratoVenta, "Contrato.doc");
-	    getAddressbookView().showSuccessNotification("Archivo guardado en carpeta Descargas.");
+	    btDescargar.descargar(ContratoVenta, "Contrato.doc");	
 	});
 
 	setVisible(false);

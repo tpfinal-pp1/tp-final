@@ -96,9 +96,11 @@ public class InmuebleForm extends FormLayout {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
 		Provincia provincia = valueChangeEvent.getValue();
+
 		if (provincia != null) {
 		    localidades.setItems(provincia.getLocalidades());
 		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
+
 		}
 		
 	    }
