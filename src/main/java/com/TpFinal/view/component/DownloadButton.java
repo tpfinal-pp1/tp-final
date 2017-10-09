@@ -93,7 +93,6 @@ public class DownloadButton extends Button {
     	StreamResource sr= new StreamResource(ss, nombreArchivoConExtension);
     	fileDownloader = new FileDownloader(sr);
     	fileDownloader.extend(this);
-    	
     }
     
     //Esto lo pasamos al FileDownloader de vaadin
