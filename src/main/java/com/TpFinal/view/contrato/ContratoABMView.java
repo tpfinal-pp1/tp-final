@@ -97,6 +97,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	nuevaVenta.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
+	    ContratoVentaForm.clearFields();
 	    ContratoVentaForm.setContratoVenta(new ContratoVenta.Builder()
 		    .setPrecioVenta(new BigDecimal("0"))
 		    .setFechaCelebracion(LocalDate.now())

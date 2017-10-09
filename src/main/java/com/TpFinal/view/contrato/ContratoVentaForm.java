@@ -312,21 +312,23 @@ public class ContratoVentaForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderContratoVenta.writeBean(ContratoVenta);
-	    if (ContratoVenta.getInmueble() != null && ContratoVenta.getComprador() != null && ContratoVenta
-		    .getVendedor() != null) {
-		if (ContratoVenta.getInmueble().getId() != null && ContratoVenta.getComprador().getId() != null
-			&& ContratoVenta.getVendedor().getId() != null) {
-		    if (archivo != null) {
-			if (!archivo.exists())
-			    service.saveOrUpdate(ContratoVenta, null);
-			else {
-			    service.saveOrUpdate(ContratoVenta, archivo);
+	    // if (ContratoVenta.getInmueble() != null && ContratoVenta.getComprador() !=
+	    // null && ContratoVenta
+	    // .getVendedor() != null) {
+	    // if (ContratoVenta.getInmueble().getId() != null &&
+	    // ContratoVenta.getComprador().getId() != null
+	    // && ContratoVenta.getVendedor().getId() != null) {
+	    if (archivo != null) {
+		if (!archivo.exists())
+		    service.saveOrUpdate(ContratoVenta, null);
+		else {
+		    service.saveOrUpdate(ContratoVenta, archivo);
 
-			}
-		    }
-		    success = true;
 		}
 	    }
+	    success = true;
+	    // }
+	    // }
 
 	} catch (ValidationException e) {
 	    e.printStackTrace();
@@ -390,6 +392,16 @@ public class ContratoVentaForm extends FormLayout {
 
 	};
 	personaSelector.getSelectionButton().addClickListener(e -> person = personaSelector.getObjeto());
+    }
+    
+    public void clearFields() {
+	this.cbComprador.clear();
+	this.cbInmuebles.clear();
+	this.fechaCelebracion.clear();
+	this.lblNombreVendedor.setCaption("");
+	this.rbgTipoMoneda.clear();
+	this.tfDocumento.clear();
+	this.tfPrecioDeVenta.clear();
     }
 
 }

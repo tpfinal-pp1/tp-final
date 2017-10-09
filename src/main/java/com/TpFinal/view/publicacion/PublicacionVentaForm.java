@@ -35,277 +35,262 @@ public class PublicacionVentaForm extends FormLayout {
     private PublicacionVenta publicacionVenta;
 
     Button save = new Button("Guardar");
-    //  Button test = new Button("Test");
+    // Button test = new Button("Test");
     Button delete = new Button("Eliminar");
     DateField fechaPublicacion = new DateField("Fecha publicacion");
-    RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
+    RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",
+	    EstadoPublicacion.toList());
     Button inmuebleSelector = new Button("");
     TextField nombrePropietario = new TextField();
 
     TextField precio = new TextField("Precio");
-    ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
+    ComboBox<TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
     // TODO una vez que este contrato ContratoVenta contratoVenta;
 
-    // private NativeSelect<publicacionVenta.Sexo> sexo = new NativeSelect<>("Sexo");
+    // private NativeSelect<publicacionVenta.Sexo> sexo = new
+    // NativeSelect<>("Sexo");
 
     PublicacionService service = new PublicacionService();
     private PublicacionABMView addressbookView;
     private Binder<PublicacionVenta> binderPublicacionVenta = new Binder<>(PublicacionVenta.class);
-    ComboBox <String> visualizadorInmueble= new ComboBox <String>("");
+    ComboBox<String> visualizadorInmueble = new ComboBox<String>("");
     TabSheet tabSheet;
-
 
     // Easily binding forms to beans and manage validation and buffering
 
-
     public PublicacionVentaForm(PublicacionABMView addressbook) {
-        addressbookView=addressbook;
-        configureComponents();
-        binding();
-        buildLayout();
-        addStyleName("v-scrollable");
+	addressbookView = addressbook;
+	configureComponents();
+	binding();
+	buildLayout();
+	addStyleName("v-scrollable");
     }
 
     private void configureComponents() {
-        inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
-        delete.setStyleName(ValoTheme.BUTTON_DANGER);
-        save.addClickListener(e -> this.save());
-        delete.addClickListener(e -> this.delete());
-        save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
+	delete.setStyleName(ValoTheme.BUTTON_DANGER);
+	save.addClickListener(e -> this.save());
+	delete.addClickListener(e -> this.delete());
+	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
-
-
-        setVisible(false);
+	setVisible(false);
     }
 
+    private void binding() {
 
-    private void binding(){
-     
-        binderPublicacionVenta.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
-        binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
-                "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
-        ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
+	binderPublicacionVenta.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,
+		Publicacion::setEstadoPublicacion);
+	binderPublicacionVenta.forField(fechaPublicacion).withValidator(new DateRangeValidator(
+		"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365))).bind(
+			Publicacion::getFechaPublicacion, Publicacion::setFechaPublicacion);
 
-        binderPublicacionVenta.forField(moneda).bind("moneda"); 
-        binderPublicacionVenta.forField(precio).asRequired("Debe Ingresar El precio de Venta")
-        .withConverter(new StringToBigDecimalConverter("Ingrese un numero"))
-        .bind("precio");
-       
-     
-        nombrePropietario.setEnabled(false);
-        binderPublicacionVenta.forField(this.nombrePropietario)
-        	.asRequired("Debe Seleccionar un Inmueble")
-                .withNullRepresentation("")
-                .bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().toString(),null);
-        
-        visualizadorInmueble.setEnabled(false);
-        binderPublicacionVenta.forField(this.visualizadorInmueble)
-        	.asRequired("Debe Seleccionar un Inmueble")
-                .withNullRepresentation("")
-                .bind(publicacionVenta -> publicacionVenta.getInmueble().toString(),null);
+	binderPublicacionVenta.forField(moneda).bind("moneda");
+	binderPublicacionVenta.forField(precio).asRequired("Debe Ingresar El precio de Venta")
+		.withConverter(new StringToBigDecimalConverter("Ingrese un numero"))
+		.bind("precio");
 
+	nombrePropietario.setEnabled(false);
+	binderPublicacionVenta.forField(this.nombrePropietario)
+		.asRequired("Debe Seleccionar un Inmueble")
+		.withNullRepresentation("")
+		.bind(publicacionVenta -> publicacionVenta.getInmueble().getPropietario().toString(), null);
 
-
-
-
+	visualizadorInmueble.setEnabled(false);
+	binderPublicacionVenta.forField(this.visualizadorInmueble)
+		.asRequired("Debe Seleccionar un Inmueble")
+		.withNullRepresentation("")
+		.bind(publicacionVenta -> publicacionVenta.getInmueble().toString(), null);
 
     }
 
     private void buildLayout() {
-        setMargin(false);
-        setSpacing(false);
+	setMargin(false);
+	setSpacing(false);
 
-        inmuebleSelector.setIcon(VaadinIcons.SEARCH);
-        visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-        inmuebleSelector.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-        inmuebleSelector.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-        HorizontalLayout hl = new HorizontalLayout();
-        hl.addComponents(visualizadorInmueble, inmuebleSelector);
-        hl.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        hl.setCaption("Inmueble");
-        hl.setExpandRatio(visualizadorInmueble, 1f);
-        visualizadorInmueble.setCaption(null);
+	inmuebleSelector.setIcon(VaadinIcons.SEARCH);
+	visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	inmuebleSelector.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+	inmuebleSelector.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+	HorizontalLayout hl = new HorizontalLayout();
+	hl.addComponents(visualizadorInmueble, inmuebleSelector);
+	hl.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	hl.setCaption("Inmueble");
+	hl.setExpandRatio(visualizadorInmueble, 1f);
+	visualizadorInmueble.setCaption(null);
 
+	moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	precio.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
 
-        moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-        precio.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	precio.setCaption("Precio");
+	moneda.setCaption("Moneda");
+	moneda.setEmptySelectionAllowed(false);
 
-        precio.setCaption("Precio");
-        moneda.setCaption("Moneda");
-        moneda.setEmptySelectionAllowed(false);
+	tabSheet = new TabSheet();
+	fechaPublicacion.setWidth("40%");
+	moneda.setWidth("30%");
+	nombrePropietario.setCaption("Propietario: ");
+	FormLayout principal = new FormLayout(fechaPublicacion, estadoPublicacion,
+		new BlueLabel("Inmueble"), hl, nombrePropietario, precio, moneda);
+	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-        tabSheet=new TabSheet();
-        fechaPublicacion.setWidth("40%");
-        moneda.setWidth("30%");
-        nombrePropietario.setCaption("Propietario: ");
-        FormLayout principal=new FormLayout(fechaPublicacion,estadoPublicacion,
-                new BlueLabel("Inmueble"),hl,nombrePropietario,precio,moneda
-        );
-        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	FormLayout adicional = new FormLayout();
+	adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	FormLayout mainLayout = new FormLayout(principal, adicional);
 
+	tabSheet.addTab(principal, "Venta");
+	// tabSheet.addTab(adicional,"Contrato");
 
-        FormLayout adicional=new FormLayout();
-        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        FormLayout mainLayout = new FormLayout(principal,adicional);
-
-
-
-        tabSheet.addTab(principal,"Venta");
-       // tabSheet.addTab(adicional,"Contrato");
-
-
-        addComponent(tabSheet);
-        addComponent(mainLayout);
-        HorizontalLayout actions = new HorizontalLayout(save,delete);
-        addComponent(actions);
-        actions.setSpacing(true);
-
+	addComponent(tabSheet);
+	addComponent(mainLayout);
+	HorizontalLayout actions = new HorizontalLayout(save, delete);
+	addComponent(actions);
+	actions.setSpacing(true);
 
     }
 
-    public void setPublicacionVenta(PublicacionVenta PublicacionVenta) {
+    public void setPublicacionVenta(PublicacionVenta publicacionVenta) {
 
-        this.publicacionVenta = PublicacionVenta;
-        binderPublicacionVenta.readBean(PublicacionVenta);
-        delete.setVisible(PublicacionVenta.getId()!=null);
+	this.publicacionVenta = publicacionVenta;
+	if (publicacionVenta != null) {
+	    binderPublicacionVenta.readBean(publicacionVenta);
+	    delete.setVisible(true);
+	} else {
+	    this.publicacionVenta = PublicacionService.INSTANCIA_VENTA;
+	    delete.setVisible(false);
+	}
 
-        setVisible(true);
+	setVisible(true);
 
-        getAddressbookView().setComponentsVisible(false);
-        if(getAddressbookView().isIsonMobile())
-            tabSheet.focus();
+	getAddressbookView().setComponentsVisible(false);
+	if (getAddressbookView().isIsonMobile())
+	    tabSheet.focus();
 
     }
-
-
 
     private void delete() {
-        service.delete(publicacionVenta);
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().showSuccessNotification("Borrado");
-        getAddressbookView().enableGrid();
-
-
-    }
-
-   /* private void test() {
-        nombre.setValue(DummyDataGenerator.randomFirstName());
-        apellido.setValue(DummyDataGenerator.randomLastName());
-        mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
-        DNI.setValue(DummyDataGenerator.randomNumber(8));
-        telefono.setValue(DummyDataGenerator.randomPhoneNumber());
-        telefono2.setValue(DummyDataGenerator.randomPhoneNumber());
-        String info=DummyDataGenerator.randomText(80);
-        if(info.length()>255){
-            info=info.substring(0,255);
-
-        }
-        infoAdicional.setValue(info);
-
-
-        save();
-
-    }*/
-
-    private void displayInmuebleSelector(){
-
-        VentanaSelectora<Inmueble> inmuebles= new VentanaSelectora<Inmueble>(this.publicacionVenta.getInmueble()) {
-            @Override
-            public void updateList() {
-                InmuebleService InmuebleService=
-                        new InmuebleService();
-                List<Inmueble> inmuebles = InmuebleService.readAll();
-                Collections.sort(inmuebles, new Comparator<Inmueble>() {
-
-                    @Override
-                    public int compare(Inmueble o1, Inmueble o2) {
-                        return (int) (o2.getPropietario().getPersona().getNombre().
-                                compareTo(o2.getPropietario().getPersona().getNombre()) );
-                    }
-                });
-                grid.setItems(inmuebles);
-
-            }
-
-            @Override
-            public void setGrid() {
-                grid=new Grid<Inmueble>(Inmueble.class);
-            }
-
-            @Override
-            public void seleccionado(Inmueble seleccion) {
-
-                try {
-                    binderPublicacionVenta.writeBean(publicacionVenta);
-                } catch (ValidationException e) {
-                    Notification.show("Error al guardar cambios");
-                    e.printStackTrace();
-                }
-                publicacionVenta.setInmueble(seleccion);
-                binderPublicacionVenta.readBean(publicacionVenta);
-
-            }
-
-
-        };
+	service.delete(publicacionVenta);
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
+	getAddressbookView().showSuccessNotification("Borrado");
+	getAddressbookView().enableGrid();
 
     }
 
+    /*
+     * private void test() { nombre.setValue(DummyDataGenerator.randomFirstName());
+     * apellido.setValue(DummyDataGenerator.randomLastName());
+     * mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
+     * DNI.setValue(DummyDataGenerator.randomNumber(8));
+     * telefono.setValue(DummyDataGenerator.randomPhoneNumber());
+     * telefono2.setValue(DummyDataGenerator.randomPhoneNumber()); String
+     * info=DummyDataGenerator.randomText(80); if(info.length()>255){
+     * info=info.substring(0,255);
+     * 
+     * } infoAdicional.setValue(info);
+     * 
+     * 
+     * save();
+     * 
+     * }
+     */
+
+    private void displayInmuebleSelector() {
+
+	VentanaSelectora<Inmueble> inmuebles = new VentanaSelectora<Inmueble>(this.publicacionVenta.getInmueble()) {
+	    @Override
+	    public void updateList() {
+		InmuebleService InmuebleService = new InmuebleService();
+		List<Inmueble> inmuebles = InmuebleService.readAll();
+		Collections.sort(inmuebles, new Comparator<Inmueble>() {
+
+		    @Override
+		    public int compare(Inmueble o1, Inmueble o2) {
+			return (int) (o2.getPropietario().getPersona().getNombre().compareTo(o2.getPropietario()
+				.getPersona().getNombre()));
+		    }
+		});
+		grid.setItems(inmuebles);
+
+	    }
+
+	    @Override
+	    public void setGrid() {
+		grid = new Grid<Inmueble>(Inmueble.class);
+	    }
+
+	    @Override
+	    public void seleccionado(Inmueble seleccion) {
+
+		try {
+		    binderPublicacionVenta.writeBean(publicacionVenta);
+		} catch (ValidationException e) {
+		    Notification.show("Error al guardar cambios");
+		    e.printStackTrace();
+		}
+		publicacionVenta.setInmueble(seleccion);
+		binderPublicacionVenta.readBean(publicacionVenta);
+
+	    }
+
+	};
+
+    }
 
     private void save() {
 
-        boolean success=false;
-        try {
+	boolean success = false;
+	try {
 
-            binderPublicacionVenta.writeBean(publicacionVenta);
-            service.save(publicacionVenta);
-            success = true;
+	    binderPublicacionVenta.writeBean(publicacionVenta);
+	    service.save(publicacionVenta);
+	    success = true;
 
+	} catch (ValidationException e) {
+	    e.printStackTrace();
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+	    // Notification.show("Error: "+e.getCause());
+	    return;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    Notification.show("Error: " + e.toString());
+	}
 
-        } catch (ValidationException e) {
-            e.printStackTrace();
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-            // Notification.show("Error: "+e.getCause());
-            return;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Notification.show("Error: "+e.toString());
-        }
+	addressbookView.updateList();
+	/*
+	 * String msg = String.format("Guardado '%s %s'.", publicacionVenta.getNombre(),
+	 * publicacionVenta.getApellido());* Notification.show(msg,
+	 * Type.TRAY_NOTIFICATION);
+	 */
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
 
-        addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", publicacionVenta.getNombre(),
-                publicacionVenta.getApellido());*
-        Notification.show(msg, Type.TRAY_NOTIFICATION);*/
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-
-
-        if(success)
-            getAddressbookView().showSuccessNotification("Guardado");
-
-
-
+	if (success)
+	    getAddressbookView().showSuccessNotification("Guardado");
 
     }
 
     public void cancel() {
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-        //getAddressbookView().enableGrid();
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
+	// getAddressbookView().enableGrid();
     }
-
-
 
     public PublicacionABMView getAddressbookView() {
-        return addressbookView;
+	return addressbookView;
     }
 
-
+    public void clearFields() {
+	this.estadoPublicacion.clear();
+	this.fechaPublicacion.clear();
+	this.moneda.clear();
+	this.nombrePropietario.clear();
+	this.precio.clear();
+	this.visualizadorInmueble.setValue("");
+	;
+    }
 
 }

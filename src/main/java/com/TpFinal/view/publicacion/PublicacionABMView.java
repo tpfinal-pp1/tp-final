@@ -93,7 +93,8 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	nuevaVenta.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
-	    PublicacionVentaForm.setPublicacionVenta(PublicacionService.INSTANCIA_VENTA);
+	    PublicacionVentaForm.clearFields();
+	    PublicacionVentaForm.setPublicacionVenta(null);
 
 	});
 
