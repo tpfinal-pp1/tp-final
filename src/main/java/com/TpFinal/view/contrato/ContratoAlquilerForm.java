@@ -228,6 +228,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.tfDiaDePago).withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> (n>0 && n<29), "Ingrese un dia entre 1 y 28")
 		.bind(ContratoAlquiler::getDiaDePago, ContratoAlquiler::setDiaDePago);
 
 	binderContratoAlquiler.forField(this.tfDocumento).withNullRepresentation("")
