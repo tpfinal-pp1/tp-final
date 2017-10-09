@@ -264,7 +264,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void buildLayout() {
-
+		setSizeFull();
 	stIncremento.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
 	tabSheet = new TabSheet();
