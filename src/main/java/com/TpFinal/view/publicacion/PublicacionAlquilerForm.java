@@ -143,7 +143,7 @@ public class PublicacionAlquilerForm extends FormLayout {
 
 
         tabSheet.addTab(principal,"Alquiler");
-        tabSheet.addTab(adicional,"Contrato");
+       // tabSheet.addTab(adicional,"Contrato");
 
 
         addComponent(tabSheet);
