@@ -400,19 +400,19 @@ public class ContratoAlquilerForm extends FormLayout {
     }
     
     public void clearFields() {
-	this.cbDuracionContrato.setValue(null);
-	this.cbInmuebles.setValue(null);
-	this.cbInquilino.setValue(null);
-	this.cbInteresFueraDeTermino.setValue(null);
-	this.cbtipointeres.setValue(null);
-	this.fechaCelebracion.setValue(LocalDate.now());
-	this.rbgTipoMoneda.setValue(null);
-	this.stIncremento.setValue(null);
-	this.tfDiaDePago.setValue(null);
-	this.tfDocumento.setValue(null);
-	this.tfPActualizacion.setValue(null);
-	this.tfPagoFueraDeTermino.setValue(null);
-	this.tfPropietario.setValue(null);
-	this.tfValorInicial.setValue(null);
+	this.cbDuracionContrato.clear();
+	this.cbInmuebles.clear();
+	this.cbInquilino.clear();
+	this.cbInteresFueraDeTermino.clear();
+	this.cbtipointeres.clear();
+	this.fechaCelebracion.clear();
+	this.rbgTipoMoneda.clear();
+	this.stIncremento.clear();	
+	this.tfDiaDePago.clear();
+	this.tfDocumento.clear();
+	this.tfPActualizacion.clear();
+	this.tfPagoFueraDeTermino.clear();
+	this.tfPropietario.clear();
+	this.tfValorInicial.clear();
     }
 }
