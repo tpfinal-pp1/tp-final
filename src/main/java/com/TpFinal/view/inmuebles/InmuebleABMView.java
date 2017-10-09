@@ -1,32 +1,21 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoInmueble;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
-import com.TpFinal.services.PersonaService;
-import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
-import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
 import java.util.List;
 
 @Title("Inmuebles")
@@ -175,8 +164,21 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
-	    grid.setColumns(Inmueble.pDireccion, Inmueble.pPropietario, Inmueble.pEstadoInmueble, Inmueble.pClaseInmb,
+	    grid.setColumns(Inmueble.pDireccion, Inmueble.pPropietario, Inmueble.pEstadoInmueble,
 		    Inmueble.pTipoInmb);
+
+		Grid.Column<Inmueble, String> claseInmuebleColumn = grid.addColumn(inmueble -> {
+			String ret = "";
+			if (inmueble.getClaseInmueble() == null) {
+				ret = "No aclarado";
+			} else {
+				ret = inmueble.getClaseInmueble().toString();
+			}
+			return ret;
+		});
+
+		claseInmuebleColumn.setCaption("Clase Inmueble");
+
 	    updateList();
 	}
 
