@@ -112,7 +112,7 @@ public class ContratoVentaForm extends FormLayout {
 			lblNombreVendedor.setValue("No seleccionado");
 		    } else {
 			Persona vendedor = inmueble.getPropietario().getPersona();
-			lblNombreVendedor.setValue(vendedor.getNombre());
+			lblNombreVendedor.setValue(vendedor.getNombre()+" "+vendedor.getApellido());
 			ContratoVenta.setInmueble(inmueble);
 			ContratoVenta.setVendedor(vendedor);
 		    }
