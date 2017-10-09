@@ -267,7 +267,7 @@ public class InmuebleForm extends FormLayout {
 
     private void buildLayout() {
 	// addStyleName("v-scrollable");
-
+	buscarUbicacion.setEnabled(false);
 	btnNuevoPropietario.setIcon(VaadinIcons.PLUS);
 	comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);

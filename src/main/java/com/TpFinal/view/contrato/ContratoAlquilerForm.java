@@ -317,7 +317,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	addComponent(actions);
 	this.setSpacing(false);
-	actions.setSpacing(true);
+	//actions.setSpacing(true);
 
 
     }
