@@ -28,6 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import org.vaadin.risto.stepper.IntStepper;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
@@ -58,19 +59,23 @@ public class ContratoAlquilerForm extends FormLayout {
     TextField tfPropietario = new TextField("Propietario");
     ComboBox<Persona> cbInquilino = new ComboBox<>("Inquilino");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
+
     public String nombreArchivo = "";
+    File archivo;
 
     // Documento
     TextField tfDocumento = new TextField();
     UploadButton btCargar = new UploadButton(new UploadReceiver() {
+
 	@Override
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
-	    tfDocumento.setValue(filename);
-	    System.out.println(filename);
+	    tfDocumento.setValue("Documento cargado");
 	    btDescargar.setFile(filename);
+	    archivo = new File(this.getPathAndName());
 	}
     });
+
     DownloadButton btDescargar = new DownloadButton();
 
     // Condiciones
@@ -229,7 +234,8 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(contrato -> {
 		    if (contrato.getDocumento() != null)
 			return "Documento Cargado";
-		    return "Documento No Cargado";
+		    else
+			return "Documento No Cargado";
 		}, (contrato, text) -> {
 		});
 
@@ -284,7 +290,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	HorizontalLayout documentoButtonsRow = new HorizontalLayout();
 	documentoButtonsRow.addComponents(btCargar, btDescargar);
 	documentoButtonsRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	tfDocumento.setCaption("Nombre");
+	tfDocumento.setCaption("Estado documento");
 	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
@@ -309,6 +315,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	addComponent(actions);
 	this.setSpacing(false);
 	actions.setSpacing(true);
+
+	btDescargar.addClickListener(event -> {
+	    btDescargar.descargar(contratoAlquiler, "contrato.doc");
+	});
 
     }
 
@@ -348,9 +358,15 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	boolean success = false;
 	try {
+
 	    binderContratoAlquiler.writeBean(contratoAlquiler);
-	    service.saveOrUpdate(contratoAlquiler, null);
+	    
+	    if (archivo != null &&archivo.exists())
+		service.saveOrUpdate(contratoAlquiler, archivo);
+	    else
+		service.saveOrUpdate(contratoAlquiler, null);
 	    success = true;
+
 	} catch (ValidationException e) {
 	    Notification.show("Errores de validación, porfavor revise los campos e intente de nuevo");
 	    // e.printStackTrace();

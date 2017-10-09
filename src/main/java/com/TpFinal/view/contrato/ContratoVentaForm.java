@@ -50,11 +50,12 @@ public class ContratoVentaForm extends FormLayout {
 
     DownloadButton btDescargar = new DownloadButton();
     UploadButton btCargar = new UploadButton(new UploadReceiver() {
+
 	@Override
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
-	    tfDocumento.setValue(filename);
-	    // btDescargar.setFile(filename);
+	    tfDocumento.setValue("Documento cargado");
+	    btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 
 	}
@@ -132,7 +133,9 @@ public class ContratoVentaForm extends FormLayout {
 	    }
 	});
 
-	btDescargar.setFile(ContratoVenta, "Screenshot_8.jpg");
+	btDescargar.addClickListener(event -> {
+	    btDescargar.descargar(ContratoVenta, "Contrato.doc");
+	});
 
 	setVisible(false);
 
@@ -231,7 +234,7 @@ public class ContratoVentaForm extends FormLayout {
 	HorizontalLayout documentoButtonsRow = new HorizontalLayout();
 	documentoButtonsRow.addComponents(btCargar, btDescargar);
 	documentoButtonsRow.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	tfDocumento.setCaption("Nombre");
+	tfDocumento.setCaption("Estado Documento");
 	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
