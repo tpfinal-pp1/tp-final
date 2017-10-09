@@ -307,8 +307,11 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.contratoAlquiler = ContratoAlquiler;
 	    binderContratoAlquiler.readBean(ContratoAlquiler);
 	    delete.setVisible(ContratoAlquiler.getId() != null);
-	} else
+	} else 
+	{
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
+	    delete.setVisible(false);
+	}
 
 	setVisible(true);
 
@@ -346,11 +349,6 @@ public class ContratoAlquilerForm extends FormLayout {
 	}
 
 	addressbookView.updateList();
-	/*
-	 * String msg = String.format("Guardado '%s %s'.", ContratoAlquiler.getNombre(),
-	 * ContratoAlquiler.getApellido());* Notification.show(msg,
-	 * Type.TRAY_NOTIFICATION);
-	 */
 	setVisible(false);
 	getAddressbookView().setComponentsVisible(true);
 
