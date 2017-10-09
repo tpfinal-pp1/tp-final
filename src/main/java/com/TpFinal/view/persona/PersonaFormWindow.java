@@ -89,25 +89,26 @@ public abstract class PersonaFormWindow extends Window {
         nombre.setRequiredIndicatorVisible(true);
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
-        telefono.setRequiredIndicatorVisible(true);
+       // telefono.setRequiredIndicatorVisible(true);
+        DNI.setRequiredIndicatorVisible(true);
         
-        binderPersona.forField(nombre).asRequired("Ingrese un nombre").withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").withValidator(new RegexpValidator("Porfavor ingrese un Nombre valido","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getNombre,Persona::setNombre);
         
-        binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("No se pueden ingresar numeros","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
+        binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("Porfavor ingrese un Apellido valido","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
         		).bind(Persona::getApellido,Persona::setApellido);
 
-        binderPersona.forField(DNI).withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
+        binderPersona.forField(DNI).withValidator(new RegexpValidator("Porfavor ingrese un DNI valido","[0-9]+")
         ).bind(Persona::getDNI,Persona::setDNI);
 
-        binderPersona.forField(telefono).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        binderPersona.forField(telefono).withNullRepresentation("").withValidator(new RegexpValidator("Porfavor ingrese un Telefono valido","[^a-zA-Z]+")
         ).bind(Persona::getTelefono,Persona::setTelefono);
 
-        binderPersona.forField(telefono2).withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
+        binderPersona.forField(telefono2).withNullRepresentation("").withValidator(new RegexpValidator("Porfavor ingrese un Telefono valido","[^a-zA-Z]+")
         ).bind(Persona::getTelefono2,Persona::setTelefono2);
 
         binderPersona.forField(mail).withValidator(new EmailValidator(
-                "Introduzca un email valido!"
+                "Introduzca un email valido"
         )).bind(Persona::getMail,Persona::setMail);
         
         binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
@@ -135,8 +136,10 @@ public abstract class PersonaFormWindow extends Window {
 
 
         } catch (ValidationException e) {
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
-            // Notification.show("Error: "+e.getCause());
+            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo"+e.getFieldValidationErrors());
+            e.printStackTrace();
+            System.out.println( e.getValidationErrors()+" "+e.getFieldValidationErrors());
+
             return;
         }
 
