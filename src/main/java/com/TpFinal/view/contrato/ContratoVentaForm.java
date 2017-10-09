@@ -141,7 +141,7 @@ public class ContratoVentaForm extends FormLayout {
             }
         });
 
-        btDescargar.setFile(ContratoVenta, "descarga.jpg");
+        btDescargar.setFile(ContratoVenta, "Screenshot_8.jpg");
 
         
 
