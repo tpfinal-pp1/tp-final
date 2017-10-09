@@ -35,7 +35,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     private PublicacionAlquiler publicacionAlquiler;
 
     Button save = new Button("Guardar");
-  //  Button test = new Button("Test");
+ 
     Button delete = new Button("Eliminar");
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
@@ -45,9 +45,7 @@ public class PublicacionAlquilerForm extends FormLayout {
     TextField valorCuota = new TextField("Cuota");
     ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
-   // TODO una vez que este contrato ContratoAlquiler contratoAlquiler;
-
-    // private NativeSelect<publicacionAlquiler.Sexo> sexo = new NativeSelect<>("Sexo");
+   // TODO una vez que este contrato ContratoAlquiler contratoAlquiler; 
 
     PublicacionService service = new PublicacionService();
     private PublicacionABMView addressbookView;
@@ -56,11 +54,9 @@ public class PublicacionAlquilerForm extends FormLayout {
     TabSheet tabSheet;
 
 
-    // Easily binding forms to beans and manage validation and buffering
-
 
     public PublicacionAlquilerForm(PublicacionABMView addressbook) {
-        // setSizeUndefined();
+     
         addressbookView=addressbook;
         configureComponents();
         binding();
@@ -69,44 +65,33 @@ public class PublicacionAlquilerForm extends FormLayout {
     }
 
     private void configureComponents() {
-        /*
-         * Highlight primary actions.
-         *
-         * With Vaadin built-in styles you can highlight the primary save button
-         *
-         * and give it a keyoard shortcut for a better UX.
-         */
-
-        //   sexo.setEmptySelectionAllowed(false);
-        //  sexo.setItems(publicacionAlquiler.Sexo.values());
+      
         inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-
-
-
         setVisible(false);
     }
 
 
     private void binding(){
-       //binder.bindInstanceFields(this); //Binding automatico
+   
         binderPublicacionAlquiler.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
         binderPublicacionAlquiler.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
 
-       binderPublicacionAlquiler.forField(moneda).bind("moneda"); //MAGIC//
+       binderPublicacionAlquiler.forField(moneda).bind("moneda");
        binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
        visualizadorInmueble.setEnabled(false);
-      //LAMBDA rober-MAGIX
+     
         binderPublicacionAlquiler.forField(this.nombrePropietario)
                 .withNullRepresentation("")
                 .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().toString(),null);
 
+        
         binderPublicacionAlquiler.forField(this.visualizadorInmueble)
                 .withNullRepresentation("")
                 .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().toString(),null);

@@ -169,9 +169,6 @@ public class PublicacionVentaForm extends FormLayout {
 
         this.publicacionVenta = PublicacionVenta;
         binderPublicacionVenta.readBean(PublicacionVenta);
-
-
-        // Show delete button for only Persons already in the database
         delete.setVisible(PublicacionVenta.getId()!=null);
 
         setVisible(true);
