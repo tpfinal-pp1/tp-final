@@ -134,20 +134,11 @@ public class PublicacionAlquilerForm extends FormLayout {
                 new BlueLabel("Inmueble"),hl,nombrePropietario,valorCuota,moneda
                 );
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-
-
-        FormLayout adicional=new FormLayout();
-        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        FormLayout mainLayout = new FormLayout(principal,adicional);
-
-
-
         tabSheet.addTab(principal,"Alquiler");
-       // tabSheet.addTab(adicional,"Contrato");
+
 
 
         addComponent(tabSheet);
-        addComponent(mainLayout);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
         actions.setSpacing(true);

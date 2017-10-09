@@ -37,6 +37,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	buildLayout();
 	controller.configureComponents();
 
+
     }
 
     public Controller getController() {

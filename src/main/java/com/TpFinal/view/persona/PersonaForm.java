@@ -63,7 +63,7 @@ public class PersonaForm extends FormLayout {
 
         calificacion.setItems(Calificacion.values());
         calificacion.setEmptySelectionAllowed(true);
-        calificacion.setSelectedItem(Calificacion.C);
+        calificacion.setSelectedItem(Calificacion.A);
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         test.addClickListener(e -> this.test());
@@ -116,14 +116,17 @@ public class PersonaForm extends FormLayout {
         BlueLabel contacto = new  BlueLabel("Contacto");
         
         TinyButton contratos=new TinyButton("Ver Contratos");
+        contacto.setEnabled(false);
+        TinyButton busquedas= new TinyButton("Ver Busquedas");
+        busquedas.setEnabled(false);
 
 
         aSeleccionar=new ContratoVenta();
      /*   contratos.addClickListener(e ->
                 new PersonaFormWindow(new Persona()));*/
         VerticalLayout Roles=new VerticalLayout(calificacion,contratos
-                ,
-                new TinyButton("Ver Busquedas"));
+                ,busquedas
+                );
 
 
 
@@ -158,8 +161,14 @@ public class PersonaForm extends FormLayout {
 
     public void setPersona(Persona persona) {
         if(persona.getInquilino()!=null){
+            this.calificacion.setVisible(true);
+            calificacion.setSelectedItem(Calificacion.A);
             this.calificacion.setSelectedItem(persona.getInquilino().getCalificacion());
         }
+        else{
+            this.calificacion.setVisible(false);
+        }
+
         this.persona = persona;
         binderPersona.readBean(persona);
 

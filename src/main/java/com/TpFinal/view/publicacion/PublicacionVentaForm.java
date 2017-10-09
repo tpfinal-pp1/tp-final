@@ -146,18 +146,10 @@ public class PublicacionVentaForm extends FormLayout {
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
 
-        FormLayout adicional=new FormLayout();
-        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        FormLayout mainLayout = new FormLayout(principal,adicional);
-
-
 
         tabSheet.addTab(principal,"Venta");
-       // tabSheet.addTab(adicional,"Contrato");
-
 
         addComponent(tabSheet);
-        addComponent(mainLayout);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
         actions.setSpacing(true);
