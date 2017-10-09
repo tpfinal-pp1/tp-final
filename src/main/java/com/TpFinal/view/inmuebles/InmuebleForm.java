@@ -91,21 +91,21 @@ public class InmuebleForm extends FormLayout {
 	setVisible(false);
 	localidades.setItems(provinciaService.getLocalidades());
 	provincias.setItems(provinciaService.getProvincias());
-
+	provincias.setTextInputAllowed(false);
 	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
 		Provincia provincia = valueChangeEvent.getValue();
 		if (provincia != null && !provincia.equals(provincias.getSelectedItem())) {
 		    if (valueChangeEvent.getOldValue() != null) {
-			localidades.clear();
-			localidades.setItems(provincia.getLocalidades());
-			if (inmueble.getDireccion().getProvincia() == provincia.getNombre()) {
+				localidades.clear();
+				localidades.setItems(provincia.getLocalidades());
+		/*	if (inmueble.getDireccion().getProvincia() == provincia.getNombre()) {
 			    localidades.setSelectedItem(provinciaService.getLocalidadFromNombreAndProvincia(inmueble
 				    .getDireccion().getLocalidad(), inmueble.getDireccion().getProvincia()));
 			} else {
 			    localidades.setSelectedItem(provincia.getLocalidades().get(0));
-			}
+			}*/
 		    }
 		}
 
