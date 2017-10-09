@@ -4,9 +4,12 @@ package com.TpFinal.view.component;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileDownloader;
+import com.vaadin.server.Page;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.StreamResource.StreamSource;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.ByteArrayInputStream;
@@ -66,6 +69,12 @@ public class DownloadButton extends Button {
             fileDownloader.extend(this);
             fileDownloader.getFileDownloadResource();
     	}
+        Notification success = new Notification("Descargado en carpeta /Descargas");
+        success.setDelayMsec(3500);
+        success.setStyleName("bar success small");
+        success.setPosition(Position.BOTTOM_CENTER);
+        success.show(Page.getCurrent());
+
     }
 
 
