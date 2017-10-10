@@ -99,36 +99,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	nuevaVenta.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
 	    ContratoVentaForm.clearFields();
-	    ContratoVentaForm.setContratoVenta(new ContratoVenta.Builder()
-		    .setPrecioVenta(new BigDecimal("0"))
-		    .setFechaCelebracion(LocalDate.now())
-		    .setPublicacionVenta(new PublicacionVenta())
-		    .setDocumento(null)
-		    .setInmueble(new Inmueble.Builder()
-			    .setaEstrenar(false)
-			    .setCantidadAmbientes(0)
-			    .setCantidadCocheras(0)
-			    .setCantidadDormitorios(0)
-			    .setClaseInmueble(ClaseInmueble.OtroInmueble)
-			    .setConAireAcondicionado(false)
-			    .setConJardin(false)
-			    .setConParilla(false)
-			    .setConPileta(false)
-			    .setDireccion(new Direccion.Builder()
-				    .setCalle("")
-				    .setCodPostal("")
-				    .setCoordenada(new Coordenada())
-				    .setLocalidad("")
-				    .setNro(0)
-				    .setPais("Argentina")
-				    .setProvincia("")
-				    .build())
-			    .setPropietario(new Propietario.Builder()
-				    .setPersona(new Persona())
-				    .build())
-			    .build())
-		    .setEstadoRegistro(EstadoRegistro.ACTIVO)
-		    .build());
+	    ContratoVentaForm.setContratoVenta(null);
 	});
 
 	nuevoAlquiler.addClickListener(e -> {

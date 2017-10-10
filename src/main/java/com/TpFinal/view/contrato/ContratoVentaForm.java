@@ -142,8 +142,8 @@ public class ContratoVentaForm extends FormLayout {
     }
 
     private void binding() {
-	// binder.bindInstanceFields(this); //Binding automatico
-	binderContratoVenta.forField(fechaCelebracion).bind(Contrato::getFechaCelebracion,
+
+	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha").bind(Contrato::getFechaCelebracion,
 		Contrato::setFechaCelebracion);
 	binderContratoVenta.forField(rbgTipoMoneda).bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
@@ -175,7 +175,7 @@ public class ContratoVentaForm extends FormLayout {
 		return result;
 	    }
 	};
-	binderContratoVenta.forField(cbComprador).withValidator(personaValidator)
+	binderContratoVenta.forField(cbComprador).asRequired("Debe seleccionar un comprador").withValidator(personaValidator)
 		.withNullRepresentation(new Persona())
 		.bind(contratoVenta -> contratoVenta.getComprador(), (contratoVenta, persona) -> contratoVenta
 			.setComprador(persona));
@@ -266,17 +266,20 @@ public class ContratoVentaForm extends FormLayout {
 
     public void setContratoVenta(ContratoVenta ContratoVenta) {
 
+	if (ContratoVenta != null) {
 	this.ContratoVenta = ContratoVenta;
 	binderContratoVenta.readBean(ContratoVenta);
-
-	// Show delete button for only Persons already in the database
-	delete.setVisible(ContratoVenta.getId() != null);
-
+	delete.setVisible(true);
+	}else {
+	    this.ContratoVenta = ContratoService.getInstanciaVenta();
+	    delete.setVisible(false);
+	}
+	
 	setVisible(true);
 	getAddressbookView().setComponentsVisible(false);
-
 	if (getAddressbookView().isIsonMobile())
 	    tabSheet.focus();
+	
 
     }
 

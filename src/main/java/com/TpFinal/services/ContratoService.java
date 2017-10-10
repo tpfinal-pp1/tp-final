@@ -12,7 +12,13 @@ import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.contrato.DuracionContrato;
 import com.TpFinal.data.dto.contrato.TipoInteres;
+import com.TpFinal.data.dto.inmueble.ClaseInmueble;
+import com.TpFinal.data.dto.inmueble.Coordenada;
+import com.TpFinal.data.dto.inmueble.Direccion;
+import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -24,7 +30,10 @@ import java.util.Comparator;
 import java.util.List;
 
 public class ContratoService {
-    public static enum instancia{venta,alquiler};
+    public static enum instancia {
+	venta, alquiler
+    };
+
     private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
     private DAOContrato daoContrato;
@@ -39,10 +48,11 @@ public class ContratoService {
 	boolean ret = false;
 	if (contrato.getClass().equals(ContratoVenta.class)) {
 	    ContratoVenta c = (ContratoVenta) contrato;
-	    if (doc != null)
+	    if (doc != null) {
 		ret = daoVenta.saveOrUpdateContrato(c, doc);
-	    else
+	    } else {
 		ret = daoVenta.saveOrUpdate(c);
+	    }
 	} else {
 	    ContratoAlquiler c = (ContratoAlquiler) contrato;
 	    if (doc != null)
@@ -122,6 +132,39 @@ public class ContratoService {
 		.setFechaCelebracion(LocalDate.now())
 		.setInmueble(InmuebleService.getInstancia())
 		.build();
+    }
+    
+    public static ContratoVenta getInstanciaVenta() {
+	return new ContratoVenta.Builder()
+		    .setPrecioVenta(new BigDecimal("0"))
+		    .setFechaCelebracion(LocalDate.now())
+		    .setPublicacionVenta(new PublicacionVenta())
+		    .setDocumento(null)
+		    .setInmueble(new Inmueble.Builder()
+			    .setaEstrenar(false)
+			    .setCantidadAmbientes(0)
+			    .setCantidadCocheras(0)
+			    .setCantidadDormitorios(0)
+			    .setClaseInmueble(ClaseInmueble.OtroInmueble)
+			    .setConAireAcondicionado(false)
+			    .setConJardin(false)
+			    .setConParilla(false)
+			    .setConPileta(false)
+			    .setDireccion(new Direccion.Builder()
+				    .setCalle("")
+				    .setCodPostal("")
+				    .setCoordenada(new Coordenada())
+				    .setLocalidad("")
+				    .setNro(0)
+				    .setPais("Argentina")
+				    .setProvincia("")
+				    .build())
+			    .setPropietario(new Propietario.Builder()
+				    .setPersona(new Persona())
+				    .build())
+			    .build())
+		    .setEstadoRegistro(EstadoRegistro.ACTIVO)
+		    .build();
     }
 
 }
