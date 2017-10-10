@@ -17,7 +17,7 @@ public enum TipoConexion {	H2Test("org.hibernate.dialect.H2Dialect"
 									,"root"
 									,"root"
 									,"false"
-									,"create-drop"),
+									,"update"),
 							MariaDBTest("org.hibernate.dialect.MariaDB53Dialect"
 									,"org.mariadb.jdbc.Driver"
 									,"jdbc:mysql://localhost:3306/prueba"
