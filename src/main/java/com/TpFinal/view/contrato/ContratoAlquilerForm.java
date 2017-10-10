@@ -363,10 +363,9 @@ public class ContratoAlquilerForm extends FormLayout {
 	    binderContratoAlquiler.writeBean(contratoAlquiler);
 	    
 	    if (archivo != null &&archivo.exists())
-		service.saveOrUpdate(contratoAlquiler, archivo);
+		success = service.saveOrUpdate(contratoAlquiler, archivo);
 	    else
-		service.saveOrUpdate(contratoAlquiler, null);
-	    success = true;
+		success = service.saveOrUpdate(contratoAlquiler, null);	   
 
 	} catch (ValidationException e) {
 	    Notification.show("Errores de validación, porfavor revise los campos e intente de nuevo");

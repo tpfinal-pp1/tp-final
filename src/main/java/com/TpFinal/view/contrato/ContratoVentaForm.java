@@ -112,7 +112,7 @@ public class ContratoVentaForm extends FormLayout {
 			lblNombreVendedor.setValue("No seleccionado");
 		    } else {
 			Persona vendedor = inmueble.getPropietario().getPersona();
-			lblNombreVendedor.setValue(vendedor.getNombre()+" "+vendedor.getApellido());
+			lblNombreVendedor.setValue(vendedor.getNombre() + " " + vendedor.getApellido());
 			ContratoVenta.setInmueble(inmueble);
 			ContratoVenta.setVendedor(vendedor);
 		    }
@@ -134,7 +134,7 @@ public class ContratoVentaForm extends FormLayout {
 	});
 
 	btDescargar.addClickListener(event -> {
-	    btDescargar.descargar(ContratoVenta, "Contrato.doc");	
+	    btDescargar.descargar(ContratoVenta, "Contrato.doc");
 	});
 
 	setVisible(false);
@@ -318,15 +318,14 @@ public class ContratoVentaForm extends FormLayout {
 	    // if (ContratoVenta.getInmueble().getId() != null &&
 	    // ContratoVenta.getComprador().getId() != null
 	    // && ContratoVenta.getVendedor().getId() != null) {
-	    if (archivo != null) {
-		if (!archivo.exists())
-		    service.saveOrUpdate(ContratoVenta, null);
-		else {
-		    service.saveOrUpdate(ContratoVenta, archivo);
 
-		}
+	    if (archivo != null && !archivo.exists())
+		success = service.saveOrUpdate(ContratoVenta, null);
+	    else {
+		success = service.saveOrUpdate(ContratoVenta, archivo);
+
 	    }
-	    success = true;
+
 	    // }
 	    // }
 
@@ -351,6 +350,9 @@ public class ContratoVentaForm extends FormLayout {
 
 	if (success)
 	    getAddressbookView().showSuccessNotification("Guardado");
+	else {
+	    getAddressbookView().showErrorNotification("Fallo al guardar");
+	}
 
     }
 
@@ -393,7 +395,7 @@ public class ContratoVentaForm extends FormLayout {
 	};
 	personaSelector.getSelectionButton().addClickListener(e -> person = personaSelector.getObjeto());
     }
-    
+
     public void clearFields() {
 	this.cbComprador.clear();
 	this.cbInmuebles.clear();
