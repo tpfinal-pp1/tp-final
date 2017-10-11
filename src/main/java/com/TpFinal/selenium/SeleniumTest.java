@@ -1,8 +1,8 @@
 package com.TpFinal.selenium;
 
+import com.vaadin.testbench.TestBenchTestCase;
 import org.apache.commons.lang3.SystemUtils;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by Max on 10/2/2017.
  */
-public class SeleniumTest {
+public class SeleniumTest extends TestBenchTestCase{
 
 
     FirefoxDriver driver;
@@ -108,20 +108,20 @@ public class SeleniumTest {
     @Before
     public void setUp() throws Exception {
         if(SystemUtils.IS_OS_LINUX){
-            System.setProperty("webdriver.gecko.wd","GeckoDriver"+ File.separator+"geckodriver");
+            System.setProperty("webdriver.gecko.driver","GeckoDriver"+ File.separator+"geckodriver");
             System.out.println("OS: LINUX");
         }
         if(SystemUtils.IS_OS_WINDOWS) {
             String systemArchitecture = System.getProperty("sun.arch.data.model");
             if(systemArchitecture.equals("64")) {
-                System.setProperty("webdriver.gecko.wd", "GeckoDriver" + File.separator + "geckodriver.exe");
+                System.setProperty("webdriver.gecko.driver", "GeckoDriver" + File.separator + "geckodriver.exe");
 
 
 
                 System.out.println("OS: Windows 64-bit");
             }
             else {
-                System.setProperty("webdriver.gecko.wd", "GeckoDriver-32-bits" + File.separator + "geckodriver.exe");
+                System.setProperty("webdriver.gecko.driver", "GeckoDriver-32-bits" + File.separator + "geckodriver.exe");
                 System.out.println("OS: Windows 32-bit");
             }
         }

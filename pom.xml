@@ -170,7 +170,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-testbench</artifactId>
-			<version>5.0.0</version>
+			<version>4.1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.peimari</groupId>
@@ -222,23 +222,11 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>2.1.2</version>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/org.javamoney/moneta -->
 		<dependency>
 			<groupId>org.javamoney</groupId>
 			<artifactId>moneta</artifactId>
 			<version>1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-java</artifactId>
-			<version>3.6.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.seleniumhq.selenium</groupId>
-			<artifactId>selenium-firefox-driver</artifactId>
-			<version>3.6.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -255,11 +243,7 @@
 			<artifactId>stepper</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-testbench-core</artifactId>
-			<version>5.1.0.alpha1</version>
-		</dependency>
+
 	</dependencies>
 
 	<build>
