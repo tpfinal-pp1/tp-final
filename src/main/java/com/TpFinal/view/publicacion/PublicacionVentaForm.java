@@ -13,6 +13,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.validator.DateRangeValidator;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
@@ -86,10 +87,9 @@ public class PublicacionVentaForm extends FormLayout {
 		"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365))).bind(
 			Publicacion::getFechaPublicacion, Publicacion::setFechaPublicacion);
 
-	binderPublicacionVenta.forField(moneda).bind("moneda");
-	binderPublicacionVenta.forField(precio).asRequired("Debe Ingresar El precio de Venta")
-		.withConverter(new StringToBigDecimalConverter("Ingrese un numero"))
-		.bind("precio");
+	binderPublicacionVenta.forField(moneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
+	binderPublicacionVenta.forField(precio).asRequired("Ingrese un valor mayor a 0").withValidator(new RegexpValidator("Ingrese un valor mayor a 0",
+ 		   "^[1-9][0-9]*$")).withConverter(new StringToBigDecimalConverter("Ingrese un valor mayor a 0")).bind("precio");
 
 	nombrePropietario.setEnabled(false);
 	binderPublicacionVenta.forField(this.nombrePropietario)
@@ -151,7 +151,7 @@ public class PublicacionVentaForm extends FormLayout {
         addComponent(actions);
         actions.setSpacing(true);
 
-
+        
     }
 
     public void setPublicacionVenta(PublicacionVenta publicacionVenta) {

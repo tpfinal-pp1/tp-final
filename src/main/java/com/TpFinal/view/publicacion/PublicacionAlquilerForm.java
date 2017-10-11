@@ -13,6 +13,7 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.validator.DateRangeValidator;
+import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
@@ -32,21 +33,19 @@ import java.util.List;
  * with @PropertyId annotation.
  */
 public class PublicacionAlquilerForm extends FormLayout {
-    private PublicacionAlquiler publicacionAlquiler;
-
+	
     Button save = new Button("Guardar");
- 
     Button delete = new Button("Eliminar");
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",EstadoPublicacion.toList());
     Button inmuebleSelector = new Button("");
     TextField nombrePropietario = new TextField();
-
     TextField valorCuota = new TextField("Cuota");
     ComboBox <TipoMoneda> moneda = new ComboBox<>("", TipoMoneda.toList());
 
    // TODO una vez que este contrato ContratoAlquiler contratoAlquiler; 
 
+    private PublicacionAlquiler publicacionAlquiler;
     PublicacionService service = new PublicacionService();
     private PublicacionABMView addressbookView;
     private Binder<PublicacionAlquiler> binderPublicacionAlquiler = new Binder<>(PublicacionAlquiler.class);
@@ -79,28 +78,25 @@ public class PublicacionAlquilerForm extends FormLayout {
     private void binding(){
    
         binderPublicacionAlquiler.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
+        
         binderPublicacionAlquiler.forField(fechaPublicacion).withValidator(new DateRangeValidator(
                 "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
         ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
 
-       binderPublicacionAlquiler.forField(moneda).bind("moneda");
-       binderPublicacionAlquiler.forField(valorCuota).withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("valorCuota");
+       binderPublicacionAlquiler.forField(moneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
+       
+       binderPublicacionAlquiler.forField(valorCuota).asRequired("Ingrese un valor mayor a 0").withValidator(new RegexpValidator("Ingrese un valor mayor a 0",
+    		   "^[1-9][0-9]*$")).withConverter(new StringToBigDecimalConverter("Ingrese un valor mayor a 0")).bind("valorCuota");
+       
        visualizadorInmueble.setEnabled(false);
      
         binderPublicacionAlquiler.forField(this.nombrePropietario)
                 .withNullRepresentation("")
                 .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().getPropietario().toString(),null);
-
         
         binderPublicacionAlquiler.forField(this.visualizadorInmueble)
                 .withNullRepresentation("")
                 .bind(publicacionAlquiler -> publicacionAlquiler.getInmueble().toString(),null);
-
-
-
-
-
-
     }
 
     private void buildLayout() {
@@ -136,24 +132,32 @@ public class PublicacionAlquilerForm extends FormLayout {
         principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
         tabSheet.addTab(principal,"Alquiler");
 
-
-
         addComponent(tabSheet);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
         actions.setSpacing(true);
-
-
+        
     }
 
     public void setPublicacionAlquiler(PublicacionAlquiler PublicacionAlquiler) {
 
-        this.publicacionAlquiler = PublicacionAlquiler;
-        binderPublicacionAlquiler.readBean(PublicacionAlquiler);
+    	this.publicacionAlquiler = PublicacionAlquiler;
+    	if (publicacionAlquiler != null) {
+    		binderPublicacionAlquiler.readBean(PublicacionAlquiler);
+    	    delete.setVisible(true);
+    	} else {
+    	    this.publicacionAlquiler = PublicacionService.INSTANCIA_ALQUILER;
+    	    delete.setVisible(false);
+    	}
+    	
+        //this.publicacionAlquiler = PublicacionAlquiler;
+       // binderPublicacionAlquiler.readBean(PublicacionAlquiler);
 
 
+        
+        
         // Show delete button for only Persons already in the database
-        delete.setVisible(PublicacionAlquiler.getId()!=null);
+       // delete.setVisible(PublicacionAlquiler.getId()!=null);
 
         setVisible(true);
 
@@ -290,6 +294,15 @@ public class PublicacionAlquilerForm extends FormLayout {
         return addressbookView;
     }
 
+    public void clearFields() {
+    	this.estadoPublicacion.clear();
+    	this.fechaPublicacion.clear();
+    	this.moneda.clear();
+    	this.nombrePropietario.clear();
+    	this.valorCuota.clear();
+    	this.visualizadorInmueble.setValue("");
+    	;
+    	}
 
 
 }

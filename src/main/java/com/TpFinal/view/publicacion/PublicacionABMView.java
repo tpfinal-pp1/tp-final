@@ -101,7 +101,9 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	nuevoAlquiler.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
-	    PublicacionAlquilerForm.setPublicacionAlquiler(PublicacionService.INSTANCIA_ALQUILER);
+	    PublicacionAlquilerForm.clearFields();
+	    PublicacionAlquilerForm.setPublicacionAlquiler(null);
+	    
 
 	});
 

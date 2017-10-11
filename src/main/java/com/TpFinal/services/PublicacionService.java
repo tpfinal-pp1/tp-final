@@ -99,7 +99,7 @@ public class PublicacionService {
         p.addRol(Rol.Propietario);
 
       return  new PublicacionAlquiler.Builder()
-                 .setValorCuota(new BigDecimal("0"))
+                 .setValorCuota(new BigDecimal(0))
                  .setFechaPublicacion(LocalDate.now())
                  .setMoneda(TipoMoneda.Pesos)
                  .setContratoAlquiler(new ContratoAlquiler())
@@ -135,7 +135,7 @@ public class PublicacionService {
         Persona p= new Persona();
         p.addRol(Rol.Propietario);
         PublicacionVenta PV=new PublicacionVenta.Builder()
-                .setPrecio(new BigDecimal("0"))
+                .setPrecio(new BigDecimal(0))
                 .setFechaPublicacion(LocalDate.now())
                 .setMoneda(TipoMoneda.Pesos)
                 .setContratoVenta(new ContratoVenta())
