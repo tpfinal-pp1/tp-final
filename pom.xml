@@ -136,6 +136,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-testbench</artifactId>
+			<version>4.0.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-compatibility-client</artifactId>
 			<version>${vaadin.version}</version>
 			<scope>provided</scope>
@@ -164,8 +170,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-testbench</artifactId>
-			<version>4.0.3</version>
-			<scope>test</scope>
+			<version>5.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.peimari</groupId>
@@ -249,6 +254,11 @@
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>stepper</artifactId>
 			<version>2.4.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-testbench-core</artifactId>
+			<version>5.1.0.alpha1</version>
 		</dependency>
 	</dependencies>
 
