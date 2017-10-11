@@ -80,21 +80,17 @@ public class PersonaForm extends FormLayout {
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
         telefono.setRequiredIndicatorVisible(true);
-        binderPersona.forField(nombre).withValidator(new RegexpValidator("Ingrese un nombre con la primer letra Mayúscula","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
-        		).bind(Persona::getNombre,Persona::setNombre);
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre,Persona::setNombre);
 
-        binderPersona.forField(apellido).withValidator(new RegexpValidator("Ingrese un nombre con la primer letra Mayúscula","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
-        		).bind(Persona::getApellido,Persona::setApellido);
+        binderPersona.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getApellido,Persona::setApellido);
 
         binderPersona.forField(DNI).asRequired("Ingrese un dni").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
         ).bind(Persona::getDNI,Persona::setDNI);
 
 
-        binderPersona.forField(telefono).withNullRepresentation("").withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
-        ).bind(Persona::getTelefono,Persona::setTelefono);
+        binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,Persona::setTelefono);
 
-        binderPersona.forField(telefono2).withNullRepresentation("").withValidator(new RegexpValidator("No se pueden ingresar letras","[^a-zA-Z]+")
-        ).bind(Persona::getTelefono2,Persona::setTelefono2);
+        binderPersona.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
 
 
         binderPersona.forField(mail).withValidator(new EmailValidator(

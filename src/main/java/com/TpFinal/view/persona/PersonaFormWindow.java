@@ -92,20 +92,16 @@ public abstract class PersonaFormWindow extends Window {
        // telefono.setRequiredIndicatorVisible(true);
         DNI.setRequiredIndicatorVisible(true);
         
-        binderPersona.forField(nombre).asRequired("Ingrese un nombre").withValidator(new RegexpValidator("Porfavor ingrese un Nombre valido","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
-        		).bind(Persona::getNombre,Persona::setNombre);
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre,Persona::setNombre);
         
-        binderPersona.forField(apellido).asRequired("Ingrese un apellido").withValidator(new RegexpValidator("Porfavor ingrese un Apellido valido","([A-Z]||[a-z]*.?[\\s])*([A-Z][a-z]*)")
-        		).bind(Persona::getApellido,Persona::setApellido);
+        binderPersona.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getApellido,Persona::setApellido);
 
         binderPersona.forField(DNI).withValidator(new RegexpValidator("Porfavor ingrese un DNI valido","[0-9]+")
         ).bind(Persona::getDNI,Persona::setDNI);
 
-        binderPersona.forField(telefono).withNullRepresentation("").withValidator(new RegexpValidator("Porfavor ingrese un Telefono valido","[^a-zA-Z]+")
-        ).bind(Persona::getTelefono,Persona::setTelefono);
+        binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,Persona::setTelefono);
 
-        binderPersona.forField(telefono2).withNullRepresentation("").withValidator(new RegexpValidator("Porfavor ingrese un Telefono valido","[^a-zA-Z]+")
-        ).bind(Persona::getTelefono2,Persona::setTelefono2);
+        binderPersona.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
 
         binderPersona.forField(mail).withValidator(new EmailValidator(
                 "Introduzca un email valido"
@@ -136,7 +132,7 @@ public abstract class PersonaFormWindow extends Window {
 
 
         } catch (ValidationException e) {
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo"+e.getFieldValidationErrors());
+            Notification.show("Error al guardar, por favor revise los campos e intente de nuevo");
             e.printStackTrace();
             System.out.println( e.getValidationErrors()+" "+e.getFieldValidationErrors());
 
