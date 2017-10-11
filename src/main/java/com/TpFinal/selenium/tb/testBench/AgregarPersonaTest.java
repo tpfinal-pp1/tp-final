@@ -34,8 +34,8 @@ public class AgregarPersonaTest extends TestBenchTestCase{
         contraseaPasswordField.setValue("1234");
         ButtonElement iniciarSesinButton = $(ButtonElement.class).caption("Iniciar Sesión").first();
         iniciarSesinButton.click();
-        //ButtonElement personasButton = $(ButtonElement.class).caption("Personas").first();
-        //personasButton.click();
+        ButtonElement personasButton = $(ButtonElement.class).caption("Personas").first();
+        personasButton.click();
         getDriver().get("http://inmobi.ddns.net/#!personas");
         ButtonElement nuevoButton = $(ButtonElement.class).caption("Nuevo").first();
         nuevoButton.click();
