@@ -157,6 +157,7 @@
 			<artifactId>vaadin-themes</artifactId>
 			<version>${vaadin.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>com.vaadin.tapio</groupId>
 			<artifactId>googlemaps</artifactId>
@@ -243,7 +244,11 @@
 			<artifactId>stepper</artifactId>
 			<version>2.4.0</version>
 		</dependency>
-
+		<dependency>
+			<groupId>org.vaadin.addon</groupId>
+			<artifactId>confirmdialog</artifactId>
+			<version>3.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>

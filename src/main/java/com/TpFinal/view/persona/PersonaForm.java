@@ -14,6 +14,7 @@ import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.dialogs.ConfirmDialog;
 
 
 public class PersonaForm extends FormLayout {
@@ -180,12 +181,26 @@ public class PersonaForm extends FormLayout {
     }
 
     private void delete() {
-        service.delete(persona);
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
-                persona.getApellido());
+
+        ConfirmDialog.show(this.getUI(),"Eliminar Persona","Esta seguro que desea eliminar esta Persona?, " +
+                        "esta accion no es reversible",
+                "Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
+                    @Override
+                    public void onClose(ConfirmDialog confirmDialog) {
+                        if (confirmDialog.isConfirmed()) {
+                            service.delete(persona);
+                            addressbookView.updateList();
+                            setVisible(false);
+                            getAddressbookView().setComponentsVisible(true);
+                            getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
+                                    persona.getApellido());
+
+                        }
+
+                    }
+
+                });
+
 
 
     }

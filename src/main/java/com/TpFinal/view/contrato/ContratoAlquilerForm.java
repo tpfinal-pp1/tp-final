@@ -26,6 +26,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
@@ -347,11 +348,26 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void delete() {
-	service.delete(contratoAlquiler);
-	addressbookView.updateList();
-	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
-	getAddressbookView().showSuccessNotification("Borrado");
+		ConfirmDialog.show(this.getUI(),"Eliminar Inmueble","Esta seguro que desea eliminar?, " +
+						"esta accion no es reversible",
+				"Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
+					@Override
+					public void onClose(ConfirmDialog confirmDialog) {
+						if (confirmDialog.isConfirmed()) {
+							service.delete(contratoAlquiler);
+							addressbookView.updateList();
+							setVisible(false);
+							getAddressbookView().setComponentsVisible(true);
+							getAddressbookView().showSuccessNotification("Borrado");
+
+						}
+
+					}
+
+				});
+
+
+
 
     }
 

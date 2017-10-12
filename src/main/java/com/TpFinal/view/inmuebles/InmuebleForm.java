@@ -24,6 +24,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.vaadin.dialogs.ConfirmDialog;
 
 @SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
@@ -331,14 +332,26 @@ public class InmuebleForm extends FormLayout {
     }
 
     private void delete() {
-	inmbService.delete(inmueble);
-	abmView.getController().updateList();
-	setVisible(false);
-	getABMView().setComponentsVisible(true);
-	getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-		inmueble.getPropietario().toString());
+		ConfirmDialog.show(this.getUI(),"Eliminar Inmueble","Esta seguro que desea eliminar?, " +
+						"esta accion no es reversible",
+				"Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
+					@Override
+					public void onClose(ConfirmDialog confirmDialog) {
+						if (confirmDialog.isConfirmed()) {
+							inmbService.delete(inmueble);
+							abmView.getController().updateList();
+							setVisible(false);
+							getABMView().setComponentsVisible(true);
+							getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
+									inmueble.getPropietario().toString());
 
-    }
+						}
+
+					}
+
+				});
+	}
+
 
     private void save() {
 
