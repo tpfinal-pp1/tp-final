@@ -158,7 +158,7 @@ public abstract class PersonaFormWindow extends Window {
         footer.setWidth(100.0f, Unit.PERCENTAGE);
         footer.setSpacing(false);
 
-        Button ok = new Button("GuardarPersonaEnForm");
+        Button ok = new Button("Guardar Persona");
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
         ok.addClickListener(new ClickListener() {
             @Override
