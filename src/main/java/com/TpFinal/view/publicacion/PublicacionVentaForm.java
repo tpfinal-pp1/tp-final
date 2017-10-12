@@ -8,6 +8,7 @@ import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.VentanaSelectora;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -18,7 +19,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.dialogs.ConfirmDialog;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -38,7 +38,13 @@ public class PublicacionVentaForm extends FormLayout {
 
     Button save = new Button("Guardar");
     // Button test = new Button("Test");
-    Button delete = new Button("Eliminar");
+	DeleteButton delete = new DeleteButton("Eliminar",
+			VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+			delete();
+		}
+	});
     DateField fechaPublicacion = new DateField("Fecha publicacion");
     RadioButtonGroup<EstadoPublicacion> estadoPublicacion = new RadioButtonGroup<>("Estado de la publicacion",
 	    EstadoPublicacion.toList());
@@ -73,7 +79,6 @@ public class PublicacionVentaForm extends FormLayout {
 	inmuebleSelector.addClickListener(e -> displayInmuebleSelector());
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
-	delete.addClickListener(e -> this.delete());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
@@ -175,25 +180,13 @@ public class PublicacionVentaForm extends FormLayout {
     }
 
     private void delete() {
-		ConfirmDialog.show(this.getUI(),"Eliminar Inmueble","Esta seguro que desea eliminar?, " +
-						"esta accion no es reversible",
-				"Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-					@Override
-					public void onClose(ConfirmDialog confirmDialog) {
-						if (confirmDialog.isConfirmed()) {
+
 							service.delete(publicacionVenta);
 							addressbookView.updateList();
 							setVisible(false);
 							getAddressbookView().setComponentsVisible(true);
 							getAddressbookView().showSuccessNotification("Borrado");
 							getAddressbookView().enableGrid();
-
-						}
-
-					}
-
-				});
-
 
 
     }

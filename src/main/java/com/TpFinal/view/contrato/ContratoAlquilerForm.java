@@ -4,7 +4,6 @@ import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.DuracionContrato;
 import com.TpFinal.data.dto.contrato.TipoInteres;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Calificacion;
@@ -26,11 +25,9 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -53,7 +50,13 @@ public class ContratoAlquilerForm extends FormLayout {
 
     // Actions
     Button save = new Button("Guardar");
-    Button delete = new Button("Eliminar");
+	DeleteButton delete = new DeleteButton("Eliminar",
+			VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+			delete();
+		}
+	});
 
     // TabPrincipal
     ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
@@ -119,7 +122,6 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
-	delete.addClickListener(e -> this.delete());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
@@ -348,23 +350,11 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void delete() {
-		ConfirmDialog.show(this.getUI(),"Eliminar Inmueble","Esta seguro que desea eliminar?, " +
-						"esta accion no es reversible",
-				"Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-					@Override
-					public void onClose(ConfirmDialog confirmDialog) {
-						if (confirmDialog.isConfirmed()) {
-							service.delete(contratoAlquiler);
-							addressbookView.updateList();
-							setVisible(false);
-							getAddressbookView().setComponentsVisible(true);
-							getAddressbookView().showSuccessNotification("Borrado");
-
-						}
-
-					}
-
-				});
+		service.delete(contratoAlquiler);
+		addressbookView.updateList();
+		setVisible(false);
+		getAddressbookView().setComponentsVisible(true);
+		getAddressbookView().showSuccessNotification("Borrado");
 
 
 

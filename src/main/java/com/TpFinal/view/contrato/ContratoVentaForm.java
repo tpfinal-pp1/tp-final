@@ -15,7 +15,6 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.dialogs.ConfirmDialog;
 
 import java.io.File;
 import java.util.Collections;
@@ -35,7 +34,13 @@ public class ContratoVentaForm extends FormLayout {
 
     // Actions
     Button save = new Button("Guardar");
-    Button delete = new Button("Eliminar");
+	DeleteButton delete = new DeleteButton("Eliminar",
+			VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+			delete();
+		}
+	});
 
     // TabPrincipal
     ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
@@ -99,7 +104,7 @@ public class ContratoVentaForm extends FormLayout {
 	// sexo.setItems(ContratoVenta.Sexo.values());
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
-	delete.addClickListener(e -> this.delete());
+
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 
@@ -285,24 +290,11 @@ public class ContratoVentaForm extends FormLayout {
     }
 
     private void delete() {
-
-		ConfirmDialog.show(this.getUI(),"Eliminar Inmueble","Esta seguro que desea eliminar?, " +
-						"esta accion no es reversible",
-				"Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-					@Override
-					public void onClose(ConfirmDialog confirmDialog) {
-						if (confirmDialog.isConfirmed()) {
-								service.delete(ContratoVenta);
-							addressbookView.updateList();
-							setVisible(false);
-							getAddressbookView().setComponentsVisible(true);
-							getAddressbookView().showSuccessNotification("Borrado");
-
-						}
-
-					}
-
-				});
+		service.delete(ContratoVenta);
+		addressbookView.updateList();
+		setVisible(false);
+		getAddressbookView().setComponentsVisible(true);
+		getAddressbookView().showSuccessNotification("Borrado");
 
 
 	}

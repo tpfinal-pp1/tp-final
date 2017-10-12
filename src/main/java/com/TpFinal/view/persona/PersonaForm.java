@@ -6,22 +6,31 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.dialogs.ConfirmDialog;
 
 
 public class PersonaForm extends FormLayout {
     private Persona persona;
     Button save = new Button("Guardar");
     //Button test = new Button("Test");
-    Button delete = new Button("Eliminar");
+    DeleteButton delete = new DeleteButton("Eliminar",
+            VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
+        @Override
+        public void buttonClick(Button.ClickEvent clickEvent) {
+            delete();
+        }
+    });
+
+
     TextField nombre = new TextField("Nombre");
     TextField apellido = new TextField("Apellido");
     TextField DNI = new TextField("DNI");
@@ -68,7 +77,7 @@ public class PersonaForm extends FormLayout {
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         //test.addClickListener(e -> this.test());
-        delete.addClickListener(e -> this.delete());
+
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
         setVisible(false);
@@ -181,27 +190,12 @@ public class PersonaForm extends FormLayout {
     }
 
     private void delete() {
-
-        ConfirmDialog.show(this.getUI(),"Eliminar Persona","Esta seguro que desea eliminar esta Persona?, " +
-                        "esta accion no es reversible",
-                "Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-                    @Override
-                    public void onClose(ConfirmDialog confirmDialog) {
-                        if (confirmDialog.isConfirmed()) {
-                            service.delete(persona);
-                            addressbookView.updateList();
-                            setVisible(false);
-                            getAddressbookView().setComponentsVisible(true);
-                            getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
-                                    persona.getApellido());
-
-                        }
-
-                    }
-
-                });
-
-
+        service.delete(persona);
+        addressbookView.updateList();
+        setVisible(false);
+        getAddressbookView().setComponentsVisible(true);
+        getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
+                persona.getApellido());
 
     }
 

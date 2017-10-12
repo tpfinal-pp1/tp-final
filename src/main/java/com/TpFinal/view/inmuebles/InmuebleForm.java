@@ -13,6 +13,7 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
 import com.TpFinal.view.persona.PersonaFormWindow;
 import com.vaadin.data.Binder;
@@ -24,7 +25,6 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.dialogs.ConfirmDialog;
 
 @SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
@@ -34,7 +34,13 @@ public class InmuebleForm extends FormLayout {
 
     // Acciones
     private Button save = new Button("Guardar");
-    private Button delete = new Button("Eliminar");
+	DeleteButton delete = new DeleteButton("Eliminar",
+			VaadinIcons.WARNING,"¿Esta seguro que desea eliminar?","20%", new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+			delete();
+		}
+	});
 
     // TabPrincipal
     private final ComboBox<Persona> comboPropietario = new ComboBox<>();
@@ -84,7 +90,7 @@ public class InmuebleForm extends FormLayout {
     private void configureComponents() {
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
-	delete.addClickListener(e -> this.delete());
+
 
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -332,24 +338,13 @@ public class InmuebleForm extends FormLayout {
     }
 
     private void delete() {
-		ConfirmDialog.show(this.getUI(),"Eliminar Inmueble","Esta seguro que desea eliminar?, " +
-						"esta accion no es reversible",
-				"Entiendo y deseo eliminar","No eliminar",new ConfirmDialog.Listener() {
-					@Override
-					public void onClose(ConfirmDialog confirmDialog) {
-						if (confirmDialog.isConfirmed()) {
-							inmbService.delete(inmueble);
-							abmView.getController().updateList();
-							setVisible(false);
-							getABMView().setComponentsVisible(true);
-							getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-									inmueble.getPropietario().toString());
+		inmbService.delete(inmueble);
+		abmView.getController().updateList();
+		setVisible(false);
+		getABMView().setComponentsVisible(true);
+		getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
+				inmueble.getPropietario().toString());
 
-						}
-
-					}
-
-				});
 	}
 
 
