@@ -317,14 +317,13 @@ public class InmuebleForm extends FormLayout {
 
     public void setInmueble(Inmueble inmueble) {
 
+	if(inmueble != null) {
 	this.inmueble = inmueble;
-
-	System.out.println(this.inmueble);
 	binderInmueble.readBean(this.inmueble);
-
-	// Show delete button for only Persons already in the database
-	delete.setVisible(inmueble.getId() != null);
-
+	delete.setVisible(true);
+	}else {
+	    this.inmueble = InmuebleService.getInstancia();
+	}
 	setVisible(true);
 	getABMView().setComponentsVisible(false);
 	if (getABMView().isIsonMobile())
@@ -383,6 +382,28 @@ public class InmuebleForm extends FormLayout {
 
     public InmuebleABMView getABMView() {
 	return abmView;
+    }
+
+    public void clearFields() {
+	this.aEstrenar.clear();
+	this.aireAcond.clear();
+	this.aireAcond.clear();
+	this.ambientes.clear();
+	this.calle.clear();
+	this.cJardin.clear();
+	this.clasesInmueble.clear();
+	this.cocheras.clear();
+	this.codPostal.clear();
+	this.comboPropietario.clear();
+	this.cParrilla.clear();
+	this.cPpileta.clear();
+	this.dormitorios.clear();
+	this.localidades.clear();
+	this.nro.clear();
+	this.provincias.clear();
+	this.supCubierta.clear();
+	this.supTotal.clear();
+	this.tiposInmueble.clear();	
     }
 
 }
