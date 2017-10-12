@@ -15,6 +15,7 @@ public class DeleteButton extends CustomComponent {
         private final Button yesButton = new Button("Eliminar", VaadinIcons.CHECK);
         private final Button noButton = new Button("Cancelar", VaadinIcons.CLOSE);
         private final Window window = new Window();
+        private Button button;
         public DeleteButton(String caption, VaadinIcons icon, String popupText, String popupWidth,
                             Button.ClickListener yesListener) {
 
@@ -34,7 +35,7 @@ public class DeleteButton extends CustomComponent {
             final VerticalLayout popupVLayout = new VerticalLayout();
             popupVLayout.setSpacing(true);
             popupVLayout.setMargin(true);
-            final Button button = new Button(caption, icon);
+            button = new Button(caption, icon);
             button.setSizeFull();
             button.addStyleName(ValoTheme.BUTTON_DANGER);
             button.addClickListener(e -> {
@@ -82,5 +83,11 @@ public class DeleteButton extends CustomComponent {
                 yesButton.addClickListener(yesListener);
             }
         }
+       @Override
+    public void addStyleNames(String... styles) {
+      for(String style : styles) {
+	  button.addStyleName(style);
+      }
+    }
     }
 
