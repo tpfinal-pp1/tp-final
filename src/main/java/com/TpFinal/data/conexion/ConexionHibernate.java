@@ -61,6 +61,9 @@ public class ConexionHibernate {
 	public static Session openSession() {
 		return getSession().openSession();
 	}
+	public static void createSessionFactory() {
+	    getSession();
+	}
 	
 	public static void close() {
 		if(sf!= null) {
