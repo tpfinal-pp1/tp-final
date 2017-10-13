@@ -70,11 +70,15 @@ public class PublicacionVentaForm extends FormLayout {
     public PublicacionVentaForm(PublicacionABMView addressbook) {
 		setMargin(true);
 		setHeight("100%");
-	addressbookView = addressbook;
+		setSizeUndefined();
+		addStyleName("v-scrollable");
+
+
+		addressbookView = addressbook;
 	configureComponents();
 	binding();
 	buildLayout();
-	addStyleName("v-scrollable");
+
     }
 
     private void configureComponents() {
@@ -114,8 +118,6 @@ public class PublicacionVentaForm extends FormLayout {
     }
 
     private void buildLayout() {
-		setSizeUndefined();
-		setMargin(true);
 
 	inmuebleSelector.setIcon(VaadinIcons.SEARCH);
 	visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);

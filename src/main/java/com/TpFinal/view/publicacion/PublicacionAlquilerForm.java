@@ -67,7 +67,6 @@ public class PublicacionAlquilerForm extends FormLayout {
         configureComponents();
         binding();
         buildLayout();
-        addStyleName("v-scrollable");
     }
 
     private void configureComponents() {
@@ -106,8 +105,10 @@ public class PublicacionAlquilerForm extends FormLayout {
     }
 
     private void buildLayout() {
-        setMargin(false);
-        setSpacing(false);
+        setMargin(true);
+        setHeight("100%");
+        setSizeUndefined();
+        addStyleName("v-scrollable");
 
         inmuebleSelector.setIcon(VaadinIcons.SEARCH);
         visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
