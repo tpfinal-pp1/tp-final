@@ -248,7 +248,7 @@
 				<artifactId>coveralls-maven-plugin</artifactId>
 				<version>4.3.0</version>
 				<configuration>
-					<repoToken>2sc85anyNM3zIJuFnLpbsCZ3eIkiNAyI4</repoToken>
+					<repoToken>OewS4g8cTtiXjGIWt9IH6kMMjiUKfv32F</repoToken>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -330,15 +330,6 @@
 							<filtering>true</filtering>
 						</webResource>
 					</webResources>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
