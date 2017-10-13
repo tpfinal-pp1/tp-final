@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.contrato.Contrato;
+import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 
@@ -528,7 +529,10 @@ public String toString() {
     public void setContratos(Set<Contrato> contratos) {
         this.contratos = contratos;
     }
-    
+
+	public void removeContrato(Contrato contrato) {
+		this.contratos.remove(contrato);
+	}
     
 
 }

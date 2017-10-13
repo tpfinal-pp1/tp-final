@@ -36,8 +36,22 @@ public class PublicacionService {
     }
 
     public boolean save(Publicacion entidad) {
-        return dao.saveOrUpdate(entidad);
+    	boolean ret=true;
+    	if(entidad!=null) {
+    		if(entidad.getId()!=null) {
+    			Publicacion antigua= dao.findById(entidad.getId());
+    			if(!antigua.getInmueble().equals(entidad.getInmueble())){
+    				antigua.getInmueble().getPublicaciones().remove(antigua);
+    				dao.saveOrUpdate(antigua);
+    			}
+    		}
+    		
+    		 ret= dao.saveOrUpdate(entidad);
+    	}
+       return ret;
     }
+    
+    //ToDelete
     @Deprecated
     public boolean updateBidireccioal(Publicacion p) {
     	boolean ret=true;

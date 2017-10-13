@@ -45,23 +45,56 @@ public class ContratoService {
     }
 
     public boolean saveOrUpdate(Contrato contrato, File doc) {
-	boolean ret = false;
-	if (contrato.getClass().equals(ContratoVenta.class)) {
-	    ContratoVenta c = (ContratoVenta) contrato;
-	    if (doc != null) {
-		ret = daoVenta.saveOrUpdateContrato(c, doc);
-	    } else {
-		ret = daoVenta.saveOrUpdate(c);
-	    }
-	} else {
-	    ContratoAlquiler c = (ContratoAlquiler) contrato;
-	    if (doc != null)
-		ret = daoAlquiler.saveOrUpdateContrato(c, doc);
-	    else
-		ret = daoAlquiler.saveOrUpdate(c);
-	}
-	return ret;
+    	boolean ret=true;
+    	if(contrato!=null) {
+    		if(contrato.getId()!=null) {
+    			if(contrato.getClass().equals(ContratoVenta.class)) {
+        			ContratoVenta cvOriginal = daoVenta.findById(contrato.getId());
+        			updateContratoVenta(contrato, cvOriginal, doc);
+        		}else if(contrato.getClass().equals(ContratoAlquiler.class)) {
+        			ContratoAlquiler caOriginal=daoAlquiler.findById(contrato.getId());
+        		}
+    		}
+    		ret= ret&&saveUpdate(contrato, doc);
+    	}
+    	return ret;
     }
+    
+    private boolean updateContratoVenta(Contrato contrato, ContratoVenta original, File doc) {
+    	boolean ret=true;
+    	ContratoVenta contratov=(ContratoVenta)contrato;
+    	if(!contratov.getPublicacionVenta().equals(original.getPublicacionVenta())) {
+    		original.getPublicacionVenta().setContratoVenta(null);
+    	}
+    	if(!contratov.getInmueble().equals(original.getInmueble())) {
+    		original.getInmueble().removeContrato(original);
+    	}
+    	ret=daoVenta.saveOrUpdateContrato(contratov, doc);
+    	return ret;
+    }
+    
+    private boolean updateContratoAlquiler(Contrato contrato, ContratoVenta original) {
+    	return true;
+    }
+
+	private boolean saveUpdate(Contrato contrato, File doc) {
+		boolean ret = false;
+		if (contrato.getClass().equals(ContratoVenta.class)) {
+		    ContratoVenta c = (ContratoVenta) contrato;
+		    if (doc != null) {
+			ret = daoVenta.saveOrUpdateContrato(c, doc);
+		    } else {
+			ret = daoVenta.saveOrUpdate(c);
+		    }
+		} else {
+		    ContratoAlquiler c = (ContratoAlquiler) contrato;
+		    if (doc != null)
+			ret = daoAlquiler.saveOrUpdateContrato(c, doc);
+		    else
+			ret = daoAlquiler.saveOrUpdate(c);
+		}
+		return ret;
+	}
 
     public boolean delete(Contrato contrato) {
 	boolean ret = false;
