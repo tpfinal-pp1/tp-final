@@ -34,7 +34,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     public static final String pPropietario = "propietario";
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = Inmueble.pIdInmueble)
     private Long idInmueble;
 

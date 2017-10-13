@@ -24,7 +24,7 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
     private Persona persona;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = idr)
     protected Long idRol;
 

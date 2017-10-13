@@ -11,7 +11,7 @@ public class Direccion implements Identificable {
 	public static final String pLocalidad = "localidad";
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idDireccion")
 	private Long idDireccion;
 

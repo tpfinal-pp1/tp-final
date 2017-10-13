@@ -41,7 +41,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	Transaction tx = null;
 	try {
 	    tx = session.beginTransaction();
-	    session.save(entidad);
+	    session.persist(entidad);
 	    tx.commit();
 	    resultado = true;
 	} catch (HibernateException e) {
@@ -85,7 +85,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	Transaction tx = null;
 	try {
 	    tx = session.beginTransaction();
-	    session.update(entidad);
+	    session.merge(entidad);
 	    tx.commit();
 	    ret = true;
 	} catch (HibernateException e) {
