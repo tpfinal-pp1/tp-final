@@ -9,5 +9,4 @@ import org.junit.runners.Suite.SuiteClasses;
 	InmuebleServicePruebasTest.class, InmuebleServiceTest.class,
 	PublicacionServiceTest.class })
 public class AllTests {
-
 }
