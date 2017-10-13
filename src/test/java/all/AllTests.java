@@ -19,5 +19,4 @@ import com.TpFinal.services.AllTestsService;
 @SuiteClasses({ AllTestsDAO.class, AllDTO.class, AllTestsService.class})
 public class AllTests {
 
-
 }
