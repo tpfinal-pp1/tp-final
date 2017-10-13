@@ -13,104 +13,96 @@ import java.time.LocalDate;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
 @Table(name = "publicaciones")
-public abstract class Publicacion implements Identificable,BorradoLogico {
-	
-	public static final String pTipoPublicacion ="tipoPublicacion";
-	
-	@Id
-	@GeneratedValue
-	@Column(name = "idPublicacion")
-	protected Long idPublicacion;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_inmueble")
-	@NotNull
-	protected Inmueble inmueble;
-	
-	@Column(name = "fecha_publicacion")
-	protected LocalDate fechaPublicacion;
-	
-	@Enumerated(EnumType.STRING)
-	@Column (name = Publicacion.pTipoPublicacion)
-	protected TipoPublicacion tipoPublicacion;
+public abstract class Publicacion implements Identificable, BorradoLogico {
 
-	@Enumerated(EnumType.STRING)
-	@Column (name = "estado_publicacion")
-	protected EstadoPublicacion estadoPublicacion;
+    public static final String pTipoPublicacion = "tipoPublicacion";
 
-	public static String getpTipoPublicacion() {
-		return pTipoPublicacion;
+    @Id
+    @GeneratedValue
+    @Column(name = "idPublicacion")
+    protected Long idPublicacion;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_inmueble")
+    @NotNull
+    protected Inmueble inmueble;
+
+    @Column(name = "fecha_publicacion")
+    protected LocalDate fechaPublicacion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = Publicacion.pTipoPublicacion)
+    protected TipoPublicacion tipoPublicacion;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_publicacion")
+    protected EstadoPublicacion estadoPublicacion;
+
+    public static String getpTipoPublicacion() {
+	return pTipoPublicacion;
+    }
+
+    @Enumerated(EnumType.STRING)
+    protected EstadoRegistro estadoRegistro;
+
+    @Override
+    public Long getId() {
+	return idPublicacion;
+    }
+
+    @SuppressWarnings("unused")
+    private void setIdPublicacion(Long idPublicacion) {
+	this.idPublicacion = idPublicacion;
+    }
+
+    public Inmueble getInmueble() {
+	return inmueble;
+    }
+
+    public void setInmueble(Inmueble inmueble) {
+	if (inmueble != null) {
+	    this.inmueble = inmueble;
 	}
+    }
 
-	@Enumerated(EnumType.STRING)
-	protected EstadoRegistro estadoRegistro;
+    public LocalDate getFechaPublicacion() {
+	return fechaPublicacion;
+    }
 
+    public void setFechaPublicacion(LocalDate fechaPublicacion) {
+	this.fechaPublicacion = fechaPublicacion;
+    }
 
-	@Override
-	public Long getId() {
-		return idPublicacion;
-	}
-	
-	@SuppressWarnings("unused")
-	private void setIdPublicacion(Long idPublicacion) {
-		this.idPublicacion = idPublicacion;
-	}
+    public TipoPublicacion getTipoPublicacion() {
+	return tipoPublicacion;
+    }
 
-	public Inmueble getInmueble() {
-		return inmueble;
-	}
+    public void setTipoPublicacion(TipoPublicacion tipoPublicacion) {
+	this.tipoPublicacion = tipoPublicacion;
+    }
 
-	public void setInmueble(Inmueble inmueble) {
-	if(inmueble!=null) {
-		this.inmueble = inmueble;
-		this.inmueble.addPublicacion(this);
-	}
-	else{
-		if(this.inmueble!=null) {
-			this.inmueble.removePublicacion(this);
-			this.inmueble = null;
-		}
-	}
-		}
+    public EstadoPublicacion getEstadoPublicacion() {
+	return estadoPublicacion;
+    }
 
-	public LocalDate getFechaPublicacion() {
-		return fechaPublicacion;
-	}
+    public void setEstadoPublicacion(EstadoPublicacion estadoPublicacion) {
+	this.estadoPublicacion = estadoPublicacion;
+    }
 
-	public void setFechaPublicacion(LocalDate fechaPublicacion) {
-		this.fechaPublicacion = fechaPublicacion;
-	}
+    @Override
+    public String toString() {
+	return inmueble + " " + tipoPublicacion;
+    }
 
-	public TipoPublicacion getTipoPublicacion() {
-		return tipoPublicacion;
-	}
+    @Override
+    public void setEstadoRegistro(EstadoRegistro estado) {
+	this.estadoRegistro = estado;
 
-	public void setTipoPublicacion(TipoPublicacion tipoPublicacion) {
-		this.tipoPublicacion = tipoPublicacion;
-	}
+    }
 
-	public EstadoPublicacion getEstadoPublicacion() { return estadoPublicacion; }
-
-	public void setEstadoPublicacion(EstadoPublicacion estadoPublicacion) { this.estadoPublicacion = estadoPublicacion; }
-
-
-	@Override
-	public String toString() {
-		return inmueble+" "+tipoPublicacion;
-	}
-	
-	@Override
-	public void setEstadoRegistro(EstadoRegistro estado) {
-	    this.estadoRegistro = estado;
-	    
-	}
-
-	@Override
-	public EstadoRegistro getEstadoRegistro() {
-	    return estadoRegistro;
-	}
-	
-	
-	
+    @Override
+    public EstadoRegistro getEstadoRegistro() {
+	return estadoRegistro;
+    }
 
 }

@@ -123,6 +123,27 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 		return ret;
 	    
 	}
+	
+	@Override
+	public boolean merge(T entidad) {
+	    boolean ret = false;
+		Session session = ConexionHibernate.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.merge(entidad);
+			tx.commit();
+			ret = true;
+		} catch (HibernateException e) {
+			System.err.println("Error al guardar");
+			e.printStackTrace();
+			tx.rollback();
+		} finally {
+			session.close();
+		}
+		return ret;
+	    
+	}
 
 
 

@@ -24,5 +24,6 @@ public interface DAO<T extends Identificable & BorradoLogico> {
 	default public List<T> findByCriteria(DetachedCriteria criteria) {
         throw new RuntimeException("Metodo FindByCriteria no Implementado!");
     }
-	public boolean saveOrUpdate(T entidad); 
+	public boolean saveOrUpdate(T entidad);
+	boolean merge(T entidad); 
 }
