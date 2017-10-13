@@ -132,7 +132,7 @@ public class InmuebleForm extends FormLayout {
     private void setNewPropietario() {
 	this.persona = new Persona();
 	persona.addRol(Rol.Propietario);
-	Propietario propietario = persona.getPropietario();
+	Propietario propietario = (Propietario)persona.getRol(Rol.Propietario);
 	propietario.addInmueble(this.inmueble);
 
 	new PersonaFormWindow(this.persona) {

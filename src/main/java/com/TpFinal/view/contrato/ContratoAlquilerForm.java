@@ -151,7 +151,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		    Persona inquilino = (Persona) valueChangeEvent.getValue();
 		    if (inquilino != null) {
 			if (inquilino.getRol(Rol.Inquilino) != null) {
-			    contratoAlquiler.setInquilinoContrato(inquilino.getInquilino());
+			    contratoAlquiler.setInquilinoContrato((Inquilino)inquilino.getRol(Rol.Inquilino));
 			} else {
 			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
 				    .setPersona(inquilino).build();

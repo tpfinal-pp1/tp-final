@@ -80,24 +80,6 @@ public class Persona implements Identificable, BorradoLogico {
 	this.infoAdicional = infoAdicional;
     }
 
-	public Inquilino getInquilino() {
-		for (RolPersona rol : roles) {
-			if (rol instanceof Inquilino) {
-				return (Inquilino) rol;
-			}
-		}
-		return null;
-	}
-
-	public Propietario getPropietario() {
-		for (RolPersona rol : roles) {
-			if (rol instanceof Propietario) {
-				return (Propietario) rol;
-			}
-		}
-		return null;
-	}
-
    @Override
    public String toString(){
     	return this.getNombre()+" "+this.getApellido();
