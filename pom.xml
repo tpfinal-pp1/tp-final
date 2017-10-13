@@ -136,12 +136,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-testbench</artifactId>
-			<version>4.0.3</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-compatibility-client</artifactId>
 			<version>${vaadin.version}</version>
 			<scope>provided</scope>
