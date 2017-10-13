@@ -346,4 +346,8 @@ public class Persona implements Identificable, BorradoLogico {
 
     }
 
+	public void removeRol(RolPersona r) {
+		this.roles.remove(r);
+	}
+
 }

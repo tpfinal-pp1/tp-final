@@ -12,6 +12,7 @@ import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.RolPersona;
 import com.TpFinal.data.dto.publicacion.Rol;
 
 public class PersonaService {
@@ -22,9 +23,26 @@ public class PersonaService {
 	}
 	
 	public boolean saveOrUpdate(Persona p) {
-		if(p.getRoles()!=null || p.getRoles().size()!=0) 
-			p.getRoles().forEach(rol -> rol.setPersona(p));
-		return dao.saveOrUpdate(p);
+		boolean ret=true;
+	
+		if(p!=null && p.getId()!=null) {
+			Persona persistida=dao.findById(p.getId());
+			if(persistida!=null) {
+				if(p.getRoles()!=null || p.getRoles().size()!=0) {
+					//borro los roles que no estan en la nueva persona
+					persistida.getRoles().forEach(r -> {
+						if(!p.contiene(r)) {
+							r.setPersona(null);
+						}
+					});
+					dao.saveOrUpdate(persistida);
+				}
+			}
+		}
+		//agrego los roles nuevos
+		p.getRoles().forEach(rol -> rol.setPersona(p));
+		ret=ret&& dao.saveOrUpdate(p);
+		return ret;
 	}
 	
 	public boolean delete(Persona p) {
