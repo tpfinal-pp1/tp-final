@@ -103,4 +103,46 @@ public abstract class Publicacion implements Identificable, BorradoLogico {
 	return estadoRegistro;
     }
 
+    @Override
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((estadoPublicacion == null) ? 0 : estadoPublicacion.hashCode());
+	result = prime * result + ((estadoRegistro == null) ? 0 : estadoRegistro.hashCode());
+	result = prime * result + ((fechaPublicacion == null) ? 0 : fechaPublicacion.hashCode());
+	result = prime * result + ((idPublicacion == null) ? 0 : idPublicacion.hashCode());
+	result = prime * result + ((tipoPublicacion == null) ? 0 : tipoPublicacion.hashCode());
+	return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (!(obj instanceof Publicacion))
+	    return false;
+	Publicacion other = (Publicacion) obj;
+	if (estadoPublicacion != other.estadoPublicacion)
+	    return false;
+	if (estadoRegistro != other.estadoRegistro)
+	    return false;
+	if (fechaPublicacion == null) {
+	    if (other.fechaPublicacion != null)
+		return false;
+	} else if (!fechaPublicacion.equals(other.fechaPublicacion))
+	    return false;
+	if (idPublicacion == null) {
+	    if (other.idPublicacion != null)
+		return false;
+	} else if (!idPublicacion.equals(other.idPublicacion))
+	    return false;
+	if (tipoPublicacion != other.tipoPublicacion)
+	    return false;
+	return true;
+    }
+    
+    
+
 }

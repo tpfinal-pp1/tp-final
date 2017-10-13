@@ -90,7 +90,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     @JoinColumn(name = "id_proppietario")
     private Propietario propietario;
 
-    @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},orphanRemoval = true, fetch = FetchType.EAGER)
     protected Set<Publicacion> publicaciones = new HashSet<>();
     
     @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
