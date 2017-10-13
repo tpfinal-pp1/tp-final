@@ -17,11 +17,8 @@ public enum EstadoInmueble {Alquilado,EnAlquiler,EnVenta,NoPublicado,Vendido;
 	case Vendido:
 	    ret = "Vendido";
 	    break;	
-	case NoPublicado:
-	    ret = "No Publicado";
-	    break;	
 	default:
-	    ret = "-";
+	    ret = "";
 	    break;
 	}
 	 return ret;

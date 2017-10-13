@@ -11,7 +11,7 @@ import com.TpFinal.utils.GeneradorDeDatos;
  * Application Lifecycle Listener implementation class initListener
  *
  */
-//@WebListener
+@WebListener
 public class initListener implements ServletContextListener {
 
     /**
