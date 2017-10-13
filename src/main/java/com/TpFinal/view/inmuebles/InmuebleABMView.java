@@ -155,6 +155,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	private void configureNewItem() {
 	    newItem.addClickListener(e -> {
 		grid.asSingleSelect().clear();
+		inmuebleForm.clearFields();
 		inmuebleForm.setInmueble(null);
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -205,15 +206,15 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	    grid.addComponentColumn(inmueble -> {
 		Button edit = new Button(VaadinIcons.EDIT);
-		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_FRIENDLY);
+		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
 		edit.addClickListener(e -> {
 		    inmuebleForm.setInmueble(inmueble);
 
 		});
 
 		Button del = new Button(VaadinIcons.TRASH);
-		del.addClickListener(e -> {
-		    DialogConfirmacion dialog=new DialogConfirmacion("Eliminar",
+		del.addClickListener(click -> {
+		    DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
 			    VaadinIcons.WARNING,
 			    "¿Esta seguro que desea Eliminar?",
 			    "100px",
@@ -221,12 +222,19 @@ public class InmuebleABMView extends DefaultLayout implements View {
 				inmuebleService.delete(inmueble);
 				showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
 					inmueble.getPropietario().toString());
-				updateList();				
+				updateList();
 			    });
-		    
+
 		});
 		del.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_DANGER);
-		CssLayout hl = new CssLayout(edit, del);
+
+		Button verFotos = new Button(VaadinIcons.PICTURE);
+		verFotos.addClickListener(click -> {
+		    Notification.show("A Implementar: Abrir Pantalla para ver fotos",
+			    Notification.Type.WARNING_MESSAGE);
+		});
+		verFotos.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
+		CssLayout hl = new CssLayout(edit, del, verFotos);
 		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		return hl;
 	    }).setCaption("Acciones");
