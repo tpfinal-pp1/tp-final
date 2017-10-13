@@ -26,5 +26,28 @@ public enum ClaseInmueble {
 	}
 	return ret;
     }
+    
+    @Override
+    public String toString() {
+	String ret;
+	switch (this) {
+	case FondoDeComercio:
+	    ret = "Fondo de Comercio";	    
+	    break;
+	case TerrenoOLote:
+	    ret = "Terreno o lote";	    
+	    break;	
+	case DepositoGalpon:
+	    ret = "Depósito o Galpon";
+	    break;
+	case OtroInmueble:
+	    ret = "Otro Imueble";
+	    break;    
+	default:
+	    ret = super.toString();
+	    break;
+	}
+	return ret;
+    }
 
 }
