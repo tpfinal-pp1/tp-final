@@ -6,6 +6,7 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DeleteButton;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -187,7 +188,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		}
 		return ret;
 	    }).setCaption("Dirección");
-	    
+
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
@@ -210,18 +211,22 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		});
 
-		DeleteButton delete = new DeleteButton("",
-			VaadinIcons.TRASH, "¿Esta seguro que desea eliminar?", "20%", new Button.ClickListener() {
-			    @Override
-			    public void buttonClick(Button.ClickEvent clickEvent) {
+		Button del = new Button(VaadinIcons.TRASH);
+		del.addClickListener(e -> {
+		    DialogConfirmacion dialog=new DialogConfirmacion("Eliminar",
+			    VaadinIcons.WARNING,
+			    "¿Esta seguro que desea Eliminar?",
+			    "100px",
+			    confirmacion -> {
 				inmuebleService.delete(inmueble);
 				showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
 					inmueble.getPropietario().toString());
-				updateList();
-			    }
-			});
-		delete.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_DANGER);
-		CssLayout hl = new CssLayout(edit, delete);
+				updateList();				
+			    });
+		    
+		});
+		del.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_DANGER);
+		CssLayout hl = new CssLayout(edit, del);
 		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		return hl;
 	    }).setCaption("Acciones");

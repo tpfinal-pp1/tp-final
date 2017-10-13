@@ -32,5 +32,10 @@ public enum DuracionContrato {
 
 	return ret;
     }
+    
+    @Override 
+    public String toString() {
+	return this.getDescripcion();
+    }
 
 }
