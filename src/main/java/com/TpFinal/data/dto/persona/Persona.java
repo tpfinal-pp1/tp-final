@@ -52,32 +52,21 @@ public class Persona implements Identificable, BorradoLogico {
     private EstadoRegistro estadoRegistro;
 
     public Persona() {
-	super();
-	setEstadoRegistro(EstadoRegistro.ACTIVO);
+		super();
+		setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     private Persona(Builder b) {
-	this.id = b.id;
-	this.nombre = b.nombre;
-	this.apellido = b.apellido;
-	this.DNI = b.DNI;
-	this.mail = b.mail;
-	this.telefono = b.telefono;
-	this.telefono2 = b.telefono2;
-	this.infoAdicional = b.infoAdicional;
-	this.roles = b.roles;
-	this.estadoRegistro = EstadoRegistro.ACTIVO;
-    }
-
-    public Persona(String nombre, String apellido, String mail, String telefono, String telefono2, String DNI,
-	    String infoAdicional) {
-	this.nombre = nombre;
-	this.apellido = apellido;
-	this.mail = mail;
-	this.telefono = telefono;
-	this.DNI = DNI;
-	this.telefono2 = telefono2;
-	this.infoAdicional = infoAdicional;
+		this.id = b.id;
+		this.nombre = b.nombre;
+		this.apellido = b.apellido;
+		this.DNI = b.DNI;
+		this.mail = b.mail;
+		this.telefono = b.telefono;
+		this.telefono2 = b.telefono2;
+		this.infoAdicional = b.infoAdicional;
+		this.roles = b.roles;
+		this.estadoRegistro = EstadoRegistro.ACTIVO;
     }
 
    @Override
