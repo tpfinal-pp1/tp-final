@@ -220,8 +220,10 @@ public class Persona implements Identificable, BorradoLogico {
     	if(contiene(rol))
     		ret= false;
     	else {
-    		if(rol.equals(Rol.Inquilino))
+    		if(rol.equals(Rol.Inquilino)) {
     			this.roles.add(new Inquilino());
+    		}
+    			
     		if(rol.equals(Rol.Propietario))
     			this.roles.add(new Propietario());
     		ret=true;
@@ -232,7 +234,7 @@ public class Persona implements Identificable, BorradoLogico {
     public RolPersona getRol(Rol rol) {
     	List<RolPersona> ret=new ArrayList<>();
     	this.roles.forEach(r -> {
-    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
+    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class) && r.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)) {
     			ret.add(r);
     		} else if(rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
     			ret.add(r);
