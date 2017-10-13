@@ -1,5 +1,6 @@
 package com.TpFinal.view;
 
+import com.TpFinal.view.duracionContratos.*;
 import com.TpFinal.view.contrato.ContratoABMView;
 import com.TpFinal.view.dummy.dashboard.DashboardView;
 import com.TpFinal.view.dummy.reports.ReportsView;
@@ -17,7 +18,8 @@ public enum DashboardViewType {
     PERSONAS("personas",PersonaABMView.class, VaadinIcons.USER, false),
     INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
     OPERACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
-    CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false)/*,
+    CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
+    DURACIONCONTRATOS("duracioncontratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false)/*,
     REPORTES("reportes", ReportsView.class, VaadinIcons.FILE, false),
     SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false)*/;
 
