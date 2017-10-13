@@ -323,6 +323,7 @@ public class InmuebleForm extends FormLayout {
 	delete.setVisible(true);
 	}else {
 	    this.inmueble = InmuebleService.getInstancia();
+	    delete.setVisible(false);
 	}
 	setVisible(true);
 	getABMView().setComponentsVisible(false);
@@ -361,11 +362,11 @@ public class InmuebleForm extends FormLayout {
 
 	} catch (ValidationException e) {
 	    e.printStackTrace();
-	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo");
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo", Notification.Type.WARNING_MESSAGE);
 	    return;
 	} catch (Exception e) {
 	    e.printStackTrace();
-	    Notification.show("Error: " + e.toString());
+	    Notification.show("Error: " + e.toString(), Notification.Type.WARNING_MESSAGE);
 	}
 
 	abmView.getController().updateList();
