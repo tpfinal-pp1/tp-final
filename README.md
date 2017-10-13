@@ -1,7 +1,5 @@
 
-#  Inmobi [![Coverage Status](https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg?branch=master)](https://coveralls.io/github/tpfinal-pp1/tp-final?branch=master)
-
-{<img src="https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg" alt="Coverage Status" />}[https://coveralls.io/github/tpfinal-pp1/tp-final]
+#  Inmobi <img src="https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg" alt="Coverage Status" />
 
 Registrar los bugs acá:
 https://docs.google.com/spreadsheets/d/1XNNqazp9nD1wKexRnw6_vUSLYAwQIKNnDmMNPK4CACA/edit#gid=0
