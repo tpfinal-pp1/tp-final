@@ -11,7 +11,8 @@ import javax.validation.constraints.NotNull;
 import java.util.*;
 
 @Entity
-@Table(name = "personas")
+@Table(name = "personas", uniqueConstraints=
+@UniqueConstraint(columnNames={"DNI"}))
 public class Persona implements Identificable, BorradoLogico {
 
     public static final String idPersona = "idPersona";
@@ -35,6 +36,7 @@ public class Persona implements Identificable, BorradoLogico {
     @Column(name = mailPersona)
     private String mail = "";
     @Column(name = DNIPersona)
+    @NotNull
     private String DNI = "";
     @Column(name = telefonoPersona)
     private String telefono = "";
@@ -78,8 +80,6 @@ public class Persona implements Identificable, BorradoLogico {
 	this.infoAdicional = infoAdicional;
     }
 
-
-
 	public Inquilino getInquilino() {
 		for (RolPersona rol : roles) {
 			if (rol instanceof Inquilino) {
@@ -102,24 +102,8 @@ public class Persona implements Identificable, BorradoLogico {
    public String toString(){
     	return this.getNombre()+" "+this.getApellido();
    }
-
-    /*@Override
-    public String toString() {
-	String rols = "";
-	for (RolPersona rol : this.roles) {
-	    rols = rols + rol.giveMeYourRole().toString() + " ,";
-
-	}
-	return "{" +
-		"nombre='" + nombre + '\'' +
-		", apellido='" + apellido + '\'' +
-		", DNI='" + DNI + '\'' +
-		", roles=" + rols +
-		'}';
-    }
-*/
-    @Override
-    public boolean equals(Object o) {
+   
+    public boolean isSame(Object o) {
 	if (this == o)
 	    return true;
 	if (o == null || getClass() != o.getClass())
@@ -143,18 +127,31 @@ public class Persona implements Identificable, BorradoLogico {
     }
 
     @Override
-    public int hashCode() {
-	int result = nombre != null ? nombre.hashCode() : 0;
-	result = 31 * result + (apellido != null ? apellido.hashCode() : 0);
-	result = 31 * result + (mail != null ? mail.hashCode() : 0);
-	result = 31 * result + (DNI != null ? DNI.hashCode() : 0);
-	result = 31 * result + (telefono != null ? telefono.hashCode() : 0);
-	result = 31 * result + (telefono2 != null ? telefono2.hashCode() : 0);
-	result = 31 * result + (infoAdicional != null ? infoAdicional.hashCode() : 0);
-	return result;
-    }
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((DNI == null) ? 0 : DNI.hashCode());
+		return result;
+	}
 
-    public String getNombre() {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Persona other = (Persona) obj;
+		if (DNI == null) {
+			if (other.DNI != null)
+				return false;
+		} else if (!DNI.equals(other.DNI))
+			return false;
+		return true;
+	}
+
+	public String getNombre() {
 	return nombre;
     }
 
@@ -242,6 +239,64 @@ public class Persona implements Identificable, BorradoLogico {
 	this.roles = roles;
     }
 
+    public void addRol(RolPersona rol) {
+		roles.add(rol);
+		rol.setPersona(this);
+    }
+    
+    public boolean addRol(Rol rol) {
+    	boolean ret;
+    	if(contiene(rol))
+    		ret= false;
+    	else {
+    		if(rol.equals(Rol.Inquilino))
+    			this.roles.add(new Inquilino());
+    		if(rol.equals(Rol.Propietario))
+    			this.roles.add(new Propietario());
+    		ret=true;
+    	}
+    	return ret;
+    }
+    
+    public RolPersona getRol(Rol rol) {
+    	List<RolPersona> ret=new ArrayList<>();
+    	this.roles.forEach(r -> {
+    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
+    			ret.add(r);
+    		} else if(rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
+    			ret.add(r);
+    		}
+    	});
+    	return ret.size()!= 0 ?ret.get(0) : null;
+    }
+    
+    public List<Rol>giveMeYourRoles(){
+    	List<Rol>roles=new ArrayList<>();
+    	this.roles.forEach(r ->{
+    	if(r.getClass().equals(Inquilino.class))
+    		roles.add(Rol.Inquilino);
+    	else if(r.getClass().equals(Propietario.class))
+    		roles.add(Rol.Propietario);
+    	});
+    	return roles;
+    }
+    
+    public String roles() {
+    	String ret="";
+    	for(Rol r : giveMeYourRoles()) {
+    		ret+=r.toString()+" ";
+    	}
+    	return ret;
+    }
+    
+    public boolean contiene(Rol rol) {
+    	boolean ret=false;
+    	for(Rol r:giveMeYourRoles()) {
+    		ret=ret||r.equals(rol);
+    	}
+    	return ret;
+    }
+    
     public static class Builder {
 		private Long id;
 		private String nombre;
@@ -303,64 +358,6 @@ public class Persona implements Identificable, BorradoLogico {
 		    return new Persona(this);
 		}
 
-    }
-
-    public void addRol(RolPersona rol) {
-		roles.add(rol);
-		rol.setPersona(this);
-    }
-    
-    public boolean addRol(Rol rol) {
-    	boolean ret;
-    	if(contiene(rol))
-    		ret= false;
-    	else {
-    		if(rol.equals(Rol.Inquilino))
-    			this.roles.add(new Inquilino());
-    		if(rol.equals(Rol.Propietario))
-    			this.roles.add(new Propietario());
-    		ret=true;
-    	}
-    	return ret;
-    }
-    
-    public RolPersona getRol(Rol rol) {
-    	List<RolPersona> ret=new ArrayList<>();
-    	this.roles.forEach(r -> {
-    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
-    			ret.add(r);
-    		} else if(rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
-    			ret.add(r);
-    		}
-    	});
-    	return ret.size()!= 0 ?ret.get(0) : null;
-    }
-    
-    public List<Rol>giveMeYourRoles(){
-    	List<Rol>roles=new ArrayList<>();
-    	this.roles.forEach(r ->{
-    	if(r.getClass().equals(Inquilino.class))
-    		roles.add(Rol.Inquilino);
-    	else if(r.getClass().equals(Propietario.class))
-    		roles.add(Rol.Propietario);
-    	});
-    	return roles;
-    }
-    
-    public String roles() {
-    	String ret="";
-    	for(Rol r : giveMeYourRoles()) {
-    		ret+=r.toString()+" ";
-    	}
-    	return ret;
-    }
-    
-    public boolean contiene(Rol rol) {
-    	boolean ret=false;
-    	for(Rol r:giveMeYourRoles()) {
-    		ret=ret||r.equals(rol);
-    	}
-    	return ret;
     }
 
 }

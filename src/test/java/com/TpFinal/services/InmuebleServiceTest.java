@@ -12,7 +12,9 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
+import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
@@ -30,6 +32,7 @@ public class InmuebleServiceTest {
 	List<Inmueble>inmuebles=new ArrayList<>();
 	List<Persona>personas= new ArrayList<>();
 	DAOPersona daoPer;
+	DAOInmueble daoInm;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
@@ -39,30 +42,31 @@ public class InmuebleServiceTest {
 	@Before
 	public void setUp() throws Exception {
 		service= new InmuebleService();
-		service.readAll().forEach(i -> service.delete(i));
+		daoInm=new DAOInmuebleImpl();
+		daoInm.readAll().forEach(i -> daoInm.delete(i));
 		daoPer=new DAOPersonaImpl();
-		daoPer.readAll().forEach(p -> daoPer.logicalDelete(p));
+		daoPer.readAll().forEach(p -> daoPer.delete(p));
 		inmuebles.clear();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		service.readAll().forEach(i -> service.delete(i));
-		daoPer.readAll().forEach(p -> daoPer.logicalDelete(p));
+		daoInm.readAll().forEach(i -> daoInm.delete(i));
+		daoPer.readAll().forEach(p -> daoPer.delete(p));
 	}
 
 	@Test
 	public void test() {
 		Propietario pro= new Propietario();
 		Persona per = instancia("1");
-		pro.setPersona(per);
 		per.addRol(pro);
 		//guardo la persona y su rol
 		daoPer.save(per);
 		
 		Inmueble in = unInmuebleNoPublicado();
 		
-		in.setPropietario(pro);
+		//in.setPropietario(pro);
+		pro=daoPer.readAllActives().get(0).getPropietario();
 		pro.addInmueble(in);
 		assertEquals(1, pro.getInmuebles().size());
 		//guardo el inmueble
@@ -70,7 +74,7 @@ public class InmuebleServiceTest {
 		
 		Inmueble inm = service.readAll().get(0);
 		inm.setPropietario(null);
-		assertTrue(service.updateBidireccional(inm));
+		assertTrue(service.save(inm));
 		
 
 		assertEquals(null, service.readAll().get(0).getPropietario());

@@ -14,8 +14,12 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
+import com.TpFinal.data.dao.DAOPublicacionImpl;
+import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.data.dao.interfaces.DAOPublicacion;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.Direccion;
@@ -36,6 +40,8 @@ public class PublicacionServiceTest {
 	List<Persona>personas= new ArrayList<>();
 	DAOPersona daoPer;
 	PublicacionService servicePub;
+	DAOInmueble daoInm;
+	DAOPublicacion daoPub;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception{
@@ -46,37 +52,38 @@ public class PublicacionServiceTest {
 	public void setUp() throws Exception {
 		serviceInm= new InmuebleService();
 		servicePub=new PublicacionService();
-		servicePub.readAll().forEach(p->servicePub.delete(p));
-		serviceInm.readAll().forEach(i -> serviceInm.delete(i));
+		daoPub=new DAOPublicacionImpl();
+		daoPub.readAll().forEach(p -> daoPub.delete(p));
+		daoInm=new DAOInmuebleImpl();
+		daoInm.readAll().forEach(i -> daoInm.delete(i));
 		daoPer=new DAOPersonaImpl();
-		daoPer.readAll().forEach(p -> daoPer.logicalDelete(p));
+		daoPer.readAll().forEach(p -> daoPer.delete(p));
 		inmuebles.clear();
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		serviceInm.readAll().forEach(i -> serviceInm.delete(i));
-		daoPer.readAll().forEach(p -> daoPer.logicalDelete(p));
-		servicePub.readAll().forEach(p->servicePub.delete(p));
+		daoPub.readAll().forEach(p -> daoPub.delete(p));
 	}
 
 	@Test
 	public void test() {
 		Propietario pro= new Propietario();
 		Persona per = instancia("1");
-		pro.setPersona(per);
 		per.addRol(pro);
+		
 		//guardo la persona y su rol
 		daoPer.save(per);
 		
 		Inmueble in = unInmuebleNoPublicado();
 		
-		in.setPropietario(pro);
+		//in.setPropietario(pro);
+		pro=daoPer.readAll().get(0).getPropietario();
 		pro.addInmueble(in);
 		assertEquals(1, pro.getInmuebles().size());
 		//guardo el inmueble
 		assertTrue(serviceInm.saveOrUpdate(in));
-		
+		in=daoInm.readAll().get(0);
 		PublicacionVenta pv = instanciaVenta(in);
 		PublicacionAlquiler pa = instanciaAlquiler(in);
 		pv.setInmueble(in);
@@ -95,8 +102,8 @@ public class PublicacionServiceTest {
 		pv.setInmueble(null);
 
 
-		servicePub.updateBidireccioal(pa);
-		servicePub.updateBidireccioal(pv);
+		servicePub.save(pa);
+		servicePub.save(pv);
 		
 		pa=(PublicacionAlquiler)servicePub.readAll().get(0);
 		pv=(PublicacionVenta)servicePub.readAll().get(1);
