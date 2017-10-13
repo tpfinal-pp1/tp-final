@@ -131,7 +131,7 @@ public class InmuebleForm extends FormLayout {
 
     private void setNewPropietario() {
 	this.persona = new Persona();
-	persona.addRol(Rol.Propietario);
+	persona.addRol(new Propietario());
 	Propietario propietario = (Propietario)persona.getRol(Rol.Propietario);
 	propietario.addInmueble(this.inmueble);
 
@@ -255,7 +255,7 @@ public class InmuebleForm extends FormLayout {
 	    if (persona != null) {
 		Propietario rolP;
 		if (persona.contiene(Rol.Propietario) == false) {
-		    persona.addRol(Rol.Propietario);
+		    persona.addRol(new Propietario());
 		}
 		rolP = (Propietario) persona.getRol(Rol.Propietario);
 		rolP.addInmueble(inmueble);

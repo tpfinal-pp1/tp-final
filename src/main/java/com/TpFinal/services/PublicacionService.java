@@ -96,7 +96,7 @@ public class PublicacionService {
 
      static PublicacionAlquiler InstanciaPublicacionAlquiler() {
         Persona p= new Persona();
-        p.addRol(Rol.Propietario);
+        p.addRol(new Propietario());
 
       return  new PublicacionAlquiler.Builder()
                  .setValorCuota(new BigDecimal(0))
@@ -133,7 +133,7 @@ public class PublicacionService {
 
     static  PublicacionVenta InstanciaPublicacionVenta(){
         Persona p= new Persona();
-        p.addRol(Rol.Propietario);
+        p.addRol(new Propietario());
         PublicacionVenta PV=new PublicacionVenta.Builder()
                 .setPrecio(new BigDecimal(0))
                 .setFechaPublicacion(LocalDate.now())

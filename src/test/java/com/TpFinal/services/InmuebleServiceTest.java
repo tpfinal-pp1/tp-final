@@ -59,6 +59,7 @@ public class InmuebleServiceTest {
 	public void test() {
 		Propietario pro= new Propietario();
 		Persona per = instancia("1");
+		pro.setPersona(per);
 		per.addRol(pro);
 		//guardo la persona y su rol
 		daoPer.save(per);

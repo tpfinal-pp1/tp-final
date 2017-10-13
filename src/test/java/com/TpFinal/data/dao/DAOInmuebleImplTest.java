@@ -860,7 +860,9 @@ public class DAOInmuebleImplTest {
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setPersona(p)
 		.build();
+	propietario.setPersona(p);
 	p.addRol(propietario);
+	
 	DAOPersonaImpl daop = new DAOPersonaImpl();
 //	Debe existir primero una persona en la bd a la que asignarle el rol de propietario.
 	daop.saveOrUpdate(p);

@@ -210,9 +210,14 @@ public class Persona implements Identificable, BorradoLogico {
 	this.roles = roles;
     }
 
-    public void addRol(RolPersona rol) {
-		roles.add(rol);
-		rol.setPersona(this);
+    public boolean addRol(RolPersona rol) {
+    	boolean ret=true;
+    	if(contiene(rol))
+    		ret= false;
+    	else {
+    		this.roles.add(rol);
+    	}
+    	return ret;
     }
     
     public boolean addRol(Rol rol) {
@@ -234,7 +239,7 @@ public class Persona implements Identificable, BorradoLogico {
     public RolPersona getRol(Rol rol) {
     	List<RolPersona> ret=new ArrayList<>();
     	this.roles.forEach(r -> {
-    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class) && r.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)) {
+    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
     			ret.add(r);
     		} else if(rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
     			ret.add(r);
@@ -269,6 +274,14 @@ public class Persona implements Identificable, BorradoLogico {
     	}
     	return ret;
     }
+    
+    public boolean contiene(RolPersona rol) {
+    	boolean ret=false;
+    	for(RolPersona r:this.roles) {
+    		ret=ret||r.getClass().equals(rol.getClass());
+    	}
+    	return ret;
+    } 
     
     public static class Builder {
 		private Long id;

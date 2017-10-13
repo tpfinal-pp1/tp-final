@@ -26,6 +26,7 @@ import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.ProvinciaService;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
@@ -172,6 +173,7 @@ public class GeneradorDeDatos {
     private static Inquilino asignarRolInquilinoA(Persona inquilino) {
 	Inquilino inq = new Inquilino();
 	inq.setEstadoRegistro(EstadoRegistro.ACTIVO);
+	inq.setPersona(inquilino);
 	inquilino.addRol(inq);
 	return inq;
     }
