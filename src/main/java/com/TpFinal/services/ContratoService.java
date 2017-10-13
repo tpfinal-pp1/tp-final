@@ -73,7 +73,9 @@ public class ContratoService {
     	return ret;
     }
     
-    private boolean updateContratoAlquiler(Contrato contrato, ContratoVenta original)
+    private boolean updateContratoAlquiler(Contrato contrato, ContratoVenta original) {
+    	return true;
+    }
 
 	private boolean saveUpdate(Contrato contrato, File doc) {
 		boolean ret = false;
