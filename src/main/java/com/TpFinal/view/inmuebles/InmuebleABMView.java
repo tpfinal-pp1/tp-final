@@ -1,11 +1,9 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.DeleteButton;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -15,12 +13,7 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
@@ -31,7 +24,7 @@ import java.util.List;
 public class InmuebleABMView extends DefaultLayout implements View {
 
     private TextField filter = new TextField();
-    private Grid<Inmueble> grid = new Grid<>();
+    private Grid<Inmueble> grid = new Grid<>(Inmueble.class);
     private Button newItem = new Button("Nuevo");
     private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     private HorizontalLayout mainLayout;
@@ -43,6 +36,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	controller.configureComponents();
+
 
     }
 
@@ -72,7 +66,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
 	filter.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
+	//clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
 
@@ -104,6 +98,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	if (this.inmuebleForm.isVisible()) {
 	    newItem.focus();
 	    inmuebleForm.cancel();
+
 	}
 	filter.clear();
     }
@@ -145,95 +140,54 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	private InmuebleService inmuebleService = new InmuebleService();
 
 	public void configureComponents() {
-	    configureFilter();
-	    configureNewItem();
-	    configureGrid();
-	    updateList();
-	}
 
-	private void configureNewItem() {
-	    newItem.addClickListener(e -> {
-		grid.asSingleSelect().clear();
-		inmuebleForm.setInmueble(null);
-	    });
-	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
-	}
-
-	private void configureFilter() {
 	    filter.addValueChangeListener(e -> filtrarPorCalle(filter.getValue()));
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);
 	    filter.setPlaceholder("Filtrar");
 	    filter.setIcon(VaadinIcons.SEARCH);
 	    filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
 	    clearFilterTextBtn.setDescription("Limpiar filtro");
 	    clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
-	}
 
-	private void configureGrid() {
-	    grid.asSingleSelect().addValueChangeListener(event -> {
-		if (event.getValue() == null) {
-		    if (inmuebleForm.isVisible())
-			setComponentsVisible(true);
-		    inmuebleForm.setVisible(false);
-		    inmuebleForm.clearFields();
-		}
+	    newItem.addClickListener(e -> {
+		grid.asSingleSelect().clear();
+		inmuebleForm.setInmueble(InmuebleService.getInstancia());
 	    });
 
-	    grid.addColumn(inmueble -> {
-		String ret = "";
-		if (inmueble.getDireccion() != null) {
-		    Direccion d = inmueble.getDireccion();
-		    ret = d.getCalle() + " n° " + d.getNro() + ", " + d.getProvincia();
-		}
-		return ret;
-	    }).setCaption("Dirección");
-	    
-	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
-	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
-	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
-
-	    grid.addColumn(inmueble -> {
-		String ret = "";
-		if (inmueble.getClaseInmueble() == null) {
-		    ret = "No aclarado";
+	    grid.asSingleSelect().addValueChangeListener(event -> {
+		if (event.getValue() == null) {
+		    if (inmuebleForm.isVisible()) setComponentsVisible(true);
+		    inmuebleForm.setVisible(false);
 		} else {
-		    ret = inmueble.getClaseInmueble().toString();
+		    inmuebleForm.setInmueble(event.getValue());
 		}
-		return ret;
-	    }).setCaption("Clase Inmueble");
+	    });
+	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
-	    grid.addComponentColumn(inmueble -> {
-		Button edit = new Button(VaadinIcons.EDIT);
-		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_FRIENDLY);
-		edit.addClickListener(e -> {
-		    inmuebleForm.setInmueble(inmueble);
+	    grid.setColumns(Inmueble.pDireccion, Inmueble.pPropietario, Inmueble.pEstadoInmueble,
+		    Inmueble.pTipoInmb);
 
+		Grid.Column<Inmueble, String> claseInmuebleColumn = grid.addColumn(inmueble -> {
+			String ret = "";
+			if (inmueble.getClaseInmueble() == null) {
+				ret = "No aclarado";
+			} else {
+				ret = inmueble.getClaseInmueble().toString();
+			}
+			return ret;
 		});
 
-		DeleteButton delete = new DeleteButton("",
-			VaadinIcons.TRASH, "¿Esta seguro que desea eliminar?", "20%", new Button.ClickListener() {
-			    @Override
-			    public void buttonClick(Button.ClickEvent clickEvent) {
-				inmuebleService.delete(inmueble);
-				showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-					inmueble.getPropietario().toString());
-				updateList();
-			    }
-			});
-		delete.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_DANGER);
-		CssLayout hl = new CssLayout(edit, delete);
-		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		return hl;
-	    }).setCaption("Acciones");
+		claseInmuebleColumn.setCaption("Clase Inmueble");
 
-	    grid.getColumns().forEach(c -> c.setResizable(false));
+	    updateList();
 	}
 
 	public void updateList() {
 	    List<Inmueble> inmuebles = inmuebleService.readAll();
 	    grid.setItems(inmuebles);
 	}
-
+	
 	public void filtrarPorCalle(String filtro) {
 	    List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
 	    grid.setItems(inmuebles);
