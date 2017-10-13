@@ -26,11 +26,11 @@ public class Coordenada implements Identificable{
 
 	@Id @GeneratedValue
 	private Long idCoordenada;
-	@NotNull
+	
 	@Column (name = "latitud")
 	private Double lat;
 	
-	@NotNull
+	
 	@Column (name = "longitud")
 	private Double lon;
 	

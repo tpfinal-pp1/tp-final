@@ -251,23 +251,19 @@ public class Inmueble implements Identificable, BorradoLogico {
 
 
     public void addPublicacion(Publicacion publicacion) {
-
-    	removePublicacion(publicacion);
 		publicaciones.add(publicacion);
     }
-
 	public void removePublicacion(Publicacion publicacion) {
-
-
-		if(publicacion.getId()!=null) {
-			for (Publicacion publi: publicaciones
-					) {
-				if (publi.getId() == publicacion.getId()) {
-					publicaciones.remove(publicacion);
-					return; //Ojo con el concurrent modification si se saca esto
-				}
-			}
-		}
+	    publicaciones.remove(publicacion);
+//		if(publicacion.getId()!=null) {
+//			for (Publicacion publi: publicaciones
+//					) {
+//				if (publi.getId() == publicacion.getId()) {
+//					publicaciones.remove(publicacion);
+//					return; //Ojo con el concurrent modification si se saca esto
+//				}
+//			}
+//		}
 	}
     public Propietario getPropietario() {
 	return propietario;
