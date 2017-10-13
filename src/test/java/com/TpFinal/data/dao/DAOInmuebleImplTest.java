@@ -30,6 +30,7 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.data.dto.publicacion.TipoPublicacion;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.GeneradorDeDatos;
@@ -865,7 +866,6 @@ public class DAOInmuebleImplTest {
 		.setTelefono2("321")
 		.buid();
 	Propietario propietario = new Propietario.Builder()
-		.addInmueble(i)
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setPersona(p)
 		.build();
@@ -876,15 +876,18 @@ public class DAOInmuebleImplTest {
 //	Debe existir primero una persona en la bd a la que asignarle el rol de propietario.
 	daop.saveOrUpdate(p);
 	i.setPropietario(propietario);
+	propietario.addInmueble(i);
 	
 	daoInmueble.saveOrUpdate(i);
 	inmuebles = daoInmueble.readAll();
 	assertEquals(propietario,i.getPropietario());
 	
-	propietario.setPersona(null);
-	//Hay que hacer esto para desvincular al propietario de la persona y asi poder borrarlo cuando se borra el inmueble.
-	daop.saveOrUpdate(p);
 	
+	((Propietario)p.getRol(Rol.Propietario)).getInmuebles().remove(i);
+	p.removeRol(propietario);
+	daop.save(p);
+	i.setPropietario(null);
+	daoInmueble.save(i);
     }
     
     //@Test
