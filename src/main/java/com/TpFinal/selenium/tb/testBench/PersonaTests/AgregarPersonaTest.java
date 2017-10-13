@@ -1,10 +1,12 @@
-package com.TpFinal.selenium.tb.testBench;
+package com.TpFinal.selenium.tb.testBench.PersonaTests;
 
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
+import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.PasswordFieldElement;
 import com.vaadin.testbench.elements.TextFieldElement;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -37,6 +39,7 @@ public class AgregarPersonaTest extends TestBenchTestCase{
         ButtonElement personasButton = $(ButtonElement.class).caption("Personas").first();
         personasButton.click();
         getDriver().get("http://inmobi.ddns.net/#!personas");
+        Assert.assertTrue($(GridElement.class).exists());
         ButtonElement nuevoButton = $(ButtonElement.class).caption("Nuevo").first();
         nuevoButton.click();
         TextFieldElement nombreTextField = $(TextFieldElement.class).caption("Nombre").first();
