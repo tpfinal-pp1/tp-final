@@ -23,9 +23,8 @@ public class DeleteButton extends CustomComponent {
             popupText="¿Esta seguro que desea eliminar?";
             VerticalLayout root = new VerticalLayout();
             setCompositionRoot(root);
-
             root.setSpacing(false);
-            root.setMargin(false);
+            root.setMargin(false);           
             infoLabel.setSizeFull();
             if (popupText != null) {
                 infoLabel.setValue(popupText);
@@ -35,19 +34,11 @@ public class DeleteButton extends CustomComponent {
             final VerticalLayout popupVLayout = new VerticalLayout();
             popupVLayout.setSpacing(true);
             popupVLayout.setMargin(true);
-            button = new Button(caption, icon);
-            button.setSizeFull();
-            button.addStyleName(ValoTheme.BUTTON_DANGER);
-            button.addClickListener(e -> {
-                if (window.getParent() == null) {
-                    UI.getCurrent().addWindow(window);
-                }
-            });
+           
             HorizontalLayout buttonsHLayout = new HorizontalLayout();
             buttonsHLayout.setSpacing(true);
             buttonsHLayout.addComponent(yesButton);
             buttonsHLayout.addComponent(noButton);
-            window.setWidth(popupWidth);
             window.setHeightUndefined();
             window.setModal(true);
             window.center();
@@ -69,9 +60,22 @@ public class DeleteButton extends CustomComponent {
             popupVLayout.addComponent(infoLabel);
             popupVLayout.addComponent(buttonsHLayout);
             popupVLayout.setComponentAlignment(buttonsHLayout, Alignment.TOP_CENTER);
+            
+            configureDeleteButton(caption, icon);
             root.addComponent(button);
 
         }
+	private void configureDeleteButton(String caption, VaadinIcons icon) {
+	    button = new Button(caption, icon);
+            button.setSizeFull();
+            button.addStyleName(ValoTheme.BUTTON_DANGER);
+            button.addClickListener(e -> {
+                if (window.getParent() == null) {
+                    UI.getCurrent().addWindow(window);
+                    window.center();
+                }
+            });
+	}
         public void setInfo(String info) {
             infoLabel.setValue(info);
         }

@@ -31,7 +31,7 @@ public class DialogConfirmacion extends CustomComponent {
 	buttonsHLayout.setSpacing(true);
 	buttonsHLayout.addComponent(yesButton);
 	buttonsHLayout.addComponent(noButton);
-	// window.setWidth(popupWidth);
+	
 	window.setHeightUndefined();
 	window.setModal(true);
 	window.center();
