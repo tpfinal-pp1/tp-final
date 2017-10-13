@@ -89,6 +89,7 @@ public class ContratoServiceTest {
 		service.saveOrUpdate(instanciaVenta("2"),null);
 		service.saveOrUpdate(instanciaVenta("3"),null);
 		
+		System.out.println("Debug: "+service.readAll().size());
 		service.readAll().forEach(a -> {
 			if(a.getClass().equals(ContratoAlquiler.class)) {
 				ContratoAlquiler ca = (ContratoAlquiler)a;

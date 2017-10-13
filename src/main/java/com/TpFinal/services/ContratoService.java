@@ -50,9 +50,12 @@ public class ContratoService {
     		if(contrato.getId()!=null) {
     			if(contrato.getClass().equals(ContratoVenta.class)) {
         			ContratoVenta cvOriginal = daoVenta.findById(contrato.getId());
-        			updateContratoVenta(contrato, cvOriginal, doc);
+        			if(cvOriginal.getInmueble()!=null && contrato.getInmueble()!=null)
+        				updateContratoVenta(contrato, cvOriginal, doc);
         		}else if(contrato.getClass().equals(ContratoAlquiler.class)) {
         			ContratoAlquiler caOriginal=daoAlquiler.findById(contrato.getId());
+        			if(caOriginal.getInmueble()!=null && contrato.getInmueble()!=null)
+        				updateContratoAlquiler(contrato, caOriginal, doc);
         		}
     		}
     		ret= ret&&saveUpdate(contrato, doc);
@@ -69,12 +72,18 @@ public class ContratoService {
     	if(!contratov.getInmueble().equals(original.getInmueble())) {
     		original.getInmueble().removeContrato(original);
     	}
-    	ret=daoVenta.saveOrUpdateContrato(contratov, doc);
+    	ret=daoVenta.saveOrUpdateContrato(original, doc);
     	return ret;
     }
     
-    private boolean updateContratoAlquiler(Contrato contrato, ContratoVenta original) {
-    	return true;
+    private boolean updateContratoAlquiler(Contrato contrato, ContratoAlquiler original, File doc) {
+    	boolean ret=false;
+    	ContratoAlquiler contratoa=(ContratoAlquiler)contrato;
+    	if(!contratoa.getInmueble().equals(original.getInmueble())) {
+    		original.getInmueble().removeContrato(original);
+    	}
+    	ret=daoAlquiler.saveOrUpdateContrato(original, doc);
+    	return ret;
     }
 
 	private boolean saveUpdate(Contrato contrato, File doc) {
