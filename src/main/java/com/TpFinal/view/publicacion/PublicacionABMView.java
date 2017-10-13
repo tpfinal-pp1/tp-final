@@ -69,6 +69,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	configureComponents();
+	setSizeFull();
 
 
     }
@@ -191,8 +192,11 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, PublicacionVentaForm, PublicacionAlquilerForm);
 	mainLayout.setSizeFull();
+	mainLayout.setExpandRatio(grid,1);
 	addComponent(mainLayout);
 	this.setExpandRatio(mainLayout, 1);
+
+
 
     }
 

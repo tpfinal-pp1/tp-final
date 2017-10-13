@@ -68,6 +68,8 @@ public class PublicacionVentaForm extends FormLayout {
     // Easily binding forms to beans and manage validation and buffering
 
     public PublicacionVentaForm(PublicacionABMView addressbook) {
+		setMargin(true);
+		setHeight("100%");
 	addressbookView = addressbook;
 	configureComponents();
 	binding();
@@ -112,8 +114,8 @@ public class PublicacionVentaForm extends FormLayout {
     }
 
     private void buildLayout() {
-	setMargin(false);
-	setSpacing(false);
+		setSizeUndefined();
+		setMargin(true);
 
 	inmuebleSelector.setIcon(VaadinIcons.SEARCH);
 	visualizadorInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);

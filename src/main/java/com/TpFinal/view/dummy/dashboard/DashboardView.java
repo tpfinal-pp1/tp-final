@@ -9,6 +9,8 @@ import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.component.DownloadButton;
 import com.TpFinal.view.component.UploadButton;
 import com.TpFinal.view.component.UploadReceiver;
+import com.TpFinal.view.dummy.DemoUI;
+import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -30,8 +32,14 @@ import com.vaadin.util.CurrentInstance;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.TextStyle;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
@@ -115,18 +123,108 @@ public final class DashboardView extends Panel implements View{
         Responsive.makeResponsive(dashboardPanels);
 
 
-        dashboardPanels.addComponent(buildNotes());
+        dashboardPanels.addComponent(buildCalendar());
 
-
-     /*   UploadButton uploadButton=new UploadButton("Subir",new UploadReceiver());
-        DownloadButton downloadButton=new DownloadButton("Descargar", "demo1.pdf");
-        dashboardPanels.addComponent(uploadButton);
-        dashboardPanels.addComponent(downloadButton);
-        */
 
         return dashboardPanels;
     }
 
+
+
+    private static class CalStyle {
+
+        @FunctionalInterface
+        interface CalAction {
+            void update();
+        }
+
+        private String caption;
+
+        private CalAction action;
+
+        CalStyle(String caption,CalAction action) {
+            this.caption = caption;
+            this.action = action;
+        }
+
+        private void act() {
+            action.update();
+        }
+
+        @Override
+        public String toString() {
+            return caption;
+        }
+    }
+
+    private Component buildCalendar(){
+        // Initialize our new UI component
+        MeetingCalendar meetings = new MeetingCalendar();
+        meetings.setSizeFull();
+
+      /*  ComboBox<Locale> localeBox = new ComboBox<>();
+        localeBox.setItems(Locale.getAvailableLocales());
+        localeBox.setEmptySelectionAllowed(false);
+        localeBox.setValue(UI.getCurrent().getLocale());
+        localeBox.addValueChangeListener(e -> meetings.getCalendar().setLocale(e.getValue()));
+*/
+
+        meetings.getCalendar().setLocale(UI.getCurrent().getLocale());
+        meetings.getCalendar().setZoneId(ZoneId.of(meetings.getCalendar().getZoneId().getId()));
+       /*ComboBox<String> zoneBox = new ComboBox<>();
+        zoneBox.setItems(ZoneId.getAvailableZoneIds());
+        zoneBox.setEmptySelectionAllowed(false);
+        zoneBox.setValue(meetings.getCalendar().getZoneId().getId());
+        zoneBox.addValueChangeListener(e -> meetings.getCalendar().setZoneId(ZoneId.of(e.getValue())));
+*/
+       /* ComboBox<CalStyle> calActionComboBox = new ComboBox<>();
+        calActionComboBox.setItems(
+                new CalStyle("Col 1 - 7", () -> meetings.getCalendar().withVisibleDays(1, 7)),
+                new CalStyle("Col 1 - 5", () -> meetings.getCalendar().withVisibleDays(1, 5)),
+                new CalStyle("Col 2 - 5", () -> meetings.getCalendar().withVisibleDays(2, 5)),
+                new CalStyle("Col 6 - 7", () -> meetings.getCalendar().withVisibleDays(6, 7))
+        );
+        calActionComboBox.addValueChangeListener(e -> e.getValue().act());
+        calActionComboBox.setEmptySelectionAllowed(false);*/
+
+    /*    Button fixedSize = new Button("fixed Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeightUndefined());
+        fixedSize.setIcon(VaadinIcons.LINK);
+
+        Button fullSize = new Button("full Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeight(100, Unit.PERCENTAGE));
+        fullSize.setIcon(VaadinIcons.UNLINK);
+*/
+       /* ComboBox<Month> months = new ComboBox<>();
+        months.setItems(Month.values());
+        months.setItemCaptionGenerator(month -> month.getDisplayName(TextStyle.FULL, meetings.getCalendar().getLocale()));
+        months.setEmptySelectionAllowed(false);
+        months.addValueChangeListener(me -> meetings.switchToMonth(me.getValue()));
+
+        Button today = new Button("today", (Button.ClickEvent clickEvent) -> meetings.getCalendar().withDay(ZonedDateTime.now()));
+        Button week = new Button("week", (Button.ClickEvent clickEvent) -> meetings.getCalendar().withWeek(ZonedDateTime.now()));
+
+        HorizontalLayout nav = new HorizontalLayout( months, today, week);
+        //nav.setWidth("100%");
+*/
+        // Show it in the middle of the screen
+        final VerticalLayout layout = new VerticalLayout();
+        meetings.panel.setHeightUndefined();
+        layout.setStyleName("demoContentLayout");
+        layout.setSizeFull();
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        meetings.panel.setHeight(100, Unit.PERCENTAGE);
+       // layout.addComponent(nav);
+        layout.addComponentsAndExpand(meetings);
+        try{
+            meetings.switchToMonth(LocalDate.now().getMonth());}
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+       return createContentWrapper(layout);
+
+
+    }
 
 
 
@@ -213,7 +311,7 @@ public final class DashboardView extends Panel implements View{
         card.addComponents(toolbar, content);
         slot.addComponent(card);
         return slot;
-    }
+}
 
     private void openNotificationsPopup(final ClickEvent event) {
         VerticalLayout notificationsLayout = new VerticalLayout();
