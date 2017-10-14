@@ -61,12 +61,40 @@ public class DAOContratoAlquilerTest {
 
     @After
     public void tearDown() throws Exception {
-        contratos=dao.readAll();       
-        daoInmuebles.readAll().forEach(daoInmuebles::delete);
+        contratos=dao.readAll();
+        desvincularInmuebleYContrato();
+        desvincularPersonasYContrato();
+        
         contratos.forEach(dao::delete);
         
         deleteDirectory(new File("Files"));
     }
+
+   
+    private void desvincularInmuebleYContrato() {
+	daoInmuebles.readAll().forEach(inmueble ->{
+	    inmueble.setContratos(null);
+	    daoInmuebles.saveOrUpdate(inmueble);
+	});
+	dao.readAll().forEach(contrato -> {
+	    contrato.setInmueble(null);
+	    dao.saveOrUpdate(contrato);
+	});
+	
+    }
+    
+    private void desvincularPersonasYContrato() {
+   	daoPersonas.readAll().forEach(persona ->{
+   	    persona.setRoles(null);
+   	    daoPersonas.saveOrUpdate(persona);
+   	});
+   	dao.readAll().forEach(contrato ->{
+   	    contrato.setInquilinoContrato(null);
+   	   dao.saveOrUpdate(contrato);
+   	});
+   	
+       }
+
 
     @Test
     public void agregarSinDocs() {
