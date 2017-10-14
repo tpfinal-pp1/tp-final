@@ -94,7 +94,7 @@ public class Contrato implements Identificable, BorradoLogico {
     }
 
     public void setInmueble(Inmueble inmueble) {
-	if (this.inmueble != null)
+	if (this.inmueble != null && !this.inmueble.equals(inmueble))
 	{
 	    this.inmueble.removeContrato(this);
 	}
