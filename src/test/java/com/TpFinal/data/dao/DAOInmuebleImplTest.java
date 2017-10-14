@@ -57,7 +57,15 @@ public class DAOInmuebleImplTest {
     @After
     public void tearDown() throws Exception {
 	inmuebles = dao.readAll();
+	desvincular();
 	inmuebles.forEach(dao::delete);
+    }
+    
+    private void desvincular() {
+    	dao.readAll().forEach(i -> {
+    		i.setPropietario(null);
+    		dao.saveOrUpdate(i);
+    	});
     }
 
     @Test

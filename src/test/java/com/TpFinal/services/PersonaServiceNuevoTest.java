@@ -49,9 +49,9 @@ public class PersonaServiceNuevoTest {
 	@Test
 	public void agregar() {
     	Persona p = instancia("1");
-    	p.agregarRol(instanciaInquilino(Calificacion.A));
-    	p.agregarRol(instanciaInquilino(Calificacion.B));
-    	p.agregarRol(instanciaInquilino(Calificacion.C));
+    	p.addRol(instanciaInquilino(Calificacion.A));
+    	p.addRol(instanciaInquilino(Calificacion.B));
+    	p.addRol(instanciaInquilino(Calificacion.C));
     	
     	
     	service.saveOrUpdate(p);
@@ -62,9 +62,9 @@ public class PersonaServiceNuevoTest {
 	@Test
 	public void editar() {
 		Persona p = instancia("1");
-    	p.agregarRol(instanciaInquilino(Calificacion.A));
-    	p.agregarRol(instanciaInquilino(Calificacion.B));
-    	p.agregarRol(instanciaInquilino(Calificacion.C));
+    	p.addRol(instanciaInquilino(Calificacion.A));
+    	p.addRol(instanciaInquilino(Calificacion.B));
+    	p.addRol(instanciaInquilino(Calificacion.C));
     	
     	
     	service.saveOrUpdate(p);

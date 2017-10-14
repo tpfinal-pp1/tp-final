@@ -54,7 +54,12 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	}
 
 	public void setPersona(Persona persona) {
+		if(this.persona!=null && !this.persona.equals(persona)) {
+			this.persona.removeRol(this);
+		}
 		this.persona = persona;
+		if(persona!=null && !persona.getRoles().contains(this))
+			persona.addRol(this);
 	}
 
 	public void setIdRol(Long idRol) {
