@@ -2,7 +2,7 @@ package com.TpFinal.view.component;
 
 import java.util.Arrays;
 
-import com.TpFinal.data.dto.dummy.User;
+import com.TpFinal.data.dto.persona.User;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.annotations.PropertyId;

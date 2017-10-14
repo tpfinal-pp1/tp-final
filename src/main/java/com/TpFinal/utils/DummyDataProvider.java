@@ -2,9 +2,8 @@ package com.TpFinal.utils;
 
 import com.TpFinal.data.dto.*;
 
-import com.TpFinal.data.dto.dummy.Movie;
-import com.TpFinal.data.dto.dummy.Transaction;
-import com.TpFinal.data.dto.dummy.User;
+
+import com.TpFinal.data.dto.persona.User;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.gson.*;
@@ -35,8 +34,7 @@ public class DummyDataProvider implements DataProvider {
     /* List of countries and cities for them */
     private static Multimap<String, String> countryToCities;
     private static Date lastDataUpdate;
-    private static Collection<Movie> movies;
-    private static Multimap<Long, Transaction> transactions;
+
 
     private static Random rand = new Random();
 
@@ -50,122 +48,10 @@ public class DummyDataProvider implements DataProvider {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DAY_OF_YEAR, -1);
         if (lastDataUpdate == null || lastDataUpdate.before(cal.getTime())) {
-            refreshStaticData();
             lastDataUpdate = new Date();
         }
     }
 
-    private void refreshStaticData() {
-    //    countryToCities = loadTheaterData();
-        movies = loadMoviesData();
-      //  transactions = generateTransactionsData();
-
-    }
-
-    /**
-     * Get a list of movies currently playing in theaters.
-     *
-     * @return a list of Movie objects
-     */
-    @Override
-    public Collection<Movie> getMovies() {
-        return Collections.unmodifiableCollection(movies);
-    }
-
-    /**
-     * Initialize the list of movies playing in theaters currently. Uses the
-     * Rotten Tomatoes API to get the list. The result is cached to a local file
-     * for 24h (daily limit of API calls is 10,000).
-     *
-     * @return
-     */
-    private static Collection<Movie> loadMoviesData() {
-
-        JsonObject json = null;
-        File cache;
-        VaadinRequest vaadinRequest = CurrentInstance.get(VaadinRequest.class);
-
-        File baseDirectory = vaadinRequest.getService().getBaseDirectory();
-        cache = new File(baseDirectory + "/movies.txt");
-
-        try {
-            if (cache.exists()
-                    && System.currentTimeMillis() < cache.lastModified()
-                    + (1000 * 60 * 60 * 24)) {
-                // Use cache if it's under 24h old
-                json = readJsonFromFile(cache);
-            } else {
-                if (ROTTEN_TOMATOES_API_KEY != null) {
-                    try {
-                        json = readJsonFromUrl("http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=30&apikey="
-                                + ROTTEN_TOMATOES_API_KEY);
-                        // Store in cache
-                        FileWriter fileWriter = new FileWriter(cache);
-                        fileWriter.write(json.toString());
-                        fileWriter.close();
-                    } catch (Exception e) {
-                        json = readJsonFromFile(new File(baseDirectory
-                                + "/movies-fallback.txt"));
-                    }
-                } else {
-                    json = readJsonFromFile(new File(baseDirectory
-                            + "/movies-fallback.txt"));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        Collection<Movie> result = new ArrayList<Movie>();
-        if (json != null) {
-            JsonArray moviesJson;
-
-            moviesJson = json.getAsJsonArray("movies");
-            for (int i = 0; i < moviesJson.size(); i++) {
-                JsonObject movieJson = moviesJson.get(i).getAsJsonObject();
-                JsonObject posters = movieJson.get("posters").getAsJsonObject();
-                if (!posters.get("profile").getAsString()
-                        .contains("poster_default")) {
-                    Movie movie = new Movie();
-                    movie.setId(i);
-                    movie.setTitle(movieJson.get("title").getAsString());
-                    try {
-                        movie.setDuration(movieJson.get("runtime").getAsInt());
-                    } catch (Exception e) {
-                        // No need to handle this exception
-                    }
-                    movie.setSynopsis(movieJson.get("synopsis").getAsString());
-                    movie.setThumbUrl(posters.get("profile").getAsString()
-                            .replace("_tmb", "_320"));
-                    movie.setPosterUrl(posters.get("detailed").getAsString()
-                            .replace("_tmb", "_640"));
-
-                    try {
-                        JsonObject releaseDates = movieJson
-                                .get("release_dates").getAsJsonObject();
-                        String datestr = releaseDates.get("theater")
-                                .getAsString();
-                        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                        movie.setReleaseDate(df.parse(datestr));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    try {
-                        movie.setScore(movieJson.get("ratings")
-                                .getAsJsonObject().get("critics_score")
-                                .getAsInt());
-                    } catch (Exception e) {
-                        // No need to handle this exception
-                    }
-
-                    result.add(movie);
-
-                }
-            }
-        }
-        return result;
-    }
 
 
 
@@ -284,117 +170,6 @@ public class DummyDataProvider implements DataProvider {
      *
      * @return
      */
-    private Multimap<Long, Transaction> generateTransactionsData() {
-        Multimap<Long, Transaction> result = MultimapBuilder.hashKeys()
-                .arrayListValues().build();
-
-        for (Movie movie : movies) {
-            result.putAll(movie.getId(), new ArrayList<Transaction>());
-
-            Calendar cal = Calendar.getInstance();
-            int daysSubtractor = rand.nextInt(150) + 30;
-            cal.add(Calendar.DAY_OF_YEAR, -daysSubtractor);
-
-            Calendar lastDayOfWeek = Calendar.getInstance();
-            lastDayOfWeek.add(Calendar.DAY_OF_YEAR,
-                    Calendar.SATURDAY - cal.get(Calendar.DAY_OF_WEEK));
-
-            while (cal.before(lastDayOfWeek)) {
-
-                int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
-                if (hourOfDay > 10 && hourOfDay < 22) {
-
-                    Transaction transaction = new Transaction();
-                    transaction.setMovieId(movie.getId());
-                    transaction.setTitle(movie.getTitle());
-
-                    // Country
-                    Object[] array = countryToCities.keySet().toArray();
-                    int i = (int) (Math.random() * (array.length - 1));
-                    String country = array[i].toString();
-                    transaction.setCountry(country);
-
-                    transaction.setTime(cal.getTime());
-
-                    // City
-                    Collection<String> cities = countryToCities.get(country);
-                    transaction.setCity(cities.iterator().next());
-
-                    // Theater
-                    String theater = theaters
-                            .get((int) (rand.nextDouble() * (theaters.size() - 1)));
-                    transaction.setTheater(theater);
-
-                    // Room
-                    String room = rooms.get((int) (rand.nextDouble() * (rooms
-                            .size() - 1)));
-                    transaction.setRoom(room);
-
-                    // Title
-                    int randomIndex = (int) (Math.abs(rand.nextGaussian()) * (movies
-                            .size() / 2.0 - 1));
-                    while (randomIndex >= movies.size()) {
-                        randomIndex = (int) (Math.abs(rand.nextGaussian()) * (movies
-                                .size() / 2.0 - 1));
-                    }
-
-                    // Seats
-                    int seats = (int) (1 + rand.nextDouble() * 3);
-                    transaction.setSeats(seats);
-
-                    // Price (approx. USD)
-                    double price = seats * (2 + (rand.nextDouble() * 8));
-                    transaction.setPrice(price);
-
-                    result.get(movie.getId()).add(transaction);
-                }
-
-                cal.add(Calendar.SECOND, rand.nextInt(500000) + 5000);
-            }
-        }
-
-        return result;
-
-    }
-
-    public static Movie getMovieForTitle(String title) {
-        for (Movie movie : movies) {
-            if (movie.getTitle().equals(title)) {
-                return movie;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public User authenticate(String userName, String password) {
-        User user = new User();
-        user.setFirstName(DummyDataGenerator.randomFirstName());
-        user.setLastName(DummyDataGenerator.randomLastName());
-        user.setRole("admin");
-        String email = user.getFirstName().toLowerCase() + "."
-                + user.getLastName().toLowerCase() + "@"
-                + DummyDataGenerator.randomCompanyName().toLowerCase() + ".com";
-        user.setEmail(email.replaceAll(" ", ""));
-        user.setLocation(DummyDataGenerator.randomWord(5, true));
-        user.setBio("Quis aute iure reprehenderit in voluptate velit esse."
-                + "Cras mattis iudicium purus sit amet fermentum.");
-        return user;
-    }
-
-    @Override
-    public Collection<Transaction> getRecentTransactions(int count) {
-        List<Transaction> orderedTransactions = Lists.newArrayList(transactions
-                .values());
-        Collections.sort(orderedTransactions, new Comparator<Transaction>() {
-            @Override
-            public int compare(Transaction o1, Transaction o2) {
-                return o2.getTime().compareTo(o1.getTime());
-            }
-        });
-        return orderedTransactions.subList(0,
-                Math.min(count, transactions.values().size() - 1));
-    }
 
 
 
@@ -411,6 +186,14 @@ public class DummyDataProvider implements DataProvider {
     }
 
 
+    @Override
+    public User authenticate(String userName, String password) {
+        User u=new User();
+        u.setFirstName(DummyDataGenerator.randomFirstName());
+        u.setLastName(DummyDataGenerator.randomLastName());
+        u.setRole("admin");
+        return u;
+    }
 
     @Override
     public int getUnreadNotificationsCount() {
@@ -432,27 +215,6 @@ public class DummyDataProvider implements DataProvider {
     }
 
 
-    @Override
-    public Movie getMovie(final long movieId) {
-        return Iterables.find(movies, new Predicate<Movie>() {
-            @Override
-            public boolean apply(Movie input) {
-                return input.getId() == movieId;
-            }
-        });
-    }
 
-    @Override
-    public Collection<Transaction> getTransactionsBetween(final Date startDate,
-                                                          final Date endDate) {
-        return Collections2.filter(transactions.values(),
-                new Predicate<Transaction>() {
-                    @Override
-                    public boolean apply(Transaction input) {
-                        return !input.getTime().before(startDate)
-                                && !input.getTime().after(endDate);
-                    }
-                });
-    }
 
 }

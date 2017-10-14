@@ -1,7 +1,6 @@
 package com.TpFinal.services;
 
 
-import com.TpFinal.data.dto.dummy.Transaction;
 import com.TpFinal.view.DashboardViewType;
 
 import java.util.Collection;
@@ -53,17 +52,7 @@ public abstract class DashboardEvent {
 
     }
 
-    public static final class TransactionReportEvent {
-        private final Collection<Transaction> transactions;
 
-        public TransactionReportEvent(final Collection<Transaction> transactions) {
-            this.transactions = transactions;
-        }
-
-        public Collection<Transaction> getTransactions() {
-            return transactions;
-        }
-    }
 
     public static final class PostViewChangeEvent {
         private final DashboardViewType view;
