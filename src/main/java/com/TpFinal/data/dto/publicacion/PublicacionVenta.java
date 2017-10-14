@@ -13,27 +13,14 @@ import org.hibernate.annotations.CascadeType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "publicaciones_venta")
 public class PublicacionVenta extends Publicacion {
 	
 	public static final String pPrecioVenta = "precio";
-
-	public static String getpPrecioVenta() {
-		return pPrecioVenta;
-	}
-
-	public ContratoVenta getContratoVenta() {
-		return contratoVenta;
-	}
-
-	public void setContratoVenta(ContratoVenta contratoVenta) {
-		this.contratoVenta = contratoVenta;
-	}
-
 	@Column(name = pPrecioVenta)
-
 	private BigDecimal precio;
 	
 	@Enumerated(EnumType.STRING)
@@ -60,6 +47,18 @@ public class PublicacionVenta extends Publicacion {
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
 	
+	public static String getpPrecioVenta() {
+		return pPrecioVenta;
+	}
+
+	public ContratoVenta getContratoVenta() {
+		return contratoVenta;
+	}
+
+	public void setContratoVenta(ContratoVenta contratoVenta) {
+		this.contratoVenta = contratoVenta;
+	}
+	
 	public BigDecimal getPrecio() {
 		return precio;
 	}
@@ -76,7 +75,24 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = moneda;
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if(!(obj instanceof PublicacionVenta)) return false;
+		PublicacionVenta p = (PublicacionVenta)obj;
+		return Objects.equals(p.getId(), this.getId());
+	}
 	
 	public static class Builder{
 		private ContratoVenta contratoVenta;
@@ -104,11 +120,6 @@ public class PublicacionVenta extends Publicacion {
 		public PublicacionVenta build() {
 			return new PublicacionVenta(this);
 		}		
-	}
-	
-	@Override
-	public String toString() {
-		return super.toString();
 	}
 	
 

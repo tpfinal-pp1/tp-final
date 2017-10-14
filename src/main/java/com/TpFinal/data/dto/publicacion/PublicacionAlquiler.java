@@ -13,6 +13,7 @@ import org.hibernate.annotations.CascadeType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "publicaciones_alquiler")
@@ -115,6 +116,19 @@ public class PublicacionAlquiler extends Publicacion {
 				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoPublicacion=" + tipoPublicacion + "\n]";
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if(!(obj instanceof PublicacionAlquiler)) return false;
+		PublicacionAlquiler p = (PublicacionAlquiler)obj;
+		return Objects.equals(p.getId(), this.getId());
+	}
 	
 
 }
