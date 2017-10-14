@@ -1,5 +1,5 @@
 
-#  Inmobi <img src="https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg" alt="Coverage Status" />
+#  Inmobi <a href="https://coveralls.io/github/tpfinal-pp1/tp-final" target="_blank"><img src="https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg" alt="Coverage Status" /></a>
 
 Registrar los bugs acá:
 https://docs.google.com/spreadsheets/d/1XNNqazp9nD1wKexRnw6_vUSLYAwQIKNnDmMNPK4CACA/edit#gid=0
