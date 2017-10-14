@@ -228,11 +228,11 @@ public class InmuebleForm extends FormLayout {
 		},
 		(inmueble, localidad) -> {
 		    if (inmueble.getDireccion() == null)
-			inmueble.setDireccion(new Direccion());
+				inmueble.setDireccion(new Direccion());
 		    if (localidad != null) {
-			inmueble.getDireccion().setLocalidad(localidad.getNombre());
-			inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
-			inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
+				inmueble.getDireccion().setLocalidad(localidad.getNombre());
+				inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
+				inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
 		    }
 		});
 
@@ -243,9 +243,9 @@ public class InmuebleForm extends FormLayout {
 		},
 			(inmueble, provincia) -> {
 			    if (inmueble.getDireccion() == null)
-				inmueble.setDireccion(new Direccion());
+					inmueble.setDireccion(new Direccion());
 			    if (provincia != null) {
-				inmueble.getDireccion().setProvincia(provincia.getNombre());
+					inmueble.getDireccion().setProvincia(provincia.getNombre());
 			    }
 			});
 

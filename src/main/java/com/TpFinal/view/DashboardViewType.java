@@ -17,8 +17,7 @@ public enum DashboardViewType {
     INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
     OPERACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
     CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
-    DURACIONCONTRATOS("duracioncontratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false),
-    CALENDARIO("Calendario",DemoUI.class, VaadinIcons.CLOCK,false)
+    DURACIONCONTRATOS("duracioncontratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false)
     /*
     REPORTES("reportes", ReportsView.class, VaadinIcons.FILE, false),
     SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false)*/;
