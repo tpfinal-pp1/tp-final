@@ -32,7 +32,6 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-import com.TpFinal.data.dto.publicacion.Rol;
 
 public class PublicacionServiceTest {
 
@@ -71,7 +70,6 @@ public class PublicacionServiceTest {
 	public void test() {
 		Propietario pro= new Propietario();
 		Persona per = instancia("1");
-		pro.setPersona(per);
 		per.addRol(pro);
 		
 		//guardo la persona y su rol
@@ -80,7 +78,7 @@ public class PublicacionServiceTest {
 		Inmueble in = unInmuebleNoPublicado();
 		
 		//in.setPropietario(pro);
-		pro=(Propietario)daoPer.readAll().get(0).getRol(Rol.Propietario);
+		pro=daoPer.readAll().get(0).getPropietario();
 		pro.addInmueble(in);
 		assertEquals(1, pro.getInmuebles().size());
 		//guardo el inmueble

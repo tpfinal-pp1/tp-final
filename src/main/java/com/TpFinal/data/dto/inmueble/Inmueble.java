@@ -4,7 +4,6 @@ import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 
@@ -34,7 +33,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     public static final String pPropietario = "propietario";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = Inmueble.pIdInmueble)
     private Long idInmueble;
 
@@ -91,7 +90,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     @JoinColumn(name = "id_proppietario")
     private Propietario propietario;
 
-    @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH},orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     protected Set<Publicacion> publicaciones = new HashSet<>();
     
     @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
@@ -252,19 +251,23 @@ public class Inmueble implements Identificable, BorradoLogico {
 
 
     public void addPublicacion(Publicacion publicacion) {
+
+    	removePublicacion(publicacion);
 		publicaciones.add(publicacion);
     }
+
 	public void removePublicacion(Publicacion publicacion) {
-	    publicaciones.remove(publicacion);
-//		if(publicacion.getId()!=null) {
-//			for (Publicacion publi: publicaciones
-//					) {
-//				if (publi.getId() == publicacion.getId()) {
-//					publicaciones.remove(publicacion);
-//					return; //Ojo con el concurrent modification si se saca esto
-//				}
-//			}
-//		}
+
+
+		if(publicacion.getId()!=null) {
+			for (Publicacion publi: publicaciones
+					) {
+				if (publi.getId() == publicacion.getId()) {
+					publicaciones.remove(publicacion);
+					return; //Ojo con el concurrent modification si se saca esto
+				}
+			}
+		}
 	}
     public Propietario getPropietario() {
 	return propietario;
@@ -529,10 +532,7 @@ public String toString() {
     public void setContratos(Set<Contrato> contratos) {
         this.contratos = contratos;
     }
-
-	public void removeContrato(Contrato contrato) {
-		this.contratos.remove(contrato);
-	}
+    
     
 
 }

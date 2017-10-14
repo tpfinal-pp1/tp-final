@@ -27,7 +27,7 @@ public class Inquilino extends RolPersona {
 	private Set<ContratoAlquiler>contratos= new HashSet<>();
 
 	
-	public Inquilino() {super(); this.setEstadoRegistro(EstadoRegistro.ACTIVO);}
+	public Inquilino() {super();}
 	
 	private Inquilino(Builder b) {
 		super(b.persona, EstadoRegistro.ACTIVO);

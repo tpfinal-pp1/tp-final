@@ -24,7 +24,7 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
     private Persona persona;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue
     @Column(name = idr)
     protected Long idRol;
 
@@ -73,16 +73,14 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 		return this.estadoRegistro;
 	}
 
-	
-
 	@Override
 	public int hashCode() {
 	    final int prime = 31;
 	    int result = 1;
-	    result = prime * result + ((idRol == null) ? 0 : idRol.hashCode());
+	    result = prime * result + ((estadoRegistro == null) ? 0 : estadoRegistro.hashCode());
 	    result = prime * result + ((persona == null) ? 0 : persona.hashCode());
 	    return result;
-	}
+	}	
 
 	@Override
 	public boolean equals(Object obj) {
@@ -93,10 +91,7 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	    if (!(obj instanceof RolPersona))
 		return false;
 	    RolPersona other = (RolPersona) obj;
-	    if (idRol == null) {
-		if (other.idRol != null)
-		    return false;
-	    } else if (!idRol.equals(other.idRol))
+	    if (estadoRegistro != other.estadoRegistro)
 		return false;
 	    if (persona == null) {
 		if (other.persona != null)
@@ -108,11 +103,10 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 
 	public Rol giveMeYourRole() {
 		Rol ret=Rol.Propietario;
-		if(this instanceof Inquilino)
+		if(this.getClass().equals(Inquilino.class))
 			ret= Rol.Inquilino;
 		return ret;
 	}
-	
 	
 
 }

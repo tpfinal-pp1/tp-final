@@ -26,15 +26,6 @@ public class PersonaTest {
 		assertFalse(p.addRol(Rol.Propietario));
 	}
 	
-	public void addRolConcreto() {
-		Persona p = instancia("1");
-		assertTrue(p.addRol(new Inquilino()));
-		assertFalse(p.addRol(new Inquilino()));
-		assertEquals(1, p.getRoles().size());
-		assertTrue(p.addRol(new Propietario()));
-		assertFalse(p.addRol(new Propietario()));
-	}
-	
 	@Test
 	public void getRol() {
 		Persona p = instancia("1");

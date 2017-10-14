@@ -36,22 +36,8 @@ public class PublicacionService {
     }
 
     public boolean save(Publicacion entidad) {
-    	boolean ret=true;
-    	if(entidad!=null) {
-    		if(entidad.getId()!=null) {
-    			Publicacion antigua= dao.findById(entidad.getId());
-    			if(!antigua.getInmueble().equals(entidad.getInmueble())){
-    				antigua.getInmueble().getPublicaciones().remove(antigua);
-    				dao.saveOrUpdate(antigua);
-    			}
-    		}
-    		
-    		 ret= dao.saveOrUpdate(entidad);
-    	}
-       return ret;
+        return dao.saveOrUpdate(entidad);
     }
-    
-    //ToDelete
     @Deprecated
     public boolean updateBidireccioal(Publicacion p) {
     	boolean ret=true;
@@ -110,7 +96,7 @@ public class PublicacionService {
 
      static PublicacionAlquiler InstanciaPublicacionAlquiler() {
         Persona p= new Persona();
-        p.addRol(new Propietario());
+        p.addRol(Rol.Propietario);
 
       return  new PublicacionAlquiler.Builder()
                  .setValorCuota(new BigDecimal(0))
@@ -137,7 +123,7 @@ public class PublicacionService {
                                  .setProvincia("")
                                  .build())
                          .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                         .setPropietario((Propietario)p.getRol(Rol.Propietario))
+                         .setPropietario(p.getPropietario())
                          .setSuperficieCubierta(0)
                          .setSuperficieTotal(0)
                          .setTipoInmueble(TipoInmueble.Vivienda)
@@ -147,7 +133,7 @@ public class PublicacionService {
 
     static  PublicacionVenta InstanciaPublicacionVenta(){
         Persona p= new Persona();
-        p.addRol(new Propietario());
+        p.addRol(Rol.Propietario);
         PublicacionVenta PV=new PublicacionVenta.Builder()
                 .setPrecio(new BigDecimal(0))
                 .setFechaPublicacion(LocalDate.now())
@@ -173,7 +159,7 @@ public class PublicacionService {
                                 .setProvincia("")
                                 .build())
                         .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                        .setPropietario((Propietario)p.getRol(Rol.Propietario))
+                        .setPropietario(p.getPropietario())
                         .setSuperficieCubierta(0)
                         .setSuperficieTotal(0)
                         .setTipoInmueble(TipoInmueble.Vivienda)

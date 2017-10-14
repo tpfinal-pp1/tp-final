@@ -30,14 +30,12 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.data.dto.publicacion.TipoPublicacion;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.GeneradorDeDatos;
 
 public class DAOInmuebleImplTest {
-    DAOInmuebleImpl daoInmueble;
-    DAOPublicacionImpl daoPublicacion;
+    DAOInmuebleImpl dao;
     List<Inmueble> inmuebles = new ArrayList<>();
     private CriterioBusquedaInmuebleDTO criterio;
 
@@ -48,8 +46,7 @@ public class DAOInmuebleImplTest {
 
     @Before
     public void setUp() throws Exception {
-	daoInmueble = new DAOInmuebleImpl();
-	daoPublicacion = new DAOPublicacionImpl();
+	dao = new DAOInmuebleImpl();
 	inmuebles.clear();
 	criterio = null;
 
@@ -57,44 +54,44 @@ public class DAOInmuebleImplTest {
 
     @After
     public void tearDown() throws Exception {
-	inmuebles = daoInmueble.readAll();
-	inmuebles.forEach(daoInmueble::delete);
+	inmuebles = dao.readAll();
+	inmuebles.forEach(dao::delete);
     }
 
     @Test
     public void testCreate() {
 	List<Inmueble> inmueblesAGuardar = unoNoPublicado_unoEnAlquiler_unoEnVenta();
-	inmueblesAGuardar.forEach(daoInmueble::create);
-	List<Inmueble> inmueblesEnBD = daoInmueble.readAll();
+	inmueblesAGuardar.forEach(dao::create);
+	List<Inmueble> inmueblesEnBD = dao.readAll();
 	inmueblesEnBD.forEach(i -> assertEquals(i, inmueblesAGuardar.get(inmueblesEnBD.indexOf(i))));
     }
 
     @Test
     public void testReadAll() {
 	int cantidadDeInmuebles = 3;
-	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> daoInmueble.create(unInmuebleNoPublicado()));
-	inmuebles = daoInmueble.readAll();
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
+	inmuebles = dao.readAll();
 	assertEquals(cantidadDeInmuebles, inmuebles.size());
     }
 
     @Test
     public void testUpdate() {
 	Inmueble original = unInmuebleNoPublicado();
-	daoInmueble.create(original);
-	Inmueble modificado = daoInmueble.readAll().get(0);
+	dao.create(original);
+	Inmueble modificado = dao.readAll().get(0);
 	modificado.setCantidadAmbientes(10);
 	modificado.getDireccion().setCoordenada(new Coordenada(12.0, 10.2));
-	daoInmueble.update(modificado);
-	assertTrue(modificado.getCantidadAmbientes().equals(daoInmueble.findById(modificado.getId()).getCantidadAmbientes()));
+	dao.update(modificado);
+	assertTrue(modificado.getCantidadAmbientes().equals(dao.findById(modificado.getId()).getCantidadAmbientes()));
 	assertTrue(modificado.getDireccion().getCoordenada()
-		.equals(daoInmueble.findById(modificado.getId()).getDireccion().getCoordenada()));
+		.equals(dao.findById(modificado.getId()).getDireccion().getCoordenada()));
     }
 
     @Test
     public void findInmueblesbyEstado() {
 	int cantidadDeInmuebles = 3;
-	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> daoInmueble.create(unInmuebleNoPublicado()));
-	inmuebles = daoInmueble.findInmueblesbyEstado(EstadoInmueble.NoPublicado);
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
+	inmuebles = dao.findInmueblesbyEstado(EstadoInmueble.NoPublicado);
 	assertEquals(cantidadDeInmuebles, inmuebles.size());
     }
 
@@ -105,22 +102,22 @@ public class DAOInmuebleImplTest {
 	Inmueble inmuebleEstrenado = unInmuebleNoPublicado();
 	inmuebleEstrenado.setaEstrenar(false);
 
-	daoInmueble.create(inmuebleAEstrenar);
-	daoInmueble.create(inmuebleEstrenado);
+	dao.create(inmuebleAEstrenar);
+	dao.create(inmuebleEstrenado);
 
-	inmuebles = daoInmueble.readAll();
+	inmuebles = dao.readAll();
 
 	assertTrue(inmuebles.get(0).getaEstrenar() == true);
 	assertTrue(inmuebles.get(1).getaEstrenar() == false);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setaEstrenar(true).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getaEstrenar() == true);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setaEstrenar(false).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getaEstrenar() == false);
@@ -130,16 +127,16 @@ public class DAOInmuebleImplTest {
     @Test
     public void findInmueblesByCriteria_Ciudad() {
 	int cantidadDeInmuebles = 3;
-	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> daoInmueble.create(unInmuebleNoPublicado()));
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad").build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(cantidadDeInmuebles, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(0, inmuebles.size());
 
     }
@@ -151,22 +148,22 @@ public class DAOInmuebleImplTest {
 	Inmueble inmuebleSinAA = unInmuebleNoPublicado();
 	inmuebleSinAA.setConAireAcondicionado(false);
 
-	daoInmueble.create(inmuebleConAA);
-	daoInmueble.create(inmuebleSinAA);
+	dao.create(inmuebleConAA);
+	dao.create(inmuebleSinAA);
 
-	inmuebles = daoInmueble.readAll();
+	inmuebles = dao.readAll();
 
 	assertTrue(inmuebles.get(0).getConAireAcondicionado() == true);
 	assertTrue(inmuebles.get(1).getConAireAcondicionado() == false);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConAireAcondicionado(true).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConAireAcondicionado() == true);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConAireAcondicionado(false).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConAireAcondicionado() == false);
@@ -175,52 +172,52 @@ public class DAOInmuebleImplTest {
     @Test
     public void findInmueblesByCriteria_Estado() {
 	int cantidadDeInmuebles = 3;
-	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> daoInmueble.create(unInmuebleNoPublicado()));
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(EstadoInmueble.NoPublicado).build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(cantidadDeInmuebles, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(EstadoInmueble.Alquilado).build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(0, inmuebles.size());
     }
 
     @Test
     public void findInmueblesByCriteria_ClaseInmuebleCochera() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = daoInmueble.readAll().get(0);
+	Inmueble i = dao.readAll().get(0);
 	i.setClaseInmueble(ClaseInmueble.Cochera);
-	daoInmueble.save(i);
+	dao.save(i);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera))
 		.build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setClasesDeInmueble(Arrays.asList(ClaseInmueble.Ph))
 		.build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
     }
 
     @Test
     public void findInmueblesByCriteria_ClaseInmuebleCocheraOrPh() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = daoInmueble.readAll().get(0);
+	Inmueble i = dao.readAll().get(0);
 	i.setClaseInmueble(ClaseInmueble.Cochera);
-	daoInmueble.save(i);
+	dao.save(i);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder()
 		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera, ClaseInmueble.Ph)).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(3, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setClasesDeInmueble(Arrays.asList(ClaseInmueble.Ph))
 		.build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
     }
 
@@ -234,20 +231,20 @@ public class DAOInmuebleImplTest {
 		i.setConAireAcondicionado(false);
 		i.setDireccion(new Direccion.Builder().setLocalidad("otra localidad").build());
 	    }
-	    daoInmueble.create(i);
+	    dao.create(i);
 
 	}
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad").setConAireAcondicionado(true)
 		.build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").setConAireAcondicionado(false)
 		.build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
 
     }
@@ -259,22 +256,22 @@ public class DAOInmuebleImplTest {
 	Inmueble inmuebleSinJardin = unInmuebleNoPublicado();
 	inmuebleSinJardin.setConJardin(false);
 
-	daoInmueble.create(inmuebleConJardin);
-	daoInmueble.create(inmuebleSinJardin);
+	dao.create(inmuebleConJardin);
+	dao.create(inmuebleSinJardin);
 
-	inmuebles = daoInmueble.readAll();
+	inmuebles = dao.readAll();
 
 	assertTrue(inmuebles.get(0).getConJardin() == true);
 	assertTrue(inmuebles.get(1).getConJardin() == false);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConJardin(true).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConJardin() == true);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConJardin(false).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConJardin() == false);
@@ -287,22 +284,22 @@ public class DAOInmuebleImplTest {
 	Inmueble inmuebleSin = unInmuebleNoPublicado();
 	inmuebleSin.setConParilla(false);
 
-	daoInmueble.create(inmuebleCon);
-	daoInmueble.create(inmuebleSin);
+	dao.create(inmuebleCon);
+	dao.create(inmuebleSin);
 
-	inmuebles = daoInmueble.readAll();
+	inmuebles = dao.readAll();
 
 	assertTrue(inmuebles.get(0).getConParilla() == true);
 	assertTrue(inmuebles.get(1).getConParilla() == false);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConParrilla(true).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConParilla() == true);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConParrilla(false).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConParilla() == false);
@@ -314,22 +311,22 @@ public class DAOInmuebleImplTest {
 	inmuebleCon.setConPileta(true);
 	Inmueble inmuebleSin = unInmuebleNoPublicado();
 	inmuebleSin.setConPileta(false);
-	daoInmueble.create(inmuebleCon);
-	daoInmueble.create(inmuebleSin);
+	dao.create(inmuebleCon);
+	dao.create(inmuebleSin);
 
-	inmuebles = daoInmueble.readAll();
+	inmuebles = dao.readAll();
 
 	assertTrue(inmuebles.get(0).getConPileta() == true);
 	assertTrue(inmuebles.get(1).getConPileta() == false);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConPileta(true).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConPileta() == true);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setConPileta(false).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 
 	assertEquals(1, inmuebles.size());
 	assertTrue(inmuebles.get(0).getConPileta() == false);
@@ -353,13 +350,13 @@ public class DAOInmuebleImplTest {
 	Inmueble inmuebleVendido = unInmuebleNoPublicado();
 	inmuebleVendido.setEstadoInmueble(EstadoInmueble.Vendido);
 
-	daoInmueble.create(inmuebleAlquilado);
-	daoInmueble.create(inmuebleEnAlquiler);
-	daoInmueble.create(inmuebleEnVenta);
-	daoInmueble.create(inmuebleNoPublicado);
-	daoInmueble.create(inmuebleVendido);
+	dao.create(inmuebleAlquilado);
+	dao.create(inmuebleEnAlquiler);
+	dao.create(inmuebleEnVenta);
+	dao.create(inmuebleNoPublicado);
+	dao.create(inmuebleVendido);
 
-	inmuebles = daoInmueble.readAll();
+	inmuebles = dao.readAll();
 	EstadoInmueble[] estados = EstadoInmueble.values();
 
 	assertEquals(inmuebles.size(), estados.length);
@@ -370,7 +367,7 @@ public class DAOInmuebleImplTest {
 
 	for (int i = 0; i < estados.length; i++) {
 	    criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(estados[i]).build();
-	    inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	    inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	    assertEquals(1, inmuebles.size());
 	    assertEquals(inmuebles.get(0).getEstadoInmueble(), estados[i]);
 	}
@@ -384,59 +381,59 @@ public class DAOInmuebleImplTest {
 	for (int x = 1; x <= cantidadDeInmuebles; x++) {
 	    Inmueble i = unInmuebleNoPublicado();
 	    i.setSuperficieTotal(x * 100);
-	    daoInmueble.create(i);
+	    dao.create(i);
 
 	}
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(200).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(250).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(300).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(3, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(100).setMaxSupTotal(300).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(3, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupTotal(400).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(0, inmuebles.size());
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupTotal(99).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(0, inmuebles.size());
 
     }
 
     @Test
     public void findInmueblesByCriteria_InmueblesAlquilados() {
-	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(daoInmueble::create);
+	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Alquiler).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
     }
 
     @Test
     public void findInmueblesByCriteria_InmueblesEnVenta() {
-	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(daoInmueble::create);
+	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Venta).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
     }
 
     @Test
     public void findInmueblesByCriteria_TodosLosInmuebles() {
-	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(daoInmueble::create);
+	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(3, inmuebles.size());
 
     }
@@ -447,7 +444,7 @@ public class DAOInmuebleImplTest {
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Alquiler)
 		.setMinPrecio(BigDecimal.valueOf(200)).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
     }
 
@@ -458,7 +455,7 @@ public class DAOInmuebleImplTest {
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Alquiler)
 		.setMaxPrecio(BigDecimal.valueOf(100)).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
     }
 
@@ -468,7 +465,7 @@ public class DAOInmuebleImplTest {
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Venta)
 		.setMinPrecio(BigDecimal.valueOf(200)).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
     }
 
@@ -479,34 +476,34 @@ public class DAOInmuebleImplTest {
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Venta)
 		.setMaxPrecio(BigDecimal.valueOf(100)).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
     }
 
     @Test
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200AndClaseCochera() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = daoInmueble.readAll().get(0);
+	Inmueble i = dao.readAll().get(0);
 	i.setClaseInmueble(ClaseInmueble.Cochera);
-	daoInmueble.save(i);
+	dao.save(i);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Venta)
 		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera)).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
     }
 
     @Test
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200AndEsCocheraAndSinPileta() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = daoInmueble.readAll().get(0);
+	Inmueble i = dao.readAll().get(0);
 	i.setClaseInmueble(ClaseInmueble.Cochera);
 	i.setConPileta(false);
-	daoInmueble.save(i);
+	dao.save(i);
 
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoPublicacion(TipoPublicacion.Venta)
 		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera)).setConPileta(false).build();
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
     }
 
@@ -515,13 +512,13 @@ public class DAOInmuebleImplTest {
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(2);
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().setTipoMoneda(TipoMoneda.Dolares).build();
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(2, inmuebles.size());
 
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(1);
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(4);
 
-	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(6, inmuebles.size());
 
     }
@@ -532,13 +529,13 @@ public class DAOInmuebleImplTest {
     	Inmueble otroInmueble = unInmuebleCon8Ambientes();
     	Inmueble otroInmueble2 = unInmuebleEnVentaEnPesos();
     	
-    	daoInmueble.create(inmueble);
-    	daoInmueble.create(otroInmueble);
-    	daoInmueble.create(otroInmueble2);
+    	dao.create(inmueble);
+    	dao.create(otroInmueble);
+    	dao.create(otroInmueble2);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinCantAmbientes(5).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	assertEquals(2,inmuebles.size());
     }
     
@@ -548,13 +545,13 @@ public class DAOInmuebleImplTest {
     	Inmueble otroInmueble = unInmuebleCon8Ambientes();
     	Inmueble otroInmueble2 = unInmuebleEnVentaEnPesos();
     	
-    	daoInmueble.create(inmueble);
-    	daoInmueble.create(otroInmueble);
-    	daoInmueble.create(otroInmueble2);
+    	dao.create(inmueble);
+    	dao.create(otroInmueble);
+    	dao.create(otroInmueble2);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxCantAmbientes(4).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	assertEquals(1,inmuebles.size());
     }
     
@@ -570,15 +567,15 @@ public class DAOInmuebleImplTest {
     	inmueble2.setCantidadCocheras(4);
     	inmueble3.setCantidadCocheras(5);
     	
-    	daoInmueble.create(inmueble1);
-    	daoInmueble.create(inmueble2);
-    	daoInmueble.create(inmueble3);
-    	daoInmueble.create(inmueble4);
-    	daoInmueble.create(inmueble5);
+    	dao.create(inmueble1);
+    	dao.create(inmueble2);
+    	dao.create(inmueble3);
+    	dao.create(inmueble4);
+    	dao.create(inmueble5);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinCantCocheras(4).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(3, inmuebles.size());
     	
@@ -589,13 +586,13 @@ public class DAOInmuebleImplTest {
     	inmueble4.setCantidadCocheras(5);
     	inmueble5.setCantidadCocheras(10);
     	
-    	daoInmueble.saveOrUpdate(inmueble1);
-    	daoInmueble.saveOrUpdate(inmueble2);
-    	daoInmueble.saveOrUpdate(inmueble3);
-    	daoInmueble.saveOrUpdate(inmueble4);
-    	daoInmueble.saveOrUpdate(inmueble5);
+    	dao.saveOrUpdate(inmueble1);
+    	dao.saveOrUpdate(inmueble2);
+    	dao.saveOrUpdate(inmueble3);
+    	dao.saveOrUpdate(inmueble4);
+    	dao.saveOrUpdate(inmueble5);
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(3, inmuebles.size());
     	
@@ -613,15 +610,15 @@ public class DAOInmuebleImplTest {
     	inmueble2.setCantidadCocheras(4);
     	inmueble3.setCantidadCocheras(5);
     	
-    	daoInmueble.create(inmueble1);
-    	daoInmueble.create(inmueble2);
-    	daoInmueble.create(inmueble3);
-    	daoInmueble.create(inmueble4);
-    	daoInmueble.create(inmueble5);
+    	dao.create(inmueble1);
+    	dao.create(inmueble2);
+    	dao.create(inmueble3);
+    	dao.create(inmueble4);
+    	dao.create(inmueble5);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxCantCocheras(4).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(4, inmuebles.size());
     	
@@ -632,13 +629,13 @@ public class DAOInmuebleImplTest {
     	inmueble4.setCantidadCocheras(5);
     	inmueble5.setCantidadCocheras(10);
     	
-    	daoInmueble.saveOrUpdate(inmueble1);
-    	daoInmueble.saveOrUpdate(inmueble2);
-    	daoInmueble.saveOrUpdate(inmueble3);
-    	daoInmueble.saveOrUpdate(inmueble4);
-    	daoInmueble.saveOrUpdate(inmueble5);
+    	dao.saveOrUpdate(inmueble1);
+    	dao.saveOrUpdate(inmueble2);
+    	dao.saveOrUpdate(inmueble3);
+    	dao.saveOrUpdate(inmueble4);
+    	dao.saveOrUpdate(inmueble5);
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(3, inmuebles.size());
     	
@@ -656,15 +653,15 @@ public class DAOInmuebleImplTest {
     	inmueble2.setCantidadDormitorios(3);
     	inmueble3.setCantidadDormitorios(4);
     	
-    	daoInmueble.create(inmueble1);
-    	daoInmueble.create(inmueble2);
-    	daoInmueble.create(inmueble3);
-    	daoInmueble.create(inmueble4);
-    	daoInmueble.create(inmueble5);
+    	dao.create(inmueble1);
+    	dao.create(inmueble2);
+    	dao.create(inmueble3);
+    	dao.create(inmueble4);
+    	dao.create(inmueble5);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinCantDormitorios(3).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(2, inmuebles.size());
     	
@@ -675,13 +672,13 @@ public class DAOInmuebleImplTest {
     	inmueble4.setCantidadDormitorios(5);
     	inmueble5.setCantidadDormitorios(10);
     	
-    	daoInmueble.saveOrUpdate(inmueble1);
-    	daoInmueble.saveOrUpdate(inmueble2);
-    	daoInmueble.saveOrUpdate(inmueble3);
-    	daoInmueble.saveOrUpdate(inmueble4);
-    	daoInmueble.saveOrUpdate(inmueble5);
+    	dao.saveOrUpdate(inmueble1);
+    	dao.saveOrUpdate(inmueble2);
+    	dao.saveOrUpdate(inmueble3);
+    	dao.saveOrUpdate(inmueble4);
+    	dao.saveOrUpdate(inmueble5);
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(4, inmuebles.size());
     	
@@ -699,15 +696,15 @@ public class DAOInmuebleImplTest {
     	inmueble2.setCantidadDormitorios(3);
     	inmueble3.setCantidadDormitorios(4);
     	
-    	daoInmueble.create(inmueble1);
-    	daoInmueble.create(inmueble2);
-    	daoInmueble.create(inmueble3);
-    	daoInmueble.create(inmueble4);
-    	daoInmueble.create(inmueble5);
+    	dao.create(inmueble1);
+    	dao.create(inmueble2);
+    	dao.create(inmueble3);
+    	dao.create(inmueble4);
+    	dao.create(inmueble5);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxCantDormitorios(3).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(4, inmuebles.size());
     	
@@ -718,13 +715,13 @@ public class DAOInmuebleImplTest {
     	inmueble4.setCantidadDormitorios(5);
     	inmueble5.setCantidadDormitorios(10);
     	
-    	daoInmueble.saveOrUpdate(inmueble1);
-    	daoInmueble.saveOrUpdate(inmueble2);
-    	daoInmueble.saveOrUpdate(inmueble3);
-    	daoInmueble.saveOrUpdate(inmueble4);
-    	daoInmueble.saveOrUpdate(inmueble5);
+    	dao.saveOrUpdate(inmueble1);
+    	dao.saveOrUpdate(inmueble2);
+    	dao.saveOrUpdate(inmueble3);
+    	dao.saveOrUpdate(inmueble4);
+    	dao.saveOrUpdate(inmueble5);
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(2, inmuebles.size());
     	
@@ -758,15 +755,15 @@ public class DAOInmuebleImplTest {
     	inmueble2.setSuperficieCubierta(300);
     	inmueble3.setSuperficieCubierta(301);
     	
-    	daoInmueble.create(inmueble1);
-    	daoInmueble.create(inmueble2);
-    	daoInmueble.create(inmueble3);
-    	daoInmueble.create(inmueble4);
-    	daoInmueble.create(inmueble5);
+    	dao.create(inmueble1);
+    	dao.create(inmueble2);
+    	dao.create(inmueble3);
+    	dao.create(inmueble4);
+    	dao.create(inmueble5);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMinSupCubierta(300).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(2, inmuebles.size());
     	
@@ -777,13 +774,13 @@ public class DAOInmuebleImplTest {
     	inmueble4.setSuperficieCubierta(299);
     	inmueble5.setSuperficieCubierta(100);
     	
-    	daoInmueble.saveOrUpdate(inmueble1);
-    	daoInmueble.saveOrUpdate(inmueble2);
-    	daoInmueble.saveOrUpdate(inmueble3);
-    	daoInmueble.saveOrUpdate(inmueble4);
-    	daoInmueble.saveOrUpdate(inmueble5);
+    	dao.saveOrUpdate(inmueble1);
+    	dao.saveOrUpdate(inmueble2);
+    	dao.saveOrUpdate(inmueble3);
+    	dao.saveOrUpdate(inmueble4);
+    	dao.saveOrUpdate(inmueble5);
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(3, inmuebles.size());
     	
@@ -801,15 +798,15 @@ public class DAOInmuebleImplTest {
     	inmueble2.setSuperficieCubierta(300);
     	inmueble3.setSuperficieCubierta(299);
     	
-    	daoInmueble.create(inmueble1);
-    	daoInmueble.create(inmueble2);
-    	daoInmueble.create(inmueble3);
-    	daoInmueble.create(inmueble4);
-    	daoInmueble.create(inmueble5);
+    	dao.create(inmueble1);
+    	dao.create(inmueble2);
+    	dao.create(inmueble3);
+    	dao.create(inmueble4);
+    	dao.create(inmueble5);
     	
     	criterio = new CriterioBusquedaInmuebleDTO.Builder().setMaxSupCubierta(300).build();
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(4, inmuebles.size());
     	
@@ -820,13 +817,13 @@ public class DAOInmuebleImplTest {
     	inmueble4.setSuperficieCubierta(299);
     	inmueble5.setSuperficieCubierta(400);
     	
-    	daoInmueble.saveOrUpdate(inmueble1);
-    	daoInmueble.saveOrUpdate(inmueble2);
-    	daoInmueble.saveOrUpdate(inmueble3);
-    	daoInmueble.saveOrUpdate(inmueble4);
-    	daoInmueble.saveOrUpdate(inmueble5);
+    	dao.saveOrUpdate(inmueble1);
+    	dao.saveOrUpdate(inmueble2);
+    	dao.saveOrUpdate(inmueble3);
+    	dao.saveOrUpdate(inmueble4);
+    	dao.saveOrUpdate(inmueble5);
     	
-    	inmuebles = daoInmueble.findInmueblesbyCaracteristicas(criterio);
+    	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
     	
     	assertEquals(2, inmuebles.size());
     	
@@ -836,27 +833,20 @@ public class DAOInmuebleImplTest {
     public void testPublicaciones() {
 	Inmueble i = unInmuebleNoPublicado();
 	i.setEstadoInmueble(EstadoInmueble.EnVenta);
-	Publicacion p = new PublicacionVenta.Builder()
+	i.addPublicacion(new PublicacionVenta.Builder()
 		.setFechaPublicacion(LocalDate.now())
+		.setInmueble(i)
 		.setPrecio(BigDecimal.valueOf(200))
-		.build();
-	
-	//daoInmueble.create(i);
-	//daoPublicacion.create(p);
-	p.setInmueble(i);
-	i.addPublicacion(p);
-	//daoPublicacion.saveOrUpdate(p);
-	//daoInmueble.saveOrUpdate(i);
-	daoInmueble.merge(i);
-	
-	inmuebles = daoInmueble.readAll();
+		.build());
+	dao.create(i);
+	inmuebles = dao.readAll();
 	assertEquals(1, inmuebles.get(0).getPublicaciones().size());
     }
     
     @Test
     public void testRelacionPropietarios() {
 	Inmueble i = unInmuebleNoPublicado();
-	daoInmueble.saveOrUpdate(i);
+	dao.saveOrUpdate(i);
 	Persona p = new Persona.Builder().setApellido("ape")
 		.setDNI("123")
 		.setinfoAdicional("Info adicional")
@@ -866,34 +856,30 @@ public class DAOInmuebleImplTest {
 		.setTelefono2("321")
 		.buid();
 	Propietario propietario = new Propietario.Builder()
+		//.addInmueble(i)
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setPersona(p)
 		.build();
-	propietario.setPersona(p);
 	p.addRol(propietario);
-	
 	DAOPersonaImpl daop = new DAOPersonaImpl();
 //	Debe existir primero una persona en la bd a la que asignarle el rol de propietario.
 	daop.saveOrUpdate(p);
-	i.setPropietario(propietario);
+	//i.setPropietario(propietario);
 	propietario.addInmueble(i);
-	
-	daoInmueble.saveOrUpdate(i);
-	inmuebles = daoInmueble.readAll();
+	dao.saveOrUpdate(i);
+	inmuebles = dao.readAll();
 	assertEquals(propietario,i.getPropietario());
 	
+	propietario.setPersona(null);
+	//Hay que hacer esto para desvincular al propietario de la persona y asi poder borrarlo cuando se borra el inmueble.
+	daop.saveOrUpdate(p);
 	
-	((Propietario)p.getRol(Rol.Propietario)).getInmuebles().remove(i);
-	p.removeRol(propietario);
-	daop.save(p);
-	i.setPropietario(null);
-	daoInmueble.save(i);
     }
     
     //@Test
     public void testGeneradorDeDatos() {
 	GeneradorDeDatos.generarDatos(10,ProvinciaService.modoLecturaJson.local);
-	inmuebles=daoInmueble.readAll();
+	inmuebles=dao.readAll();
 	assertEquals(10, inmuebles.size());
 	DAOPersonaImpl daop = new DAOPersonaImpl();
 	for(Inmueble i : inmuebles) {
@@ -913,7 +899,7 @@ public class DAOInmuebleImplTest {
 		    oa.setPrecio(BigDecimal.valueOf(100 * x));
 		}
 	    }
-	    daoInmueble.create(i);
+	    dao.create(i);
 	}
     }
 
@@ -926,7 +912,7 @@ public class DAOInmuebleImplTest {
 		    ov.setPrecio(BigDecimal.valueOf(100 * x));
 		}
 	    }
-	    daoInmueble.create(i);
+	    dao.create(i);
 	}
     }
 

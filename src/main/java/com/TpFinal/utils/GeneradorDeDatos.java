@@ -24,10 +24,8 @@ import com.TpFinal.data.dto.inmueble.*;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.ProvinciaService;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
@@ -79,38 +77,34 @@ public class GeneradorDeDatos {
 		    Provincia provincia = provinciaRandom(provincias);
 		    Localidad localidad = localidadRandom(provincia);
 		    Inmueble inmueble = inmuebleRandom(provincia, localidad);
-		    daoInm.saveOrUpdate(inmueble);
 		    Persona p = personaRandom();
 		    daoPer.create(p);
-		    Propietario prop = asignarRolPropietarioA(p);		    
-		    prop.addInmueble(inmueble);
-		    inmueble.setPropietario(prop);
-		    daoInm.saveOrUpdate(inmueble);
-		    
-		    		    
+		    Propietario prop = asignarRolPropietarioA(p);
 
-		    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);		    
+		    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);
 		    PublicacionAlquiler pubAlquiler = publicacionAlquilerRandom(inmueble);
-		    pubVenta.setEstadoPublicacion(random.nextBoolean()? EstadoPublicacion.Activa : EstadoPublicacion.Terminada);
-		    pubAlquiler.setEstadoPublicacion(pubVenta.getEstadoPublicacion() == EstadoPublicacion.Activa? EstadoPublicacion.Terminada :EstadoPublicacion.Activa);
-		    inmueble.addPublicacion(pubVenta);
-		    inmueble.addPublicacion(pubAlquiler);
-		    daoope.saveOrUpdate(pubAlquiler);
-		    daoope.saveOrUpdate(pubVenta);
-		    daoInm.saveOrUpdate(inmueble);
-		    
-		    
 		    Persona comprador = personaRandom();
 		    Persona inquilino = personaRandom();
+		    daoPer.saveOrUpdate(comprador);
+		    
 		    Inquilino inq = asignarRolInquilinoA(inquilino);
-		    daoPer.saveOrUpdate(comprador);		    
 		    daoPer.saveOrUpdate(inquilino);
 
-		    ContratoVenta contratoVenta = contratoVentaDe(inmueble, pubVenta, comprador);
+		    pubVenta.setContratoVenta(contratoVentaDe(inmueble, pubVenta, comprador));
+		    
+		    
+		    daoPer.saveOrUpdate(p);
+		    daoInm.create(inmueble);
+		    inmueble.setPropietario(prop);
+		    daoInm.saveOrUpdate(inmueble);
+		    daoope.saveOrUpdate(pubVenta);
+		    daoope.saveOrUpdate(pubAlquiler);
+		    inmueble.addContrato(pubVenta.getContratoVenta());
 		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
-		    inmueble.addContrato(contratoVenta);
 		    inmueble.addContrato(contratoAlquiler);
-		    daoInm.saveOrUpdate(inmueble);	    
+		    daoContratos.saveOrUpdate(contratoAlquiler);
+		    daoInm.saveOrUpdate(inmueble);
+		    
 
 		}
 		System.out.println("Agregados\n"
@@ -178,14 +172,13 @@ public class GeneradorDeDatos {
     private static Inquilino asignarRolInquilinoA(Persona inquilino) {
 	Inquilino inq = new Inquilino();
 	inq.setEstadoRegistro(EstadoRegistro.ACTIVO);
-	inq.setPersona(inquilino);
 	inquilino.addRol(inq);
 	return inq;
     }
 
     private static Propietario asignarRolPropietarioA(Persona p) {
-	Propietario prop = new Propietario.Builder().setEstadoRegistro(EstadoRegistro.ACTIVO)
-		.setPersona(p).build();
+	Propietario prop = new Propietario();
+	prop.setEstadoRegistro(EstadoRegistro.ACTIVO);
 	p.addRol(prop);
 	return prop;
     }

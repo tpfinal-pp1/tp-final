@@ -100,10 +100,26 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 
     @Override
     public boolean saveOrUpdate(T entidad) {
-	if (exists(entidad)) {
-	    return merge(entidad);
-	}
-	return create(entidad);
+//	if (exists(entidad)) {
+//	    return merge(entidad);
+//	}
+//	return create(entidad);
+    	boolean ret = false;
+		Session session = ConexionHibernate.openSession();
+		Transaction tx = null;
+		try {
+			tx = session.beginTransaction();
+			session.saveOrUpdate(entidad);
+			tx.commit();
+			ret = true;
+		} catch (HibernateException e) {
+			System.err.println("Error al guardar");
+			e.printStackTrace();
+			tx.rollback();
+		} finally {
+			session.close();
+		}
+		return ret;
 
     }
 

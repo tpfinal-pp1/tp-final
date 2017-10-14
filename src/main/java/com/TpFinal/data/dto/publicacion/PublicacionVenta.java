@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-//@Table(name = "publicaciones_venta")
+@Table(name = "publicaciones_venta")
 public class PublicacionVenta extends Publicacion {
 	
 	public static final String pPrecioVenta = "precio";
@@ -20,13 +20,13 @@ public class PublicacionVenta extends Publicacion {
 		return pPrecioVenta;
 	}
 
-//	public ContratoVenta getContratoVenta() {
-//		return contratoVenta;
-//	}
-//
-//	public void setContratoVenta(ContratoVenta contratoVenta) {
-//		this.contratoVenta = contratoVenta;
-//	}
+	public ContratoVenta getContratoVenta() {
+		return contratoVenta;
+	}
+
+	public void setContratoVenta(ContratoVenta contratoVenta) {
+		this.contratoVenta = contratoVenta;
+	}
 
 	@Column(name = pPrecioVenta)
 
@@ -36,8 +36,8 @@ public class PublicacionVenta extends Publicacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 	
-//	@OneToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-//	ContratoVenta contratoVenta;
+	@OneToOne(cascade = CascadeType.ALL)
+	ContratoVenta contratoVenta;
 	
 	public PublicacionVenta() {
 		super();
@@ -50,7 +50,7 @@ public class PublicacionVenta extends Publicacion {
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.precio = b.precio;
-		//this.contratoVenta = b.contratoVenta;
+		this.contratoVenta = b.contratoVenta;
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -72,37 +72,7 @@ public class PublicacionVenta extends Publicacion {
 	}
 	
 	
-	@Override
-	public int hashCode() {
-	    final int prime = 31;
-	    int result = super.hashCode();
-	    result = prime * result + ((moneda == null) ? 0 : moneda.hashCode());
-	    result = prime * result + ((precio == null) ? 0 : precio.hashCode());
-	    return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-	    if (this == obj)
-		return true;
-	    if (!super.equals(obj))
-		return false;
-	    if (!(obj instanceof PublicacionVenta))
-		return false;
-	    PublicacionVenta other = (PublicacionVenta) obj;
-	    if (moneda != other.moneda)
-		return false;
-	    if (precio == null) {
-		if (other.precio != null)
-		    return false;
-	    } else if (!precio.equals(other.precio))
-		return false;
-	    return true;
-	}
-
-
-
-
+	
 	public static class Builder{
 		private ContratoVenta contratoVenta;
 		private Inmueble inmueble;

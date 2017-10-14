@@ -150,8 +150,8 @@ public class DAOContratoAlquilerTest {
 	daoI.create(i);
 	c.setInmueble(i);
 	i.addContrato(c);
-	dao.save(c);
-	daoI.merge(i);
+	dao.create(c);
+	daoI.saveOrUpdate(i);
 	
 	
 	assertEquals(1, daoI.readAll().get(0).getContratos().size());

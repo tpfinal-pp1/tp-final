@@ -52,22 +52,51 @@ public class Persona implements Identificable, BorradoLogico {
     private EstadoRegistro estadoRegistro;
 
     public Persona() {
-		super();
-		setEstadoRegistro(EstadoRegistro.ACTIVO);
+	super();
+	setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     private Persona(Builder b) {
-		this.id = b.id;
-		this.nombre = b.nombre;
-		this.apellido = b.apellido;
-		this.DNI = b.DNI;
-		this.mail = b.mail;
-		this.telefono = b.telefono;
-		this.telefono2 = b.telefono2;
-		this.infoAdicional = b.infoAdicional;
-		this.roles = b.roles;
-		this.estadoRegistro = EstadoRegistro.ACTIVO;
+	this.id = b.id;
+	this.nombre = b.nombre;
+	this.apellido = b.apellido;
+	this.DNI = b.DNI;
+	this.mail = b.mail;
+	this.telefono = b.telefono;
+	this.telefono2 = b.telefono2;
+	this.infoAdicional = b.infoAdicional;
+	this.roles = b.roles;
+	this.estadoRegistro = EstadoRegistro.ACTIVO;
     }
+
+    public Persona(String nombre, String apellido, String mail, String telefono, String telefono2, String DNI,
+	    String infoAdicional) {
+	this.nombre = nombre;
+	this.apellido = apellido;
+	this.mail = mail;
+	this.telefono = telefono;
+	this.DNI = DNI;
+	this.telefono2 = telefono2;
+	this.infoAdicional = infoAdicional;
+    }
+
+	public Inquilino getInquilino() {
+		for (RolPersona rol : roles) {
+			if (rol instanceof Inquilino) {
+				return (Inquilino) rol;
+			}
+		}
+		return null;
+	}
+
+	public Propietario getPropietario() {
+		for (RolPersona rol : roles) {
+			if (rol instanceof Propietario) {
+				return (Propietario) rol;
+			}
+		}
+		return null;
+	}
 
    @Override
    public String toString(){
@@ -210,14 +239,9 @@ public class Persona implements Identificable, BorradoLogico {
 	this.roles = roles;
     }
 
-    public boolean addRol(RolPersona rol) {
-    	boolean ret=true;
-    	if(contiene(rol))
-    		ret= false;
-    	else {
-    		this.roles.add(rol);
-    	}
-    	return ret;
+    public void addRol(RolPersona rol) {
+		roles.add(rol);
+		rol.setPersona(this);
     }
     
     public boolean addRol(Rol rol) {
@@ -225,10 +249,8 @@ public class Persona implements Identificable, BorradoLogico {
     	if(contiene(rol))
     		ret= false;
     	else {
-    		if(rol.equals(Rol.Inquilino)) {
+    		if(rol.equals(Rol.Inquilino))
     			this.roles.add(new Inquilino());
-    		}
-    			
     		if(rol.equals(Rol.Propietario))
     			this.roles.add(new Propietario());
     		ret=true;
@@ -274,14 +296,6 @@ public class Persona implements Identificable, BorradoLogico {
     	}
     	return ret;
     }
-    
-    public boolean contiene(RolPersona rol) {
-    	boolean ret=false;
-    	for(RolPersona r:this.roles) {
-    		ret=ret||r.getClass().equals(rol.getClass());
-    	}
-    	return ret;
-    } 
     
     public static class Builder {
 		private Long id;
@@ -345,9 +359,5 @@ public class Persona implements Identificable, BorradoLogico {
 		}
 
     }
-
-	public void removeRol(RolPersona r) {
-		this.roles.remove(r);
-	}
 
 }

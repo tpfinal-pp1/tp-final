@@ -13,18 +13,22 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 @PrimaryKeyJoinColumn(name="id")
 public class Propietario extends RolPersona {
 	
+	
+	
 	@OneToMany(mappedBy="propietario", fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
 	private Set<Inmueble>inmuebles= new HashSet<>();
 	
+		
 	public Propietario() {super();}
 	
 	private Propietario(Builder b) {
 	 	super(b.persona, EstadoRegistro.ACTIVO);
 		this.inmuebles=b.inmuebles;
-	}
 	
+	}
 	public void addInmueble(Inmueble i) {
 		inmuebles.add(i);
+		i.setPropietario(this);
 	}
 
 	public Set<Inmueble> getInmuebles() {
@@ -35,6 +39,8 @@ public class Propietario extends RolPersona {
 	    this.inmuebles = inmuebles;
 	}
 	
+	
+
 	@Override
 	public String toString() {
 	    
@@ -45,6 +51,11 @@ public class Propietario extends RolPersona {
 	    return ret;
 	}
 	
+	
+
+
+
+
 	public static class Builder{
 		private Set<Inmueble>inmuebles = new HashSet<>();
 		private Persona persona;
@@ -75,8 +86,6 @@ public class Propietario extends RolPersona {
 			return new Propietario(this);
 		}
 	}
-	
-	
 	
 	
 
