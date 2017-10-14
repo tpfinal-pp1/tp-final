@@ -189,6 +189,7 @@ public class DAOContratoAlquilerTest {
 	daoI.create(i);
 	c.setInmueble(i);
 	i.addContrato(c);
+	
 	dao.create(c);
 	daoI.saveOrUpdate(i);
 	

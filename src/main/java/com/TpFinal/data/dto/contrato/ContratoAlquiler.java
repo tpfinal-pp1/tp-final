@@ -5,8 +5,6 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
 
-
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -55,12 +53,12 @@ public class ContratoAlquiler extends Contrato {
     private DuracionContrato duracionContrato;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @Cascade({ CascadeType.SAVE_UPDATE })
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
 
     @ManyToOne
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @Cascade({ CascadeType.SAVE_UPDATE })
     @JoinColumn(name = "id_propietario")
     private Persona propietario;
 
@@ -78,23 +76,110 @@ public class ContratoAlquiler extends Contrato {
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
 	this.duracionContrato = b.duracionContrato;
-	
+
 	if (b.inmueble != null) {
 	    this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 	}
     }
-    
+
+    public Double getInteresPunitorio() {
+	return interesPunitorio;
+    }
+
+    public void setInteresPunitorio(Double interesPunitorio) {
+	this.interesPunitorio = interesPunitorio;
+    }
+
+    public BigDecimal getValorInicial() {
+	return valorInicial;
+    }
+
+    public void setValorInicial(BigDecimal valorInicial) {
+	this.valorInicial = valorInicial;
+    }
+
+    public Integer getDiaDePago() {
+	return diaDePago;
+    }
+
+    public void setDiaDePago(Integer diaDePago) {
+	this.diaDePago = diaDePago;
+    }
+
+    public Inquilino getInquilinoContrato() {
+	return inquilinoContrato;
+    }
+
+    public void setInquilinoContrato(Inquilino inquilinoContrato) {
+	if (this.inquilinoContrato != null && !this.inquilinoContrato.equals(inquilinoContrato)) {
+	    this.inquilinoContrato.removeContrato(this);
+	}
+	this.inquilinoContrato = inquilinoContrato;
+	if(inquilinoContrato !=  null && !inquilinoContrato.getContratos().contains(this))
+	    inquilinoContrato.addContrato(this);
+    }
+
+    public TipoInteres getTipoInteresPunitorio() {
+	return tipoInteresPunitorio;
+    }
+
+    public void setTipoInteresPunitorio(TipoInteres tipoInteresPunitorio) {
+	this.tipoInteresPunitorio = tipoInteresPunitorio;
+    }
+
+    public TipoInteres getTipoIncrementoCuota() {
+	return tipoIncrementoCuota;
+    }
+
+    public void setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
+	this.tipoIncrementoCuota = tipoIncrementoCuota;
+    }
+
+    public Double getPorcentajeIncrementoCuota() {
+	return porcentajeIncrementoCuota;
+    }
+
+    public void setPorcentajeIncrementoCuota(Double porcentajeIncrementoCuota) {
+	this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
+    }
+
+    public DuracionContrato getDuracionContrato() {
+	return duracionContrato;
+    }
+
+    public void setDuracionContrato(DuracionContrato duracionContrato) {
+	this.duracionContrato = duracionContrato;
+    }
+
+    public Persona getPropietario() {
+	return propietario;
+    }
+
+    public void setPropietario(Persona propietario) {
+	this.propietario = propietario;
+    }
+
+    public Integer getIntervaloActualizacion() {
+	return intervaloActualizacion;
+    }
+
+    public void setIntervaloActualizacion(Integer intervaloActualizacion) {
+	this.intervaloActualizacion = intervaloActualizacion;
+    }
+
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ContratoAlquiler)) return false;
-        ContratoAlquiler contrato = (ContratoAlquiler) o;
-        return getId() != null && Objects.equals(getId(), contrato.getId());
+	if (this == o)
+	    return true;
+	if (!(o instanceof ContratoAlquiler))
+	    return false;
+	ContratoAlquiler contrato = (ContratoAlquiler) o;
+	return getId() != null && Objects.equals(getId(), contrato.getId());
     }
- 
+
     @Override
     public int hashCode() {
-        return 3;
+	return 3;
     }
 
     public static class Builder {
@@ -183,86 +268,4 @@ public class ContratoAlquiler extends Contrato {
 	}
     }
 
-    public Double getInteresPunitorio() {
-	return interesPunitorio;
-    }
-
-    public void setInteresPunitorio(Double interesPunitorio) {
-	this.interesPunitorio = interesPunitorio;
-    }
-
-    public BigDecimal getValorInicial() {
-	return valorInicial;
-    }
-
-    public void setValorInicial(BigDecimal valorInicial) {
-	this.valorInicial = valorInicial;
-    }
-
-    public Integer getDiaDePago() {
-	return diaDePago;
-    }
-
-    public void setDiaDePago(Integer diaDePago) {
-	this.diaDePago = diaDePago;
-    }   
-
-    public Inquilino getInquilinoContrato() {
-	return inquilinoContrato;
-    }
-
-    public void setInquilinoContrato(Inquilino inquilinoContrato) {
-	this.inquilinoContrato = inquilinoContrato;
-    }
-
-    public TipoInteres getTipoInteresPunitorio() {
-	return tipoInteresPunitorio;
-    }
-
-    public void setTipoInteresPunitorio(TipoInteres tipoInteresPunitorio) {
-	this.tipoInteresPunitorio = tipoInteresPunitorio;
-    }
-
-    public TipoInteres getTipoIncrementoCuota() {
-	return tipoIncrementoCuota;
-    }
-
-    public void setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
-	this.tipoIncrementoCuota = tipoIncrementoCuota;
-    }
-
-    public Double getPorcentajeIncrementoCuota() {
-	return porcentajeIncrementoCuota;
-    }
-
-    public void setPorcentajeIncrementoCuota(Double porcentajeIncrementoCuota) {
-	this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
-    }
-
-    public DuracionContrato getDuracionContrato() {
-	return duracionContrato;
-    }
-
-    public void setDuracionContrato(DuracionContrato duracionContrato) {
-	this.duracionContrato = duracionContrato;
-    }
-    public Persona getPropietario() {
-        return propietario;
-    }
-
-    public void setPropietario(Persona propietario) {
-        this.propietario = propietario;
-    }
-
-    public Integer getIntervaloActualizacion() {
-        return intervaloActualizacion;
-    }
-
-    public void setIntervaloActualizacion(Integer intervaloActualizacion) {
-        this.intervaloActualizacion = intervaloActualizacion;
-    }
-    
-
-    
-    
 }

@@ -81,8 +81,7 @@ public class DAOContratoVentaTest {
 		dao.save(instancia("3.00"));
 	
 		assertEquals(3, dao.readAll().size());
-		assertEquals(instanciaOV().getFechaPublicacion(), dao.readAll().get(0).getPublicacionVenta()
-			.getFechaPublicacion());
+		
     }
 
     @Test
@@ -176,14 +175,11 @@ public class DAOContratoVentaTest {
 	return new ContratoVenta.Builder()
 		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
 		.setPrecioVenta(new BigDecimal(numero))
-		.setPublicacionVenta(instanciaOV())
+	
 		.build();
     }
 
-    private PublicacionVenta instanciaOV() {
-	return new PublicacionVenta.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
-		.setMoneda(TipoMoneda.Pesos).setPrecio(BigDecimal.valueOf(12e3)).setInmueble(null).build();
-    }
+    
 
     private Inmueble unInmuebleNoPublicado() {
 	return new Inmueble.Builder()

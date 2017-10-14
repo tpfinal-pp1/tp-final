@@ -58,7 +58,7 @@ public class ContratoService {
 	    if (doc != null)
 		ret = daoAlquiler.saveOrUpdateContrato(c, doc);
 	    else
-		ret = daoAlquiler.saveOrUpdate(c);
+		ret = daoAlquiler.merge(c);
 	}
 	return ret;
     }
@@ -137,8 +137,7 @@ public class ContratoService {
     public static ContratoVenta getInstanciaVenta() {
 	return new ContratoVenta.Builder()
 		    .setPrecioVenta(new BigDecimal("0"))
-		    .setFechaCelebracion(LocalDate.now())
-		    .setPublicacionVenta(new PublicacionVenta())
+		    .setFechaCelebracion(LocalDate.now())		   
 		    .setDocumento(null)
 		    .setInmueble(new Inmueble.Builder()
 			    .setaEstrenar(false)

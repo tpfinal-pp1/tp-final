@@ -27,9 +27,7 @@ public class PublicacionVenta extends Publicacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 	
-	@OneToOne
-	@Cascade({CascadeType.SAVE_UPDATE})
-	ContratoVenta contratoVenta;
+	
 	
 	public PublicacionVenta() {
 		super();
@@ -42,21 +40,12 @@ public class PublicacionVenta extends Publicacion {
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.precio = b.precio;
-		this.contratoVenta = b.contratoVenta;
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
 	
 	public static String getpPrecioVenta() {
 		return pPrecioVenta;
-	}
-
-	public ContratoVenta getContratoVenta() {
-		return contratoVenta;
-	}
-
-	public void setContratoVenta(ContratoVenta contratoVenta) {
-		this.contratoVenta = contratoVenta;
 	}
 	
 	public BigDecimal getPrecio() {
@@ -95,7 +84,6 @@ public class PublicacionVenta extends Publicacion {
 	}
 	
 	public static class Builder{
-		private ContratoVenta contratoVenta;
 		private Inmueble inmueble;
 		private LocalDate fechaPublicacion;
 		private BigDecimal precio;
@@ -112,11 +100,7 @@ public class PublicacionVenta extends Publicacion {
 		}
 		public Builder setMoneda(TipoMoneda moneda) {
 			this.moneda = moneda;return this;
-		}
-		public Builder setContratoVenta(ContratoVenta contratoVenta) {
-			this.contratoVenta = contratoVenta;
-			return this;
-		}
+		}		
 		public PublicacionVenta build() {
 			return new PublicacionVenta(this);
 		}		

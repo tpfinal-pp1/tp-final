@@ -90,7 +90,7 @@ public class GeneradorDeDatos {
 		    Inquilino inq = asignarRolInquilinoA(inquilino);
 		    daoPer.saveOrUpdate(inquilino);
 
-		    pubVenta.setContratoVenta(contratoVentaDe(inmueble, pubVenta, comprador));
+		    ContratoVenta contratoVenta =contratoVentaDe(inmueble, pubVenta, comprador);
 		    
 		    
 		    daoPer.saveOrUpdate(p);
@@ -99,7 +99,7 @@ public class GeneradorDeDatos {
 		    daoInm.saveOrUpdate(inmueble);
 		    daoope.saveOrUpdate(pubVenta);
 		    daoope.saveOrUpdate(pubAlquiler);
-		    inmueble.addContrato(pubVenta.getContratoVenta());
+		    inmueble.addContrato(contratoVenta);
 		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
 		    inmueble.addContrato(contratoAlquiler);
 		    daoContratos.saveOrUpdate(contratoAlquiler);
@@ -162,8 +162,7 @@ public class GeneradorDeDatos {
     private static ContratoVenta contratoVentaDe(Inmueble inmueble, PublicacionVenta pubVenta, Persona comprador) {
 	return new ContratoVenta.Builder()
 		.setComprador(comprador)
-		.setFechaCelebracion(fechaRandom())
-		.setPublicacionVenta(pubVenta)
+		.setFechaCelebracion(fechaRandom())	
 		.setPrecioVenta(pubVenta.getPrecio())
 		.setInmueble(inmueble)
 		.build();

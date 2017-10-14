@@ -28,11 +28,7 @@ import java.util.Objects;
 public class ContratoVenta extends Contrato {
 
     @Column(name = "precioVenta")
-    private BigDecimal precioVenta;
-
-    @OneToOne
-    @Cascade({CascadeType.SAVE_UPDATE})
-    private PublicacionVenta publicacion;
+    private BigDecimal precioVenta;    
 
     @ManyToOne
     @Cascade({CascadeType.SAVE_UPDATE})
@@ -51,16 +47,11 @@ public class ContratoVenta extends Contrato {
     private ContratoVenta(Builder b) {
 	super(b.id, b.fechaCelebracion, b.documento, b.estadoRegistro, b.inmueble);
 	this.precioVenta = b.precioVenta;
-	this.publicacion = b.publicacionVenta;
 	this.comprador = b.comprador;
 	if (b.inmueble != null) {
 	    this.vendedor = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 	    this.inmueble = b.inmueble;
 	}
-    }
-
-    public PublicacionVenta getPublicacionVenta() {
-	return publicacion;
     }
 
     public Persona getVendedor() {
@@ -70,11 +61,7 @@ public class ContratoVenta extends Contrato {
     public void setVendedor(Persona vendedor) {
 	this.vendedor = vendedor;
     }
-
-    public void setPublicacionVenta(PublicacionVenta publicacionVenta) {
-	this.publicacion = publicacionVenta;
-
-    }
+    
 
     public BigDecimal getPrecioVenta() {
 	return precioVenta;
@@ -91,15 +78,7 @@ public class ContratoVenta extends Contrato {
     public void setComprador(Persona comprador) {
 	this.comprador = comprador;
     }
-
-    public PublicacionVenta getPublicacion() {
-	return publicacion;
-    }
-
-    public void setPublicacion(PublicacionVenta publicacion) {
-	this.publicacion = publicacion;
-    }
-    
+   
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -121,7 +100,6 @@ public class ContratoVenta extends Contrato {
 	private LocalDate fechaCelebracion;
 	private Blob documento;
 	private BigDecimal precioVenta;
-	private PublicacionVenta publicacionVenta;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
 
 	public Builder setId(Long dato) {
@@ -141,11 +119,6 @@ public class ContratoVenta extends Contrato {
 
 	public Builder setPrecioVenta(BigDecimal dato) {
 	    this.precioVenta = dato;
-	    return this;
-	}
-
-	public Builder setPublicacionVenta(PublicacionVenta dato) {
-	    this.publicacionVenta = dato;
 	    return this;
 	}
 

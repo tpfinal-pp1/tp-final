@@ -115,6 +115,27 @@ public class Inquilino extends RolPersona {
 			return new Inquilino(this);
 		}
 	}
+
+
+
+
+
+
+	public void removeContrato(ContratoAlquiler contratoAlquiler) {
+	   if (this.contratos.contains(contratoAlquiler)) {
+	       this.contratos.remove(contratoAlquiler);
+	       contratoAlquiler.setInquilinoContrato(null);
+	   }
+	    
+	}
+
+	public void addContrato(ContratoAlquiler contratoAlquiler) {
+	    if(!this.contratos.contains(contratoAlquiler)) {
+		   this.contratos.add(contratoAlquiler);
+		   contratoAlquiler.setInquilinoContrato(this);
+	    }
+	    
+	}
 	
 	
 
