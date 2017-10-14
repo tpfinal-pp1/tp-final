@@ -270,278 +270,43 @@ public class Inmueble implements Identificable, BorradoLogico {
 
 
     public void addPublicacion(Publicacion publicacion) {
-
-    	removePublicacion(publicacion);
-		publicaciones.add(publicacion);
+    	if(!this.publicaciones.contains(publicacion)) {
+    		publicacion.setInmueble(this);
+    		this.publicaciones.add(publicacion);
+    	}
     }
 
 	public void removePublicacion(Publicacion publicacion) {
-
-
-		if(publicacion.getId()!=null) {
-			for (Publicacion publi: publicaciones
-					) {
-				if (publi.getId() == publicacion.getId()) {
-					publicaciones.remove(publicacion);
-					return; //Ojo con el concurrent modification si se saca esto
-				}
-			}
+		if(this.publicaciones.contains(publicacion)) {
+			publicacion.setInmueble(null);
+			this.publicaciones.remove(publicacion);
 		}
 	}
+	
     public Propietario getPropietario() {
-	return propietario;
+    	return propietario;
     }
 
     public void setPropietario(Propietario propietario) {
     		this.propietario = propietario;
     }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((aEstrenar == null) ? 0 : aEstrenar.hashCode());
-	result = prime * result + ((cantidadAmbientes == null) ? 0 : cantidadAmbientes.hashCode());
-	result = prime * result + ((cantidadCocheras == null) ? 0 : cantidadCocheras.hashCode());
-	result = prime * result + ((cantidadDormitorios == null) ? 0 : cantidadDormitorios.hashCode());
-	result = prime * result + ((claseInmueble == null) ? 0 : claseInmueble.hashCode());
-	result = prime * result + ((conAireAcondicionado == null) ? 0 : conAireAcondicionado.hashCode());
-	result = prime * result + ((conJardin == null) ? 0 : conJardin.hashCode());
-	result = prime * result + ((conParrilla == null) ? 0 : conParrilla.hashCode());
-	result = prime * result + ((conPileta == null) ? 0 : conPileta.hashCode());
-	result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
-	result = prime * result + ((estadoInmueble == null) ? 0 : estadoInmueble.hashCode());
-	result = prime * result + ((superficieCubierta == null) ? 0 : superficieCubierta.hashCode());
-	result = prime * result + ((superficieTotal == null) ? 0 : superficieTotal.hashCode());
-	result = prime * result + ((tipoInmueble == null) ? 0 : tipoInmueble.hashCode());
-	return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (obj == null)
-	    return false;
-	if (!(obj instanceof Inmueble))
-	    return false;
-	Inmueble other = (Inmueble) obj;
-	if (aEstrenar == null) {
-	    if (other.aEstrenar != null)
-		return false;
-	} else if (!aEstrenar.equals(other.aEstrenar))
-	    return false;
-	if (cantidadAmbientes == null) {
-	    if (other.cantidadAmbientes != null)
-		return false;
-	} else if (!cantidadAmbientes.equals(other.cantidadAmbientes))
-	    return false;
-	if (cantidadCocheras == null) {
-	    if (other.cantidadCocheras != null)
-		return false;
-	} else if (!cantidadCocheras.equals(other.cantidadCocheras))
-	    return false;
-	if (cantidadDormitorios == null) {
-	    if (other.cantidadDormitorios != null)
-		return false;
-	} else if (!cantidadDormitorios.equals(other.cantidadDormitorios))
-	    return false;
-	if (claseInmueble != other.claseInmueble)
-	    return false;
-	if (conAireAcondicionado == null) {
-	    if (other.conAireAcondicionado != null)
-		return false;
-	} else if (!conAireAcondicionado.equals(other.conAireAcondicionado))
-	    return false;
-	if (conJardin == null) {
-	    if (other.conJardin != null)
-		return false;
-	} else if (!conJardin.equals(other.conJardin))
-	    return false;
-	if (conParrilla == null) {
-	    if (other.conParrilla != null)
-		return false;
-	} else if (!conParrilla.equals(other.conParrilla))
-	    return false;
-	if (conPileta == null) {
-	    if (other.conPileta != null)
-		return false;
-	} else if (!conPileta.equals(other.conPileta))
-	    return false;
-	if (direccion == null) {
-	    if (other.direccion != null)
-		return false;
-	} else if (!direccion.equals(other.direccion))
-	    return false;
-	if (estadoInmueble != other.estadoInmueble)
-	    return false;
-	if (superficieCubierta == null) {
-	    if (other.superficieCubierta != null)
-		return false;
-	} else if (!superficieCubierta.equals(other.superficieCubierta))
-	    return false;
-	if (superficieTotal == null) {
-	    if (other.superficieTotal != null)
-		return false;
-	} else if (!superficieTotal.equals(other.superficieTotal))
-	    return false;
-	if (tipoInmueble != other.tipoInmueble)
-	    return false;
-	return true;
-    }
-/*
-    @Override
-    public String toString() {
-	return "Inmueble \n[\nidInmueble=" + idInmueble + "\ncantidadAmbientes=" + cantidadAmbientes
-		+ "\ncantidadDormitorios=" + cantidadDormitorios + "\nsuperficieTotal=" + superficieTotal
-		+ "\nsuperficieCubierta=" + superficieCubierta + "\naEstrenar=" + aEstrenar + "\ncantidadCocheras="
-		+ cantidadCocheras + "\nconAireAcondicionado=" + conAireAcondicionado + "\nconJardin=" + conJardin
-		+ "\nconParilla=" + conParrilla + "\nconPileta=" + conPileta + "\nestadoInmueble=" + estadoInmueble
-		+ "\ntipoInmueble=" + tipoInmueble + "\nclaseInmueble=" + claseInmueble + "\ndireccion=" + direccion
-		+ "\npublicaciones=" + publicaciones + "\npropietario=" + propietario + "\n]";
-    }*/
-@Override
-public String toString() {
-	return  direccion.getCalle()+" N°"+direccion.getNro() + "," + direccion.getLocalidad();
-}
-
-
-
-	public static class Builder {
-	private Set<Contrato> contratos = new HashSet<>();
-	private Propietario propietario;
-	private Integer cantidadAmbientes;
-	private Integer cantidadDormitorios;
-	private Integer superficieTotal;
-	private Integer superficieCubierta;
-	private Boolean aEstrenar;
-	private Integer cantidadCocheras;
-	private Boolean conAireAcondicionado;
-	private Boolean conJardin;
-	private Boolean conParilla;
-	private Boolean conPileta;
-	private EstadoInmueble estadoInmueble;
-	private TipoInmueble tipoInmueble;
-	private ClaseInmueble claseInmueble;
-	private Direccion direccion;
-	private Set<Publicacion> publicaciones = new HashSet<>();
-
-	public Builder setCantidadAmbientes(Integer cantidadAmbientes) {
-	    this.cantidadAmbientes = cantidadAmbientes;
-	    return this;
-	}
-
-	public Builder setCantidadDormitorios(Integer cantidadDormitorios) {
-	    this.cantidadDormitorios = cantidadDormitorios;
-	    return this;
-	}
-
-	public Builder setSuperficieTotal(Integer superficieTotal) {
-	    this.superficieTotal = superficieTotal;
-	    return this;
-	}
-
-	public Builder setSuperficieCubierta(Integer superficieCubierta) {
-	    this.superficieCubierta = superficieCubierta;
-	    return this;
-	}
-
-	public Builder setaEstrenar(Boolean aEstrenar) {
-	    this.aEstrenar = aEstrenar;
-	    return this;
-	}
-
-	public Builder setCantidadCocheras(Integer cantidadCocheras) {
-	    this.cantidadCocheras = cantidadCocheras;
-	    return this;
-	}
-
-	public Builder setConAireAcondicionado(Boolean conAireAcondicionado) {
-	    this.conAireAcondicionado = conAireAcondicionado;
-	    return this;
-	}
-
-	public Builder setConJardin(Boolean conJardin) {
-	    this.conJardin = conJardin;
-	    return this;
-	}
-
-	public Builder setConParilla(Boolean conParilla) {
-	    this.conParilla = conParilla;
-	    return this;
-	}
-
-	public Builder setConPileta(Boolean conPileta) {
-	    this.conPileta = conPileta;
-	    return this;
-	}
-
-	public Builder setEstadoInmueble(EstadoInmueble estadoInmueble) {
-	    this.estadoInmueble = estadoInmueble;
-	    return this;
-	}
-
-	public Builder setTipoInmueble(TipoInmueble tipoInmueble) {
-	    this.tipoInmueble = tipoInmueble;
-	    return this;
-	}
-
-	public Builder setClaseInmueble(ClaseInmueble claseInmueble) {
-	    this.claseInmueble = claseInmueble;
-	    return this;
-	}
-
-	public Builder setDireccion(Direccion direccion) {
-	    this.direccion = direccion;
-	    return this;
-	}
-
-	public Builder setPublicaciones(Set<Publicacion> publicaciones) {
-	    this.publicaciones = publicaciones;
-	    return this;
-	}
-
-
-	public Builder addPublicacion(Publicacion publicacion) {
-	    this.publicaciones.add(publicacion);
-	    return this;
-	}
-
-	public Builder setPropietario(Propietario propietario) {
-	    this.propietario = propietario;
-	    return this;
-	}
-	
-	public Builder setContratos(Set<Contrato> contratos) {
-	    this.contratos = contratos;
-	    return this;
-	}
-	
-	public Builder addContrato(Contrato contrato) {
-	    contratos.add(contrato);
-	    return this;
-	}
-
-	public Inmueble build() {
-	    return new Inmueble(this);
-	}
-
-    }
-
+    
     @Override
     public void setEstadoRegistro(EstadoRegistro estado) {
-	this.estadoRegistro = estado;
+    	this.estadoRegistro = estado;
 
     }
 
     @Override
     public EstadoRegistro getEstadoRegistro() {
-	return estadoRegistro;
+    	return estadoRegistro;
     }
 
     public void addContrato(Contrato c) {
-	contratos.add(c);
-	
+    	if(!this.contratos.contains(c)) {
+    		c.setInmueble(this);
+    		contratos.add(c);
+    	}
     }
 
     public Set<Contrato> getContratos() {
@@ -551,7 +316,230 @@ public String toString() {
     public void setContratos(Set<Contrato> contratos) {
         this.contratos = contratos;
     }
-    
+
+    @Override
+    public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((aEstrenar == null) ? 0 : aEstrenar.hashCode());
+		result = prime * result + ((cantidadAmbientes == null) ? 0 : cantidadAmbientes.hashCode());
+		result = prime * result + ((cantidadCocheras == null) ? 0 : cantidadCocheras.hashCode());
+		result = prime * result + ((cantidadDormitorios == null) ? 0 : cantidadDormitorios.hashCode());
+		result = prime * result + ((claseInmueble == null) ? 0 : claseInmueble.hashCode());
+		result = prime * result + ((conAireAcondicionado == null) ? 0 : conAireAcondicionado.hashCode());
+		result = prime * result + ((conJardin == null) ? 0 : conJardin.hashCode());
+		result = prime * result + ((conParrilla == null) ? 0 : conParrilla.hashCode());
+		result = prime * result + ((conPileta == null) ? 0 : conPileta.hashCode());
+		result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
+		result = prime * result + ((estadoInmueble == null) ? 0 : estadoInmueble.hashCode());
+		result = prime * result + ((superficieCubierta == null) ? 0 : superficieCubierta.hashCode());
+		result = prime * result + ((superficieTotal == null) ? 0 : superficieTotal.hashCode());
+		result = prime * result + ((tipoInmueble == null) ? 0 : tipoInmueble.hashCode());
+		return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+		if (this == obj)
+		    return true;
+		if (obj == null)
+		    return false;
+		if (!(obj instanceof Inmueble))
+		    return false;
+		Inmueble other = (Inmueble) obj;
+		if (aEstrenar == null) {
+		    if (other.aEstrenar != null)
+			return false;
+		} else if (!aEstrenar.equals(other.aEstrenar))
+		    return false;
+		if (cantidadAmbientes == null) {
+		    if (other.cantidadAmbientes != null)
+			return false;
+		} else if (!cantidadAmbientes.equals(other.cantidadAmbientes))
+		    return false;
+		if (cantidadCocheras == null) {
+		    if (other.cantidadCocheras != null)
+			return false;
+		} else if (!cantidadCocheras.equals(other.cantidadCocheras))
+		    return false;
+		if (cantidadDormitorios == null) {
+		    if (other.cantidadDormitorios != null)
+			return false;
+		} else if (!cantidadDormitorios.equals(other.cantidadDormitorios))
+		    return false;
+		if (claseInmueble != other.claseInmueble)
+		    return false;
+		if (conAireAcondicionado == null) {
+		    if (other.conAireAcondicionado != null)
+			return false;
+		} else if (!conAireAcondicionado.equals(other.conAireAcondicionado))
+		    return false;
+		if (conJardin == null) {
+		    if (other.conJardin != null)
+			return false;
+		} else if (!conJardin.equals(other.conJardin))
+		    return false;
+		if (conParrilla == null) {
+		    if (other.conParrilla != null)
+			return false;
+		} else if (!conParrilla.equals(other.conParrilla))
+		    return false;
+		if (conPileta == null) {
+		    if (other.conPileta != null)
+			return false;
+		} else if (!conPileta.equals(other.conPileta))
+		    return false;
+		if (direccion == null) {
+		    if (other.direccion != null)
+			return false;
+		} else if (!direccion.equals(other.direccion))
+		    return false;
+		if (estadoInmueble != other.estadoInmueble)
+		    return false;
+		if (superficieCubierta == null) {
+		    if (other.superficieCubierta != null)
+			return false;
+		} else if (!superficieCubierta.equals(other.superficieCubierta))
+		    return false;
+		if (superficieTotal == null) {
+		    if (other.superficieTotal != null)
+			return false;
+		} else if (!superficieTotal.equals(other.superficieTotal))
+		    return false;
+		if (tipoInmueble != other.tipoInmueble)
+		    return false;
+		return true;
+    }
+
+    @Override
+	public String toString() {
+		return  direccion.getCalle()+" N°"+direccion.getNro() + "," + direccion.getLocalidad();
+	}
+
+
+
+	public static class Builder {
+		private Set<Contrato> contratos = new HashSet<>();
+		private Propietario propietario;
+		private Integer cantidadAmbientes;
+		private Integer cantidadDormitorios;
+		private Integer superficieTotal;
+		private Integer superficieCubierta;
+		private Boolean aEstrenar;
+		private Integer cantidadCocheras;
+		private Boolean conAireAcondicionado;
+		private Boolean conJardin;
+		private Boolean conParilla;
+		private Boolean conPileta;
+		private EstadoInmueble estadoInmueble;
+		private TipoInmueble tipoInmueble;
+		private ClaseInmueble claseInmueble;
+		private Direccion direccion;
+		private Set<Publicacion> publicaciones = new HashSet<>();
+	
+		public Builder setCantidadAmbientes(Integer cantidadAmbientes) {
+		    this.cantidadAmbientes = cantidadAmbientes;
+		    return this;
+		}
+	
+		public Builder setCantidadDormitorios(Integer cantidadDormitorios) {
+		    this.cantidadDormitorios = cantidadDormitorios;
+		    return this;
+		}
+	
+		public Builder setSuperficieTotal(Integer superficieTotal) {
+		    this.superficieTotal = superficieTotal;
+		    return this;
+		}
+	
+		public Builder setSuperficieCubierta(Integer superficieCubierta) {
+		    this.superficieCubierta = superficieCubierta;
+		    return this;
+		}
+	
+		public Builder setaEstrenar(Boolean aEstrenar) {
+		    this.aEstrenar = aEstrenar;
+		    return this;
+		}
+	
+		public Builder setCantidadCocheras(Integer cantidadCocheras) {
+		    this.cantidadCocheras = cantidadCocheras;
+		    return this;
+		}
+	
+		public Builder setConAireAcondicionado(Boolean conAireAcondicionado) {
+		    this.conAireAcondicionado = conAireAcondicionado;
+		    return this;
+		}
+	
+		public Builder setConJardin(Boolean conJardin) {
+		    this.conJardin = conJardin;
+		    return this;
+		}
+	
+		public Builder setConParilla(Boolean conParilla) {
+		    this.conParilla = conParilla;
+		    return this;
+		}
+	
+		public Builder setConPileta(Boolean conPileta) {
+		    this.conPileta = conPileta;
+		    return this;
+		}
+	
+		public Builder setEstadoInmueble(EstadoInmueble estadoInmueble) {
+		    this.estadoInmueble = estadoInmueble;
+		    return this;
+		}
+	
+		public Builder setTipoInmueble(TipoInmueble tipoInmueble) {
+		    this.tipoInmueble = tipoInmueble;
+		    return this;
+		}
+	
+		public Builder setClaseInmueble(ClaseInmueble claseInmueble) {
+		    this.claseInmueble = claseInmueble;
+		    return this;
+		}
+	
+		public Builder setDireccion(Direccion direccion) {
+		    this.direccion = direccion;
+		    return this;
+		}
+	
+		public Builder setPublicaciones(Set<Publicacion> publicaciones) {
+		    this.publicaciones = publicaciones;
+		    return this;
+		}
+	
+	
+		public Builder addPublicacion(Publicacion publicacion) {
+		    this.publicaciones.add(publicacion);
+		    return this;
+		}
+	
+		public Builder setPropietario(Propietario propietario) {
+		    this.propietario = propietario;
+		    return this;
+		}
+		
+		public Builder setContratos(Set<Contrato> contratos) {
+		    this.contratos = contratos;
+		    return this;
+		}
+		
+		public Builder addContrato(Contrato contrato) {
+		    contratos.add(contrato);
+		    return this;
+		}
+	
+		public Inmueble build() {
+		    return new Inmueble(this);
+		}
+
+    }
+
+
     
 
 }
