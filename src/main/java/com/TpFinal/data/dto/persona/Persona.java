@@ -227,8 +227,18 @@ public class Persona implements Identificable, BorradoLogico {
 	return this.estadoRegistro;
     }
 
-    public void agregarRol(RolPersona r) {
-	this.roles.add(r);
+    public void addRol(RolPersona r) {
+    	if(!this.roles.contains(r)) {
+    		this.roles.add(r);
+    		r.setPersona(this);
+    	}
+    }
+    
+    public void removeRol(RolPersona r) {
+    	if(this.roles.contains(r)) {
+    		this.roles.remove(r);
+    		r.setPersona(null);
+    	}
     }
 
     public Set<RolPersona> getRoles() {
@@ -243,15 +253,6 @@ public class Persona implements Identificable, BorradoLogico {
 	this.roles = roles;
     }
 
-    public void addRol(RolPersona rol) {
-    	if(!this.roles.contains(rol))
-    	{
-    		if(rol!=null) {
-    			roles.add(rol);
-    			rol.setPersona(this);
-    		}
-    	}
-    }
     
     public boolean addRol(Rol rol) {
     	boolean ret;

@@ -302,7 +302,12 @@ public class Inmueble implements Identificable, BorradoLogico {
     }
 
     public void setPropietario(Propietario propietario) {
-    		this.propietario = propietario;
+    	if(this.propietario!=null && !this.propietario.equals(propietario)) {
+    			this.propietario.removeInmueble(this);
+    		}
+	    this.propietario=propietario;
+		if(propietario!=null) 
+			propietario.addInmueble(this);
     }
     
     @Override

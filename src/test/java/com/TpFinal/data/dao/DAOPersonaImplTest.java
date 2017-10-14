@@ -103,9 +103,9 @@ public class DAOPersonaImplTest {
     	dao.readAll().forEach(p -> dao.delete(p));
     	Persona p = instancia("1");
     	
-    	p.agregarRol(instanciaInquilino(Calificacion.A));
-    	p.agregarRol(instanciaInquilino(Calificacion.B));
-    	p.agregarRol(instanciaInquilino(Calificacion.C));
+    	p.addRol(instanciaInquilino(Calificacion.A));
+    	p.addRol(instanciaInquilino(Calificacion.B));
+    	p.addRol(instanciaInquilino(Calificacion.C));
     	
     	p.getRoles().forEach(r -> r.setPersona(p));
     	
