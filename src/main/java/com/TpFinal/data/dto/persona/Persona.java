@@ -244,8 +244,13 @@ public class Persona implements Identificable, BorradoLogico {
     }
 
     public void addRol(RolPersona rol) {
-		roles.add(rol);
-		rol.setPersona(this);
+    	if(!this.roles.contains(rol))
+    	{
+    		if(rol!=null) {
+    			roles.add(rol);
+    			rol.setPersona(this);
+    		}
+    	}
     }
     
     public boolean addRol(Rol rol) {
