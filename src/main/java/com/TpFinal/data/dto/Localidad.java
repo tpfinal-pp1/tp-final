@@ -63,11 +63,7 @@ public class Localidad {
 
 	    @Override
 	    public String toString() {
-	    	if(this.nombre.equals("Ciudad Autonoma Buenos Aires"))
-	    		return "C.A.B.A - "+this.codigoPostal;
-	    	else {
 				return nombre;
-			}
 	    }
 
 		public String getNombre() {

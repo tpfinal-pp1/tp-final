@@ -129,18 +129,23 @@ public class InmuebleForm extends FormLayout {
 
 	});
 
+
 	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
 
 		if (valueChangeEvent.getValue() != null) {
-		    codPostal.setValue(valueChangeEvent.getValue().getCodigoPostal());
+			String CP=valueChangeEvent.getValue().getCodigoPostal();
+			if(!CP.equals("0"))
+		    	codPostal.setValue(CP);
+
+			else
+				codPostal.setValue("");
 		}
 
 	    }
 
 	});
-	codPostal.setEnabled(false);
 	comboPropietario.setTextInputAllowed(true);
 	clasesInmueble.setTextInputAllowed(true);
 	localidades.setTextInputAllowed(true);
@@ -223,8 +228,10 @@ public class InmuebleForm extends FormLayout {
 	binderInmueble.forField(this.localidades).withValidator(localidad -> localidades.isEnabled(), "Debe seleccionar una provincia primero")
 		.asRequired("Seleccione una localidad").bind(inmueble -> {
 	    	Direccion dir = inmueble.getDireccion();
-	    	return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
-		    	.getProvincia()) : null;
+
+				return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
+						.getProvincia()) : null;
+
 		},
 		(inmueble, localidad) -> {
 		    if (inmueble.getDireccion() == null)
