@@ -7,6 +7,10 @@ import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Propietario;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -31,7 +35,8 @@ public class PublicacionAlquiler extends Publicacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
+	@Cascade({CascadeType.SAVE_UPDATE})
 	ContratoAlquiler contratoAlquiler;
 
 	public PublicacionAlquiler() {

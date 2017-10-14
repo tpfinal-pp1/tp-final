@@ -122,12 +122,7 @@ public class DAOContratoVentaTest {
 
 	assertEquals(1, daoI.readAll().get(0).getContratos().size());
 	assertEquals(i, dao.readAll().get(0).getInmueble());
-
-	i = daoI.readAll().get(0);
-	i.getContratos().remove(c);
-	daoI.saveOrUpdate(i);
-	dao.delete(c);
-	daoI.delete(i);
+	daoI.readAll().forEach(daoI::delete);
 
     }
 

@@ -4,6 +4,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 
@@ -15,7 +19,8 @@ public class Propietario extends RolPersona {
 	
 	
 	
-	@OneToMany(mappedBy="propietario", fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToMany(mappedBy="propietario", fetch=FetchType.EAGER)
+	@Cascade({CascadeType.SAVE_UPDATE})
 	private Set<Inmueble>inmuebles= new HashSet<>();
 	
 		

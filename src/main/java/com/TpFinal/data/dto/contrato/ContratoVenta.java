@@ -1,6 +1,6 @@
 package com.TpFinal.data.dto.contrato;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,6 +8,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -26,14 +29,17 @@ public class ContratoVenta extends Contrato {
     @Column(name = "precioVenta")
     private BigDecimal precioVenta;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
     private PublicacionVenta publicacion;
 
-    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @ManyToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "id_comprador")
     private Persona comprador;
 
-    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @ManyToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "id_vendedor")
     private Persona vendedor;
 

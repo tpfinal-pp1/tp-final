@@ -35,6 +35,9 @@ import static org.junit.Assert.*;
 public class DAOContratoAlquilerTest {
 
     DAOContratoAlquiler dao;
+    DAOPublicacionImpl daoPublicaciones;
+    DAOInmuebleImpl daoInmuebles;
+    DAOPersonaImpl daoPersonas;
     List<ContratoAlquiler> contratos=new ArrayList<>();
 
     @BeforeClass
@@ -49,14 +52,19 @@ public class DAOContratoAlquilerTest {
         deleteDirectory(dir);
         dir.mkdir();
         dao=new DAOContratoAlquilerImpl();
+        daoPublicaciones = new DAOPublicacionImpl();
+        daoInmuebles = new DAOInmuebleImpl();
+        daoPersonas = new DAOPersonaImpl();
         contratos.clear();
     }
 
 
     @After
     public void tearDown() throws Exception {
-        contratos=dao.readAll();
+        contratos=dao.readAll();       
+        daoInmuebles.readAll().forEach(daoInmuebles::delete);
         contratos.forEach(dao::delete);
+        
         deleteDirectory(new File("Files"));
     }
 
@@ -68,7 +76,7 @@ public class DAOContratoAlquilerTest {
 
         assertEquals(3, dao.readAll().size());
         
-        assertEquals(dao.readAll().get(0).getPublicacionAlquiler().getFechaPublicacion(), instanciaOA().getFechaPublicacion());
+        
     }
 
     @Test
@@ -139,6 +147,9 @@ public class DAOContratoAlquilerTest {
     	i.getContratos().add(c);
     	dao.save(c);
     	assertEquals(i, dao.readAll().get(0).getInquilinoContrato());
+    	
+  
+    	
     }
     
     @Test
@@ -157,11 +168,7 @@ public class DAOContratoAlquilerTest {
 	assertEquals(1, daoI.readAll().get(0).getContratos().size());
 	assertEquals(i,dao.readAll().get(0).getInmueble());
 	
-	i = daoI.readAll().get(0);
-	i.getContratos().remove(c);
-	daoI.saveOrUpdate(i);
-	dao.delete(c);
-	daoI.delete(i);
+	
 	
 	
     }
@@ -200,7 +207,7 @@ public class DAOContratoAlquilerTest {
                 .setInteresPunitorio(new Double(numero))
                 .setIntervaloActualizacion(new Integer(numero))
                 .setInquilinoContrato(null)
-                 .setPublicacionAlquiler(instanciaOA())
+          
                 .build();
 
     }
@@ -210,11 +217,6 @@ public class DAOContratoAlquilerTest {
     	return i;
     }
     
-    
-    private PublicacionAlquiler instanciaOA() {
-    	return new PublicacionAlquiler.Builder().setFechaPublicacion(LocalDate.of(2017, 10, 1))
-    			.setMoneda(TipoMoneda.Pesos).setInmueble(null).build();
-    }
     
     private Inmueble unInmuebleNoPublicado() {
    	return new Inmueble.Builder()

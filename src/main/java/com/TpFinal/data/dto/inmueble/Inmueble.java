@@ -7,9 +7,24 @@ import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 
-import javax.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 @Entity
 @Table(name = "Inmuebles")
@@ -82,18 +97,22 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Enumerated(EnumType.STRING)
     private EstadoRegistro estadoRegistro;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name = "id_direccion")
     private Direccion direccion;
 
-    @ManyToOne(cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH,CascadeType.REMOVE})
+    @ManyToOne
+    @Cascade({CascadeType.ALL})
     @JoinColumn(name = "id_proppietario")
     private Propietario propietario;
 
-    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inmueble",fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
     protected Set<Publicacion> publicaciones = new HashSet<>();
     
-    @OneToMany(mappedBy = "inmueble", cascade = {CascadeType.DETACH,CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REFRESH}, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "inmueble",fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
     protected Set<Contrato> contratos = new HashSet<>();
 
     public Inmueble() {

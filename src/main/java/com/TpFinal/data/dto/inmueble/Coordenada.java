@@ -24,7 +24,7 @@ public class Coordenada implements Identificable{
 		this.lon = lon;
 	}
 
-	@Id @GeneratedValue
+	@Id @GeneratedValue()
 	private Long idCoordenada;
 	@NotNull
 	@Column (name = "latitud")

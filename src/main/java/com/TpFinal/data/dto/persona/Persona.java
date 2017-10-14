@@ -8,6 +8,9 @@ import com.TpFinal.data.dto.publicacion.Rol;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.*;
 
 @Entity
@@ -44,7 +47,8 @@ public class Persona implements Identificable, BorradoLogico {
     private String telefono2 = "";
     @Column(name = infoPersona)
     private String infoAdicional = "";
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "persona",fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
     private Set<RolPersona> roles = new HashSet<>();
     @Enumerated(EnumType.STRING)
     @Column(name = Persona.estadoRegistroS)

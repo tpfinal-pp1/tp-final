@@ -7,6 +7,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
@@ -23,7 +25,8 @@ public class Inquilino extends RolPersona {
 	@Enumerated(EnumType.STRING)
 	@Column(name="calificacion")
 	private Calificacion calificacion;
-	@OneToMany(mappedBy="inquilinoContrato", fetch=FetchType.EAGER, cascade={CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+	@OneToMany(mappedBy="inquilinoContrato", fetch=FetchType.EAGER)
+	@Cascade({CascadeType.SAVE_UPDATE})
 	private Set<ContratoAlquiler>contratos= new HashSet<>();
 
 	

@@ -6,6 +6,9 @@ import java.time.LocalDate;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
@@ -30,6 +33,7 @@ public class Contrato implements Identificable, BorradoLogico {
     @Column(name = Contrato.estadoRegistroS)
     private EstadoRegistro estadoRegistro;
     @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "id_inmueble")
     @NotNull
     protected Inmueble inmueble;
