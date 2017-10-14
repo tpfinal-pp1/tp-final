@@ -77,6 +77,8 @@ public class Propietario extends RolPersona {
 	}
 	
 	
+	
+	
 
 	
 }

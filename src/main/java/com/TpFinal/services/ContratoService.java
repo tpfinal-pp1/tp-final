@@ -67,7 +67,7 @@ public class ContratoService {
     	boolean ret=true;
     	ContratoVenta contratov=(ContratoVenta)contrato;
     	if(!contratov.getPublicacionVenta().equals(original.getPublicacionVenta())) {
-    		original.getPublicacionVenta().setContratoVenta(null);
+    	//	original.getPublicacionVenta().setContratoVenta(null);
     	}
     	if(!contratov.getInmueble().equals(original.getInmueble())) {
     		original.getInmueble().removeContrato(original);
