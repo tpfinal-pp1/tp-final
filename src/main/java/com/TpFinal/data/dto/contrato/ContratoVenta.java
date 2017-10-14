@@ -20,6 +20,7 @@ import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "contratoVenta")
@@ -97,6 +98,19 @@ public class ContratoVenta extends Contrato {
 
     public void setPublicacion(PublicacionVenta publicacion) {
 	this.publicacion = publicacion;
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ContratoVenta)) return false;
+        ContratoVenta contrato = (ContratoVenta) o;
+        return getId() != null && Objects.equals(getId(), contrato.getId());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return 5;
     }
 
     public static class Builder {

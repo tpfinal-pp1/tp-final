@@ -9,6 +9,7 @@ import com.TpFinal.data.dto.publicacion.Publicacion;
 
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -323,28 +324,19 @@ public class Inmueble implements Identificable, BorradoLogico {
     }
 
     @Override
-    public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((aEstrenar == null) ? 0 : aEstrenar.hashCode());
-		result = prime * result + ((cantidadAmbientes == null) ? 0 : cantidadAmbientes.hashCode());
-		result = prime * result + ((cantidadCocheras == null) ? 0 : cantidadCocheras.hashCode());
-		result = prime * result + ((cantidadDormitorios == null) ? 0 : cantidadDormitorios.hashCode());
-		result = prime * result + ((claseInmueble == null) ? 0 : claseInmueble.hashCode());
-		result = prime * result + ((conAireAcondicionado == null) ? 0 : conAireAcondicionado.hashCode());
-		result = prime * result + ((conJardin == null) ? 0 : conJardin.hashCode());
-		result = prime * result + ((conParrilla == null) ? 0 : conParrilla.hashCode());
-		result = prime * result + ((conPileta == null) ? 0 : conPileta.hashCode());
-		result = prime * result + ((direccion == null) ? 0 : direccion.hashCode());
-		result = prime * result + ((estadoInmueble == null) ? 0 : estadoInmueble.hashCode());
-		result = prime * result + ((superficieCubierta == null) ? 0 : superficieCubierta.hashCode());
-		result = prime * result + ((superficieTotal == null) ? 0 : superficieTotal.hashCode());
-		result = prime * result + ((tipoInmueble == null) ? 0 : tipoInmueble.hashCode());
-		return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Inmueble)) return false;
+        Inmueble inmueble = (Inmueble) o;
+        return getId() != null && Objects.equals(getId(), inmueble.getId());
     }
-
+ 
     @Override
-    public boolean equals(Object obj) {
+    public int hashCode() {
+        return 57;
+    }
+    
+    public boolean isSame(Object obj) {
 		if (this == obj)
 		    return true;
 		if (obj == null)

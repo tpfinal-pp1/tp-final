@@ -2,6 +2,7 @@ package com.TpFinal.data.dto.contrato;
 
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,14 +34,14 @@ public class Contrato implements Identificable, BorradoLogico {
     @Column(name = Contrato.estadoRegistroS)
     private EstadoRegistro estadoRegistro;
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "id_inmueble")
     @NotNull
     protected Inmueble inmueble;
     @Enumerated(EnumType.STRING)
     @Column(name = "moneda")
     private TipoMoneda moneda;
-
+    
     public Contrato() {
     }
 
@@ -93,7 +94,13 @@ public class Contrato implements Identificable, BorradoLogico {
     }
 
     public void setInmueble(Inmueble inmueble) {
+	if (this.inmueble != null)
+	{
+	    this.inmueble.removeContrato(this);
+	}
 	this.inmueble = inmueble;
+	if(inmueble != null && !inmueble.getContratos().contains(this))
+	inmueble.addContrato(this);
     }
 
     @Override
@@ -106,5 +113,21 @@ public class Contrato implements Identificable, BorradoLogico {
     public EstadoRegistro getEstadoRegistro() {
 	return estadoRegistro;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Contrato)) return false;
+        Contrato contrato = (Contrato) o;
+        return getId() != null && Objects.equals(getId(), contrato.getId());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return 37;
+    }
+    
+    
+    
 
 }

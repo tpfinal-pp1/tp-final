@@ -24,6 +24,7 @@ import org.hibernate.annotations.CascadeType;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Created by Max on 9/30/2017.
@@ -81,6 +82,19 @@ public class ContratoAlquiler extends Contrato {
 	if (b.inmueble != null) {
 	    this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 	}
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ContratoAlquiler)) return false;
+        ContratoAlquiler contrato = (ContratoAlquiler) o;
+        return getId() != null && Objects.equals(getId(), contrato.getId());
+    }
+ 
+    @Override
+    public int hashCode() {
+        return 3;
     }
 
     public static class Builder {

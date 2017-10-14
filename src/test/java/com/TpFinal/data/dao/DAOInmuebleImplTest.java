@@ -735,14 +735,14 @@ public class DAOInmuebleImplTest {
     	Inmueble inmueble2 =  unInmuebleEnVentaEnPesos();
     	Inmueble inmueble3 =  unInmuebleEnVentaEnPesos();
     	
-    	assertTrue(inmueble.equals(inmueble2));
-    	assertTrue(inmueble2.equals(inmueble3));
+    	assertTrue(inmueble.isSame(inmueble2));
+    	assertTrue(inmueble2.isSame(inmueble3));
     	
     	inmueble2.setCantidadAmbientes(10);
     	inmueble3.setCantidadCocheras(11);
     	
-    	assertFalse(inmueble.equals(inmueble2));
-    	assertFalse(inmueble.equals(inmueble3));
+    	assertFalse(inmueble.isSame(inmueble2));
+    	assertFalse(inmueble.isSame(inmueble3));
     }
     
     @Test
