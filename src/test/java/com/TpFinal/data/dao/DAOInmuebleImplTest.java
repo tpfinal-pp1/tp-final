@@ -42,11 +42,13 @@ public class DAOInmuebleImplTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 	ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+	
     }
 
     @Before
     public void setUp() throws Exception {
 	dao = new DAOInmuebleImpl();
+	dao.readAll().forEach(dao::delete);
 	inmuebles.clear();
 	criterio = null;
 

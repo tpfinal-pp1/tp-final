@@ -51,6 +51,7 @@ public class DAOContratoVentaTest {
 		contratos = dao.readAll();
 		contratos.forEach(dao::delete);
 		contratos.clear();
+		daoInmuebles.readAll().forEach(daoInmuebles::delete);
     }
 
     @After
