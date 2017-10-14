@@ -92,17 +92,19 @@ public class InmuebleForm extends FormLayout {
 	save.addClickListener(e -> this.save());
 
 
+
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 	setVisible(false);
 	localidades.setItems(provinciaService.getLocalidades());
 	provincias.setItems(provinciaService.getProvincias());
-	provincias.setTextInputAllowed(false);
+	//provincias.setTextInputAllowed(false);
 	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
 		Provincia provincia = valueChangeEvent.getValue();
+
 
 		if (provincia != null) {
 		    localidades.setItems(provincia.getLocalidades());
@@ -126,6 +128,10 @@ public class InmuebleForm extends FormLayout {
 
 	});
 	codPostal.setEnabled(false);
+	comboPropietario.setTextInputAllowed(true);
+	clasesInmueble.setTextInputAllowed(true);
+	localidades.setTextInputAllowed(true);
+	provincias.setTextInputAllowed(true);
 
     }
 
