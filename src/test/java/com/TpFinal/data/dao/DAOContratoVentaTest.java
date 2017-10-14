@@ -135,7 +135,7 @@ public class DAOContratoVentaTest {
 	
 		daoI.create(i);
 		c.setInmueble(i);
-		i.addContrato(c);
+		//i.addContrato(c);
 		dao.saveOrUpdate(c);
 		daoI.saveOrUpdate(i);
 		

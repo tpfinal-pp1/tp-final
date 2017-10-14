@@ -182,21 +182,21 @@ public class DAOContratoAlquilerTest {
     
     @Test
     public void testRelacionInmueble() {
-	DAOInmuebleImpl daoI = new DAOInmuebleImpl();
-	Inmueble i = unInmuebleNoPublicado();
-	ContratoAlquiler c = instancia("1");
-	
-	daoI.create(i);
-	c.setInmueble(i);
-	i.addContrato(c);
-	dao.create(c);
-	daoI.saveOrUpdate(i);
-	
-	
-	assertEquals(1, daoI.readAll().get(0).getContratos().size());
-	assertEquals(i,dao.readAll().get(0).getInmueble());
-	
-	
+		DAOInmuebleImpl daoI = new DAOInmuebleImpl();
+		Inmueble i = unInmuebleNoPublicado();
+		ContratoAlquiler c = instancia("1");
+		
+		daoI.create(i);
+		c.setInmueble(i);
+		//i.addContrato(c);
+		dao.create(c);
+		daoI.saveOrUpdate(i);
+		
+		
+		assertEquals(1, daoI.readAll().get(0).getContratos().size());
+		assertEquals(i,dao.readAll().get(0).getInmueble());
+		
+		
 	
 	
     }
