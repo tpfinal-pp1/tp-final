@@ -219,7 +219,7 @@ public class GeneradorDeDatos {
 		.setConParilla(random.nextBoolean())
 		.setConPileta(random.nextBoolean())
 		.setDireccion(new Direccion.Builder()
-			.setCalle("calle " + 1 + random.nextInt(100))
+			.setCalle(DummyDataGenerator.randomLastName())
 			.setCodPostal(localidad.getCodigoPostal())
 			.setCoordenada(new Coordenada(random.nextDouble(), random.nextDouble()))
 			.setLocalidad(localidad.getNombre())
