@@ -282,6 +282,20 @@ public class Inmueble implements Identificable, BorradoLogico {
 		}
 	}
 	
+	public void addContrato(Contrato c) {
+	   if(!this.contratos.contains(c)) {
+		   this.contratos.add(c);
+		   c.setInmueble(this);
+	    }
+	}
+	
+	public void removeContrato(Contrato c) {
+		if(this.contratos.contains(c)) {
+			this.contratos.remove(c);
+			c.setInmueble(null);
+		}
+	}
+	
     public Propietario getPropietario() {
     	return propietario;
     }
@@ -298,13 +312,6 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Override
     public EstadoRegistro getEstadoRegistro() {
     	return estadoRegistro;
-    }
-
-    public void addContrato(Contrato c) {
-    	if(!this.contratos.contains(c)) {
-    		c.setInmueble(this);
-    		contratos.add(c);
-    	}
     }
 
     public Set<Contrato> getContratos() {
