@@ -56,11 +56,7 @@ public abstract class VentanaSelectora<T>extends Window {
 
         updateList();
     }
-
-
-
-
-
+    
 
 
     private Component buildFooter() {

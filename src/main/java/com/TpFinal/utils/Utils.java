@@ -20,15 +20,14 @@ public class Utils {
     }
 
 
-   public static ArrayList<Object> Search(List<Object>Objects,String keyword) {
-
+   public static ArrayList<Object> Search(List<Object>Objects,String keyword,int threshold) {
         ArrayList<Object> ret = new ArrayList<Object>();
        keyword=keyword.toUpperCase();
-       System.out.println(keyword);
        for (Object op : Objects)
             {
+
                 if(op.toString()!=null){
-                    if(Utils.isPercentageMatch(op.toString(),keyword,50)){
+                    if(Utils.isPercentageMatch(op.toString().toUpperCase(),keyword,threshold)){
                         ret.add(op);
                     }
                 }
@@ -39,86 +38,25 @@ public class Utils {
 
         return ret;
 
-
     }
 
 
     public static boolean isPercentageMatch(String candidate,String keyword,int threshold){
-        String trimmedCandidate=trimCandidate(candidate,keyword,4);
+        //String trimmedCandidate=trimCandidate(candidate,keyword,4);
 
-        if(trimmedCandidate==""){
-            return false;
-        }
+      //  if(trimmedCandidate==""){
+     //       return false;
+      //  }
 
-        int percentage=percentageOfTextMatch(keyword,trimmedCandidate);
+        int percentage=percentageOfTextMatch(keyword,candidate);
+        System.out.println("Busqueda: "+keyword+" Resultado: "+candidate+" Match: "+percentage+"%");
 
-        if(percentage>threshold){
+        if(percentage>=threshold){
 
             return true;
         }
         return false;
     }
-    public static String trimCandidate(String candidate,String keyword,int threshold){
-
-        if(keyword.length()<candidate.length()) {
-            int matchCount=0;
-            int start=0;
-            int end=0;
-            int keywordIndex=0;
-            boolean enoughMatch=false;
-
-
-            candidate=candidate.toUpperCase();
-            for (int i = 0; i < candidate.length(); i++) {
-
-
-
-                boolean isMatch=candidate.charAt(i)==keyword.charAt(keywordIndex);
-                // System.out.print(candidate.charAt(i)+" | "+keyword.charAt(keywordIndex));
-
-                if(isMatch){ //if both chars match
-                    if(start==0)start=i;
-                    // System.out.println("   /");
-                    matchCount++;
-                    keywordIndex++;
-                    if(matchCount>threshold){ //flaged as enough match
-                        enoughMatch=true;
-                        end=i;
-                    }
-
-
-                }
-
-                if(!isMatch&&matchCount<=threshold){
-                    //    System.out.println("   X");
-                    matchCount=0;
-                    start=0;
-                    end=0;
-                    keywordIndex=0;
-                }
-                if(!isMatch&&matchCount>threshold){
-
-                    return candidate.substring(start,end);
-                }
-
-                if(keywordIndex>keyword.length()-1){
-                    if (keyword.length()==1){
-                        return candidate.substring(start,i);
-                    }
-                    else{
-                        return candidate.substring(start-1,i);
-                    }
-                }
-
-
-            }
-            return "";
-
-        }
-        return "";
-    }
-
-
 
 
 
