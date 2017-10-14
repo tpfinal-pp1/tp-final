@@ -107,9 +107,13 @@ public class InmuebleForm extends FormLayout {
 
 
 		if (provincia != null) {
-		    localidades.setItems(provincia.getLocalidades());
+			localidades.setEnabled(true);
+			localidades.setItems(provincia.getLocalidades());
 		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
-
+		}
+		else{
+			localidades.setEnabled(false);
+			localidades.setSelectedItem(null);
 		}
 		
 	    }
@@ -206,11 +210,12 @@ public class InmuebleForm extends FormLayout {
 		.bind(inmueble -> inmueble.getDireccion().getCalle(),
 			(inmueble, calle) -> inmueble.getDireccion().setCalle(calle));
 
-	binderInmueble.forField(this.localidades).asRequired("Seleccione una localidad").bind(inmueble -> {
-	    Direccion dir = inmueble.getDireccion();
-	    return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
-		    .getProvincia()) : null;
-	},
+	binderInmueble.forField(this.localidades).withValidator(localidad -> localidades.isEnabled(), "Debe seleccionar una provincia primero")
+		.asRequired("Seleccione una localidad").bind(inmueble -> {
+	    	Direccion dir = inmueble.getDireccion();
+	    	return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
+		    	.getProvincia()) : null;
+		},
 		(inmueble, localidad) -> {
 		    if (inmueble.getDireccion() == null)
 			inmueble.setDireccion(new Direccion());
@@ -329,6 +334,7 @@ public class InmuebleForm extends FormLayout {
 	delete.setVisible(true);
 	}else {
 	    this.inmueble = InmuebleService.getInstancia();
+	    localidades.setEnabled(false);
 	    delete.setVisible(false);
 	}
 	setVisible(true);
