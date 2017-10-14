@@ -116,170 +116,169 @@ public class Inmueble implements Identificable, BorradoLogico {
     protected Set<Contrato> contratos = new HashSet<>();
 
     public Inmueble() {
-	super();
-	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
+		super();
+		this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     private Inmueble(Builder inmuebleBuilder) {
-	this.idInmueble = null;
-	this.aEstrenar = inmuebleBuilder.aEstrenar;
-	this.cantidadAmbientes = inmuebleBuilder.cantidadAmbientes;
-	this.cantidadCocheras = inmuebleBuilder.cantidadCocheras;
-	this.cantidadDormitorios = inmuebleBuilder.cantidadDormitorios;
-	this.claseInmueble = inmuebleBuilder.claseInmueble;
-	this.conAireAcondicionado = inmuebleBuilder.conAireAcondicionado;
-	this.conJardin = inmuebleBuilder.conJardin;
-	this.conParrilla = inmuebleBuilder.conParilla;
-	this.conPileta = inmuebleBuilder.conPileta;
-	this.direccion = inmuebleBuilder.direccion;
-	this.estadoInmueble = inmuebleBuilder.estadoInmueble;
-	this.superficieCubierta = inmuebleBuilder.superficieCubierta;
-	this.superficieTotal = inmuebleBuilder.superficieTotal;
-	this.tipoInmueble = inmuebleBuilder.tipoInmueble;
-	this.publicaciones = inmuebleBuilder.publicaciones;
-	this.propietario = inmuebleBuilder.propietario;
-	this.contratos = inmuebleBuilder.contratos;
-	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
+		this.idInmueble = null;
+		this.aEstrenar = inmuebleBuilder.aEstrenar;
+		this.cantidadAmbientes = inmuebleBuilder.cantidadAmbientes;
+		this.cantidadCocheras = inmuebleBuilder.cantidadCocheras;
+		this.cantidadDormitorios = inmuebleBuilder.cantidadDormitorios;
+		this.claseInmueble = inmuebleBuilder.claseInmueble;
+		this.conAireAcondicionado = inmuebleBuilder.conAireAcondicionado;
+		this.conJardin = inmuebleBuilder.conJardin;
+		this.conParrilla = inmuebleBuilder.conParilla;
+		this.conPileta = inmuebleBuilder.conPileta;
+		this.direccion = inmuebleBuilder.direccion;
+		this.estadoInmueble = inmuebleBuilder.estadoInmueble;
+		this.superficieCubierta = inmuebleBuilder.superficieCubierta;
+		this.superficieTotal = inmuebleBuilder.superficieTotal;
+		this.tipoInmueble = inmuebleBuilder.tipoInmueble;
+		this.publicaciones = inmuebleBuilder.publicaciones;
+		this.propietario = inmuebleBuilder.propietario;
+		this.contratos = inmuebleBuilder.contratos;
+		this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
     @Override
     public Long getId() {
-	return idInmueble;
+    	return idInmueble;
     }
 
     @SuppressWarnings("unused")
     private void setIdInmueble(Long idInmueble) {
-	this.idInmueble = idInmueble;
+    	this.idInmueble = idInmueble;
     }
 
     public Integer getCantidadAmbientes() {
-	return cantidadAmbientes;
+    	return cantidadAmbientes;
     }
 
     public void setCantidadAmbientes(Integer cantidadAmbientes) {
-	this.cantidadAmbientes = cantidadAmbientes;
+    	this.cantidadAmbientes = cantidadAmbientes;
     }
 
     public Integer getCantidadDormitorios() {
-	return cantidadDormitorios;
+    	return cantidadDormitorios;
     }
 
     public void setCantidadDormitorios(Integer cantidadDormitorios) {
-	this.cantidadDormitorios = cantidadDormitorios;
+    	this.cantidadDormitorios = cantidadDormitorios;
     }
 
     public Integer getSuperficieTotal() {
-	return superficieTotal;
+    	return superficieTotal;
     }
 
     public void setSuperficieTotal(Integer superficieTotal) {
-	this.superficieTotal = superficieTotal;
+    	this.superficieTotal = superficieTotal;
     }
 
     public Integer getSuperficieCubierta() {
-	return superficieCubierta;
+    	return superficieCubierta;
     }
 
     public void setSuperficieCubierta(Integer superficieCubierta) {
-	this.superficieCubierta = superficieCubierta;
+    	this.superficieCubierta = superficieCubierta;
     }
 
     public Boolean getaEstrenar() {
-	return aEstrenar;
+    	return aEstrenar;
     }
 
     public void setaEstrenar(Boolean aEstrenar) {
-	this.aEstrenar = aEstrenar;
+    	this.aEstrenar = aEstrenar;
     }
 
     public Integer getCantidadCocheras() {
-	return cantidadCocheras;
+    	return cantidadCocheras;
     }
 
     public void setCantidadCocheras(Integer cantidadCocheras) {
-	this.cantidadCocheras = cantidadCocheras;
+    	this.cantidadCocheras = cantidadCocheras;
     }
 
     public Boolean getConAireAcondicionado() {
-	return conAireAcondicionado;
+    	return conAireAcondicionado;
     }
 
     public void setConAireAcondicionado(Boolean conAireAcondicionado) {
-	this.conAireAcondicionado = conAireAcondicionado;
+    	this.conAireAcondicionado = conAireAcondicionado;
     }
 
     public Boolean getConJardin() {
-	return conJardin;
+    	return conJardin;
     }
 
     public void setConJardin(Boolean conJardin) {
-	this.conJardin = conJardin;
+    	this.conJardin = conJardin;
     }
 
     public Boolean getConParilla() {
-	return conParrilla;
+    	return conParrilla;
     }
 
     public void setConParilla(Boolean conParilla) {
-	this.conParrilla = conParilla;
+    	this.conParrilla = conParilla;
     }
 
     public Boolean getConPileta() {
-	return conPileta;
+    	return conPileta;
     }
 
     public void setConPileta(Boolean conPileta) {
-	this.conPileta = conPileta;
+    	this.conPileta = conPileta;
     }
 
     public EstadoInmueble getEstadoInmueble() {
-	return estadoInmueble;
+    	return estadoInmueble;
     }
 
     public void setEstadoInmueble(EstadoInmueble estadoInmueble) {
-	this.estadoInmueble = estadoInmueble;
+    	this.estadoInmueble = estadoInmueble;
     }
 
     public TipoInmueble getTipoInmueble() {
-	return tipoInmueble;
+    	return tipoInmueble;
     }
 
     public void setTipoInmueble(TipoInmueble tipoInmueble) {
-	this.tipoInmueble = tipoInmueble;
+    	this.tipoInmueble = tipoInmueble;
     }
 
     public ClaseInmueble getClaseInmueble() {
-	return claseInmueble;
+    	return claseInmueble;
     }
 
     public void setClaseInmueble(ClaseInmueble claseInmueble) {
-	this.claseInmueble = claseInmueble;
+    	this.claseInmueble = claseInmueble;
     }
 
     public Direccion getDireccion() {
-	return direccion;
+    	return direccion;
     }
 
     public void setDireccion(Direccion direccion) {
-	this.direccion = direccion;
+    	this.direccion = direccion;
     }
 
     public Set<Publicacion> getPublicaciones() {
-	return publicaciones;
+    	return publicaciones;
     }
-
 
     public void addPublicacion(Publicacion publicacion) {
     	if(!this.publicaciones.contains(publicacion)) {
-    		publicacion.setInmueble(this);
     		this.publicaciones.add(publicacion);
+    		publicacion.setInmueble(this);
     	}
     }
 
 	public void removePublicacion(Publicacion publicacion) {
 		if(this.publicaciones.contains(publicacion)) {
-			publicacion.setInmueble(null);
 			this.publicaciones.remove(publicacion);
+			publicacion.setInmueble(null);
 		}
 	}
 	
@@ -294,7 +293,6 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Override
     public void setEstadoRegistro(EstadoRegistro estado) {
     	this.estadoRegistro = estado;
-
     }
 
     @Override
