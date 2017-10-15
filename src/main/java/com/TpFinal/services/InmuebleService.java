@@ -29,8 +29,8 @@ public class InmuebleService {
 	return dao.readAllActives();
     }
 
-    public boolean saveOrUpdate(Inmueble entidad) {
-	return dao.saveOrUpdate(entidad);
+    public boolean merge(Inmueble entidad) {
+	return dao.merge(entidad);
     }
 
     public boolean delete(Inmueble i) {

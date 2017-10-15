@@ -82,7 +82,7 @@ public class PublicacionServiceTest {
 		pro.addInmueble(in);
 		assertEquals(1, pro.getInmuebles().size());
 		//guardo el inmueble
-		assertTrue(serviceInm.saveOrUpdate(in));
+		assertTrue(serviceInm.merge(in));
 		in=daoInm.readAll().get(0);
 		PublicacionVenta pv = instanciaVenta(in);
 		PublicacionAlquiler pa = instanciaAlquiler(in);

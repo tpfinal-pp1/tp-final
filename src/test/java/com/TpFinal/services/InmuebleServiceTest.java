@@ -70,11 +70,11 @@ public class InmuebleServiceTest {
 		pro.addInmueble(in);
 		assertEquals(1, pro.getInmuebles().size());
 		//guardo el inmueble
-		assertTrue(service.saveOrUpdate(in));
+		assertTrue(service.merge(in));
 		
 		Inmueble inm = service.readAll().get(0);
 		inm.setPropietario(null);
-		assertTrue(service.saveOrUpdate(inm));
+		assertTrue(service.merge(inm));
 		
 
 		assertEquals(null, service.readAll().get(0).getPropietario());
