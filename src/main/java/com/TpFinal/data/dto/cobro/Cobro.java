@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.TpFinal.data.dto.EstadoRegistro;
+
 @Entity
 @Table(name="cobros")
 public class Cobro {
@@ -26,6 +28,8 @@ public class Cobro {
 	private BigDecimal montoPropietario;
 	private LocalDate fechaDePago;
 	private LocalDate fechaDeVencimiento;
+	private EstadoCobro estadoCobro;
+	private EstadoRegistro estadoRegistro;
 	
 	public Cobro() {}
 	
@@ -38,6 +42,8 @@ public class Cobro {
 		this.montoPropietario=b.montoPropietario;
 		this.fechaDePago=b.fechaDePago;
 		this.fechaDeVencimiento=b.fechaDeVencimiento;
+		this.estadoCobro=EstadoCobro.NOCOBRADO;
+		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
 	
 	public Integer getNumeroCuota() {
@@ -102,6 +108,22 @@ public class Cobro {
 
 	public void setFechaDeVencimiento(LocalDate fechaDeVencimiento) {
 		this.fechaDeVencimiento = fechaDeVencimiento;
+	}
+	
+	public EstadoCobro getEstadoCobro() {
+		return estadoCobro;
+	}
+
+	public EstadoRegistro getEstadoRegistro() {
+		return estadoRegistro;
+	}
+
+	public void setEstadoCobro(EstadoCobro estadoCobro) {
+		this.estadoCobro = estadoCobro;
+	}
+
+	public void setEstadoRegistro(EstadoRegistro estadoRegistro) {
+		this.estadoRegistro = estadoRegistro;
 	}
 
 	@Override
