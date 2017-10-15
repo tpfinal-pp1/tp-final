@@ -8,4 +8,6 @@ public interface DAOContratoVenta extends DAO<ContratoVenta>{
 
 	boolean saveOrUpdateContrato(ContratoVenta entidad, File doc);
 
+	boolean mergeContrato(ContratoVenta c, File doc);
+
 }

@@ -389,7 +389,7 @@ public class InmuebleForm extends FormLayout {
 	try {
 	    binderInmueble.writeBean(inmueble);
 	    if (inmueble.getPropietario().getPersona() != null)
-		success = inmbService.save(inmueble);
+		success = inmbService.merge(inmueble);
 	    if (success)
 		getABMView().showSuccessNotification("Inmuble Guardado");
 	    else

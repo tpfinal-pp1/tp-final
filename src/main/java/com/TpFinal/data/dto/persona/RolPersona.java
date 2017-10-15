@@ -4,6 +4,9 @@ package com.TpFinal.data.dto.persona;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
@@ -19,12 +22,13 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	public static final String idr = "idRol";
 	private static final String estadoRegistroS="estadoRegistro";
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade= {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE})
     @JoinColumn(name = "idp")
     private Persona persona;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = idr)
     protected Long idRol;
 
@@ -50,7 +54,12 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 	}
 
 	public void setPersona(Persona persona) {
+		if(this.persona!=null && !this.persona.equals(persona)) {
+			this.persona.removeRol(this);
+		}
 		this.persona = persona;
+		if(persona!=null && !persona.getRoles().contains(this))
+			persona.addRol(this);
 	}
 
 	public void setIdRol(Long idRol) {

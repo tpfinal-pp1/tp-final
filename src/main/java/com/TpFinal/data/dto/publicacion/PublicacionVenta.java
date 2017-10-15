@@ -7,37 +7,27 @@ import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Propietario;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "publicaciones_venta")
 public class PublicacionVenta extends Publicacion {
 	
 	public static final String pPrecioVenta = "precio";
-
-	public static String getpPrecioVenta() {
-		return pPrecioVenta;
-	}
-
-	public ContratoVenta getContratoVenta() {
-		return contratoVenta;
-	}
-
-	public void setContratoVenta(ContratoVenta contratoVenta) {
-		this.contratoVenta = contratoVenta;
-	}
-
 	@Column(name = pPrecioVenta)
-
 	private BigDecimal precio;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 	
-	@OneToOne(cascade = CascadeType.ALL)
-	ContratoVenta contratoVenta;
+	
 	
 	public PublicacionVenta() {
 		super();
@@ -50,9 +40,12 @@ public class PublicacionVenta extends Publicacion {
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.precio = b.precio;
-		this.contratoVenta = b.contratoVenta;
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
+	}
+	
+	public static String getpPrecioVenta() {
+		return pPrecioVenta;
 	}
 	
 	public BigDecimal getPrecio() {
@@ -71,10 +64,26 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = moneda;
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString();
+	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if(!(obj instanceof PublicacionVenta)) return false;
+		PublicacionVenta p = (PublicacionVenta)obj;
+		return Objects.equals(p.getId(), this.getId());
+	}
 	
 	public static class Builder{
-		private ContratoVenta contratoVenta;
 		private Inmueble inmueble;
 		private LocalDate fechaPublicacion;
 		private BigDecimal precio;
@@ -91,19 +100,10 @@ public class PublicacionVenta extends Publicacion {
 		}
 		public Builder setMoneda(TipoMoneda moneda) {
 			this.moneda = moneda;return this;
-		}
-		public Builder setContratoVenta(ContratoVenta contratoVenta) {
-			this.contratoVenta = contratoVenta;
-			return this;
-		}
+		}		
 		public PublicacionVenta build() {
 			return new PublicacionVenta(this);
 		}		
-	}
-	
-	@Override
-	public String toString() {
-		return super.toString();
 	}
 	
 

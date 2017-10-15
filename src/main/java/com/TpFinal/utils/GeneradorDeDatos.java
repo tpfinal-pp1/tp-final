@@ -1,3 +1,4 @@
+
 package com.TpFinal.utils;
 
 import java.io.*;
@@ -90,7 +91,7 @@ public class GeneradorDeDatos {
 		    Inquilino inq = asignarRolInquilinoA(inquilino);
 		    daoPer.saveOrUpdate(inquilino);
 
-		    pubVenta.setContratoVenta(contratoVentaDe(inmueble, pubVenta, comprador));
+		    ContratoVenta contratoVenta =contratoVentaDe(inmueble, pubVenta, comprador);
 		    
 		    
 		    daoPer.saveOrUpdate(p);
@@ -99,7 +100,7 @@ public class GeneradorDeDatos {
 		    daoInm.saveOrUpdate(inmueble);
 		    daoope.saveOrUpdate(pubVenta);
 		    daoope.saveOrUpdate(pubAlquiler);
-		    inmueble.addContrato(pubVenta.getContratoVenta());
+		    inmueble.addContrato(contratoVenta);
 		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
 		    inmueble.addContrato(contratoAlquiler);
 		    daoContratos.saveOrUpdate(contratoAlquiler);
@@ -162,8 +163,7 @@ public class GeneradorDeDatos {
     private static ContratoVenta contratoVentaDe(Inmueble inmueble, PublicacionVenta pubVenta, Persona comprador) {
 	return new ContratoVenta.Builder()
 		.setComprador(comprador)
-		.setFechaCelebracion(fechaRandom())
-		.setPublicacionVenta(pubVenta)
+		.setFechaCelebracion(fechaRandom())	
 		.setPrecioVenta(pubVenta.getPrecio())
 		.setInmueble(inmueble)
 		.build();
@@ -219,7 +219,7 @@ public class GeneradorDeDatos {
 		.setConParilla(random.nextBoolean())
 		.setConPileta(random.nextBoolean())
 		.setDireccion(new Direccion.Builder()
-			.setCalle(DummyDataGenerator.randomLastName())
+			.setCalle("calle " + 1 + random.nextInt(100))
 			.setCodPostal(localidad.getCodigoPostal())
 			.setCoordenada(new Coordenada(random.nextDouble(), random.nextDouble()))
 			.setLocalidad(localidad.getNombre())
@@ -244,7 +244,7 @@ public class GeneradorDeDatos {
 		.setNombre(nombres[random.nextInt(nombres.length)])
 		.setTelefono(getTelefeno())
 		.setTelefono2(getTelefeno())
-		.buid();
+		.build();
     }
 
     private static String dniRandom() {
@@ -258,5 +258,4 @@ public class GeneradorDeDatos {
     private static LocalDate fechaRandom() {
 	return LocalDate.of(1990 + random.nextInt(28), 1 + random.nextInt(12), 1 + random.nextInt(28));
     }
-
 }

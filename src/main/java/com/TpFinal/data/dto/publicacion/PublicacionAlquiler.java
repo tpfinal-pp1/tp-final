@@ -7,8 +7,13 @@ import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Propietario;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "publicaciones_alquiler")
@@ -31,9 +36,7 @@ public class PublicacionAlquiler extends Publicacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	ContratoAlquiler contratoAlquiler;
-
+	
 	public PublicacionAlquiler() {
 		super();
 		tipoPublicacion = TipoPublicacion.Alquiler;
@@ -45,7 +48,6 @@ public class PublicacionAlquiler extends Publicacion {
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.valorCuota = b.valorCuota;
-		this.contratoAlquiler = b.contratoAlquiler;
 		tipoPublicacion = TipoPublicacion.Alquiler;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -66,8 +68,7 @@ public class PublicacionAlquiler extends Publicacion {
 		this.moneda = moneda;
 	}
 
-	public static class Builder {
-		private ContratoAlquiler contratoAlquiler;
+	public static class Builder {		
 		private Inmueble inmueble;
 		private LocalDate fechaPublicacion;
 		private BigDecimal valorCuota;
@@ -92,11 +93,6 @@ public class PublicacionAlquiler extends Publicacion {
 			this.moneda = moneda;
 			return this;
 		}
-		
-		public Builder setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-			this.contratoAlquiler= contratoAlquiler;
-			return this;
-		}
 
 		public PublicacionAlquiler build() {
 			return new PublicacionAlquiler(this);
@@ -110,6 +106,19 @@ public class PublicacionAlquiler extends Publicacion {
 				+ "\nfechaPublicacion=" + fechaPublicacion + "\ntipoPublicacion=" + tipoPublicacion + "\n]";
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if(!(obj instanceof PublicacionAlquiler)) return false;
+		PublicacionAlquiler p = (PublicacionAlquiler)obj;
+		return Objects.equals(p.getId(), this.getId());
+	}
 	
 
 }

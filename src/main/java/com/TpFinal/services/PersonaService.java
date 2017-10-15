@@ -22,8 +22,6 @@ public class PersonaService {
 	}
 	
 	public boolean saveOrUpdate(Persona p) {
-		if(p.getRoles()!=null || p.getRoles().size()!=0) 
-			p.getRoles().forEach(rol -> rol.setPersona(p));
 		return dao.saveOrUpdate(p);
 	}
 	

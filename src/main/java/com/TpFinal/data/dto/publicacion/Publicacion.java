@@ -9,6 +9,7 @@ import com.TpFinal.data.dto.persona.Propietario;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -18,7 +19,7 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	public static final String pTipoPublicacion ="tipoPublicacion";
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idPublicacion")
 	protected Long idPublicacion;
 	
@@ -109,8 +110,20 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	public EstadoRegistro getEstadoRegistro() {
 	    return estadoRegistro;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(this.getId());
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if(!(obj instanceof Publicacion)) return false;
+		Publicacion p = (Publicacion)obj;
+		return Objects.equals(p.getId(), this.getId());
+	}
 	
 
 }

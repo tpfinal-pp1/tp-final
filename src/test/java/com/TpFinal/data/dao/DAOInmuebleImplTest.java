@@ -42,11 +42,13 @@ public class DAOInmuebleImplTest {
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
 	ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+	
     }
 
     @Before
     public void setUp() throws Exception {
 	dao = new DAOInmuebleImpl();
+	dao.readAll().forEach(dao::delete);
 	inmuebles.clear();
 	criterio = null;
 
@@ -55,7 +57,15 @@ public class DAOInmuebleImplTest {
     @After
     public void tearDown() throws Exception {
 	inmuebles = dao.readAll();
+	desvincular();
 	inmuebles.forEach(dao::delete);
+    }
+    
+    private void desvincular() {
+    	dao.readAll().forEach(i -> {
+    		i.setPropietario(null);
+    		dao.saveOrUpdate(i);
+    	});
     }
 
     @Test
@@ -733,14 +743,14 @@ public class DAOInmuebleImplTest {
     	Inmueble inmueble2 =  unInmuebleEnVentaEnPesos();
     	Inmueble inmueble3 =  unInmuebleEnVentaEnPesos();
     	
-    	assertTrue(inmueble.equals(inmueble2));
-    	assertTrue(inmueble2.equals(inmueble3));
+    	assertTrue(inmueble.isSame(inmueble2));
+    	assertTrue(inmueble2.isSame(inmueble3));
     	
     	inmueble2.setCantidadAmbientes(10);
     	inmueble3.setCantidadCocheras(11);
     	
-    	assertFalse(inmueble.equals(inmueble2));
-    	assertFalse(inmueble.equals(inmueble3));
+    	assertFalse(inmueble.isSame(inmueble2));
+    	assertFalse(inmueble.isSame(inmueble3));
     }
     
     @Test
@@ -854,7 +864,7 @@ public class DAOInmuebleImplTest {
 		.setNombre("nom")
 		.setTelefono("123456")
 		.setTelefono2("321")
-		.buid();
+		.build();
 	Propietario propietario = new Propietario.Builder()
 		//.addInmueble(i)
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)

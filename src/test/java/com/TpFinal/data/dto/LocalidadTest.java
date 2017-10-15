@@ -32,7 +32,7 @@ public class LocalidadTest {
 //		localidades.forEach( l -> System.out.println(l.getNombre()+" "+l.getProvincia()+" "+l.getCodPosta()));
 //	}
 	
-
+	@Test
 	public void transformar() {
 
 
@@ -45,7 +45,7 @@ public class LocalidadTest {
 	}
 
 
-	
+	@Test
 	public void transformar2() {
 		
 	}

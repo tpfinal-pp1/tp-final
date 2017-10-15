@@ -1,6 +1,6 @@
 package com.TpFinal.data.dto.contrato;
 
-import javax.persistence.CascadeType;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -8,6 +8,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.inmueble.Inmueble;
@@ -17,6 +20,7 @@ import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "contratoVenta")
@@ -24,16 +28,15 @@ import java.time.LocalDate;
 public class ContratoVenta extends Contrato {
 
     @Column(name = "precioVenta")
-    private BigDecimal precioVenta;
+    private BigDecimal precioVenta;    
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private PublicacionVenta publicacion;
-
-    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @ManyToOne
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "id_comprador")
     private Persona comprador;
 
-    @ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+    @ManyToOne
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "id_vendedor")
     private Persona vendedor;
 
@@ -44,16 +47,11 @@ public class ContratoVenta extends Contrato {
     private ContratoVenta(Builder b) {
 	super(b.id, b.fechaCelebracion, b.documento, b.estadoRegistro, b.inmueble);
 	this.precioVenta = b.precioVenta;
-	this.publicacion = b.publicacionVenta;
 	this.comprador = b.comprador;
 	if (b.inmueble != null) {
 	    this.vendedor = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 	    this.inmueble = b.inmueble;
 	}
-    }
-
-    public PublicacionVenta getPublicacionVenta() {
-	return publicacion;
     }
 
     public Persona getVendedor() {
@@ -63,11 +61,7 @@ public class ContratoVenta extends Contrato {
     public void setVendedor(Persona vendedor) {
 	this.vendedor = vendedor;
     }
-
-    public void setPublicacionVenta(PublicacionVenta publicacionVenta) {
-	this.publicacion = publicacionVenta;
-
-    }
+    
 
     public BigDecimal getPrecioVenta() {
 	return precioVenta;
@@ -84,13 +78,18 @@ public class ContratoVenta extends Contrato {
     public void setComprador(Persona comprador) {
 	this.comprador = comprador;
     }
-
-    public PublicacionVenta getPublicacion() {
-	return publicacion;
+   
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ContratoVenta)) return false;
+        ContratoVenta contrato = (ContratoVenta) o;
+        return getId() != null && Objects.equals(getId(), contrato.getId());
     }
-
-    public void setPublicacion(PublicacionVenta publicacion) {
-	this.publicacion = publicacion;
+ 
+    @Override
+    public int hashCode() {
+        return 5;
     }
 
     public static class Builder {
@@ -101,7 +100,6 @@ public class ContratoVenta extends Contrato {
 	private LocalDate fechaCelebracion;
 	private Blob documento;
 	private BigDecimal precioVenta;
-	private PublicacionVenta publicacionVenta;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
 
 	public Builder setId(Long dato) {
@@ -121,11 +119,6 @@ public class ContratoVenta extends Contrato {
 
 	public Builder setPrecioVenta(BigDecimal dato) {
 	    this.precioVenta = dato;
-	    return this;
-	}
-
-	public Builder setPublicacionVenta(PublicacionVenta dato) {
-	    this.publicacionVenta = dato;
 	    return this;
 	}
 

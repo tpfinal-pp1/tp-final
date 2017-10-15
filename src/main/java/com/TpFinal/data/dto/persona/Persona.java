@@ -8,6 +8,9 @@ import com.TpFinal.data.dto.publicacion.Rol;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import java.util.*;
 
 @Entity
@@ -44,7 +47,8 @@ public class Persona implements Identificable, BorradoLogico {
     private String telefono2 = "";
     @Column(name = infoPersona)
     private String infoAdicional = "";
-    @OneToMany(mappedBy = "persona", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "persona",fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
     private Set<RolPersona> roles = new HashSet<>();
     @Enumerated(EnumType.STRING)
     @Column(name = Persona.estadoRegistroS)
@@ -223,8 +227,18 @@ public class Persona implements Identificable, BorradoLogico {
 	return this.estadoRegistro;
     }
 
-    public void agregarRol(RolPersona r) {
-	this.roles.add(r);
+    public void addRol(RolPersona r) {
+    	if(!this.roles.contains(r)) {
+    		this.roles.add(r);
+    		r.setPersona(this);
+    	}
+    }
+    
+    public void removeRol(RolPersona r) {
+    	if(this.roles.contains(r)) {
+    		this.roles.remove(r);
+    		r.setPersona(null);
+    	}
     }
 
     public Set<RolPersona> getRoles() {
@@ -239,10 +253,6 @@ public class Persona implements Identificable, BorradoLogico {
 	this.roles = roles;
     }
 
-    public void addRol(RolPersona rol) {
-		roles.add(rol);
-		rol.setPersona(this);
-    }
     
     public boolean addRol(Rol rol) {
     	boolean ret;
@@ -354,7 +364,7 @@ public class Persona implements Identificable, BorradoLogico {
 		    return this;
 		}
 	
-		public Persona buid() {
+		public Persona build() {
 		    return new Persona(this);
 		}
 

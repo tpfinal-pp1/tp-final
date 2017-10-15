@@ -18,156 +18,138 @@ import java.util.List;
 
 public class PublicacionService {
     private DAOPublicacion dao;
-    public final static PublicacionVenta INSTANCIA_VENTA= InstanciaPublicacionVenta();
-   public final static PublicacionAlquiler INSTANCIA_ALQUILER= InstanciaPublicacionAlquiler();
-
-
+    public final static PublicacionVenta INSTANCIA_VENTA = InstanciaPublicacionVenta();
+    public final static PublicacionAlquiler INSTANCIA_ALQUILER = InstanciaPublicacionAlquiler();
 
     public PublicacionService() {
-        dao = new DAOPublicacionImpl();
+	dao = new DAOPublicacionImpl();
     }
 
     public List<Publicacion> readAll() {
-        return dao.readAll();
+	return dao.readAllActives();
     }
 
     public boolean delete(Publicacion entidad) {
-        return dao.logicalDelete(entidad);
+	return dao.logicalDelete(entidad);
     }
 
     public boolean save(Publicacion entidad) {
-        return dao.saveOrUpdate(entidad);
-    }
-    @Deprecated
-    public boolean updateBidireccioal(Publicacion p) {
-    	boolean ret=true;
-    	Publicacion publicacion = dao.findById(p.getId());
-    	if(p.getInmueble()==null || !p.getInmueble().equals(publicacion.getInmueble())) {
-    		publicacion.getInmueble().getPublicaciones().remove(publicacion);
-    	}
-    	dao.saveOrUpdate(publicacion);
-    	dao.saveOrUpdate(p);
-    	return ret;
+	return dao.saveOrUpdate(entidad);
     }
 
     public Publicacion findById(Long id) {
-        return dao.findById(id);
+	return dao.findById(id);
     }
-
 
     public List<Publicacion> readAll(String stringFilter) {
-        ArrayList <Publicacion> arrayList = new ArrayList();
-        List<Publicacion> publicaciones=dao.readAllActives();
-        if(stringFilter!=""){
+	ArrayList<Publicacion> arrayList = new ArrayList();
+	List<Publicacion> publicaciones = dao.readAllActives();
+	if (stringFilter != "") {
 
-            for (Publicacion publicacion : publicaciones) {
+	    for (Publicacion publicacion : publicaciones) {
 
-                boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-                        || publicacion.toString().toLowerCase()
-                        .contains(stringFilter.toLowerCase());
-                if (passesFilter) {
+		boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+			|| publicacion.toString().toLowerCase()
+				.contains(stringFilter.toLowerCase());
+		if (passesFilter) {
 
-                    arrayList.add(publicacion);
-                }
+		    arrayList.add(publicacion);
+		}
 
-            }
-        }
-        else{
-            arrayList.addAll(publicaciones);
-        }
+	    }
+	} else {
+	    arrayList.addAll(publicaciones);
+	}
 
-        Collections.sort(arrayList, new Comparator<Publicacion>() {
+	Collections.sort(arrayList, new Comparator<Publicacion>() {
 
-            @Override
-            public int compare(Publicacion o1, Publicacion o2) {
-                return (int) (o2.getId() - o1.getId());
-            }
-        });
-        for(Publicacion p : arrayList){
-            if(p.getInmueble() != null){
-                //p.setPropietarioPublicacion(p.getInmueble().getPropietario());
-            }
-            if(p.getEstadoPublicacion() == null)
-                p.setEstadoPublicacion(EstadoPublicacion.Activa);
-        }
-        return arrayList;
-
-    }
-
-     static PublicacionAlquiler InstanciaPublicacionAlquiler() {
-        Persona p= new Persona();
-        p.addRol(Rol.Propietario);
-
-      return  new PublicacionAlquiler.Builder()
-                 .setValorCuota(new BigDecimal(0))
-                 .setFechaPublicacion(LocalDate.now())
-                 .setMoneda(TipoMoneda.Pesos)
-                 .setContratoAlquiler(new ContratoAlquiler())
-                 .setInmueble(new Inmueble.Builder()
-                         .setaEstrenar(false)
-                         .setCantidadAmbientes(0)
-                         .setCantidadCocheras(0)
-                         .setCantidadDormitorios(0)
-                         .setClaseInmueble(ClaseInmueble.OtroInmueble)
-                         .setConAireAcondicionado(false)
-                         .setConJardin(false)
-                         .setConParilla(false)
-                         .setConPileta(false)
-                         .setDireccion(new Direccion.Builder()
-                                 .setCalle("")
-                                 .setCodPostal("")
-                                 .setCoordenada(new Coordenada())
-                                 .setLocalidad("")
-                                 .setNro(0)
-                                 .setPais("Argentina")
-                                 .setProvincia("")
-                                 .build())
-                         .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                         .setPropietario(p.getPropietario())
-                         .setSuperficieCubierta(0)
-                         .setSuperficieTotal(0)
-                         .setTipoInmueble(TipoInmueble.Vivienda)
-                         .build())
-                 .build();
-    }
-
-    static  PublicacionVenta InstanciaPublicacionVenta(){
-        Persona p= new Persona();
-        p.addRol(Rol.Propietario);
-        PublicacionVenta PV=new PublicacionVenta.Builder()
-                .setPrecio(new BigDecimal(0))
-                .setFechaPublicacion(LocalDate.now())
-                .setMoneda(TipoMoneda.Pesos)
-                .setContratoVenta(new ContratoVenta())
-                .setInmueble(new Inmueble.Builder()
-                        .setaEstrenar(false)
-                        .setCantidadAmbientes(0)
-                        .setCantidadCocheras(0)
-                        .setCantidadDormitorios(0)
-                        .setClaseInmueble(ClaseInmueble.OtroInmueble)
-                        .setConAireAcondicionado(false)
-                        .setConJardin(false)
-                        .setConParilla(false)
-                        .setConPileta(false)
-                        .setDireccion(new Direccion.Builder()
-                                .setCalle("")
-                                .setCodPostal("")
-                                .setCoordenada(new Coordenada())
-                                .setLocalidad("")
-                                .setNro(0)
-                                .setPais("Argentina")
-                                .setProvincia("")
-                                .build())
-                        .setEstadoInmueble(EstadoInmueble.NoPublicado)
-                        .setPropietario(p.getPropietario())
-                        .setSuperficieCubierta(0)
-                        .setSuperficieTotal(0)
-                        .setTipoInmueble(TipoInmueble.Vivienda)
-                        .build())
-                .build();
-        return PV;
+	    @Override
+	    public int compare(Publicacion o1, Publicacion o2) {
+		return (int) (o2.getId() - o1.getId());
+	    }
+	});
+	for (Publicacion p : arrayList) {
+	    if (p.getInmueble() != null) {
+		// p.setPropietarioPublicacion(p.getInmueble().getPropietario());
+	    }
+	    if (p.getEstadoPublicacion() == null)
+		p.setEstadoPublicacion(EstadoPublicacion.Activa);
+	}
+	return arrayList;
 
     }
 
+    static PublicacionAlquiler InstanciaPublicacionAlquiler() {
+	Persona p = new Persona();
+	p.addRol(Rol.Propietario);
+
+	return new PublicacionAlquiler.Builder()
+		.setValorCuota(new BigDecimal(0))
+		.setFechaPublicacion(LocalDate.now())
+		.setMoneda(TipoMoneda.Pesos)
+		.setInmueble(new Inmueble.Builder()
+			.setaEstrenar(false)
+			.setCantidadAmbientes(0)
+			.setCantidadCocheras(0)
+			.setCantidadDormitorios(0)
+			.setClaseInmueble(ClaseInmueble.OtroInmueble)
+			.setConAireAcondicionado(false)
+			.setConJardin(false)
+			.setConParilla(false)
+			.setConPileta(false)
+			.setDireccion(new Direccion.Builder()
+				.setCalle("")
+				.setCodPostal("")
+				.setCoordenada(new Coordenada())
+				.setLocalidad("")
+				.setNro(0)
+				.setPais("Argentina")
+				.setProvincia("")
+				.build())
+			.setEstadoInmueble(EstadoInmueble.NoPublicado)
+			.setPropietario(p.getPropietario())
+			.setSuperficieCubierta(0)
+			.setSuperficieTotal(0)
+			.setTipoInmueble(TipoInmueble.Vivienda)
+			.build())
+		.build();
+    }
+
+    static PublicacionVenta InstanciaPublicacionVenta() {
+	Persona p = new Persona();
+	p.addRol(Rol.Propietario);
+	PublicacionVenta PV = new PublicacionVenta.Builder()
+		.setPrecio(new BigDecimal(0))
+		.setFechaPublicacion(LocalDate.now())
+		.setMoneda(TipoMoneda.Pesos)
+		.setInmueble(new Inmueble.Builder()
+			.setaEstrenar(false)
+			.setCantidadAmbientes(0)
+			.setCantidadCocheras(0)
+			.setCantidadDormitorios(0)
+			.setClaseInmueble(ClaseInmueble.OtroInmueble)
+			.setConAireAcondicionado(false)
+			.setConJardin(false)
+			.setConParilla(false)
+			.setConPileta(false)
+			.setDireccion(new Direccion.Builder()
+				.setCalle("")
+				.setCodPostal("")
+				.setCoordenada(new Coordenada())
+				.setLocalidad("")
+				.setNro(0)
+				.setPais("Argentina")
+				.setProvincia("")
+				.build())
+			.setEstadoInmueble(EstadoInmueble.NoPublicado)
+			.setPropietario(p.getPropietario())
+			.setSuperficieCubierta(0)
+			.setSuperficieTotal(0)
+			.setTipoInmueble(TipoInmueble.Vivienda)
+			.build())
+		.build();
+	return PV;
+
+    }
 
 }
