@@ -7,16 +7,21 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.persona.Persona;
 
 @Entity
 @Table(name = "contratoDuracion")
 @PrimaryKeyJoinColumn(name = "id")
 public class ContratoDuracion implements Identificable, BorradoLogico  {
 
+	private static final String estadoRegistroS = "estadoRegistro";
+	
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
@@ -27,11 +32,19 @@ public class ContratoDuracion implements Identificable, BorradoLogico  {
 
 	@Column(name = "duracion")
 	private Integer duracion;
+	
+	@Column(name = ContratoDuracion.estadoRegistroS)
+    @NotNull
+    private EstadoRegistro estadoRegistro;
+	
+	public ContratoDuracion() {}
 
 	public ContratoDuracion(Builder b) {
-
+		
+		this.id = b.id;
 		this.descripcion = b.descripcion;
 		this.duracion = b.duracion;
+		this.estadoRegistro = EstadoRegistro.ACTIVO;
 
 	}
 
@@ -40,6 +53,7 @@ public class ContratoDuracion implements Identificable, BorradoLogico  {
 		private String descripcion;
 		private Integer duracion;
 		private Long id;
+		private EstadoRegistro estadoRegistro;
 
 
 		public Builder setDescripcion (String descripcion) {
@@ -61,9 +75,10 @@ public class ContratoDuracion implements Identificable, BorradoLogico  {
 			return new ContratoDuracion(this);
 		}
 	}
-
+	
+	@Override
 	public Long getId() {
-		return id;
+		return this.id;
 	}
 	public void setId(Long id) {
 		this.id = id;
@@ -96,13 +111,12 @@ public class ContratoDuracion implements Identificable, BorradoLogico  {
 	}
 	@Override
 	public void setEstadoRegistro(EstadoRegistro estado) {
-		// TODO Auto-generated method stub
+		this.estadoRegistro = estado;
 		
 	}
 	@Override
 	public EstadoRegistro getEstadoRegistro() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.estadoRegistro;
 	}
 }
 

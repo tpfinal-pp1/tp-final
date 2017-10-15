@@ -3,6 +3,7 @@ package com.TpFinal.view.duracionContratos;
 import com.TpFinal.data.dto.contrato.ContratoDuracion;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -63,7 +64,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     // PersonaService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    PersonaService service = new PersonaService();
+    ContratoDuracionService service = new ContratoDuracionService();
 
 
     public DuracionContratosABMView(){
@@ -201,9 +202,9 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-        //TODO    
-    	//List<ContratoDuracion> customers = service.findAll(filter.getValue());
-           // grid.setItems(customers);
+          
+    	List<ContratoDuracion> customers = service.findAll(filter.getValue());
+            grid.setItems(customers);
     }
     
        public boolean isIsonMobile() {
