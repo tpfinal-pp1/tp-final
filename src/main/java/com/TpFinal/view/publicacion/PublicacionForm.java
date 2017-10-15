@@ -216,8 +216,8 @@ public class PublicacionForm extends FormLayout {
             moneda.setEmptySelectionAllowed(false);
 
             tabSheet=new TabSheet();
-            fechaPublicacion.setWidth("40%");
-            moneda.setWidth("30%");
+           // fechaPublicacion.setWidth("40%");
+            //moneda.setWidth("30%");
             nombrePropietario.setCaption("Propietario: ");
             FormLayout principal=new FormLayout(tipoPublicacion,fechaPublicacion,estadoPublicacion,
                     new BlueLabel("Inmueble"),comboInmueble,nombrePropietario, monto,moneda
@@ -239,12 +239,10 @@ public class PublicacionForm extends FormLayout {
             if (Publicacion != null) {
                 if(Publicacion instanceof PublicacionVenta) {
                     tabSheet.getTab(0).setCaption("Venta");
-                    tipoPublicacion.setValue(TipoPublicacion.Venta);
                     binderPublicacion.readBean((PublicacionVenta)Publicacion);
                 }
                 else if(Publicacion instanceof PublicacionAlquiler) {
                     tabSheet.getTab(0).setCaption("Alquiler");
-                    tipoPublicacion.setValue(TipoPublicacion.Alquiler);
                     binderPublicacion.readBean((PublicacionAlquiler)Publicacion);
                 }
 
@@ -255,7 +253,7 @@ public class PublicacionForm extends FormLayout {
 
              }
              else{
-
+                tabSheet.getTab(0).setCaption("Publicación");
                 tipoPublicacion.setEnabled(true);
                 delete.setVisible(false);
                 tipoPublicacion.setRequiredIndicatorVisible(true);
@@ -364,6 +362,7 @@ public class PublicacionForm extends FormLayout {
             this.moneda.clear();
             this.nombrePropietario.clear();
             this.monto.clear();
+            this.comboInmueble.clear();
 
             ;
         }
