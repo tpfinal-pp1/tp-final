@@ -170,7 +170,7 @@ public class DAOPersonaImplTest {
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
-                .buid();
+                .build();
     }
     
     

@@ -53,6 +53,22 @@ public class Inquilino extends RolPersona {
 	this.contratos = contratos;
     }
 
+    public void removeContrato(ContratoAlquiler contratoAlquiler) {
+	if (this.contratos.contains(contratoAlquiler)) {
+	    this.contratos.remove(contratoAlquiler);
+	    contratoAlquiler.setInquilinoContrato(null);
+	}
+
+    }
+
+    public void addContrato(ContratoAlquiler contratoAlquiler) {
+	if (!this.contratos.contains(contratoAlquiler)) {
+	    this.contratos.add(contratoAlquiler);
+	    contratoAlquiler.setInquilinoContrato(this);
+	}
+
+    }
+
     @Override
     public boolean equals(Object o) {
 	if (this == o)
@@ -103,22 +119,6 @@ public class Inquilino extends RolPersona {
 	public Inquilino build() {
 	    return new Inquilino(this);
 	}
-    }
-
-    public void removeContrato(ContratoAlquiler contratoAlquiler) {
-	if (this.contratos.contains(contratoAlquiler)) {
-	    this.contratos.remove(contratoAlquiler);
-	    contratoAlquiler.setInquilinoContrato(null);
-	}
-
-    }
-
-    public void addContrato(ContratoAlquiler contratoAlquiler) {
-	if (!this.contratos.contains(contratoAlquiler)) {
-	    this.contratos.add(contratoAlquiler);
-	    contratoAlquiler.setInquilinoContrato(this);
-	}
-
     }
 
 }

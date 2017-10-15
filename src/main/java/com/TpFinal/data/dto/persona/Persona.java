@@ -364,7 +364,7 @@ public class Persona implements Identificable, BorradoLogico {
 		    return this;
 		}
 	
-		public Persona buid() {
+		public Persona build() {
 		    return new Persona(this);
 		}
 

@@ -99,7 +99,6 @@ public class PublicacionService {
 		.setValorCuota(new BigDecimal(0))
 		.setFechaPublicacion(LocalDate.now())
 		.setMoneda(TipoMoneda.Pesos)
-		.setContratoAlquiler(new ContratoAlquiler())
 		.setInmueble(new Inmueble.Builder()
 			.setaEstrenar(false)
 			.setCantidadAmbientes(0)

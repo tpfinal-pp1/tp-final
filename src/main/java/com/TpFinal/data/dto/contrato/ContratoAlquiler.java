@@ -155,7 +155,7 @@ public class ContratoAlquiler extends Contrato {
 	return propietario;
     }
 
-    public void setPropietario(Persona propietario) {
+    public void setPropietario(Persona propietario) {	
 	this.propietario = propietario;
     }
 

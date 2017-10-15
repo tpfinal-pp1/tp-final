@@ -36,10 +36,7 @@ public class PublicacionAlquiler extends Publicacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 
-	@OneToOne
-	@Cascade({CascadeType.SAVE_UPDATE})
-	ContratoAlquiler contratoAlquiler;
-
+	
 	public PublicacionAlquiler() {
 		super();
 		tipoPublicacion = TipoPublicacion.Alquiler;
@@ -51,7 +48,6 @@ public class PublicacionAlquiler extends Publicacion {
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
 		this.valorCuota = b.valorCuota;
-		this.contratoAlquiler = b.contratoAlquiler;
 		tipoPublicacion = TipoPublicacion.Alquiler;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -72,8 +68,7 @@ public class PublicacionAlquiler extends Publicacion {
 		this.moneda = moneda;
 	}
 
-	public static class Builder {
-		private ContratoAlquiler contratoAlquiler;
+	public static class Builder {		
 		private Inmueble inmueble;
 		private LocalDate fechaPublicacion;
 		private BigDecimal valorCuota;
@@ -96,11 +91,6 @@ public class PublicacionAlquiler extends Publicacion {
 
 		public Builder setMoneda(TipoMoneda moneda) {
 			this.moneda = moneda;
-			return this;
-		}
-		
-		public Builder setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-			this.contratoAlquiler= contratoAlquiler;
 			return this;
 		}
 

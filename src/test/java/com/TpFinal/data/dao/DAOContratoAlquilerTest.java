@@ -12,6 +12,7 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Inquilino;
+import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -93,6 +94,29 @@ public class DAOContratoAlquilerTest {
 
     }
 
+    @Test
+    public void testModificar() {
+	List<ContratoAlquiler> contratosEnMem = new ArrayList<>();
+	contratosEnMem.add(instancia("1"));
+	contratosEnMem.add(instancia("2"));
+	contratosEnMem.add(instancia("3"));
+	contratosEnMem.forEach(dao::saveOrUpdate);
+	
+	Persona p = new Persona.Builder()
+		.setNombre("Pepe")
+		.setApellido("Perez")
+		.setDNI("123456")
+		.setMail("q@q.com")
+		.setTelefono("123")		
+		.build();	
+	
+	 ContratoAlquiler c = contratosEnMem.get(0);
+	 c.setInquilinoContrato(new Inquilino.Builder().setPersona(p).build());
+	
+	dao.saveOrUpdate(c);
+	
+    }
+    
     @Test
     public void agregarSinDocs() {
 	dao.save(instancia("1"));

@@ -243,7 +243,7 @@ public class GeneradorDeDatos {
 		.setNombre(nombres[random.nextInt(nombres.length)])
 		.setTelefono(getTelefeno())
 		.setTelefono2(getTelefeno())
-		.buid();
+		.build();
     }
 
     private static String dniRandom() {

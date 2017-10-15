@@ -864,7 +864,7 @@ public class DAOInmuebleImplTest {
 		.setNombre("nom")
 		.setTelefono("123456")
 		.setTelefono2("321")
-		.buid();
+		.build();
 	Propietario propietario = new Propietario.Builder()
 		//.addInmueble(i)
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
