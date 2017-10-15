@@ -229,7 +229,7 @@ public class CobrosABMView extends DefaultLayout implements View {
                     ret = ((ContratoVenta) contrato).getPrecioVenta().toString();
                 }
                 return ret;
-            }).setCaption("Motno");
+            }).setCaption("Monto");
 
 
 
