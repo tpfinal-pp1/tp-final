@@ -221,13 +221,18 @@ public class ContratoAlquiler extends Contrato {
     				fechaCobro=fechaCobro.plusMonths(i);
     			}
     			
-    			this.cobros.add(new Cobro.Builder()
+    			Cobro c =new Cobro.Builder()
     					.setNumeroCuota(i)
     					.setFechaDePago(fechaCobro)
-    					.build());
+    					.build();
     			if(i+1%this.intervaloActualizacion==0) {
-    				
+    				if(this.tipoIncrementoCuota.equals(TipoInteres.Acumulativo)) {
+    					//TODO
+    				}else {
+    					//TODO
+    				}
     			}
+    			this.cobros.add(c);
     		}
     	}
     }
