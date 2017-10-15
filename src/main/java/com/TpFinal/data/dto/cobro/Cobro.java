@@ -19,7 +19,6 @@ public class Cobro {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
 	private Long id;
-	
 	private Integer numeroCuota;
 	private BigDecimal montoOriginal;
 	private BigDecimal montoRecibido;
