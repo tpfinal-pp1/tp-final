@@ -5,12 +5,20 @@ import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 
 @Entity
 @Table(name="cobros")
@@ -19,16 +27,32 @@ public class Cobro {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
 	private Long id;
+	@Column(name="numeroCuota")
 	private Integer numeroCuota;
+	@Column(name="montoOriginal")
 	private BigDecimal montoOriginal;
+	@Column(name="montoRecibido")
 	private BigDecimal montoRecibido;
+	@Column(name="interes")
 	private BigDecimal interes;
+	@Column(name="comision")
 	private BigDecimal comision;
+	@Column(name="montoPropietario")
 	private BigDecimal montoPropietario;
+	@Column(name="fechaDePago")
 	private LocalDate fechaDePago;
+	@Column(name="fechaDeVencimiento")
 	private LocalDate fechaDeVencimiento;
+	@Column(name="estadoCobro")
+	@Enumerated(EnumType.STRING)
 	private EstadoCobro estadoCobro;
+	@Column(name="estadoRegistro")
+	@Enumerated(EnumType.STRING)
 	private EstadoRegistro estadoRegistro;
+	@ManyToOne
+	@Cascade({CascadeType.SAVE_UPDATE})
+	@JoinColumn(name="idContrato")
+	private ContratoAlquiler contrato;
 	
 	public Cobro() {}
 	
@@ -123,6 +147,14 @@ public class Cobro {
 
 	public void setEstadoRegistro(EstadoRegistro estadoRegistro) {
 		this.estadoRegistro = estadoRegistro;
+	}
+	
+	public ContratoAlquiler getContrato() {
+		return contrato;
+	}
+
+	public void setContrato(ContratoAlquiler contrato) {
+		this.contrato = contrato;
 	}
 
 	@Override
