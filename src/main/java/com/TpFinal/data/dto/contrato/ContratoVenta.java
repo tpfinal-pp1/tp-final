@@ -31,12 +31,12 @@ public class ContratoVenta extends Contrato {
     private BigDecimal precioVenta;    
 
     @ManyToOne
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "id_comprador")
     private Persona comprador;
 
     @ManyToOne
-    @Cascade({CascadeType.SAVE_UPDATE})
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "id_vendedor")
     private Persona vendedor;
 

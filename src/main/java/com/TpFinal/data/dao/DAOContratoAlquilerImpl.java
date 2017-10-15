@@ -54,4 +54,39 @@ public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implement
         }
         return ret;
     }
+
+    @Override
+    public boolean mergeContrato(ContratoAlquiler entidad, File doc) {
+	boolean ret = false;
+        FileInputStream docInputStream = null;
+        Session session = ConexionHibernate.openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+
+            Blob archivo = null;
+
+            docInputStream = new FileInputStream(doc);
+            archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
+
+            entidad.setDocumento(archivo);
+
+            session.merge(entidad);
+            tx.commit();
+            ret = true;
+        } catch (HibernateException | FileNotFoundException e) {
+            System.err.println("Error al leer");
+            e.printStackTrace();
+            tx.rollback();
+        } finally {
+            session.close();
+            if (docInputStream != null)
+                try {
+                    docInputStream.close();
+                } catch (IOException e) {
+
+                }
+        }
+        return ret;
+    }
 }

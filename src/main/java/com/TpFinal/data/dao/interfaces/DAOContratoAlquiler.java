@@ -9,4 +9,5 @@ import java.io.File;
  */
 public interface DAOContratoAlquiler extends DAO<ContratoAlquiler>{
     boolean saveOrUpdateContrato(ContratoAlquiler entidad, File doc);
+    boolean mergeContrato(ContratoAlquiler entidad, File doc);
 }

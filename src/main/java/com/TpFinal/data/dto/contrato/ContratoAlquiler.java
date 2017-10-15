@@ -53,12 +53,12 @@ public class ContratoAlquiler extends Contrato {
     private DuracionContrato duracionContrato;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE })
+    @Cascade({ CascadeType.SAVE_UPDATE ,CascadeType.MERGE})
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
 
     @ManyToOne
-    @Cascade({ CascadeType.SAVE_UPDATE })
+    @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE })
     @JoinColumn(name = "id_propietario")
     private Persona propietario;
 

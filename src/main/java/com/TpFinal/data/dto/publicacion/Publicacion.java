@@ -19,7 +19,7 @@ public abstract class Publicacion implements Identificable,BorradoLogico {
 	public static final String pTipoPublicacion ="tipoPublicacion";
 	
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idPublicacion")
 	protected Long idPublicacion;
 	
