@@ -26,7 +26,7 @@ public abstract class VentanaSelectora<T>extends Window {
 
 
 
-
+    @Deprecated
     public VentanaSelectora(T seleccion) {
             objeto = seleccion;
             addStyleName("profile-window");
@@ -56,11 +56,7 @@ public abstract class VentanaSelectora<T>extends Window {
 
         updateList();
     }
-
-
-
-
-
+    
 
 
     private Component buildFooter() {

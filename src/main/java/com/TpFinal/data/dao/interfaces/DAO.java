@@ -2,11 +2,8 @@ package com.TpFinal.data.dao.interfaces;
 
 
 import com.TpFinal.data.dto.BorradoLogico;
-import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.dummy.User;
 import com.TpFinal.data.dto.Identificable;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;

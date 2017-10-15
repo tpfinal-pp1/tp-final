@@ -185,7 +185,8 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		String ret = "";
 		if (inmueble.getDireccion() != null) {
 		    Direccion d = inmueble.getDireccion();
-		    ret = d.getCalle() + " n° " + d.getNro() + ", " + d.getProvincia();
+		    ret = d.getCalle() + " " + d.getNro() + ", " +d.getLocalidad()+", "+ d.getProvincia();
+
 		}
 		return ret;
 	    }).setCaption("Dirección");

@@ -1,7 +1,7 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.data.dto.dummy.User;
+import com.TpFinal.data.dto.persona.User;
 import com.TpFinal.view.component.ProfilePreferencesWindow;
 
 import com.TpFinal.services.DashboardEvent;
@@ -31,7 +31,6 @@ public final class DashboardMenu extends CustomComponent {
     public static final String NOTIFICATIONS_BADGE_ID = "dashboard-menu-notifications-badge";
     private static final String STYLE_VISIBLE = "valo-menu-visible";
     private Label notificationsBadge;
-    private Label reportsBadge;
     private MenuItem settingsItem;
 
     public DashboardMenu() {

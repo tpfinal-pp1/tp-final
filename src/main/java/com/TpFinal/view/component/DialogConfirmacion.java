@@ -11,8 +11,8 @@ public class DialogConfirmacion extends CustomComponent {
      */
     private static final long serialVersionUID = 1L;
     private final Label infoLabel = new Label("", ContentMode.HTML);
-    private final Button yesButton = new Button("Eliminar", VaadinIcons.CHECK);
-    private final Button noButton = new Button("Cancelar", VaadinIcons.CLOSE);
+    private final Button yesButton = new Button("Si", VaadinIcons.CHECK);
+    private final Button noButton = new Button("No", VaadinIcons.CLOSE);
     private final Window window = new Window();
 
     public DialogConfirmacion(String titulo, VaadinIcons iconTitulo, String popupText, String popupWidth,

@@ -2,10 +2,11 @@ package com.TpFinal;
 
 
 
+import com.TpFinal.data.dto.persona.User;
 import com.TpFinal.utils.DummyDataProvider;
 
 import com.TpFinal.utils.DataProvider;
-import com.TpFinal.data.dto.dummy.User;
+
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.utils.GeneradorDeDatos;
@@ -39,7 +40,7 @@ public final class DashboardUI extends UI {
      * injection; and not in the UI but somewhere closer to where they're
      * actually accessed.
      */
-    private final DataProvider dataProvider = new DummyDataProvider();
+    private final DummyDataProvider dataProvider = new DummyDataProvider();
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
 
 

@@ -15,6 +15,7 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.*;
 import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
@@ -24,10 +25,10 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -101,7 +102,10 @@ public class ContratoAlquilerForm extends FormLayout {
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
     Persona person = new Persona(); // TODO ver donde se usa persona p.
 
-    TabSheet tabSheet;
+	//Tabsheet
+	FormLayout principal;
+	FormLayout condiciones;
+	TabSheet contratoAlquilerTabSheet;
 
     public ContratoAlquilerForm(ContratoABMView addressbook) {
 	// setSizeUndefined();
@@ -271,7 +275,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		setSizeFull();
 	stIncremento.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
-	tabSheet = new TabSheet();
+	contratoAlquilerTabSheet = new TabSheet();
 
 	BlueLabel seccionDoc = new BlueLabel("Documento Word");
 
@@ -301,11 +305,11 @@ public class ContratoAlquilerForm extends FormLayout {
 		btDescargar.descargar(contratoAlquiler, "Contrato.doc");		
 	});
 
-	FormLayout principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
+	 principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
 		tfDocumento,
 		documentoButtonsRow);
 
-	FormLayout condiciones = new FormLayout(cbDuracionContrato, tfDiaDePago, tfPagoFueraDeTermino, cbtipointeres,
+	condiciones = new FormLayout(cbDuracionContrato, tfDiaDePago, tfPagoFueraDeTermino, cbtipointeres,
 		new BlueLabel("Monto e Incremento"),
 		stIncremento, tfPActualizacion, tfValorInicial, rbgTipoMoneda);
 	condiciones.setMargin(true);
@@ -313,10 +317,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	condiciones.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-	tabSheet.addTab(principal, "Alquiler");
-	tabSheet.addTab(condiciones, "Condiciones");
+	contratoAlquilerTabSheet.addTab(principal, "Alquiler");
+	contratoAlquilerTabSheet.addTab(condiciones, "Condiciones");
 
-	addComponent(tabSheet);
+	addComponent(contratoAlquilerTabSheet);
 	HorizontalLayout actions = new HorizontalLayout(save, delete);
 
 	addComponent(actions);
@@ -345,7 +349,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	getAddressbookView().setComponentsVisible(false);
 	if (getAddressbookView().isIsonMobile())
-	    tabSheet.focus();
+	    contratoAlquilerTabSheet.focus();
 
     }
 
@@ -374,8 +378,8 @@ public class ContratoAlquilerForm extends FormLayout {
 		success = service.saveOrUpdate(contratoAlquiler, null);	   
 
 	} catch (ValidationException e) {
-	    Notification.show("Errores de validación, porfavor revise los campos e intente de nuevo");
-	    // e.printStackTrace();
+	    //Notification.show("Errores de validación, porfavor revise los campos e intente de nuevo");
+	    checkFieldsPerTab(e.getFieldValidationErrors());
 	    return;
 	} catch (Exception e) {
 	    // e.printStackTrace();
@@ -451,4 +455,54 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.tfPropietario.clear();
 	this.tfValorInicial.clear();
     }
+
+
+	private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
+		boolean tabPrincipalInvalidFields = false ;
+		boolean tabConditionsInvalidFields =false;
+		//TabElements for tab principal
+		List<Component> tabPrincipalComponents = new ArrayList<Component>();
+		tabPrincipalComponents.add(cbInmuebles);
+		tabPrincipalComponents.add(tfPropietario);
+		tabPrincipalComponents.add(cbInquilino);
+		tabPrincipalComponents.add(fechaCelebracion);
+		tabPrincipalComponents.add(tfDocumento);
+		for(BindingValidationStatus invalidField : invalidComponents){
+			tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+			if(tabPrincipalInvalidFields)
+				break;
+		}
+		System.out.println(tabPrincipalInvalidFields);
+
+		//Tab elements for tab caracteristicas
+		List<Component> tabConditionsComponents = new ArrayList<Component>();
+		tabConditionsComponents.add(cbDuracionContrato);
+		tabConditionsComponents.add(tfDiaDePago);
+		tabConditionsComponents.add(tfPagoFueraDeTermino);
+		tabConditionsComponents.add( cbtipointeres);
+		tabConditionsComponents.add(new BlueLabel("Monto e Incremento"));
+		tabConditionsComponents.add(stIncremento);
+		tabConditionsComponents.add(tfPActualizacion);
+		tabConditionsComponents.add(tfValorInicial);
+		tabConditionsComponents.add(rbgTipoMoneda);
+		for(BindingValidationStatus invalidField : invalidComponents){
+			tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+			if(tabConditionsInvalidFields)
+				break;
+		}
+		System.out.println(tabConditionsInvalidFields);
+
+		//Take user to the invalid components tag (in case there's only one)
+		if(tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+			Notification.show("Error al guardar, porfavor revise los campos principales", Notification.Type.WARNING_MESSAGE);
+			contratoAlquilerTabSheet.setSelectedTab(principal);
+		}
+		else if(!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+			Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo", Notification.Type.WARNING_MESSAGE);
+			contratoAlquilerTabSheet.setSelectedTab(condiciones);
+		}
+		else{
+			Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo", Notification.Type.WARNING_MESSAGE);
+		}
+	}
 }

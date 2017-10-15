@@ -63,7 +63,7 @@ public class Localidad {
 
 	    @Override
 	    public String toString() {
-	        return nombre;
+				return nombre;
 	    }
 
 		public String getNombre() {

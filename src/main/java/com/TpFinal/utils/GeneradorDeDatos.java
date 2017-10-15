@@ -1,3 +1,4 @@
+
 package com.TpFinal.utils;
 
 import java.io.*;
@@ -257,5 +258,4 @@ public class GeneradorDeDatos {
     private static LocalDate fechaRandom() {
 	return LocalDate.of(1990 + random.nextInt(28), 1 + random.nextInt(12), 1 + random.nextInt(28));
     }
-
 }

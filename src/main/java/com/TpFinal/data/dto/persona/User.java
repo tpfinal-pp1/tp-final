@@ -1,4 +1,4 @@
-package com.TpFinal.data.dto.dummy;
+package com.TpFinal.data.dto.persona;
 
 public final class User {
     private String role;

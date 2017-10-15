@@ -9,6 +9,7 @@ import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -16,6 +17,9 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class PersonaForm extends FormLayout {
@@ -47,7 +51,11 @@ public class PersonaForm extends FormLayout {
     PersonaService service = new PersonaService();
     private PersonaABMView addressbookView;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
-    TabSheet tabSheet;
+
+    //TabSheet
+    FormLayout principal;
+    FormLayout adicional;
+    TabSheet personaFormTabSheet;
 
     // Easily binding forms to beans and manage validation and buffering
 
@@ -114,7 +122,7 @@ public class PersonaForm extends FormLayout {
         setSizeFull();
         setMargin(true);
 
-        tabSheet=new TabSheet();
+        personaFormTabSheet =new TabSheet();
 
 
         BlueLabel Publicaciones = new  BlueLabel("Operaciones");
@@ -136,8 +144,8 @@ public class PersonaForm extends FormLayout {
 
 
 
-        FormLayout principal=new FormLayout(nombre, apellido,DNI,contacto,mail,telefono,telefono2);
-        FormLayout adicional=new FormLayout(
+        principal=new FormLayout(nombre, apellido,DNI,contacto,mail,telefono,telefono2);
+        adicional=new FormLayout(
                 Publicaciones, Roles
                 );
         adicional.addComponent(info);
@@ -150,10 +158,10 @@ public class PersonaForm extends FormLayout {
         calificacion.setEnabled(false);
         calificacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
-        tabSheet.addTab(principal,"Principal");
-        tabSheet.addTab(adicional,"Adicional");
+        personaFormTabSheet.addTab(principal,"Principal");
+        personaFormTabSheet.addTab(adicional,"Adicional");
 
-        addComponent(tabSheet);
+        addComponent(personaFormTabSheet);
         //HorizontalLayout actions = new HorizontalLayout(save,test,delete);
         HorizontalLayout actions = new HorizontalLayout(save,delete);
         addComponent(actions);
@@ -185,7 +193,7 @@ public class PersonaForm extends FormLayout {
         getAddressbookView().setComponentsVisible(false);
         nombre.selectAll();
         if(getAddressbookView().isIsonMobile())
-            tabSheet.focus();
+            personaFormTabSheet.focus();
 
     }
 
@@ -228,8 +236,8 @@ public class PersonaForm extends FormLayout {
 
 
         } catch (ValidationException e) {
-            e.printStackTrace();
-            Notification.show("Error al guardar, por favor revise los campos e intente de nuevo");
+           //e.printStackTrace();
+            checkFieldsPerTab(e.getFieldValidationErrors());
             // Notification.show("Error: "+e.getCause());
             return;
         }
@@ -263,6 +271,51 @@ public class PersonaForm extends FormLayout {
 
     public PersonaABMView getAddressbookView() {
         return addressbookView;
+    }
+
+
+    private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
+        boolean tabPrincipalInvalidFields = false ;
+        boolean tabConditionsInvalidFields =false;
+        //TabElements for tab principal
+        List<Component> tabPrincipalComponents = new ArrayList<Component>();
+        tabPrincipalComponents.add( nombre);
+        tabPrincipalComponents.add(apellido);
+        tabPrincipalComponents.add(DNI);
+        tabPrincipalComponents.add(mail);
+        tabPrincipalComponents.add(telefono);
+        tabPrincipalComponents.add(telefono2);
+
+        for(BindingValidationStatus invalidField : invalidComponents){
+            tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+            if(tabPrincipalInvalidFields)
+                break;
+        }
+        System.out.println(tabPrincipalInvalidFields);
+
+        //Tab elements for tab caracteristicas
+        List<Component> tabConditionsComponents = new ArrayList<Component>();
+        tabConditionsComponents.add(calificacion);
+
+        for(BindingValidationStatus invalidField : invalidComponents){
+            tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+            if(tabConditionsInvalidFields)
+                break;
+        }
+        System.out.println(tabConditionsInvalidFields);
+
+        //Take user to the invalid components tag (in case there's only one)
+        if(tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+            Notification.show("Error al guardar, porfavor revise los campos principales", Notification.Type.WARNING_MESSAGE);
+            personaFormTabSheet.setSelectedTab(principal);
+        }
+        else if(!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+            Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo", Notification.Type.WARNING_MESSAGE);
+            personaFormTabSheet.setSelectedTab(adicional);
+        }
+        else{
+            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo", Notification.Type.WARNING_MESSAGE);
+        }
     }
 
 }

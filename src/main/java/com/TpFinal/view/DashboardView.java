@@ -1,4 +1,4 @@
-package com.TpFinal.view.dummy.dashboard;
+package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
 
@@ -221,7 +221,7 @@ public final class DashboardView extends Panel implements View{
             e.printStackTrace();
         }
 
-       return createContentWrapper(layout);
+       return layout;
 
 
     }
