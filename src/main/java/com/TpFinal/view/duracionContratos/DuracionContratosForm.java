@@ -21,10 +21,8 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-
 public class DuracionContratosForm extends FormLayout {
-    
-	//necesita clase nueva
+ 
 	private ContratoDuracion duracionContrato;
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
@@ -137,23 +135,7 @@ public class DuracionContratosForm extends FormLayout {
     		getAddressbookView().setComponentsVisible(false);
     		if (getAddressbookView().isIsonMobile())
     		    this.focus();
-    	
-    	
-    	/*
-    	
-    	this.duracionContrato = duracionContrato;
-        binderContratoDuracion.readBean(duracionContrato);
-
-        // Show delete button for only Persons already in the database
-        
-        delete.setVisible(duracionContrato.getId()!=null);
-
-        setVisible(true);
-        getAddressbookView().setComponentsVisible(false);
-        descripcion.selectAll();
-        if(getAddressbookView().isIsonMobile())
-            tabSheet.focus();
-		*/
+  
     }
 
     private void delete() {
@@ -207,8 +189,6 @@ public class DuracionContratosForm extends FormLayout {
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
     }
-
-
 
     public DuracionContratosABMView getAddressbookView() {
         return addressbookView;

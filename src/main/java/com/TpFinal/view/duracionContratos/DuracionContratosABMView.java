@@ -1,18 +1,13 @@
 package com.TpFinal.view.duracionContratos;
 
 import com.TpFinal.data.dto.contrato.ContratoDuracion;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.TinyButton;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -53,15 +48,13 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     Window sw = new Window("Filtrar");
 
    
-   
-
 
     HorizontalLayout mainLayout;
-    // PersonaForm is an example of a custom component class
+    // DuracionContratosForm is an example of a custom component class
     DuracionContratosForm DuracionContratosForm = new DuracionContratosForm(this);
     private boolean isonMobile=false;
 
-    // PersonaService is a in-memory mock DAO that mimics
+    // DuracionContratosService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
     ContratoDuracionService service = new ContratoDuracionService();
@@ -73,12 +66,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
         buildLayout();
         configureComponents();
 
-
     }
-
-
-
-
 
     private void configureComponents() {
         /*
@@ -88,8 +76,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
          * to synchronously handle those events. Vaadin automatically sends only
          * the needed changes to the web page without loading a new page.
          */
-    //    newItem.addClickListener(e -> personaForm.setPersona(new Persona()));
-
+   
         filter.addValueChangeListener(e -> updateList());
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.setPlaceholder("Filtrar");
@@ -101,8 +88,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
             grid.asSingleSelect().clear();
             DuracionContratosForm.setContratoDuracion(null);
         });
-        
-         
+                 
 
         grid.setColumns("descripcion", "duracion");
         grid.getColumn("descripcion").setCaption("Descripcion");
