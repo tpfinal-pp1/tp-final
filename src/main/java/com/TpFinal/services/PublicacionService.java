@@ -10,6 +10,7 @@ import com.TpFinal.data.dto.inmueble.*;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.*;
+import com.TpFinal.exceptions.services.PublicacionServiceException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,9 +40,14 @@ public class PublicacionService {
 	return ret;
     }
 
-    public boolean save(Publicacion publicacion) {
-	boolean ret = daoPublicacion.saveOrUpdate(publicacion);
+    public boolean save(Publicacion publicacion) throws PublicacionServiceException {
+	boolean ret = true;
+	if (publicacion.getInmueble() != null) {
+	ret = daoPublicacion.saveOrUpdate(publicacion);
 	inmuebleService.actualizarEstadoInmuebleSegunPublicacion(publicacion.getInmueble());
+	}else {
+	    throw new PublicacionServiceException("Debe la publicación debe tener un inmueble asociado!");
+	}
 	return ret;
     }
 

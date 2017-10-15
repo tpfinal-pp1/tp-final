@@ -107,10 +107,8 @@ public class InmuebleService {
 	System.out.println("Actualizando Estado Inmueble");
 	boolean ret = true;
 	List<Publicacion> publicaciones = getListadoDePublicaciones(inmueble);
-	List<Publicacion> pubsActivas = publicaciones.stream().filter(p -> {
-	    return p.getEstadoRegistro() == EstadoRegistro.ACTIVO && p
-		    .getEstadoPublicacion() == EstadoPublicacion.Activa;
-	}).limit(2).collect(Collectors.toList());
+	List<Publicacion> pubsActivas = publicaciones.stream().filter(this::estaActivoYNoFueBorrado)
+		.limit(2).collect(Collectors.toList());
 
 	if (!pubsActivas.isEmpty()) {
 	    setEstadoInmuebleSegunPublicaciones(inmueble, pubsActivas);
@@ -118,6 +116,11 @@ public class InmuebleService {
 	}
 	return ret;
 
+    }
+
+    private boolean estaActivoYNoFueBorrado(Publicacion p) {
+	return p.getEstadoRegistro() == EstadoRegistro.ACTIVO && p
+	    .getEstadoPublicacion() == EstadoPublicacion.Activa;
     }
 
     private void setEstadoInmuebleSegunPublicaciones(Inmueble inmueble, List<Publicacion> publicaciones) {
