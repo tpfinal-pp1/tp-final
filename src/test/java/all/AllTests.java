@@ -18,4 +18,5 @@ import com.TpFinal.services.AllTestsService;
 @RunWith(Suite.class)
 @SuiteClasses({ AllTestsDAO.class, AllDTO.class, AllTestsService.class})
 public class AllTests {
+	
 }
