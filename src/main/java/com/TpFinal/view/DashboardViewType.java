@@ -1,12 +1,11 @@
 package com.TpFinal.view;
 
-import com.TpFinal.view.dummy.DemoUI;
-import com.TpFinal.view.duracionContratos.*;
+import com.TpFinal.view.cobros.CobrosABMView;
 import com.TpFinal.view.contrato.ContratoABMView;
+import com.TpFinal.view.duracionContratos.DuracionContratosABMView;
 import com.TpFinal.view.inmuebles.InmuebleABMView;
-import com.TpFinal.view.publicacion.PublicacionABMView;
 import com.TpFinal.view.persona.PersonaABMView;
-
+import com.TpFinal.view.publicacion.PublicacionABMView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
@@ -17,7 +16,8 @@ public enum DashboardViewType {
     INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
     OPERACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
     CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
-    DURACIONCONTRATOS("duracioncontratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false)
+    DURACIONCONTRATOS("duracioncontratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false),
+    COBROS("cobros", CobrosABMView.class,VaadinIcons.CASH,false)
     /*
     REPORTES("reportes", ReportsView.class, VaadinIcons.FILE, false),
     SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false)*/;

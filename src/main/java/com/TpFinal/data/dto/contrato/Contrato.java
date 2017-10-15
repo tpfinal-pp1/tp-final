@@ -1,17 +1,15 @@
 package com.TpFinal.data.dto.contrato;
 
-import java.sql.Blob;
-import java.time.LocalDate;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-
 import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.persona.Persona;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.sql.Blob;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "contrato")
@@ -91,6 +89,8 @@ public class Contrato implements Identificable, BorradoLogico {
     public void setInmueble(Inmueble inmueble) {
 	this.inmueble = inmueble;
     }
+
+
 
     @Override
     public void setEstadoRegistro(EstadoRegistro estado) {
