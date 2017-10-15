@@ -29,35 +29,8 @@ public class InmuebleService {
 	return dao.readAllActives();
     }
 
-    /**
-     * Usar solo para guardar inmuebles
-     * 
-     * @param entidad
-     * @return <code> true </code> si se guardo, <code> false </code> si ocurrio un
-     *         error.
-     */
     public boolean saveOrUpdate(Inmueble entidad) {
-	// if(entidad.getPropietario()!=null)
-	// entidad.getPropietario().addInmueble(entidad);
 	return dao.saveOrUpdate(entidad);
-    }
-
-    /**
-     * Usar para update de inmuebles ya que incluye bidireccional
-     * 
-     * @param inmueble
-     * @return
-     */
-    @Deprecated
-    public boolean updateBidireccional(Inmueble inmueble) {
-	boolean ret = true;
-	Inmueble inmBd = dao.findById(inmueble.getId());
-	if (inmueble.getPropietario() == null || !inmueble.getPropietario().equals(inmBd.getPropietario())) {
-	    inmBd.getPropietario().getInmuebles().remove(inmBd);
-	}
-	dao.saveOrUpdate(inmBd);
-	dao.saveOrUpdate(inmueble);
-	return ret;
     }
 
     public boolean delete(Inmueble i) {
@@ -98,50 +71,6 @@ public class InmuebleService {
 		.setSuperficieTotal(0)
 		.setTipoInmueble(TipoInmueble.Vivienda)
 		.build();
-    }
-
-    /**
-     * guarda un inmueble junto con todas las entidades a las que esta asociado.
-     * 
-     * @param inmueble
-     * @return
-     */
-    public boolean save(Inmueble inmueble) {
-	boolean ret = false;
-	PersonaService pService = new PersonaService();
-	if (inmueble != null) {
-	    // si es != null entonces esta en la bd
-	    if (inmueble.getId() != null) {
-		if (inmueble.getPropietario() != null) {
-		    if (inmueble.getPropietario().getPersona() != null) {
-			Inmueble inmuebleSinModificar = findById(inmueble.getId());
-
-			if (inmuebleSinModificar.getPropietario().getPersona() != null) {
-			    Persona propietarioAntiguo = inmuebleSinModificar.getPropietario().getPersona();
-			    ((Propietario) propietarioAntiguo.getRol(Rol.Propietario)).getInmuebles().remove(
-				    inmuebleSinModificar);
-			    pService.saveOrUpdate(propietarioAntiguo);
-
-			}
-
-			Persona propietarioNuevo = inmueble.getPropietario().getPersona();
-			((Propietario) propietarioNuevo.getRol(Rol.Propietario)).addInmueble(inmueble);
-			pService.saveOrUpdate(propietarioNuevo);
-		    }
-		}
-	    } else {
-		if (inmueble.getPropietario() != null) {
-		    if (inmueble.getPropietario().getPersona() != null) {
-			Persona propietarioNuevo = inmueble.getPropietario().getPersona();
-			((Propietario) propietarioNuevo.getRol(Rol.Propietario)).addInmueble(inmueble);
-			pService.saveOrUpdate(propietarioNuevo);
-		    }
-		}
-
-	    }
-	    ret = dao.saveOrUpdate(inmueble);
-	}
-	return ret;
     }
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
