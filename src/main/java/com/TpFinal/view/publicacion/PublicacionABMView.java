@@ -1,15 +1,8 @@
 package com.TpFinal.view.publicacion;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.inmueble.*;
-import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
-import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.TinyButton;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -24,8 +17,6 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.List;
 
 /* User Interface written in Java.
@@ -48,15 +39,13 @@ public class PublicacionABMView extends DefaultLayout implements View {
      */
     TextField filter = new TextField();
     private Grid<Publicacion> grid = new Grid<>(Publicacion.class);
-    Button nuevoAlquiler = new Button("Nuevo Alquiler");
-    Button nuevaVenta = new Button("Nueva Venta");
+    Button nuevo = new Button("Nueva");
 
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
 
     HorizontalLayout mainLayout;
     // ContratoVentaForm is an example of a custom component class
-    PublicacionVentaForm PublicacionVentaForm = new PublicacionVentaForm(this);
-    PublicacionAlquilerForm PublicacionAlquilerForm = new PublicacionAlquilerForm(this);
+    PublicacionForm publicacionForm = new PublicacionForm(this);
 
     private boolean isonMobile = false;
 
@@ -82,7 +71,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	 * synchronously handle those events. Vaadin automatically sends only the needed
 	 * changes to the web page without loading a new page.
 	 */
-	// nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new
+	// nuevo.addClickListener(e -> ContratoVentaForm.setVenta(new
 	// Publicacion()));
 
 	filter.addValueChangeListener(e -> updateList());
@@ -93,20 +82,13 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	clearFilterTextBtn.setDescription("Limpiar filtro");
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
-	nuevaVenta.addClickListener(e -> {
+	nuevo.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
-	    PublicacionVentaForm.clearFields();
-	    PublicacionVentaForm.setPublicacionVenta(null);
+	    publicacionForm.clearFields();
+	    publicacionForm.setPublicacion(null);
 
 	});
 
-	nuevoAlquiler.addClickListener(e -> {
-	    grid.asSingleSelect().clear();
-	    PublicacionAlquilerForm.clearFields();
-	    PublicacionAlquilerForm.setPublicacionAlquiler(null);
-	    
-
-	});
 
 	grid.setColumns("inmueble", "tipoPublicacion", "fechaPublicacion", "estadoPublicacion");
 	grid.getColumn("tipoPublicacion").setCaption("Operación");
@@ -117,26 +99,14 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	Responsive.makeResponsive(this);
 	grid.asSingleSelect().addValueChangeListener(event -> {
+		publicacionForm.setVisible(false);
 	    if (event.getValue() == null) {
-		if (PublicacionVentaForm.isVisible() || PublicacionAlquilerForm.isVisible())
-		    setComponentsVisible(true);
-		PublicacionVentaForm.setVisible(false);
-		PublicacionAlquilerForm.setVisible(false);
+	    	setComponentsVisible(true);
+
+
 	    } else {
+		    publicacionForm.setPublicacion( event.getValue());
 
-		if (event.getValue() instanceof PublicacionAlquiler) {
-		    PublicacionVentaForm.setVisible(false);
-		    PublicacionAlquilerForm.setVisible(false);
-		    PublicacionAlquilerForm.setPublicacionAlquiler((PublicacionAlquiler) event.getValue());
-
-		}
-
-		else if (event.getValue() instanceof PublicacionVenta) {
-		    PublicacionVentaForm.setVisible(false);
-		    PublicacionAlquilerForm.setVisible(false);
-		    PublicacionVentaForm.setPublicacionVenta((PublicacionVenta) event.getValue());
-
-		}
 	    }
 	});
 
@@ -148,8 +118,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     public void setComponentsVisible(boolean b) {
-	nuevaVenta.setVisible(b);
-	nuevoAlquiler.setVisible(b);
+	nuevo.setVisible(b);
 	filter.setVisible(b);
 	if (checkIfOnMobile())
 	    clearFilterTextBtn.setVisible(!b);
@@ -162,39 +131,20 @@ public class PublicacionABMView extends DefaultLayout implements View {
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
 
-	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	HorizontalLayout layout = new HorizontalLayout(nuevo);
+	filtering.addComponents(filter, clearFilterTextBtn, layout);
 
-	if (checkIfOnMobile()) {
 
-	    // layout.setSpacing(false);
-	    // layout.setResponsive(true);
-	    filter.setSizeUndefined();
-	    // Responsive.makeResponsive(layout);
-	    // filter.setWidth("58%");
-	    nuevaVenta.setCaption("Venta");
-	    nuevoAlquiler.setCaption("Alquiler");
-	    // nuevaVenta.addStyleName(ValoTheme.BUTTON_TINY);
-	    // nuevoAlquiler.addStyleName(ValoTheme.BUTTON_TINY);
-
-	    // layout.setMargin(false);
-	    // layout.setSizeUndefined();
-	    filtering.addComponents(filter, clearFilterTextBtn, nuevaVenta, nuevoAlquiler);
-	    clearFilterTextBtn.setVisible(false);
-
-	} else {
-	    HorizontalLayout layout = new HorizontalLayout(nuevaVenta, nuevoAlquiler);
-	    filtering.addComponents(filter, clearFilterTextBtn, layout);
-
-	}
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	buildToolbar("Publicaciones", filtering/* , layout */);
 	grid.setSizeFull();
-	mainLayout = new HorizontalLayout(grid, PublicacionVentaForm, PublicacionAlquilerForm);
+	mainLayout = new HorizontalLayout(grid, publicacionForm);
 	mainLayout.setSizeFull();
-	mainLayout.setExpandRatio(grid,1);
 	addComponent(mainLayout);
 	this.setExpandRatio(mainLayout, 1);
+
 
 
 
@@ -238,13 +188,10 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     public void ClearFilterBtnAction() {
-	if (this.PublicacionVentaForm.isVisible()) {
-	    nuevaVenta.focus();
-	    PublicacionVentaForm.cancel();
+	if (this.publicacionForm.isVisible()) {
+	    nuevo.focus();
+	    publicacionForm.cancel();
 
-	} else if (this.PublicacionAlquilerForm.isVisible()) {
-	    nuevoAlquiler.focus();
-	    PublicacionAlquilerForm.cancel();
 	}
 
 	filter.clear();
