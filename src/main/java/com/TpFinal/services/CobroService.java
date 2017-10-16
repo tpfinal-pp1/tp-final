@@ -1,6 +1,8 @@
 package com.TpFinal.services;
 
 import com.TpFinal.data.dto.cobro.Cobro;
+import com.TpFinal.data.dto.contrato.Contrato;
+import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -34,8 +36,14 @@ public class CobroService {
 	}
 	
 	private void llenarConDatosHardCodeados() {
-		for(int i = 0; i < 20; i++){
-			addRandomPayment();
+		List<Contrato>  contratos = new ContratoService().readAll();
+		int cobroIndex = 0;
+		for(int i = 0; i < contratos.size(); i++) {
+			if (contratos.get(i) instanceof ContratoAlquiler) {
+				addRandomPayment();
+				cobros.get(cobroIndex).setContrato((ContratoAlquiler) contratos.get(i));
+				cobroIndex++;
+			}
 		}
 	}
 	//TODO este metodo es temporal hasta que se implemente el dao

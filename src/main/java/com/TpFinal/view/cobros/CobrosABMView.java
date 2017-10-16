@@ -1,10 +1,7 @@
 package com.TpFinal.view.cobros;
 
 import com.TpFinal.data.dto.cobro.Cobro;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.services.CobroService;
-import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
@@ -251,17 +248,7 @@ public class CobrosABMView extends DefaultLayout implements View {
         }
 
         public void updateList() {
-            List<Contrato>  contratos = new ContratoService().readAll();
             List<Cobro> cobros = cobroService.readAll();
-            int cobroIndex = 0;
-            for(int i = 0; i < contratos.size(); i++ ){
-                if(contratos.get(i) instanceof ContratoAlquiler) {
-                    cobros.get(cobroIndex).setContrato((ContratoAlquiler) contratos.get(i));
-                    cobroIndex++;
-                }
-                if(cobroIndex == cobros.size())
-                    break;
-            }
             grid.setItems(cobros);
         }
 
