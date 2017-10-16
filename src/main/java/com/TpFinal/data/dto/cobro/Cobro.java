@@ -17,12 +17,14 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.Identificable;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 
 @Entity
 @Table(name="cobros")
-public class Cobro {
+public class Cobro implements Identificable, BorradoLogico {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -67,6 +69,15 @@ public class Cobro {
 		this.fechaDeVencimiento=b.fechaDeVencimiento;
 		this.estadoCobro=EstadoCobro.NOCOBRADO;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
+	}
+	
+	@Override
+	public Long getId() {
+		return this.id;
+	}
+	
+	public void SetId(Long id) {
+		this.id=id;
 	}
 	
 	public Integer getNumeroCuota() {
@@ -271,5 +282,6 @@ public class Cobro {
 		}
 		
 	}
+
 
 }
