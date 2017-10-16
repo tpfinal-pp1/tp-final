@@ -10,8 +10,12 @@ NO REGISTRAS: HAY TABLA
 
 Sistema para gestión inmobiliaria:    
     Travis(Integración Continua): https://travis-ci.org/tpfinal-pp1/tp-final
+    
     SonarCloud(Calidad de Codigo):https://sonarcloud.io/dashboard?id=com.TpFinal%3ATpFinal
+    
     Coveralls(Covertura): https://coveralls.io/github/tpfinal-pp1/tp-final
+    
     Jenkins(Deployment): http://inmobi.ddns.net:8090   
+    
     Web-App:http://inmobi.ddns.net
 
