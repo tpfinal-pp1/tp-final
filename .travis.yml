@@ -7,7 +7,7 @@ sudo: false
 install: true
 addons:
       sonarcloud:
-        organization: "agusalex-github"
+        organization: "tpfinal-pp1-github"
         token:
           secure: "04db89c9d5164b1ec6350d28933c43eccc1bd79f"
 
