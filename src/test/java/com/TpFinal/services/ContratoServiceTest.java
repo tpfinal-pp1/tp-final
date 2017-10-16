@@ -138,7 +138,8 @@ public class ContratoServiceTest {
 				ret=0;
 			return ret;
 		});
-		cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
+		LocalDate fecha = LocalDate.of(2017, 05, 13);
+		//cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
 		assertEquals(ca.getCobros().size(), 24);
 		BigDecimal monto = new BigDecimal("100.00");
 		BigDecimal expected = new BigDecimal("100.00");
@@ -148,6 +149,9 @@ public class ContratoServiceTest {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
+			System.out.println(cos.get(i).getFechaDeVencimiento());
+			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
+			fecha=fecha.plusMonths(1);
 		}
 	}
 	
@@ -167,15 +171,17 @@ public class ContratoServiceTest {
 				ret=0;
 			return ret;
 		});
-		cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
 		assertEquals(ca.getCobros().size(), 24);
 		BigDecimal expected = new BigDecimal("100.00");
+		LocalDate fecha = LocalDate.of(2017, 06, 11);
 		for(int i =0; i<cos.size(); i++) {
 			assertEquals(cos.get(i).getMontoOriginal(), expected);
 			if((i+1)%2==0) {
 				Double interes= new Double(0.5);
 				expected=expected.add(expected.multiply(new BigDecimal(interes.toString())));
 			}
+			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
+			fecha=fecha.plusMonths(1);
 		}
 	}
 	
@@ -218,7 +224,7 @@ public class ContratoServiceTest {
         return new ContratoAlquiler.Builder()
                 .setFechaCelebracion(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
-                .setDiaDePago(new Integer(13))
+                .setDiaDePago(new Integer(11))
                 .setInteresPunitorio(new Double(0.5))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Acumulativo)
