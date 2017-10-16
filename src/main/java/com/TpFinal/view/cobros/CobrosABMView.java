@@ -150,9 +150,10 @@ public class CobrosABMView extends DefaultLayout implements View {
 
         private void configureNewItem() {
             newItem.addClickListener(e -> {
+                Notification.show("Falta Implementar");/*
                 grid.asSingleSelect().clear();
                 cobrosForm.clearFields();
-                cobrosForm.setInmueble(null);
+                cobrosForm.setInmueble(null);*/
             });
             newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
         }

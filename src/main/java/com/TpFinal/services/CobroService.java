@@ -21,7 +21,7 @@ public class CobroService {
 	List<Cobro>cobros;
 	public CobroService() {
 		dao=new DAOCobroImpl();
-		llenarConDatosHardCodeados();
+		//llenarConDatosHardCodeados();
 	}
 	
 	public boolean save(Cobro c) {
@@ -111,7 +111,7 @@ public class CobroService {
 			}
 		}
 	}
-	//TODO este metodo es temporal hasta que se implemente el dao
+	//FIXME este metodo es temporal hasta que se implemente el dao
 	private void addRandomPayment(){
 		Random randomGenerator = new Random();
 		int upperBound = 500;
