@@ -101,10 +101,13 @@ public class PersonaABMView extends DefaultLayout implements View {
             grid.asSingleSelect().clear();
             personaForm.setPersona(new Persona());
         });
-        
+
+        HorizontalLayout hl=new HorizontalLayout(filtroRoles);
+        hl.setMargin(true);
+        hl.setSpacing(true);
         seleccionFiltro.addClickListener(event -> {
         	
-        	sw.setContent(new HorizontalLayout(filtroRoles));
+        	sw.setContent(hl);
         	 filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
              filtroRoles.addValueChangeListener(l ->{
              	System.out.println(l.getValue());

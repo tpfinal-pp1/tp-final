@@ -3,6 +3,15 @@ cache:
   directories:
   - .autoconf
   - $HOME/.m2
-sudo: true
-script: mvn clean verify
-after_success: mvn jacoco:report coveralls:report
+sudo: false
+install: true
+addons:
+      sonarcloud:
+        organization: "tpfinal-pp1-github"
+        token:
+          secure: "04db89c9d5164b1ec6350d28933c43eccc1bd79f"
+
+script: mvn clean test
+after_success:  mvn jacoco:report coveralls:report sonar:sonar
+notifications:
+    slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ

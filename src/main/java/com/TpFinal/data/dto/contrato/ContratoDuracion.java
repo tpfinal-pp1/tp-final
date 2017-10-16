@@ -16,107 +16,111 @@ import com.TpFinal.data.dto.persona.Persona;
 
 @Entity
 @Table(name = "contratoDuracion")
-@PrimaryKeyJoinColumn(name = "id")
-public class ContratoDuracion implements Identificable, BorradoLogico  {
 
-	private static final String estadoRegistroS = "estadoRegistro";
-	
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id")
-	protected Long id;
+public class ContratoDuracion implements Identificable, BorradoLogico {
 
-	@Column(name = "descripcion")
-	private String descripcion;
+    private static final String estadoRegistroS = "estadoRegistro";
 
-	@Column(name = "duracion")
-	private Integer duracion;
-	
-	@Column(name = ContratoDuracion.estadoRegistroS)
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    protected Long id;
+
+    @Column(name = "descripcion")
+    private String descripcion;
+
+    @Column(name = "duracion")
+    private Integer duracion;
+
+    @Column(name = ContratoDuracion.estadoRegistroS)
     @NotNull
     private EstadoRegistro estadoRegistro;
-	
-	public ContratoDuracion() {}
 
-	public ContratoDuracion(Builder b) {
-		
-		this.id = b.id;
-		this.descripcion = b.descripcion;
-		this.duracion = b.duracion;
-		this.estadoRegistro = EstadoRegistro.ACTIVO;
+    public ContratoDuracion() {
+    }
 
-	}
+    public ContratoDuracion(Builder b) {
 
-	public static class Builder {
+	this.id = b.id;
+	this.descripcion = b.descripcion;
+	this.duracion = b.duracion;
+	this.estadoRegistro = EstadoRegistro.ACTIVO;
 
-		private String descripcion;
-		private Integer duracion;
-		private Long id;
-		private EstadoRegistro estadoRegistro;
+    }
 
+    public static class Builder {
 
-		public Builder setDescripcion (String descripcion) {
-			this.descripcion = descripcion;
-			return this;
-		}
+	private String descripcion;
+	private Integer duracion;
+	private Long id;
+	private EstadoRegistro estadoRegistro;
 
-		public Builder setDuracion (Integer duracion) {
-			this.duracion = duracion;
-			return this;
-		}
-
-		public Builder setId(Long id) {
-			this.id=id;
-			return this;
-		}
-
-		public ContratoDuracion build() {
-			return new ContratoDuracion(this);
-		}
-	}
-	
-	@Override
-	public Long getId() {
-		return this.id;
-	}
-	public void setId(Long id) {
-		this.id = id;
+	public Builder setDescripcion(String descripcion) {
+	    this.descripcion = descripcion;
+	    return this;
 	}
 
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
-	public Integer getDuracion() {
-		return duracion;
-	}
-	public void setDuracion(Integer duracion) {
-		this.duracion = duracion;
+	public Builder setDuracion(Integer duracion) {
+	    this.duracion = duracion;
+	    return this;
 	}
 
-	public String getDuracionString() {
-		return duracion.toString();
+	public Builder setId(Long id) {
+	    this.id = id;
+	    return this;
 	}
 
-	public void setDuracionString(String valor) {
-		this.duracion = Integer.valueOf(valor);
+	public ContratoDuracion build() {
+	    return new ContratoDuracion(this);
 	}
-	
-	@Override
-	public String toString() {
-		return this.getDuracion() + " " + "Meses";
-	}
-	@Override
-	public void setEstadoRegistro(EstadoRegistro estado) {
-		this.estadoRegistro = estado;
-		
-	}
-	@Override
-	public EstadoRegistro getEstadoRegistro() {
-		return this.estadoRegistro;
-	}
+    }
+
+    @Override
+    public Long getId() {
+	return this.id;
+    }
+
+    public void setId(Long id) {
+	this.id = id;
+    }
+
+    public String getDescripcion() {
+	return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+	this.descripcion = descripcion;
+    }
+
+    public Integer getDuracion() {
+	return duracion;
+    }
+
+    public void setDuracion(Integer duracion) {
+	this.duracion = duracion;
+    }
+
+    public String getDuracionString() {
+	return duracion.toString();
+    }
+
+    public void setDuracionString(String valor) {
+	this.duracion = Integer.valueOf(valor);
+    }
+
+    @Override
+    public String toString() {
+	return this.getDuracion() + " " + "Meses";
+    }
+
+    @Override
+    public void setEstadoRegistro(EstadoRegistro estado) {
+	this.estadoRegistro = estado;
+
+    }
+
+    @Override
+    public EstadoRegistro getEstadoRegistro() {
+	return this.estadoRegistro;
+    }
 }
-

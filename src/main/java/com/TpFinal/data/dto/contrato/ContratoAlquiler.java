@@ -195,6 +195,11 @@ public class ContratoAlquiler extends Contrato {
 			this.cobros.remove(c);
 		}
 	}
+	@Override
+	public String toString() {
+		return  inmueble.toString()+", "
+				+this.propietario.toString()+", "+this.inquilinoContrato ;
+	}
 
 	@Override
     public boolean equals(Object o) {

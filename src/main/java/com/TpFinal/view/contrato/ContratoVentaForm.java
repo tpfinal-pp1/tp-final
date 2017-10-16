@@ -257,11 +257,15 @@ public class ContratoVentaForm extends FormLayout {
 	tabSheet.addTab(principal, "Venta");
 
 	addComponent(tabSheet);
-	HorizontalLayout actions = new HorizontalLayout(save, delete, finalizarCarga, renovarContrato);
-
-	addComponent(actions);
+	HorizontalLayout actions1 = new HorizontalLayout(save, delete);
+	HorizontalLayout actions2 = new HorizontalLayout(finalizarCarga, renovarContrato);
+	actions1.setSpacing(true);
+	actions2.setSpacing(true);
+	addComponents(actions1,actions2);
+	this.setComponentAlignment(actions1, Alignment.BOTTOM_CENTER);
+	this.setComponentAlignment(actions2, Alignment.BOTTOM_CENTER);
 	this.setSpacing(false);
-	actions.setSpacing(true);
+	
 
 	// addStyleName("v-scrollable");
 
