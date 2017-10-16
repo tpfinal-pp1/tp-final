@@ -43,7 +43,6 @@ public class PersonaServiceNuevoTest {
 	@After
 	public void tearDown() {
 		DAOPersona dao = new DAOPersonaImpl();
-
 		service.readAll().forEach(p -> dao.delete(p));
 	}
 	

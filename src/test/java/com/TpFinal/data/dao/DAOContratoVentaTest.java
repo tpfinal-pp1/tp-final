@@ -42,34 +42,24 @@ public class DAOContratoVentaTest {
 
     @Before
     public void setUp() throws Exception {
-try {
 
-
-	File dir = new File("Files");
-	deleteDirectory(dir);
-	dir.mkdir();
-	dao = new DAOContratoVentaImpl();
-	daoInmuebles = new DAOInmuebleImpl();
-	contratos = dao.readAll();
-	contratos.forEach(dao::delete);
-	contratos.clear();
-	daoInmuebles.readAll().forEach(daoInmuebles::delete);
-}
-		catch (Exception e){
-			System.out.println("Error al hacer setUp");
-		}
+		File dir = new File("Files");
+		deleteDirectory(dir);
+		dir.mkdir();
+		dao = new DAOContratoVentaImpl();
+		daoInmuebles=new DAOInmuebleImpl();
+		contratos = dao.readAll();
+		contratos.forEach(dao::delete);
+		contratos.clear();
+		daoInmuebles.readAll().forEach(daoInmuebles::delete);
     }
 
     @After
     public void tearDown() throws Exception {
-    	try {
-			contratos = dao.readAll();
-			desvincularInmuebleYContrato();
-			contratos.forEach(dao::delete);
-			deleteDirectory(new File("Files"));
-		}catch (Exception e){
-			System.out.println("Error al hacer TearDown");
-		}
+		contratos = dao.readAll();
+		desvincularInmuebleYContrato();
+		contratos.forEach(dao::delete);
+		deleteDirectory(new File("Files"));
     }
     
     private void desvincularInmuebleYContrato() {

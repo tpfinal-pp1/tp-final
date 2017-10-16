@@ -1,8 +1,4 @@
 language: java
-cache:
-  directories:
-  - .autoconf
-  - $HOME/.m2
 sudo: true
 script: mvn clean test
 after_success: mvn jacoco:report coveralls:report
