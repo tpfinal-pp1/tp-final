@@ -46,11 +46,9 @@ public class DownloadButton extends Button {
 
     }
     public DownloadButton(String filename){
-        super();
+	this();        
         fileDownloader = new FileDownloader(fromPathtoSR(filename));
-        fileDownloader.extend(this);
-        this.setIcon(VaadinIcons.DOWNLOAD);
-        this.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+        fileDownloader.extend(this);        
 
     }
     public void setFile(String filename){

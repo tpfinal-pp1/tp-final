@@ -1,6 +1,7 @@
 package com.TpFinal.data.dto.contrato;
 
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.cobro.Cobro;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
@@ -12,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -22,7 +24,9 @@ import org.hibernate.annotations.CascadeType;
 import java.math.BigDecimal;
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Created by Max on 9/30/2017.
@@ -61,6 +65,9 @@ public class ContratoAlquiler extends Contrato {
     @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE })
     @JoinColumn(name = "id_propietario")
     private Persona propietario;
+    @OneToMany(mappedBy="contrato", fetch=FetchType.EAGER)
+    @Cascade({CascadeType.ALL})
+    private Set<Cobro>cobros;
 
     public ContratoAlquiler() {
 	super();
@@ -76,6 +83,7 @@ public class ContratoAlquiler extends Contrato {
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
 	this.duracionContrato = b.duracionContrato;
+	cobros=new HashSet<>();
 
 	if (b.inmueble != null) {
 	    this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
@@ -166,8 +174,28 @@ public class ContratoAlquiler extends Contrato {
     public void setIntervaloActualizacion(Integer intervaloActualizacion) {
 	this.intervaloActualizacion = intervaloActualizacion;
     }
+    
+    public Set<Cobro> getCobros() {
+		return cobros;
+	}
 
-    @Override
+	public void setCobros(Set<Cobro> cobros) {
+		this.cobros = cobros;
+	}
+	
+	public void addCobro(Cobro c) {
+		if(!this.cobros.contains(c)) {
+			this.cobros.add(c);
+		}
+	}
+	
+	public void removeCobro(Cobro c) {
+		if(this.cobros.contains(c)) {
+			this.cobros.remove(c);
+		}
+	}
+
+	@Override
     public boolean equals(Object o) {
 	if (this == o)
 	    return true;
@@ -180,6 +208,33 @@ public class ContratoAlquiler extends Contrato {
     @Override
     public int hashCode() {
 	return 3;
+    }
+    
+    private void agregarCobros() {
+    	if(this.duracionContrato!=null) {
+    		for(int i=0; i<this.duracionContrato.getDuracion(); i++) {
+    			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
+    			LocalDate fechaCobro=LocalDate.of(fechaCelebracion.getDayOfMonth(), fechaCelebracion.getMonthValue(), this.diaDePago);
+    			if(fechaCelebracion.getDayOfMonth()>=(int)this.diaDePago) {
+        			fechaCobro=fechaCobro.plusMonths(i+1);
+    			}else {
+    				fechaCobro=fechaCobro.plusMonths(i);
+    			}
+    			
+    			Cobro c =new Cobro.Builder()
+    					.setNumeroCuota(i)
+    					.setFechaDePago(fechaCobro)
+    					.build();
+    			if(i+1%this.intervaloActualizacion==0) {
+    				if(this.tipoIncrementoCuota.equals(TipoInteres.Acumulativo)) {
+    					//TODO
+    				}else {
+    					//TODO
+    				}
+    			}
+    			this.cobros.add(c);
+    		}
+    	}
     }
 
     public static class Builder {

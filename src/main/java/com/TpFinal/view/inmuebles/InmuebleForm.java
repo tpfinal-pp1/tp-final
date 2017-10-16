@@ -108,27 +108,26 @@ public class InmuebleForm extends FormLayout {
 	setVisible(false);
 	localidades.setItems(provinciaService.getLocalidades());
 	provincias.setItems(provinciaService.getProvincias());
+
 	//provincias.setTextInputAllowed(false);
 	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
-	    @Override
-	    public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
-		Provincia provincia = valueChangeEvent.getValue();
+		@Override
+		public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
+			Provincia provincia = valueChangeEvent.getValue();
 
 
-		if (provincia != null) {
-			localidades.setEnabled(true);
-			localidades.setItems(provincia.getLocalidades());
-		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			if (provincia != null) {
+				localidades.setEnabled(true);
+				localidades.setItems(provincia.getLocalidades());
+				localidades.setSelectedItem(provincia.getLocalidades().get(0));
+			} else {
+				localidades.setEnabled(false);
+				localidades.setSelectedItem(null);
+			}
+
 		}
-		else{
-			localidades.setEnabled(false);
-			localidades.setSelectedItem(null);
-		}
-		
-	    }
 
 	});
-
 
 	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
 	    @Override
@@ -159,6 +158,7 @@ public class InmuebleForm extends FormLayout {
 	persona.addRol(new Propietario());
 	Propietario propietario = (Propietario)persona.getRol(Rol.Propietario);
 	propietario.addInmueble(this.inmueble);
+
 
 	new PersonaFormWindow(this.persona) {
 	    @Override

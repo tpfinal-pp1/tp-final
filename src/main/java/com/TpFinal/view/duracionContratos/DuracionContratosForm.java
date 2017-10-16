@@ -5,6 +5,8 @@ import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.contrato.DuracionContrato;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.services.ContratoDuracionService;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.component.BlueLabel;
@@ -19,10 +21,8 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-
 public class DuracionContratosForm extends FormLayout {
-    
-	//necesita clase nueva
+ 
 	private ContratoDuracion duracionContrato;
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
@@ -37,7 +37,7 @@ public class DuracionContratosForm extends FormLayout {
     TextField descripcion = new TextField("Descripcion");  
     TextField cantidad = new TextField("Cantidad");
 
-    //PersonaService service = new PersonaService();
+    ContratoDuracionService service = new ContratoDuracionService();
     private DuracionContratosABMView addressbookView;
     private Binder<ContratoDuracion> binderContratoDuracion= new Binder<>(ContratoDuracion.class);
     TabSheet tabSheet;
@@ -123,25 +123,24 @@ public class DuracionContratosForm extends FormLayout {
 
     public void setContratoDuracion(ContratoDuracion duracionContrato) {
    
-        this.duracionContrato = duracionContrato;
-        binderContratoDuracion.readBean(duracionContrato);
-
-        // Show delete button for only Persons already in the database
-        //TODO
-        // delete.setVisible(duracionContrato.getId()!=null);
-
-        setVisible(true);
-        getAddressbookView().setComponentsVisible(false);
-        descripcion.selectAll();
-        if(getAddressbookView().isIsonMobile())
-            tabSheet.focus();
-
+    	if(duracionContrato != null) {
+    		this.duracionContrato = duracionContrato;
+    		binderContratoDuracion.readBean(this.duracionContrato);
+    		delete.setVisible(true);
+    		}else {
+    		    this.duracionContrato = ContratoDuracionService.getInstancia();
+    			delete.setVisible(false);
+    		}
+    		setVisible(true);
+    		getAddressbookView().setComponentsVisible(false);
+    		if (getAddressbookView().isIsonMobile())
+    		    this.focus();
+  
     }
 
     private void delete() {
         
-    	//TODO
-    	//service.delete(duracionContrato);
+    	service.delete(duracionContrato);
         addressbookView.updateList();
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
@@ -155,8 +154,8 @@ public class DuracionContratosForm extends FormLayout {
         boolean success=false;
         try {
         	binderContratoDuracion.writeBean(duracionContrato);
-            //TODO
-        	//service.saveOrUpdate(duracionContrato);
+            
+        	service.saveOrUpdate(duracionContrato);
             success=true;
 
 
@@ -190,8 +189,6 @@ public class DuracionContratosForm extends FormLayout {
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
     }
-
-
 
     public DuracionContratosABMView getAddressbookView() {
         return addressbookView;

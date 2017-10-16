@@ -1,6 +1,8 @@
 package com.TpFinal.services;
 
+import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
+import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
@@ -8,6 +10,7 @@ import com.TpFinal.data.dto.inmueble.*;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.*;
+import com.TpFinal.exceptions.services.PublicacionServiceException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,33 +20,44 @@ import java.util.Comparator;
 import java.util.List;
 
 public class PublicacionService {
-    private DAOPublicacion dao;
+    private DAOPublicacion daoPublicacion;
+    private InmuebleService inmuebleService;
     public final static PublicacionVenta INSTANCIA_VENTA = InstanciaPublicacionVenta();
     public final static PublicacionAlquiler INSTANCIA_ALQUILER = InstanciaPublicacionAlquiler();
 
     public PublicacionService() {
-	dao = new DAOPublicacionImpl();
+	daoPublicacion = new DAOPublicacionImpl();
+	inmuebleService = new InmuebleService();
     }
 
     public List<Publicacion> readAll() {
-	return dao.readAllActives();
+	return daoPublicacion.readAllActives();
     }
 
-    public boolean delete(Publicacion entidad) {
-	return dao.logicalDelete(entidad);
+    public boolean delete(Publicacion publicacion) {
+	boolean ret = daoPublicacion.logicalDelete(publicacion);
+	inmuebleService.actualizarEstadoInmuebleSegunPublicacion(publicacion.getInmueble());
+	return ret;
     }
 
-    public boolean save(Publicacion entidad) {
-	return dao.saveOrUpdate(entidad);
+    public boolean save(Publicacion publicacion) throws PublicacionServiceException {
+	boolean ret = true;
+	if (publicacion.getInmueble() != null) {
+	ret = daoPublicacion.saveOrUpdate(publicacion);
+	inmuebleService.actualizarEstadoInmuebleSegunPublicacion(publicacion.getInmueble());
+	}else {
+	    throw new PublicacionServiceException("La publicación debe tener un inmueble asociado!");
+	}
+	return ret;
     }
 
     public Publicacion findById(Long id) {
-	return dao.findById(id);
+	return daoPublicacion.findById(id);
     }
 
     public List<Publicacion> readAll(String stringFilter) {
 	ArrayList<Publicacion> arrayList = new ArrayList();
-	List<Publicacion> publicaciones = dao.readAllActives();
+	List<Publicacion> publicaciones = daoPublicacion.readAllActives();
 	if (stringFilter != "") {
 
 	    for (Publicacion publicacion : publicaciones) {

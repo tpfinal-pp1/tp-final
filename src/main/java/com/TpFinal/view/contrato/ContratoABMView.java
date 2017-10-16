@@ -4,6 +4,7 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.contrato.EstadoContrato;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.Direccion;
@@ -18,6 +19,7 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -27,6 +29,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.Column;
+import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.math.BigDecimal;
@@ -106,13 +109,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    grid.asSingleSelect().clear();
 	    ContratoAlquilerForm.clearFields();
 	    ContratoAlquilerForm.setContratoAlquiler(null);
-	   
+
 	});
 
 	setearColumnas();
-
-	// grid.getColumn("tipoContrato").setCaption("Operación");
-	// grid.getColumn("fechaContrato").setCaption("Fecha Publicación");
 
 	Responsive.makeResponsive(this);
 	grid.asSingleSelect().addValueChangeListener(event -> {
@@ -137,8 +137,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	});
 
-	// grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-
 	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
@@ -146,34 +144,18 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void setearColumnas() {
-	// grid.removeAllColumns();
-
 	contratos = service.findAll(filter.getValue());
+	grid.addColumn(getTipoContrato()).setCaption("Tipo");
+	grid.addColumn(Contrato::getFechaCelebracion, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
+		"Fecha de celebración");
+	grid.addColumn(Contrato::getEstadoContrato).setCaption("Estado");
+	grid.addColumn(contrato -> contrato.getInmueble().getDireccion()).setCaption("Dirección");
+	grid.addColumn(getIntervinientes()).setCaption("Intervinientes");
+	grid.getColumns().forEach(col -> col.setResizable(false));
+    }
 
-	Column<Contrato, String> tipoCol = grid.addColumn(contrato -> {
-	    String ret = "";
-	    if (contrato instanceof ContratoVenta) {
-		ret = "Venta";
-	    } else {
-		ret = "Alquiler";
-	    }
-	    return ret;
-	});
-
-	Column<Contrato, String> fechaCelebracionCol = grid.addColumn(contrato -> {
-	    return contrato.getFechaCelebracion().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-	});
-
-	Column<Contrato, EstadoRegistro> estadoCol = grid.addColumn(Contrato::getEstadoRegistro).setCaption("Estado");
-
-	Column<Contrato, String> direccionCol = grid.addColumn(contrato -> {
-	    String ret = "";
-	    Direccion dir = contrato.getInmueble().getDireccion();
-	    ret = dir.getCalle() + " " + dir.getNro() + ", " + dir.getProvincia();
-	    return ret;
-	});
-
-	Column<Contrato, String> intervinientesCol = grid.addColumn(contrato -> {
+    private ValueProvider<Contrato, String> getIntervinientes() {
+	return contrato -> {
 	    String ret = "";
 	    if (contrato instanceof ContratoVenta) {
 		ContratoVenta c = (ContratoVenta) contrato;
@@ -190,25 +172,20 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	    }
 	    return ret;
-	});
-
-	tipoCol.setCaption("Tipo");
-	fechaCelebracionCol.setCaption("Fecha de Celebración");
-	direccionCol.setCaption("Dirección");
-	intervinientesCol.setCaption("Intervinientes");
+	};
     }
 
-    /*
-     * Robust layouts.
-     *
-     * Layouts are components that contain other components. HorizontalLayout
-     * contains TextField and Button. It is wrapped with a Grid into VerticalLayout
-     * for the left side of the screen. Allow user to resize the components with a
-     * SplitPanel.
-     *
-     * In addition to programmatically building layout in Java, you may also choose
-     * to setup layout declaratively with Vaadin Designer, CSS and HTML.
-     */
+    private ValueProvider<Contrato, String> getTipoContrato() {
+	return contrato -> {
+	    String ret = "";
+	    if (contrato instanceof ContratoVenta) {
+		ret = "Venta";
+	    } else {
+		ret = "Alquiler";
+	    }
+	    return ret;
+	};
+    }
 
     public void setComponentsVisible(boolean b) {
 	nuevaVenta.setVisible(b);
@@ -261,15 +238,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 	this.setExpandRatio(mainLayout, 1);
 
     }
-
-    /*
-     * Choose the design patterns you like.
-     *
-     * It is good practice to have separate data access methods that handle the
-     * back-end access and/or the user interface updates. You can further split your
-     * code into classes to easier maintenance. With Vaadin you can follow MVC, MVP
-     * or any other design pattern you choose.
-     */
 
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(

@@ -1,7 +1,7 @@
 package com.TpFinal.data.dto.inmueble;
 
 public enum EstadoInmueble {
-    Alquilado, EnAlquiler, EnVenta, NoPublicado, Vendido;
+    Alquilado, EnAlquiler, EnAlquilerYVenta, EnVenta, NoPublicado, Vendido;
     @Override
     public String toString() {
 	String ret = "";
@@ -14,6 +14,9 @@ public enum EstadoInmueble {
 	    break;
 	case NoPublicado:
 	    ret = "No Publicado";
+	    break;
+	case EnAlquilerYVenta:
+	    ret = "En Alquiler y Venta";
 	    break;
 	default:
 	    ret = super.toString();

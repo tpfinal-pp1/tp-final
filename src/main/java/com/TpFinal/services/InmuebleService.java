@@ -2,6 +2,8 @@ package com.TpFinal.services;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
+import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
@@ -11,11 +13,15 @@ import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoInmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
+import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.data.dto.publicacion.TipoPublicacion;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class InmuebleService {
@@ -75,18 +81,78 @@ public class InmuebleService {
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
 	List<Inmueble> inmuebles = dao.readAllActives().stream()
-		.filter( i -> {return filtro == null || filtro.isEmpty()
-                || i.getDireccion().getCalle().toLowerCase().contains(filtro.toLowerCase());})
+		.filter(i -> {
+		    return filtro == null || filtro.isEmpty()
+			    || i.getDireccion().getCalle().toLowerCase().contains(filtro.toLowerCase());
+		})
 		.collect(Collectors.toList());
-	Collections.sort(inmuebles, new Comparator<Inmueble>(){
+	Collections.sort(inmuebles, new Comparator<Inmueble>() {
 
 	    @Override
 	    public int compare(Inmueble o1, Inmueble o2) {
 		return o1.getDireccion().getCalle().compareTo(o2.getDireccion().getCalle());
 	    }
-	    
+
 	});
 	return inmuebles;
+    }
+
+    /**
+     * Revisa la lista de publicaciones. Si existe al menos una publicación activa,
+     * cambia el estadoPublicación a activo sino, cambia el estadoPublicacion a
+     * noPublicado
+     * 
+     * @param inmueble
+     */
+    public boolean actualizarEstadoInmuebleSegunPublicacion(Inmueble inmueble) {
+	System.out.println("Actualizando Estado Inmueble");
+	boolean ret = true;
+	List<Publicacion> publicaciones = getListadoDePublicaciones(inmueble);
+	List<Publicacion> pubsActivas = publicaciones.stream().filter(this::estaActivoYNoFueBorrado)
+		.limit(2).collect(Collectors.toList());
+
+	if (!pubsActivas.isEmpty()) {
+	    setEstadoInmuebleSegunPublicaciones(inmueble, pubsActivas);
+	    ret = ret && dao.merge(inmueble);
+	}
+	return ret;
+
+    }
+
+    private boolean estaActivoYNoFueBorrado(Publicacion p) {
+	return p.getEstadoRegistro() == EstadoRegistro.ACTIVO && p
+	    .getEstadoPublicacion() == EstadoPublicacion.Activa;
+    }
+
+    private void setEstadoInmuebleSegunPublicaciones(Inmueble inmueble, List<Publicacion> publicaciones) {
+	if (publicaciones.size() == 2) {
+	    System.out.println("Immueble seteado a alquiler y venta");
+	    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
+	} else {
+	    Publicacion publicacion = publicaciones.get(0);
+	    if (publicacion.getTipoPublicacion() == TipoPublicacion.Alquiler) {
+		System.out.println("Immueble seteado a alquiler");
+		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
+	    } else {
+		System.out.println("Immueble seteado a venta");
+		inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
+	    }
+	}
+
+    }
+
+    public List<Publicacion> getListadoDePublicaciones(Inmueble inmueble) {
+	List<Publicacion> ret = null;
+	if (inmueble != null && inmueble.getPublicaciones() != null) {
+	    ret = inmueble.getPublicaciones().stream().collect(Collectors.toList());
+	}
+	return ret;
+    }
+
+    public void desvincularContrato(Contrato contratoAntiguo) {
+	Inmueble i = contratoAntiguo.getInmueble();
+	i.removeContrato(contratoAntiguo);
+	dao.saveOrUpdate(i);
     }
 
 }

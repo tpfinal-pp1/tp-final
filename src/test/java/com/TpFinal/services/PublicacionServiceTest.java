@@ -32,143 +32,163 @@ import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.publicacion.Publicacion;
 import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.exceptions.services.PublicacionServiceException;
 
 public class PublicacionServiceTest {
 
-	InmuebleService serviceInm;
-	List<Inmueble>inmuebles=new ArrayList<>();
-	List<Persona>personas= new ArrayList<>();
-	DAOPersona daoPer;
-	PublicacionService servicePub;
-	DAOInmueble daoInm;
-	DAOPublicacion daoPub;
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception{
-		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
-	 }
+    InmuebleService serviceInm;
+    List<Inmueble> inmuebles = new ArrayList<>();
+    List<Persona> personas = new ArrayList<>();
+    DAOPersona daoPer;
+    PublicacionService servicePub;
+    DAOInmueble daoInm;
+    DAOPublicacion daoPub;
 
-	@Before
-	public void setUp() throws Exception {
-		serviceInm= new InmuebleService();
-		servicePub=new PublicacionService();
-		daoPub=new DAOPublicacionImpl();
-		daoPub.readAll().forEach(p -> daoPub.delete(p));
-		daoInm=new DAOInmuebleImpl();
-		daoInm.readAll().forEach(i -> daoInm.delete(i));
-		daoPer=new DAOPersonaImpl();
-		daoPer.readAll().forEach(p -> daoPer.delete(p));
-		inmuebles.clear();
-	}
+    @BeforeClass
+    public static void setUpBeforeClass() throws Exception {
+	ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
+    }
 
-	@After
-	public void tearDown() throws Exception {
-		daoPub.readAll().forEach(p -> daoPub.delete(p));
-	}
+    @Before
+    public void setUp() throws Exception {
+	serviceInm = new InmuebleService();
+	servicePub = new PublicacionService();
+	daoPub = new DAOPublicacionImpl();
+	daoPub.readAll().forEach(p -> daoPub.delete(p));
+	daoInm = new DAOInmuebleImpl();
+	daoInm.readAll().forEach(i -> daoInm.delete(i));
+	daoPer = new DAOPersonaImpl();
+	daoPer.readAll().forEach(p -> daoPer.delete(p));
+	inmuebles.clear();
+    }
 
-	@Test
-	public void test() {
-		Propietario pro= new Propietario();
-		Persona per = instancia("1");
-		per.addRol(pro);
-		
-		//guardo la persona y su rol
-		daoPer.save(per);
-		
-		Inmueble in = unInmuebleNoPublicado();
-		
-		//in.setPropietario(pro);
-		pro=daoPer.readAll().get(0).getPropietario();
-		pro.addInmueble(in);
-		assertEquals(1, pro.getInmuebles().size());
-		//guardo el inmueble
-		assertTrue(serviceInm.merge(in));
-		in=daoInm.readAll().get(0);
-		PublicacionVenta pv = instanciaVenta(in);
-		PublicacionAlquiler pa = instanciaAlquiler(in);
-		pv.setInmueble(in);
-		pa.setInmueble(in);
-		
-		in.addPublicacion(pv);
-		in.addPublicacion(pa);
-		
-		servicePub.save(pa);
-		servicePub.save(pv);
-		
-		pa=(PublicacionAlquiler)servicePub.readAll().get(0);
-		pv=(PublicacionVenta)servicePub.readAll().get(1);
-		
-		pa.setInmueble(null);
-		pv.setInmueble(null);
-
-
-		servicePub.save(pa);
-		servicePub.save(pv);
-		
-		pa=(PublicacionAlquiler)servicePub.readAll().get(0);
-		pv=(PublicacionVenta)servicePub.readAll().get(1);
-		
-		assertEquals(null, pa.getInmueble());
-		assertEquals(null, pv.getInmueble());
-		
-		
-	}
-	
-	private PublicacionVenta instanciaVenta(Inmueble i) {
-		return new PublicacionVenta.Builder()
-				.setFechaPublicacion(LocalDate.of(2017, 05, 12))
-				.setMoneda(TipoMoneda.Pesos)
-				.setPrecio(new BigDecimal("100.00"))
-				.setInmueble(i)
-				.build();
-	}
-	
-	private PublicacionAlquiler instanciaAlquiler(Inmueble i) {
-		return new PublicacionAlquiler.Builder() 
-				.setFechaPublicacion(LocalDate.of(2017, 05, 12))
-				.setMoneda(TipoMoneda.Dolares)
-				.setValorCuota(new BigDecimal("100.00"))
-				.setInmueble(i)
-				.build();
-	}
-	
-	 private Inmueble unInmuebleNoPublicado() {
-			return new Inmueble.Builder()
-				.setaEstrenar(true)
-				.setCantidadAmbientes(2)
-				.setCantidadCocheras(3)
-				.setCantidadDormitorios(1)
-				.setClaseInmueble(ClaseInmueble.Casa)
-				.setConAireAcondicionado(true)
-				.setConJardin(true).setConParilla(true).setConPileta(true)
-				.setDireccion(
-					new Direccion.Builder()
-						.setCalle("Una calle")
-						.setCodPostal("asd123")
-						.setCoordenada(new Coordenada())
-						.setLocalidad("una Localidad")
-						.setNro(123)
-						.setPais("Argentina")
-						.setProvincia("Buenos Aires")
-						.build())
-				.setEstadoInmueble(EstadoInmueble.NoPublicado)
-				.setSuperficieCubierta(200)
-				.setSuperficieTotal(400)
-				.setTipoInmueble(TipoInmueble.Vivienda)
-				.build();
-		    }
-	   
-	  public Persona instancia(String numero) {
-	        return new Persona.Builder()
-	                .setNombre("nombre "+numero)
-	                .setApellido("apellido "+numero)
-	                .setMail("mail "+numero)
-	                .setTelefono("telefono "+numero)
-	                .setTelefono("telefono "+numero)
-	                .setTelefono2("telefono2 "+numero)
-	                .setDNI("Dni"+numero)
-	                .setinfoAdicional("Info Adicional"+ numero)
-	                .build();
+    @After
+    public void tearDown() throws Exception {
+	daoPub.readAll().forEach(p -> {
+	    Inmueble i = p.getInmueble();
+	    if (i != null) {
+		i.removePublicacion(p);
+		daoInm.saveOrUpdate(i);
+		p.setInmueble(null);
+		daoPub.saveOrUpdate(p);
 	    }
+	    daoPub.delete(p);
+	});
+    }
+
+    @Test
+    public void test() {
+	Propietario pro = new Propietario();
+	Persona per = instancia("1");
+	per.addRol(pro);
+
+	// guardo la persona y su rol
+	daoPer.save(per);
+
+	Inmueble in = unInmuebleNoPublicado();
+
+	// in.setPropietario(pro);
+	pro = daoPer.readAll().get(0).getPropietario();
+	pro.addInmueble(in);
+	assertEquals(1, pro.getInmuebles().size());
+	// guardo el inmueble
+	assertTrue(serviceInm.merge(in));
+	in = daoInm.readAll().get(0);
+	PublicacionVenta pv = instanciaVenta(in);
+	PublicacionAlquiler pa = instanciaAlquiler(in);
+	pv.setInmueble(in);
+	pa.setInmueble(in);
+
+	in.addPublicacion(pv);
+	in.addPublicacion(pa);
+
+	try {
+	    servicePub.save(pa);
+	} catch (PublicacionServiceException e) {
+
+	}
+
+	try {
+	    servicePub.save(pv);
+	} catch (PublicacionServiceException e) {
+
+	}
+
+	pa = (PublicacionAlquiler) servicePub.readAll().get(0);
+	pv = (PublicacionVenta) servicePub.readAll().get(1);
+
+	pa.setInmueble(null);
+	pv.setInmueble(null);
+
+	try {
+	    servicePub.save(pa);
+	} catch (PublicacionServiceException e) {
+	    assertTrue(e instanceof PublicacionServiceException);
+	}
+
+	try {
+	    servicePub.save(pv);
+	} catch (PublicacionServiceException e) {
+	    assertTrue(e instanceof PublicacionServiceException);
+	}
+
+    }
+
+    private PublicacionVenta instanciaVenta(Inmueble i) {
+	return new PublicacionVenta.Builder()
+		.setFechaPublicacion(LocalDate.of(2017, 05, 12))
+		.setMoneda(TipoMoneda.Pesos)
+		.setPrecio(new BigDecimal("100.00"))
+		.setInmueble(i)
+		.build();
+    }
+
+    private PublicacionAlquiler instanciaAlquiler(Inmueble i) {
+	return new PublicacionAlquiler.Builder()
+		.setFechaPublicacion(LocalDate.of(2017, 05, 12))
+		.setMoneda(TipoMoneda.Dolares)
+		.setValorCuota(new BigDecimal("100.00"))
+		.setInmueble(i)
+		.build();
+    }
+
+    private Inmueble unInmuebleNoPublicado() {
+	return new Inmueble.Builder()
+		.setaEstrenar(true)
+		.setCantidadAmbientes(2)
+		.setCantidadCocheras(3)
+		.setCantidadDormitorios(1)
+		.setClaseInmueble(ClaseInmueble.Casa)
+		.setConAireAcondicionado(true)
+		.setConJardin(true).setConParilla(true).setConPileta(true)
+		.setDireccion(
+			new Direccion.Builder()
+				.setCalle("Una calle")
+				.setCodPostal("asd123")
+				.setCoordenada(new Coordenada())
+				.setLocalidad("una Localidad")
+				.setNro(123)
+				.setPais("Argentina")
+				.setProvincia("Buenos Aires")
+				.build())
+		.setEstadoInmueble(EstadoInmueble.NoPublicado)
+		.setSuperficieCubierta(200)
+		.setSuperficieTotal(400)
+		.setTipoInmueble(TipoInmueble.Vivienda)
+		.build();
+    }
+
+    public Persona instancia(String numero) {
+	return new Persona.Builder()
+		.setNombre("nombre " + numero)
+		.setApellido("apellido " + numero)
+		.setMail("mail " + numero)
+		.setTelefono("telefono " + numero)
+		.setTelefono("telefono " + numero)
+		.setTelefono2("telefono2 " + numero)
+		.setDNI("Dni" + numero)
+		.setinfoAdicional("Info Adicional" + numero)
+		.build();
+    }
 
 }

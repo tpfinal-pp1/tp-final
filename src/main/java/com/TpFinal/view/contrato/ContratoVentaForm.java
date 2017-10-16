@@ -34,13 +34,15 @@ public class ContratoVentaForm extends FormLayout {
 
     // Actions
     Button save = new Button("Guardar");
-	DeleteButton delete = new DeleteButton("Eliminar",
-			VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
+    DeleteButton delete = new DeleteButton("Eliminar",
+	    VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
 		@Override
 		public void buttonClick(Button.ClickEvent clickEvent) {
-			delete();
+		    delete();
 		}
-	});
+	    });
+    Button finalizarCarga = new Button("Finalizar Carga");
+    Button renovarContrato = new Button("Renovar");
 
     // TabPrincipal
     ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
@@ -92,21 +94,14 @@ public class ContratoVentaForm extends FormLayout {
     }
 
     private void configureComponents() {
-	/*
-	 * Highlight primary actions.
-	 *
-	 * With Vaadin built-in styles you can highlight the primary save button
-	 *
-	 * and give it a keyoard shortcut for a better UX.
-	 */
-
-	// sexo.setEmptySelectionAllowed(false);
-	// sexo.setItems(ContratoVenta.Sexo.values());
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
-
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	finalizarCarga.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	renovarContrato.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	//finalizarCarga.addClickListener();
+	
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
 	    @Override
@@ -149,7 +144,8 @@ public class ContratoVentaForm extends FormLayout {
 
     private void binding() {
 
-	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha").bind(Contrato::getFechaCelebracion,
+	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha").bind(
+		Contrato::getFechaCelebracion,
 		Contrato::setFechaCelebracion);
 	binderContratoVenta.forField(rbgTipoMoneda).bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
@@ -181,7 +177,8 @@ public class ContratoVentaForm extends FormLayout {
 		return result;
 	    }
 	};
-	binderContratoVenta.forField(cbComprador).asRequired("Debe seleccionar un comprador").withValidator(personaValidator)
+	binderContratoVenta.forField(cbComprador).asRequired("Debe seleccionar un comprador").withValidator(
+		personaValidator)
 		.withNullRepresentation(new Persona())
 		.bind(contratoVenta -> contratoVenta.getComprador(), (contratoVenta, persona) -> contratoVenta
 			.setComprador(persona));
@@ -260,7 +257,7 @@ public class ContratoVentaForm extends FormLayout {
 	tabSheet.addTab(principal, "Venta");
 
 	addComponent(tabSheet);
-	HorizontalLayout actions = new HorizontalLayout(save, delete);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, finalizarCarga, renovarContrato);
 
 	addComponent(actions);
 	this.setSpacing(false);
@@ -273,31 +270,29 @@ public class ContratoVentaForm extends FormLayout {
     public void setContratoVenta(ContratoVenta ContratoVenta) {
 
 	if (ContratoVenta != null) {
-	this.ContratoVenta = ContratoVenta;
-	binderContratoVenta.readBean(ContratoVenta);
-	delete.setVisible(true);
-	}else {
+	    this.ContratoVenta = ContratoVenta;
+	    binderContratoVenta.readBean(ContratoVenta);
+	    delete.setVisible(true);
+	} else {
 	    this.ContratoVenta = ContratoService.getInstanciaVenta();
 	    delete.setVisible(false);
 	}
-	
+
 	setVisible(true);
 	getAddressbookView().setComponentsVisible(false);
 	if (getAddressbookView().isIsonMobile())
 	    tabSheet.focus();
-	
 
     }
 
     private void delete() {
-		service.delete(ContratoVenta);
-		addressbookView.updateList();
-		setVisible(false);
-		getAddressbookView().setComponentsVisible(true);
-		getAddressbookView().showSuccessNotification("Borrado");
+	service.delete(ContratoVenta);
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
+	getAddressbookView().showSuccessNotification("Borrado");
 
-
-	}
+    }
 
     /*
      * private void test() { nombre.setValue(DummyDataGenerator.randomFirstName());
