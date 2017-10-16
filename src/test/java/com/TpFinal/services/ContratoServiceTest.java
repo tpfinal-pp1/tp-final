@@ -148,7 +148,6 @@ public class ContratoServiceTest {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
-			
 		}
 	}
 	
@@ -177,7 +176,6 @@ public class ContratoServiceTest {
 				Double interes= new Double(0.5);
 				expected=expected.add(expected.multiply(new BigDecimal(interes.toString())));
 			}
-			
 		}
 	}
 	
