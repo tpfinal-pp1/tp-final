@@ -7,6 +7,7 @@ import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.cobro.Cobro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
@@ -173,6 +174,39 @@ public class ContratoService {
 			.build())
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.build();
+    }
+    
+    public void addCobros(ContratoAlquiler contrato) {
+    	if(contrato.getDuracionContrato()!=null) {
+    		BigDecimal valorAnterior = contrato.getValorInicial();
+    		for(int i=0; i<contrato.getDuracionContrato().getDuracion(); i++) {
+    			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
+    			LocalDate fechaCobro=LocalDate.of(contrato.getFechaCelebracion().getDayOfMonth(), contrato.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
+    			if(contrato.getFechaCelebracion().getDayOfMonth()>=(int)contrato.getDiaDePago()) {
+        			fechaCobro=fechaCobro.plusMonths(i+1);
+    			}else {
+    				fechaCobro=fechaCobro.plusMonths(i);
+    			}
+    			
+    			Cobro c =new Cobro.Builder()
+    					.setNumeroCuota(i)
+    					.setFechaDePago(fechaCobro)
+    					.setMontoOriginal(valorAnterior)
+    					.build();
+    			if((i+1) % contrato.getIntervaloActualizacion()==0) {
+    				if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
+    					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+    					BigDecimal aux = valorAnterior.multiply(incremento);
+    					valorAnterior=valorAnterior.add(aux);
+    				}else if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
+    					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+    					BigDecimal aux = contrato.getValorInicial().multiply(incremento);
+    					valorAnterior=valorAnterior.add(aux);
+    				}
+    			}
+    			contrato.addCobro(c);
+    		}
+    	}
     }
 
 }

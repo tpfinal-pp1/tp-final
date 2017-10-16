@@ -21,9 +21,12 @@ import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.cobro.Cobro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.contrato.DuracionContrato;
+import com.TpFinal.data.dto.contrato.TipoInteres;
 
 public class ContratoServiceTest {
 	
@@ -119,6 +122,64 @@ public class ContratoServiceTest {
 	
 	}
 	
+	@Test
+	public void testAddCobrosSimples() {
+		ContratoAlquiler ca = instanciaAlquilerSimple();
+		service.addCobros(ca);
+		List<Cobro>cos=new ArrayList<>();
+		ca.getCobros().forEach(c->cos.add(c));
+		cos.sort((c1, c2) -> {
+			int ret=0;
+			if(c1.getNumeroCuota()<c2.getNumeroCuota())
+				ret=-1;
+			else if(c1.getNumeroCuota()>c2.getNumeroCuota())
+				ret=1;
+			else
+				ret=0;
+			return ret;
+		});
+		cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
+		assertEquals(ca.getCobros().size(), 24);
+		BigDecimal monto = new BigDecimal("100.00");
+		BigDecimal expected = new BigDecimal("100.00");
+		for(int i =0; i<cos.size(); i++) {
+			assertEquals(cos.get(i).getMontoOriginal(), expected);
+			if((i+1)%2==0) {
+				Double interes= new Double(0.5);
+				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
+			}
+		}
+	}
+	
+	@Test
+	public void testAddCobrosAcumulativos() {
+		ContratoAlquiler ca = instanciaAlquilerAcumulativo();
+		service.addCobros(ca);
+		List<Cobro>cos=new ArrayList<>();
+		ca.getCobros().forEach(c->cos.add(c));
+		cos.sort((c1, c2) -> {
+			int ret=0;
+			if(c1.getNumeroCuota()<c2.getNumeroCuota())
+				ret=-1;
+			else if(c1.getNumeroCuota()>c2.getNumeroCuota())
+				ret=1;
+			else
+				ret=0;
+			return ret;
+		});
+		cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
+		assertEquals(ca.getCobros().size(), 24);
+		BigDecimal expected = new BigDecimal("100.00");
+		for(int i =0; i<cos.size(); i++) {
+			assertEquals(cos.get(i).getMontoOriginal(), expected);
+			if((i+1)%2==0) {
+				Double interes= new Double(0.5);
+				expected=expected.add(expected.multiply(new BigDecimal(interes.toString())));
+			}
+		}
+	}
+	
+	
 	private ContratoVenta instanciaVenta(String numero) {
 		return new ContratoVenta.Builder()
 				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
@@ -135,7 +196,40 @@ public class ContratoServiceTest {
                 .setIntervaloActualizacion(new Integer(numero))
                 .setInquilinoContrato(null)
                  .build();
-
     }
+    
+    private ContratoAlquiler instanciaAlquilerSimple() {
+        return new ContratoAlquiler.Builder()
+                .setFechaCelebracion(LocalDate.of(2017, 05, 12))
+                .setValorIncial(new BigDecimal("100.00"))
+                .setDiaDePago(new Integer(13))
+                .setInteresPunitorio(new Double(0.5))
+                .setIntervaloActualizacion(new Integer(2))
+                .setTipoIncrementoCuota(TipoInteres.Simple)
+                .setTipoInteresPunitorio(TipoInteres.Simple)
+                .setPorcentajeIncremento(new Double(0.5))
+                .setInquilinoContrato(null)
+                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setEstadoRegistro(EstadoRegistro.ACTIVO)
+                 .build();
+    }
+    
+    private ContratoAlquiler instanciaAlquilerAcumulativo() {
+        return new ContratoAlquiler.Builder()
+                .setFechaCelebracion(LocalDate.of(2017, 05, 12))
+                .setValorIncial(new BigDecimal("100.00"))
+                .setDiaDePago(new Integer(13))
+                .setInteresPunitorio(new Double(0.5))
+                .setIntervaloActualizacion(new Integer(2))
+                .setTipoIncrementoCuota(TipoInteres.Acumulativo)
+                .setTipoInteresPunitorio(TipoInteres.Simple)
+                .setPorcentajeIncremento(new Double(0.5))
+                .setInquilinoContrato(null)
+                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setEstadoRegistro(EstadoRegistro.ACTIVO)
+                 .build();
+    }
+    
+    
 
 }

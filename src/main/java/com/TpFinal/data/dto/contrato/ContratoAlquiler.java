@@ -83,6 +83,7 @@ public class ContratoAlquiler extends Contrato {
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
 	this.duracionContrato = b.duracionContrato;
+	this.porcentajeIncrementoCuota=b.porcentajeIncrementoCuota;
 	cobros=new HashSet<>();
 
 	if (b.inmueble != null) {
@@ -212,6 +213,7 @@ public class ContratoAlquiler extends Contrato {
     
     private void agregarCobros() {
     	if(this.duracionContrato!=null) {
+    		BigDecimal valorAnterior = this.valorInicial;
     		for(int i=0; i<this.duracionContrato.getDuracion(); i++) {
     			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
     			LocalDate fechaCobro=LocalDate.of(fechaCelebracion.getDayOfMonth(), fechaCelebracion.getMonthValue(), this.diaDePago);
@@ -224,12 +226,17 @@ public class ContratoAlquiler extends Contrato {
     			Cobro c =new Cobro.Builder()
     					.setNumeroCuota(i)
     					.setFechaDePago(fechaCobro)
+    					.setMontoOriginal(valorAnterior)
     					.build();
     			if(i+1%this.intervaloActualizacion==0) {
     				if(this.tipoIncrementoCuota.equals(TipoInteres.Acumulativo)) {
-    					//TODO
-    				}else {
-    					//TODO
+    					BigDecimal incremento= new BigDecimal(this.porcentajeIncrementoCuota.toString());
+    					BigDecimal aux = valorAnterior.multiply(incremento);
+    					valorAnterior=valorAnterior.add(aux);
+    				}else if(this.tipoIncrementoCuota.equals(TipoInteres.Simple)) {
+    					BigDecimal incremento= new BigDecimal(this.porcentajeIncrementoCuota.toString());
+    					BigDecimal aux = this.valorInicial.multiply(incremento);
+    					valorAnterior=valorAnterior.add(aux);
     				}
     			}
     			this.cobros.add(c);
@@ -249,6 +256,7 @@ public class ContratoAlquiler extends Contrato {
 	private Inquilino inquilinoContrato;
 	private BigDecimal valorInicial;
 	private Double interesPunitorio;
+	private Double porcentajeIncrementoCuota;
 	private Integer intervaloActualizacion;
 	private Integer diaDePago;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
@@ -291,6 +299,11 @@ public class ContratoAlquiler extends Contrato {
 	public Builder setInteresPunitorio(Double interesPunitorio) {
 	    this.interesPunitorio = interesPunitorio;
 	    return this;
+	}
+	
+	public Builder setPorcentajeIncremento(Double porcentaje) {
+		this.porcentajeIncrementoCuota=porcentaje;
+		return this;
 	}
 
 	public Builder setInmueble(Inmueble inmueble) {
