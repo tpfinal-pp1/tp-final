@@ -1,4 +1,4 @@
 language: java
-sudo: true
+sudo: false
 script: mvn clean verify
 after_success: mvn jacoco:report coveralls:report
