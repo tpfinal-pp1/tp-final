@@ -1,8 +1,9 @@
 package com.TpFinal.view.cobros;
 
+import com.TpFinal.data.dto.cobro.Cobro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.services.CobroService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
@@ -30,7 +31,7 @@ import java.util.List;
 public class CobrosABMView extends DefaultLayout implements View {
 
     private TextField filter = new TextField();
-    private Grid<Contrato> grid = new Grid<>();
+    private Grid<Cobro> grid = new Grid<>();
     private Button newItem = new Button("Nuevo");
     private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     private HorizontalLayout mainLayout;
@@ -141,7 +142,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 
     public class Controller {
 
-        private ContratoService contratoService = new ContratoService();
+        private CobroService cobroService = new CobroService();
 
         public void configureComponents() {
             configureFilter();
@@ -181,56 +182,33 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 
 
-            grid.addColumn(Contrato::getInmueble).setCaption("Inmueble");
-
-            Grid.Column<Contrato, String> tipoCol = grid.addColumn(contrato -> {
+            Grid.Column<Cobro,String> inmuebleCol = grid.addColumn(cobro -> {
                 String ret = "";
-                if (contrato instanceof ContratoVenta) {
-                    ret = "Venta";
-                } else {
-                    ret = "Alquiler";
-                }
+                ret = cobro.getContrato().getInmueble().toString();
+                return ret ;
+            }).setCaption("Inmueble");
+
+            Grid.Column<Cobro, String> tipoCol = grid.addColumn(cobro -> {
+                String ret = "";
+                ret = "Alquiler";
                 return ret;
-            }).setCaption("Tipo");;
+            }).setCaption("Tipo");
 
-            Grid.Column<Contrato, String> fechaVencimientoCol = grid.addColumn(contrato -> {
-                String ret = "";
-                if(contrato instanceof ContratoAlquiler)
-                    ret = contrato.getFechaCelebracion().plusMonths(((ContratoAlquiler) contrato).getDuracionContrato().getDuracion()).toString();
-                return ret;
-            }).setCaption("Fecha De Vencimiento");
+            grid.addColumn(Cobro::getFechaDeVencimiento).setCaption("Fecha De Vencimiento");
 
-            Grid.Column<Contrato, String> fechaDePago = grid.addColumn(contrato -> {
-                String ret = "";
-                if (contrato instanceof ContratoAlquiler) {
-                    ret = ((ContratoAlquiler) contrato).getDiaDePago().toString();
-                }
-                return ret;
-            }).setCaption("Fecha de Pago");
+            grid.addColumn(Cobro::getFechaDePago).setCaption("Fecha de Pago");
 
-            Grid.Column<Contrato, String> inquilino = grid.addColumn(contrato -> {
+            Grid.Column<Cobro, String> inquilino = grid.addColumn(cobro -> {
                 String ret = "";
-                if (contrato instanceof ContratoAlquiler) {
-                    ret = ((ContratoAlquiler) contrato).getInquilinoContrato().toString();
-                }
-                else if (contrato instanceof ContratoVenta){
-                    ret = ((ContratoVenta) contrato).getComprador().toString();
-                }
+                ret = cobro.getContrato().getInquilinoContrato().toString();
                 return ret;
             }).setCaption("Inquilino");
 
-
-            Grid.Column<Contrato, String> monto = grid.addColumn(contrato -> {
+            Grid.Column<Cobro, String> monto = grid.addColumn(cobro -> {
                 String ret = "";
-                if (contrato instanceof ContratoAlquiler) {
-                    ret = ((ContratoAlquiler) contrato).getValorInicial().toString();
-                }
-                else if (contrato instanceof ContratoVenta){
-                    ret = ((ContratoVenta) contrato).getPrecioVenta().toString();
-                }
+                ret = cobro.getMontoPropietario().toPlainString();
                 return ret;
             }).setCaption("Monto");
-
 
 
             grid.addComponentColumn(inmueble -> {
@@ -273,9 +251,18 @@ public class CobrosABMView extends DefaultLayout implements View {
         }
 
         public void updateList() {
-            List<Contrato> contratos = contratoService.readAll();
-            System.out.println("cantidad de contratos "+contratos.size());
-            grid.setItems(contratos);
+            List<Contrato>  contratos = new ContratoService().readAll();
+            List<Cobro> cobros = cobroService.readAll();
+            int cobroIndex = 0;
+            for(int i = 0; i < contratos.size(); i++ ){
+                if(contratos.get(i) instanceof ContratoAlquiler) {
+                    cobros.get(cobroIndex).setContrato((ContratoAlquiler) contratos.get(i));
+                    cobroIndex++;
+                }
+                if(cobroIndex == cobros.size())
+                    break;
+            }
+            grid.setItems(cobros);
         }
 
 
