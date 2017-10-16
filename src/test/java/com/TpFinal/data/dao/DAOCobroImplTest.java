@@ -55,7 +55,26 @@ public class DAOCobroImplTest {
 
 	@Test
 	public void alta() {
-		fail("Not yet implemented");
+		for(int i =0; i< 4; i++) {daoCobro.saveOrUpdate(instanciaCobro(i));}
+		cobros=daoCobro.readAll();
+		assertEquals(4, cobros.size());
+		assertEquals(new Integer(0), cobros.get(0).getNumeroCuota());
+		assertEquals(new Integer(1), cobros.get(1).getNumeroCuota());
+		assertEquals(new Integer(2), cobros.get(2).getNumeroCuota());
+		assertEquals(new Integer(3), cobros.get(3).getNumeroCuota());
+	}
+	
+	@Test
+	public void update() {
+		for(int i =0; i< 4; i++) {daoCobro.saveOrUpdate(instanciaCobro(i));}
+		cobros=daoCobro.readAll();
+		assertEquals(4, cobros.size());
+		for(int i =0; i< 4; i++) {cobros.get(i).setNumeroCuota(i+4); daoCobro.saveOrUpdate(cobros.get(i));}
+		cobros=daoCobro.readAll();
+		assertEquals(new Integer(4), cobros.get(0).getNumeroCuota());
+		assertEquals(new Integer(5), cobros.get(1).getNumeroCuota());
+		assertEquals(new Integer(6), cobros.get(2).getNumeroCuota());
+		assertEquals(new Integer(7), cobros.get(3).getNumeroCuota());
 	}
 	
     private ContratoAlquiler instanciaAlquilerSimple() {
@@ -90,8 +109,9 @@ public class DAOCobroImplTest {
                  .build();
     }
     
-    private Cobro instanciaCobro() {
+    private Cobro instanciaCobro(Integer n) {
     	return new Cobro.Builder()
+    			.setNumeroCuota(n)
     			.setFechaDeVencimiento(LocalDate.of(2017, 11, 2))
     			.setMontoOriginal(new BigDecimal("100"))
     			.build();
