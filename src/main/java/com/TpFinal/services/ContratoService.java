@@ -181,7 +181,7 @@ public class ContratoService {
     		BigDecimal valorAnterior = contrato.getValorInicial();
     		for(int i=0; i<contrato.getDuracionContrato().getDuracion(); i++) {
     			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
-    			LocalDate fechaCobro=LocalDate.of(contrato.getFechaCelebracion().getDayOfMonth(), contrato.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
+    			LocalDate fechaCobro=LocalDate.of(contrato.getFechaCelebracion().getYear(), contrato.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
     			if(contrato.getFechaCelebracion().getDayOfMonth()>=(int)contrato.getDiaDePago()) {
         			fechaCobro=fechaCobro.plusMonths(i+1);
     			}else {
@@ -190,7 +190,7 @@ public class ContratoService {
     			
     			Cobro c =new Cobro.Builder()
     					.setNumeroCuota(i)
-    					.setFechaDePago(fechaCobro)
+    					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
     					.build();
     			if((i+1) % contrato.getIntervaloActualizacion()==0) {

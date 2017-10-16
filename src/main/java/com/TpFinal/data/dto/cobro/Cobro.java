@@ -2,6 +2,7 @@ package com.TpFinal.data.dto.cobro;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,12 +18,15 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.TpFinal.data.dto.BorradoLogico;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 
 @Entity
 @Table(name="cobros")
-public class Cobro {
+public class Cobro implements Identificable, BorradoLogico {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -67,6 +71,15 @@ public class Cobro {
 		this.fechaDeVencimiento=b.fechaDeVencimiento;
 		this.estadoCobro=EstadoCobro.NOCOBRADO;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
+	}
+	
+	@Override
+	public Long getId() {
+		return this.id;
+	}
+	
+	public void SetId(Long id) {
+		this.id=id;
 	}
 	
 	public Integer getNumeroCuota() {
@@ -157,8 +170,7 @@ public class Cobro {
 		this.contrato = contrato;
 	}
 
-	@Override
-	public int hashCode() {
+	public int oldHashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((comision == null) ? 0 : comision.hashCode());
@@ -172,8 +184,7 @@ public class Cobro {
 		return result;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
+	public boolean isSame(Object obj) {
 		if (this == obj)
 			return true;
 		if (obj == null)
@@ -223,6 +234,21 @@ public class Cobro {
 			return false;
 		return true;
 	}
+	
+	 @Override
+	   public boolean equals(Object o) {
+		if (this == o)
+		    return true;
+		if (!(o instanceof Cobro))
+		    return false;
+		Cobro cobro = (Cobro) o;
+		return getId() != null && Objects.equals(getId(), cobro.getId());
+	    }
+
+	    @Override
+	    public int hashCode() {
+	    	return 37;
+	    }
 
 	public static class Builder{
 		Integer numeroCuota;
@@ -271,5 +297,6 @@ public class Cobro {
 		}
 		
 	}
+
 
 }
