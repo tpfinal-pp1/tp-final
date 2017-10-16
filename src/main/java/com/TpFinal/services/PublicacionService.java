@@ -46,7 +46,7 @@ public class PublicacionService {
 	ret = daoPublicacion.saveOrUpdate(publicacion);
 	inmuebleService.actualizarEstadoInmuebleSegunPublicacion(publicacion.getInmueble());
 	}else {
-	    throw new PublicacionServiceException("Debe la publicación debe tener un inmueble asociado!");
+	    throw new PublicacionServiceException("La publicación debe tener un inmueble asociado!");
 	}
 	return ret;
     }
