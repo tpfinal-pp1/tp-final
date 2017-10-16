@@ -96,7 +96,7 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         Assert.assertEquals(tabsheet1Options.get(0),"Datos Principales");
         Assert.assertEquals(tabsheet1Options.get(1),"Características");
         tabSheet1.openTab("Datos Principales");
-
+//TODO comment
         //ComboPersonas
         ComboBoxElement personasComboBox = $(ComboBoxElement.class).first();
 

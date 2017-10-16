@@ -247,7 +247,7 @@ public class PublicacionForm extends FormLayout {
             actions.setSpacing(true);
 
         }
-
+//TODO comment
         public void setPublicacion(Publicacion Publicacion) {
 
             this.publicacion = Publicacion;
