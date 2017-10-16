@@ -187,12 +187,14 @@ public class ContratoAlquiler extends Contrato {
 	public void addCobro(Cobro c) {
 		if(!this.cobros.contains(c)) {
 			this.cobros.add(c);
+			c.setContrato(this);
 		}
 	}
 	
 	public void removeCobro(Cobro c) {
 		if(this.cobros.contains(c)) {
 			this.cobros.remove(c);
+			c.setContrato(null);
 		}
 	}
 	@Override
