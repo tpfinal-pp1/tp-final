@@ -83,6 +83,7 @@ public class ContratoAlquiler extends Contrato {
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
 	this.duracionContrato = b.duracionContrato;
+	this.porcentajeIncrementoCuota=b.porcentajeIncrementoCuota;
 	cobros=new HashSet<>();
 
 	if (b.inmueble != null) {
@@ -255,6 +256,7 @@ public class ContratoAlquiler extends Contrato {
 	private Inquilino inquilinoContrato;
 	private BigDecimal valorInicial;
 	private Double interesPunitorio;
+	private Double porcentajeIncrementoCuota;
 	private Integer intervaloActualizacion;
 	private Integer diaDePago;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
@@ -297,6 +299,11 @@ public class ContratoAlquiler extends Contrato {
 	public Builder setInteresPunitorio(Double interesPunitorio) {
 	    this.interesPunitorio = interesPunitorio;
 	    return this;
+	}
+	
+	public Builder setPorcentajeIncremento(Double porcentaje) {
+		this.porcentajeIncrementoCuota=porcentaje;
+		return this;
 	}
 
 	public Builder setInmueble(Inmueble inmueble) {
