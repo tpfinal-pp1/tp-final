@@ -49,12 +49,7 @@ import java.util.List;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ContratoABMView extends DefaultLayout implements View {
 
-    /*
-     * Hundreds of widgets. Vaadin's user interface components are just Java objects
-     * that encapsulate and handle cross-browser support and client-server
-     * communication. The default Vaadin components are in the com.vaadin.ui package
-     * and there are over 500 more in vaadin.com/directory.
-     */
+    
     private TextField filter = new TextField();
     private Grid<Contrato> grid = new Grid<>();
     private Button nuevoAlquiler = new Button("Nuevo Alquiler");
@@ -68,9 +63,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private boolean isonMobile = false;
 
-    // ContratoService is a in-memory mock DAO that mimics
-    // a real-world datasource. Typically implemented for
-    // example as EJB or Spring Data based service.
+   
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
 
@@ -82,15 +75,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	/*
-	 * Synchronous event handling.
-	 *
-	 * Receive user interaction events on the server-side. This allows you to
-	 * synchronously handle those events. Vaadin automatically sends only the needed
-	 * changes to the web page without loading a new page.
-	 */
-	// nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new Contrato()));
-
+	
 	filter.addValueChangeListener(e -> updateList());
 	filter.setValueChangeMode(ValueChangeMode.LAZY);
 	filter.setPlaceholder("Filtrar");
