@@ -160,7 +160,7 @@ public class InmuebleService {
     public boolean inmueblePoseeContratoVigente(Inmueble inmueble) {
 	boolean ret = false;
 	if (inmueble != null) {
-	    Set<Contrato> contratos = inmueble.getContratos();
+	    Set<Contrato> contratos = dao.findById(inmueble.getId()).getContratos();
 	    if (contratos != null)
 		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente);
 	}
