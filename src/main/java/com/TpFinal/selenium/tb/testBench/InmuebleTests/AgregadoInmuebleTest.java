@@ -99,27 +99,11 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
 
         //ComboPersonas
         ComboBoxElement personasComboBox = $(ComboBoxElement.class).first();
-        //Get combobox's values.
-        List<String> comboValues = personasComboBox.getPopupSuggestions();
-        System.out.println("Lista de personas registradas");
-        comboValues.forEach(System.out::println);
-        if(comboValues.size() > 0) {
-            String propietario = comboValues.get(2);
-            personasComboBox.selectByText(propietario);
-            System.out.println("valor seleccionado del combo "+personasComboBox.getValue());
-        }
+
 
         //ComboClase Inmueble
         ComboBoxElement claseComboBox = $(ComboBoxElement.class).caption("Clase").first();
-        List<String> comboClaseValues = claseComboBox.getPopupSuggestions();
-        System.out.println("Lista de clases de inmueble registradas");
-        comboClaseValues.forEach(System.out::println);
-        if(comboClaseValues.size() > 0) {
-            String claseInmueble = comboClaseValues.get(1);
-            claseComboBox.selectByText(claseInmueble);
-        }
-        //Adding a new Person to the combobox
-        ButtonElement newPersonButton = $(FormLayoutElement.class).$(ButtonElement.class).first();
+
 
         //Adress data
         TextFieldElement calleTextField = $(TextFieldElement.class).caption("Calle").first();
@@ -127,32 +111,9 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         TextFieldElement nmeroTextField = $(TextFieldElement.class).caption("Número").first();
         nmeroTextField.setValue("742");
 
-        //PRUEBA
-
-
-
         //Combobox provincias
         ComboBoxElement provinciaComboBox = $(ComboBoxElement.class).caption("Provincia").first();
-        List<String> provinces = provinciaComboBox.getPopupSuggestions();
-        System.out.println("Lista de provincias registradas");
-        provinces.forEach(System.out::println);
-        if( provinces.size() > 0) {
-            String province =  provinces.get(1);
-            provinciaComboBox.selectByText(province);
-        }
 
-        //PRUEBA
-
-        if(!personasComboBox.getValue().equals("")) {
-            //Combobox localidades
-            ComboBoxElement localidadComboBox = $(ComboBoxElement.class).caption("Localidad").first();
-            List<String> localidades = provinciaComboBox.getPopupSuggestions();
-            if (localidades.size() > 0) {
-                String localidad = provinces.get(1);
-                localidadComboBox.selectByText(localidad);
-
-            }
-        }
 
         //Tab "Caracteristicas"
         tabSheet1.openTab("Características");
@@ -198,10 +159,12 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         //Sve inmueble.
         ButtonElement cancelButton = $(VerticalLayoutElement.class).$(ButtonElement.class).first();
         ButtonElement guardarButton = $(ButtonElement.class).caption("Guardar").first();
+        ButtonElement llenarcomboButton = $(ButtonElement.class).caption("llenar combo").first();
+        llenarcomboButton.click();
         guardarButton.click();
 
         //Verificar que la grid tiene un elemen to, verfificando el propietario del inmueble
-        //Assert.assertEquals(inmuebleGrid.getCell(0,1).getText(),"Loma Ardis");
+        //Assert.assertEquals(inmuebleGrid.getCell(0,1).getText(),"Brandy Wilburn");
     }
 
     @After
