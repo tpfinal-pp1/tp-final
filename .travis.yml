@@ -7,13 +7,14 @@ sudo: false
 install: true
 addons:
       sonarcloud:
-        organization: "tpfinal-pp1-github"
+        organization: "agusalex-github"
         token:
           secure: "04db89c9d5164b1ec6350d28933c43eccc1bd79f"
 
 script: mvn clean test
-after_success:  mvn jacoco:report coveralls:report
-                sonar-scanner
+after_success:  - mvn jacoco:report coveralls:report
+                - sonar-scanner
+
 notifications:
     slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
 
