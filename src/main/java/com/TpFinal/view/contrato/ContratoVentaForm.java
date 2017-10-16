@@ -33,7 +33,7 @@ import java.util.List;
  * with @PropertyId annotation.
  */
 public class ContratoVentaForm extends FormLayout {
-    private ContratoVenta ContratoVenta;
+    private ContratoVenta contratoVenta;
     private InmuebleService inmuebleService = new InmuebleService();
 
     // Actions
@@ -100,13 +100,13 @@ public class ContratoVentaForm extends FormLayout {
 		if (valueChangeEvent != null) {
 		    Inmueble inmueble = (Inmueble) valueChangeEvent.getValue();
 		    if (inmueble == null) {
-			ContratoVenta.setInmueble(null);
+			contratoVenta.setInmueble(null);
 			lblNombreVendedor.setValue("No seleccionado");
 		    } else {
 			Persona vendedor = inmueble.getPropietario().getPersona();
 			lblNombreVendedor.setValue(vendedor.getNombre() + " " + vendedor.getApellido());
-			ContratoVenta.setInmueble(inmueble);
-			ContratoVenta.setVendedor(vendedor);
+			contratoVenta.setInmueble(inmueble);
+			contratoVenta.setVendedor(vendedor);
 		    }
 		}
 	    }
@@ -118,15 +118,15 @@ public class ContratoVentaForm extends FormLayout {
 		if (valueChangeEvent != null) {
 		    Persona comprador = (Persona) valueChangeEvent.getValue();
 		    if (comprador != null) {
-			ContratoVenta.setComprador(comprador);
+			contratoVenta.setComprador(comprador);
 		    } else
-			ContratoVenta.setComprador(null);
+			contratoVenta.setComprador(null);
 		}
 	    }
 	});
 
 	btDescargar.addClickListener(event -> {
-	    btDescargar.descargar(ContratoVenta, "Contrato.doc");
+	    btDescargar.descargar(contratoVenta, "Contrato.doc");
 	});
 
 	setVisible(false);
@@ -147,7 +147,7 @@ public class ContratoVentaForm extends FormLayout {
 	finalizarCarga.addClickListener(e -> {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (binderContratoVenta.isValid()) {
-		ContratoVenta.setEstadoContrato(EstadoContrato.Vigente);		
+		contratoVenta.setEstadoContrato(EstadoContrato.Vigente);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 	    }
@@ -168,8 +168,9 @@ public class ContratoVentaForm extends FormLayout {
 		Contrato::setFechaCelebracion);
 	binderContratoVenta.forField(rbgTipoMoneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
-		.withValidator(inmueble -> !(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado || inmueble.getEstadoInmueble() == EstadoInmueble.Vendido)
-		, "El inmueble seleccionado ya posee un contrato vigente.")
+		.withValidator(inmueble -> !(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado || inmueble
+			.getEstadoInmueble() == EstadoInmueble.Vendido),
+			"El inmueble seleccionado ya posee un contrato vigente.")
 		.bind(Contrato::getInmueble, Contrato::setInmueble);
 
 	Validator<Persona> personaValidator = new Validator<Persona>() {
@@ -178,8 +179,8 @@ public class ContratoVentaForm extends FormLayout {
 		ValidationResult result = new ValidationResult() {
 		    @Override
 		    public String getErrorMessage() {
-			if (ContratoVenta.getInmueble().getId() != null)
-			    if (ContratoVenta.getInmueble().getPropietario().getPersona().getId().equals(persona
+			if (contratoVenta.getInmueble().getId() != null)
+			    if (contratoVenta.getInmueble().getPropietario().getPersona().getId().equals(persona
 				    .getId()))
 				return "Error: No se puede seleccionar al vendedor como comprador";
 			return "No se detectaron errores";
@@ -187,9 +188,9 @@ public class ContratoVentaForm extends FormLayout {
 
 		    @Override
 		    public boolean isError() {
-			if (ContratoVenta.getInmueble().getId() != null)
+			if (contratoVenta.getInmueble().getId() != null)
 			    if (persona != null)
-				if (ContratoVenta.getInmueble().getPropietario().getPersona().getId().equals(persona
+				if (contratoVenta.getInmueble().getPropietario().getPersona().getId().equals(persona
 					.getId()))
 				    return true;
 			return false;
@@ -302,26 +303,24 @@ public class ContratoVentaForm extends FormLayout {
 	HorizontalLayout actions = new HorizontalLayout(save, delete, finalizarCarga, renovarContrato);
 
 	actions.setSpacing(true);
-
 	addComponent(actions);
-	this.setComponentAlignment(actions, Alignment.BOTTOM_CENTER);
 	this.setSpacing(false);
     }
 
-    public void setContratoVenta(ContratoVenta ContratoVenta) {
+    public void setContratoVenta(ContratoVenta contratoVenta) {
 
-	if (ContratoVenta != null) {
-	    configurarComponentesSegunEstadoContrato(ContratoVenta.getEstadoContrato());
-	    this.ContratoVenta = ContratoVenta;
-	    binderContratoVenta.readBean(ContratoVenta);
+	if (contratoVenta != null) {
+	    configurarComponentesSegunEstadoContrato(contratoVenta.getEstadoContrato());
+	    this.contratoVenta = contratoVenta;
+	    binderContratoVenta.readBean(contratoVenta);
 	} else {
-	    this.ContratoVenta = ContratoService.getInstanciaVenta();
-	    configurarComponentesSegunEstadoContrato(this.ContratoVenta.getEstadoContrato());
+	    this.contratoVenta = ContratoService.getInstanciaVenta();
+	    configurarComponentesSegunEstadoContrato(this.contratoVenta.getEstadoContrato());
 	}
 
 	setVisible(true);
-	getAddressbookView().setComponentsVisible(false);
-	if (getAddressbookView().isIsonMobile())
+	contratoABMView().setComponentsVisible(false);
+	if (contratoABMView().isIsonMobile())
 	    tabSheet.focus();
 
     }
@@ -338,9 +337,9 @@ public class ContratoVentaForm extends FormLayout {
      * @param estadoContrato
      */
     private void configurarComponentesSegunEstadoContrato(EstadoContrato estadoContrato) {
-	binderContratoVenta = getBinderParaEdicion();
 	tfDocumento.setEnabled(false);
 	if (estadoContrato == EstadoContrato.EnProcesoDeCarga) {
+	    binderContratoVenta = getBinderParaEdicion();
 	    this.save.setVisible(true);
 	    this.delete.setVisible(true);
 	    this.finalizarCarga.setVisible(true);
@@ -372,62 +371,44 @@ public class ContratoVentaForm extends FormLayout {
     }
 
     private void delete() {
-	boolean success = service.delete(ContratoVenta);
+	boolean success = service.delete(contratoVenta);
 	contratoABMView.updateList();
 	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
+	contratoABMView().setComponentsVisible(true);
 	if (success) {
-	    getAddressbookView().showSuccessNotification("Borrado");
+	    contratoABMView().showSuccessNotification("Borrado");
 	} else {
-	    getAddressbookView().showErrorNotification("No se realizaron Cambios");
+	    contratoABMView().showErrorNotification("No se realizaron Cambios");
 	}
     }
-
-    /*
-     * private void test() { nombre.setValue(DummyDataGenerator.randomFirstName());
-     * apellido.setValue(DummyDataGenerator.randomLastName());
-     * mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
-     * DNI.setValue(DummyDataGenerator.randomNumber(8));
-     * telefono.setValue(DummyDataGenerator.randomPhoneNumber());
-     * telefono2.setValue(DummyDataGenerator.randomPhoneNumber()); String
-     * info=DummyDataGenerator.randomText(80); if(info.length()>255){
-     * info=info.substring(0,255);
-     * 
-     * } infoAdicional.setValue(info);
-     * 
-     * 
-     * save();
-     * 
-     * }
-     */
 
     private void save() {
 
 	boolean success = false;
 	try {
-	    binderContratoVenta.writeBean(ContratoVenta);
-	    if (ContratoVenta.getEstadoContrato() == EstadoContrato.Vigente)
-		ContratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
-	    
+	    binderContratoVenta.writeBean(contratoVenta);
+	    if (contratoVenta.getEstadoContrato() == EstadoContrato.Vigente)
+		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
+
 	    if (archivo != null && !archivo.exists())
-		success = service.saveOrUpdate(ContratoVenta, null);
+		success = service.saveOrUpdate(contratoVenta, null);
 	    else {
-		success = service.saveOrUpdate(ContratoVenta, archivo);
+		success = service.saveOrUpdate(contratoVenta, archivo);
 	    }
 
 	    contratoABMView.updateList();
 	    setVisible(false);
-	    getAddressbookView().setComponentsVisible(true);
+	    contratoABMView().setComponentsVisible(true);
 
 	    if (success)
-		getAddressbookView().showSuccessNotification("Guardado");
+		contratoABMView().showSuccessNotification("Guardado");
 	    else {
-		getAddressbookView().showErrorNotification("Fallo al guardar");
+		contratoABMView().showErrorNotification("Fallo al guardar");
 	    }
 
 	} catch (ValidationException e) {
 	    e.printStackTrace();
-	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo ");
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo.",Notification.Type.WARNING_MESSAGE);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    Notification.show("Error: " + e.toString());
@@ -438,10 +419,10 @@ public class ContratoVentaForm extends FormLayout {
     public void cancel() {
 	contratoABMView.updateList();
 	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
+	contratoABMView().setComponentsVisible(true);
     }
 
-    public ContratoABMView getAddressbookView() {
+    public ContratoABMView contratoABMView() {
 	return contratoABMView;
     }
 

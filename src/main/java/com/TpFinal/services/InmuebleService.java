@@ -130,15 +130,12 @@ public class InmuebleService {
 	if (!(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado
 		|| (inmueble.getEstadoInmueble() == EstadoInmueble.Vendido))) {
 	    if (publicaciones.size() == 2) {
-
 		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
 	    } else {
 		Publicacion publicacion = publicaciones.get(0);
 		if (publicacion.getTipoPublicacion() == TipoPublicacion.Alquiler) {
-		    System.out.println("Immueble seteado a alquiler");
 		    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
 		} else {
-		    System.out.println("Immueble seteado a venta");
 		    inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
 		}
 	    }
