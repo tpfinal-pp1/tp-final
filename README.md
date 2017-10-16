@@ -1,6 +1,6 @@
 #
 #  Inmobi 
-<a href="https://coveralls.io/github/tpfinal-pp1/tp-final" target="_blank"><img src="https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg" alt="Coverage Status" /></a> <a href="https://api.travis-ci.org/tpfinal-pp1/" target="_blank"><img src="https://api.travis-ci.org/tpfinal-pp1/tp-final.svg?branch=master" alt="Build" /></a>
+<a href="https://coveralls.io/github/tpfinal-pp1/tp-final" target="_blank"><img src="https://coveralls.io/repos/github/tpfinal-pp1/tp-final/badge.svg" alt="Coverage Status" /></a> <a href="https://travis-ci.org/tpfinal-pp1/" target="_blank"><img src="https://travis-ci.org/tpfinal-pp1/tp-final.svg?branch=master" alt="Build" /></a>
 
 Registrar los bugs acá:
 https://docs.google.com/spreadsheets/d/1XNNqazp9nD1wKexRnw6_vUSLYAwQIKNnDmMNPK4CACA/edit#gid=0
