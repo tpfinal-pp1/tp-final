@@ -17,6 +17,7 @@ import com.TpFinal.data.dto.EstadoRegistro;
 import com.TpFinal.data.dto.persona.Calificacion;
 import com.TpFinal.data.dto.persona.Inquilino;
 import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.data.dto.persona.Propietario;
 import com.TpFinal.data.dto.persona.RolPersona;
 import com.TpFinal.data.dto.publicacion.Rol;
 
@@ -36,13 +37,31 @@ public class DAOPersonaImplTest {
     @Before
     public void setUp() throws Exception {
         dao= new DAOPersonaImpl();
-        dao.readAll().forEach(dao::delete);
+        Personas=dao.readAll();
+        Personas.forEach(p -> {
+           Propietario prop =(Propietario) p.getRol(Rol.Propietario);
+           if (prop != null) {
+               prop.setPersona(null);
+           }
+           p.setRoles(null);
+           dao.saveOrUpdate(p);
+        });
+        Personas.forEach(dao::delete);
+
         Personas.clear();
     }
 
     @After
     public void tearDown() throws Exception {
         Personas=dao.readAll();
+        Personas.forEach(p -> {
+           Propietario prop =(Propietario) p.getRol(Rol.Propietario);
+           if (prop != null) {
+               prop.setPersona(null);
+           }
+           p.setRoles(null);
+           dao.saveOrUpdate(p);
+        });
         Personas.forEach(dao::delete);
     }
 

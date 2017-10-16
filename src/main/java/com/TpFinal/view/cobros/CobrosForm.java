@@ -371,7 +371,7 @@ public class CobrosForm extends FormLayout {
 
     private void updateComboPersonas() {
         PersonaService ps = new PersonaService();
-        comboPropietario.setItems(ps.findAll(""));
+        comboPropietario.setItems(ps.readAll());
     }
 
     private void delete() {
