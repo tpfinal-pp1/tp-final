@@ -167,7 +167,15 @@ public class Cobro implements Identificable, BorradoLogico {
 	}
 
 	public void setContrato(ContratoAlquiler contrato) {
+		if(this.contrato!=null && !this.contrato.equals(contrato))
+			this.contrato.removeCobro(this);
 		this.contrato = contrato;
+		if(contrato!=null && !this.contrato.getCobros().contains(this))
+			this.contrato.addCobro(this);
+	}
+	
+	public String getEstadoCobroString() {
+		return this.estadoCobro.toString();
 	}
 
 	public int oldHashCode() {

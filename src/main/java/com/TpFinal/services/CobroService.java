@@ -1,39 +1,104 @@
 package com.TpFinal.services;
 
+import com.TpFinal.data.dao.DAOCobroImpl;
+import com.TpFinal.data.dao.interfaces.DAOCobro;
 import com.TpFinal.data.dto.cobro.Cobro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.persona.Persona;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
 public class CobroService {
 	
+	DAOCobro dao;
 	List<Cobro>cobros;
-	
 	public CobroService() {
-		cobros=new ArrayList<>();
+		dao=new DAOCobroImpl();
 		llenarConDatosHardCodeados();
 	}
 	
-	public void save(Cobro c) {
-		cobros.add(c);
+	public boolean save(Cobro c) {
+		return dao.saveOrUpdate(c);
 	}
 	
-	public void delete(Cobro c) {
-		cobros.remove(c);
-	}
-	
-	public void update(Cobro c) {
-		//TODO al dope hacerlo ahora, tira un print como que funca
+	public boolean delete(Cobro c) {
+		return dao.logicalDelete(c);
 	}
 	
 	public List<Cobro> readAll() {
-		return this.cobros;
+		return dao.readAllActives();
 	}
+	
+	//Ver que se necesita "arriba"
+	 public synchronized List<Cobro> findAll(String stringFilter) {
+	        ArrayList arrayList = new ArrayList();
+	        List<Cobro> cobros=dao.readAllActives();
+	        if(stringFilter!=""){
+
+	            for (Cobro cobro : cobros) {
+
+	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+	                                            || cobro.toString().toLowerCase()
+	                                            .contains(stringFilter.toLowerCase());
+	                    if (passesFilter) {
+
+	                        arrayList.add(cobro);
+	                    }
+
+	            }
+	        }
+	        else{
+	            arrayList.addAll(cobros);
+	        }
+
+	        Collections.sort(arrayList, new Comparator<Persona>() {
+
+	            @Override
+	            public int compare(Persona o1, Persona o2) {
+	                return (int) (o2.getId() - o1.getId());
+	            }
+	        });
+	        return arrayList;
+	    }
+	 
+		//Ver que se necesita "arriba"
+	 public synchronized List<Cobro> findByEstado(String stringFilter) {
+	        ArrayList arrayList = new ArrayList();
+	        List<Cobro> cobros=dao.readAllActives();
+	        if(stringFilter!=""){
+
+	            for (Cobro cobro : cobros) {
+
+	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
+	                                            || cobro.getEstadoCobroString().toLowerCase()
+	                                            .contains(stringFilter.toLowerCase());
+	                    if (passesFilter) {
+
+	                        arrayList.add(cobro);
+	                    }
+
+	            }
+	        }
+	        else{
+	            arrayList.addAll(cobros);
+	        }
+
+	        Collections.sort(arrayList, new Comparator<Persona>() {
+
+	            @Override
+	            public int compare(Persona o1, Persona o2) {
+	                return (int) (o2.getId() - o1.getId());
+	            }
+	        });
+	        return arrayList;
+	    }
 	
 	private void llenarConDatosHardCodeados() {
 		List<Contrato>  contratos = new ContratoService().readAll();
