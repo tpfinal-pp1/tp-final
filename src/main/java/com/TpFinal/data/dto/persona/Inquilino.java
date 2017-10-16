@@ -58,6 +58,8 @@ public class Inquilino extends RolPersona {
 	    this.contratos.remove(contratoAlquiler);
 	    contratoAlquiler.setInquilinoContrato(null);
 	}
+	if(contratos.isEmpty() && this.getPersona() !=  null)
+	    this.getPersona().removeRol(this);
 
     }
 
