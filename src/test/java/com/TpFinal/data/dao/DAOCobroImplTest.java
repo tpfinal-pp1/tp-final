@@ -75,7 +75,6 @@ public class DAOCobroImplTest {
 		assertEquals(new Integer(5), cobros.get(1).getNumeroCuota());
 		assertEquals(new Integer(6), cobros.get(2).getNumeroCuota());
 		assertEquals(new Integer(7), cobros.get(3).getNumeroCuota());
-		
 	}
 	
     private ContratoAlquiler instanciaAlquilerSimple() {
