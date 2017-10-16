@@ -173,6 +173,10 @@ public class Cobro implements Identificable, BorradoLogico {
 		if(contrato!=null && !this.contrato.getCobros().contains(this))
 			this.contrato.addCobro(this);
 	}
+	
+	public String getEstadoCobroString() {
+		return this.estadoCobro.toString();
+	}
 
 	public int oldHashCode() {
 		final int prime = 31;
