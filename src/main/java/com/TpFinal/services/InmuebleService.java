@@ -3,6 +3,7 @@ package com.TpFinal.services;
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dto.EstadoRegistro;
+import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.inmueble.ClaseInmueble;
 import com.TpFinal.data.dto.inmueble.Coordenada;
 import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
@@ -146,6 +147,12 @@ public class InmuebleService {
 	    ret = inmueble.getPublicaciones().stream().collect(Collectors.toList());
 	}
 	return ret;
+    }
+
+    public void desvincularContrato(Contrato contratoAntiguo) {
+	Inmueble i = contratoAntiguo.getInmueble();
+	i.removeContrato(contratoAntiguo);
+	dao.saveOrUpdate(i);
     }
 
 }

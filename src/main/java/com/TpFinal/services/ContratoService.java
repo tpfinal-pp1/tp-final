@@ -18,7 +18,6 @@ import com.TpFinal.data.dto.inmueble.Direccion;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.persona.Persona;
 import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -29,6 +28,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.openqa.selenium.internal.FindsById;
+
 public class ContratoService {
     public static enum instancia {
 	venta, alquiler
@@ -37,16 +38,24 @@ public class ContratoService {
     private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
     private DAOContrato daoContrato;
+    private InmuebleService inmuebleService;
 
     public ContratoService() {
 	daoAlquiler = new DAOContratoAlquilerImpl();
 	daoVenta = new DAOContratoVentaImpl();
 	daoContrato = new DAOContratoImpl();
+	inmuebleService = new InmuebleService();
     }
 
     public boolean saveOrUpdate(Contrato contrato, File doc) {
 	boolean ret = false;
-	if (contrato.getClass().equals(ContratoVenta.class)) {
+	if (contrato.getId() != null) {
+	    Contrato contratoAntiguo = daoContrato.findById(contrato.getId());
+	    if (contrato.getInmueble()!= null && !contratoAntiguo.getInmueble().equals(contrato.getInmueble())) {
+		inmuebleService.desvincularContrato(contratoAntiguo);
+	    }
+	}
+	if (contrato instanceof ContratoVenta) {
 	    ContratoVenta c = (ContratoVenta) contrato;
 	    if (doc != null) {
 		ret = daoVenta.mergeContrato(c, doc);
@@ -60,12 +69,13 @@ public class ContratoService {
 	    else
 		ret = daoAlquiler.merge(c);
 	}
+
 	return ret;
     }
 
     public boolean delete(Contrato contrato) {
 	boolean ret = false;
-	if (contrato.getClass().equals(ContratoVenta.class)) {
+	if (contrato instanceof ContratoVenta) {
 	    ContratoVenta c = (ContratoVenta) contrato;
 	    ret = daoVenta.logicalDelete(c);
 	} else {
@@ -80,7 +90,7 @@ public class ContratoService {
     }
 
     public synchronized List<Contrato> findAll(String stringFilter) {
-	ArrayList arrayList = new ArrayList();
+	ArrayList<Contrato> arrayList = new ArrayList<>();
 	List<Contrato> contratos = daoContrato.readAllActives();
 
 	if (stringFilter != "") {
@@ -113,7 +123,6 @@ public class ContratoService {
     public static LocalDate getFechaVencimiento(ContratoAlquiler c) {
 	LocalDate ret;
 	ret = c.getFechaCelebracion().plus(c.getDuracionContrato().getDuracion(), ChronoUnit.MONTHS);
-
 	return ret;
     }
 
@@ -133,37 +142,37 @@ public class ContratoService {
 		.setInmueble(InmuebleService.getInstancia())
 		.build();
     }
-    
+
     public static ContratoVenta getInstanciaVenta() {
 	return new ContratoVenta.Builder()
-		    .setPrecioVenta(new BigDecimal("0"))
-		    .setFechaCelebracion(LocalDate.now())		   
-		    .setDocumento(null)
-		    .setInmueble(new Inmueble.Builder()
-			    .setaEstrenar(false)
-			    .setCantidadAmbientes(0)
-			    .setCantidadCocheras(0)
-			    .setCantidadDormitorios(0)
-			    .setClaseInmueble(ClaseInmueble.OtroInmueble)
-			    .setConAireAcondicionado(false)
-			    .setConJardin(false)
-			    .setConParilla(false)
-			    .setConPileta(false)
-			    .setDireccion(new Direccion.Builder()
-				    .setCalle("")
-				    .setCodPostal("")
-				    .setCoordenada(new Coordenada())
-				    .setLocalidad("")
-				    .setNro(0)
-				    .setPais("Argentina")
-				    .setProvincia("")
-				    .build())
-			    .setPropietario(new Propietario.Builder()
-				    .setPersona(new Persona())
-				    .build())
-			    .build())
-		    .setEstadoRegistro(EstadoRegistro.ACTIVO)
-		    .build();
+		.setPrecioVenta(new BigDecimal("0"))
+		.setFechaCelebracion(LocalDate.now())
+		.setDocumento(null)
+		.setInmueble(new Inmueble.Builder()
+			.setaEstrenar(false)
+			.setCantidadAmbientes(0)
+			.setCantidadCocheras(0)
+			.setCantidadDormitorios(0)
+			.setClaseInmueble(ClaseInmueble.OtroInmueble)
+			.setConAireAcondicionado(false)
+			.setConJardin(false)
+			.setConParilla(false)
+			.setConPileta(false)
+			.setDireccion(new Direccion.Builder()
+				.setCalle("")
+				.setCodPostal("")
+				.setCoordenada(new Coordenada())
+				.setLocalidad("")
+				.setNro(0)
+				.setPais("Argentina")
+				.setProvincia("")
+				.build())
+			.setPropietario(new Propietario.Builder()
+				.setPersona(new Persona())
+				.build())
+			.build())
+		.setEstadoRegistro(EstadoRegistro.ACTIVO)
+		.build();
     }
 
 }

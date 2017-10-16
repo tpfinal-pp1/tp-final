@@ -34,14 +34,17 @@ public class Contrato implements Identificable, BorradoLogico {
     @Column(name = Contrato.estadoRegistroS)
     private EstadoRegistro estadoRegistro;
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
     @JoinColumn(name = "id_inmueble")
     @NotNull
     protected Inmueble inmueble;
     @Enumerated(EnumType.STRING)
     @Column(name = "moneda")
     private TipoMoneda moneda;
-    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_contrato")
+    private EstadoContrato estadoContrato;
+
     public Contrato() {
     }
 
@@ -53,20 +56,28 @@ public class Contrato implements Identificable, BorradoLogico {
 	this.estadoRegistro = estado;
 	this.inmueble = inmueble;
 	this.moneda = TipoMoneda.Pesos;
+	this.estadoContrato = EstadoContrato.EnProcesoDeCarga;
     }
 
     @Override
     public Long getId() {
 	return this.id;
     }
-    
+
+    public EstadoContrato getEstadoContrato() {
+	return estadoContrato;
+    }
+
+    public void setEstadoContrato(EstadoContrato estadoContrato) {
+	this.estadoContrato = estadoContrato;
+    }
 
     public TipoMoneda getMoneda() {
-        return moneda;
+	return moneda;
     }
 
     public void setMoneda(TipoMoneda moneda) {
-        this.moneda = moneda;
+	this.moneda = moneda;
     }
 
     public LocalDate getFechaCelebracion() {
@@ -94,13 +105,12 @@ public class Contrato implements Identificable, BorradoLogico {
     }
 
     public void setInmueble(Inmueble inmueble) {
-	if (this.inmueble != null && !this.inmueble.equals(inmueble))
-	{
+	if (this.inmueble != null && !this.inmueble.equals(inmueble)) {
 	    this.inmueble.removeContrato(this);
 	}
 	this.inmueble = inmueble;
-	if(inmueble != null && !inmueble.getContratos().contains(this))
-	inmueble.addContrato(this);
+	if (inmueble != null && !inmueble.getContratos().contains(this))
+	    inmueble.addContrato(this);
     }
 
     @Override
@@ -116,18 +126,17 @@ public class Contrato implements Identificable, BorradoLogico {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Contrato)) return false;
-        Contrato contrato = (Contrato) o;
-        return getId() != null && Objects.equals(getId(), contrato.getId());
+	if (this == o)
+	    return true;
+	if (!(o instanceof Contrato))
+	    return false;
+	Contrato contrato = (Contrato) o;
+	return getId() != null && Objects.equals(getId(), contrato.getId());
     }
- 
+
     @Override
     public int hashCode() {
-        return 37;
+	return 37;
     }
-    
-    
-    
 
 }

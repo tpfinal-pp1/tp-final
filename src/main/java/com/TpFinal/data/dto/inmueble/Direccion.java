@@ -182,7 +182,7 @@ public class Direccion implements Identificable {
 
 	@Override
 	public String toString() {
-	    return calle + " " + nro + ", "+localidad+", "+provincia+", "+pais;
+	    return calle + " n°" + nro + ", "+localidad+", "+provincia;
 	}
 
 
