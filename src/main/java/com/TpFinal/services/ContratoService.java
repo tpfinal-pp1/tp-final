@@ -190,7 +190,7 @@ public class ContratoService {
     			
     			Cobro c =new Cobro.Builder()
     					.setNumeroCuota(i)
-    					.setFechaDePago(fechaCobro)
+    					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
     					.build();
     			if((i+1) % contrato.getIntervaloActualizacion()==0) {

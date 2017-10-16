@@ -149,8 +149,8 @@ public class ContratoServiceTest {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
-			System.out.println(cos.get(i).getFechaDePago());
-			assertEquals(fecha, cos.get(i).getFechaDePago());
+			System.out.println(cos.get(i).getFechaDeVencimiento());
+			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}
 	}
@@ -180,7 +180,7 @@ public class ContratoServiceTest {
 				Double interes= new Double(0.5);
 				expected=expected.add(expected.multiply(new BigDecimal(interes.toString())));
 			}
-			assertEquals(fecha, cos.get(i).getFechaDePago());
+			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}
 	}
