@@ -147,8 +147,7 @@ public class ContratoVentaForm extends FormLayout {
 	finalizarCarga.addClickListener(e -> {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (binderContratoVenta.isValid()) {
-		ContratoVenta.setEstadoContrato(EstadoContrato.Vigente);
-		ContratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
+		ContratoVenta.setEstadoContrato(EstadoContrato.Vigente);		
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 	    }
@@ -407,7 +406,9 @@ public class ContratoVentaForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderContratoVenta.writeBean(ContratoVenta);
-
+	    if (ContratoVenta.getEstadoContrato() == EstadoContrato.Vigente)
+		ContratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
+	    
 	    if (archivo != null && !archivo.exists())
 		success = service.saveOrUpdate(ContratoVenta, null);
 	    else {
