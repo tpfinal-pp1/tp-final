@@ -3,6 +3,7 @@ cache:
   directories:
   - .autoconf
   - $HOME/.m2
+  - $HOME/travis/.sonar/cache
 sudo: false
 install: true
 addons:

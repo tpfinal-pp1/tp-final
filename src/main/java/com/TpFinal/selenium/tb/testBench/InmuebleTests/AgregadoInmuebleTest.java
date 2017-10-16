@@ -60,8 +60,8 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
 //TODO completar TEST (MAX)
     @Test
     public void agregadoInmuebleTest() {
-        //getDriver().get("http://inmobi.ddns.net/");
-        getDriver().get("http://localhost:8080/");
+        getDriver().get("http://inmobi.ddns.net/");
+       // getDriver().get("http://localhost:8080/");
 
         //Login screen (TextFields and Login Button)
         TextFieldElement usuarioTextField = $(TextFieldElement.class).caption("Usuario").first();
@@ -82,8 +82,8 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         inmueblesViewButton.click();
 
         //Inmuebles View
-        //getDriver().get("http://inmobi.ddns.net/#!inmuebles");
-        getDriver().get("http://localhost:8080/#!inmuebles");
+        getDriver().get("http://inmobi.ddns.net/#!inmuebles");
+       // getDriver().get("http://localhost:8080/#!inmuebles");
         GridElement inmuebleGrid = $(GridElement.class).first();
 
         //Agregar inmueble
