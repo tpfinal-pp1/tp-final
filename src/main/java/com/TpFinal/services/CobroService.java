@@ -1,10 +1,12 @@
 package com.TpFinal.services;
 
+import com.TpFinal.data.dto.cobro.Cobro;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.TpFinal.data.dto.cobro.Cobro;
+import java.util.Random;
 
 public class CobroService {
 	
@@ -32,9 +34,36 @@ public class CobroService {
 	}
 	
 	private void llenarConDatosHardCodeados() {
-		//TODO
-		
-		cobros.add(new Cobro.Builder().setComision(new BigDecimal("100")).build());
+		for(int i = 0; i < 20; i++){
+			addRandomPayment();
+		}
 	}
+	//TODO este metodo es temporal hasta que se implemente el dao
+	private void addRandomPayment(){
+		Random randomGenerator = new Random();
+		int upperBound = 500;
+		int lowerBound = 100;
+		Integer comision = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
+		Integer montoOriginal = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
+		Integer montoPropietario = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
+		Integer montoRecibido = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
+		Integer interes = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;;
+		Integer numeroCuenta = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
+		Integer fechaPago = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
+		Integer fechaVencimiento = randomGenerator.nextInt(upperBound-lowerBound)+lowerBound;
 
+		LocalDate pago = LocalDate.now().plusDays(fechaPago);
+		LocalDate vencimiento = LocalDate.now().plusDays(fechaVencimiento);
+
+		cobros.add(new Cobro.Builder()
+				.setComision(new BigDecimal(comision))
+				.setFechaDePago(pago)
+				.setFechaDeVencimiento(vencimiento)
+				.setMontoOriginal(new BigDecimal(montoOriginal))
+				.setMontoPropietario(new BigDecimal(montoPropietario))
+				.setMontoRecibido(new BigDecimal(montoRecibido))
+				.setNumeroCuota(numeroCuenta)
+				.setInteres(new BigDecimal(interes))
+				.build());
+	}
 }

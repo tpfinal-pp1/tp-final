@@ -40,6 +40,8 @@
 		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
 		<mapping class="com.TpFinal.data.dto.persona.Propietario" />
 		<mapping class="com.TpFinal.data.dto.contrato.ContratoDuracion" />
+		<mapping class="com.TpFinal.data.dto.cobro.Cobro" />
+		
 		
 	
 
