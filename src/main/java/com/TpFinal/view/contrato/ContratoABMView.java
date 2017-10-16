@@ -78,7 +78,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	configureComponents();
-	filter.setEnabled(false);
 
     }
 

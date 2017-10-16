@@ -76,6 +76,8 @@ public class Contrato implements Identificable, BorradoLogico {
 	return moneda;
     }
 
+
+
     public void setMoneda(TipoMoneda moneda) {
 	this.moneda = moneda;
     }

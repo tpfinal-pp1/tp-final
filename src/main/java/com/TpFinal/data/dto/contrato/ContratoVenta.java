@@ -92,6 +92,12 @@ public class ContratoVenta extends Contrato {
         return 5;
     }
 
+    @Override
+	public String toString() {
+		return  inmueble.toString()+", "
+				+this.vendedor+", "+this.comprador ;
+	}
+
     public static class Builder {
 
 	private Persona comprador;
@@ -136,6 +142,8 @@ public class ContratoVenta extends Contrato {
 	    this.comprador = comprador;
 	    return this;
 	}
+
+
 
 	public ContratoVenta build() {
 	    return new ContratoVenta(this);
