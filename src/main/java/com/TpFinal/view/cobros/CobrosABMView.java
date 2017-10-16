@@ -252,8 +252,6 @@ public class CobrosABMView extends DefaultLayout implements View {
             grid.setItems(cobros);
         }
 
-
-
     }
 
 }
