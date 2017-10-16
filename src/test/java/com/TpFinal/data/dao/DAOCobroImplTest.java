@@ -55,7 +55,9 @@ public class DAOCobroImplTest {
 
 	@Test
 	public void alta() {
-		fail("Not yet implemented");
+		for(int i =0; i< 4; i++) {daoCobro.saveOrUpdate(instanciaCobro(i));}
+		assertEquals(4, daoCobro.readAll().size());
+		
 	}
 	
     private ContratoAlquiler instanciaAlquilerSimple() {
@@ -90,8 +92,9 @@ public class DAOCobroImplTest {
                  .build();
     }
     
-    private Cobro instanciaCobro() {
+    private Cobro instanciaCobro(Integer n) {
     	return new Cobro.Builder()
+    			.setNumeroCuota(n)
     			.setFechaDeVencimiento(LocalDate.of(2017, 11, 2))
     			.setMontoOriginal(new BigDecimal("100"))
     			.build();
