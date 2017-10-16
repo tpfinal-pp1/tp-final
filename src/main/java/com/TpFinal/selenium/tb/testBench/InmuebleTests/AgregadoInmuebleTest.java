@@ -105,11 +105,8 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         comboValues.forEach(System.out::println);
         if(comboValues.size() > 0) {
             String propietario = comboValues.get(2);
-            personasComboBox.openPopup();
             personasComboBox.selectByText(propietario);
-            WebElement el = personasComboBox.getSuggestionPopup();
-            Actions actions = new Actions(getDriver()); //used to locate checkboxes and click them
-            actions.moveToElement(el).click().perform();
+            System.out.println("valor seleccionado del combo "+personasComboBox.getValue());
         }
 
         //ComboClase Inmueble
@@ -119,9 +116,7 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         comboClaseValues.forEach(System.out::println);
         if(comboClaseValues.size() > 0) {
             String claseInmueble = comboClaseValues.get(1);
-            claseComboBox.openPopup();
             claseComboBox.selectByText(claseInmueble);
-            claseComboBox.getSuggestionPopup().click();
         }
         //Adding a new Person to the combobox
         ButtonElement newPersonButton = $(FormLayoutElement.class).$(ButtonElement.class).first();
@@ -143,23 +138,21 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         provinces.forEach(System.out::println);
         if( provinces.size() > 0) {
             String province =  provinces.get(1);
-            provinciaComboBox.openPopup();
             provinciaComboBox.selectByText(province);
-            provinciaComboBox.getSuggestionPopup().click();
         }
 
         //PRUEBA
 
-        //Combobox localidades
-        ComboBoxElement localidadComboBox = $(ComboBoxElement.class).caption("Localidad").first();
-        List<String> localidades = provinciaComboBox.getPopupSuggestions();
-        if( localidades.size() > 0) {
-            String localidad =  provinces.get(1);
-            localidadComboBox.openPopup();
-            localidadComboBox.selectByText(localidad);
-            localidadComboBox.getSuggestionPopup().click();
-        }
+        if(!personasComboBox.getValue().equals("")) {
+            //Combobox localidades
+            ComboBoxElement localidadComboBox = $(ComboBoxElement.class).caption("Localidad").first();
+            List<String> localidades = provinciaComboBox.getPopupSuggestions();
+            if (localidades.size() > 0) {
+                String localidad = provinces.get(1);
+                localidadComboBox.selectByText(localidad);
 
+            }
+        }
 
         //Tab "Caracteristicas"
         tabSheet1.openTab("Características");
