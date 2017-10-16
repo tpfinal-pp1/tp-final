@@ -47,18 +47,26 @@ public class DAOInmuebleImplTest {
 
     @Before
     public void setUp() throws Exception {
-	dao = new DAOInmuebleImpl();
-	dao.readAll().forEach(dao::delete);
-	inmuebles.clear();
-	criterio = null;
+    	try {
+			dao = new DAOInmuebleImpl();
+			dao.readAll().forEach(dao::delete);
+			inmuebles.clear();
+			criterio = null;
+		}catch (Exception e){
+			System.out.println("Error al hacer setUp");
+		}
 
     }
 
     @After
     public void tearDown() throws Exception {
+    	try{
 	inmuebles = dao.readAll();
 	desvincular();
 	inmuebles.forEach(dao::delete);
+		}catch (Exception e){
+			System.out.println("Error al hacer TearDown");
+		}
     }
 
     private void desvincular() {

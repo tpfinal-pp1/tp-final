@@ -34,7 +34,7 @@ public class DAOPersonaImplTest {
 
     @Before
     public void setUp() throws Exception {
-	daoprop = new DAOImpl<>(Propietario.class);
+	try{daoprop = new DAOImpl<>(Propietario.class);
 	daoprop.readAll().forEach(prop -> {
 	    Persona p = prop.getPersona();
 	    if (p != null) {
@@ -55,12 +55,15 @@ public class DAOPersonaImplTest {
 	});
 	Personas.forEach(dao::delete);
 
-	Personas.clear();
+	Personas.clear();}
+	catch (Exception e){
+		System.out.println("Error al hacer setUp");
+	}
     }
 
     @After
     public void tearDown() throws Exception {
-	daoprop.readAll().forEach(prop -> {
+	try{daoprop.readAll().forEach(prop -> {
 	    Persona p = prop.getPersona();
 	    if (p != null) {
 		prop.setPersona(null);
@@ -78,7 +81,10 @@ public class DAOPersonaImplTest {
 	    p.getRoles().clear();
 	    dao.saveOrUpdate(p);
 	});
-	Personas.forEach(dao::delete);
+	Personas.forEach(dao::delete);}
+	catch (Exception e){
+		System.out.println("Error al hacer TearDown");
+	}
     }
 
     @Test
