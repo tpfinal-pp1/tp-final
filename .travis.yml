@@ -6,3 +6,5 @@ cache:
 sudo: false
 script: mvn clean test
 after_success: mvn jacoco:report coveralls:report
+notifications:
+    slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
