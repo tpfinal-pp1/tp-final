@@ -87,6 +87,9 @@ public class InmuebleForm extends FormLayout {
 
     TabSheet tabSheet;
 
+    //TODO Boton test solo para testing (completado de comboboxes) comentar antes de cada reunion formal
+	Button test = new Button("llenar combo");
+
     public InmuebleForm(InmuebleABMView abmView) {
 	this.abmView = abmView;
 	configureComponents();
@@ -145,6 +148,22 @@ public class InmuebleForm extends FormLayout {
 	    }
 
 	});
+
+	//TODO funcion del boton test
+	test.addClickListener(event -> {
+		Persona p;
+		List<Persona> people = personaService.readAll();
+		p = people.get(0);
+		comboPropietario.setSelectedItem(p);
+
+		Provincia provincia ;
+		List<Provincia> provincess = provinciaService.getProvincias();
+		provincia = provincess.get(0);
+		provincias.setSelectedItem(provincia);
+//TODO comment
+
+	});
+
 	comboPropietario.setTextInputAllowed(true);
 	clasesInmueble.setTextInputAllowed(true);
 	localidades.setTextInputAllowed(true);
@@ -340,7 +359,7 @@ public class InmuebleForm extends FormLayout {
 	inmuebleFromTabSheet.addTab(caracteristicas1, "Características");
 
 
-	HorizontalLayout actions = new HorizontalLayout(save, delete);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, test);
 	addComponents(inmuebleFromTabSheet, actions);
 	actions.setSpacing(true);
 
