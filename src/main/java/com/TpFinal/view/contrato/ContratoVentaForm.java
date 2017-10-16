@@ -168,8 +168,9 @@ public class ContratoVentaForm extends FormLayout {
 		Contrato::setFechaCelebracion);
 	binderContratoVenta.forField(rbgTipoMoneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
-		.withValidator(inmueble -> !(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado || inmueble
-			.getEstadoInmueble() == EstadoInmueble.Vendido),
+		.withValidator(inmueble -> {
+		    return !inmuebleService.inmueblePoseeContratoVigente(inmueble);
+		},
 			"El inmueble seleccionado ya posee un contrato vigente.")
 		.bind(Contrato::getInmueble, Contrato::setInmueble);
 
@@ -408,7 +409,8 @@ public class ContratoVentaForm extends FormLayout {
 
 	} catch (ValidationException e) {
 	    e.printStackTrace();
-	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo.",Notification.Type.WARNING_MESSAGE);
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo.",
+		    Notification.Type.WARNING_MESSAGE);
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    Notification.show("Error: " + e.toString());

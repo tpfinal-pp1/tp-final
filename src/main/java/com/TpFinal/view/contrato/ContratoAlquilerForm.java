@@ -212,8 +212,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
 
 	binderContratoAlquiler.forField(this.cbInmuebles).asRequired("Seleccione un Inmueble")
-		.withValidator(inmueble -> !(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado || inmueble
-			.getEstadoInmueble() == EstadoInmueble.Vendido),
+		.withValidator(inmueble -> {
+		    return !inmuebleService.inmueblePoseeContratoVigente(inmueble);
+		},
 			"El inmueble seleccionado ya posee un contrato vigente.")
 		.bind(ContratoAlquiler::getInmueble, ContratoAlquiler::setInmueble);
 
@@ -301,15 +302,15 @@ public class ContratoAlquilerForm extends FormLayout {
     private Binder<ContratoAlquiler> getBinderParaFinalizacionDeCarga() {
 	binderContratoAlquiler = getBinderParaEdicion();
 	binderContratoAlquiler.forField(this.tfDocumento)
-	.asRequired("Debe Cargar al menos un documento antes de finalizar la carga.")
-	.withValidator(text -> text == "Documento Cargado",
-		"Debe Cargar al menos un documento antes de finalizar la carga.")
-	.bind(contrato -> {
-	    if (contrato.getDocumento() != null)
-		return "Documento Cargado";
-	    return "Documento No Cargado";
-	}, (contrato, text) -> {
-	});
+		.asRequired("Debe Cargar al menos un documento antes de finalizar la carga.")
+		.withValidator(text -> text == "Documento Cargado",
+			"Debe Cargar al menos un documento antes de finalizar la carga.")
+		.bind(contrato -> {
+		    if (contrato.getDocumento() != null)
+			return "Documento Cargado";
+		    return "Documento No Cargado";
+		}, (contrato, text) -> {
+		});
 	return binderContratoAlquiler;
     }
 
@@ -487,7 +488,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    contratoABMView().setComponentsVisible(true);
 
 	} catch (ValidationException e) {
-	       checkFieldsPerTab(e.getFieldValidationErrors());
+	    checkFieldsPerTab(e.getFieldValidationErrors());
 
 	} catch (Exception e) {
 	}
