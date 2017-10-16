@@ -75,7 +75,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	@Override
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
-	    tfDocumento.setValue("Documento cargado");
+	    tfDocumento.setValue("Documento Cargado");
 	    btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 	}

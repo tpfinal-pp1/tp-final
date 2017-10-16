@@ -2,6 +2,7 @@ package com.TpFinal.view.contrato;
 
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.data.dto.contrato.EstadoContrato;
 import com.TpFinal.data.dto.inmueble.Inmueble;
 import com.TpFinal.data.dto.inmueble.TipoMoneda;
 import com.TpFinal.data.dto.persona.Persona;
@@ -17,6 +18,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,12 +37,7 @@ public class ContratoVentaForm extends FormLayout {
     // Actions
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
-	    VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
-		    delete();
-		}
-	    });
+	    VaadinIcons.WARNING, "Eliminar", "20%", e -> delete());
     Button finalizarCarga = new Button("Finalizar Carga");
     Button renovarContrato = new Button("Renovar");
 
@@ -62,7 +59,7 @@ public class ContratoVentaForm extends FormLayout {
 	@Override
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
-	    tfDocumento.setValue("Documento cargado");
+	    tfDocumento.setValue("Documento Cargado");
 	    btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 
@@ -94,14 +91,7 @@ public class ContratoVentaForm extends FormLayout {
     }
 
     private void configureComponents() {
-	delete.setStyleName(ValoTheme.BUTTON_DANGER);
-	save.addClickListener(e -> this.save());
-	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-	finalizarCarga.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-	renovarContrato.setStyleName(ValoTheme.BUTTON_FRIENDLY);
-	//finalizarCarga.addClickListener();
-	
+	configurarAcciones();
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
 	    @Override
@@ -142,7 +132,34 @@ public class ContratoVentaForm extends FormLayout {
 
     }
 
+    private void configurarAcciones() {
+	delete.setStyleName(ValoTheme.BUTTON_DANGER);
+	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	finalizarCarga.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	renovarContrato.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	save.addClickListener(e -> {
+	    this.binderContratoVenta = getBinderParaEdicion();
+	    this.save();
+	});
+	finalizarCarga.addClickListener(e -> {
+	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
+	    if (binderContratoVenta.isValid()) {
+		ContratoVenta.setEstadoContrato(EstadoContrato.Vigente);
+	    }
+	    else {
+		tfDocumento.setValue("Cargue un documento.");
+	    }
+	    this.save();
+	});
+    }
+
     private void binding() {
+	binderContratoVenta = getBinderParaEdicion();
+    }
+
+    private Binder<ContratoVenta> getBinderParaEdicion() {
+	Binder<ContratoVenta> binderContratoVenta = new Binder<>(ContratoVenta.class);
 
 	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha").bind(
 		Contrato::getFechaCelebracion,
@@ -191,9 +208,13 @@ public class ContratoVentaForm extends FormLayout {
 
 	binderContratoVenta.forField(tfPrecioDeVenta)
 		.withNullRepresentation("")
-		.withConverter(new StringToBigDecimalConverter("Ingrese un numero")).bind("precioVenta");
+		.withConverter(new StringToBigDecimalConverter("Ingrese un numero"))
+		.withValidator(n -> {
+		    return (n.compareTo(BigDecimal.ZERO) > 0);
+		}, "Debe Ingresar un Valor Positivo")
+		.asRequired("Debe Ingresar un Precio de Venta")
+		.bind("precioVenta");
 
-	tfDocumento.setEnabled(false);
 	binderContratoVenta.forField(this.tfDocumento).withNullRepresentation("")
 		.bind(contrato -> {
 		    if (contrato.getDocumento() != null)
@@ -201,6 +222,23 @@ public class ContratoVentaForm extends FormLayout {
 		    return "Documento No Cargado";
 		}, (contrato, text) -> {
 		});
+	return binderContratoVenta;
+    }
+
+    private Binder<ContratoVenta> getBinderParaFinalizacionDeCarga() {
+	binderContratoVenta = getBinderParaEdicion();
+	binderContratoVenta.forField(this.tfDocumento)
+		.asRequired("Debe Cargar al menos un documento antes de finalizar la carga.")
+		.withValidator(text -> text == "Documento Cargado",
+			"Debe Cargar al menos un documento antes de finalizar la carga.")
+		.bind(contrato -> {
+		    if (contrato.getDocumento() != null)
+			return "Documento Cargado";
+		    return "Documento No Cargado";
+		}, (contrato, text) -> {
+		});
+	return binderContratoVenta;
+
     }
 
     private void updateComboInmuebles() {
@@ -257,29 +295,24 @@ public class ContratoVentaForm extends FormLayout {
 	tabSheet.addTab(principal, "Venta");
 
 	addComponent(tabSheet);
-	HorizontalLayout actions1 = new HorizontalLayout(save, delete);
-	HorizontalLayout actions2 = new HorizontalLayout(finalizarCarga, renovarContrato);
-	actions1.setSpacing(true);
-	actions2.setSpacing(true);
-	addComponents(actions1,actions2);
-	this.setComponentAlignment(actions1, Alignment.BOTTOM_CENTER);
-	this.setComponentAlignment(actions2, Alignment.BOTTOM_CENTER);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, finalizarCarga, renovarContrato);
+
+	actions.setSpacing(true);
+
+	addComponent(actions);
+	this.setComponentAlignment(actions, Alignment.BOTTOM_CENTER);
 	this.setSpacing(false);
-	
-
-	// addStyleName("v-scrollable");
-
     }
 
     public void setContratoVenta(ContratoVenta ContratoVenta) {
 
 	if (ContratoVenta != null) {
+	    configurarComponentesSegunEstadoContrato(ContratoVenta.getEstadoContrato());
 	    this.ContratoVenta = ContratoVenta;
 	    binderContratoVenta.readBean(ContratoVenta);
-	    delete.setVisible(true);
 	} else {
 	    this.ContratoVenta = ContratoService.getInstanciaVenta();
-	    delete.setVisible(false);
+	    configurarComponentesSegunEstadoContrato(this.ContratoVenta.getEstadoContrato());
 	}
 
 	setVisible(true);
@@ -289,13 +322,61 @@ public class ContratoVentaForm extends FormLayout {
 
     }
 
+    /**
+     * Configura el modo de edición de los componentes segun el estado del contrato.
+     * <p>
+     * <Strong>En proceso de carga: </Strong>Se permite libre edición, borrado y
+     * finalización de carga. No se permite renovación.
+     * <p>
+     * <Strong>Vigente, Próximo a vencer y vencido: </Strong>Se deshabilita la
+     * edición, borrado y finalización de carga. Se permite renovación.
+     * 
+     * @param estadoContrato
+     */
+    private void configurarComponentesSegunEstadoContrato(EstadoContrato estadoContrato) {
+	binderContratoVenta = getBinderParaEdicion();
+	tfDocumento.setEnabled(false);
+	if (estadoContrato == EstadoContrato.EnProcesoDeCarga) {
+	    this.save.setVisible(true);
+	    this.delete.setVisible(true);
+	    this.finalizarCarga.setVisible(true);
+	    this.renovarContrato.setVisible(false);
+	    this.btCargar.setEnabled(true);
+	    this.btDescargar.setEnabled(true);
+	    this.cbComprador.setEnabled(true);
+	    this.cbInmuebles.setEnabled(true);
+	    this.fechaCelebracion.setEnabled(true);
+	    this.rbgTipoMoneda.setEnabled(true);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPrecioDeVenta.setEnabled(true);
+	} else {
+	    binderContratoVenta = getBinderParaFinalizacionDeCarga();
+	    this.save.setVisible(false);
+	    this.delete.setVisible(false);
+	    this.finalizarCarga.setVisible(false);
+	    this.renovarContrato.setVisible(true);
+	    this.btCargar.setEnabled(true);
+	    this.btDescargar.setEnabled(true);
+	    this.cbComprador.setEnabled(false);
+	    this.cbInmuebles.setEnabled(false);
+	    this.fechaCelebracion.setEnabled(false);
+	    this.rbgTipoMoneda.setEnabled(false);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPrecioDeVenta.setEnabled(false);
+	}
+
+    }
+
     private void delete() {
-	service.delete(ContratoVenta);
+	boolean success = service.delete(ContratoVenta);
 	addressbookView.updateList();
 	setVisible(false);
 	getAddressbookView().setComponentsVisible(true);
-	getAddressbookView().showSuccessNotification("Borrado");
-
+	if (success) {
+	    getAddressbookView().showSuccessNotification("Borrado");
+	} else {
+	    getAddressbookView().showErrorNotification("No se realizaron Cambios");
+	}
     }
 
     /*
