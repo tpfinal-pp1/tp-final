@@ -104,7 +104,8 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         //ComboClase Inmueble
         ComboBoxElement claseComboBox = $(ComboBoxElement.class).caption("Clase").first();
 
-
+        RadioButtonGroupElement tipoRadioButtonGroup = $(RadioButtonGroupElement.class).caption("Tipo").first();
+        tipoRadioButtonGroup.selectByText("Comercial");
         //Adress data
         TextFieldElement calleTextField = $(TextFieldElement.class).caption("Calle").first();
         calleTextField.setValue("Evergreen Terrace");

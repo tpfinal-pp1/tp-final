@@ -161,7 +161,6 @@ public class InmuebleForm extends FormLayout {
 		provincia = provincess.get(0);
 		provincias.setSelectedItem(provincia);
 
-		tiposInmueble.setSelectedItem(TipoInmueble.Vivienda);
 
 	});
 
