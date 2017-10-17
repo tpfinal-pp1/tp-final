@@ -1,8 +1,10 @@
 package com.TpFinal.utils;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -10,14 +12,13 @@ public class Utils {
 
 
 
-    private Utils(){
 
-    }
 
     public static int cantLines(String str) {
         String[] lines = str.split("\r\n|\r|\n");
         return lines.length;
     }
+
 
 
    public static ArrayList<Object> Search(List<Object>Objects,String keyword,int threshold) {
