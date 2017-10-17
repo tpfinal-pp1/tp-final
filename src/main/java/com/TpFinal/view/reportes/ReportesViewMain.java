@@ -1,6 +1,6 @@
 package com.TpFinal.view.reportes;
 
-import com.TpFinal.data.dto.persona.*;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 
@@ -20,10 +20,8 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
-
-
-import com.TpFinal.data.dto.contrato.ContratoDuracion;
-import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
