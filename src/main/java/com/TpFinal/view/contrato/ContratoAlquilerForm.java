@@ -30,6 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -197,10 +198,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.save();
 	    binderContratoAlquiler.validate();
 	});
-	renovarContrato.addClickListener(e ->{
+	renovarContrato.addClickListener(e -> {
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    this.setContratoAlquiler(contratoAlquiler.clone());
-	    
+
 	});
     }
 
@@ -300,6 +301,9 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.tfValorInicial).withNullRepresentation("")
 		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
+		.withValidator(n -> {
+		    return (n.compareTo(BigDecimal.ZERO) > 0);
+		}, "Debe Ingresar un Valor Positivo")
 		.bind(ContratoAlquiler::getValorInicial, ContratoAlquiler::setValorInicial);
 	return binderContratoAlquiler;
     }
