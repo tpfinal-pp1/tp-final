@@ -24,6 +24,7 @@ import com.TpFinal.UnitTests.dto.contrato.Contrato;
 import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
 import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
 import com.TpFinal.UnitTests.dto.contrato.DuracionContrato;
+import com.TpFinal.UnitTests.dto.contrato.EstadoContrato;
 import com.TpFinal.UnitTests.dto.contrato.TipoInteres;
 
 public class ContratoServiceIT {
@@ -147,6 +148,7 @@ public class ContratoServiceIT {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
+			System.out.println(cos.get(i).getFechaDeVencimiento());
 			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}
@@ -202,7 +204,7 @@ public class ContratoServiceIT {
     }
     
     private ContratoAlquiler instanciaAlquilerSimple() {
-        return new ContratoAlquiler.Builder()
+        ContratoAlquiler ret= new ContratoAlquiler.Builder()
                 .setFechaCelebracion(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
@@ -214,11 +216,14 @@ public class ContratoServiceIT {
                 .setInquilinoContrato(null)
                 .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
+                
                  .build();
+        ret.setEstadoContrato(EstadoContrato.Vigente);
+        return ret;
     }
     
     private ContratoAlquiler instanciaAlquilerAcumulativo() {
-        return new ContratoAlquiler.Builder()
+        ContratoAlquiler ca= new ContratoAlquiler.Builder()
                 .setFechaCelebracion(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(11))
@@ -231,6 +236,8 @@ public class ContratoServiceIT {
                 .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
+        ca.setEstadoContrato(EstadoContrato.Vigente);
+        return ca;
     }
     
     
