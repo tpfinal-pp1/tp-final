@@ -1,4 +1,4 @@
-package com.TpFinal.data.dao;
+package com.TpFinal.Integracion.dao;
 
 import static org.junit.Assert.*;
 
@@ -16,6 +16,8 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOInmuebleImpl;
+import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.UnitTests.dto.EstadoRegistro;
 import com.TpFinal.UnitTests.dto.inmueble.ClaseInmueble;
 import com.TpFinal.UnitTests.dto.inmueble.Coordenada;
