@@ -3,17 +3,25 @@ package com.TpFinal.services;
 import com.TpFinal.data.dao.DAOCobroImpl;
 import com.TpFinal.data.dao.interfaces.DAOCobro;
 import com.TpFinal.data.dto.cobro.Cobro;
+import com.TpFinal.data.dto.cobro.EstadoCobro;
 import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.data.dto.contrato.EstadoContrato;
+import com.TpFinal.data.dto.contrato.TipoInteres;
 import com.TpFinal.data.dto.persona.Persona;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor;
+import org.omg.DynamicAny.DynAnySeqHelper;
 
 public class CobroService {
 	
@@ -34,6 +42,34 @@ public class CobroService {
 	
 	public List<Cobro> readAll() {
 		return dao.readAllActives();
+	}
+	
+	public void calcularDatosFaltantes(List<Cobro>cobros) {
+		cobros.forEach(c ->{
+			if(hayQueCalcular(c)) {
+				Long cantidadDias=ChronoUnit.DAYS.between(c.getFechaDeVencimiento(), LocalDate.now());
+				if(cantidadDias>0) {
+					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
+						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
+						interes=c.getMontoOriginal().multiply(interes);
+						BigDecimal nuevoValor=c.getMontoOriginal().add(interes);
+						c.setMontoRecibido(nuevoValor);
+					}else if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Acumulativo)) {
+						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						BigDecimal valorAnterior= c.getMontoOriginal();
+						for(int i=0; i<cantidadDias;i++) {
+							valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));
+						}
+						c.setMontoRecibido(valorAnterior);
+					}
+				}
+			}
+		});
+	}
+	
+	private boolean hayQueCalcular(Cobro c) {
+		return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO) && !c.getContrato().getEstadoContrato().equals(EstadoContrato.EnProcesoDeCarga);
 	}
 	
 	//Ver que se necesita "arriba"
