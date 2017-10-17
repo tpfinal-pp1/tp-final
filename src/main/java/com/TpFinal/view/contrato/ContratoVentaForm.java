@@ -10,6 +10,7 @@ import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.*;
 import com.vaadin.data.*;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
@@ -423,7 +424,7 @@ public class ContratoVentaForm extends FormLayout {
 	    }
 
 	} catch (ValidationException e) {
-	    e.printStackTrace();
+	    Utils.mostarErroresValidator(e);
 	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo.",
 		    Notification.Type.WARNING_MESSAGE);
 	} catch (Exception e) {

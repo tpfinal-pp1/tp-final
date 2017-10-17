@@ -5,6 +5,7 @@ import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.publicacion.*;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
@@ -327,8 +328,7 @@ public class PublicacionForm extends FormLayout {
 
 
             } catch (ValidationException e) {
-
-                e.printStackTrace();
+        	 Utils.mostarErroresValidator(e);
                 printInvalidComponents(e.getFieldValidationErrors());
 
                 return;

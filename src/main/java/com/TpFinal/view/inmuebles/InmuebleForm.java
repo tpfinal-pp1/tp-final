@@ -12,6 +12,7 @@ import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
@@ -415,7 +416,7 @@ public class InmuebleForm extends FormLayout {
 		getABMView().showSuccessNotification("No se han realizado modificaciones");
 
 	} catch (ValidationException e) {
-	    //e.printStackTrace();
+	    Utils.mostarErroresValidator(e);
 		checkFieldsPerTab(e.getFieldValidationErrors());
 
 	    return;
