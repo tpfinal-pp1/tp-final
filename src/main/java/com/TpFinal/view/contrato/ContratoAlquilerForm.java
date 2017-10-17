@@ -193,6 +193,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
 	    if (binderContratoAlquiler.isValid()) {
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
+		service.addCobros(contratoAlquiler);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 	    }
