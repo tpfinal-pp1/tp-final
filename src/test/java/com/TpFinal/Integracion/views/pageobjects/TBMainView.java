@@ -17,6 +17,12 @@ import com.vaadin.testbench.elements.MenuBarElement;
 
 public class TBMainView extends TestBenchTestCase {
 
+    private TBPersonaView personaView;
+    private TBContratoView contratoView;
+    private TBInmuebleView inmuebleView;
+    private TBPublicacionView publicacionView;
+
+
     public TBMainView(WebDriver driver) {
         setDriver(driver);
     }
@@ -124,4 +130,13 @@ public class TBMainView extends TestBenchTestCase {
         reports.click();
         return new TBReportsView(driver);
     }*/
+
+
+    public TBPersonaView getPersonaView() { return personaView = new TBPersonaView(getDriver()); }
+
+    public TBContratoView getContratoView() { return contratoView = new TBContratoView(getDriver()); }
+
+    public TBInmuebleView getInmuebleView() { return inmuebleView = new TBInmuebleView(getDriver()); }
+
+    public TBPublicacionView getPublicacionView() { return publicacionView = new TBPublicacionView(getDriver()); }
 }
