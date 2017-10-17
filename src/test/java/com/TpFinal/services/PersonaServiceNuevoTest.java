@@ -46,7 +46,7 @@ public class PersonaServiceNuevoTest {
 		service.readAll().forEach(p -> dao.delete(p));
 	}
 	
-
+	@Test
 	public void agregar() {
     	Persona p = instancia("1");
     	p.addRol(instanciaInquilino(Calificacion.A));
@@ -59,7 +59,7 @@ public class PersonaServiceNuevoTest {
     	assertEquals(3, service.readAll().get(0).getRoles().size());
 	}
 	
-
+	@Test
 	public void editar() {
 		Persona p = instancia("1");
     	p.addRol(instanciaInquilino(Calificacion.A));

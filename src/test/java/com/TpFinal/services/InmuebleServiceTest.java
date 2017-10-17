@@ -55,7 +55,7 @@ public class InmuebleServiceTest {
 		daoPer.readAll().forEach(p -> daoPer.delete(p));
 	}
 
-
+	@Test
 	public void test() {
 		Propietario pro= new Propietario();
 		Persona per = instancia("1");
