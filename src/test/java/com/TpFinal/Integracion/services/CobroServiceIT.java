@@ -3,6 +3,7 @@ package com.TpFinal.Integracion.services;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -138,6 +139,7 @@ public class CobroServiceIT {
 		interes=ca.getValorInicial().multiply(interes);
 		expected=interes.add(ca.getValorInicial());
 		System.out.println("primer cobro: "+cos.get(0).getMontoRecibido());
+		expected=expected.setScale(2, RoundingMode.CEILING);
 		assertEquals(expected,cos.get(0).getMontoRecibido());
 		
 	}
@@ -169,6 +171,7 @@ public class CobroServiceIT {
 		}
 		
 		System.out.println("primer cobro acumulativo: "+cos.get(0).getMontoRecibido());
+		valorAnterior=valorAnterior.setScale(2, RoundingMode.CEILING);
 		assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
 		
 	}

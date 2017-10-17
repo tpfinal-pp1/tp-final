@@ -3,6 +3,7 @@ package com.TpFinal.Integracion.services;
 import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -144,7 +145,8 @@ public class ContratoServiceIT {
 		BigDecimal monto = new BigDecimal("100.00");
 		BigDecimal expected = new BigDecimal("100.00");
 		for(int i =0; i<cos.size(); i++) {
-			assertEquals(cos.get(i).getMontoOriginal(), expected);
+			expected=expected.setScale(2, RoundingMode.CEILING);
+			assertEquals(expected.toBigInteger(), cos.get(i).getMontoOriginal().toBigInteger());
 			if((i+1)%2==0) {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
@@ -173,12 +175,15 @@ public class ContratoServiceIT {
 		});
 		assertEquals(ca.getCobros().size(), 24);
 		BigDecimal expected = new BigDecimal("100.00");
+		
 		LocalDate fecha = LocalDate.of(2017, 06, 11);
 		for(int i =0; i<cos.size(); i++) {
-			assertEquals(cos.get(i).getMontoOriginal(), expected);
+			expected=expected.setScale(2, RoundingMode.CEILING);
+			assertEquals(expected.toBigInteger(),cos.get(i).getMontoOriginal().toBigInteger());
 			if((i+1)%2==0) {
 				Double interes= new Double(0.5);
 				expected=expected.add(expected.multiply(new BigDecimal(interes.toString())));
+				expected=expected.setScale(2, RoundingMode.CEILING);
 			}
 			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
