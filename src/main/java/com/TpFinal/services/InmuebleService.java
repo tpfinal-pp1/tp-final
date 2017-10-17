@@ -2,26 +2,25 @@ package com.TpFinal.services;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoInmueble;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.EstadoPublicacion;
-import com.TpFinal.data.dto.publicacion.Publicacion;
-import com.TpFinal.data.dto.publicacion.Rol;
-import com.TpFinal.data.dto.publicacion.TipoPublicacion;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.inmueble.ClaseInmueble;
+import com.TpFinal.dto.inmueble.Coordenada;
+import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoInmueble;
+import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.EstadoPublicacion;
+import com.TpFinal.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.TipoPublicacion;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class InmuebleService {
@@ -121,21 +120,21 @@ public class InmuebleService {
 
     private boolean estaActivoYNoFueBorrado(Publicacion p) {
 	return p.getEstadoRegistro() == EstadoRegistro.ACTIVO && p
-	    .getEstadoPublicacion() == EstadoPublicacion.Activa;
+		.getEstadoPublicacion() == EstadoPublicacion.Activa;
     }
 
     private void setEstadoInmuebleSegunPublicaciones(Inmueble inmueble, List<Publicacion> publicaciones) {
-	if (publicaciones.size() == 2) {
-	    System.out.println("Immueble seteado a alquiler y venta");
-	    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
-	} else {
-	    Publicacion publicacion = publicaciones.get(0);
-	    if (publicacion.getTipoPublicacion() == TipoPublicacion.Alquiler) {
-		System.out.println("Immueble seteado a alquiler");
-		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
+	if (!(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado
+		|| (inmueble.getEstadoInmueble() == EstadoInmueble.Vendido))) {
+	    if (publicaciones.size() == 2) {
+		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
 	    } else {
-		System.out.println("Immueble seteado a venta");
-		inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
+		Publicacion publicacion = publicaciones.get(0);
+		if (publicacion.getTipoPublicacion() == TipoPublicacion.Alquiler) {
+		    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
+		} else {
+		    inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
+		}
 	    }
 	}
 
@@ -153,6 +152,16 @@ public class InmuebleService {
 	Inmueble i = contratoAntiguo.getInmueble();
 	i.removeContrato(contratoAntiguo);
 	dao.saveOrUpdate(i);
+    }
+
+    public boolean inmueblePoseeContratoVigente(Inmueble inmueble) {
+	boolean ret = false;
+	if (inmueble != null) {
+	    Set<Contrato> contratos = dao.findById(inmueble.getId()).getContratos();
+	    if (contratos != null)
+		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente);
+	}
+	return ret;
     }
 
 }

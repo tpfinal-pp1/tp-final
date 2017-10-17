@@ -1,9 +1,6 @@
 package com.TpFinal.view.duracionContratos;
 
-
-
-import com.TpFinal.data.dto.contrato.ContratoDuracion;
-
+import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;

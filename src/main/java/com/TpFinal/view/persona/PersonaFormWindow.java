@@ -1,6 +1,6 @@
 package com.TpFinal.view.persona;
 
-import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;

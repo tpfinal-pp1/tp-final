@@ -1,8 +1,7 @@
 package com.TpFinal.view;
 
-import com.TpFinal.services.DashboardEvent.UserLoginRequestedEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.utils.GeneradorDeDatos;
+import com.TpFinal.services.DashboardEvent.UserLoginRequestedEvent;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Responsive;

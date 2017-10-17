@@ -1,15 +1,9 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-
-
-import com.TpFinal.data.dto.DashboardNotification;
+import com.TpFinal.dto.DashboardNotification;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.view.component.DownloadButton;
-import com.TpFinal.view.component.UploadButton;
-import com.TpFinal.view.component.UploadReceiver;
-import com.TpFinal.view.dummy.DemoUI;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -33,13 +27,9 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.TextStyle;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Locale;
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{

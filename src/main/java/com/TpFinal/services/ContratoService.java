@@ -1,24 +1,26 @@
 package com.TpFinal.services;
 
+
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
 import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.cobro.Cobro;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.contrato.DuracionContrato;
-import com.TpFinal.data.dto.contrato.TipoInteres;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.contrato.DuracionContrato;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.inmueble.ClaseInmueble;
+import com.TpFinal.dto.inmueble.Coordenada;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Propietario;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -177,11 +179,13 @@ public class ContratoService {
     }
     
     public void addCobros(ContratoAlquiler contrato) {
-    	if(contrato.getDuracionContrato()!=null) {
+    	if(contrato.getDuracionContrato()!=null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente) 
+    			&& (contrato.getCobros()==null || contrato.getCobros().size()==0)) {
+    		
     		BigDecimal valorAnterior = contrato.getValorInicial();
     		for(int i=0; i<contrato.getDuracionContrato().getDuracion(); i++) {
     			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
-    			LocalDate fechaCobro=LocalDate.of(contrato.getFechaCelebracion().getDayOfMonth(), contrato.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
+    			LocalDate fechaCobro=LocalDate.of(contrato.getFechaCelebracion().getYear(), contrato.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
     			if(contrato.getFechaCelebracion().getDayOfMonth()>=(int)contrato.getDiaDePago()) {
         			fechaCobro=fechaCobro.plusMonths(i+1);
     			}else {
@@ -190,7 +194,7 @@ public class ContratoService {
     			
     			Cobro c =new Cobro.Builder()
     					.setNumeroCuota(i)
-    					.setFechaDePago(fechaCobro)
+    					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
     					.build();
     			if((i+1) % contrato.getIntervaloActualizacion()==0) {

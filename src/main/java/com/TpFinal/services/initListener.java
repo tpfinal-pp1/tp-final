@@ -5,7 +5,6 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.utils.GeneradorDeDatos;
 
 /**
  * Application Lifecycle Listener implementation class initListener

@@ -1,17 +1,9 @@
 package com.TpFinal.view.contrato;
 
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.contrato.EstadoContrato;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
@@ -28,13 +20,9 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /* User Interface written in Java.
@@ -49,12 +37,7 @@ import java.util.List;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ContratoABMView extends DefaultLayout implements View {
 
-    /*
-     * Hundreds of widgets. Vaadin's user interface components are just Java objects
-     * that encapsulate and handle cross-browser support and client-server
-     * communication. The default Vaadin components are in the com.vaadin.ui package
-     * and there are over 500 more in vaadin.com/directory.
-     */
+    
     private TextField filter = new TextField();
     private Grid<Contrato> grid = new Grid<>();
     private Button nuevoAlquiler = new Button("Nuevo Alquiler");
@@ -68,9 +51,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private boolean isonMobile = false;
 
-    // ContratoService is a in-memory mock DAO that mimics
-    // a real-world datasource. Typically implemented for
-    // example as EJB or Spring Data based service.
+   
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
 
@@ -82,15 +63,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	/*
-	 * Synchronous event handling.
-	 *
-	 * Receive user interaction events on the server-side. This allows you to
-	 * synchronously handle those events. Vaadin automatically sends only the needed
-	 * changes to the web page without loading a new page.
-	 */
-	// nuevaVenta.addClickListener(e -> ContratoVentaForm.setVenta(new Contrato()));
-
+	
 	filter.addValueChangeListener(e -> updateList());
 	filter.setValueChangeMode(ValueChangeMode.LAZY);
 	filter.setPlaceholder("Filtrar");

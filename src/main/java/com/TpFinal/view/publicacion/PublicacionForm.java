@@ -1,14 +1,16 @@
 package com.TpFinal.view.publicacion;
 
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.publicacion.*;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.publicacion.*;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
-import com.vaadin.data.*;
+import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
+import com.vaadin.data.HasValue;
+import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.validator.DateRangeValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -48,6 +50,8 @@ public class PublicacionForm extends FormLayout {
         }
         });
         TabSheet tabSheet;
+
+        Button test = new Button("llenar combo");
 
 
 
@@ -93,7 +97,19 @@ public class PublicacionForm extends FormLayout {
                     }
                 }
             });
+        //TODO boton test para prueba unicamente
+            test.addClickListener(event -> {
+                Inmueble i;
+                InmuebleService inmuebleService = new InmuebleService();
+                List<Inmueble> inmuebles = inmuebleService.readAll();
+                i = inmuebles.get(0);
+                comboInmueble.setSelectedItem(i);
+                moneda.setSelectedItem(TipoMoneda.Pesos);
+
+            });
         }
+
+
 
 
         private void binding(){
@@ -226,12 +242,12 @@ public class PublicacionForm extends FormLayout {
             tabSheet.addTab(principal,"Publicacion");
 
             addComponent(tabSheet);
-            HorizontalLayout actions = new HorizontalLayout(save,delete);
+            HorizontalLayout actions = new HorizontalLayout(save,delete,test);
             addComponent(actions);
             actions.setSpacing(true);
 
         }
-
+//TODO comment
         public void setPublicacion(Publicacion Publicacion) {
 
             this.publicacion = Publicacion;

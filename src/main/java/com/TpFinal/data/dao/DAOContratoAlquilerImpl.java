@@ -2,7 +2,8 @@ package com.TpFinal.data.dao;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

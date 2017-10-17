@@ -1,9 +1,9 @@
 package com.TpFinal;
 
+import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.DashboardEvent.BrowserResizeEvent;
 import com.TpFinal.services.DashboardEvent.CloseOpenWindowsEvent;
 import com.TpFinal.services.DashboardEvent.PostViewChangeEvent;
-import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.DashboardViewType;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;

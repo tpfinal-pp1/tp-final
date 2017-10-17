@@ -1,5 +1,5 @@
 package com.TpFinal.view.publicacion;
-import com.TpFinal.data.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.DefaultLayout;

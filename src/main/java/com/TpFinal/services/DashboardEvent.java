@@ -3,8 +3,6 @@ package com.TpFinal.services;
 
 import com.TpFinal.view.DashboardViewType;
 
-import java.util.Collection;
-
 /*
  * Event bus events used in Dashboard are listed here as inner classes.
  */

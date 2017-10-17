@@ -1,6 +1,6 @@
 package com.TpFinal.data.dao.interfaces;
 
-        import com.TpFinal.data.dto.persona.Persona;
+        import com.TpFinal.dto.persona.Persona;
 
 public interface DAOPersona extends DAO<Persona>{
 

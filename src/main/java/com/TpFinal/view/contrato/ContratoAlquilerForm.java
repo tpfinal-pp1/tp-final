@@ -1,15 +1,17 @@
 package com.TpFinal.view.contrato;
 
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.DuracionContrato;
-import com.TpFinal.data.dto.contrato.TipoInteres;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.persona.Calificacion;
-import com.TpFinal.data.dto.persona.Inquilino;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.DuracionContrato;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
@@ -28,6 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -51,13 +54,10 @@ public class ContratoAlquilerForm extends FormLayout {
 
     // Actions
     Button save = new Button("Guardar");
-	DeleteButton delete = new DeleteButton("Eliminar",
-			VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
-			delete();
-		}
-	});
+    DeleteButton delete = new DeleteButton("Eliminar",
+	    VaadinIcons.WARNING, "Eliminar", "20%", e -> delete());
+    Button finalizarCarga = new Button("Finalizar Carga");
+    Button renovarContrato = new Button("Renovar");
 
     // TabPrincipal
     ComboBox<Inmueble> cbInmuebles = new ComboBox<>("Inmueble");
@@ -75,7 +75,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	@Override
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
-	    tfDocumento.setValue("Documento cargado");
+	    tfDocumento.setValue("Documento Cargado");
 	    btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 	}
@@ -98,18 +98,18 @@ public class ContratoAlquilerForm extends FormLayout {
     ContratoService service = new ContratoService();
     InmuebleService inmuebleService = new InmuebleService();
     PersonaService personaService = new PersonaService();
-    private ContratoABMView addressbookView;
+    private ContratoABMView contratoABMView;
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
     Persona person = new Persona(); // TODO ver donde se usa persona p.
 
-	//Tabsheet
-	FormLayout principal;
-	FormLayout condiciones;
-	TabSheet contratoAlquilerTabSheet;
+    // Tabsheet
+    FormLayout principal;
+    FormLayout condiciones;
+    TabSheet tabSheet;
 
     public ContratoAlquilerForm(ContratoABMView addressbook) {
 	// setSizeUndefined();
-	addressbookView = addressbook;
+	contratoABMView = addressbook;
 	configureComponents();
 	binding();
 	buildLayout();
@@ -124,10 +124,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	cbInteresFueraDeTermino.setItems(TipoInteres.toList());
 	cbtipointeres.setItems(TipoInteres.toList());
 
-	delete.setStyleName(ValoTheme.BUTTON_DANGER);
-	save.addClickListener(e -> this.save());
-	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	configurarAcciones();
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
 	    @Override
@@ -155,7 +152,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		    Persona inquilino = (Persona) valueChangeEvent.getValue();
 		    if (inquilino != null) {
 			if (inquilino.getRol(Rol.Inquilino) != null) {
-			    contratoAlquiler.setInquilinoContrato((Inquilino)inquilino.getRol(Rol.Inquilino));
+			    contratoAlquiler.setInquilinoContrato((Inquilino) inquilino.getRol(Rol.Inquilino));
 			} else {
 			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
 				    .setPersona(inquilino).build();
@@ -179,8 +176,41 @@ public class ContratoAlquilerForm extends FormLayout {
 	setVisible(false);
     }
 
-    private void binding() {
+    private void configurarAcciones() {
+	delete.setStyleName(ValoTheme.BUTTON_DANGER);
+	save.addClickListener(e -> this.save());
+	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	finalizarCarga.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	renovarContrato.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	save.addClickListener(e -> {
+	    this.binderContratoAlquiler = getBinderParaEdicion();
+	    this.save();
+	    binderContratoAlquiler.validate();
+	});
+	finalizarCarga.addClickListener(e -> {
+	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
+	    if (binderContratoAlquiler.isValid()) {
+		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
+	    } else {
+		tfDocumento.setValue("Cargue un documento.");
+	    }
+	    this.save();
+	    binderContratoAlquiler.validate();
+	});
+	renovarContrato.addClickListener(e -> {
+	    this.binderContratoAlquiler = getBinderParaEdicion();
+	    this.setContratoAlquiler(contratoAlquiler.clone());
 
+	});
+    }
+
+    private void binding() {
+	binderContratoAlquiler = getBinderParaEdicion();
+    }
+
+    private Binder<ContratoAlquiler> getBinderParaEdicion() {
+	Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
 	binderContratoAlquiler.forField(this.fechaCelebracion).asRequired("Seleccione una fecha de celebración")
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
 
@@ -188,7 +218,10 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
 
 	binderContratoAlquiler.forField(this.cbInmuebles).asRequired("Seleccione un Inmueble")
-		.withNullRepresentation(new Inmueble())
+		.withValidator(inmueble -> {
+		    return !inmuebleService.inmueblePoseeContratoVigente(inmueble);
+		},
+			"El inmueble seleccionado ya posee un contrato vigente.")
 		.bind(ContratoAlquiler::getInmueble, ContratoAlquiler::setInmueble);
 
 	binderContratoAlquiler.forField(this.cbInquilino).asRequired("Seleccione una persona")
@@ -210,20 +243,19 @@ public class ContratoAlquilerForm extends FormLayout {
 			    i.getContratos().add(contrato);
 			    contrato.setInquilinoContrato(i);
 			});
-	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino)// .asRequired("Seleccione un Tipo de Interes")
+	binderContratoAlquiler.forField(this.cbInteresFueraDeTermino).asRequired("Seleccione un Tipo de Interes")
 		.withNullRepresentation(null)
 		.bind(ContratoAlquiler::getTipoInteresPunitorio, ContratoAlquiler::setTipoInteresPunitorio);
 
-	binderContratoAlquiler.forField(this.cbtipointeres)// .asRequired("Seleccione un Tipo de Interes")
-		.withNullRepresentation(null)
+	binderContratoAlquiler.forField(this.cbtipointeres).asRequired("Seleccione un Tipo de Interes")
 		.bind(ContratoAlquiler::getTipoIncrementoCuota, ContratoAlquiler::setTipoIncrementoCuota);
 
-	binderContratoAlquiler.forField(rbgTipoMoneda)// .asRequired("Seleccione un Tipo de Moneda")
+	binderContratoAlquiler.forField(rbgTipoMoneda).asRequired("Seleccione un Tipo de Moneda")
 		.bind("moneda");
 
-	binderContratoAlquiler.forField(this.stIncremento)// .asRequired("Ingrese una frecuencia de incremento de la
-							  // cuota")
-		.withNullRepresentation(null).withValidator(v -> {
+	binderContratoAlquiler.forField(this.stIncremento).asRequired(
+		"Ingrese una frecuencia de incremento de la cuota")
+		.withValidator(v -> {
 		    DuracionContrato d = this.cbDuracionContrato.getValue();
 		    if (d != null) {
 			if (d.getDuracion() % v == 0)
@@ -235,7 +267,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.tfDiaDePago).withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> (n>0 && n<29), "Ingrese un dia entre 1 y 28")
+		.withValidator(n -> (n > 0 && n < 29), "Ingrese un dia entre 1 y 28")
 		.bind(ContratoAlquiler::getDiaDePago, ContratoAlquiler::setDiaDePago);
 
 	binderContratoAlquiler.forField(this.tfDocumento).withNullRepresentation("")
@@ -248,11 +280,13 @@ public class ContratoAlquilerForm extends FormLayout {
 		});
 
 	binderContratoAlquiler.forField(this.tfPActualizacion).withNullRepresentation("")
-		.withConverter(new StringToDoubleConverter("Debe ingresar un coeficiente"))
+		.withConverter(new StringToDoubleConverter("Debe ingresar un número"))
+		.withValidator(n -> (n >= 0 && n <= 100), "Ingrese un porcentaje entre 0 y 100")
 		.bind(ContratoAlquiler::getPorcentajeIncrementoCuota, ContratoAlquiler::setPorcentajeIncrementoCuota);
 
 	binderContratoAlquiler.forField(this.tfPagoFueraDeTermino).withNullRepresentation("")
-		.withConverter(new StringToDoubleConverter("Debe ingresar un coeficiente"))
+		.withConverter(new StringToDoubleConverter("Debe ingresar un número"))
+		.withValidator(n -> (n >= 0 && n <= 100), "Ingrese un porcentaje entre 0 y 100")
 		.bind(ContratoAlquiler::getPorcentajeIncrementoCuota, ContratoAlquiler::setPorcentajeIncrementoCuota);
 
 	binderContratoAlquiler.forField(this.tfPropietario).withNullRepresentation("")
@@ -267,15 +301,33 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.tfValorInicial).withNullRepresentation("")
 		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
+		.withValidator(n -> {
+		    return (n.compareTo(BigDecimal.ZERO) > 0);
+		}, "Debe Ingresar un Valor Positivo")
 		.bind(ContratoAlquiler::getValorInicial, ContratoAlquiler::setValorInicial);
+	return binderContratoAlquiler;
+    }
 
+    private Binder<ContratoAlquiler> getBinderParaFinalizacionDeCarga() {
+	binderContratoAlquiler = getBinderParaEdicion();
+	binderContratoAlquiler.forField(this.tfDocumento)
+		.asRequired("Debe Cargar al menos un documento antes de finalizar la carga.")
+		.withValidator(text -> text == "Documento Cargado",
+			"Debe Cargar al menos un documento antes de finalizar la carga.")
+		.bind(contrato -> {
+		    if (contrato.getDocumento() != null)
+			return "Documento Cargado";
+		    return "Documento No Cargado";
+		}, (contrato, text) -> {
+		});
+	return binderContratoAlquiler;
     }
 
     private void buildLayout() {
-		setSizeFull();
+	setSizeFull();
 	stIncremento.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
-	contratoAlquilerTabSheet = new TabSheet();
+	tabSheet = new TabSheet();
 
 	BlueLabel seccionDoc = new BlueLabel("Documento Word");
 
@@ -284,7 +336,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	stIncremento.setMaxValue(36);
 	stIncremento.setStepAmount(1);
 	stIncremento.setWidth("77%");
-	if (!this.addressbookView.checkIfOnMobile()) {
+	if (!this.contratoABMView.checkIfOnMobile()) {
 	    rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 	    stIncremento.setCaption("Frecuencia de Incremento(meses)");
 	    tfPActualizacion.setCaption("Aumento por Actualización");
@@ -301,11 +353,11 @@ public class ContratoAlquilerForm extends FormLayout {
 	tfDocumento.setCaption("Estado documento");
 	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
-	btDescargar.addClickListener(event ->{
-		btDescargar.descargar(contratoAlquiler, "Contrato.doc");		
+	btDescargar.addClickListener(event -> {
+	    btDescargar.descargar(contratoAlquiler, "Contrato.doc");
 	});
 
-	 principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
+	principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
 		tfDocumento,
 		documentoButtonsRow);
 
@@ -317,51 +369,134 @@ public class ContratoAlquilerForm extends FormLayout {
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	condiciones.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-	contratoAlquilerTabSheet.addTab(principal, "Alquiler");
-	contratoAlquilerTabSheet.addTab(condiciones, "Condiciones");
+	tabSheet.addTab(principal, "Alquiler");
+	tabSheet.addTab(condiciones, "Condiciones");
 
-	addComponent(contratoAlquilerTabSheet);
-	HorizontalLayout actions = new HorizontalLayout(save, delete);
+	addComponent(tabSheet);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, finalizarCarga, renovarContrato);
 
 	addComponent(actions);
 	this.setSpacing(false);
-	//actions.setSpacing(true);
-
+	actions.setSpacing(true);
 
     }
 
     public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
 
 	if (contratoAlquiler != null) {
+	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
 	    binderContratoAlquiler.readBean(contratoAlquiler);
-	    delete.setVisible(contratoAlquiler.getId() != null);
 	    if (contratoAlquiler.getDuracionContrato() != null) {
 		stIncremento.setMaxValue(contratoAlquiler.getDuracionContrato().getDuracion());
 	    }
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
+	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
 	    stIncremento.setValue(1);
-	    delete.setVisible(false);
 	}
 
 	setVisible(true);
-
-	getAddressbookView().setComponentsVisible(false);
-	if (getAddressbookView().isIsonMobile())
-	    contratoAlquilerTabSheet.focus();
+	contratoABMView().setComponentsVisible(false);
+	if (contratoABMView().isIsonMobile())
+	    tabSheet.focus();
 
     }
 
+    /**
+     * Configura el modo de edición de los componentes segun el estado del contrato.
+     * <p>
+     * <Strong>En proceso de carga: </Strong>Se permite libre edición, borrado y
+     * finalización de carga. No se permite renovación.
+     * <p>
+     * <Strong>Vigente, Próximo a vencer y vencido: </Strong>Se deshabilita la
+     * edición, borrado y finalización de carga. Se permite renovación.
+     * 
+     * @param estadoContrato
+     */
+    private void configurarComponentesSegunEstadoContrato(EstadoContrato estadoContrato) {
+	// TODO Auto-generated method stub
+
+	tfDocumento.setEnabled(false);
+	if (estadoContrato == EstadoContrato.EnProcesoDeCarga) {
+	    binderContratoAlquiler = getBinderParaEdicion();
+	    this.save.setVisible(true);
+	    this.delete.setVisible(true);
+	    this.finalizarCarga.setVisible(true);
+	    this.renovarContrato.setVisible(false);
+	    this.btCargar.setEnabled(true);
+	    this.btDescargar.setEnabled(true);
+	    this.cbDuracionContrato.setEnabled(true);
+	    this.cbInmuebles.setEnabled(true);
+	    this.cbInquilino.setEnabled(true);
+	    this.cbInteresFueraDeTermino.setEnabled(true);
+	    this.cbtipointeres.setEnabled(true);
+	    this.fechaCelebracion.setEnabled(true);
+	    this.rbgTipoMoneda.setEnabled(true);
+	    this.stIncremento.setEnabled(true);
+	    this.tfDiaDePago.setEnabled(true);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPActualizacion.setEnabled(true);
+	    this.tfPagoFueraDeTermino.setEnabled(true);
+	    this.tfValorInicial.setEnabled(true);
+
+	} else if (estadoContrato == EstadoContrato.Vencido) {
+	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
+	    this.save.setVisible(false);
+	    this.delete.setVisible(false);
+	    this.finalizarCarga.setVisible(false);
+	    this.renovarContrato.setVisible(true);
+	    this.btCargar.setEnabled(false);
+	    this.btDescargar.setEnabled(true);
+	    this.cbDuracionContrato.setEnabled(false);
+	    this.cbInmuebles.setEnabled(false);
+	    this.cbInquilino.setEnabled(false);
+	    this.cbInteresFueraDeTermino.setEnabled(false);
+	    this.cbtipointeres.setEnabled(false);
+	    this.fechaCelebracion.setEnabled(false);
+	    this.rbgTipoMoneda.setEnabled(false);
+	    this.stIncremento.setEnabled(false);
+	    this.tfDiaDePago.setEnabled(false);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPActualizacion.setEnabled(false);
+	    this.tfPagoFueraDeTermino.setEnabled(false);
+	    this.tfValorInicial.setEnabled(false);
+
+	} else {
+	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
+	    this.save.setVisible(false);
+	    this.delete.setVisible(false);
+	    this.finalizarCarga.setVisible(false);
+	    this.renovarContrato.setVisible(false);
+	    this.btCargar.setEnabled(false);
+	    this.btDescargar.setEnabled(true);
+	    this.cbDuracionContrato.setEnabled(false);
+	    this.cbInmuebles.setEnabled(false);
+	    this.cbInquilino.setEnabled(false);
+	    this.cbInteresFueraDeTermino.setEnabled(false);
+	    this.cbtipointeres.setEnabled(false);
+	    this.fechaCelebracion.setEnabled(false);
+	    this.rbgTipoMoneda.setEnabled(false);
+	    this.stIncremento.setEnabled(false);
+	    this.tfDiaDePago.setEnabled(false);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPActualizacion.setEnabled(false);
+	    this.tfPagoFueraDeTermino.setEnabled(false);
+	    this.tfValorInicial.setEnabled(false);
+
+	}
+    }
+
     private void delete() {
-		service.delete(contratoAlquiler);
-		addressbookView.updateList();
-		setVisible(false);
-		getAddressbookView().setComponentsVisible(true);
-		getAddressbookView().showSuccessNotification("Borrado");
-
-
-
+	boolean success = service.delete(contratoAlquiler);
+	contratoABMView.updateList();
+	setVisible(false);
+	contratoABMView().setComponentsVisible(true);
+	if (success) {
+	    contratoABMView().showSuccessNotification("Borrado");
+	} else {
+	    contratoABMView().showErrorNotification("No se realizaron Cambios");
+	}
 
     }
 
@@ -371,42 +506,40 @@ public class ContratoAlquilerForm extends FormLayout {
 	try {
 
 	    binderContratoAlquiler.writeBean(contratoAlquiler);
-	    
-	    if (archivo != null &&archivo.exists())
+	    if (contratoAlquiler.getEstadoContrato() == EstadoContrato.Vigente)
+		contratoAlquiler.getInmueble().setEstadoInmueble(EstadoInmueble.Alquilado);
+
+	    if (archivo != null && archivo.exists())
 		success = service.saveOrUpdate(contratoAlquiler, archivo);
 	    else
-		success = service.saveOrUpdate(contratoAlquiler, null);	   
+		success = service.saveOrUpdate(contratoAlquiler, null);
+
+	    contratoABMView.updateList();
+	    setVisible(false);
+	    contratoABMView().setComponentsVisible(true);
 
 	} catch (ValidationException e) {
-	    //Notification.show("Errores de validación, porfavor revise los campos e intente de nuevo");
 	    checkFieldsPerTab(e.getFieldValidationErrors());
-	    return;
+
 	} catch (Exception e) {
-	    // e.printStackTrace();
-	    Notification.show("Error: " + e.toString());
 	}
 
-	addressbookView.updateList();
-
-	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
-
 	if (success)
-	    getAddressbookView().showSuccessNotification("Guardado");
+	    contratoABMView().showSuccessNotification("Guardado");
 	else {
-	    getAddressbookView().showErrorNotification("No se realizaron cambios");
+	    contratoABMView().showErrorNotification("No se realizaron cambios");
 	}
 
     }
 
     public void cancel() {
-	addressbookView.updateList();
+	contratoABMView.updateList();
 	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
+	contratoABMView().setComponentsVisible(true);
     }
 
-    public ContratoABMView getAddressbookView() {
-	return addressbookView;
+    public ContratoABMView contratoABMView() {
+	return contratoABMView;
     }
 
     private void getPersonaSelector() {
@@ -456,53 +589,53 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.tfValorInicial.clear();
     }
 
-
-	private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
-		boolean tabPrincipalInvalidFields = false ;
-		boolean tabConditionsInvalidFields =false;
-		//TabElements for tab principal
-		List<Component> tabPrincipalComponents = new ArrayList<Component>();
-		tabPrincipalComponents.add(cbInmuebles);
-		tabPrincipalComponents.add(tfPropietario);
-		tabPrincipalComponents.add(cbInquilino);
-		tabPrincipalComponents.add(fechaCelebracion);
-		tabPrincipalComponents.add(tfDocumento);
-		for(BindingValidationStatus invalidField : invalidComponents){
-			tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
-			if(tabPrincipalInvalidFields)
-				break;
-		}
-		System.out.println(tabPrincipalInvalidFields);
-
-		//Tab elements for tab caracteristicas
-		List<Component> tabConditionsComponents = new ArrayList<Component>();
-		tabConditionsComponents.add(cbDuracionContrato);
-		tabConditionsComponents.add(tfDiaDePago);
-		tabConditionsComponents.add(tfPagoFueraDeTermino);
-		tabConditionsComponents.add( cbtipointeres);
-		tabConditionsComponents.add(new BlueLabel("Monto e Incremento"));
-		tabConditionsComponents.add(stIncremento);
-		tabConditionsComponents.add(tfPActualizacion);
-		tabConditionsComponents.add(tfValorInicial);
-		tabConditionsComponents.add(rbgTipoMoneda);
-		for(BindingValidationStatus invalidField : invalidComponents){
-			tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
-			if(tabConditionsInvalidFields)
-				break;
-		}
-		System.out.println(tabConditionsInvalidFields);
-
-		//Take user to the invalid components tag (in case there's only one)
-		if(tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
-			Notification.show("Error al guardar, porfavor revise los campos principales", Notification.Type.WARNING_MESSAGE);
-			contratoAlquilerTabSheet.setSelectedTab(principal);
-		}
-		else if(!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
-			Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo", Notification.Type.WARNING_MESSAGE);
-			contratoAlquilerTabSheet.setSelectedTab(condiciones);
-		}
-		else{
-			Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo", Notification.Type.WARNING_MESSAGE);
-		}
+    private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
+	boolean tabPrincipalInvalidFields = false;
+	boolean tabConditionsInvalidFields = false;
+	// TabElements for tab principal
+	List<Component> tabPrincipalComponents = new ArrayList<Component>();
+	tabPrincipalComponents.add(cbInmuebles);
+	tabPrincipalComponents.add(tfPropietario);
+	tabPrincipalComponents.add(cbInquilino);
+	tabPrincipalComponents.add(fechaCelebracion);
+	tabPrincipalComponents.add(tfDocumento);
+	for (BindingValidationStatus invalidField : invalidComponents) {
+	    tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+	    if (tabPrincipalInvalidFields)
+		break;
 	}
+	System.out.println(tabPrincipalInvalidFields);
+
+	// Tab elements for tab caracteristicas
+	List<Component> tabConditionsComponents = new ArrayList<Component>();
+	tabConditionsComponents.add(cbDuracionContrato);
+	tabConditionsComponents.add(tfDiaDePago);
+	tabConditionsComponents.add(tfPagoFueraDeTermino);
+	tabConditionsComponents.add(cbtipointeres);
+	tabConditionsComponents.add(new BlueLabel("Monto e Incremento"));
+	tabConditionsComponents.add(stIncremento);
+	tabConditionsComponents.add(tfPActualizacion);
+	tabConditionsComponents.add(tfValorInicial);
+	tabConditionsComponents.add(rbgTipoMoneda);
+	for (BindingValidationStatus invalidField : invalidComponents) {
+	    tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+	    if (tabConditionsInvalidFields)
+		break;
+	}
+	System.out.println(tabConditionsInvalidFields);
+
+	// Take user to the invalid components tag (in case there's only one)
+	if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+	    Notification.show("Error al guardar, porfavor revise los campos principales",
+		    Notification.Type.WARNING_MESSAGE);
+	    tabSheet.setSelectedTab(principal);
+	} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+	    Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	    tabSheet.setSelectedTab(condiciones);
+	} else {
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	}
+    }
 }

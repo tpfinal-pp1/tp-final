@@ -25,22 +25,22 @@
 -->
 
 		<!-- Names the annotated entity class -->
-		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
-		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
-		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
-		<mapping class="com.TpFinal.data.dto.publicacion.Publicacion" />
-		<mapping class="com.TpFinal.data.dto.publicacion.PublicacionAlquiler" />
-		<mapping class="com.TpFinal.data.dto.publicacion.PublicacionVenta" />
-		<mapping class="com.TpFinal.data.dto.publicacion.TipoPublicacion" />
-		<mapping class="com.TpFinal.data.dto.contrato.Contrato" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoVenta" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoAlquiler" />
-		<mapping class="com.TpFinal.data.dto.persona.Persona" />
-		<mapping class="com.TpFinal.data.dto.persona.RolPersona" />
-		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
-		<mapping class="com.TpFinal.data.dto.persona.Propietario" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoDuracion" />
-		<mapping class="com.TpFinal.data.dto.cobro.Cobro" />
+		<mapping class="com.TpFinal.dto.inmueble.Inmueble" />
+		<mapping class="com.TpFinal.dto.inmueble.Coordenada" />
+		<mapping class="com.TpFinal.dto.inmueble.Direccion" />
+		<mapping class="com.TpFinal.dto.publicacion.Publicacion" />
+		<mapping class="com.TpFinal.dto.publicacion.PublicacionAlquiler" />
+		<mapping class="com.TpFinal.dto.publicacion.PublicacionVenta" />
+		<mapping class="com.TpFinal.dto.publicacion.TipoPublicacion" />
+		<mapping class="com.TpFinal.dto.contrato.Contrato" />
+		<mapping class="com.TpFinal.dto.contrato.ContratoVenta" />
+		<mapping class="com.TpFinal.dto.contrato.ContratoAlquiler" />
+		<mapping class="com.TpFinal.dto.persona.Persona" />
+		<mapping class="com.TpFinal.dto.persona.RolPersona" />
+		<mapping class="com.TpFinal.dto.persona.Inquilino" />
+		<mapping class="com.TpFinal.dto.persona.Propietario" />
+		<mapping class="com.TpFinal.dto.contrato.ContratoDuracion" />
+		<mapping class="com.TpFinal.dto.cobro.Cobro" />
 		
 		
 	

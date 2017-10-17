@@ -5,14 +5,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
-import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.persona.Inquilino;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
 
 public class PersonaService {
 	DAOPersona dao;

@@ -1,11 +1,10 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -28,7 +27,6 @@ import java.util.List;
 
 @Title("Inmuebles")
 @Theme("valo")
-// @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class InmuebleABMView extends DefaultLayout implements View {
 
     private TextField filter = new TextField();
@@ -195,17 +193,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
 
-	    grid.addColumn(inmueble -> {
-		String ret = "";
-		if (inmueble.getClaseInmueble() == null) {
-		    ret = "No aclarado";
-		} else {
-		    ret = inmueble.getClaseInmueble().toString();
-		}
-		return ret;
-	    }).setCaption("Clase Inmueble");
-
-	    grid.addComponentColumn(inmueble -> {
+	   grid.addComponentColumn(inmueble -> {
 		Button edit = new Button(VaadinIcons.EDIT);
 		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
 		edit.addClickListener(e -> {
@@ -238,7 +226,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		CssLayout hl = new CssLayout(edit, del, verFotos);
 		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		return hl;
-	    }).setCaption("Acciones");
+	    }).setCaption("Accioness");
 
 	    grid.getColumns().forEach(c -> c.setResizable(false));
 	}

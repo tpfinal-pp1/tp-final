@@ -1,12 +1,12 @@
 package com.TpFinal.data.dao;
 
-import com.TpFinal.data.dto.BorradoLogico;
-import com.TpFinal.data.dto.DashboardNotification;
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.persona.User;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAO;
-import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.dto.BorradoLogico;
+import com.TpFinal.dto.DashboardNotification;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.persona.User;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;

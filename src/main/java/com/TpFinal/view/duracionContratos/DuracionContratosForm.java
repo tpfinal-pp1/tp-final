@@ -1,21 +1,12 @@
 package com.TpFinal.view.duracionContratos;
 
-import com.TpFinal.data.dto.contrato.ContratoDuracion;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.contrato.DuracionContrato;
-import com.TpFinal.data.dto.persona.Calificacion;
-import com.TpFinal.data.dto.persona.Persona;
+import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.services.ContratoDuracionService;
-import com.TpFinal.services.InmuebleService;
-import com.TpFinal.services.PersonaService;
-import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;

@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import com.TpFinal.data.dto.JsonUtil;
-import com.TpFinal.data.dto.Localidad;
-import com.TpFinal.data.dto.LocalidadRAW;
-import com.TpFinal.data.dto.Provincia;
+import com.TpFinal.dto.JsonUtil;
+import com.TpFinal.dto.Localidad;
+import com.TpFinal.dto.LocalidadRAW;
+import com.TpFinal.dto.Provincia;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 

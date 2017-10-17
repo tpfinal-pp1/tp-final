@@ -1,14 +1,14 @@
 package com.TpFinal.view.cobros;
 
-import com.TpFinal.data.dto.Localidad;
-import com.TpFinal.data.dto.Provincia;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoInmueble;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.Rol;
+import com.TpFinal.dto.Localidad;
+import com.TpFinal.dto.Provincia;
+import com.TpFinal.dto.inmueble.ClaseInmueble;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoInmueble;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;

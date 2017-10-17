@@ -8,26 +8,24 @@ import java.util.List;
 import java.util.Random;
 
 import com.TpFinal.data.dao.DAOContratoImpl;
-import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
-import com.TpFinal.data.dao.interfaces.DAOContrato;
-import com.TpFinal.data.dao.DAOPersonaImpl;
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.Localidad;
-import com.TpFinal.data.dto.Provincia;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.contrato.DuracionContrato;
-import com.TpFinal.data.dto.contrato.TipoInteres;
-import com.TpFinal.data.dto.inmueble.*;
-import com.TpFinal.data.dto.persona.Inquilino;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.Localidad;
+import com.TpFinal.dto.Provincia;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.contrato.DuracionContrato;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.inmueble.*;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.ProvinciaService;
+import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
@@ -92,6 +90,7 @@ public class GeneradorDeDatos {
 		    daoPer.saveOrUpdate(inquilino);
 
 		    ContratoVenta contratoVenta =contratoVentaDe(inmueble, pubVenta, comprador);
+		    contratoVenta.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
 		    
 		    
 		    daoPer.saveOrUpdate(p);
@@ -102,6 +101,7 @@ public class GeneradorDeDatos {
 		    daoope.saveOrUpdate(pubAlquiler);
 		    inmueble.addContrato(contratoVenta);
 		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
+		    contratoAlquiler.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
 		    inmueble.addContrato(contratoAlquiler);
 		    daoContratos.saveOrUpdate(contratoAlquiler);
 		    daoInm.saveOrUpdate(inmueble);

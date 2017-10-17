@@ -7,7 +7,7 @@ import java.util.List;
 
 import com.TpFinal.data.dao.DAOContratoDuracionImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoDuracion;
-import com.TpFinal.data.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.contrato.ContratoDuracion;
 
 public class ContratoDuracionService {
 	DAOContratoDuracion dao;

@@ -1,15 +1,10 @@
 package com.TpFinal.services;
 
-import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
-import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.inmueble.*;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.*;
+import com.TpFinal.dto.inmueble.*;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.*;
 import com.TpFinal.exceptions.services.PublicacionServiceException;
 
 import java.math.BigDecimal;

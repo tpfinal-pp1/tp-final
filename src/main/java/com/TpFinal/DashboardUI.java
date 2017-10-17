@@ -2,13 +2,12 @@ package com.TpFinal;
 
 
 
-import com.TpFinal.data.dto.persona.User;
+import com.TpFinal.dto.persona.User;
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.utils.DummyDataProvider;
 
 import com.TpFinal.utils.DataProvider;
-
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
@@ -48,7 +47,7 @@ public final class DashboardUI extends UI {
         @Override
         protected void init(final VaadinRequest request) {
             
-            GeneradorDeDatos.generarDatos(2);
+            GeneradorDeDatos.generarDatos(10);
             setLocale(Locale.forLanguageTag("es-AR"));
 
             DashboardEventBus.register(this);

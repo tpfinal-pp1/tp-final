@@ -1,6 +1,6 @@
 package com.TpFinal.view.cobros;
 
-import com.TpFinal.data.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
@@ -150,9 +150,10 @@ public class CobrosABMView extends DefaultLayout implements View {
 
         private void configureNewItem() {
             newItem.addClickListener(e -> {
+                Notification.show("Falta Implementar");/*
                 grid.asSingleSelect().clear();
                 cobrosForm.clearFields();
-                cobrosForm.setInmueble(null);
+                cobrosForm.setInmueble(null);*/
             });
             newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
         }
@@ -251,8 +252,6 @@ public class CobrosABMView extends DefaultLayout implements View {
             List<Cobro> cobros = cobroService.readAll();
             grid.setItems(cobros);
         }
-
-
 
     }
 
