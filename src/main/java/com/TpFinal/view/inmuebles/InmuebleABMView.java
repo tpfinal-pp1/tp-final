@@ -194,17 +194,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
 
-	    grid.addColumn(inmueble -> {
-		String ret = "";
-		if (inmueble.getClaseInmueble() == null) {
-		    ret = "No aclarado";
-		} else {
-		    ret = inmueble.getClaseInmueble().toString();
-		}
-		return ret;
-	    }).setCaption("Clase Inmueble");
-
-	    grid.addComponentColumn(inmueble -> {
+	   grid.addComponentColumn(inmueble -> {
 		Button edit = new Button(VaadinIcons.EDIT);
 		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
 		edit.addClickListener(e -> {
