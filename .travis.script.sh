@@ -10,7 +10,7 @@ then
 	# Pull request for master with secure variables available
 	mvn -B -e -V -Dvaadin.testbench.developer.license=dfe12f22-5ae4-4414-97a9-2e8474b8336c clean test
 
-#else
+else
 	# Something else than a pull request inside the repository
-#	mvn -B -e -V -Dvaadin.testbench.developer.license=dfe12f22-5ae4-4414-97a9-2e8474b8336c clean test jacoco:report coveralls:report sonar:sonar
+	mvn -B -e -V -Dvaadin.testbench.developer.license=dfe12f22-5ae4-4414-97a9-2e8474b8336c clean test jacoco:report coveralls:report sonar:sonar
 fi

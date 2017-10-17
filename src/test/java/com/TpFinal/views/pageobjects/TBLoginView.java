@@ -18,7 +18,8 @@ public class TBLoginView extends TestBenchTestCase {
     }
 
     public TBMainView login() {
-        getLoginButton().first().click();
+        if(isDisplayed())
+            getLoginButton().first().click();
         return new TBMainView(getDriver());
     }
     private ElementQuery<ButtonElement> getLoginButton() {
