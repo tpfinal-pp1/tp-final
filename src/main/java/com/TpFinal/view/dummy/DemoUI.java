@@ -1,23 +1,16 @@
 package com.TpFinal.view.dummy;
 
-import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
-import com.google.common.eventbus.Subscribe;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Page;
 import com.vaadin.server.Sizeable;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.*;
 
 
-import javax.servlet.annotation.WebServlet;
 import java.time.Month;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -93,7 +86,7 @@ public class DemoUI extends VerticalLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        com.TpFinal.services.DashboardEventBus.unregister(this);
+        com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
     }
 
    /* @Subscribe

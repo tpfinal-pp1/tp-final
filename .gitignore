@@ -64,6 +64,8 @@ rebel.xml
 .DS_Store
 *.iml
 .idea/
+.png/
+/File/
 
 
 src/main/resources/prueba.pdf

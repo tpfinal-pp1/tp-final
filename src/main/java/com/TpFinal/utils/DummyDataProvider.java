@@ -1,20 +1,16 @@
 package com.TpFinal.utils;
 
-import com.TpFinal.data.dto.*;
+import com.TpFinal.UnitTests.dto.*;
 
 
-import com.TpFinal.data.dto.persona.User;
+import com.TpFinal.UnitTests.dto.persona.User;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import com.google.gson.*;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.util.CurrentInstance;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -189,10 +185,17 @@ public class DummyDataProvider implements DataProvider {
     @Override
     public User authenticate(String userName, String password) {
         User u=new User();
-        u.setFirstName(DummyDataGenerator.randomFirstName());
-        u.setLastName(DummyDataGenerator.randomLastName());
         u.setRole("admin");
-        return u;
+        u.setLastName(DummyDataGenerator.randomLastName());
+
+        if(userName.equals("")){
+        u.setFirstName("test");
+        u.setLastName(DummyDataGenerator.randomLastName());
+        return u;}
+
+        u.setFirstName(userName);
+        u.setLastName(DummyDataGenerator.randomLastName());
+       return u;
     }
 
     @Override

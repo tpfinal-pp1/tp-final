@@ -25,22 +25,22 @@
 -->
 
 		<!-- Names the annotated entity class -->
-		<mapping class="com.TpFinal.data.dto.inmueble.Inmueble" />
-		<mapping class="com.TpFinal.data.dto.inmueble.Coordenada" />
-		<mapping class="com.TpFinal.data.dto.inmueble.Direccion" />
-		<mapping class="com.TpFinal.data.dto.publicacion.Publicacion" />
-		<mapping class="com.TpFinal.data.dto.publicacion.PublicacionAlquiler" />
-		<mapping class="com.TpFinal.data.dto.publicacion.PublicacionVenta" />
-		<mapping class="com.TpFinal.data.dto.publicacion.TipoPublicacion" />
-		<mapping class="com.TpFinal.data.dto.contrato.Contrato" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoVenta" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoAlquiler" />
-		<mapping class="com.TpFinal.data.dto.persona.Persona" />
-		<mapping class="com.TpFinal.data.dto.persona.RolPersona" />
-		<mapping class="com.TpFinal.data.dto.persona.Inquilino" />
-		<mapping class="com.TpFinal.data.dto.persona.Propietario" />
-		<mapping class="com.TpFinal.data.dto.contrato.ContratoDuracion" />
-		<mapping class="com.TpFinal.data.dto.cobro.Cobro" />
+		<mapping class="com.TpFinal.UnitTests.dto.inmueble.Inmueble" />
+		<mapping class="com.TpFinal.UnitTests.dto.inmueble.Coordenada" />
+		<mapping class="com.TpFinal.UnitTests.dto.inmueble.Direccion" />
+		<mapping class="com.TpFinal.UnitTests.dto.publicacion.Publicacion" />
+		<mapping class="com.TpFinal.UnitTests.dto.publicacion.PublicacionAlquiler" />
+		<mapping class="com.TpFinal.UnitTests.dto.publicacion.PublicacionVenta" />
+		<mapping class="com.TpFinal.UnitTests.dto.publicacion.TipoPublicacion" />
+		<mapping class="com.TpFinal.UnitTests.dto.contrato.Contrato" />
+		<mapping class="com.TpFinal.UnitTests.dto.contrato.ContratoVenta" />
+		<mapping class="com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler" />
+		<mapping class="com.TpFinal.UnitTests.dto.persona.Persona" />
+		<mapping class="com.TpFinal.UnitTests.dto.persona.RolPersona" />
+		<mapping class="com.TpFinal.UnitTests.dto.persona.Inquilino" />
+		<mapping class="com.TpFinal.UnitTests.dto.persona.Propietario" />
+		<mapping class="com.TpFinal.UnitTests.dto.contrato.ContratoDuracion" />
+		<mapping class="com.TpFinal.UnitTests.dto.cobro.Cobro" />
 		
 		
 	

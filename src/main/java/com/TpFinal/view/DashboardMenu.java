@@ -1,11 +1,11 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.data.dto.persona.User;
+import com.TpFinal.UnitTests.dto.persona.User;
 import com.TpFinal.view.component.ProfilePreferencesWindow;
 
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.Integracion.services.DashboardEvent;
+import com.TpFinal.Integracion.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
 
 import com.vaadin.icons.VaadinIcons;

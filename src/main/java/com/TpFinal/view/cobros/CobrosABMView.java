@@ -1,8 +1,8 @@
 package com.TpFinal.view.cobros;
 
-import com.TpFinal.data.dto.cobro.Cobro;
-import com.TpFinal.services.CobroService;
-import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.UnitTests.dto.cobro.Cobro;
+import com.TpFinal.Integracion.services.CobroService;
+import com.TpFinal.Integracion.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
@@ -118,7 +118,7 @@ public class CobrosABMView extends DefaultLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        com.TpFinal.services.DashboardEventBus.unregister(this);
+        com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
     }
 
     @Subscribe
@@ -150,9 +150,10 @@ public class CobrosABMView extends DefaultLayout implements View {
 
         private void configureNewItem() {
             newItem.addClickListener(e -> {
+                Notification.show("Falta Implementar");/*
                 grid.asSingleSelect().clear();
                 cobrosForm.clearFields();
-                cobrosForm.setInmueble(null);
+                cobrosForm.setInmueble(null);*/
             });
             newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
         }
@@ -251,8 +252,6 @@ public class CobrosABMView extends DefaultLayout implements View {
             List<Cobro> cobros = cobroService.readAll();
             grid.setItems(cobros);
         }
-
-
 
     }
 

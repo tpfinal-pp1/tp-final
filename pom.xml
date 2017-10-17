@@ -7,12 +7,14 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<productionMode>true</productionMode>
+		<productionMode>false</productionMode>
 		<vaadin.version>8.1.5</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
 	</properties>
+
 
 	<repositories>
 		<repository>
@@ -71,53 +73,6 @@
 							</execution>
 						</executions>
 					</plugin>
-
-					<plugin>
-						<groupId>org.eclipse.jetty</groupId>
-						<artifactId>jetty-maven-plugin</artifactId>
-						<version>9.2.3.v20140905</version>
-						<executions>
-							<!-- start and stop jetty (running our app) when running integration 
-								tests -->
-							<execution>
-								<id>start-jetty</id>
-								<phase>pre-integration-test</phase>
-								<goals>
-									<goal>start</goal>
-								</goals>
-								<configuration>
-									<scanIntervalSeconds>0</scanIntervalSeconds>
-									<stopKey>STOP</stopKey>
-									<stopPort>8866</stopPort>
-								</configuration>
-							</execution>
-							<execution>
-								<id>stop-jetty</id>
-								<phase>post-integration-test</phase>
-								<goals>
-									<goal>stop</goal>
-								</goals>
-								<configuration>
-									<stopKey>STOP</stopKey>
-									<stopPort>8866</stopPort>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-failsafe-plugin</artifactId>
-						<version>2.12</version>
-						<executions>
-							<execution>
-								<goals>
-									<goal>integration-test</goal>
-									<goal>verify</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -168,6 +123,16 @@
 			<version>5.0.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-testbench-api</artifactId>
+			<version>${vaadin.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.github.bonigarcia</groupId>
+			<artifactId>webdrivermanager</artifactId>
+			<version>1.7.2</version>
+		</dependency>
+		<dependency>
 			<groupId>org.peimari</groupId>
 			<artifactId>maddon</artifactId>
 			<version>1.15</version>
@@ -215,8 +180,10 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>23.1-jre</version>
+			<version>22.0</version>
+
 		</dependency>
+
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -323,6 +290,11 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.6.201602180812</version>
+				<configuration>
+					<excludes>
+						<exclude>**/com/TpFinal/view/*</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>
@@ -400,6 +372,59 @@
 					</webResources>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- The Jetty plugin allows us to easily test the development build by
+				running jetty:run on the command line. -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.3.v20140905</version>
+				<executions>
+					<!-- start and stop jetty (running our app) when running integration
+						tests -->
+					<execution>
+						<id>start-jetty</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>start</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>stop-jetty</id>
+						<phase>post-integration-test</phase>
+						<goals>
+							<goal>stop</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<scanIntervalSeconds>2</scanIntervalSeconds>
+					<stopPort>8081</stopPort>
+					<stopKey>foo</stopKey>
+					<stopWait>5</stopWait>
+					<!-- Prevent Jetty from scanning the classpath. -->
+					<!--Speeds up startup time significantly -->
+					<webAppConfig>
+						<webInfIncludeJarPattern>^$</webInfIncludeJarPattern>
+						<containerIncludeJarPattern>^$</containerIncludeJarPattern>
+					</webAppConfig>
+
+				</configuration>
+			</plugin>
+
 		</plugins>
 
 		<pluginManagement>
