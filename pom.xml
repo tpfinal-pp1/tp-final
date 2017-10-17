@@ -331,6 +331,7 @@
 						</goals>
 					</execution>
 				</executions>
+
 				<configuration>
 					<scanIntervalSeconds>2</scanIntervalSeconds>
 					<stopPort>8081</stopPort>
