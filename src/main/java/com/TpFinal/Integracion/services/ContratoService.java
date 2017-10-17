@@ -1,17 +1,13 @@
 package com.TpFinal.Integracion.services;
 
-import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
-import com.TpFinal.data.dao.DAOContratoImpl;
-import com.TpFinal.data.dao.DAOContratoVentaImpl;
-import com.TpFinal.data.dao.interfaces.DAOContrato;
-import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
-import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
+
 import com.TpFinal.UnitTests.dto.EstadoRegistro;
 import com.TpFinal.UnitTests.dto.cobro.Cobro;
 import com.TpFinal.UnitTests.dto.contrato.Contrato;
 import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
 import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
 import com.TpFinal.UnitTests.dto.contrato.DuracionContrato;
+import com.TpFinal.UnitTests.dto.contrato.EstadoContrato;
 import com.TpFinal.UnitTests.dto.contrato.TipoInteres;
 import com.TpFinal.UnitTests.dto.inmueble.ClaseInmueble;
 import com.TpFinal.UnitTests.dto.inmueble.Coordenada;
@@ -19,6 +15,12 @@ import com.TpFinal.UnitTests.dto.inmueble.Direccion;
 import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
 import com.TpFinal.UnitTests.dto.persona.Persona;
 import com.TpFinal.UnitTests.dto.persona.Propietario;
+import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
+import com.TpFinal.data.dao.DAOContratoImpl;
+import com.TpFinal.data.dao.DAOContratoVentaImpl;
+import com.TpFinal.data.dao.interfaces.DAOContrato;
+import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
+import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -28,6 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import org.openqa.selenium.internal.FindsById;
 
 public class ContratoService {
     public static enum instancia {
@@ -175,7 +179,9 @@ public class ContratoService {
     }
     
     public void addCobros(ContratoAlquiler contrato) {
-    	if(contrato.getDuracionContrato()!=null) {
+    	if(contrato.getDuracionContrato()!=null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente) 
+    			&& (contrato.getCobros()==null || contrato.getCobros().size()==0)) {
+    		
     		BigDecimal valorAnterior = contrato.getValorInicial();
     		for(int i=0; i<contrato.getDuracionContrato().getDuracion(); i++) {
     			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes

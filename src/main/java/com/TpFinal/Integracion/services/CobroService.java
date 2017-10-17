@@ -1,7 +1,6 @@
 package com.TpFinal.Integracion.services;
 
-import com.TpFinal.data.dao.DAOCobroImpl;
-import com.TpFinal.data.dao.interfaces.DAOCobro;
+
 import com.TpFinal.UnitTests.dto.cobro.Cobro;
 import com.TpFinal.UnitTests.dto.cobro.EstadoCobro;
 import com.TpFinal.UnitTests.dto.contrato.Contrato;
@@ -9,6 +8,8 @@ import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
 import com.TpFinal.UnitTests.dto.contrato.EstadoContrato;
 import com.TpFinal.UnitTests.dto.contrato.TipoInteres;
 import com.TpFinal.UnitTests.dto.persona.Persona;
+import com.TpFinal.data.dao.DAOCobroImpl;
+import com.TpFinal.data.dao.interfaces.DAOCobro;
 
 import java.math.BigDecimal;
 import java.time.*;
@@ -18,6 +19,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+
+import org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor;
+import org.omg.DynamicAny.DynAnySeqHelper;
 
 public class CobroService {
 	
@@ -37,9 +42,12 @@ public class CobroService {
 	}
 	
 	public List<Cobro> readAll() {
-		return dao.readAllActives();
+		List<Cobro>ret=dao.readAllActives();
+		calcularDatosFaltantes(ret);
+		return ret;
 	}
 	
+	//lo deje en public para testearlo
 	public void calcularDatosFaltantes(List<Cobro>cobros) {
 		cobros.forEach(c ->{
 			if(hayQueCalcular(c)) {
@@ -49,6 +57,7 @@ public class CobroService {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
 						interes=c.getMontoOriginal().multiply(interes);
+						c.setInteres(interes);
 						BigDecimal nuevoValor=c.getMontoOriginal().add(interes);
 						c.setMontoRecibido(nuevoValor);
 					}else if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Acumulativo)) {
@@ -58,6 +67,7 @@ public class CobroService {
 							valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));
 						}
 						c.setMontoRecibido(valorAnterior);
+						c.setInteres(c.getMontoRecibido().subtract(c.getMontoOriginal()));
 					}
 				}
 			}
