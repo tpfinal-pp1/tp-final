@@ -1,19 +1,13 @@
 package com.TpFinal.view.duracionContratos;
 
-import com.TpFinal.data.dto.persona.*;
-
-import java.util.HashMap;
-import java.util.Map;
 
 
 import com.TpFinal.data.dto.contrato.ContratoDuracion;
-import com.TpFinal.data.dto.publicacion.Rol;
+
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
