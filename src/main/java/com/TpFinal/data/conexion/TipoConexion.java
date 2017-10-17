@@ -6,7 +6,7 @@ import org.hibernate.cfg.Environment;
 
 public enum TipoConexion {	H2Test("org.hibernate.dialect.H2Dialect"
 									,"org.h2.Driver"
-									,"jdbc:h2:~//Test2;AUTO_SERVER=TRUE"
+									,"jdbc:h2:~//Test3;AUTO_SERVER=TRUE"
 									,"root"
 									,"root"
 									,"false"

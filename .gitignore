@@ -64,6 +64,7 @@ rebel.xml
 .DS_Store
 *.iml
 .idea/
+.png/
 /File/
 
 
