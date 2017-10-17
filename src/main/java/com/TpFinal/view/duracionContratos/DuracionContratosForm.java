@@ -1,7 +1,7 @@
 package com.TpFinal.view.duracionContratos;
 
-import com.TpFinal.UnitTests.dto.contrato.ContratoDuracion;
-import com.TpFinal.Integracion.services.ContratoDuracionService;
+import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;

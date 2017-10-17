@@ -1,7 +1,7 @@
 package com.TpFinal.view.dummy.pdf;
 
-import com.TpFinal.Integracion.services.DashboardEvent;
-import com.TpFinal.Integracion.services.DashboardEventBus;
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;

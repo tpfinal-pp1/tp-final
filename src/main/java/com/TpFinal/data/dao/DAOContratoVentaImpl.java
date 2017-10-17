@@ -13,7 +13,7 @@ import org.hibernate.Transaction;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
-import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.contrato.ContratoVenta;
 
 public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOContratoVenta {
 

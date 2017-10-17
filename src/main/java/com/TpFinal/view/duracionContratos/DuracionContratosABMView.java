@@ -1,8 +1,8 @@
 package com.TpFinal.view.duracionContratos;
 
-import com.TpFinal.UnitTests.dto.contrato.ContratoDuracion;
-import com.TpFinal.Integracion.services.ContratoDuracionService;
-import com.TpFinal.Integracion.services.DashboardEvent;
+import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.services.ContratoDuracionService;
+import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -221,7 +221,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
+        com.TpFinal.services.DashboardEventBus.unregister(this);
     }
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {

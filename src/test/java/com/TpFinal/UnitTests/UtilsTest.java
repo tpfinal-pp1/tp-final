@@ -1,7 +1,7 @@
 package com.TpFinal.UnitTests;
 
 
-import com.TpFinal.UnitTests.dto.persona.Persona;
+import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.utils.Utils;
 import org.junit.Test;
 

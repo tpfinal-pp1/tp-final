@@ -1,8 +1,8 @@
 package com.TpFinal.data.dao.interfaces;
 
-import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
-
 import java.io.File;
+
+import com.TpFinal.dto.contrato.ContratoAlquiler;
 
 /**
  * Created by Max on 9/30/2017.

@@ -1,6 +1,6 @@
 package com.TpFinal.view.component;
 
-import com.TpFinal.Integracion.services.DashboardEventBus;
+import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.ui.*;

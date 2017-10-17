@@ -1,9 +1,9 @@
 package com.TpFinal.view.persona;
 
-import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
-import com.TpFinal.UnitTests.dto.persona.Calificacion;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.Integracion.services.PersonaService;
+import com.TpFinal.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;

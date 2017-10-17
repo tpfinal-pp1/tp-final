@@ -14,12 +14,12 @@ import java.util.List;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
-import com.TpFinal.UnitTests.dto.EstadoRegistro;
-import com.TpFinal.UnitTests.dto.persona.Calificacion;
-import com.TpFinal.UnitTests.dto.persona.Inquilino;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.UnitTests.dto.persona.RolPersona;
-import com.TpFinal.UnitTests.dto.publicacion.Rol;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.RolPersona;
+import com.TpFinal.dto.publicacion.Rol;
 
 
 public class DAOPersonaImplIT {

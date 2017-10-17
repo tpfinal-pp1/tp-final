@@ -1,7 +1,7 @@
 package com.TpFinal.view.persona;
 
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.Integracion.services.PersonaService;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.services.PersonaService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;

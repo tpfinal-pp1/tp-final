@@ -9,14 +9,14 @@ import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.CriterioBusquedaInmuebleDTO;
-import com.TpFinal.UnitTests.dto.inmueble.Direccion;
-import com.TpFinal.UnitTests.dto.inmueble.EstadoInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
-import com.TpFinal.UnitTests.dto.publicacion.Publicacion;
-import com.TpFinal.UnitTests.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.UnitTests.dto.publicacion.PublicacionVenta;
-import com.TpFinal.UnitTests.dto.publicacion.TipoPublicacion;
+import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
+import com.TpFinal.dto.publicacion.TipoPublicacion;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 

@@ -1,11 +1,11 @@
 package com.TpFinal.view.contrato;
 
-import com.TpFinal.UnitTests.dto.contrato.Contrato;
-import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
-import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.Integracion.services.ContratoService;
-import com.TpFinal.Integracion.services.DashboardEvent;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -276,7 +276,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	super.detach();
 	// A new instance of TransactionsView is created every time it's
 	// navigated to so we'll need to clean up references to it on detach.
-	com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
+	com.TpFinal.services.DashboardEventBus.unregister(this);
     }
 
     @Subscribe

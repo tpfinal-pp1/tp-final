@@ -16,15 +16,16 @@ import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
-import com.TpFinal.UnitTests.dto.inmueble.ClaseInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.Coordenada;
-import com.TpFinal.UnitTests.dto.inmueble.Direccion;
-import com.TpFinal.UnitTests.dto.inmueble.EstadoInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
-import com.TpFinal.UnitTests.dto.inmueble.TipoInmueble;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.UnitTests.dto.persona.Propietario;
-import com.TpFinal.UnitTests.dto.publicacion.Rol;
+import com.TpFinal.dto.inmueble.ClaseInmueble;
+import com.TpFinal.dto.inmueble.Coordenada;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoInmueble;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.services.InmuebleService;
 
 public class InmuebleServiceIT {
 	

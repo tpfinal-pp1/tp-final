@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.TpFinal.UnitTests.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Direccion;
 
 public class DireccionTest {
 
