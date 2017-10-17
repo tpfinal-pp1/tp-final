@@ -25,7 +25,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "contratoVenta")
 @PrimaryKeyJoinColumn(name = "id")
-public class ContratoVenta extends Contrato {
+public class ContratoVenta extends Contrato  implements Cloneable{
 
     @Column(name = "precioVenta")
     private BigDecimal precioVenta;    
@@ -98,6 +98,19 @@ public class ContratoVenta extends Contrato {
 				+this.vendedor+", "+this.comprador ;
 	}
 
+    @Override
+    public ContratoVenta clone() {
+	ContratoVenta clon = new ContratoVenta();
+	clon.setComprador(comprador);
+	clon.setVendedor(vendedor);
+	clon.setDocumento(null);	
+	clon.setInmueble(inmueble);
+	clon.setEstadoContrato(EstadoContrato.EnProcesoDeCarga);	
+	clon.setMoneda(getMoneda());	
+	clon.setPrecioVenta(precioVenta);	
+	return clon;
+    }
+    
     public static class Builder {
 
 	private Persona comprador;
@@ -107,7 +120,7 @@ public class ContratoVenta extends Contrato {
 	private Blob documento;
 	private BigDecimal precioVenta;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
-
+	
 	public Builder setId(Long dato) {
 	    this.id = dato;
 	    return this;

@@ -197,6 +197,11 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.save();
 	    binderContratoAlquiler.validate();
 	});
+	renovarContrato.addClickListener(e ->{
+	    this.binderContratoAlquiler = getBinderParaEdicion();
+	    this.setContratoAlquiler(contratoAlquiler.clone());
+	    
+	});
     }
 
     private void binding() {
@@ -431,12 +436,34 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPagoFueraDeTermino.setEnabled(true);
 	    this.tfValorInicial.setEnabled(true);
 
-	} else {
+	} else if (estadoContrato == EstadoContrato.Vencido) {
 	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
 	    this.save.setVisible(false);
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(true);
+	    this.btCargar.setEnabled(true);
+	    this.btDescargar.setEnabled(true);
+	    this.cbDuracionContrato.setEnabled(false);
+	    this.cbInmuebles.setEnabled(false);
+	    this.cbInquilino.setEnabled(false);
+	    this.cbInteresFueraDeTermino.setEnabled(false);
+	    this.cbtipointeres.setEnabled(false);
+	    this.fechaCelebracion.setEnabled(false);
+	    this.rbgTipoMoneda.setEnabled(false);
+	    this.stIncremento.setEnabled(false);
+	    this.tfDiaDePago.setEnabled(false);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPActualizacion.setEnabled(false);
+	    this.tfPagoFueraDeTermino.setEnabled(false);
+	    this.tfValorInicial.setEnabled(false);
+
+	} else {
+	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
+	    this.save.setVisible(false);
+	    this.delete.setVisible(false);
+	    this.finalizarCarga.setVisible(false);
+	    this.renovarContrato.setVisible(false);
 	    this.btCargar.setEnabled(true);
 	    this.btDescargar.setEnabled(true);
 	    this.cbDuracionContrato.setEnabled(false);
