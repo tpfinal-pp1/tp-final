@@ -149,7 +149,6 @@ public class ContratoServiceTest {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
-			System.out.println(cos.get(i).getFechaDeVencimiento());
 			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}

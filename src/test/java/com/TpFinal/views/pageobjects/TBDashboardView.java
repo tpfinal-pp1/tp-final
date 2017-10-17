@@ -1,4 +1,4 @@
-package com.TpFinal.selenium.tb.pageobjects;
+package com.TpFinal.views.pageobjects;
 
 import com.TpFinal.view.DashboardView;
 import org.openqa.selenium.WebDriver;

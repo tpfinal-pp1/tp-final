@@ -1,38 +1,47 @@
-package com.TpFinal.selenium.tb.testBench.InmuebleTests;
+package com.TpFinal.views.testBench.InmuebleTests;
 
+import com.TpFinal.views.TBUtils;
+import com.TpFinal.views.pageobjects.TBLoginView;
+import com.TpFinal.views.pageobjects.TBMainView;
+import com.vaadin.testbench.Parameters;
+import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.*;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import org.junit.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import java.util.concurrent.TimeUnit;
 
 public class AgregarInmuebleTest extends TestBenchTestCase{
 
+    private TBLoginView loginView;
+    private TBMainView mainView;
+    @Rule
+    public ScreenshotOnFailureRule screenshotOnFailureRule =
+            new ScreenshotOnFailureRule(this, true);
+
     @Before
     public void setUp() throws Exception {
-
-        setDriver( new FirefoxDriver());
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        Parameters.setScreenshotErrorDirectory(
+                "File/errors");
+        Parameters.setMaxScreenshotRetries(2);
+        Parameters.setScreenshotComparisonTolerance(1.0);
+        Parameters.setScreenshotRetryDelay(10);
+        Parameters.setScreenshotComparisonCursorDetection(true);
+        setDriver(TBUtils.initializeDriver());
+        loginView = TBUtils.loginView(this.getDriver());
+        mainView=loginView.login();
 
     }
 
-
     @Test
     public void agregarPersonaTest(){
-        getDriver().get("http://inmobi.ddns.net/");
-        
-        TextFieldElement usuarioTextField = $(TextFieldElement.class).caption("Usuario").first();
-        usuarioTextField.setValue("Misa");
-        PasswordFieldElement contraseaPasswordField = $(PasswordFieldElement.class).caption("Contraseña").first();
-        contraseaPasswordField.setValue("7777");        
-        ButtonElement iniciarSesinButton = $(ButtonElement.class).caption("Iniciar Sesión").first();
-        iniciarSesinButton.click();
-        
-        getDriver().get("http://inmobi.ddns.net/#!inmuebles");
-        
+        getDriver().get(TBUtils.getUrl("inmuebles"));
+        Assert.assertTrue($(GridElement.class).exists());
         ButtonElement nuevoButton = $(ButtonElement.class).caption("Nuevo").first();
         nuevoButton.click();
         
@@ -85,8 +94,5 @@ public class AgregarInmuebleTest extends TestBenchTestCase{
    
     }
 
-    @After
-    public void tearDown() throws Exception {
-        getDriver().quit();
-    }
+
 }

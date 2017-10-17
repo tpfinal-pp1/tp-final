@@ -1,13 +1,11 @@
-package com.TpFinal.selenium.tb;
+package com.TpFinal.views;
 
-import com.TpFinal.selenium.tb.pageobjects.TBDashboardView;
+import com.TpFinal.views.pageobjects.TBDashboardView;
 
-import com.TpFinal.selenium.tb.pageobjects.TBLoginView;
-import com.TpFinal.selenium.tb.pageobjects.TBMainView;
-import org.junit.After;
+import com.TpFinal.views.pageobjects.TBLoginView;
+import com.TpFinal.views.pageobjects.TBMainView;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Test;
 
 
 import com.vaadin.testbench.TestBenchTestCase;
@@ -19,19 +17,12 @@ public class DashboardViewIT extends TestBenchTestCase {
 
     @Before
     public void setUp() {
-        loginView = TBUtils.openInitialView();
+        setDriver(TBUtils.initializeDriver());
+        loginView = TBUtils.loginView(this.getDriver());
         mainView = loginView.login();
     }
 
-    @Test
-    public void testEditDashboardTitle() {
-        TBDashboardView dashboardView = mainView.openDashboardView();
-        String newTitle = "New Dashboard";
 
-        Assert.assertEquals(newTitle, dashboardView.getDashboardTitle());
-    }
-
-    @Test
     public void testReadNotifications() {
         TBDashboardView dashboardView = mainView.openDashboardView();
         Assert.assertEquals(mainView.getUnreadNotificationsCount(),
@@ -41,8 +32,5 @@ public class DashboardViewIT extends TestBenchTestCase {
                 dashboardView.getUnreadNotificationsCount());
     }
 
-    @After
-    public void tearDown() {
-        loginView.getDriver().quit();
-    }
+
 }

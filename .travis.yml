@@ -4,6 +4,8 @@ cache:
   - .autoconf
   - $HOME/.m2
   - $HOME/travis/.sonar/cache
+  - $HOME/travis/.sonarscanner/
+  - $HOME/.sonarscanner/sonar-scanner-2.8
 sudo: false
 install: true
 addons:

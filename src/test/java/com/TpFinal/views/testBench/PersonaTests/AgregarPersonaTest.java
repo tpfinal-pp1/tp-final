@@ -1,15 +1,21 @@
-package com.TpFinal.selenium.tb.testBench.PersonaTests;
+package com.TpFinal.views.testBench.PersonaTests;
 
+import com.TpFinal.views.TBUtils;
+import com.TpFinal.views.pageobjects.TBLoginView;
+import com.TpFinal.views.pageobjects.TBMainView;
+import com.vaadin.testbench.Parameters;
+import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
 import com.vaadin.testbench.elements.GridElement;
 import com.vaadin.testbench.elements.PasswordFieldElement;
 import com.vaadin.testbench.elements.TextFieldElement;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import org.junit.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import java.util.concurrent.TimeUnit;
 
@@ -17,28 +23,31 @@ import java.util.concurrent.TimeUnit;
  * Created by Max on 10/11/2017.
  */
 public class AgregarPersonaTest extends TestBenchTestCase{
+    private TBLoginView loginView;
+    private TBMainView mainView;
+    @Rule
+    public ScreenshotOnFailureRule screenshotOnFailureRule =
+            new ScreenshotOnFailureRule(this, true);
 
     @Before
     public void setUp() throws Exception {
+        Parameters.setScreenshotErrorDirectory(
+                "File/errors");
+        Parameters.setMaxScreenshotRetries(2);
+        Parameters.setScreenshotComparisonTolerance(1.0);
+        Parameters.setScreenshotRetryDelay(10);
+        Parameters.setScreenshotComparisonCursorDetection(true);
+        setDriver(TBUtils.initializeDriver());
+        loginView = TBUtils.loginView(this.getDriver());
+        mainView=loginView.login();
 
-        setDriver( new FirefoxDriver());
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 
     }
 
-
     @Test
     public void agregarPersonaTest(){
-        getDriver().get("http://inmobi.ddns.net/");
-        TextFieldElement usuarioTextField = $(TextFieldElement.class).caption("Usuario").first();
-        usuarioTextField.setValue("Max");
-        PasswordFieldElement contraseaPasswordField = $(PasswordFieldElement.class).caption("Contraseña").first();
-        contraseaPasswordField.setValue("1234");
-        ButtonElement iniciarSesinButton = $(ButtonElement.class).caption("Iniciar Sesión").first();
-        iniciarSesinButton.click();
-        ButtonElement personasButton = $(ButtonElement.class).caption("Personas").first();
-        personasButton.click();
-        getDriver().get("http://inmobi.ddns.net/#!personas");
+        getDriver().get(TBUtils.getUrl("personas"));
+
         Assert.assertTrue($(GridElement.class).exists());
         ButtonElement nuevoButton = $(ButtonElement.class).caption("Nuevo").first();
         nuevoButton.click();
@@ -58,8 +67,4 @@ public class AgregarPersonaTest extends TestBenchTestCase{
         guardarButton.click();
     }
 
-    @After
-    public void tearDown() throws Exception {
-        getDriver().quit();
-    }
 }

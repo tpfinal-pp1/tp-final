@@ -1,93 +1,57 @@
-package com.TpFinal.selenium.tb.testBench.InmuebleTests;
+package com.TpFinal.views.testBench.InmuebleTests;
 
+import com.TpFinal.views.TBUtils;
+import com.TpFinal.views.pageobjects.TBLoginView;
+import com.TpFinal.views.pageobjects.TBMainView;
+import com.vaadin.testbench.Parameters;
+import com.vaadin.testbench.ScreenshotOnFailureRule;
+import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.*;
-import org.apache.commons.lang3.SystemUtils;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import io.github.bonigarcia.wdm.PhantomJsDriverManager;
+import org.junit.*;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.interactions.Actions;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
-import java.io.File;
+import javax.validation.constraints.AssertTrue;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Max on 10/12/2017.
  */
 public class AgregadoInmuebleTest extends TestBenchTestCase {
-    FirefoxDriver driver;
+    private TBLoginView loginView;
+    private TBMainView mainView;
+    @Rule
+    public ScreenshotOnFailureRule screenshotOnFailureRule =
+            new ScreenshotOnFailureRule(this, true);
 
     @Before
     public void setUp() throws Exception {
-        if(SystemUtils.IS_OS_LINUX){
-            System.setProperty("webdriver.gecko.driver","GeckoDriver"+ File.separator+"geckodriver");
-            System.out.println("OS: LINUX");
-        }
-        if(SystemUtils.IS_OS_WINDOWS) {
-            String systemArchitecture = System.getProperty("sun.arch.data.model");
-            if(systemArchitecture.equals("64")) {
-                System.setProperty("webdriver.gecko.driver", "GeckoDriver" + File.separator + "geckodriver.exe");
-
-
-
-                System.out.println("OS: Windows 64-bit");
-            }
-            else {
-                System.setProperty("webdriver.gecko.driver", "GeckoDriver-32-bits" + File.separator + "geckodriver.exe");
-                System.out.println("OS: Windows 32-bit");
-            }
-        }
-        String userHomeDirectory = System.getenv("ProgramFiles");
-        FirefoxBinary binary = new FirefoxBinary(new File(userHomeDirectory + File.separator + "Mozilla Firefox" +File.separator + "firefox.exe"));
-        FirefoxProfile firefoxProfile = new FirefoxProfile();
-        DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-        // Enable legacy mode
-        capabilities.setCapability(FirefoxDriver.MARIONETTE, false);
-
-        driver = new FirefoxDriver(binary,firefoxProfile,capabilities);
-        setDriver(driver);
-        driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
+        Parameters.setScreenshotErrorDirectory(
+                "File/errors");
+        Parameters.setMaxScreenshotRetries(2);
+        Parameters.setScreenshotComparisonTolerance(1.0);
+        Parameters.setScreenshotRetryDelay(10);
+        Parameters.setScreenshotComparisonCursorDetection(true);
+        setDriver(TBUtils.initializeDriver());
+        loginView = TBUtils.loginView(this.getDriver());
+        mainView=loginView.login();
 
     }
 
 //TODO completar TEST (MAX)
     @Test
     public void agregadoInmuebleTest() {
-        getDriver().get("http://inmobi.ddns.net/");
-       // getDriver().get("http://localhost:8080/");
-
-        //Login screen (TextFields and Login Button)
-        TextFieldElement usuarioTextField = $(TextFieldElement.class).caption("Usuario").first();
-        usuarioTextField.setValue("Max");
-        PasswordFieldElement contraseaPasswordField = $(PasswordFieldElement.class).caption("Contraseña").first();
-        contraseaPasswordField.setValue("1234");
-        ButtonElement iniciarSesinButton = $(ButtonElement.class).caption("Iniciar Sesión").first();
-        //Check if the Login fields are filled with credentials.
-        Assert.assertEquals($(TextFieldElement.class).caption("Usuario").first().getValue(),"Max");
-        Assert.assertEquals($(PasswordFieldElement.class).caption("Contraseña").first().getValue(),"1234");
-        Assert.assertEquals(usuarioTextField.getValue(),"Max");
-        Assert.assertEquals(contraseaPasswordField.getValue(),"1234");
-        iniciarSesinButton.click();
-
-        //Main View
-        //Inmuebles button view
-        ButtonElement inmueblesViewButton = $(ButtonElement.class).caption("Inmuebles").first();
-        inmueblesViewButton.click();
-
-        //Inmuebles View
-        getDriver().get("http://inmobi.ddns.net/#!inmuebles");
-       // getDriver().get("http://localhost:8080/#!inmuebles");
-        GridElement inmuebleGrid = $(GridElement.class).first();
+       // initializeDriver().get("http://inmobi.ddns.net/");
+        getDriver().get(TBUtils.getUrl("inmuebles"));
 
         //Agregar inmueble
         //Tab "Datos Principales"
+        Assert.assertTrue($(GridElement.class).exists());
         ButtonElement nuevoInmuebleButton = $(ButtonElement.class).caption("Nuevo").first();
         nuevoInmuebleButton.click();
         //Tab "Datos principales"
@@ -98,11 +62,11 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         tabSheet1.openTab("Datos Principales");
 //TODO comment
         //ComboPersonas
-        ComboBoxElement personasComboBox = $(ComboBoxElement.class).first();
+      //  ComboBoxElement personasComboBox = $(ComboBoxElement.class).first();
 
 
         //ComboClase Inmueble
-        ComboBoxElement claseComboBox = $(ComboBoxElement.class).caption("Clase").first();
+       // ComboBoxElement claseComboBox = $(ComboBoxElement.class).caption("Clase").first();
 
         RadioButtonGroupElement tipoRadioButtonGroup = $(RadioButtonGroupElement.class).caption("Tipo").first();
         tipoRadioButtonGroup.selectByText("Comercial");
@@ -168,9 +132,6 @@ public class AgregadoInmuebleTest extends TestBenchTestCase {
         //Assert.assertEquals(inmuebleGrid.getCell(0,1).getText(),"Brandy Wilburn");
     }
 
-    @After
-    public void tearDown() throws Exception {
-        getDriver().quit();
-    }
+
 
 }

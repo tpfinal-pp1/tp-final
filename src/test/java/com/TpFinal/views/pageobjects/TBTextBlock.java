@@ -1,4 +1,4 @@
-package com.TpFinal.selenium.tb.pageobjects;
+package com.TpFinal.views.pageobjects;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
