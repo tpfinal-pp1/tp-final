@@ -21,7 +21,7 @@ import com.TpFinal.data.dto.persona.RolPersona;
 import com.TpFinal.data.dto.publicacion.Rol;
 
 
-public class DAOPersonaImplTest {
+public class DAOPersonaImplIT {
 
     DAOPersonaImpl dao;
     List<Persona>Personas= new ArrayList<>();
