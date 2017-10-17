@@ -3,6 +3,7 @@ package com.TpFinal.view.duracionContratos;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
+
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -46,9 +47,8 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     RadioButtonGroup<String>filtroRoles= new RadioButtonGroup<>();
     Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
-
-   
-
+    
+    
     HorizontalLayout mainLayout;
     // DuracionContratosForm is an example of a custom component class
     DuracionContratosForm DuracionContratosForm = new DuracionContratosForm(this);
@@ -88,7 +88,8 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
             grid.asSingleSelect().clear();
             DuracionContratosForm.setContratoDuracion(null);
         });
-                 
+        
+       
 
         grid.setColumns("descripcion", "duracion");
         grid.getColumn("descripcion").setCaption("Descripcion");
@@ -114,6 +115,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
             filter.setWidth("100%");
         }
         newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        
         //filter.setIcon(VaadinIcons.SEARCH);
        //filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
@@ -133,7 +135,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
      */
 
     public void setComponentsVisible(boolean b){
-        newItem.setVisible(b);
+    	newItem.setVisible(b);
         filter.setVisible(b);
         seleccionFiltro.setVisible(b);
         //clearFilterTextBtn.setVisible(b);
@@ -151,7 +153,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
         hl.addComponent(filtering);
         
 
-       buildToolbar("ContratoDuracion",hl);
+       buildToolbar("Duraciones de Contratos",hl);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, DuracionContratosForm);
         mainLayout.setSizeFull();
