@@ -20,8 +20,7 @@ then
 #then #SOLO TEST DE INTEGRACION
 #    mvn -B -e -V -Dvaadin.testbench.developer.license=dfe12f22-5ae4-4414-97a9-2e8474b8336c clean verify
 
-
 else
-     echo "No entra en ningun condicional haciendo tests de unidad"
+     echo "No entra en ningun condicional analisis completo"
      mvn -B -e -V -Dvaadin.testbench.developer.license=dfe12f22-5ae4-4414-97a9-2e8474b8336c clean verify jacoco:report coveralls:report sonar:sonar
 fi
