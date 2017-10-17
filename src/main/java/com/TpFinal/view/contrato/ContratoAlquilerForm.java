@@ -15,6 +15,7 @@ import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.*;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
@@ -519,9 +520,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    contratoABMView().setComponentsVisible(true);
 
 	} catch (ValidationException e) {
-	    e.printStackTrace();
-	    e.getFieldValidationErrors().forEach(err -> System.out.println(err.getField()));
-	    e.getValidationErrors().forEach(err -> System.out.println(err.getErrorMessage()));
+	    Utils.mostarErroresValidator(e);
 	    checkFieldsPerTab(e.getFieldValidationErrors());
 
 	} catch (Exception e) {

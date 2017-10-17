@@ -8,6 +8,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.vaadin.data.ValidationException;
+
 public class Utils {
 
 
@@ -117,16 +119,9 @@ public class Utils {
         return cost[len0 - 1];
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    public static void mostarErroresValidator(ValidationException e) {
+	e.printStackTrace();
+	e.getFieldValidationErrors().forEach(err -> System.out.println(err.getField()));
+	e.getValidationErrors().forEach(err -> System.out.println(err.getErrorMessage()));
+    }
 }

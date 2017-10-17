@@ -5,6 +5,7 @@ import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.DummyDataGenerator;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
@@ -236,9 +237,9 @@ public class PersonaForm extends FormLayout {
 
 
         } catch (ValidationException e) {
-           //e.printStackTrace();
+            Utils.mostarErroresValidator(e);
             checkFieldsPerTab(e.getFieldValidationErrors());
-            // Notification.show("Error: "+e.getCause());
+           
             return;
         }
         catch (Exception e){
