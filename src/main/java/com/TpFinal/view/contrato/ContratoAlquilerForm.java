@@ -446,7 +446,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(true);
-	    this.btCargar.setEnabled(true);
+	    this.btCargar.setEnabled(false);
 	    this.btDescargar.setEnabled(true);
 	    this.cbDuracionContrato.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);
@@ -468,7 +468,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(false);
-	    this.btCargar.setEnabled(true);
+	    this.btCargar.setEnabled(false);
 	    this.btDescargar.setEnabled(true);
 	    this.cbDuracionContrato.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);

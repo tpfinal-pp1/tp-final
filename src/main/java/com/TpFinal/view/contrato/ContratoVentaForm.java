@@ -359,7 +359,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(false);
-	    this.btCargar.setEnabled(true);
+	    this.btCargar.setEnabled(false);
 	    this.btDescargar.setEnabled(true);
 	    this.cbComprador.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);
@@ -373,7 +373,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(false);
-	    this.btCargar.setEnabled(true);
+	    this.btCargar.setEnabled(false);
 	    this.btDescargar.setEnabled(true);
 	    this.cbComprador.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);
