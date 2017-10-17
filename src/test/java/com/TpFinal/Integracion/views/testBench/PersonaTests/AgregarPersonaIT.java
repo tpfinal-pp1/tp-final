@@ -1,22 +1,26 @@
 package com.TpFinal.Integracion.views.testBench.PersonaTests;
 
-import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
+import com.TpFinal.Integracion.views.pageobjects.TBPersonaView;
+import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.GridElement;
-import com.vaadin.testbench.elements.TextFieldElement;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 /**
  * Created by Max on 10/11/2017.
  */
 public class AgregarPersonaIT extends TestBenchTestCase{
+
     private TBLoginView loginView;
     private TBMainView mainView;
+    private TBPersonaView personaView;
+
     @Rule
     public ScreenshotOnFailureRule screenshotOnFailureRule =
             new ScreenshotOnFailureRule(this, true);
@@ -33,6 +37,7 @@ public class AgregarPersonaIT extends TestBenchTestCase{
         loginView = TBUtils.loginView(this.getDriver());
         mainView=loginView.login();
 
+        personaView = mainView.getPersonaView();
 
     }
 
@@ -40,23 +45,17 @@ public class AgregarPersonaIT extends TestBenchTestCase{
     public void agregarPersonaTest(){
         getDriver().get(TBUtils.getUrl("personas"));
 
-        Assert.assertTrue($(GridElement.class).exists());
-        ButtonElement nuevoButton = $(ButtonElement.class).caption("Nuevo").first();
-        nuevoButton.click();
-        TextFieldElement nombreTextField = $(TextFieldElement.class).caption("Nombre").first();
-        nombreTextField.setValue("Max");
-        TextFieldElement apellidoTextField = $(TextFieldElement.class).caption("Apellido").first();
-        apellidoTextField.setValue("Lencina");
-        TextFieldElement dNITextField = $(TextFieldElement.class).caption("DNI").first();
-        dNITextField.setValue("13256789");
-        TextFieldElement mailTextField = $(TextFieldElement.class).caption("Mail").first();
-        mailTextField.setValue("max@max.com");
-        TextFieldElement telefonoTextField = $(TextFieldElement.class).caption("Telefono").first();
-        telefonoTextField.setValue("45345678");
-        TextFieldElement celularTextField = $(TextFieldElement.class).caption("Celular").first();
-        celularTextField.setValue("1234669874");
-        ButtonElement guardarButton = $(ButtonElement.class).caption("Guardar").first();
-        guardarButton.click();
+        Assert.assertTrue(personaView.isDisplayed());
+        personaView.getNuevaPersonaButton().first().click();
+        personaView.getNameTextField().first().setValue("Max");
+        personaView.getSurnameTextField().first().setValue("Lencina");
+        personaView.getDNITextField().first().setValue("13256789");
+        personaView.getMailTextField().first().setValue("max@max.com");
+        personaView.getTelefonoTextField().first().setValue("45345678");
+        personaView.getCelularTextField().first().setValue("1234669874");
+        personaView.getGuardarButton().first().click();
+
+        Assert.assertFalse(personaView.isFormDisplayed());
     }
 
 }

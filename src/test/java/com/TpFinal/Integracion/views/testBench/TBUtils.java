@@ -2,18 +2,12 @@ package com.TpFinal.Integracion.views.testBench;
 
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.vaadin.testbench.TestBench;
-import com.vaadin.testbench.parallel.Browser;
 import io.github.bonigarcia.wdm.ChromeDriverManager;
-import io.github.bonigarcia.wdm.FirefoxDriverManager;
 import io.github.bonigarcia.wdm.PhantomJsDriverManager;
 import org.openqa.selenium.Dimension;
-import org.openqa.selenium.Platform;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.GeckoDriverService;
 import org.openqa.selenium.phantomjs.PhantomJSDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 
 public class TBUtils {
