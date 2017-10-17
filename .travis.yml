@@ -6,7 +6,7 @@ cache:
   - $HOME/travis/.sonar/cache
   - $HOME/travis/.sonarscanner/
   - $HOME/.sonarscanner/sonar-scanner-2.8
-sudo: false
+sudo: true
 install: true
 addons:
       sonarcloud:
@@ -14,7 +14,6 @@ addons:
         token:
           secure: "04db89c9d5164b1ec6350d28933c43eccc1bd79f"
 
-script: mvn -B -e -V -Dvaadin.testbench.developer.license=dfe12f22-5ae4-4414-97a9-2e8474b8336c clean verify
-after_success:  mvn jacoco:report coveralls:report sonar:sonar
+script: ./.travis.script.sh
 notifications:
     slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
