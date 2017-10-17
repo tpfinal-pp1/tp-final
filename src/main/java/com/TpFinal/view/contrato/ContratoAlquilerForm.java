@@ -361,9 +361,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		tfDocumento,
 		documentoButtonsRow);
 
-	condiciones = new FormLayout(cbDuracionContrato, tfDiaDePago, tfPagoFueraDeTermino, cbtipointeres,
+	condiciones = new FormLayout(cbDuracionContrato, tfDiaDePago, tfPagoFueraDeTermino, cbInteresFueraDeTermino,
 		new BlueLabel("Monto e Incremento"),
-		stIncremento, tfPActualizacion, tfValorInicial, rbgTipoMoneda);
+		stIncremento, tfPActualizacion, cbtipointeres, tfValorInicial, rbgTipoMoneda);
 	condiciones.setMargin(true);
 	condiciones.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
@@ -519,6 +519,9 @@ public class ContratoAlquilerForm extends FormLayout {
 	    contratoABMView().setComponentsVisible(true);
 
 	} catch (ValidationException e) {
+	    e.printStackTrace();
+	    e.getFieldValidationErrors().forEach(err -> System.out.println(err.getField()));
+	    e.getValidationErrors().forEach(err -> System.out.println(err.getErrorMessage()));
 	    checkFieldsPerTab(e.getFieldValidationErrors());
 
 	} catch (Exception e) {
