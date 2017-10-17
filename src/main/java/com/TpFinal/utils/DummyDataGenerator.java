@@ -1,6 +1,6 @@
 package com.TpFinal.utils;
 
-import com.TpFinal.data.dto.DashboardNotification;
+import com.TpFinal.UnitTests.dto.DashboardNotification;
 
 
 import java.util.Arrays;

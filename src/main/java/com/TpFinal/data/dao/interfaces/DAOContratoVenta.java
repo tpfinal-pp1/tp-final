@@ -2,7 +2,7 @@ package com.TpFinal.data.dao.interfaces;
 
 import java.io.File;
 
-import com.TpFinal.data.dto.contrato.ContratoVenta;
+import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
 
 public interface DAOContratoVenta extends DAO<ContratoVenta>{
 

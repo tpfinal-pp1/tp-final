@@ -7,7 +7,7 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<productionMode>true</productionMode>
+		<productionMode>false</productionMode>
 		<vaadin.version>8.1.5</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -217,6 +217,11 @@
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.6.201602180812</version>
+				<configuration>
+					<excludes>
+						<exclude>**/com/TpFinal/view/*</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
 						<id>prepare-agent</id>

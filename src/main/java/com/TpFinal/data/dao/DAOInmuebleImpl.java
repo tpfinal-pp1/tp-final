@@ -8,17 +8,15 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
-import com.TpFinal.data.dao.DAOImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.CriterioBusquedaInmuebleDTO;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.publicacion.Publicacion;
-import com.TpFinal.data.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-import com.TpFinal.data.dto.publicacion.TipoPublicacion;
+import com.TpFinal.UnitTests.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.UnitTests.dto.inmueble.Direccion;
+import com.TpFinal.UnitTests.dto.inmueble.EstadoInmueble;
+import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
+import com.TpFinal.UnitTests.dto.publicacion.Publicacion;
+import com.TpFinal.UnitTests.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.UnitTests.dto.publicacion.PublicacionVenta;
+import com.TpFinal.UnitTests.dto.publicacion.TipoPublicacion;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
