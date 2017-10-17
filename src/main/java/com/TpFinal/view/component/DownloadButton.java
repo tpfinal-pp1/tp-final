@@ -1,7 +1,7 @@
 package com.TpFinal.view.component;
 
 
-import com.TpFinal.UnitTests.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.Contrato;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.Page;

@@ -5,13 +5,13 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.TpFinal.UnitTests.dto.Localidad;
-import com.TpFinal.Integracion.services.ProvinciaService;
+import com.TpFinal.dto.Localidad;
+import com.TpFinal.dto.Provincia;
+import com.TpFinal.services.ProvinciaService;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.TpFinal.UnitTests.dto.Provincia;
 
 public class ProvinciaServiceTest {
 	ProvinciaService service=new ProvinciaService(ProvinciaService.modoLecturaJson.local);

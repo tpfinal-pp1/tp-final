@@ -15,10 +15,11 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
-import com.TpFinal.UnitTests.dto.persona.Calificacion;
-import com.TpFinal.UnitTests.dto.persona.Inquilino;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.UnitTests.dto.persona.RolPersona;
+import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.RolPersona;
+import com.TpFinal.services.PersonaService;
 
 public class PersonaServiceNuevoIT {
 	

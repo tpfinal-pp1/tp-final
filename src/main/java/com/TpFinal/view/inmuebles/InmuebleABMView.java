@@ -1,9 +1,9 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.UnitTests.dto.inmueble.Direccion;
-import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
-import com.TpFinal.Integracion.services.DashboardEvent;
-import com.TpFinal.Integracion.services.InmuebleService;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
@@ -121,7 +121,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	super.detach();
 	// A new instance of TransactionsView is created every time it's
 	// navigated to so we'll need to clean up references to it on detach.
-	com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
+	com.TpFinal.services.DashboardEventBus.unregister(this);
     }
 
     @Subscribe
@@ -194,17 +194,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
 
-	    grid.addColumn(inmueble -> {
-		String ret = "";
-		if (inmueble.getClaseInmueble() == null) {
-		    ret = "No aclarado";
-		} else {
-		    ret = inmueble.getClaseInmueble().toString();
-		}
-		return ret;
-	    }).setCaption("Clase Inmueble");
-
-	    grid.addComponentColumn(inmueble -> {
+	   grid.addComponentColumn(inmueble -> {
 		Button edit = new Button(VaadinIcons.EDIT);
 		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
 		edit.addClickListener(e -> {

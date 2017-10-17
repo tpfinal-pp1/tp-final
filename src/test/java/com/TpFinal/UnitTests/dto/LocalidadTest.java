@@ -7,6 +7,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.TpFinal.dto.JsonUtil;
+import com.TpFinal.dto.LocalidadRAW;
+import com.TpFinal.dto.Provincia;
+
 public class LocalidadTest {
 
 	@Before

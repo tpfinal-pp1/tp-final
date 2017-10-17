@@ -1,7 +1,7 @@
 package com.TpFinal.data.dao;
 
 import com.TpFinal.data.dao.interfaces.DAOContrato;
-import com.TpFinal.UnitTests.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.Contrato;
 
 public class DAOContratoImpl extends DAOImpl<Contrato>implements DAOContrato{
 	public DAOContratoImpl() {

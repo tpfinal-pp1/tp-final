@@ -1,20 +1,20 @@
 package com.TpFinal.view.contrato;
 
-import com.TpFinal.UnitTests.dto.contrato.Contrato;
-import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
-import com.TpFinal.UnitTests.dto.contrato.DuracionContrato;
-import com.TpFinal.UnitTests.dto.contrato.EstadoContrato;
-import com.TpFinal.UnitTests.dto.contrato.TipoInteres;
-import com.TpFinal.UnitTests.dto.inmueble.EstadoInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
-import com.TpFinal.UnitTests.dto.inmueble.TipoMoneda;
-import com.TpFinal.UnitTests.dto.persona.Calificacion;
-import com.TpFinal.UnitTests.dto.persona.Inquilino;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.UnitTests.dto.publicacion.Rol;
-import com.TpFinal.Integracion.services.ContratoService;
-import com.TpFinal.Integracion.services.InmuebleService;
-import com.TpFinal.Integracion.services.PersonaService;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.DuracionContrato;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.InmuebleService;
+import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.*;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
@@ -30,6 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -197,10 +198,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.save();
 	    binderContratoAlquiler.validate();
 	});
-	renovarContrato.addClickListener(e ->{
+	renovarContrato.addClickListener(e -> {
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    this.setContratoAlquiler(contratoAlquiler.clone());
-	    
+
 	});
     }
 
@@ -300,6 +301,9 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.tfValorInicial).withNullRepresentation("")
 		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
+		.withValidator(n -> {
+		    return (n.compareTo(BigDecimal.ZERO) > 0);
+		}, "Debe Ingresar un Valor Positivo")
 		.bind(ContratoAlquiler::getValorInicial, ContratoAlquiler::setValorInicial);
 	return binderContratoAlquiler;
     }
@@ -442,7 +446,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(true);
-	    this.btCargar.setEnabled(true);
+	    this.btCargar.setEnabled(false);
 	    this.btDescargar.setEnabled(true);
 	    this.cbDuracionContrato.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);
@@ -464,7 +468,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
 	    this.renovarContrato.setVisible(false);
-	    this.btCargar.setEnabled(true);
+	    this.btCargar.setEnabled(false);
 	    this.btDescargar.setEnabled(true);
 	    this.cbDuracionContrato.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);

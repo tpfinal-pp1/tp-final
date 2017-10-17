@@ -20,18 +20,20 @@ import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
-import com.TpFinal.UnitTests.dto.inmueble.ClaseInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.Coordenada;
-import com.TpFinal.UnitTests.dto.inmueble.Direccion;
-import com.TpFinal.UnitTests.dto.inmueble.EstadoInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
-import com.TpFinal.UnitTests.dto.inmueble.TipoInmueble;
-import com.TpFinal.UnitTests.dto.inmueble.TipoMoneda;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.UnitTests.dto.persona.Propietario;
-import com.TpFinal.UnitTests.dto.publicacion.PublicacionAlquiler;
-import com.TpFinal.UnitTests.dto.publicacion.PublicacionVenta;
+import com.TpFinal.dto.inmueble.ClaseInmueble;
+import com.TpFinal.dto.inmueble.Coordenada;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoInmueble;
+import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.exceptions.services.PublicacionServiceException;
+import com.TpFinal.services.InmuebleService;
+import com.TpFinal.services.PublicacionService;
 
 public class PublicacionServiceIT {
 

@@ -20,9 +20,9 @@ import com.TpFinal.data.dao.DAOContratoVentaImpl;
 import com.TpFinal.data.dao.interfaces.DAOContrato;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
-import com.TpFinal.UnitTests.dto.contrato.Contrato;
-import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
-import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
 
 public class DAOContratoImplIT {
 	DAOContrato daoContrato;

@@ -86,7 +86,7 @@ public class DemoUI extends VerticalLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
+        com.TpFinal.services.DashboardEventBus.unregister(this);
     }
 
    /* @Subscribe

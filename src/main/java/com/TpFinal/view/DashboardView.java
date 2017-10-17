@@ -1,11 +1,9 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-
-
-import com.TpFinal.UnitTests.dto.DashboardNotification;
-import com.TpFinal.Integracion.services.DashboardEvent;
-import com.TpFinal.Integracion.services.DashboardEventBus;
+import com.TpFinal.dto.DashboardNotification;
+import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;

@@ -19,13 +19,15 @@ import com.TpFinal.data.dao.DAOCobroImpl;
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.interfaces.DAOCobro;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
-import com.TpFinal.UnitTests.dto.EstadoRegistro;
-import com.TpFinal.UnitTests.dto.cobro.Cobro;
-import com.TpFinal.UnitTests.dto.cobro.EstadoCobro;
-import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
-import com.TpFinal.UnitTests.dto.contrato.DuracionContrato;
-import com.TpFinal.UnitTests.dto.contrato.EstadoContrato;
-import com.TpFinal.UnitTests.dto.contrato.TipoInteres;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.DuracionContrato;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.services.CobroService;
+import com.TpFinal.services.ContratoService;
 
 public class CobroServiceIT {
 	DAOCobro daoCobro;

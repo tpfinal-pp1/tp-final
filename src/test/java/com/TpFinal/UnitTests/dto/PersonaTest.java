@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.TpFinal.UnitTests.dto.persona.Inquilino;
-import com.TpFinal.UnitTests.dto.persona.Persona;
-import com.TpFinal.UnitTests.dto.persona.Propietario;
-import com.TpFinal.UnitTests.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.Rol;
 
 public class PersonaTest {
 

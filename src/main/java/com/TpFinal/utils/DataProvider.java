@@ -2,8 +2,8 @@ package com.TpFinal.utils;
 
 import java.util.Collection;
 
-import com.TpFinal.UnitTests.dto.*;
-import com.TpFinal.UnitTests.dto.persona.User;
+import com.TpFinal.dto.*;
+import com.TpFinal.dto.persona.User;
 
 /**
  * QuickTickets Dashboard backend API.

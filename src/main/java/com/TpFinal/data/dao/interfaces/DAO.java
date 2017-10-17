@@ -1,12 +1,12 @@
 package com.TpFinal.data.dao.interfaces;
 
 
-import com.TpFinal.UnitTests.dto.BorradoLogico;
-import com.TpFinal.UnitTests.dto.Identificable;
-
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
+
+import com.TpFinal.dto.BorradoLogico;
+import com.TpFinal.dto.Identificable;
 
 
 public interface DAO<T extends Identificable & BorradoLogico> {

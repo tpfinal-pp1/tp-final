@@ -1,11 +1,10 @@
 package com.TpFinal.utils;
 
-import com.TpFinal.UnitTests.dto.DashboardNotification;
-
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
+
+import com.TpFinal.dto.DashboardNotification;
 
 
 public abstract class DummyDataGenerator {
