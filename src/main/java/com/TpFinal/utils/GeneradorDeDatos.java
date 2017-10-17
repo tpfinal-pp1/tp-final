@@ -20,6 +20,7 @@ import com.TpFinal.data.dto.contrato.Contrato;
 import com.TpFinal.data.dto.contrato.ContratoAlquiler;
 import com.TpFinal.data.dto.contrato.ContratoVenta;
 import com.TpFinal.data.dto.contrato.DuracionContrato;
+import com.TpFinal.data.dto.contrato.EstadoContrato;
 import com.TpFinal.data.dto.contrato.TipoInteres;
 import com.TpFinal.data.dto.inmueble.*;
 import com.TpFinal.data.dto.persona.Inquilino;
@@ -92,6 +93,7 @@ public class GeneradorDeDatos {
 		    daoPer.saveOrUpdate(inquilino);
 
 		    ContratoVenta contratoVenta =contratoVentaDe(inmueble, pubVenta, comprador);
+		    contratoVenta.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
 		    
 		    
 		    daoPer.saveOrUpdate(p);
@@ -102,6 +104,7 @@ public class GeneradorDeDatos {
 		    daoope.saveOrUpdate(pubAlquiler);
 		    inmueble.addContrato(contratoVenta);
 		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
+		    contratoAlquiler.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
 		    inmueble.addContrato(contratoAlquiler);
 		    daoContratos.saveOrUpdate(contratoAlquiler);
 		    daoInm.saveOrUpdate(inmueble);

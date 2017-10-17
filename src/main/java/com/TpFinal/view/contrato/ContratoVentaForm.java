@@ -353,12 +353,12 @@ public class ContratoVentaForm extends FormLayout {
 	    this.rbgTipoMoneda.setEnabled(true);
 	    this.tfDocumento.setEnabled(false);
 	    this.tfPrecioDeVenta.setEnabled(true);
-	} else {
+	} else if (estadoContrato == EstadoContrato.Vencido) {
 	    binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    this.save.setVisible(false);
 	    this.delete.setVisible(false);
 	    this.finalizarCarga.setVisible(false);
-	    this.renovarContrato.setVisible(true);
+	    this.renovarContrato.setVisible(false);
 	    this.btCargar.setEnabled(true);
 	    this.btDescargar.setEnabled(true);
 	    this.cbComprador.setEnabled(false);
@@ -367,6 +367,21 @@ public class ContratoVentaForm extends FormLayout {
 	    this.rbgTipoMoneda.setEnabled(false);
 	    this.tfDocumento.setEnabled(false);
 	    this.tfPrecioDeVenta.setEnabled(false);
+	} else {
+	    binderContratoVenta = getBinderParaFinalizacionDeCarga();
+	    this.save.setVisible(false);
+	    this.delete.setVisible(false);
+	    this.finalizarCarga.setVisible(false);
+	    this.renovarContrato.setVisible(false);
+	    this.btCargar.setEnabled(true);
+	    this.btDescargar.setEnabled(true);
+	    this.cbComprador.setEnabled(false);
+	    this.cbInmuebles.setEnabled(false);
+	    this.fechaCelebracion.setEnabled(false);
+	    this.rbgTipoMoneda.setEnabled(false);
+	    this.tfDocumento.setEnabled(false);
+	    this.tfPrecioDeVenta.setEnabled(false);
+
 	}
 
     }

@@ -34,7 +34,7 @@ import java.util.Set;
 @Entity
 @Table(name = "contratoAlquiler")
 @PrimaryKeyJoinColumn(name = "id")
-public class ContratoAlquiler extends Contrato {
+public class ContratoAlquiler extends Contrato implements Cloneable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tipointeresPunitorio")
@@ -251,6 +251,27 @@ public class ContratoAlquiler extends Contrato {
     	}
     }
 
+    @Override
+    public ContratoAlquiler clone() {
+	ContratoAlquiler clon = new ContratoAlquiler();
+	clon.setEstadoRegistro(EstadoRegistro.ACTIVO);
+	clon.setId(null);
+	clon.setDiaDePago(diaDePago.intValue());
+	clon.setDocumento(null);
+	clon.setDuracionContrato(DuracionContrato.valueOf(duracionContrato.name()));
+	clon.setInmueble(inmueble);
+	clon.setEstadoContrato(EstadoContrato.EnProcesoDeCarga);
+	clon.setInquilinoContrato(inquilinoContrato);
+	clon.setInteresPunitorio(interesPunitorio);
+	clon.setIntervaloActualizacion(intervaloActualizacion);
+	clon.setMoneda(getMoneda());
+	clon.setPorcentajeIncrementoCuota(porcentajeIncrementoCuota);
+	clon.setPropietario(propietario);
+	clon.setTipoIncrementoCuota(tipoIncrementoCuota);
+	clon.setTipoInteresPunitorio(tipoInteresPunitorio);
+	clon.setValorInicial(valorInicial);	
+	return clon;
+    }
     public static class Builder {
 
 	private DuracionContrato duracionContrato;
