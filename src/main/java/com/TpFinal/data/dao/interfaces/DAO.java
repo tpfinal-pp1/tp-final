@@ -1,8 +1,8 @@
 package com.TpFinal.data.dao.interfaces;
 
 
-import com.TpFinal.data.dto.BorradoLogico;
-import com.TpFinal.data.dto.Identificable;
+import com.TpFinal.UnitTests.dto.BorradoLogico;
+import com.TpFinal.UnitTests.dto.Identificable;
 
 import java.util.List;
 

@@ -1,11 +1,10 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.InmuebleService;
+import com.TpFinal.UnitTests.dto.inmueble.Direccion;
+import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
+import com.TpFinal.Integracion.services.DashboardEvent;
+import com.TpFinal.Integracion.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -122,7 +121,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	super.detach();
 	// A new instance of TransactionsView is created every time it's
 	// navigated to so we'll need to clean up references to it on detach.
-	com.TpFinal.services.DashboardEventBus.unregister(this);
+	com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
     }
 
     @Subscribe

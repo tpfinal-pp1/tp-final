@@ -2,17 +2,15 @@ package com.TpFinal.view.persona;
 
 
 
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.publicacion.Rol;
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.PersonaService;
+import com.TpFinal.UnitTests.dto.persona.Persona;
+import com.TpFinal.UnitTests.dto.publicacion.Rol;
+import com.TpFinal.Integracion.services.DashboardEvent;
+import com.TpFinal.Integracion.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.TinyButton;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -270,7 +268,7 @@ public class PersonaABMView extends DefaultLayout implements View {
         super.detach();
         // A new instance of TransactionsView is created every time it's
         // navigated to so we'll need to clean up references to it on detach.
-        com.TpFinal.services.DashboardEventBus.unregister(this);
+        com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
     }
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {

@@ -1,19 +1,11 @@
 package com.TpFinal.view.contrato;
 
-import com.TpFinal.data.dto.EstadoRegistro;
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.contrato.EstadoContrato;
-import com.TpFinal.data.dto.inmueble.ClaseInmueble;
-import com.TpFinal.data.dto.inmueble.Coordenada;
-import com.TpFinal.data.dto.inmueble.Direccion;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.data.dto.persona.Propietario;
-import com.TpFinal.data.dto.publicacion.PublicacionVenta;
-import com.TpFinal.services.ContratoService;
-import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.UnitTests.dto.contrato.Contrato;
+import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
+import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
+import com.TpFinal.UnitTests.dto.persona.Persona;
+import com.TpFinal.Integracion.services.ContratoService;
+import com.TpFinal.Integracion.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -28,13 +20,9 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /* User Interface written in Java.
@@ -288,7 +276,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	super.detach();
 	// A new instance of TransactionsView is created every time it's
 	// navigated to so we'll need to clean up references to it on detach.
-	com.TpFinal.services.DashboardEventBus.unregister(this);
+	com.TpFinal.Integracion.services.DashboardEventBus.unregister(this);
     }
 
     @Subscribe

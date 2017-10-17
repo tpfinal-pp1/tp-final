@@ -1,15 +1,15 @@
 package com.TpFinal.view.contrato;
 
-import com.TpFinal.data.dto.contrato.Contrato;
-import com.TpFinal.data.dto.contrato.ContratoVenta;
-import com.TpFinal.data.dto.contrato.EstadoContrato;
-import com.TpFinal.data.dto.inmueble.EstadoInmueble;
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.persona.Persona;
-import com.TpFinal.services.ContratoService;
-import com.TpFinal.services.InmuebleService;
-import com.TpFinal.services.PersonaService;
+import com.TpFinal.UnitTests.dto.contrato.Contrato;
+import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
+import com.TpFinal.UnitTests.dto.contrato.EstadoContrato;
+import com.TpFinal.UnitTests.dto.inmueble.EstadoInmueble;
+import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
+import com.TpFinal.UnitTests.dto.inmueble.TipoMoneda;
+import com.TpFinal.UnitTests.dto.persona.Persona;
+import com.TpFinal.Integracion.services.ContratoService;
+import com.TpFinal.Integracion.services.InmuebleService;
+import com.TpFinal.Integracion.services.PersonaService;
 import com.TpFinal.view.component.*;
 import com.vaadin.data.*;
 import com.vaadin.data.converter.StringToBigDecimalConverter;

@@ -1,10 +1,10 @@
 package com.TpFinal.view.publicacion;
 
-import com.TpFinal.data.dto.inmueble.Inmueble;
-import com.TpFinal.data.dto.inmueble.TipoMoneda;
-import com.TpFinal.data.dto.publicacion.*;
-import com.TpFinal.services.InmuebleService;
-import com.TpFinal.services.PublicacionService;
+import com.TpFinal.UnitTests.dto.inmueble.Inmueble;
+import com.TpFinal.UnitTests.dto.inmueble.TipoMoneda;
+import com.TpFinal.UnitTests.dto.publicacion.*;
+import com.TpFinal.Integracion.services.InmuebleService;
+import com.TpFinal.Integracion.services.PublicacionService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;

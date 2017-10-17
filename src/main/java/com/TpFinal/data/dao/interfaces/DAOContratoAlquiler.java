@@ -1,6 +1,6 @@
 package com.TpFinal.data.dao.interfaces;
 
-import com.TpFinal.data.dto.contrato.ContratoAlquiler;
+import com.TpFinal.UnitTests.dto.contrato.ContratoAlquiler;
 
 import java.io.File;
 
