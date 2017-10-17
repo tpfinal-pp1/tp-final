@@ -27,7 +27,6 @@ import java.util.List;
 
 @Title("Inmuebles")
 @Theme("valo")
-// @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class InmuebleABMView extends DefaultLayout implements View {
 
     private TextField filter = new TextField();
@@ -227,7 +226,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		CssLayout hl = new CssLayout(edit, del, verFotos);
 		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		return hl;
-	    }).setCaption("Acciones");
+	    }).setCaption("Accioness");
 
 	    grid.getColumns().forEach(c -> c.setResizable(false));
 	}
