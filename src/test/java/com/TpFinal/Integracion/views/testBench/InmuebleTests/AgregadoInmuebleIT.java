@@ -1,15 +1,16 @@
 package com.TpFinal.Integracion.views.testBench.InmuebleTests;
 
-import com.TpFinal.Integracion.views.testBench.TBUtils;
+import com.TpFinal.Integracion.views.pageobjects.TBInmuebleView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
+import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.*;
-import org.junit.*;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ import java.util.List;
 public class AgregadoInmuebleIT extends TestBenchTestCase {
     private TBLoginView loginView;
     private TBMainView mainView;
+    private TBInmuebleView inmuebleView;
+
     @Rule
     public ScreenshotOnFailureRule screenshotOnFailureRule =
             new ScreenshotOnFailureRule(this, true);
@@ -33,7 +36,9 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
         Parameters.setScreenshotComparisonCursorDetection(true);
         setDriver(TBUtils.initializeDriver());
         loginView = TBUtils.loginView(this.getDriver());
-        mainView=loginView.login();
+        mainView =loginView.login();
+
+        inmuebleView = mainView.getInmuebleView();
 
     }
 
@@ -45,49 +50,56 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
 
         //Agregar inmueble
         //Tab "Datos Principales"
-        Assert.assertTrue($(GridElement.class).exists());
-        ButtonElement nuevoInmuebleButton = $(ButtonElement.class).caption("Nuevo").first();
-        nuevoInmuebleButton.click();
+        Assert.assertTrue(inmuebleView.getGrid().exists());
+        inmuebleView.getNuevoInmuebleButton().first().click();
         //Tab "Datos principales"
-        TabSheetElement tabSheet1 = $(TabSheetElement.class).first();
-        List<String> tabsheet1Options = $(TabSheetElement.class).first().getTabCaptions();
+
+        List<String> tabsheet1Options = inmuebleView.getTabSheet().first().getTabCaptions();
         Assert.assertEquals(tabsheet1Options.get(0),"Datos Principales");
         Assert.assertEquals(tabsheet1Options.get(1),"Características");
-        tabSheet1.openTab("Datos Principales");
-//TODO comment
-        //ComboPersonas
-      //  ComboBoxElement personasComboBox = $(ComboBoxElement.class).first();
+        inmuebleView.getTabSheet().first().openTab("Datos Principales");
 
+        //ComboPersonas
+        List<String> owners = inmuebleView.getComboBoxPropietario().first().getPopupSuggestions();
+        String selectedOwner = owners.get(1);
+        inmuebleView.getComboBoxPropietario().first().selectByText(selectedOwner);
 
         //ComboClase Inmueble
-       // ComboBoxElement claseComboBox = $(ComboBoxElement.class).caption("Clase").first();
+        List<String> inmuebleClasess = inmuebleView.getClaseComboBox().first().getPopupSuggestions();
+        String selectedInmuebleClass = inmuebleClasess.get(1);
+        inmuebleView.getClaseComboBox().first().selectByText(selectedInmuebleClass);
 
-        RadioButtonGroupElement tipoRadioButtonGroup = $(RadioButtonGroupElement.class).caption("Tipo").first();
-        tipoRadioButtonGroup.selectByText("Comercial");
+
+        //RadioButton
+        inmuebleView.getTipoRadioButtonGroup().first().selectByText("Comercial");
+
         //Adress data
-        TextFieldElement calleTextField = $(TextFieldElement.class).caption("Calle").first();
-        calleTextField.setValue("Evergreen Terrace");
-        TextFieldElement nmeroTextField = $(TextFieldElement.class).caption("Número").first();
-        nmeroTextField.setValue("742");
+        inmuebleView.getCalleTextField().first().setValue("Evergreen Terrace");
+        inmuebleView.getNumeroTextField().first().setValue("742");
 
         //Combobox provincias
-        ComboBoxElement provinciaComboBox = $(ComboBoxElement.class).caption("Provincia").first();
-
+        List<String> provinces = inmuebleView.getProvinciaComboBox().first().getPopupSuggestions();
+        String selectedProvince = provinces.get(1);
+        inmuebleView.getProvinciaComboBox().first().selectByText(selectedProvince);
 
         //Tab "Caracteristicas"
-        tabSheet1.openTab("Características");
-        TextFieldElement ambientesTextField = $(TextFieldElement.class).caption("Ambientes").first();
-        ambientesTextField.setValue("2");
-        TextFieldElement cocherasTextField = $(TextFieldElement.class).caption("Cocheras").first();
-        cocherasTextField.setValue("3");
-        TextFieldElement dormitoriosTextField = $(TextFieldElement.class).caption("Dormitorios").first();
-        dormitoriosTextField.setValue("5");
-        TextFieldElement supTotalTextField = $(TextFieldElement.class).caption("Sup. Total").first();
-        supTotalTextField.setValue("100");
-        TextFieldElement supCubiertaTextField = $(TextFieldElement.class).caption("Sup. Cubierta").first();
-        supCubiertaTextField.setValue("300");
+        inmuebleView.getTabSheet().first().openTab("Características");
+        inmuebleView.getAmbientesTextField().first().setValue("2");
+        inmuebleView.getCocherasTextField().first().setValue("3");
+        inmuebleView.getDormitoriosTextField().first().setValue("5");
+        inmuebleView.getSupTotalTextField().first().setValue("100");
+        inmuebleView.getSupCubiertaTextField().first().setValue("300");
+
+
 
         //CheckBoxes
+        inmuebleView.getAestrenarCheckBox().first().click();
+        inmuebleView.getJardnCheckBox().first().click();
+        inmuebleView.getParrillaCheckBox().first().click();
+        inmuebleView.getAireAcondicionadoCheckBox().first().click();
+        inmuebleView.getPiletaCheckBox().first().click();
+
+        /* TODO dejarlo de prueba
         WebElement element ;
         Actions actions = new Actions(getDriver()); //used to locate checkboxes and click them
 
@@ -114,16 +126,16 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
         Assert.assertEquals(jardnCheckBox.getValue(),"unchecked");
         Assert.assertEquals(parrillaCheckBox.getValue(),"checked");
         Assert.assertEquals(piletaCheckBox.getValue(),"checked");
+*/
+        //Save inmueble.
+        inmuebleView.getGuardarButton().first().click();
+        //ButtonElement llenarcomboButton = $(ButtonElement.class).caption("llenar combo").first();
+       // llenarcomboButton.click();
 
-        //Sve inmueble.
-        ButtonElement cancelButton = $(VerticalLayoutElement.class).$(ButtonElement.class).first();
-        ButtonElement guardarButton = $(ButtonElement.class).caption("Guardar").first();
-        ButtonElement llenarcomboButton = $(ButtonElement.class).caption("llenar combo").first();
-        llenarcomboButton.click();
-        guardarButton.click();
 
         //Verificar que la grid tiene un elemen to, verfificando el propietario del inmueble
         //Assert.assertEquals(inmuebleGrid.getCell(0,1).getText(),"Brandy Wilburn");
+        Assert.assertFalse(inmuebleView.isFormDisplayed());
     }
 
 
