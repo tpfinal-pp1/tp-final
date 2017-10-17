@@ -9,6 +9,7 @@ import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -183,7 +184,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		String ret = "";
 		if (inmueble.getDireccion() != null) {
 		    Direccion d = inmueble.getDireccion();
-		    ret = d.getCalle() + " " + d.getNro() + ", " +d.getLocalidad()+", "+ d.getProvincia();
+		    ret = d.getCalle() + " " + d.getNro() + ", " + d.getLocalidad() + ", " + d.getProvincia();
 
 		}
 		return ret;
@@ -192,14 +193,19 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
+	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	    grid.getColumns().forEach(c -> c.setResizable(false));
+	}
 
-	   grid.addComponentColumn(inmueble -> {
+	private ValueProvider<Inmueble, HorizontalLayout> configurarAcciones() {
+	    return inmueble -> {
 		Button edit = new Button(VaadinIcons.EDIT);
-		edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
+		edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		edit.addClickListener(e -> {
 		    inmuebleForm.setInmueble(inmueble);
 
 		});
+		edit.setDescription("Editar");
 
 		Button del = new Button(VaadinIcons.TRASH);
 		del.addClickListener(click -> {
@@ -215,20 +221,20 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			    });
 
 		});
-		del.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_DANGER);
+		del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+		del.setDescription("Borrar");
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 		verFotos.addClickListener(click -> {
 		    Notification.show("A Implementar: Abrir Pantalla para ver fotos",
 			    Notification.Type.WARNING_MESSAGE);
 		});
-		verFotos.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
-		CssLayout hl = new CssLayout(edit, del, verFotos);
-		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+		verFotos.setDescription("Ver Fotos");
+		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos);
+		hl.setSpacing(false);
 		return hl;
-	    }).setCaption("Accioness");
-
-	    grid.getColumns().forEach(c -> c.setResizable(false));
+	    };
 	}
 
 	public void updateList() {

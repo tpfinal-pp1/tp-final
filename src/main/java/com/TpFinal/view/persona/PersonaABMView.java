@@ -1,14 +1,17 @@
 package com.TpFinal.view.persona;
 
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -43,7 +46,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     HorizontalLayout mainLayout;
     PersonaForm personaForm = new PersonaForm(this);
     private boolean isonMobile = false;
-    PersonaService service = new PersonaService();
+    PersonaService personaService = new PersonaService();
 
     public PersonaABMView() {
 	super();
@@ -52,65 +55,87 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-
+	Responsive.makeResponsive(this);
 	configureFilter();
+	configurarNewItem();
+	configurarGrid();
+	updateList();
+    }
 
+    private void configurarNewItem() {
 	newItem.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
 	    personaForm.setPersona(new Persona());
 	});
+	newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
+    }
 
-	seleccionFiltro.addClickListener(event -> {
-	    HorizontalLayout hl = new HorizontalLayout(filtroRoles);
-	    hl.setMargin(true);
-	    hl.setSpacing(true);
-	    sw.setContent(hl);
-	    filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
-	    filtroRoles.addValueChangeListener(l -> {
-		System.out.println(l.getValue());
-		String valor = l.getValue();
-		filter(valor);
-	    });
-	    Responsive.makeResponsive(sw);
-
-	    sw.setModal(true);
-	    sw.setResizable(false);
-	    sw.setClosable(true);
-	    sw.setVisible(true);
-
-	    UI.getCurrent().addWindow(sw);
-
-	    sw.focus();
-	});
-
+    private void configurarGrid() {
 	grid.setColumns("nombre", "apellido", "DNI");
 	grid.getColumn("DNI").setCaption("DNI");
 	grid.getColumn("nombre").setCaption("Nombre");
 	grid.getColumn("apellido").setCaption("Apellido ");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	grid.getColumns().forEach(col -> col.setResizable(false));
+    }
 
-	Responsive.makeResponsive(this);
-	grid.asSingleSelect().addValueChangeListener(event -> {
-	    if (event.getValue() == null) {
-		if (personaForm.isVisible())
-		    setComponentsVisible(true);
-		personaForm.setVisible(false);
-	    } else {
-		personaForm.setPersona(event.getValue());
-	    }
+    private ValueProvider<Persona, HorizontalLayout> configurarAcciones() {
+	return persona -> {
+	    Button edit = new Button(VaadinIcons.EDIT);
+	    edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	    edit.addClickListener(e -> {
+		personaForm.setPersona(persona);
+	    });
+	    edit.setDescription("Editar");
+
+	    Button del = new Button(VaadinIcons.TRASH);
+	    del.addClickListener(click -> {
+		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+			VaadinIcons.WARNING,
+			"¿Esta seguro que desea Eliminar?",
+			"100px",
+			confirmacion -> {
+			    personaService.delete(persona);
+			    showSuccessNotification("Persona borrada (" + persona.getNombre() + " " + persona
+				    .getApellido() + ")");
+			    updateList();
+			});
+	    });
+	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	    del.setDescription("Borrar");
+
+	    Button addIntereses = new Button(VaadinIcons.THUMBS_UP_O);
+	    addIntereses.addClickListener(click -> {
+		Notification.show("A Implementar: Abrir Pantalla para añadir intereses de búsqueda",
+			Notification.Type.WARNING_MESSAGE);
+	    });
+	    addIntereses.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	    addIntereses.setDescription("Añadir intereses de búsqueda");
+	    HorizontalLayout hl = new HorizontalLayout(edit, del, addIntereses);
+	    hl.setSpacing(false);
+	    return hl;
+	};
+    }
+
+    private void abriVentanaSelectoraFiltros() {
+	HorizontalLayout hl = new HorizontalLayout(filtroRoles);
+	hl.setMargin(true);
+	hl.setSpacing(true);
+	sw.setContent(hl);
+	filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
+	filtroRoles.addValueChangeListener(l -> {
+	    System.out.println(l.getValue());
+	    String valor = l.getValue();
+	    filter(valor);
 	});
-
-	// grid.setSelectionMode(Grid.SelectionMod
-	//
-	// e.SINGLE);
-
-	if (isonMobile) {
-	    filter.setWidth("100%");
-	}
-	newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
-	// filter.setIcon(VaadinIcons.SEARCH);
-	// filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-
-	updateList();
+	Responsive.makeResponsive(sw);
+	sw.setModal(true);
+	sw.setResizable(false);
+	sw.setClosable(true);
+	sw.setVisible(true);
+	sw.center();
+	UI.getCurrent().addWindow(sw);
+	sw.focus();
     }
 
     private void configureFilter() {
@@ -120,6 +145,12 @@ public class PersonaABMView extends DefaultLayout implements View {
 	filter.addValueChangeListener(e -> updateList());
 	clearFilterTextBtn.setDescription("Limpiar filtro");
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+	if (isonMobile) {
+	    filter.setWidth("100%");
+	}
+	seleccionFiltro.addClickListener(event -> {
+	    abriVentanaSelectoraFiltros();
+	});
     }
 
     public void setComponentsVisible(boolean b) {
@@ -177,18 +208,18 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	List<Persona> customers = service.findAll(filter.getValue());
+	List<Persona> customers = personaService.findAll(filter.getValue());
 	grid.setItems(customers);
     }
 
     public void filter(String valor) {
 	List<Persona> customers = null;
 	if (valor.equals("Todos"))
-	    customers = service.findAll(filter.getValue());
+	    customers = personaService.findAll(filter.getValue());
 	else if (valor.equals("Inquilinos"))
-	    customers = service.findForRole(Rol.Inquilino.toString());
+	    customers = personaService.findForRole(Rol.Inquilino.toString());
 	else if (valor.equals("Propietarios"))
-	    customers = service.findForRole(Rol.Propietario.toString());
+	    customers = personaService.findForRole(Rol.Propietario.toString());
 	grid.setItems(customers);
     }
 
