@@ -1,7 +1,9 @@
-package com.TpFinal.data.dao;
+package com.TpFinal.Integracion.dao;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOContratoVentaImpl;
+import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.UnitTests.dto.contrato.ContratoVenta;
