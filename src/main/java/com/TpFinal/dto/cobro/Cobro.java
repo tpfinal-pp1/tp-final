@@ -1,6 +1,7 @@
 package com.TpFinal.dto.cobro;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -119,22 +120,27 @@ public class Cobro implements Identificable, BorradoLogico {
 
 	public void setMontoOriginal(BigDecimal montoOriginal) {
 		this.montoOriginal = montoOriginal;
+		this.montoOriginal=this.montoOriginal.setScale(2, RoundingMode.CEILING);
 	}
 
 	public void setMontoRecibido(BigDecimal montoRecibido) {
 		this.montoRecibido = montoRecibido;
+		this.montoRecibido = this.montoRecibido.setScale(2, RoundingMode.CEILING);
 	}
 
 	public void setInteres(BigDecimal interes) {
 		this.interes = interes;
+		this.interes= this.interes.setScale(2, RoundingMode.CEILING);
 	}
 
 	public void setComision(BigDecimal comision) {
 		this.comision = comision;
+		this.comision=this.comision.setScale(2, RoundingMode.CEILING);
 	}
 
 	public void setMontoPropietario(BigDecimal montoPropietario) {
 		this.montoPropietario = montoPropietario;
+		this.montoPropietario=this.montoPropietario.setScale(2, RoundingMode.CEILING);
 	}
 
 	public void setFechaDePago(LocalDate fechaDePago) {
@@ -273,22 +279,27 @@ public class Cobro implements Identificable, BorradoLogico {
 		}
 		public Builder setMontoOriginal(BigDecimal dato) {
 			this.montoOriginal=dato;
+			this.montoOriginal=this.montoOriginal.setScale(2, RoundingMode.CEILING);
 			return this;
 		}
 		public Builder setMontoRecibido(BigDecimal dato) {
 			this.montoRecibido=dato;
+			this.montoRecibido=this.montoRecibido.setScale(2, RoundingMode.CEILING);
 			return this;
 		}
 		public Builder setInteres(BigDecimal dato) {
 			this.interes=dato;
+			this.interes=this.interes.setScale(2, RoundingMode.CEILING);
 			return this;
 		}
 		public Builder setComision(BigDecimal dato) {
 			this.comision=dato;
+			this.comision=this.comision.setScale(2, RoundingMode.CEILING);
 			return this;
 		}
 		public Builder setMontoPropietario(BigDecimal dato) {
 			this.montoPropietario=dato;
+			this.montoPropietario=this.montoPropietario.setScale(2, RoundingMode.CEILING);
 			return this;
 		}
 		public Builder setFechaDePago(LocalDate dato) {
