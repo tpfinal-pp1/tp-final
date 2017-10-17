@@ -14,6 +14,6 @@ addons:
         token:
           secure: "04db89c9d5164b1ec6350d28933c43eccc1bd79f"
 
-script:  ./.travis.script.sh
+script: sh ./.travis.script.sh
 notifications:
     slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
