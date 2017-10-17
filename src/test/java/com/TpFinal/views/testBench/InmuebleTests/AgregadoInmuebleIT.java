@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Created by Max on 10/12/2017.
  */
-public class AgregadoInmuebleTest extends TestBenchTestCase {
+public class AgregadoInmuebleIT extends TestBenchTestCase {
     private TBLoginView loginView;
     private TBMainView mainView;
     @Rule

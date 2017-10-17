@@ -12,7 +12,7 @@ import org.junit.*;
 /**
  * Created by Max on 10/12/2017.
  */
-public class AddPublicacionTest extends TestBenchTestCase {
+public class AddPublicacionIT extends TestBenchTestCase {
 
 
     private TBLoginView loginView;

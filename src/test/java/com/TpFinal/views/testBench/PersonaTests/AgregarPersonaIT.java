@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Max on 10/11/2017.
  */
-public class AgregarPersonaTest extends TestBenchTestCase{
+public class AgregarPersonaIT extends TestBenchTestCase{
     private TBLoginView loginView;
     private TBMainView mainView;
     @Rule

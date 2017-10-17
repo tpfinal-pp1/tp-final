@@ -16,7 +16,7 @@ import org.openqa.selenium.phantomjs.PhantomJSDriver;
 
 import java.util.concurrent.TimeUnit;
 
-public class AgregarInmuebleTest extends TestBenchTestCase{
+public class AgregarInmuebleIT extends TestBenchTestCase{
 
     private TBLoginView loginView;
     private TBMainView mainView;
