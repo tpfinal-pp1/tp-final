@@ -217,21 +217,24 @@ public class CobrosABMView extends DefaultLayout implements View {
 
                 Button pagar = new Button(VaadinIcons.MONEY);
                 pagar.addClickListener(click -> {
-                	 DialogConfirmacion dialog = new DialogConfirmacion("Pagar cuota",
-             			    VaadinIcons.WARNING,
-             			    "¿Esta seguro que desea pagar esta cuota?",
-             			    "100px",
-             			    confirmacion -> {
-             			    			if(cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
-             			    				Notification.show("La cuota ya esta pagado",
-             			                             Notification.Type.WARNING_MESSAGE);
-             			    			}else if(cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
-             			    				cobro.setEstadoCobro(EstadoCobro.COBRADO);
-             			    				cobro.setFechaDePago(LocalDate.now());
-             			    				cobroService.save(cobro);
-             			    			}
-             			    			updateList();
-             			    	});
+                	if(cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
+		    				Notification.show("Este alquiler ya esta cobrado",
+		                             Notification.Type.WARNING_MESSAGE);
+		    			}else {
+		    				 DialogConfirmacion dialog = new DialogConfirmacion("Cobrar alquiler",
+		              			    VaadinIcons.WARNING,
+		              			    "¿Esta seguro que desea cobrar este alquiler?",
+		              			    "100px",
+		              			    confirmacion -> {
+		              			    			 if(cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
+		              			    				cobro.setEstadoCobro(EstadoCobro.COBRADO);
+		              			    				cobro.setFechaDePago(LocalDate.now());
+		              			    				cobroService.save(cobro);
+		              			    			}
+		              			    			updateList();
+		              			    	});
+		    			}
+                	
                 });
                 pagar.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
                 CssLayout hl = new CssLayout(ver, pagar);
