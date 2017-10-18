@@ -18,7 +18,7 @@ public class LoginViewIT extends TestBenchTestCase {
     @Before
     public void setUp() {
         Parameters.setScreenshotErrorDirectory(
-                "File/errors");
+                "Files/errors");
         Parameters.setMaxScreenshotRetries(2);
         Parameters.setScreenshotComparisonTolerance(1.0);
         Parameters.setScreenshotRetryDelay(10);
@@ -34,6 +34,9 @@ public class LoginViewIT extends TestBenchTestCase {
         Assert.assertTrue(mainView.isDisplayed());
 
         mainView.logout();
+        //Se setea este intervalo , sino no le da tiempo a salir y pregunta por un componente
+        //de otra view antes de salir de la view actual
+        TBUtils.sleep(5000);
         Assert.assertTrue(loginView.isDisplayed());
     }
 

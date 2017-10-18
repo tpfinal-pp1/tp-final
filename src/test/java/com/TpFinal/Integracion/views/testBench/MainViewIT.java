@@ -20,7 +20,7 @@ public class MainViewIT extends TestBenchTestCase {
     @Before
     public void setUp() throws Exception {
         Parameters.setScreenshotErrorDirectory(
-                "File/errors");
+                "Files/errors");
         Parameters.setMaxScreenshotRetries(2);
         Parameters.setScreenshotComparisonTolerance(1.0);
         Parameters.setScreenshotRetryDelay(10);
@@ -33,7 +33,7 @@ public class MainViewIT extends TestBenchTestCase {
 
     @Test
     public void testProfileName() {
-        TBUtils.sleep(1000);
+        TBUtils.sleep(5000);
         Assert.assertTrue(mainView.getUserFullName().contains("test"));
     }
 

@@ -1,13 +1,19 @@
 package com.TpFinal.Integracion.views.testBench.PublicacionTests;
 
-import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
+import com.TpFinal.Integracion.views.pageobjects.TBPublicacionView;
+import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.*;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Created by Max on 10/12/2017.
@@ -17,6 +23,7 @@ public class AddPublicacionIT extends TestBenchTestCase {
 
     private TBLoginView loginView;
     private TBMainView mainView;
+    private TBPublicacionView publicacionView;
     @Rule
     public ScreenshotOnFailureRule screenshotOnFailureRule =
             new ScreenshotOnFailureRule(this, true);
@@ -33,41 +40,39 @@ public class AddPublicacionIT extends TestBenchTestCase {
         loginView = TBUtils.loginView(this.getDriver());
         mainView=loginView.login();
 
+        publicacionView = mainView.getPublicacionView();
     }
-
-
-
 
     @Test
     public void addPublicacionTest(){
         getDriver().get(TBUtils.getUrl("publicaciones"));
         Assert.assertTrue($(GridElement.class).exists());
-        GridElement inmuebleGrid = $(GridElement.class).first();
 
-//TODO comment
-        ButtonElement nuevaButton = $(ButtonElement.class).caption("Nueva").first();
-        nuevaButton.click();
-        FormLayoutElement formLayout1 = $(FormLayoutElement.class).$(FormLayoutElement.class).first();
+        //New Publication
+        publicacionView.getNuevaButton().first().click();
 
-        RadioButtonGroupElement radioButtonGroup = $(RadioButtonGroupElement.class).caption(" ").first();
-        radioButtonGroup.selectByText("Venta");
-        DateFieldElement fechapublicacionDateField = $(DateFieldElement.class).caption("Fecha publicacion").first();
-        fechapublicacionDateField.setValue("21/10/2017");
-        RadioButtonGroupElement estadodelapublicacionRadioButtonGroup = $(RadioButtonGroupElement.class).caption("Estado de la publicacion").first();
-        estadodelapublicacionRadioButtonGroup.selectByText("Terminada");
+        //RadioButtons
+        publicacionView.getRadioButtonGroup().first().selectByText("Venta");
+        publicacionView.getEstadodelapublicacionRadioButtonGroup().first().selectByText("Terminada");
 
-        ComboBoxElement inmuebleComboBox = $(ComboBoxElement.class).caption("Inmueble").first();
+        //DateField
+        publicacionView.getFechapublicacionDateField().first().setValue("21/10/2017");
 
-        TextFieldElement montoTextField = $(TextFieldElement.class).caption("Monto").first();
-        montoTextField.setValue("200000");
-        ComboBoxElement monedaComboBox = $(ComboBoxElement.class).caption("Moneda").first();
+        //Inmueble ComboBox
+        List<String> inmuebleList = publicacionView.getInmuebleComboBox().first().getPopupSuggestions();
+        String selectedInmueble = inmuebleList.get(1);
+        publicacionView.getInmuebleComboBox().first().selectByText(selectedInmueble);
 
-        ButtonElement guardarButton = $(ButtonElement.class).caption("Guardar").first();
-        ButtonElement cancelButton = $(VerticalLayoutElement.class).$(ButtonElement.class).first();
-        ButtonElement llenarcomboButton = $(ButtonElement.class).caption("llenar combo").first();
-        llenarcomboButton.click();
+        //MontoField
+        publicacionView.getMontoTextField().first().setValue("200000");
 
-        guardarButton.click();
+        //Change type Combo
+        publicacionView.getMonedaComboBox().first().selectByText("Pesos");
+
+        publicacionView.getGuardarButton().first().click();
+
+        //Verify the form is closed
+        Assert.assertFalse(publicacionView.isFormDisplayed());
     }
 
 

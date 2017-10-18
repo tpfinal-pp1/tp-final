@@ -23,14 +23,7 @@ import java.sql.Blob;
 public class DownloadButton extends Button {
     StreamResource sr;
     FileDownloader fileDownloader;
-    @Deprecated
-    public DownloadButton(String buttonName,StreamResource streamResource){
-        super(buttonName);
-        sr =streamResource;
-        fileDownloader = new FileDownloader(sr);
-        fileDownloader.extend(this);
-        addStyleName(ValoTheme.BUTTON_TINY);
-    }
+
    /* @Deprecated
     public DownloadButton(String buttonName,String filename){
         super(buttonName);
@@ -76,7 +69,7 @@ public class DownloadButton extends Button {
     }
 
 
-    private StreamResource fromPathtoSR(String filename) {
+    public static StreamResource fromPathtoSR(String filename) {
 
         return new StreamResource(new StreamResource.StreamSource() {
             public InputStream getStream() {

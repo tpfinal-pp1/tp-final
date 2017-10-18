@@ -211,6 +211,28 @@ public class CobroServiceIT {
         return ret;
     }
     
+    private ContratoAlquiler instanciaAlquilerConInteresSimpleNoVencido() {
+    	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
+    	fecha=fecha.minusDays(2);
+    	fecha=fecha.minusMonths(1);
+    	System.out.println(fecha.toString());
+        ContratoAlquiler ret = new ContratoAlquiler.Builder()
+                .setFechaCelebracion(fecha)
+                .setValorIncial(new BigDecimal("100.00"))
+                .setDiaDePago(new Integer(13))
+                .setInteresPunitorio(new Double(0.5))
+                .setIntervaloActualizacion(new Integer(2))
+                .setTipoIncrementoCuota(TipoInteres.Simple)
+                .setTipoInteresPunitorio(TipoInteres.Simple)
+                .setPorcentajeIncremento(new Double(0))
+                .setInquilinoContrato(null)
+                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setEstadoRegistro(EstadoRegistro.ACTIVO)
+                 .build();
+        ret.setEstadoContrato(EstadoContrato.Vigente);
+        return ret;
+    }
+    
     private ContratoAlquiler instanciaAlquilerConInteresAcumulativo() {
     	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
     	fecha=fecha.minusDays(2);

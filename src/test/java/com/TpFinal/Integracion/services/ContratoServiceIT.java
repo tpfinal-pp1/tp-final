@@ -140,18 +140,20 @@ public class ContratoServiceIT {
 			return ret;
 		});
 		LocalDate fecha = LocalDate.of(2017, 05, 13);
-		//cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
 		assertEquals(ca.getCobros().size(), 24);
 		BigDecimal monto = new BigDecimal("100.00");
 		BigDecimal expected = new BigDecimal("100.00");
 		for(int i =0; i<cos.size(); i++) {
 			expected=expected.setScale(2, RoundingMode.CEILING);
 			assertEquals(expected.toBigInteger(), cos.get(i).getMontoOriginal().toBigInteger());
+			System.out.println("Monto esperado: "+expected.toString());
+			System.out.println("Monto inicial: "+cos.get(i).getMontoOriginal().toString());
+			System.out.println("Monto total: "+cos.get(i).getMontoRecibido().toString());
 			if((i+1)%2==0) {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
-			System.out.println(cos.get(i).getFechaDeVencimiento());
+			//System.out.println(cos.get(i).getFechaDeVencimiento());
 			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}

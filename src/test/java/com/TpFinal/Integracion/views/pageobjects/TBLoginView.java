@@ -3,8 +3,6 @@ package com.TpFinal.Integracion.views.pageobjects;
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.PasswordFieldElement;
-import com.vaadin.testbench.elements.TextFieldElement;
 import org.openqa.selenium.WebDriver;
 
 public class TBLoginView extends TestBenchTestCase {
@@ -24,9 +22,6 @@ public class TBLoginView extends TestBenchTestCase {
         return $(ButtonElement.class).caption("Iniciar Sesión");
     }
 
-    private ElementQuery<TextFieldElement>  getUserNameTextfield(){ return $(TextFieldElement.class).caption("Usuario");}
-
-    private ElementQuery<PasswordFieldElement>  getUserPassTextField(){ return $(PasswordFieldElement.class).caption("Contraseña");}
 
     public boolean isDisplayed() {
         return getLoginButton().exists();
