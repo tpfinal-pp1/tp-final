@@ -23,6 +23,7 @@ import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
@@ -219,7 +220,7 @@ public class ContratoServiceIT {
                 .setTipoInteresPunitorio(TipoInteres.Simple)
                 .setPorcentajeIncremento(new Double(50))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                 
                  .build();
@@ -238,12 +239,20 @@ public class ContratoServiceIT {
                 .setTipoInteresPunitorio(TipoInteres.Simple)
                 .setPorcentajeIncremento(new Double(50))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
         ca.setEstadoContrato(EstadoContrato.Vigente);
         return ca;
     }
+    
+    private ContratoDuracion instanciaContratoDuracion24() {
+    	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
+    	  }
+    
+    private ContratoDuracion instanciaContratoDuracion36() {
+    	return new ContratoDuracion.Builder().setDescripcion("36 Horas").setDuracion(36).build();
+    	  }
     
     
 
