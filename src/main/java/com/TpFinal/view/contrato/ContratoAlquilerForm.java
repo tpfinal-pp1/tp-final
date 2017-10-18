@@ -179,7 +179,6 @@ public class ContratoAlquilerForm extends FormLayout {
 
     private void configurarAcciones() {
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
-	save.addClickListener(e -> this.save());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 	finalizarCarga.setStyleName(ValoTheme.BUTTON_FRIENDLY);

@@ -1,12 +1,14 @@
 package com.TpFinal.view.publicacion;
+
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -19,24 +21,14 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
 
-/* User Interface written in Java.
- *
- * Define the user interface shown on the Vaadin generated web page by extending the UI class.
- * By default, a new UI instance is automatically created when the page is loaded. To reuse
- * the same instance, add @PreserveOnRefresh.
- */
-
 @Title("Addressbook")
 @Theme("valo")
-@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class PublicacionABMView extends DefaultLayout implements View {
 
-    /*
-     * Hundreds of widgets. Vaadin's user interface components are just Java objects
-     * that encapsulate and handle cross-browser support and client-server
-     * communication. The default Vaadin components are in the com.vaadin.ui package
-     * and there are over 500 more in vaadin.com/directory.
+    /**
+     * 
      */
+    private static final long serialVersionUID = 8290150520198357534L;
     TextField filter = new TextField();
     private Grid<Publicacion> grid = new Grid<>(Publicacion.class);
     Button nuevo = new Button("Nueva");
@@ -52,7 +44,10 @@ public class PublicacionABMView extends DefaultLayout implements View {
     // PublicacionService is a in-memory mock DAO that mimics
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
-    PublicacionService service = new PublicacionService();
+    PublicacionService publicacionService = new PublicacionService();
+
+    //acciones segun numero de fila
+	int acciones = 0;
 
     public PublicacionABMView() {
 	super();
@@ -60,61 +55,78 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	configureComponents();
 	setSizeFull();
 
-
     }
 
     private void configureComponents() {
-	/*
-	 * Synchronous event handling.
-	 *
-	 * Receive user interaction events on the server-side. This allows you to
-	 * synchronously handle those events. Vaadin automatically sends only the needed
-	 * changes to the web page without loading a new page.
-	 */
-	// nuevo.addClickListener(e -> ContratoVentaForm.setVenta(new
-	// Publicacion()));
+	configureFilter();
+	configureNewItem();
+	configureGrid();
+	updateList();
+    }
 
-	filter.addValueChangeListener(e -> updateList());
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
+    private void configureGrid() {
+	grid.setColumns("inmueble", "tipoPublicacion", "fechaPublicacion", "estadoPublicacion");
+	grid.getColumn("tipoPublicacion").setCaption("Operación");
+	grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
+	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	grid.getColumns().forEach(c -> c.setResizable(false));
+    }
 
-	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
-	clearFilterTextBtn.setDescription("Limpiar filtro");
-	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+    private ValueProvider<Publicacion, HorizontalLayout> configurarAcciones() {
+	return publicacion -> {
+	    Button edit = new Button(VaadinIcons.EDIT);
+	    edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	    edit.addClickListener(e -> {
+		publicacionForm.setPublicacion(publicacion);
 
+	    });
+	    edit.setDescription("Editar");
+
+	    Button del = new Button(VaadinIcons.TRASH);
+	    del.addClickListener(click -> {
+		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+			VaadinIcons.WARNING,
+			"¿Esta seguro que desea Eliminar?",
+			"100px",
+			confirmacion -> {
+			    if (publicacionService.delete(publicacion)) {
+				showSuccessNotification("Publicación Borrada");
+			    } else {
+				showErrorNotification("No se realizaron cambios");
+			    }
+			    updateList();
+			});
+
+	    });
+	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	    del.setDescription("Borrar");
+	    HorizontalLayout hl = new HorizontalLayout(edit, del);
+	    hl.setCaption("Accion "+acciones);
+	    hl.setSpacing(false);
+	    acciones++;
+	    return hl;
+	};
+    }
+
+    private void configureNewItem() {
 	nuevo.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
 	    publicacionForm.clearFields();
 	    publicacionForm.setPublicacion(null);
 
 	});
+    }
 
-
-	grid.setColumns("inmueble", "tipoPublicacion", "fechaPublicacion", "estadoPublicacion");
-	grid.getColumn("tipoPublicacion").setCaption("Operación");
-	grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
-	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario");
-
-	// grid.getColumn("propietarioPublicacion").setCaption("Propietario");
-
-	Responsive.makeResponsive(this);
-	grid.asSingleSelect().addValueChangeListener(event -> {
-		publicacionForm.setVisible(false);
-	    if (event.getValue() == null) {
-	    	setComponentsVisible(true);
-
-
-	    } else {
-		    publicacionForm.setPublicacion( event.getValue());
-
-	    }
-	});
-
-	// grid.setSelectionMode(Grid.SelectionMode.SINGLE);
-
+    private void configureFilter() {
+	filter.addValueChangeListener(e -> updateList());
+	filter.setValueChangeMode(ValueChangeMode.LAZY);
+	filter.setPlaceholder("Filtrar");
+	filter.addValueChangeListener(e -> updateList());
+	clearFilterTextBtn.setDescription("Limpiar filtro");
+	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-	updateList();
     }
 
     public void setComponentsVisible(boolean b) {
@@ -135,8 +147,6 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	HorizontalLayout layout = new HorizontalLayout(nuevo);
 	filtering.addComponents(filter, clearFilterTextBtn, layout);
 
-
-
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	buildToolbar("Publicaciones", filtering/* , layout */);
 	grid.setSizeFull();
@@ -144,9 +154,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	mainLayout.setSizeFull();
 	addComponent(mainLayout);
 	this.setExpandRatio(mainLayout, 1);
-
-
-
+	Responsive.makeResponsive(this);
 
     }
 
@@ -178,7 +186,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	List<Publicacion> customers = service.readAll(filter.getValue());
+	List<Publicacion> customers = publicacionService.readAll(filter.getValue());
 	grid.setItems(customers);
 
     }

@@ -11,33 +11,39 @@ import org.openqa.selenium.WebDriver;
 public class TBInmuebleView extends TestBenchTestCase{
 
 
-    private ElementQuery<GridElement> grid                             = $(GridElement.class);
-    private ElementQuery<TextFieldElement> filterText                  = $(TextFieldElement.class);
-    private ElementQuery<ButtonElement> quitFilter                     = $(VerticalLayoutElement.class).$(ButtonElement.class);
-    private ElementQuery<ButtonElement> nuevoInmuebleButton            = $(ButtonElement.class).caption("Nuevo");
-    private ElementQuery<TabSheetElement> tabSheet                     = $(TabSheetElement.class);
-    private ElementQuery<ComboBoxElement> comboBoxPropietario          = $(ComboBoxElement.class);
-    private ElementQuery<ButtonElement> nuevpPropietarioButton         = $(FormLayoutElement.class).$(ButtonElement.class);
-    private ElementQuery<ComboBoxElement> claseComboBox                = $(ComboBoxElement.class).caption("Clase");
-    private ElementQuery<RadioButtonGroupElement> tipoRadioButtonGroup = $(RadioButtonGroupElement.class).caption("Tipo");
-    private ElementQuery<TextFieldElement> calleTextField              = $(TextFieldElement.class).caption("Calle");
-    private ElementQuery<TextFieldElement> numeroTextField             = $(TextFieldElement.class).caption("Número");
-    private ElementQuery<ComboBoxElement> provinciaComboBox            = $(ComboBoxElement.class).caption("Provincia");
-    private ElementQuery<ComboBoxElement> localidadComboBox            = $(ComboBoxElement.class).caption("Localidad");
-    private ElementQuery<TextFieldElement> codigopostalTextField       = $(TextFieldElement.class).caption("Código postal");
-    private ElementQuery<ButtonElement> buscarUbicacionButton          = $(ButtonElement.class).caption("Buscar Ubicación");
-    private ElementQuery<ButtonElement> guardarButton                  = $(ButtonElement.class).caption("Guardar");
-    private ElementQuery<ButtonElement> llenarcomboButton              = $(ButtonElement.class).caption("llenar combo");
-    private ElementQuery<TextFieldElement> ambientesTextField          = $(TextFieldElement.class).caption("Ambientes");
-    private ElementQuery<TextFieldElement> cocherasTextField           = $(TextFieldElement.class).caption("Cocheras");
-    private ElementQuery<TextFieldElement> dormitoriosTextField        = $(TextFieldElement.class).caption("Dormitorios");
-    private ElementQuery<TextFieldElement> supTotalTextField           = $(TextFieldElement.class).caption("Sup. Total");
-    private ElementQuery<TextFieldElement> supCubiertaTextField        = $(TextFieldElement.class).caption("Sup. Cubierta");
-    private ElementQuery<CheckBoxElement> aestrenarCheckBox            = $(CheckBoxElement.class).caption("A estrenar");
-    private ElementQuery<CheckBoxElement> aireAcondicionadoCheckBox    = $(CheckBoxElement.class).caption("Aire Acondicionado");
-    private ElementQuery<CheckBoxElement> jardnCheckBox                = $(CheckBoxElement.class).caption("Jardín");
-    private ElementQuery<CheckBoxElement> parrillaCheckBox             = $(CheckBoxElement.class).caption("Parrilla");
-    private ElementQuery<CheckBoxElement> piletaCheckBox               = $(CheckBoxElement.class).caption("Pileta");
+    private ElementQuery<GridElement> grid    ;
+    private ElementQuery<TextFieldElement> filterText                ;
+    private ElementQuery<ButtonElement> quitFilter                    ;
+    private ElementQuery<ButtonElement> nuevoInmuebleButton          ;
+    private ElementQuery<TabSheetElement> tabSheet                    ;
+    private ElementQuery<ComboBoxElement> comboBoxPropietario         ;
+    private ElementQuery<ButtonElement> nuevpPropietarioButton         ;
+    private ElementQuery<ComboBoxElement> claseComboBox               ;
+    private ElementQuery<RadioButtonGroupElement> tipoRadioButtonGroup ;
+    private ElementQuery<TextFieldElement> calleTextField             ;
+    private ElementQuery<TextFieldElement> numeroTextField            ;
+    private ElementQuery<ComboBoxElement> provinciaComboBox            ;
+    private ElementQuery<ComboBoxElement> localidadComboBox           ;
+    private ElementQuery<TextFieldElement> codigopostalTextField     ;
+    private ElementQuery<ButtonElement> buscarUbicacionButton        ;
+    private ElementQuery<ButtonElement> guardarButton                ;
+    private ElementQuery<ButtonElement> llenarcomboButton             ;
+    private ElementQuery<TextFieldElement> ambientesTextField         ;
+    private ElementQuery<TextFieldElement> cocherasTextField       ;
+    private ElementQuery<TextFieldElement> dormitoriosTextField        ;
+    private ElementQuery<TextFieldElement> supTotalTextField          ;
+    private ElementQuery<TextFieldElement> supCubiertaTextField      ;
+    private ElementQuery<CheckBoxElement> aestrenarCheckBox            ;
+    private ElementQuery<CheckBoxElement> aireAcondicionadoCheckBox    ;
+    private ElementQuery<CheckBoxElement> jardnCheckBox               ;
+    private ElementQuery<CheckBoxElement> parrillaCheckBox            ;
+    private ElementQuery<CheckBoxElement> piletaCheckBox               ;
+    private ElementQuery<HorizontalLayoutElement> horizontalLayoutAcciones;
+    private ElementQuery<ButtonElement> buttonEdit ;
+    private ElementQuery<ButtonElement> buttonRemove ;
+    private ElementQuery<ButtonElement> buttonImage;
+
+    private TBPersonaInmueblePopupView personaInmueblePopupView;
 
 
     public TBInmuebleView(WebDriver driver){
@@ -69,6 +75,7 @@ public class TBInmuebleView extends TestBenchTestCase{
         jardnCheckBox               = $(CheckBoxElement.class).caption("Jardín");
         parrillaCheckBox            = $(CheckBoxElement.class).caption("Parrilla");
         piletaCheckBox              = $(CheckBoxElement.class).caption("Pileta");
+        horizontalLayoutAcciones = $(GridElement.class).$$(HorizontalLayoutElement.class);
     }
 
 
@@ -126,7 +133,25 @@ public class TBInmuebleView extends TestBenchTestCase{
 
     public ElementQuery<CheckBoxElement> getPiletaCheckBox() { return piletaCheckBox; }
 
+    private ElementQuery<HorizontalLayoutElement> getHorizontalLayoutAcciones() { return horizontalLayoutAcciones; }
+
+    private HorizontalLayoutElement getHorizontalLayoutElement(String caption){ return getHorizontalLayoutAcciones().caption(caption).first(); }
+
+    private ElementQuery<ButtonElement> getButtonEdit(String caption) { return buttonEdit = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    private ElementQuery<ButtonElement> getButtonRemove(String caption) { return  buttonRemove = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    private ElementQuery<ButtonElement> getButtonImage(String caption) { return  buttonImage = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    public ButtonElement getEditButton(String caption){ return getButtonEdit(caption).first(); }
+
+    public ButtonElement getRemoveButton(String caption){ return getButtonRemove(caption).first(); }
+
+    public ButtonElement getImageButton(String caption){ return getButtonImage(caption).first(); }
+
     public boolean isDisplayed(){ return this.grid.exists(); }
 
     public boolean isFormDisplayed(){ return this.guardarButton.exists(); }
+
+    public TBPersonaInmueblePopupView getPersonaInmueblePopupView() { return personaInmueblePopupView = new TBPersonaInmueblePopupView(getDriver()); }
 }

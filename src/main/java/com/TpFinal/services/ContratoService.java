@@ -196,14 +196,17 @@ public class ContratoService {
     					.setNumeroCuota(i)
     					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
+    					.setMontoRecibido(valorAnterior)
     					.build();
     			if((i+1) % contrato.getIntervaloActualizacion()==0) {
     				if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
     					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+    					incremento=incremento.divide(new BigDecimal("100"));
     					BigDecimal aux = valorAnterior.multiply(incremento);
     					valorAnterior=valorAnterior.add(aux);
     				}else if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
     					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+    					incremento=incremento.divide(new BigDecimal("100"));
     					BigDecimal aux = contrato.getValorInicial().multiply(incremento);
     					valorAnterior=valorAnterior.add(aux);
     				}

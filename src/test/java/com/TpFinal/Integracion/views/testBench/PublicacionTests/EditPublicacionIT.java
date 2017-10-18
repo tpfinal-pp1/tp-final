@@ -7,19 +7,15 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.List;
-
 /**
- * Created by Max on 10/12/2017.
+ * Created by Max on 10/18/2017.
  */
-public class AddPublicacionIT extends TestBenchTestCase {
-
+public class EditPublicacionIT extends TestBenchTestCase{
 
     private TBLoginView loginView;
     private TBMainView mainView;
@@ -46,32 +42,18 @@ public class AddPublicacionIT extends TestBenchTestCase {
     @Test
     public void addPublicacionTest(){
         getDriver().get(TBUtils.getUrl("publicaciones"));
-        Assert.assertTrue($(GridElement.class).exists());
+        Assert.assertTrue(publicacionView.isDisplayed());
 
-        //New Publication
-        publicacionView.getNuevaButton().first().click();
+        //Edit Publicacion
+        publicacionView.getEditButton("Accion 1").click();
+        TBUtils.sleep(5000);
 
-        //RadioButtons
-        publicacionView.getRadioButtonGroup().first().selectByText("Venta");
-        publicacionView.getEstadodelapublicacionRadioButtonGroup().first().selectByText("Terminada");
 
-        //DateField
-        publicacionView.getFechapublicacionDateField().first().setValue("21/10/2017");
-
-        //Inmueble ComboBox
-        List<String> inmuebleList = publicacionView.getInmuebleComboBox().first().getPopupSuggestions();
-        String selectedInmueble = inmuebleList.get(1);
-        publicacionView.getInmuebleComboBox().first().selectByText(selectedInmueble);
-
-        //MontoField
-        publicacionView.getMontoTextField().first().setValue("200000");
-
-        //Change type Combo
-        publicacionView.getMonedaComboBox().first().selectByText("Pesos");
-
+        //Edit name
+        publicacionView.getMontoTextField().first().setValue("2000000000000");
         publicacionView.getGuardarButton().first().click();
+        TBUtils.sleep(5000);
 
-        //Verify the form is closed
         Assert.assertFalse(publicacionView.isFormDisplayed());
     }
 

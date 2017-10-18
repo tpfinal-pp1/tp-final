@@ -55,6 +55,7 @@ public class CobroService {
 				if(cantidadDias>0) {
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						interes=interes.divide(new BigDecimal("100"));
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
 						interes=c.getMontoOriginal().multiply(interes);
 						c.setInteres(interes);
@@ -62,6 +63,7 @@ public class CobroService {
 						c.setMontoRecibido(nuevoValor);
 					}else if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Acumulativo)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						interes=interes.divide(new BigDecimal("100"));
 						BigDecimal valorAnterior= c.getMontoOriginal();
 						for(int i=0; i<cantidadDias;i++) {
 							valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));

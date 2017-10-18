@@ -61,7 +61,7 @@ public abstract class PersonaFormWindow extends Window {
         setCloseShortcut(KeyCode.ESCAPE, null);
         setResizable(false);
         setClosable(true);
-        
+        setHeight(90.0f, Unit.PERCENTAGE);
 
         VerticalLayout content = new VerticalLayout();
         content.setSizeFull();

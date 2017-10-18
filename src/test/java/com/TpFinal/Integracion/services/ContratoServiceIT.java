@@ -140,7 +140,6 @@ public class ContratoServiceIT {
 			return ret;
 		});
 		LocalDate fecha = LocalDate.of(2017, 05, 13);
-		//cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
 		assertEquals(ca.getCobros().size(), 24);
 		BigDecimal monto = new BigDecimal("100.00");
 		BigDecimal expected = new BigDecimal("100.00");
@@ -151,7 +150,7 @@ public class ContratoServiceIT {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
-			System.out.println(cos.get(i).getFechaDeVencimiento());
+			//System.out.println(cos.get(i).getFechaDeVencimiento());
 			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}
@@ -214,11 +213,11 @@ public class ContratoServiceIT {
                 .setFechaCelebracion(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
-                .setInteresPunitorio(new Double(0.5))
+                .setInteresPunitorio(new Double(50))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Simple)
                 .setTipoInteresPunitorio(TipoInteres.Simple)
-                .setPorcentajeIncremento(new Double(0.5))
+                .setPorcentajeIncremento(new Double(50))
                 .setInquilinoContrato(null)
                 .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
@@ -233,11 +232,11 @@ public class ContratoServiceIT {
                 .setFechaCelebracion(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(11))
-                .setInteresPunitorio(new Double(0.5))
+                .setInteresPunitorio(new Double(50))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Acumulativo)
                 .setTipoInteresPunitorio(TipoInteres.Simple)
-                .setPorcentajeIncremento(new Double(0.5))
+                .setPorcentajeIncremento(new Double(50))
                 .setInquilinoContrato(null)
                 .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)

@@ -30,6 +30,10 @@ import java.util.List;
 @Theme("valo")
 public class InmuebleABMView extends DefaultLayout implements View {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1749224574589852377L;
     private TextField filter = new TextField();
     private Grid<Inmueble> grid = new Grid<>();
     private Button newItem = new Button("Nuevo");
@@ -38,6 +42,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private InmuebleForm inmuebleForm = new InmuebleForm(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
+
+    //acciones segun numero de fila
+	int acciones = 0;
 
     public InmuebleABMView() {
 	super();
@@ -214,9 +221,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			    "¿Esta seguro que desea Eliminar?",
 			    "100px",
 			    confirmacion -> {
-				inmuebleService.delete(inmueble);
-				showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-					inmueble.getPropietario().toString());
+				if (inmuebleService.delete(inmueble)) {
+				    showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
+					    inmueble.getPropietario().toString());
+				} else {
+				    showErrorNotification("No se realizaron cambios");
+				}
 				updateList();
 			    });
 
@@ -232,7 +242,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
 		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos);
+		hl.setCaption("Accion "+acciones);
 		hl.setSpacing(false);
+		acciones++;
 		return hl;
 	    };
 	}
