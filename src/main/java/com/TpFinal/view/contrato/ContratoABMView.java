@@ -64,12 +64,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private void configureComponents() {
 	
-	filter.addValueChangeListener(e -> updateList());
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
-	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
-	clearFilterTextBtn.setDescription("Limpiar filtro");
-	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+	configureFilter();
 
 	nuevaVenta.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
@@ -83,10 +78,11 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    ContratoAlquilerForm.setContratoAlquiler(null);
 
 	});
+	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
 	setearColumnas();
 
-	Responsive.makeResponsive(this);
+	
 	grid.asSingleSelect().addValueChangeListener(event -> {
 	    if (event.getValue() == null) {
 		if (ContratoVentaForm.isVisible() || ContratoAlquilerForm.isVisible())
@@ -109,10 +105,20 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	});
 
-	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	
+	
+	updateList();
+    }
+
+    private void configureFilter() {
+	filter.addValueChangeListener(e -> updateList());
+	filter.setValueChangeMode(ValueChangeMode.LAZY);
+	filter.setPlaceholder("Filtrar");
+	filter.addValueChangeListener(e -> updateList());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-	updateList();
+	clearFilterTextBtn.setDescription("Limpiar filtro");
+	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
     }
 
     private void setearColumnas() {
@@ -173,7 +179,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void buildLayout() {
-
+	Responsive.makeResponsive(this);
 	CssLayout filtering = new CssLayout();
 
 	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
