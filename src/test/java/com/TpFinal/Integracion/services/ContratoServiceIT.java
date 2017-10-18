@@ -140,7 +140,6 @@ public class ContratoServiceIT {
 			return ret;
 		});
 		LocalDate fecha = LocalDate.of(2017, 05, 13);
-		//cos.forEach(c -> System.out.println(c.getMontoOriginal().toString()));
 		assertEquals(ca.getCobros().size(), 24);
 		BigDecimal monto = new BigDecimal("100.00");
 		BigDecimal expected = new BigDecimal("100.00");
