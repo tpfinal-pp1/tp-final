@@ -3,10 +3,13 @@ package com.TpFinal.view.contrato;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -37,7 +40,6 @@ import java.util.List;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ContratoABMView extends DefaultLayout implements View {
 
-    
     private TextField filter = new TextField();
     private Grid<Contrato> grid = new Grid<>();
     private Button nuevoAlquiler = new Button("Nuevo Alquiler");
@@ -51,7 +53,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private boolean isonMobile = false;
 
-   
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
 
@@ -63,59 +64,43 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	
-	filter.addValueChangeListener(e -> updateList());
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
-	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
-	clearFilterTextBtn.setDescription("Limpiar filtro");
-	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+	configureFilter();
+	configureNuevaVenta();
+	configureNuevoAlquiler();
+	configureGrid();
+	updateList();
+    }
 
-	nuevaVenta.addClickListener(e -> {
-	    grid.asSingleSelect().clear();
-	    ContratoVentaForm.clearFields();
-	    ContratoVentaForm.setContratoVenta(null);
-	});
-
+    private void configureNuevoAlquiler() {
 	nuevoAlquiler.addClickListener(e -> {
 	    grid.asSingleSelect().clear();
 	    ContratoAlquilerForm.clearFields();
 	    ContratoAlquilerForm.setContratoAlquiler(null);
 
 	});
-
-	setearColumnas();
-
-	Responsive.makeResponsive(this);
-	grid.asSingleSelect().addValueChangeListener(event -> {
-	    if (event.getValue() == null) {
-		if (ContratoVentaForm.isVisible() || ContratoAlquilerForm.isVisible())
-		    setComponentsVisible(true);
-		ContratoVentaForm.setVisible(false);
-		ContratoAlquilerForm.setVisible(false);
-	    } else {
-
-		if (event.getValue() instanceof ContratoAlquiler) {
-		    ContratoVentaForm.setVisible(false);
-		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) event.getValue());
-
-		}
-
-		else if (event.getValue() instanceof ContratoVenta) {
-		    ContratoAlquilerForm.setVisible(false);
-		    ContratoVentaForm.setContratoVenta((ContratoVenta) event.getValue());
-
-		}
-	    }
-	});
-
-	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
-	filter.setIcon(VaadinIcons.SEARCH);
-	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-	updateList();
     }
 
-    private void setearColumnas() {
+    private void configureNuevaVenta() {
+	nuevaVenta.addClickListener(e -> {
+	    grid.asSingleSelect().clear();
+	    ContratoVentaForm.clearFields();
+	    ContratoVentaForm.setContratoVenta(null);
+	});
+	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
+    }
+
+    private void configureFilter() {
+	filter.addValueChangeListener(e -> updateList());
+	filter.setValueChangeMode(ValueChangeMode.LAZY);
+	filter.setPlaceholder("Filtrar");
+	filter.addValueChangeListener(e -> updateList());
+	filter.setIcon(VaadinIcons.SEARCH);
+	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+	clearFilterTextBtn.setDescription("Limpiar filtro");
+	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+    }
+
+    private void configureGrid() {
 	contratos = service.findAll(filter.getValue());
 	grid.addColumn(getTipoContrato()).setCaption("Tipo");
 	grid.addColumn(Contrato::getFechaCelebracion, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
@@ -123,7 +108,9 @@ public class ContratoABMView extends DefaultLayout implements View {
 	grid.addColumn(Contrato::getEstadoContrato).setCaption("Estado");
 	grid.addColumn(contrato -> contrato.getInmueble().getDireccion()).setCaption("Dirección");
 	grid.addColumn(getIntervinientes()).setCaption("Intervinientes");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	grid.getColumns().forEach(col -> col.setResizable(false));
+
     }
 
     private ValueProvider<Contrato, String> getIntervinientes() {
@@ -159,6 +146,90 @@ public class ContratoABMView extends DefaultLayout implements View {
 	};
     }
 
+    private ValueProvider<Contrato, HorizontalLayout> configurarAcciones() {
+	return contrato -> {
+	    Button edit = new Button(VaadinIcons.EDIT);
+	    edit.addClickListener(e -> {
+		if (contrato instanceof ContratoAlquiler) {
+		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) contrato);
+		} else {
+		    ContratoVentaForm.setContratoVenta((ContratoVenta) contrato);
+		}
+
+	    });
+	    edit.setDescription("Editar");
+
+	    Button del = new Button(VaadinIcons.TRASH);
+	    del.addClickListener(click -> {
+		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+			VaadinIcons.WARNING,
+			"¿Esta seguro que desea Eliminar?",
+			"100px",
+			confirmacion -> {
+			    if (service.delete(contrato)) {
+				showSuccessNotification("Contrato Borrado");
+			    } else {
+				showErrorNotification("No se realizaron cambios");
+			    }
+			    updateList();
+			});
+
+	    });
+	    del.setDescription("Borrar");
+
+	    Button renovarContrato = new Button(VaadinIcons.REFRESH);
+	    renovarContrato.addClickListener(click -> {
+		ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) contrato);
+		ContratoAlquilerForm.renovarContrato.click();
+	    });
+	    renovarContrato.setDescription("Renovar Contrato");
+
+	    Button finalizarCarga = new Button(VaadinIcons.CHECK_SQUARE);
+	    finalizarCarga.addClickListener(click -> {
+		if (contrato instanceof ContratoAlquiler) {
+		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) contrato);
+		    ContratoAlquilerForm.finalizarCarga.click();
+		} else {
+		    ContratoVentaForm.setContratoVenta((ContratoVenta) contrato);
+		    ContratoVentaForm.finalizarCarga.click();
+		}
+	    });
+	    finalizarCarga.setDescription("Finalizar Carga");
+
+	    HorizontalLayout hl = new HorizontalLayout(edit, finalizarCarga, renovarContrato, del);
+	    hl.forEach(button -> button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL));
+	    hl.setSpacing(false);
+
+	    EstadoContrato estado = contrato.getEstadoContrato();
+	    if (estado == EstadoContrato.EnProcesoDeCarga) {
+		renovarContrato.setEnabled(false);
+	    } else if (estado == EstadoContrato.Vigente || estado == EstadoContrato.ProximoAVencer) {
+		edit.setEnabled(true);
+		del.setEnabled(false);
+		finalizarCarga.setEnabled(false);
+		renovarContrato.setEnabled(false);
+	    } else { // Estado.Vencido
+		edit.setEnabled(false);
+		del.setEnabled(false);
+		finalizarCarga.setEnabled(false);
+		if (contrato instanceof ContratoVenta)
+		    renovarContrato.setEnabled(false);
+	    }
+
+	    hl.forEach(button -> {
+		button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+		if (!button.isEnabled()) {
+		    button.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+		    ((Button) button).setDescription("No disponible");
+		}
+	    });
+	    hl.setSpacing(false);
+
+	    return hl;
+	};
+
+    }
+
     public void setComponentsVisible(boolean b) {
 	nuevaVenta.setVisible(b);
 	nuevoAlquiler.setVisible(b);
@@ -173,7 +244,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void buildLayout() {
-
+	Responsive.makeResponsive(this);
 	CssLayout filtering = new CssLayout();
 
 	nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
