@@ -31,9 +31,9 @@ public class MainViewIT extends TestBenchTestCase {
 
     }
 
-    @Ignore
+    @Test
     public void testProfileName() {
-        TBUtils.sleep(1000);
+        TBUtils.sleep(5000);
         Assert.assertTrue(mainView.getUserFullName().contains("test"));
     }
 

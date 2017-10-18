@@ -14,7 +14,7 @@ public class TBUtils {
 
     private static final String RESTART_URL ="http://localhost:8080/?restartApplication=true";
     private static final String NORMAL_URL ="http://localhost:8080/";
-    private static boolean visible=true
+    private static boolean visible=false
             ; //Dejar en false antes de comitear!! importantisimo
 
 
