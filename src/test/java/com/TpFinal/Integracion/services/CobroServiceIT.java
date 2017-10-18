@@ -139,7 +139,6 @@ public class CobroServiceIT {
 		interes=interes.multiply(new BigDecimal(diasAtraso.toString()));
 		interes=ca.getValorInicial().multiply(interes);
 		expected=interes.add(ca.getValorInicial());
-		System.out.println("primer cobro: "+cos.get(0).getMontoRecibido());
 		expected=expected.setScale(2, RoundingMode.CEILING);
 		assertEquals(expected,cos.get(0).getMontoRecibido());
 		
@@ -172,7 +171,6 @@ public class CobroServiceIT {
 			valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));
 		}
 		
-		System.out.println("primer cobro acumulativo: "+cos.get(0).getMontoRecibido());
 		valorAnterior=valorAnterior.setScale(2, RoundingMode.CEILING);
 		assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
 		
@@ -195,7 +193,6 @@ public class CobroServiceIT {
     	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
-    	System.out.println(fecha.toString());
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
@@ -217,7 +214,6 @@ public class CobroServiceIT {
     	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
-    	System.out.println(fecha.toString());
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
@@ -239,7 +235,6 @@ public class CobroServiceIT {
     	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
-    	System.out.println(fecha.toString());
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
@@ -261,7 +256,6 @@ public class CobroServiceIT {
     	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
-    	System.out.println(fecha.toString());
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))

@@ -202,20 +202,16 @@ public class ContratoService {
     				if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
     					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
     					incremento=incremento.divide(new BigDecimal("100"));
-    					System.out.println("El incremento es: "+incremento.toString());
     					BigDecimal aux = valorAnterior.multiply(incremento);
     					valorAnterior=valorAnterior.add(aux);
     				}else if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
     					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
     					incremento=incremento.divide(new BigDecimal("100"));
-    					System.out.println("El incremento es: "+incremento.toString());
     					BigDecimal aux = contrato.getValorInicial().multiply(incremento);
     					valorAnterior=valorAnterior.add(aux);
     				}
     			}
     			contrato.addCobro(c);
-    			System.out.println("El monto inicial del cobro es: "+c.getMontoOriginal());
-    			System.out.println("El monto final del cobro es: "+c.getMontoRecibido());
     		}
     	}
     }
