@@ -10,17 +10,17 @@ import java.util.regex.Pattern;
 
 import com.vaadin.data.ValidationException;
 import com.vaadin.server.StreamResource;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.util.CurrentInstance;
 
 public class Utils {
 
 
+    public final String pathWhenCompiled=
+            CurrentInstance.get(VaadinRequest.class).getService().getBaseDirectory() + File.separator;
 
 
 
-    public static int cantLines(String str) {
-        String[] lines = str.split("\r\n|\r|\n");
-        return lines.length;
-    }
 
 
 

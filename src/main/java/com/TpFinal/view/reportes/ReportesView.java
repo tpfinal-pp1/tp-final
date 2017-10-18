@@ -5,6 +5,7 @@ import java.io.File;
 
 import java.util.*;
 
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.dummy.pdf.PDFComponent;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
@@ -38,7 +39,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ReportesView extends DefaultLayout implements View {
 Button newReport = new Button("Generar");
 	public enum TipoReporte {
-		Propietario("reportePropietarios.jasper"),Inquilino(""),Interesado("");
+		Propietario(new Utils().pathWhenCompiled+"reportePropietarios.jasper"),Inquilino(""),Interesado("");
 
 		private final String archivoReporte;
 
@@ -148,7 +149,7 @@ Button newReport = new Button("Generar");
 
 		//Te trae el nombre del archivo en base a seleccion del combo
 		try {
-			this.reporte = (JasperReport)JRLoader.loadObjectFromFile("ReportesJasper\\"+nombreReporte);
+			this.reporte = (JasperReport)JRLoader.loadObjectFromFile(nombreReporte);
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();

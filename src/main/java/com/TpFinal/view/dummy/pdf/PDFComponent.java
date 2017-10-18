@@ -18,20 +18,17 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class PDFComponent extends VerticalLayout {
-    String filename="";
+
     Embedded pdf = new Embedded();
 
     public PDFComponent() {
         super();
-        this.filename=filename;
+
 
     }
 
 
     public void setPDF(String filename) {
-
-
-        pdf.setCaption(this.filename);
         pdf.setSource(Utils.fromPathtoSR(filename));
         pdf.setType(Embedded.TYPE_BROWSER);
         pdf.setMimeType("application/pdf");
