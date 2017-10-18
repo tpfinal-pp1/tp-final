@@ -46,6 +46,21 @@ Button newReport = new Button("Generar");
 			this.archivoReporte=archivoReporte;
 		}
 
+
+		public List<Object> getObjetos(){
+		 	List<Object> objects=null;
+		 	switch (this){
+				case Propietario:
+					PersonaService servicePersona = new PersonaService();
+					objects=new ArrayList<Object>(servicePersona.findForRole(
+							Rol.Propietario.toString()));break;
+				case Inquilino:
+					System.out.println("Implementar Inquilino");break;
+
+			}
+		 	return  objects;
+		}
+
 		public static List<TipoReporte> toList() {
 			TipoReporte[] clases = TipoReporte.values();
 			List<TipoReporte> ret = new ArrayList<>();
@@ -64,7 +79,7 @@ Button newReport = new Button("Generar");
 	private JasperReport reporte;
     private JasperPrint reporteLleno;
     Map<String, Object> parametersMap = new HashMap<String, Object>();
-    PersonaService servicePersona = new PersonaService();
+
     PDFComponent pdfComponent=new PDFComponent();
     ComboBox<TipoReporte> tipoReporteCB= new ComboBox<TipoReporte>(
     		null,TipoReporte.toList());
@@ -111,10 +126,8 @@ Button newReport = new Button("Generar");
 
     	newReport.addClickListener(e -> {
 
-			List<Object> objetos = new ArrayList<Object>(
-					servicePersona.findForRole(Rol.Propietario.toString()));
 
-    		boolean success=generarReporte(objetos);
+    		boolean success=generarReporte();
         	if(success)
 				pdfComponent.setPDF(reportName);
     		else{
@@ -128,13 +141,16 @@ Button newReport = new Button("Generar");
 
 
 
-	public  boolean generarReporte(List<Object> objectos){
-    	String nombreReporte=tipoReporteCB.getValue().getArchivoReporte();
+	public  boolean generarReporte(){
+    	TipoReporte tipoReporte=tipoReporteCB.getValue();
+    	String nombreReporte=tipoReporte.getArchivoReporte();
+    	List<Object> objetos=tipoReporte.getObjetos();
+
 		//Te trae el nombre del archivo en base a seleccion del combo
 		try {
 			this.reporte = (JasperReport)JRLoader.loadObjectFromFile("ReportesJasper\\"+nombreReporte);
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
-					new JRBeanCollectionDataSource(objectos));
+					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();
 		} catch (JRException e) {
 			e.printStackTrace();
