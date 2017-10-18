@@ -1,6 +1,5 @@
 package com.TpFinal.view.persona;
 
-import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.DashboardEvent;
@@ -11,7 +10,6 @@ import com.TpFinal.view.component.PreferenciasBusqueda;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -50,6 +48,9 @@ public class PersonaABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
 
+    //Para identificar los layout de acciones
+	private int acciones = 0;
+
     public PersonaABMView() {
 	super();
 	buildLayout();
@@ -82,7 +83,9 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     private ValueProvider<Persona, HorizontalLayout> configurarAcciones() {
+
 	return persona -> {
+
 	    Button edit = new Button(VaadinIcons.EDIT);
 	    edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    edit.addClickListener(e -> {
@@ -122,6 +125,8 @@ public class PersonaABMView extends DefaultLayout implements View {
 	    addIntereses.setDescription("Añadir intereses de búsqueda");
 	    HorizontalLayout hl = new HorizontalLayout(edit, del, addIntereses);
 	    hl.setSpacing(false);
+	    hl.setCaption("Accion "+acciones);
+	    acciones++;
 	    return hl;
 	};
     }
