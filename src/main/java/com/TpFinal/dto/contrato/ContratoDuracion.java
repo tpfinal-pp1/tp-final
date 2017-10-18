@@ -98,17 +98,9 @@ public class ContratoDuracion implements Identificable, BorradoLogico {
 	this.duracion = duracion;
     }
 
-    public String getDuracionString() {
-	return duracion.toString();
-    }
-
-    public void setDuracionString(String valor) {
-	this.duracion = Integer.valueOf(valor);
-    }
-
     @Override
     public String toString() {
-	return this.getDuracion() + " " + "Meses";
+	return this.getDescripcion();
     }
 
     @Override
