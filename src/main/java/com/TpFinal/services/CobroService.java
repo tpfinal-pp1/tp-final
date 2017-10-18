@@ -52,11 +52,13 @@ public class CobroService {
 		cobros.forEach(c ->{
 			System.out.println("Estoy recorriendo el elemento");
 			if(hayQueCalcular(c)) {
+				System.out.println("El valor inicial del cobro es: "+c.getMontoRecibido());
 				Long cantidadDias=ChronoUnit.DAYS.between(c.getFechaDeVencimiento(), LocalDate.now());
 				if(cantidadDias>0) {
 					System.out.println("Entre al if de sumar interes");
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						interes=interes.divide(new BigDecimal("100"));
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
 						interes=c.getMontoOriginal().multiply(interes);
 						c.setInteres(interes);
@@ -64,6 +66,7 @@ public class CobroService {
 						c.setMontoRecibido(nuevoValor);
 					}else if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Acumulativo)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						interes=interes.divide(new BigDecimal("100"));
 						BigDecimal valorAnterior= c.getMontoOriginal();
 						for(int i=0; i<cantidadDias;i++) {
 							valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));

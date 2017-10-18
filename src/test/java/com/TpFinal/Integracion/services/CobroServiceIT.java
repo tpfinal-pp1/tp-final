@@ -134,6 +134,7 @@ public class CobroServiceIT {
 		});
 		BigDecimal expected = new BigDecimal("100.00");
 		BigDecimal interes= new BigDecimal(ca.getInteresPunitorio().toString());
+		interes=interes.divide(new BigDecimal(100));
 		Long diasAtraso= ChronoUnit.DAYS.between(cos.get(0).getFechaDeVencimiento(), LocalDate.now());
 		interes=interes.multiply(new BigDecimal(diasAtraso.toString()));
 		interes=ca.getValorInicial().multiply(interes);
@@ -164,6 +165,7 @@ public class CobroServiceIT {
 			return ret;
 		});
 		BigDecimal interes= new BigDecimal(ca.getInteresPunitorio().toString());
+		interes=interes.divide(new BigDecimal(100));
 		BigDecimal valorAnterior= ca.getValorInicial();
 		Long diasAtraso= ChronoUnit.DAYS.between(cos.get(0).getFechaDeVencimiento(), LocalDate.now());
 		for(int i =0; i< diasAtraso; i++) {
@@ -198,7 +200,7 @@ public class CobroServiceIT {
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
-                .setInteresPunitorio(new Double(0.5))
+                .setInteresPunitorio(new Double(50))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Simple)
                 .setTipoInteresPunitorio(TipoInteres.Simple)
@@ -220,7 +222,7 @@ public class CobroServiceIT {
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
-                .setInteresPunitorio(new Double(0.5))
+                .setInteresPunitorio(new Double(50))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Simple)
                 .setTipoInteresPunitorio(TipoInteres.Simple)
