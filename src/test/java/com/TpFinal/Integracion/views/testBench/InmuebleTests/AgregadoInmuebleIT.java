@@ -29,7 +29,7 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
     @Before
     public void setUp() throws Exception {
         Parameters.setScreenshotErrorDirectory(
-                "Files/errors");
+                "File/errors");
         Parameters.setMaxScreenshotRetries(2);
         Parameters.setScreenshotComparisonTolerance(1.0);
         Parameters.setScreenshotRetryDelay(10);
@@ -42,7 +42,7 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
 
     }
 
-//TODO completar TEST (MAX)
+
     @Test
     public void agregadoInmuebleTest() {
        // initializeDriver().get("http://inmobi.ddns.net/");
@@ -52,8 +52,8 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
         //Tab "Datos Principales"
         Assert.assertTrue(inmuebleView.getGrid().exists());
         inmuebleView.getNuevoInmuebleButton().first().click();
-        //Tab "Datos principales"
 
+        //Tab "Datos principales"
         List<String> tabsheet1Options = inmuebleView.getTabSheet().first().getTabCaptions();
         Assert.assertEquals(tabsheet1Options.get(0),"Datos Principales");
         Assert.assertEquals(tabsheet1Options.get(1),"Características");
@@ -64,11 +64,11 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
         String selectedOwner = owners.get(1);
         inmuebleView.getComboBoxPropietario().first().selectByText(selectedOwner);
 
+
         //ComboClase Inmueble
         List<String> inmuebleClasess = inmuebleView.getClaseComboBox().first().getPopupSuggestions();
         String selectedInmuebleClass = inmuebleClasess.get(1);
         inmuebleView.getClaseComboBox().first().selectByText(selectedInmuebleClass);
-
 
         //RadioButton
         inmuebleView.getTipoRadioButtonGroup().first().selectByText("Comercial");

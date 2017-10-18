@@ -1,18 +1,22 @@
 package com.TpFinal.Integracion.views.testBench.InmuebleTests;
 
-import com.TpFinal.Integracion.views.testBench.TBUtils;
+import com.TpFinal.Integracion.views.pageobjects.TBInmuebleView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
+import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.*;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Rule;
 
 public class AgregarInmuebleIT extends TestBenchTestCase{
 
     private TBLoginView loginView;
     private TBMainView mainView;
+    private TBInmuebleView inmuebleView;
     @Rule
     public ScreenshotOnFailureRule screenshotOnFailureRule =
             new ScreenshotOnFailureRule(this, true);
@@ -20,7 +24,7 @@ public class AgregarInmuebleIT extends TestBenchTestCase{
     @Before
     public void setUp() throws Exception {
         Parameters.setScreenshotErrorDirectory(
-                "Files/errors");
+                "File/errors");
         Parameters.setMaxScreenshotRetries(2);
         Parameters.setScreenshotComparisonTolerance(1.0);
         Parameters.setScreenshotRetryDelay(10);
@@ -29,61 +33,62 @@ public class AgregarInmuebleIT extends TestBenchTestCase{
         loginView = TBUtils.loginView(this.getDriver());
         mainView=loginView.login();
 
+        inmuebleView = mainView.getInmuebleView();
+
     }
 
-    @Test
+    @Ignore
     public void agregarPersonaTest(){
         getDriver().get(TBUtils.getUrl("inmuebles"));
-        Assert.assertTrue($(GridElement.class).exists());
-        ButtonElement nuevoButton = $(ButtonElement.class).caption("Nuevo").first();
-        nuevoButton.click();
-        
-        ButtonElement button1 = $(FormLayoutElement.class).$(ButtonElement.class).first();
-        button1.click();
-        
-        TextFieldElement nombreTextField = $(TextFieldElement.class).caption("Nombre").first();
-        nombreTextField.setValue("Aiko");
-        
-        TextFieldElement apellidoTextField = $(TextFieldElement.class).caption("Apellido").first();
-        apellidoTextField.setValue("Fulanito");
-        
-        TextFieldElement dNITextField = $(TextFieldElement.class).caption("DNI").first();
-        dNITextField.setValue("33443432");
-                
-        TextFieldElement emailTextField = $(TextFieldElement.class).caption("Email").first();
-        emailTextField.setValue("aikofulanito@gmail.com"); 
-        
-        TextFieldElement telfonoTextField = $(TextFieldElement.class).caption("Teléfono").first();
-        telfonoTextField.setValue("324432334");
-                
-        TextFieldElement celularTextField = $(TextFieldElement.class).caption("Celular").first();
-        celularTextField.setValue("32532523"); 
-        
-        TextAreaElement infoTextArea = $(TextAreaElement.class).caption("Info").first();
-        infoTextArea.setValue("soy infor adicional siendo testeada con testbench");
-        
-        ButtonElement guardarButton = $$(WindowElement.class).id("profilepreferenceswindow").$(ButtonElement.class).caption("Guardar Persona").first();
-        guardarButton.click();
-        
-        //WindowElement profilepreferenceswindow = $$(WindowElement.class).id("profilepreferenceswindow");
-        //profilepreferenceswindow.click();
-        
-        TextFieldElement calleTextField = $(TextFieldElement.class).caption("Calle").first();
-        calleTextField.setValue("Almagro");
-        
-        TextFieldElement nmeroTextField = $(TextFieldElement.class).caption("Número").first();
-        nmeroTextField.setValue("7777");
-        
-        //FIXME
-        ComboBoxElement provinciaComboBox = $(ComboBoxElement.class).caption("Provincia").first();
-        provinciaComboBox.selectByText("Buenos Aires");
-        
-        //FIXME
-        ComboBoxElement localidadComboBox = $(ComboBoxElement.class).caption("Localidad").first();
-        localidadComboBox.selectByText("Los Polvorines");
-        
-        ButtonElement guardarButton2 = $(ButtonElement.class).caption("Guardar").first();
-        guardarButton2.click();     
+        Assert.assertTrue(inmuebleView.getGrid().exists());
+
+        //New inmueble Button
+        inmuebleView.getNuevoInmuebleButton().first().click();
+
+        //Tab "Datos Principales"
+        //Adding new owner to the property
+        /*inmuebleView.getNuevpPropietarioButton().first().click();
+        TBPersonaInmueblePopupView personaInmueblePopupView = inmuebleView.getPersonaInmueblePopupView();
+        personaInmueblePopupView.getNombreTextField().first().setValue("Aiko");
+        personaInmueblePopupView.getApellidoTextField().first().setValue("Fulanito");
+        personaInmueblePopupView.getdNITextField().first().setValue("33443432");
+        personaInmueblePopupView.getEmailTextField().first().setValue("aikofulanito@gmail.com");
+        personaInmueblePopupView.getTelfonoTextField().first().setValue("324432334");
+        personaInmueblePopupView.getCelularTextField().first().setValue("32532523");
+        personaInmueblePopupView.getInfoTextArea().first().setValue("Hola, mi nombre es aiko fulanito");
+        personaInmueblePopupView.getGuardarPersonaButton().first().click();
+        */
+        //Rest of the data
+        //address
+        inmuebleView.getCalleTextField().first().setValue("Almagro");
+        inmuebleView.getNumeroTextField().first().setValue("7777");
+        inmuebleView.getProvinciaComboBox().first().selectByText("La Rioja");
+        inmuebleView.getGuardarButton().first().click();
+
+
+        //Tab "Caracteristicas"
+        //With the validation failing, the form is automatically moved into the second tab
+        inmuebleView.getTabSheet().first().openTab("Características");
+        inmuebleView.getAmbientesTextField().first().setValue("6");
+        inmuebleView.getCocherasTextField().first().setValue("90");
+        inmuebleView.getDormitoriosTextField().first().setValue("5");
+        inmuebleView.getSupTotalTextField().first().setValue("100000");
+        inmuebleView.getSupCubiertaTextField().first().setValue("300000");
+
+
+        //CheckBoxes
+        inmuebleView.getAestrenarCheckBox().first().click();
+        inmuebleView.getJardnCheckBox().first().click();
+        inmuebleView.getParrillaCheckBox().first().click();
+        inmuebleView.getAireAcondicionadoCheckBox().first().click();
+        inmuebleView.getPiletaCheckBox().first().click();
+
+        inmuebleView.getJardnCheckBox().first().click();
+        inmuebleView.getParrillaCheckBox().first().click();
+
+        inmuebleView.getGuardarButton().first().click();
+
+        Assert.assertFalse(inmuebleView.isFormDisplayed());
    
     }
 
