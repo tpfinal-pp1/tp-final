@@ -50,9 +50,11 @@ public class CobroService {
 	//lo deje en public para testearlo
 	public void calcularDatosFaltantes(List<Cobro>cobros) {
 		cobros.forEach(c ->{
+			System.out.println("Estoy recorriendo el elemento");
 			if(hayQueCalcular(c)) {
 				Long cantidadDias=ChronoUnit.DAYS.between(c.getFechaDeVencimiento(), LocalDate.now());
 				if(cantidadDias>0) {
+					System.out.println("Entre al if de sumar interes");
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
@@ -71,6 +73,7 @@ public class CobroService {
 					}
 				}
 			}
+			System.out.println("El valor final del cobro es: "+c.getMontoRecibido());
 		});
 	}
 	
