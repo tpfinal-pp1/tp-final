@@ -138,6 +138,7 @@ public class ContratoVentaForm extends FormLayout {
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+
 	finalizarCarga.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 	renovarContrato.setStyleName(ValoTheme.BUTTON_FRIENDLY);
 	save.addClickListener(e -> {

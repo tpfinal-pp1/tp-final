@@ -20,7 +20,7 @@ public class AgregarInmuebleIT extends TestBenchTestCase{
     @Before
     public void setUp() throws Exception {
         Parameters.setScreenshotErrorDirectory(
-                "File/errors");
+                "Files/errors");
         Parameters.setMaxScreenshotRetries(2);
         Parameters.setScreenshotComparisonTolerance(1.0);
         Parameters.setScreenshotRetryDelay(10);

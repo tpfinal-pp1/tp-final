@@ -1,7 +1,7 @@
 package com.TpFinal.utils;
 
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -9,6 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.vaadin.data.ValidationException;
+import com.vaadin.server.StreamResource;
 
 public class Utils {
 
@@ -62,7 +63,21 @@ public class Utils {
     }
 
 
+    public static StreamResource fromPathtoSR(String filename) {
 
+        return new StreamResource(new StreamResource.StreamSource() {
+            public InputStream getStream() {
+                InputStream is = null;
+                try {
+                    is = new FileInputStream("Files"+ File.separator+filename);
+                } catch (FileNotFoundException e) {
+                    System.err.println("No se ha encontrado el archivo a descargar Files/"+filename);
+                }
+                return is;
+            }
+        }, filename);
+
+    }
 
     public static int percentageOfTextMatch(String s0, String s1)
     {                       // Trim and remove duplicate spaces

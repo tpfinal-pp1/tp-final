@@ -18,7 +18,7 @@ public class LoginViewIT extends TestBenchTestCase {
     @Before
     public void setUp() {
         Parameters.setScreenshotErrorDirectory(
-                "File/errors");
+                "Files/errors");
         Parameters.setMaxScreenshotRetries(2);
         Parameters.setScreenshotComparisonTolerance(1.0);
         Parameters.setScreenshotRetryDelay(10);
