@@ -239,7 +239,6 @@ public class CobrosABMView extends DefaultLayout implements View {
                 return hl;
             }).setCaption("Acciones");
 
-
             grid.getColumns().forEach(c -> c.setResizable(false));
             
         }
