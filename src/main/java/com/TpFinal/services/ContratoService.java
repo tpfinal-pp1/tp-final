@@ -196,6 +196,7 @@ public class ContratoService {
     					.setNumeroCuota(i)
     					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
+    					.setMontoRecibido(valorAnterior)
     					.build();
     			if((i+1) % contrato.getIntervaloActualizacion()==0) {
     				if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {

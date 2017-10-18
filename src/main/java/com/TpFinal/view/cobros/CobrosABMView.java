@@ -204,7 +204,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 
             Grid.Column<Cobro, String> monto = grid.addColumn(cobro -> {
                 String ret = "";
-                ret = cobro.getMontoRecibido().toPlainString();
+                ret = cobro.getMontoRecibido().toString();
                 return ret;
             }).setCaption("Monto");
 
