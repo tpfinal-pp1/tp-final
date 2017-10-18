@@ -1,6 +1,5 @@
 package com.TpFinal.view.publicacion;
 
-import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
@@ -9,7 +8,6 @@ import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -47,6 +45,9 @@ public class PublicacionABMView extends DefaultLayout implements View {
     // a real-world datasource. Typically implemented for
     // example as EJB or Spring Data based service.
     PublicacionService publicacionService = new PublicacionService();
+
+    //acciones segun numero de fila
+	int acciones = 0;
 
     public PublicacionABMView() {
 	super();
@@ -101,7 +102,9 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Borrar");
 	    HorizontalLayout hl = new HorizontalLayout(edit, del);
+	    hl.setCaption("Accion "+acciones);
 	    hl.setSpacing(false);
+	    acciones++;
 	    return hl;
 	};
     }

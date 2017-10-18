@@ -43,6 +43,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     private Controller controller = new Controller();
 
+    //acciones segun numero de fila
+	int acciones = 0;
+
     public InmuebleABMView() {
 	super();
 	buildLayout();
@@ -239,7 +242,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
 		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos);
+		hl.setCaption("Accion "+acciones);
 		hl.setSpacing(false);
+		acciones++;
 		return hl;
 	    };
 	}

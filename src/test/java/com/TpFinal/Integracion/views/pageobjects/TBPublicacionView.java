@@ -22,6 +22,10 @@ public class TBPublicacionView extends TestBenchTestCase {
     private ElementQuery<TextFieldElement> montoTextField;
     private ElementQuery<ComboBoxElement> monedaComboBox;
     private ElementQuery<ButtonElement> guardarButton;
+    private ElementQuery<HorizontalLayoutElement> horizontalLayoutAcciones;
+    private ElementQuery<ButtonElement> buttonEdit ;
+    private ElementQuery<ButtonElement> buttonRemove ;
+
 
 
     public TBPublicacionView(WebDriver driver){
@@ -38,6 +42,7 @@ public class TBPublicacionView extends TestBenchTestCase {
         montoTextField = $(TextFieldElement.class).caption("Monto");
         monedaComboBox = $(ComboBoxElement.class).caption("Moneda");
         guardarButton = $(ButtonElement.class).caption("Guardar");
+        horizontalLayoutAcciones = $(GridElement.class).$$(HorizontalLayoutElement.class);
     }
 
     public ElementQuery<GridElement> getGrid1() { return grid1; }
@@ -47,7 +52,6 @@ public class TBPublicacionView extends TestBenchTestCase {
     public ElementQuery<TextFieldElement> getFilter() { return filter; }
 
     public ElementQuery<ButtonElement> getFilterBrowser() { return filterBrowser; }
-
 
     public ElementQuery<RadioButtonGroupElement> getRadioButtonGroup() { return radioButtonGroup; }
 
@@ -64,6 +68,19 @@ public class TBPublicacionView extends TestBenchTestCase {
     public ElementQuery<ComboBoxElement> getMonedaComboBox() { return monedaComboBox; }
 
     public ElementQuery<ButtonElement> getGuardarButton() { return guardarButton; }
+
+    private ElementQuery<HorizontalLayoutElement> getHorizontalLayoutAcciones() { return horizontalLayoutAcciones; }
+
+    private HorizontalLayoutElement getHorizontalLayoutElement(String caption){ return getHorizontalLayoutAcciones().caption(caption).first(); }
+
+    private ElementQuery<ButtonElement> getButtonEdit(String caption) { return buttonEdit = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    private ElementQuery<ButtonElement> getButtonRemove(String caption) { return  buttonRemove = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+
+    public ButtonElement getEditButton(String caption){ return getButtonEdit(caption).first(); }
+
+    public ButtonElement getRemoveButton(String caption){ return getButtonRemove(caption).first(); }
 
 
     public boolean isDisplayed(){ return this.grid1.exists();}

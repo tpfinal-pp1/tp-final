@@ -38,6 +38,10 @@ public class TBInmuebleView extends TestBenchTestCase{
     private ElementQuery<CheckBoxElement> jardnCheckBox               ;
     private ElementQuery<CheckBoxElement> parrillaCheckBox            ;
     private ElementQuery<CheckBoxElement> piletaCheckBox               ;
+    private ElementQuery<HorizontalLayoutElement> horizontalLayoutAcciones;
+    private ElementQuery<ButtonElement> buttonEdit ;
+    private ElementQuery<ButtonElement> buttonRemove ;
+    private ElementQuery<ButtonElement> buttonImage;
 
     private TBPersonaInmueblePopupView personaInmueblePopupView;
 
@@ -71,6 +75,7 @@ public class TBInmuebleView extends TestBenchTestCase{
         jardnCheckBox               = $(CheckBoxElement.class).caption("Jardín");
         parrillaCheckBox            = $(CheckBoxElement.class).caption("Parrilla");
         piletaCheckBox              = $(CheckBoxElement.class).caption("Pileta");
+        horizontalLayoutAcciones = $(GridElement.class).$$(HorizontalLayoutElement.class);
     }
 
 
@@ -127,6 +132,22 @@ public class TBInmuebleView extends TestBenchTestCase{
     public ElementQuery<CheckBoxElement> getParrillaCheckBox() { return parrillaCheckBox; }
 
     public ElementQuery<CheckBoxElement> getPiletaCheckBox() { return piletaCheckBox; }
+
+    private ElementQuery<HorizontalLayoutElement> getHorizontalLayoutAcciones() { return horizontalLayoutAcciones; }
+
+    private HorizontalLayoutElement getHorizontalLayoutElement(String caption){ return getHorizontalLayoutAcciones().caption(caption).first(); }
+
+    private ElementQuery<ButtonElement> getButtonEdit(String caption) { return buttonEdit = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    private ElementQuery<ButtonElement> getButtonRemove(String caption) { return  buttonRemove = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    private ElementQuery<ButtonElement> getButtonImage(String caption) { return  buttonImage = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+
+    public ButtonElement getEditButton(String caption){ return getButtonEdit(caption).first(); }
+
+    public ButtonElement getRemoveButton(String caption){ return getButtonRemove(caption).first(); }
+
+    public ButtonElement getImageButton(String caption){ return getButtonImage(caption).first(); }
 
     public boolean isDisplayed(){ return this.grid.exists(); }
 
