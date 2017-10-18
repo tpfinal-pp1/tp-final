@@ -22,6 +22,7 @@ import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 
@@ -89,7 +90,7 @@ public class DAOCobroImplIT {
                 .setTipoInteresPunitorio(TipoInteres.Simple)
                 .setPorcentajeIncremento(new Double(0.5))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
     }
@@ -105,7 +106,7 @@ public class DAOCobroImplIT {
                 .setTipoInteresPunitorio(TipoInteres.Simple)
                 .setPorcentajeIncremento(new Double(0.5))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion36())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
     }
@@ -117,5 +118,14 @@ public class DAOCobroImplIT {
     			.setMontoOriginal(new BigDecimal("100"))
     			.build();
     }
+    
+    private ContratoDuracion instanciaContratoDuracion24() {
+    	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
+    	  }
+    
+    private ContratoDuracion instanciaContratoDuracion36() {
+    	return new ContratoDuracion.Builder().setDescripcion("36 Horas").setDuracion(36).build();
+    	  }
+
 
 }

@@ -1,12 +1,20 @@
 package com.TpFinal.dto.contrato;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
@@ -23,6 +31,20 @@ public class ContratoDuracion implements Identificable, BorradoLogico {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     protected Long id;
+    
+    
+    @OneToMany(mappedBy = "duracionContrato", fetch = FetchType.EAGER)
+    @Cascade ({CascadeType.ALL})
+    private List<ContratoAlquiler> contratosAlquiler = new ArrayList<ContratoAlquiler>();
+    
+    /*
+    				
+    @OneToMany(mappedBy = "duracionContrato",fetch = FetchType.EAGER)
+    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
+    private ContratoAlquiler contratoAlquiler;
+	
+	*/
+
 
     @Column(name = "descripcion")
     private String descripcion;
@@ -113,4 +135,17 @@ public class ContratoDuracion implements Identificable, BorradoLogico {
     public EstadoRegistro getEstadoRegistro() {
 	return this.estadoRegistro;
     }
+    
+    public List<ContratoAlquiler> getContratosAlquiler() {
+		return contratosAlquiler;
+		}
+    
+    public void addContratosAlquiler(ContratoAlquiler contrato) {
+    	contratosAlquiler.add(contrato);
+    	contrato.setDuracionContrato(this);
+    	}
+    	public void removeTelefono(ContratoAlquiler contrato) {
+    	contratosAlquiler.remove(contrato);
+    	contrato.setDuracionContrato(null);
+    	}
 }

@@ -42,12 +42,14 @@ public class ContratoService {
     private DAOContratoVenta daoVenta;
     private DAOContrato daoContrato;
     private InmuebleService inmuebleService;
+    private ContratoDuracionService contratoDuracionService;
 
     public ContratoService() {
 	daoAlquiler = new DAOContratoAlquilerImpl();
 	daoVenta = new DAOContratoVentaImpl();
 	daoContrato = new DAOContratoImpl();
 	inmuebleService = new InmuebleService();
+	contratoDuracionService = new ContratoDuracionService();
     }
 
     public boolean saveOrUpdate(Contrato contrato, File doc) {
@@ -132,7 +134,7 @@ public class ContratoService {
     public static ContratoAlquiler getInstanciaAlquiler() {
 	return new ContratoAlquiler.Builder()
 		.setDiaDePago(1)
-		.setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+		.setDuracionContrato(ContratoDuracionService.getInstancia())
 		.setInquilinoContrato(PersonaService.getPersonaConInquilino())
 		.setInteresPunitorio(0.0)
 		.setIntervaloActualizacion(24)

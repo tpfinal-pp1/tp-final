@@ -24,6 +24,7 @@ import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
@@ -204,7 +205,7 @@ public class CobroServiceIT {
                 .setTipoInteresPunitorio(TipoInteres.Simple)
                 .setPorcentajeIncremento(new Double(0))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
         ret.setEstadoContrato(EstadoContrato.Vigente);
@@ -226,7 +227,7 @@ public class CobroServiceIT {
                 .setTipoInteresPunitorio(TipoInteres.Simple)
                 .setPorcentajeIncremento(new Double(0))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
         ret.setEstadoContrato(EstadoContrato.Vigente);
@@ -248,7 +249,7 @@ public class CobroServiceIT {
                 .setTipoInteresPunitorio(TipoInteres.Acumulativo)
                 .setPorcentajeIncremento(new Double(0))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
         ret.setEstadoContrato(EstadoContrato.Vigente);
@@ -270,7 +271,7 @@ public class CobroServiceIT {
                 .setTipoInteresPunitorio(TipoInteres.Acumulativo)
                 .setPorcentajeIncremento(new Double(0))
                 .setInquilinoContrato(null)
-                .setDuracionContrato(DuracionContrato.VeinticuatroMeses)
+                .setDuracionContrato(instanciaContratoDuracion24())
                 .setEstadoRegistro(EstadoRegistro.ACTIVO)
                  .build();
         return ret;
@@ -283,4 +284,12 @@ public class CobroServiceIT {
     			.setMontoOriginal(new BigDecimal("100"))
     			.build();
     }
+    
+    private ContratoDuracion instanciaContratoDuracion24() {
+    	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
+    	  }
+    
+    private ContratoDuracion instanciaContratoDuracion36() {
+    	return new ContratoDuracion.Builder().setDescripcion("36 Horas").setDuracion(36).build();
+    	  }
 }
