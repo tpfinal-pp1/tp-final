@@ -30,6 +30,10 @@ import java.util.List;
 @Theme("valo")
 public class InmuebleABMView extends DefaultLayout implements View {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1749224574589852377L;
     private TextField filter = new TextField();
     private Grid<Inmueble> grid = new Grid<>();
     private Button newItem = new Button("Nuevo");
@@ -214,9 +218,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			    "¿Esta seguro que desea Eliminar?",
 			    "100px",
 			    confirmacion -> {
-				inmuebleService.delete(inmueble);
-				showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-					inmueble.getPropietario().toString());
+				if (inmuebleService.delete(inmueble)) {
+				    showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
+					    inmueble.getPropietario().toString());
+				} else {
+				    showErrorNotification("No se realizaron cambios");
+				}
 				updateList();
 			    });
 
