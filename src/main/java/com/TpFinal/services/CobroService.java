@@ -53,6 +53,7 @@ public class CobroService {
 			if(hayQueCalcular(c)) {
 				Long cantidadDias=ChronoUnit.DAYS.between(c.getFechaDeVencimiento(), LocalDate.now());
 				if(cantidadDias>0) {
+					System.out.println("Estoy sumando interes");
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));

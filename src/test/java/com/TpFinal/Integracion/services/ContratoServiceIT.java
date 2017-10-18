@@ -147,11 +147,12 @@ public class ContratoServiceIT {
 		for(int i =0; i<cos.size(); i++) {
 			expected=expected.setScale(2, RoundingMode.CEILING);
 			assertEquals(expected.toBigInteger(), cos.get(i).getMontoOriginal().toBigInteger());
+			System.out.println("monto: "+expected.toString());
 			if((i+1)%2==0) {
 				Double interes= new Double(0.5);
 				expected=expected.add(monto.multiply(new BigDecimal(interes.toString())));
 			}
-			System.out.println(cos.get(i).getFechaDeVencimiento());
+			//System.out.println(cos.get(i).getFechaDeVencimiento());
 			assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 			fecha=fecha.plusMonths(1);
 		}
