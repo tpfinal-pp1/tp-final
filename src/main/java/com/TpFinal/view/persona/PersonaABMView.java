@@ -7,6 +7,7 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.component.PreferenciasBusqueda;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -20,6 +21,7 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
@@ -106,8 +108,15 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 	    Button addIntereses = new Button(VaadinIcons.THUMBS_UP_O);
 	    addIntereses.addClickListener(click -> {
-		Notification.show("A Implementar: Abrir Pantalla para añadir intereses de búsqueda",
-			Notification.Type.WARNING_MESSAGE);
+		new PreferenciasBusqueda(null) {
+
+		    @Override
+		    public void onSave() {
+			Notification.show("A Implementar Logica", Type.WARNING_MESSAGE);
+
+		    }
+
+		};
 	    });
 	    addIntereses.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    addIntereses.setDescription("Añadir intereses de búsqueda");
