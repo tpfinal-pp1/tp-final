@@ -37,15 +37,6 @@ public class ContratoDuracion implements Identificable, BorradoLogico {
     @Cascade ({CascadeType.ALL})
     private List<ContratoAlquiler> contratosAlquiler = new ArrayList<ContratoAlquiler>();
     
-    /*
-    				
-    @OneToMany(mappedBy = "duracionContrato",fetch = FetchType.EAGER)
-    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
-    private ContratoAlquiler contratoAlquiler;
-	
-	*/
-
-
     @Column(name = "descripcion")
     private String descripcion;
 
