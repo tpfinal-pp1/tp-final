@@ -135,7 +135,7 @@ public class Utils {
     }
 
     public static void mostarErroresValidator(ValidationException e) {
-	e.printStackTrace();
+	System.out.println(e.getMessage());
 	e.getFieldValidationErrors().forEach(err -> System.out.println(err.getField()));
 	e.getValidationErrors().forEach(err -> System.out.println(err.getErrorMessage()));
     }

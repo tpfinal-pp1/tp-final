@@ -192,6 +192,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	finalizarCarga.addClickListener(e -> {
 	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
 	    if (binderContratoAlquiler.isValid()) {
+		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
 		service.addCobros(contratoAlquiler);
 	    } else {

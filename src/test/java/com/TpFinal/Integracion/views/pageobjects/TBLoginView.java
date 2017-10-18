@@ -16,8 +16,6 @@ public class TBLoginView extends TestBenchTestCase {
 
     public TBMainView login() {
         if(isDisplayed()) {
-            getUserNameTextfield().first().setValue("Max");
-            getUserPassTextField().first().setValue("1234");
             getLoginButton().first().click();
         }
         return new TBMainView(getDriver());
