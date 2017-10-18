@@ -1,6 +1,7 @@
 package com.TpFinal.view.cobros;
 
 import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
@@ -17,6 +18,8 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -29,7 +32,6 @@ public class CobrosABMView extends DefaultLayout implements View {
 
     private TextField filter = new TextField();
     private Grid<Cobro> grid = new Grid<>();
-    private Button newItem = new Button("Nuevo");
     private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     private HorizontalLayout mainLayout;
     private CobrosForm cobrosForm = new CobrosForm(this);
@@ -49,10 +51,9 @@ public class CobrosABMView extends DefaultLayout implements View {
 
     private void buildLayout() {
         CssLayout filtering = new CssLayout();
-        filtering.addComponents(filter, clearFilterTextBtn, newItem);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-        buildToolbar("Inmuebles", filtering);
+        buildToolbar("Cobros", filtering);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, cobrosForm);
         mainLayout.setSizeFull();
@@ -67,7 +68,6 @@ public class CobrosABMView extends DefaultLayout implements View {
      *            true para mostrar, false para ocultar
      */
     public void setComponentsVisible(boolean b) {
-        newItem.setVisible(b);
         filter.setVisible(b);
         // clearFilterTextBtn.setVisible(b);
         if (isonMobile)
@@ -99,7 +99,6 @@ public class CobrosABMView extends DefaultLayout implements View {
 
     public void ClearFilterBtnAction() {
         if (this.cobrosForm.isVisible()) {
-            newItem.focus();
             cobrosForm.cancel();
         }
         filter.clear();
@@ -143,19 +142,8 @@ public class CobrosABMView extends DefaultLayout implements View {
 
         public void configureComponents() {
             configureFilter();
-            configureNewItem();
             configureGrid();
             updateList();
-        }
-
-        private void configureNewItem() {
-            newItem.addClickListener(e -> {
-                Notification.show("Falta Implementar");/*
-                grid.asSingleSelect().clear();
-                cobrosForm.clearFields();
-                cobrosForm.setInmueble(null);*/
-            });
-            newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
         }
 
         private void configureFilter() {
@@ -168,7 +156,8 @@ public class CobrosABMView extends DefaultLayout implements View {
             clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
         }
 
-        private void configureGrid() {
+        @SuppressWarnings("unchecked")
+		private void configureGrid() {
             grid.asSingleSelect().addValueChangeListener(event -> {
                 if (event.getValue() == null) {
                     if (cobrosForm.isVisible())
@@ -194,7 +183,14 @@ public class CobrosABMView extends DefaultLayout implements View {
 
             grid.addColumn(Cobro::getFechaDeVencimiento).setCaption("Fecha De Vencimiento");
 
-            grid.addColumn(Cobro::getFechaDePago).setCaption("Fecha de Pago");
+           Grid.Column<Cobro, String> fechaCobroCol= grid.addColumn(cobro -> {
+            		String ret="";
+            		if(cobro.getFechaDePago()!=null)
+            			ret=cobro.getFechaDePago().toString();
+            		else
+            			ret="No ha sido pagado";
+            		return ret;
+        }).setCaption("Fecha de Pago");
 
             Grid.Column<Cobro, String> inquilino = grid.addColumn(cobro -> {
                 String ret = "";
@@ -209,47 +205,47 @@ public class CobrosABMView extends DefaultLayout implements View {
             }).setCaption("Monto");
 
 
-            grid.addComponentColumn(inmueble -> {
-                Button edit = new Button(VaadinIcons.EDIT);
-                edit.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
-                edit.addClickListener(e -> {
-                   // cobrosForm.setInmueble(inmueble);
+            grid.addComponentColumn(cobro -> {
+                Button ver = new Button(VaadinIcons.EYE);
+                ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
+                ver.addClickListener(e -> {
+                	 Notification.show("A Implementar!!!!!",
+                             Notification.Type.WARNING_MESSAGE);
 
                 });
 
-                Button del = new Button(VaadinIcons.TRASH);
-                del.addClickListener(click -> {
-                    DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
-                            VaadinIcons.WARNING,
-                            "¿Esta seguro que desea Eliminar?",
-                            "100px",
-                            confirmacion -> {
-                               // inmuebleService.delete(inmueble);
-                               // showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-                               //         inmueble.getPropietario().toString());
-                                updateList();
-                            });
 
+                Button pagar = new Button(VaadinIcons.MONEY);
+                pagar.addClickListener(click -> {
+                	 DialogConfirmacion dialog = new DialogConfirmacion("Pagar cuota",
+             			    VaadinIcons.WARNING,
+             			    "¿Esta seguro que desea pagar esta cuota?",
+             			    "100px",
+             			    confirmacion -> {
+             			    			if(cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
+             			    				Notification.show("La cuota ya esta pagado",
+             			                             Notification.Type.WARNING_MESSAGE);
+             			    			}else if(cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
+             			    				cobro.setEstadoCobro(EstadoCobro.COBRADO);
+             			    				cobro.setFechaDePago(LocalDate.now());
+             			    				cobroService.save(cobro);
+             			    			}
+             			    			updateList();
+             			    	});
                 });
-                del.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_DANGER);
-
-                Button verFotos = new Button(VaadinIcons.PICTURE);
-                verFotos.addClickListener(click -> {
-                    Notification.show("A Implementar: Abrir Pantalla para ver fotos",
-                            Notification.Type.WARNING_MESSAGE);
-                });
-                verFotos.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
-                CssLayout hl = new CssLayout(edit, del, verFotos);
+                pagar.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
+                CssLayout hl = new CssLayout(ver, pagar);
                 hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
                 return hl;
             }).setCaption("Acciones");
 
-
             grid.getColumns().forEach(c -> c.setResizable(false));
+            
         }
 
         public void updateList() {
             List<Cobro> cobros = cobroService.readAll();
+            cobros.sort((c1, c2)-> {return c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento());});
             grid.setItems(cobros);
         }
 
