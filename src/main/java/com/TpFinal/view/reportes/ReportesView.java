@@ -2,50 +2,28 @@ package com.TpFinal.view.reportes;
 
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
-import com.TpFinal.view.component.DownloadButton;
-import com.TpFinal.view.dummy.pdf.PDFWindow;
-import com.vaadin.server.FileDownloader;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JasperCompileManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
-import net.sf.jasperreports.engine.JasperReport;
+import com.TpFinal.view.dummy.pdf.PDFComponent;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
+import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
-import net.sf.jasperreports.export.SimplePdfExporterConfiguration;
 
-import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.Rol;
-import com.TpFinal.services.ContratoDuracionService;
-import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
-import com.google.common.eventbus.Subscribe;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Page;
-import com.vaadin.server.Responsive;
-import com.vaadin.shared.Position;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.util.List;
 
 /* User Interface written in Java.
  *
@@ -58,91 +36,147 @@ import java.util.List;
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ReportesView extends DefaultLayout implements View {
-Button newReport = new Button("Reporte");
-    
-    private JasperReport reporte;
+Button newReport = new Button("Generar");
+	public enum TipoReporte {
+		Propietario("reportePropietarios.jasper"),Inquilino(""),Interesado("");
+
+		private final String archivoReporte;
+
+		 TipoReporte(String archivoReporte) {
+			this.archivoReporte=archivoReporte;
+		}
+
+		public static List<TipoReporte> toList() {
+			TipoReporte[] clases = TipoReporte.values();
+			List<TipoReporte> ret = new ArrayList<>();
+			for (TipoReporte c : clases) {
+				ret.add(c);
+			}
+			return ret;
+		}
+		public String getArchivoReporte(){
+			return this.archivoReporte;
+		}
+
+
+	}
+
+	private JasperReport reporte;
     private JasperPrint reporteLleno;
     Map<String, Object> parametersMap = new HashMap<String, Object>();
     PersonaService servicePersona = new PersonaService();
-    List<Persona> propietarios = new ArrayList<Persona>();
-
+    PDFComponent pdfComponent=new PDFComponent();
+    ComboBox<TipoReporte> tipoReporteCB= new ComboBox<TipoReporte>(
+    		null,TipoReporte.toList());
     HorizontalLayout mainLayout;
-    private boolean isonMobile=false;
-    
-    
+    String reportName="";
+
+
+
+
     public ReportesView() {
     	super();
     	  buildLayout();
           configureComponents();
-    	
-    		
+          newReport.click();
     }    
     
     public void buildLayout() {
     	CssLayout filtering = new CssLayout();
-        HorizontalLayout hl= new HorizontalLayout();
-        filtering.addComponents(newReport);
+
+        filtering.addComponents(tipoReporteCB,newReport);
+        tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        hl.addComponent(filtering);
-        
 
-       buildToolbar("Reportes",hl);
-       // mainLayout = new HorizontalLayout(DuracionContratosForm);
-       // mainLayout.setSizeFull();
-       // addComponent(mainLayout);
-       // this.setExpandRatio(mainLayout, 1);
+
+       buildToolbar("Reportes",filtering);
+       pdfComponent.setSizeFull();
+		addComponent(pdfComponent);
+       this.setExpandRatio(pdfComponent,1);
+        this.setSpacing(false);
+        this.setMargin(false);
+        this.setSizeFull();
+
     }
     
-    
+
+
+
+
     private void configureComponents() {
-    	
+    	tipoReporteCB.setEmptySelectionAllowed(false);
+    	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
+		setComponentsVisible(true);
+		newReport.setStyleName(ValoTheme.BUTTON_PRIMARY);
+
     	newReport.addClickListener(e -> {
-    		
-    		boolean success=false;
-    		
-        	try {
-        		
-        		propietarios = servicePersona.findForRole(Rol.Propietario.toString());
-				String reportName = "myreport";
-    		
-    			this.reporte = (JasperReport) 	JRLoader.loadObjectFromFile("ReportesJasper\\reportePropietarios.jasper");
-    			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap, 
-    					new JRBeanCollectionDataSource(propietarios));
-    			
-    			JRPdfExporter exporter = new JRPdfExporter();
-    			exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
-    			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("Files"+
-																					File.separator+ reportName+".pdf"));
-    			//SimplePdfExporterConfiguration configuration = new SimplePdfExporterConfiguration();
-    			//configuration.setPermissions(PdfWriter.AllowCopy | PdfWriter.AllowPrinting);
-    			//exporter.setConfiguration(configuration);
-    			exporter.exportReport();
-    			success=true;
-    			
-    			
-        	}
 
-    			catch (JRException ex){
-    				ex.printStackTrace();
-    			}
-        	
-        	if(success) {
-               Notification.show("Reporte Generado con Exito");
+			List<Object> objetos = new ArrayList<Object>(
+					servicePersona.findForRole(Rol.Propietario.toString()));
 
-				FileDownloader fileDownloader = new FileDownloader(DownloadButton.fromPathtoSR("myreport.pdf"));
-				fileDownloader.extend(this);
-				fileDownloader.getFileDownloadResource();
+    		boolean success=generarReporte(objetos);
+        	if(success)
+				pdfComponent.setPDF(reportName);
+    		else{
 
-        	 }});
-    	
-    	
-    	 setComponentsVisible(true);         
-         newReport.setStyleName(ValoTheme.BUTTON_PRIMARY);
+    			showErrorNotification("Error al generar el reporte");}
+    	});
+
+
     }
-    
+
+
+
+
+	public  boolean generarReporte(List<Object> objectos){
+    	String nombreReporte=tipoReporteCB.getValue().getArchivoReporte();
+		//Te trae el nombre del archivo en base a seleccion del combo
+		try {
+			this.reporte = (JasperReport)JRLoader.loadObjectFromFile("ReportesJasper\\"+nombreReporte);
+			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
+					new JRBeanCollectionDataSource(objectos));
+			return crearArchivo();
+		} catch (JRException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+
+
+	private boolean crearArchivo(){
+		if(reportName.equals(""))
+			reportName = Long.toString(new Date().getTime()/1000)+".pdf"; //Tiempo en segundos desde Epoch hasta ahora (no se repite)
+
+		File dir=new File("Files");
+		if(!dir.exists())
+			dir.mkdir();
+		JRPdfExporter exporter = new JRPdfExporter();
+		exporter.setExporterInput(new SimpleExporterInput(reporteLleno));
+		exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("Files"+
+				File.separator+ reportName));
+		try {
+			exporter.exportReport();
+			return true;
+		} catch (JRException e) {
+			e.printStackTrace();
+			return false;
+
+		}
+
+	}
     public void setComponentsVisible(boolean b){
     	newReport.setVisible(true);
     }
-    
-    
+	public void showErrorNotification(String notification) {
+		Notification success = new Notification(
+				notification);
+		success.setDelayMsec(4000);
+		success.setStyleName("bar error small");
+		success.setPosition(Position.BOTTOM_CENTER);
+		success.show(Page.getCurrent());
+	}
+
+
+
 }
