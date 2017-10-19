@@ -12,13 +12,16 @@ import org.junit.BeforeClass;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoDuracionImpl;
+import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoDuracion;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.services.ContratoDuracionService;
 
 public class ContratoDuracionServiceIT {
 	
+	DAOContratoAlquiler daoContrato;
 	private ContratoDuracionService service;
 	private DAOContratoDuracion daoContratoDuracion;
 	
@@ -32,13 +35,17 @@ public class ContratoDuracionServiceIT {
 	@Before
 	public void setUp() throws Exception {
 		service = new ContratoDuracionService();
+		daoContrato= new DAOContratoAlquilerImpl();
 		daoContratoDuracion = new DAOContratoDuracionImpl();
 		duraciones.clear();
+		service.readAll().forEach(c -> service.delete(c));
 	}
 	
 	@After
 	public void tearDown() throws Exception {
-		daoContratoDuracion.readAll().forEach(c -> daoContratoDuracion.delete(c));
+		//daoContrato.readAll().forEach(c -> c.getDuracionContrato().removeContratosAlquiler(c));
+		
+		service.readAll().forEach(c -> service.delete(c));
 	}
 	
 	private ContratoDuracion instanciaContratoDuracion(String numero) {
