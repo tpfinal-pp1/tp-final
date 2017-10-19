@@ -2,19 +2,24 @@ package com.TpFinal.dto.inmueble;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import com.TpFinal.dto.Identificable;
 
 @Entity
 @Table(name = "direcciones")
 public class Direccion implements Identificable {
 	public static final String pLocalidad = "localidad";
+	public static final String pProvincia = "provincia";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "idDireccion")
 	private Long idDireccion;
 
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne (orphanRemoval = true)
+	@Cascade ({CascadeType.ALL})
 	private Coordenada coordenada;
 
 	@Column(name = "calle")

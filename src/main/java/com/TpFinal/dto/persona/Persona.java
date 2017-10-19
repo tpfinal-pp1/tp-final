@@ -3,6 +3,7 @@ package com.TpFinal.dto.persona;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
@@ -14,8 +15,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.*;
 
 @Entity
-@Table(name = "personas", uniqueConstraints=
-@UniqueConstraint(columnNames={"DNI"}))
+@Table(name = "personas", uniqueConstraints = @UniqueConstraint(columnNames = { "DNI" }))
 public class Persona implements Identificable, BorradoLogico {
 
     public static final String idPersona = "idPersona";
@@ -26,7 +26,8 @@ public class Persona implements Identificable, BorradoLogico {
     public static final String telefonoPersona = "telefono";
     public static final String telefono2Persona = "telefono2";
     public static final String infoPersona = "infoAdicional";
-    private static final String estadoRegistroS = "estadoRegistro";
+    public static final String estadoRegistroPersona = "estadoRegistro";
+    public static final String preferenciasBusquedaPersona = "prefBusqueda";
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -47,13 +48,17 @@ public class Persona implements Identificable, BorradoLogico {
     private String telefono2 = "";
     @Column(name = infoPersona)
     private String infoAdicional = "";
-    @OneToMany(mappedBy = "persona",fetch = FetchType.EAGER)
-    @Cascade({CascadeType.SAVE_UPDATE,CascadeType.DELETE})
+    @OneToMany(mappedBy = "persona", fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     private Set<RolPersona> roles = new HashSet<>();
     @Enumerated(EnumType.STRING)
-    @Column(name = Persona.estadoRegistroS)
+    @Column(name = Persona.estadoRegistroPersona)
     @NotNull
     private EstadoRegistro estadoRegistro;
+
+    @OneToOne(orphanRemoval = true)
+    @Cascade({ CascadeType.ALL })
+    private CriterioBusquedaInmuebleDTO prefBusqueda;
 
     public Persona() {
 	super();
@@ -70,6 +75,7 @@ public class Persona implements Identificable, BorradoLogico {
 	this.telefono2 = b.telefono2;
 	this.infoAdicional = b.infoAdicional;
 	this.roles = b.roles;
+	this.prefBusqueda = b.prefBusqueda;
 	this.estadoRegistro = EstadoRegistro.ACTIVO;
     }
 
@@ -84,29 +90,29 @@ public class Persona implements Identificable, BorradoLogico {
 	this.infoAdicional = infoAdicional;
     }
 
-	public Inquilino getInquilino() {
-		for (RolPersona rol : roles) {
-			if (rol instanceof Inquilino) {
-				return (Inquilino) rol;
-			}
-		}
-		return null;
+    public Inquilino getInquilino() {
+	for (RolPersona rol : roles) {
+	    if (rol instanceof Inquilino) {
+		return (Inquilino) rol;
+	    }
 	}
+	return null;
+    }
 
-	public Propietario getPropietario() {
-		for (RolPersona rol : roles) {
-			if (rol instanceof Propietario) {
-				return (Propietario) rol;
-			}
-		}
-		return null;
+    public Propietario getPropietario() {
+	for (RolPersona rol : roles) {
+	    if (rol instanceof Propietario) {
+		return (Propietario) rol;
+	    }
 	}
+	return null;
+    }
 
-   @Override
-   public String toString(){
-    	return this.getNombre()+" "+this.getApellido();
-   }
-   
+    @Override
+    public String toString() {
+	return this.getNombre() + " " + this.getApellido();
+    }
+
     public boolean isSame(Object o) {
 	if (this == o)
 	    return true;
@@ -131,31 +137,31 @@ public class Persona implements Identificable, BorradoLogico {
     }
 
     @Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((DNI == null) ? 0 : DNI.hashCode());
-		return result;
-	}
+    public int hashCode() {
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((DNI == null) ? 0 : DNI.hashCode());
+	return result;
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Persona other = (Persona) obj;
-		if (DNI == null) {
-			if (other.DNI != null)
-				return false;
-		} else if (!DNI.equals(other.DNI))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (obj == null)
+	    return false;
+	if (getClass() != obj.getClass())
+	    return false;
+	Persona other = (Persona) obj;
+	if (DNI == null) {
+	    if (other.DNI != null)
+		return false;
+	} else if (!DNI.equals(other.DNI))
+	    return false;
+	return true;
+    }
 
-	public String getNombre() {
+    public String getNombre() {
 	return nombre;
     }
 
@@ -228,17 +234,17 @@ public class Persona implements Identificable, BorradoLogico {
     }
 
     public void addRol(RolPersona r) {
-    	if(!this.roles.contains(r)) {
-    		this.roles.add(r);
-    		r.setPersona(this);
-    	}
+	if (!this.roles.contains(r)) {
+	    this.roles.add(r);
+	    r.setPersona(this);
+	}
     }
-    
+
     public void removeRol(RolPersona r) {
-    	if(this.roles.contains(r)) {
-    		this.roles.remove(r);
-    		r.setPersona(null);
-    	}
+	if (this.roles.contains(r)) {
+	    this.roles.remove(r);
+	    r.setPersona(null);
+	}
     }
 
     public Set<RolPersona> getRoles() {
@@ -253,120 +259,133 @@ public class Persona implements Identificable, BorradoLogico {
 	this.roles = roles;
     }
 
-    
     public boolean addRol(Rol rol) {
-    	boolean ret;
-    	if(contiene(rol))
-    		ret= false;
-    	else {
-    		if(rol.equals(Rol.Inquilino))
-    			this.roles.add(new Inquilino());
-    		if(rol.equals(Rol.Propietario))
-    			this.roles.add(new Propietario());
-    		ret=true;
-    	}
-    	return ret;
+	boolean ret;
+	if (contiene(rol))
+	    ret = false;
+	else {
+	    if (rol.equals(Rol.Inquilino))
+		this.roles.add(new Inquilino());
+	    if (rol.equals(Rol.Propietario))
+		this.roles.add(new Propietario());
+	    ret = true;
+	}
+	return ret;
     }
-    
+
     public RolPersona getRol(Rol rol) {
-    	List<RolPersona> ret=new ArrayList<>();
-    	this.roles.forEach(r -> {
-    		if(rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
-    			ret.add(r);
-    		} else if(rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
-    			ret.add(r);
-    		}
-    	});
-    	return ret.size()!= 0 ?ret.get(0) : null;
+	List<RolPersona> ret = new ArrayList<>();
+	this.roles.forEach(r -> {
+	    if (rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
+		ret.add(r);
+	    } else if (rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
+		ret.add(r);
+	    }
+	});
+	return ret.size() != 0 ? ret.get(0) : null;
     }
-    
-    public List<Rol>giveMeYourRoles(){
-    	List<Rol>roles=new ArrayList<>();
-    	this.roles.forEach(r ->{
-    	if(r.getClass().equals(Inquilino.class))
-    		roles.add(Rol.Inquilino);
-    	else if(r.getClass().equals(Propietario.class))
-    		roles.add(Rol.Propietario);
-    	});
-    	return roles;
+
+    public List<Rol> giveMeYourRoles() {
+	List<Rol> roles = new ArrayList<>();
+	this.roles.forEach(r -> {
+	    if (r.getClass().equals(Inquilino.class))
+		roles.add(Rol.Inquilino);
+	    else if (r.getClass().equals(Propietario.class))
+		roles.add(Rol.Propietario);
+	});
+	return roles;
     }
-    
+
     public String roles() {
-    	String ret="";
-    	for(Rol r : giveMeYourRoles()) {
-    		ret+=r.toString()+" ";
-    	}
-    	return ret;
+	String ret = "";
+	for (Rol r : giveMeYourRoles()) {
+	    ret += r.toString() + " ";
+	}
+	return ret;
     }
-    
+
     public boolean contiene(Rol rol) {
-    	boolean ret=false;
-    	for(Rol r:giveMeYourRoles()) {
-    		ret=ret||r.equals(rol);
-    	}
-    	return ret;
+	boolean ret = false;
+	for (Rol r : giveMeYourRoles()) {
+	    ret = ret || r.equals(rol);
+	}
+	return ret;
     }
     
+    public CriterioBusquedaInmuebleDTO getPrefBusqueda() {
+        return prefBusqueda;
+    }
+
+    public void setPrefBusqueda(CriterioBusquedaInmuebleDTO prefBusqueda) {
+        this.prefBusqueda = prefBusqueda;
+    }
+
     public static class Builder {
-		private Long id;
-		private String nombre;
-		private String apellido;
-		private String mail;
-		private String telefono;
-		private String telefono2;
-		private String DNI;
-		private String infoAdicional;
-		protected Set<RolPersona> roles = new HashSet<>();
-		private EstadoRegistro estadoRegistro;
+	private CriterioBusquedaInmuebleDTO prefBusqueda;
+	private Long id;
+	private String nombre;
+	private String apellido;
+	private String mail;
+	private String telefono;
+	private String telefono2;
+	private String DNI;
+	private String infoAdicional;
+	protected Set<RolPersona> roles = new HashSet<>();
+	private EstadoRegistro estadoRegistro;
+
+	public Builder setId(Long dato) {
+	    this.id = dato;
+	    return this;
+	}
+
+	public Builder setNombre(String dato) {
+	    this.nombre = dato;
+	    return this;
+	}
+
+	public Builder setApellido(String dato) {
+	    this.apellido = dato;
+	    return this;
+	}
+
+	public Builder setMail(String dato) {
+	    this.mail = dato;
+	    return this;
+	}
+
+	public Builder setTelefono(String dato) {
+	    this.telefono = dato;
+	    return this;
+	}
+
+	public Builder setTelefono2(String dato) {
+	    this.telefono2 = dato;
+	    return this;
+	}
+
+	public Builder setDNI(String dato) {
+	    this.DNI = dato;
+	    return this;
+	}
+
+	public Builder setinfoAdicional(String dato) {
+	    this.infoAdicional = dato;
+	    return this;
+	}
+
+	public Builder setRoles(Set<RolPersona> dato) {
+	    this.roles = dato;
+	    return this;
+	}
 	
-		public Builder setId(Long dato) {
-		    this.id = dato;
-		    return this;
-		}
-	
-		public Builder setNombre(String dato) {
-		    this.nombre = dato;
-		    return this;
-		}
-	
-		public Builder setApellido(String dato) {
-		    this.apellido = dato;
-		    return this;
-		}
-	
-		public Builder setMail(String dato) {
-		    this.mail = dato;
-		    return this;
-		}
-	
-		public Builder setTelefono(String dato) {
-		    this.telefono = dato;
-		    return this;
-		}
-	
-		public Builder setTelefono2(String dato) {
-		    this.telefono2 = dato;
-		    return this;
-		}
-	
-		public Builder setDNI(String dato) {
-		    this.DNI = dato;
-		    return this;
-		}
-	
-		public Builder setinfoAdicional(String dato) {
-		    this.infoAdicional = dato;
-		    return this;
-		}
-	
-		public Builder setRoles(Set<RolPersona> dato) {
-		    this.roles = dato;
-		    return this;
-		}
-	
-		public Persona build() {
-		    return new Persona(this);
-		}
+	public Builder setPrefBusqueda(CriterioBusquedaInmuebleDTO dato) {
+	    this.prefBusqueda = dato;
+	    return this;
+	}
+
+	public Persona build() {
+	    return new Persona(this);
+	}
 
     }
 

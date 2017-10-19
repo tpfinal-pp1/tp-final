@@ -15,6 +15,7 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -158,6 +159,19 @@ public class DAOPersonaImplIT {
         
 //        assertEquals("sarasa", dao.readAllActives().get(2).getNombre());
 //        assertEquals("info", dao.readAllActives().get(2).getInfoAdicional());
+    }
+    
+    @Test
+    public void personaConPrefBusqueda() {
+	Persona p = instancia("1");
+	p.setPrefBusqueda(new CriterioBusquedaInmuebleDTO.Builder()
+		.setaEstrenar(true)
+		.build());
+	
+	dao.save(p);
+	
+	assertEquals(p, dao.readAll().get(0));
+	assertEquals(p.getPrefBusqueda(),dao.findById(p.getId()).getPrefBusqueda());
     }
 
 

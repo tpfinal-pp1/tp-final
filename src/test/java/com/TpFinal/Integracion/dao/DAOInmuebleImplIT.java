@@ -137,19 +137,63 @@ public class DAOInmuebleImplIT {
     }
 
     @Test
-    public void findInmueblesByCriteria_Ciudad() {
+    public void findInmueblesByCriteria_Localidad() {
 	int cantidadDeInmuebles = 3;
 	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad").build();
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setLocalidad("una Localidad").build();
 
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(cantidadDeInmuebles, inmuebles.size());
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").build();
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setLocalidad("otra localidad").build();
 
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(0, inmuebles.size());
+
+    }
+    
+    @Test
+    public void findInmueblesByCriteria_Provincia() {
+	int cantidadDeInmuebles = 3;
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
+
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Buenos Aires").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(cantidadDeInmuebles, inmuebles.size());
+
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Jujuy").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(0, inmuebles.size());
+
+    }
+    
+    
+    @Test
+    public void findInmueblesByCriteria_ProvinciaAndLocalidad() {
+	int cantidadDeInmuebles = 3;
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x ->{
+	    Inmueble i= unInmuebleNoPublicado();
+	    i.getDireccion().setLocalidad("ASD");
+	    dao.create(i);
+	    });
+
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Buenos Aires").setLocalidad("ASD").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(cantidadDeInmuebles, inmuebles.size());
+
+	dao.readAll().forEach(i ->{
+	    i.getDireccion().setProvincia("Jujuy");
+	    dao.merge(i);	    
+	});
+	
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Jujuy").setLocalidad("ASD").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(3, inmuebles.size());
 
     }
 
@@ -247,13 +291,13 @@ public class DAOInmuebleImplIT {
 
 	}
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("una Localidad").setConAireAcondicionado(true)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setLocalidad("una Localidad").setConAireAcondicionado(true)
 		.build();
 
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(1, inmuebles.size());
 
-	criterio = new CriterioBusquedaInmuebleDTO.Builder().setCiudad("otra localidad").setConAireAcondicionado(false)
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setLocalidad("otra localidad").setConAireAcondicionado(false)
 		.build();
 
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
@@ -383,8 +427,16 @@ public class DAOInmuebleImplIT {
 	for (int i = 0; i < estados.length; i++) {
 	    criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(estados[i]).build();
 	    inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	    if (estados[i] != EstadoInmueble.EnAlquilerYVenta) {
 	    assertEquals(1, inmuebles.size());
 	    assertEquals(inmuebles.get(0).getEstadoInmueble(), estados[i]);
+	    }
+	    else {
+		 assertEquals(3, inmuebles.size());
+		 assertTrue(inmuebles.contains(inmuebleEnAlquiler));
+		 assertTrue(inmuebles.contains(inmuebleEnVenta));
+		 assertTrue(inmuebles.contains(inmuebleEnAlquileryVenta));
+	    }
 	}
 
     }
@@ -450,6 +502,16 @@ public class DAOInmuebleImplIT {
 	criterio = new CriterioBusquedaInmuebleDTO.Builder().build();
 	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
 	assertEquals(3, inmuebles.size());
+
+    }
+    
+    @Test
+    public void findInmueblesByCriteria_EnVentaOAlquiler() {
+	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta)
+		.build();
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(2, inmuebles.size());
 
     }
 
