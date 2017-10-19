@@ -148,7 +148,6 @@ public class CobroServiceIT {
 		expected=interes.add(ca.getValorInicial());
 		expected=expected.setScale(2, RoundingMode.CEILING);
 		assertEquals(expected,cos.get(0).getMontoRecibido());
-		
 	}
 	
 	@Test
