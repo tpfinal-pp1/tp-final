@@ -95,7 +95,8 @@ public class ReportesView extends DefaultLayout implements View {
     	super();
     	  buildLayout();
           configureComponents();
-          newReport.click();
+         // newReport.click();
+		generarReporte();
     }    
     
     public void buildLayout() {
