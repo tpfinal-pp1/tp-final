@@ -29,6 +29,7 @@ public class PDFComponent extends VerticalLayout {
 
 
     public void setPDF(String filename) {
+        pdf.setCaption(null);
         pdf.setSource(Utils.fromPathtoSR(filename));
         pdf.setType(Embedded.TYPE_BROWSER);
         pdf.setMimeType("application/pdf");

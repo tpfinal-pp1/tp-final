@@ -37,7 +37,17 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ReportesView extends DefaultLayout implements View {
-Button newReport = new Button("Generar");
+
+	private JasperReport reporte;
+	private JasperPrint reporteLleno;
+	Map<String, Object> parametersMap = new HashMap<String, Object>();
+	PDFComponent pdfComponent=new PDFComponent();
+	ComboBox<TipoReporte> tipoReporteCB= new ComboBox<TipoReporte>(
+			null,TipoReporte.toList());
+	HorizontalLayout mainLayout;
+	String reportName="";
+	Button newReport = new Button("Generar");
+	Notification error ;
 	public enum TipoReporte {
 		Propietario(new Utils().pathWhenCompiled+"reportePropietarios.jasper"),Inquilino(""),Interesado("");
 
@@ -77,15 +87,6 @@ Button newReport = new Button("Generar");
 
 	}
 
-	private JasperReport reporte;
-    private JasperPrint reporteLleno;
-    Map<String, Object> parametersMap = new HashMap<String, Object>();
-
-    PDFComponent pdfComponent=new PDFComponent();
-    ComboBox<TipoReporte> tipoReporteCB= new ComboBox<TipoReporte>(
-    		null,TipoReporte.toList());
-    HorizontalLayout mainLayout;
-    String reportName="";
 
 
 
@@ -133,7 +134,7 @@ Button newReport = new Button("Generar");
 				pdfComponent.setPDF(reportName);
     		else{
 
-    			showErrorNotification("Error al generar el reporte");}
+    			showErrorNotification("Error al generar el reporte:"+reportName);}
     	});
 
 
@@ -186,12 +187,12 @@ Button newReport = new Button("Generar");
     	newReport.setVisible(true);
     }
 	public void showErrorNotification(String notification) {
-		Notification success = new Notification(
+		error= new Notification(
 				notification);
-		success.setDelayMsec(4000);
-		success.setStyleName("bar error small");
-		success.setPosition(Position.BOTTOM_CENTER);
-		success.show(Page.getCurrent());
+		error.setDelayMsec(4000);
+		error.setStyleName("bar error small");
+		error.setPosition(Position.BOTTOM_CENTER);
+		error.show(Page.getCurrent());
 	}
 
 
