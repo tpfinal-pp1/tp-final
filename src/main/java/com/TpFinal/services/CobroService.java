@@ -55,12 +55,18 @@ public class CobroService {
 				if(cantidadDias>0) {
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
+						System.out.println("En la bd "+interes.toString());
 						interes=interes.divide(new BigDecimal("100"));
+						System.out.println("despues de pasarlo a decimal "+interes.toString());
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
 						interes=c.getMontoOriginal().multiply(interes);
 						c.setInteres(interes);
 						BigDecimal nuevoValor=c.getMontoOriginal().add(interes);
 						c.setMontoRecibido(nuevoValor);
+						BigDecimal comision= c.getMontoRecibido().multiply(new BigDecimal("0.06"));
+						c.setComision(comision);
+						BigDecimal montoPropietario=c.getMontoRecibido().subtract(comision);
+						c.setMontoPropietario(montoPropietario);
 					}else if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Acumulativo)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
 						interes=interes.divide(new BigDecimal("100"));
@@ -70,6 +76,10 @@ public class CobroService {
 						}
 						c.setMontoRecibido(valorAnterior);
 						c.setInteres(c.getMontoRecibido().subtract(c.getMontoOriginal()));
+						BigDecimal comision= c.getMontoRecibido().multiply(new BigDecimal("0.06"));
+						c.setComision(comision);
+						BigDecimal montoPropietario=c.getMontoRecibido().subtract(comision);
+						c.setMontoPropietario(montoPropietario);
 					}
 				}
 			}
@@ -77,7 +87,7 @@ public class CobroService {
 	}
 	
 	private boolean hayQueCalcular(Cobro c) {
-		return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO) && !c.getContrato().getEstadoContrato().equals(EstadoContrato.EnProcesoDeCarga);
+		return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO) && c.getContrato().getEstadoContrato().equals(EstadoContrato.Vigente);
 	}
 	
 	//Ver que se necesita "arriba"

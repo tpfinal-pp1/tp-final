@@ -69,6 +69,7 @@ public class ContratoService {
 	    }
 	} else {
 	    ContratoAlquiler c = (ContratoAlquiler) contrato;
+	    System.out.println("interes "+c.getInteresPunitorio());
 	    if (doc != null)
 		ret = daoAlquiler.mergeContrato(c, doc);
 	    else
@@ -195,11 +196,17 @@ public class ContratoService {
     			}
     			
     			Cobro c =new Cobro.Builder()
-    					.setNumeroCuota(i)
+    					.setNumeroCuota(i+1)
     					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
     					.setMontoRecibido(valorAnterior)
+    					.setInteres(new BigDecimal(0))
+    					.setMontoPropietario(new BigDecimal(0))
+    					.setComision(new BigDecimal(0))
     					.build();
+    			c.setComision(valorAnterior.multiply(new BigDecimal(0.06)));
+    			c.setMontoPropietario(valorAnterior.subtract(c.getComision()));
+    			
     			if((i+1) % contrato.getIntervaloActualizacion()==0) {
     				if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
     					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());

@@ -7,10 +7,7 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 
@@ -89,6 +86,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoView.getTipoInteresComboBox().first().selectByText(selectedIntere);
 
         contratoView.getDiadePagoTextField().first().setValue("2");
+
         contratoView.getRecargoPunitorioTextField().first().setValue("2");
         contratoView.getAumentoporActualizacinTextField().first().setValue("4");
 
