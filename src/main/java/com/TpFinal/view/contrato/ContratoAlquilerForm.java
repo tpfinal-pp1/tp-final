@@ -286,7 +286,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	binderContratoAlquiler.forField(this.tfPagoFueraDeTermino).withNullRepresentation("")
 		.withConverter(new StringToDoubleConverter("Debe ingresar un número"))
 		.withValidator(n -> (n >= 0 && n <= 100), "Ingrese un porcentaje entre 0 y 100")
-		.bind(ContratoAlquiler::getPorcentajeIncrementoCuota, ContratoAlquiler::setPorcentajeIncrementoCuota);
+		.bind(ContratoAlquiler::getInteresPunitorio, ContratoAlquiler::setInteresPunitorio);
 
 	binderContratoAlquiler.forField(this.tfPropietario).withNullRepresentation("")
 		.bind(contrato -> {
