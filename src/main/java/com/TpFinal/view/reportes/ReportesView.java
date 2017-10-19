@@ -49,7 +49,7 @@ public class ReportesView extends DefaultLayout implements View {
 	Button newReport = new Button("Generar");
 	Notification error ;
 	public enum TipoReporte {
-		Propietario(new Utils().pathWhenCompiled+"reportePropietarios.jasper"),Inquilino(""),Interesado("");
+		Propietario("reportePropietarios.jasper"),Inquilino(""),Interesado("");
 
 		private final String archivoReporte;
 
@@ -130,8 +130,9 @@ public class ReportesView extends DefaultLayout implements View {
 
 
 			boolean success=generarReporte();
-			if(success)
+			if(success){
 				pdfComponent.setPDF(reportName);
+				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
 			else{
 				System.err.println("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());
 				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
@@ -148,12 +149,30 @@ public class ReportesView extends DefaultLayout implements View {
 
 	public  boolean generarReporte(){
     	TipoReporte tipoReporte=tipoReporteCB.getValue();
-    	String nombreReporte=tipoReporte.getArchivoReporte();
+    	String ubicacionReporte=new Utils().pathWhenCompiled()+ tipoReporte.getArchivoReporte();
     	List<Object> objetos=tipoReporte.getObjetos();
 
 		//Te trae el nombre del archivo en base a seleccion del combo
+		try{
+			this.reporte = (JasperReport)JRLoader.
+					loadObjectFromFile(ubicacionReporte);
+		}
+		catch (Exception e){
+			try {
+				this.reporte = (JasperReport)JRLoader.
+						loadObjectFromFile(tipoReporte.getArchivoReporte());
+			}
+			catch (Exception d){
+				System.err.println("No se encontro el archivo "+tipoReporte.getArchivoReporte()+"" +
+						" en "+File.separator+tipoReporte.getArchivoReporte());
+			}
+			}
+
+
+
+
 		try {
-			this.reporte = (JasperReport)JRLoader.loadObjectFromFile(nombreReporte);
+
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();
