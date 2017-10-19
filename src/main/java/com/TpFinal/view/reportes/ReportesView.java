@@ -96,7 +96,7 @@ public class ReportesView extends DefaultLayout implements View {
     	  buildLayout();
           configureComponents();
          // newReport.click();
-		generarReporte();
+
     }    
     
     public void buildLayout() {
@@ -133,9 +133,9 @@ public class ReportesView extends DefaultLayout implements View {
 			boolean success=generarReporte();
 			if(success){
 				pdfComponent.setPDF(reportName);
-				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
+				}
 			else{
-				System.err.println("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());
+
 				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
 
 
@@ -158,18 +158,21 @@ public class ReportesView extends DefaultLayout implements View {
 		File root2=new File(tipoReporte.getArchivoReporte());
 		File webapp=new File(new Utils().resourcesPath()+tipoReporte.getArchivoReporte());
 
-			System.out.println(File.separator+tipoReporte.getArchivoReporte()+"Existe: "+root.exists());
+			System.out.println(tipoReporte.getArchivoReporte()+" Existe: "+root2.exists());
 
-			System.out.println(tipoReporte.getArchivoReporte()+"Existe: "+root2.exists());
-
-			System.out.println(new Utils().resourcesPath()+tipoReporte.getArchivoReporte()+"Existe: "+webapp.exists());
+			System.out.println(new Utils().resourcesPath()+tipoReporte.getArchivoReporte()+" Existe: "+webapp.exists());
 
 
 		try {
 			this.reporte = (JasperReport)JRLoader.
                             loadObject(root2);
 		} catch (JRException e) {
-
+			try {
+				this.reporte = (JasperReport)JRLoader.
+                        loadObject(webapp);
+			} catch (JRException e1) {
+				e1.printStackTrace();
+			}
 		}
 
 
