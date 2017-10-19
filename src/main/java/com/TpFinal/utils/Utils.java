@@ -18,7 +18,7 @@ public class Utils {
 
 
 
-    public String pathWhenCompiled(){
+    public String resourcesPath(){
 
         return CurrentInstance.get(VaadinRequest.class)
                 .getService().getBaseDirectory() + File.separator;
