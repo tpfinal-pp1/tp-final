@@ -102,9 +102,16 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	    query.add(Restrictions.eq(alias + Inmueble.pConPileta, criterio.getConPileta()));
 	}
 
-	if (criterio.getCiudad() != null) {
-	    query.createCriteria(alias + Inmueble.pDireccion)
-		    .add(Restrictions.eq(Direccion.pLocalidad, criterio.getCiudad()));
+	if (criterio.getLocalidad() != null || criterio.getProvincia() != null) {
+	    String aliasDir = "d";
+	    query.createAlias(Inmueble.pDireccion, aliasDir);
+	    if (criterio.getLocalidad() != null) {
+		query.add(Restrictions.eq(aliasDir+"." + Direccion.pLocalidad, criterio.getLocalidad()));
+	    }
+
+	    if (criterio.getProvincia() != null) {
+		query.add(Restrictions.eq(aliasDir+"." + Direccion.pProvincia, criterio.getProvincia()));
+	    }
 	}
 
 	if (criterio.getClasesDeInmueble() != null) {

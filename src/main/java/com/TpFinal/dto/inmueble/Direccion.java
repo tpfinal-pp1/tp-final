@@ -11,6 +11,7 @@ import com.TpFinal.dto.Identificable;
 @Table(name = "direcciones")
 public class Direccion implements Identificable {
 	public static final String pLocalidad = "localidad";
+	public static final String pProvincia = "provincia";
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

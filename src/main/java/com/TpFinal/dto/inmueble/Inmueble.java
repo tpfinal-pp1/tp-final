@@ -417,7 +417,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 
     @Override
     public String toString() {
-	return direccion.getCalle() + " N°" + direccion.getNro() + "," + direccion.getLocalidad();
+	return direccion.toString();
     }
 
     public static class Builder {

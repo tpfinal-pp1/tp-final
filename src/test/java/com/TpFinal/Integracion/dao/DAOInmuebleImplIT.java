@@ -152,6 +152,50 @@ public class DAOInmuebleImplIT {
 	assertEquals(0, inmuebles.size());
 
     }
+    
+    @Test
+    public void findInmueblesByCriteria_Provincia() {
+	int cantidadDeInmuebles = 3;
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x -> dao.create(unInmuebleNoPublicado()));
+
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Buenos Aires").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(cantidadDeInmuebles, inmuebles.size());
+
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Jujuy").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(0, inmuebles.size());
+
+    }
+    
+    
+    @Test
+    public void findInmueblesByCriteria_ProvinciaAndLocalidad() {
+	int cantidadDeInmuebles = 3;
+	Stream.iterate(0, x -> x++).limit(cantidadDeInmuebles).forEach(x ->{
+	    Inmueble i= unInmuebleNoPublicado();
+	    i.getDireccion().setLocalidad("ASD");
+	    dao.create(i);
+	    });
+
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Buenos Aires").setLocalidad("ASD").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(cantidadDeInmuebles, inmuebles.size());
+
+	dao.readAll().forEach(i ->{
+	    i.getDireccion().setProvincia("Jujuy");
+	    dao.merge(i);	    
+	});
+	
+	criterio = new CriterioBusquedaInmuebleDTO.Builder().setProvincia("Jujuy").setLocalidad("ASD").build();
+
+	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
+	assertEquals(3, inmuebles.size());
+
+    }
 
     @Test
     public void findInmueblesByCriteria_AireAcondicionado() {

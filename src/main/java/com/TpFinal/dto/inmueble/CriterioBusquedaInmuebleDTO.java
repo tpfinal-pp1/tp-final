@@ -188,12 +188,8 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 	this.conJardin = conJardin;
     }
 
-    public String getCiudad() {
+    public String getLocalidad() {
 	return localidad;
-    }
-
-    public void setCiudad(String ciudad) {
-	this.localidad = ciudad;
     }
 
     public EstadoInmueble getEstadoInmueble() {
@@ -274,6 +270,18 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 
     public void setTipoPublicacion(TipoPublicacion tipoPublicacion) {
 	this.tipoPublicacion = tipoPublicacion;
+    }
+
+    public String getProvincia() {
+	return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+	this.provincia = provincia;
+    }
+
+    public void setLocalidad(String localidad) {
+	this.localidad = localidad;
     }
 
     @Override
