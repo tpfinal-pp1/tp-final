@@ -16,14 +16,13 @@ import com.vaadin.util.CurrentInstance;
 public class Utils {
 
 
-    public final String pathWhenCompiled=
-            CurrentInstance.get(VaadinRequest.class).getService().getBaseDirectory() + File.separator;
 
 
+    public String pathWhenCompiled(){
 
-
-
-
+        return CurrentInstance.get(VaadinRequest.class)
+                .getService().getBaseDirectory() + File.separator;
+    }
    public static ArrayList<Object> Search(List<Object>Objects,String keyword,int threshold) {
         ArrayList<Object> ret = new ArrayList<Object>();
        keyword=keyword.toUpperCase();
