@@ -87,12 +87,12 @@ public class ContratoAlquilerForm extends FormLayout {
 
     // Condiciones
     TextField tfDiaDePago = new TextField("Día de Pago");
-    TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio");
+    TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio(%)");
     ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>("Tipo Interes");
     ComboBox<ContratoDuracion> cbDuracionContrato = new ComboBox<>("Duración");
     TextField stIncremento = new TextField("Frecuencia de Incremento");
 
-    TextField tfPActualizacion = new TextField("");
+    TextField tfPActualizacion = new TextField("(%)");
     ComboBox<TipoInteres> cbtipointeres = new ComboBox<>("Tipo Interes");
     TextField tfValorInicial = new TextField("Valor Inicial $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
