@@ -49,7 +49,7 @@ public class ReportesView extends DefaultLayout implements View {
 	Button newReport = new Button("Generar");
 	Notification error ;
 	public enum TipoReporte {
-		Propietario("reportePropietarios.jasper"),Inquilino(""),Interesado("");
+		Propietario("ReportePropietarios.jasper"),Inquilino(""),Interesado("");
 
 		private final String archivoReporte;
 
@@ -95,7 +95,8 @@ public class ReportesView extends DefaultLayout implements View {
     	super();
     	  buildLayout();
           configureComponents();
-          newReport.click();
+         // newReport.click();
+		generarReporte();
     }    
     
     public void buildLayout() {
@@ -149,35 +150,36 @@ public class ReportesView extends DefaultLayout implements View {
 
 	public  boolean generarReporte(){
     	TipoReporte tipoReporte=tipoReporteCB.getValue();
-    	String ubicacionReporte=new Utils().pathWhenCompiled()+ tipoReporte.getArchivoReporte();
+    	String ubicacionReporte=new Utils().resourcesPath()+ tipoReporte.getArchivoReporte();
     	List<Object> objetos=tipoReporte.getObjetos();
 
 		//Te trae el nombre del archivo en base a seleccion del combo
-		try{
-			this.reporte = (JasperReport)JRLoader.
-					loadObjectFromFile(ubicacionReporte);
-		}
-		catch (Exception e){
-			try {
-				this.reporte = (JasperReport)JRLoader.
-						loadObjectFromFile(tipoReporte.getArchivoReporte());
-			}
-			catch (Exception d){
-				System.err.println("No se encontro el archivo "+tipoReporte.getArchivoReporte()+"" +
-						" en "+File.separator+tipoReporte.getArchivoReporte());
-			}
-			}
+		File root=new File(File.separator+tipoReporte.getArchivoReporte());
+		File root2=new File(tipoReporte.getArchivoReporte());
+		File webapp=new File(new Utils().resourcesPath()+tipoReporte.getArchivoReporte());
 
+			System.out.println(File.separator+tipoReporte.getArchivoReporte()+"Existe: "+root.exists());
+
+			System.out.println(tipoReporte.getArchivoReporte()+"Existe: "+root2.exists());
+
+			System.out.println(new Utils().resourcesPath()+tipoReporte.getArchivoReporte()+"Existe: "+webapp.exists());
+
+
+		try {
+			this.reporte = (JasperReport)JRLoader.
+                            loadObject(root2);
+		} catch (JRException e) {
+
+		}
 
 
 
 		try {
-
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();
 		} catch (JRException e) {
-			e.printStackTrace();
+
 			return false;
 		}
 	}
