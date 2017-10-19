@@ -43,8 +43,8 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     private Controller controller = new Controller();
 
-    //acciones segun numero de fila
-	int acciones = 0;
+    // acciones segun numero de fila
+    int acciones = 0;
 
     public InmuebleABMView() {
 	super();
@@ -216,7 +216,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		Button del = new Button(VaadinIcons.TRASH);
 		del.addClickListener(click -> {
-		    DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+		    new DialogConfirmacion("Eliminar",
 			    VaadinIcons.WARNING,
 			    "¿Esta seguro que desea Eliminar?",
 			    "100px",
@@ -229,7 +229,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 				}
 				updateList();
 			    });
-
 		});
 		del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		del.setDescription("Borrar");
@@ -242,7 +241,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
 		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos);
-		hl.setCaption("Accion "+acciones);
+		hl.setCaption("Accion " + acciones);
 		hl.setSpacing(false);
 		acciones++;
 		return hl;
