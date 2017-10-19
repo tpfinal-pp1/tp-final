@@ -63,11 +63,14 @@ public class ContratoVentaIT extends TestBenchTestCase{
 
         //DateField Celebracion
         contratoView.getFechadeCelebracionDateFieldAlquiler().first().setValue("22/10/2017");
-
+        
+        //Valor de venta textfield
         contratoView.getValordeventaTextField().first().setValue("344");
-    
+        
+        //Radio button de tipo de moneda
         contratoView.getTipoMonedaRadioButtonGroupVenta().first().selectByText("Dolares");
         
+        //Boton de guardar
         contratoView.getGuardarButtonVenta().first().click();
 
     }	
