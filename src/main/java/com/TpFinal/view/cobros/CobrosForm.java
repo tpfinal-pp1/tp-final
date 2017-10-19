@@ -3,6 +3,7 @@ package com.TpFinal.view.cobros;
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -30,6 +31,9 @@ import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,18 +46,20 @@ public class CobrosForm extends FormLayout {
 
     //TabSheet
     TabSheet inmuebleFromTabSheet;
-    FormLayout principal;
-    FormLayout caracteristicas1;
+    FormLayout flPrincipal;
     
     //tab principal
-    private TextField tfNumeroDeCota = new TextField("Número de cuota");
-    private TextField tfMontoOriginal = new TextField("Monto sin interés");
-    private TextField tfMontoTotal = new TextField("Monto total");
-    private TextField tfMontoInteres = new TextField("Interés");
-    private TextField tfComision = new TextField("Comisión");
-    private TextField tfMontoPropietario = new TextField("Ganancia propietario");
-    private TextField tfFechaVencimiento = new TextField("fechaDeVencimiento");
-    private TextField tfFechaDePago = new TextField("Fecha del pago");
+    TextField tfInmueble = new TextField("Inmueble");
+    TextField tfDiasAtraso= new TextField("Dias de atraso");
+    TextField tfNumeroDeCota = new TextField("Número de cuota");
+    TextField tfMontoOriginal = new TextField("Monto sin interés $");
+    TextField tfMontoTotal = new TextField("Monto total $");
+    TextField tfMontoInteres = new TextField("Interés $");
+    TextField tfComision = new TextField("Comisión $");
+    TextField tfMontoPropietario = new TextField("Ganancia propietario $");
+    DateField tfFechaVencimiento = new DateField("fechaDeVencimiento");
+    DateField tfFechaDePago = new DateField("Fecha del pago");
+    
     
     private CobrosABMView abmView;
     private Binder<Cobro> binderCobro = new Binder<>(Cobro.class);
@@ -73,22 +79,61 @@ public class CobrosForm extends FormLayout {
     }
 
     private void binding() {
+    	binderCobro.forField(tfInmueble)
+    	.bind(cobro -> cobro.getContrato().getInmueble().getDireccion().toString(), (cobro, sarasa) -> {});
+    	
+    	binderCobro.forField(tfDiasAtraso)
+    	.bind(cobro -> {
+    		Long l=new Long(0);
+    		if(cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
+    			l= ChronoUnit.DAYS.between(cobro.getFechaDeVencimiento(), LocalDate.now());
+        		if(l.compareTo(new Long(0))==-1)
+        			l= new Long(0);
+    		}else if(cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
+    			l=ChronoUnit.DAYS.between(cobro.getFechaDeVencimiento(), cobro.getFechaDePago());
+    		}
+    		return l.toString();
+    	}, (cobro, dias)->{});
+    	
     	binderCobro.forField(this.tfNumeroDeCota)
     	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
     	.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
     	.bind(cobro -> cobro.getNumeroCuota(), (cobro,numero) ->{cobro.setNumeroCuota(numero);});
+    	
+    	binderCobro.forField(this.tfMontoOriginal)
+    	.bind(cobro -> cobro.getMontoOriginal().toString(), (cobro, monto)-> cobro.setMontoOriginal(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfMontoInteres)
+    	.bind(cobro -> cobro.getInteres().toString(), (cobro, monto)-> cobro.setInteres(new BigDecimal(monto)));
+
+    	binderCobro.forField(this.tfMontoTotal)
+    	.bind(cobro -> cobro.getMontoRecibido().toString(), (cobro, monto)-> cobro.setMontoRecibido(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfMontoPropietario)
+    	.bind(cobro -> cobro.getMontoPropietario().toString(), (cobro, monto)-> cobro.setMontoPropietario(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfComision)
+    	.bind(cobro -> cobro.getComision().toString(), (cobro, monto)-> cobro.setComision(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfFechaVencimiento)
+    	.bind(cobro -> cobro.getFechaDeVencimiento(), (cobro, fecha) -> cobro.setFechaDeVencimiento(fecha));
+    	
+    	binderCobro.forField(this.tfFechaDePago)
+    	.bind(cobro -> cobro.getFechaDePago(), (cobro, fecha) -> cobro.setFechaDePago(fecha));
+    	
+    	
     }
 
     private void buildLayout() {
-    	principal = new FormLayout(tfNumeroDeCota, tfMontoOriginal, tfMontoInteres, tfMontoTotal, tfMontoPropietario, tfComision, tfFechaVencimiento, tfFechaDePago);
-    	caracteristicas1=new FormLayout();
+    	flPrincipal = new FormLayout(tfInmueble,tfNumeroDeCota, tfDiasAtraso,tfMontoOriginal, tfMontoInteres, tfMontoTotal, tfMontoPropietario, tfComision, tfFechaVencimiento, tfFechaDePago);
     	inmuebleFromTabSheet = new TabSheet();
-    	inmuebleFromTabSheet.addTab(principal, "Datos Principales");
-    	inmuebleFromTabSheet.addTab(caracteristicas1, "Características");
+    	inmuebleFromTabSheet.addTab(flPrincipal, "Datos Principales");
     	addComponents(inmuebleFromTabSheet);
-    	inmuebleFromTabSheet.setSelectedTab(principal);
-    	principal.addComponents();
+    	inmuebleFromTabSheet.setSelectedTab(flPrincipal);
+    	flPrincipal.addComponents();
     	this.setEditables();
+    	this.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+    	flPrincipal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
     }
 
     public void setCobro(Cobro cobro) {
@@ -119,6 +164,8 @@ public class CobrosForm extends FormLayout {
     }
 
     private void setEditables() {
+    	tfInmueble.setEnabled(false);
+    	tfDiasAtraso.setEnabled(false);
         tfNumeroDeCota.setEnabled(false);
         tfMontoOriginal.setEnabled(false);
         tfMontoTotal.setEnabled(false); 
@@ -127,5 +174,15 @@ public class CobrosForm extends FormLayout {
         tfMontoPropietario.setEnabled(false); 
         tfFechaVencimiento.setEnabled(false);
         tfFechaDePago.setEnabled(false);
+        tfInmueble.setWidth("100%");
+        tfDiasAtraso.setWidth("100%");
+        tfNumeroDeCota.setWidth("100%");
+        tfMontoOriginal.setWidth("100%");
+        tfMontoTotal.setWidth("100%");
+        tfMontoInteres.setWidth("100%");
+        tfComision.setWidth("100%");
+        tfMontoPropietario.setWidth("100%"); 
+        tfFechaVencimiento.setWidth("100%");
+        tfFechaDePago.setWidth("100%");
     }
 }

@@ -179,6 +179,7 @@ public class CobroServiceIT {
 	
 		valorAnterior=valorAnterior.setScale(2, RoundingMode.CEILING);
 		assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
+		assertEquals(cos.get(0).getContrato(), cos.get(1).getContrato());
 	}
 	
 	@Test

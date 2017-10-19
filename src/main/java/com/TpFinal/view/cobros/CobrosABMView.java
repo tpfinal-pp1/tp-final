@@ -16,9 +16,11 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -170,8 +172,6 @@ public class CobrosABMView extends DefaultLayout implements View {
                 }
             });
 
-
-
             Grid.Column<Cobro,String> inmuebleCol = grid.addColumn(cobro -> {
                 String ret = "";
                 ret = cobro.getContrato().getInmueble().toString();
@@ -184,12 +184,14 @@ public class CobrosABMView extends DefaultLayout implements View {
                 return ret;
             }).setCaption("Tipo");
 
-            grid.addColumn(Cobro::getFechaDeVencimiento).setCaption("Fecha De Vencimiento");
+            grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption("Fecha De Vencimiento");
 
            Grid.Column<Cobro, String> fechaCobroCol= grid.addColumn(cobro -> {
             		String ret="";
-            		if(cobro.getFechaDePago()!=null)
-            			ret=cobro.getFechaDePago().toString();
+            		if(cobro.getFechaDePago()!=null) {
+            			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+            			ret=cobro.getFechaDePago().format(formatters);
+            		}
             		else
             			ret="No ha sido pagado";
             		return ret;
