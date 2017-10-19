@@ -4,6 +4,7 @@ import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.InmuebleService;
@@ -40,6 +41,8 @@ public abstract class PreferenciasBusqueda extends Window {
     ComboBox<Provincia> cbProvincia = new ComboBox<>("Provincia", provinciaService.getProvincias());
     ComboBox<Localidad> cbLocalidad = new ComboBox<>("Localidad", provinciaService.getLocalidades());
     RadioButtonGroup<TipoInmueble> rbgTipoInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
+    RadioButtonGroup<EstadoInmueble> rbgEstadoInmueble = new RadioButtonGroup<>("Estado", EstadoInmueble.toListPublicado());
+    
     MinMaxTextField minMaxPrecio = new MinMaxTextField("Precio");
     MinMaxTextField minMaxAmbientes = new MinMaxTextField("Ambientes");
     MinMaxTextField minMaxCocheras = new MinMaxTextField("Cocheras");
@@ -207,9 +210,11 @@ public abstract class PreferenciasBusqueda extends Window {
 	root.addComponent(details);
 	root.setExpandRatio(details, 1);
 	rbgTipoInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+	rbgEstadoInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 
 	details.addComponents(
 		this.rbgTipoInmueble,
+		this.rbgEstadoInmueble,
 		this.cbProvincia,
 		this.cbLocalidad,
 		this.minMaxPrecio);
