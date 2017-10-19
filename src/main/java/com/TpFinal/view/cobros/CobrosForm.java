@@ -46,14 +46,14 @@ public class CobrosForm extends FormLayout {
     FormLayout caracteristicas1;
     
     //tab principal
-    private TextField numeroDeCota = new TextField("Número de cuota");
-    private TextField montoOriginal = new TextField("Monto sin interés");
-    private TextField montoTotal = new TextField("Monto total");
-    private TextField montoInteres = new TextField("Interés");
-    private TextField comision = new TextField("Comisión");
-    private TextField montoPropietario = new TextField("Ganancia propietario");
-    private TextField fechaVencimiento = new TextField("fechaDeVencimiento");
-    private TextField fechaDePago = new TextField("Fecha del pago");
+    private TextField tfNumeroDeCota = new TextField("Número de cuota");
+    private TextField tfMontoOriginal = new TextField("Monto sin interés");
+    private TextField tfMontoTotal = new TextField("Monto total");
+    private TextField tfMontoInteres = new TextField("Interés");
+    private TextField tfComision = new TextField("Comisión");
+    private TextField tfMontoPropietario = new TextField("Ganancia propietario");
+    private TextField tfFechaVencimiento = new TextField("fechaDeVencimiento");
+    private TextField tfFechaDePago = new TextField("Fecha del pago");
     
     private CobrosABMView abmView;
     private Binder<Cobro> binderCobro = new Binder<>(Cobro.class);
@@ -73,18 +73,23 @@ public class CobrosForm extends FormLayout {
     }
 
     private void binding() {
-    	//TODO
+    	binderCobro.forField(this.tfNumeroDeCota)
+    	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+    	.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
+    	.bind(cobro -> cobro.getNumeroCuota(), (cobro,numero) ->{cobro.setNumeroCuota(numero);});
+    	
     }
 
     private void buildLayout() {
-    	principal = new FormLayout(numeroDeCota, montoOriginal, montoInteres, montoTotal, montoPropietario, comision, fechaVencimiento, fechaDePago);
+    	principal = new FormLayout(tfNumeroDeCota, tfMontoOriginal, tfMontoInteres, tfMontoTotal, tfMontoPropietario, tfComision, tfFechaVencimiento, tfFechaDePago);
     	caracteristicas1=new FormLayout();
     	inmuebleFromTabSheet = new TabSheet();
     	inmuebleFromTabSheet.addTab(principal, "Datos Principales");
     	inmuebleFromTabSheet.addTab(caracteristicas1, "Características");
     	addComponents(inmuebleFromTabSheet);
-    	inmuebleFromTabSheet.setSelectedTab(caracteristicas1);
+    	inmuebleFromTabSheet.setSelectedTab(principal);
     	principal.addComponents();
+    	this.setEditables();
     }
 
     public void setCobro(Cobro cobro) {
@@ -114,5 +119,14 @@ public class CobrosForm extends FormLayout {
        //TODO
     }
 
-    
+    private void setEditables() {
+        tfNumeroDeCota.setEnabled(false);
+        tfMontoOriginal.setEnabled(false);
+        tfMontoTotal.setEnabled(false); 
+        tfMontoInteres.setEnabled(false);
+        tfComision.setEnabled(false); 
+        tfMontoPropietario.setEnabled(false); 
+        tfFechaVencimiento.setEnabled(false);
+        tfFechaDePago.setEnabled(false);
+    }
 }

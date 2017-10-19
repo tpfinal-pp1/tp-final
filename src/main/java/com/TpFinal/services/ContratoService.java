@@ -195,7 +195,7 @@ public class ContratoService {
     			}
     			
     			Cobro c =new Cobro.Builder()
-    					.setNumeroCuota(i)
+    					.setNumeroCuota(i+1)
     					.setFechaDeVencimiento(fechaCobro)
     					.setMontoOriginal(valorAnterior)
     					.setMontoRecibido(valorAnterior)
