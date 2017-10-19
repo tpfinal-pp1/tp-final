@@ -135,6 +135,7 @@ public class ReportesView extends DefaultLayout implements View {
     		else{
 
     			showErrorNotification("Error al generar el reporte:"+TipoReporte.Inquilino.getArchivoReporte());}
+
     	});
 
 
