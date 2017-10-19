@@ -40,7 +40,6 @@ public class CobrosForm extends FormLayout {
     private CobroService inmbService = new CobroService();
     private Cobro cobro;
 
-
     //TabSheet
     TabSheet inmuebleFromTabSheet;
     FormLayout principal;
@@ -56,15 +55,11 @@ public class CobrosForm extends FormLayout {
     private TextField fechaVencimiento = new TextField("fechaDeVencimiento");
     private TextField fechaDePago = new TextField("Fecha del pago");
     
-
-    
     private CobrosABMView abmView;
     private Binder<Cobro> binderCobro = new Binder<>(Cobro.class);
     private ProvinciaService provinciaService = new ProvinciaService();
     
-    
-
-    TabSheet tabSheet;
+    //TabSheet tabSheet;
 
     public CobrosForm(CobrosABMView abmView) {
         this.abmView = abmView;
@@ -78,10 +73,8 @@ public class CobrosForm extends FormLayout {
     }
 
     private void binding() {
-
     	//TODO
     }
-
 
     private void buildLayout() {
     	principal = new FormLayout(numeroDeCota, montoOriginal, montoInteres, montoTotal, montoPropietario, comision, fechaVencimiento, fechaDePago);
@@ -105,7 +98,6 @@ public class CobrosForm extends FormLayout {
         getABMView().setComponentsVisible(false);
         if (getABMView().isIsonMobile())
             this.focus();
-
     }
 
     public void cancel() {
@@ -122,5 +114,5 @@ public class CobrosForm extends FormLayout {
        //TODO
     }
 
-
+    
 }
