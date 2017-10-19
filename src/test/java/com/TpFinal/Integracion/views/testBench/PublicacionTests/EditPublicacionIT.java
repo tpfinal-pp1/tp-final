@@ -42,17 +42,20 @@ public class EditPublicacionIT extends TestBenchTestCase{
     @Test
     public void addPublicacionTest(){
         getDriver().get(TBUtils.getUrl("publicaciones"));
+        TBUtils.sleep(3000);
         Assert.assertTrue(publicacionView.isDisplayed());
 
-        //Edit Publicacion
-        publicacionView.getEditButton("Accion 1").click();
-        TBUtils.sleep(5000);
 
+        //Edit Publicacion
+        TBUtils.sleep(3000);
+        publicacionView.getEditButton("Accion 0").click();
+
+        TBUtils.sleep(3000);
 
         //Edit name
         publicacionView.getMontoTextField().first().setValue("2000000000000");
         publicacionView.getGuardarButton().first().click();
-        TBUtils.sleep(5000);
+        TBUtils.sleep(3000);
 
         Assert.assertFalse(publicacionView.isFormDisplayed());
     }
