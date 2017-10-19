@@ -167,7 +167,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 		try {
 			this.reporte = (JasperReport)JRLoader.
-                            loadObject(root);
+                            loadObject(root2);
 		} catch (JRException e) {
 
 		}
@@ -175,12 +175,11 @@ public class ReportesView extends DefaultLayout implements View {
 
 
 		try {
-
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();
 		} catch (JRException e) {
-			e.printStackTrace();
+
 			return false;
 		}
 	}
