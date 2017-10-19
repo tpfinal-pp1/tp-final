@@ -129,14 +129,16 @@ public class ReportesView extends DefaultLayout implements View {
     	newReport.addClickListener(e -> {
 
 
-    		boolean success=generarReporte();
-        	if(success)
+			boolean success=generarReporte();
+			if(success)
 				pdfComponent.setPDF(reportName);
-    		else{
+			else{
+				System.err.println("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());
+				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
 
-    			showErrorNotification("Error al generar el reporte:"+TipoReporte.Inquilino.getArchivoReporte());}
 
-    	});
+
+		});
 
 
     }
