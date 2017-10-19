@@ -95,7 +95,7 @@ public class ReportesView extends DefaultLayout implements View {
     	super();
     	  buildLayout();
           configureComponents();
-         // newReport.click();
+          newReport.click();
 
     }    
     
@@ -157,19 +157,20 @@ public class ReportesView extends DefaultLayout implements View {
 		File root=new File(File.separator+tipoReporte.getArchivoReporte());
 		File root2=new File(tipoReporte.getArchivoReporte());
 		File webapp=new File(new Utils().resourcesPath()+tipoReporte.getArchivoReporte());
-
+/*
 			System.out.println(tipoReporte.getArchivoReporte()+" Existe: "+root2.exists());
 
 			System.out.println(new Utils().resourcesPath()+tipoReporte.getArchivoReporte()+" Existe: "+webapp.exists());
 
-
+*/
 		try {
 			this.reporte = (JasperReport)JRLoader.
-                            loadObject(root2);
+					loadObject(webapp);
+
 		} catch (JRException e) {
 			try {
 				this.reporte = (JasperReport)JRLoader.
-                        loadObject(webapp);
+						loadObject(root2);
 			} catch (JRException e1) {
 				e1.printStackTrace();
 			}
