@@ -4,7 +4,6 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
-import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
@@ -56,8 +55,10 @@ public class ContratoABMView extends DefaultLayout implements View {
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
 
+
     // acciones segun numero de fila
-    int acciones = 0;
+   private int acciones = 0;
+
 
     public ContratoABMView() {
 	super();
@@ -200,6 +201,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    finalizarCarga.setDescription("Finalizar Carga");
 
 	    HorizontalLayout hl = new HorizontalLayout(edit, finalizarCarga, renovarContrato, del);
+	    hl.setCaption("Accion "+acciones);
+	    acciones++;
 	    hl.forEach(button -> button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL));
 	    hl.setSpacing(false);
 	    hl.setCaption("Accion " + acciones);
