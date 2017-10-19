@@ -127,7 +127,7 @@ public class CobroServiceIT {
 		//aca deberia guardar el contrato con sus cobros
 		contratoService.saveOrUpdate(ca, null);
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
-		//assertEquals(24, ca.getCobros().size());
+		assertEquals(24, ca.getCobros().size());
 		List<Cobro>cos=service.readAll();
 		cos.sort((c1, c2) -> {
 			int ret=0;
@@ -148,7 +148,6 @@ public class CobroServiceIT {
 		expected=interes.add(ca.getValorInicial());
 		expected=expected.setScale(2, RoundingMode.CEILING);
 		assertEquals(expected,cos.get(0).getMontoRecibido());
-		
 	}
 	
 	@Test
@@ -158,7 +157,7 @@ public class CobroServiceIT {
 		contratoService.addCobros(ca);
 		contratoService.saveOrUpdate(ca, null);
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
-		//assertEquals(24, ca.getCobros().size());
+		assertEquals(24, service.readAll().size());
 		List<Cobro>cos=service.readAll();
 		cos.sort((c1, c2) -> {
 			int ret=0;
@@ -179,8 +178,8 @@ public class CobroServiceIT {
 		}
 	
 		valorAnterior=valorAnterior.setScale(2, RoundingMode.CEILING);
-		//assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
-		
+		assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
+		assertEquals(cos.get(0).getContrato(), cos.get(1).getContrato());
 	}
 	
 	@Test
@@ -246,7 +245,7 @@ public class CobroServiceIT {
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
-                .setInteresPunitorio(new Double(0.5))
+                .setInteresPunitorio(new Double(50))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Simple)
                 .setTipoInteresPunitorio(TipoInteres.Acumulativo)
@@ -267,7 +266,7 @@ public class CobroServiceIT {
                 .setFechaCelebracion(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
-                .setInteresPunitorio(new Double(0.5))
+                .setInteresPunitorio(new Double(50))
                 .setIntervaloActualizacion(new Integer(2))
                 .setTipoIncrementoCuota(TipoInteres.Simple)
                 .setTipoInteresPunitorio(TipoInteres.Acumulativo)
