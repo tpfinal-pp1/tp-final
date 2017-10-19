@@ -49,7 +49,7 @@ public class ReportesView extends DefaultLayout implements View {
 	Button newReport = new Button("Generar");
 	Notification error ;
 	public enum TipoReporte {
-		Propietario("reportePropietarios.jasper"),Inquilino(""),Interesado("");
+		Propietario("ReportePropietarios.jasper"),Inquilino(""),Interesado("");
 
 		private final String archivoReporte;
 
