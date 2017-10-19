@@ -45,6 +45,7 @@ public class AgregarPersonaIT extends TestBenchTestCase{
     public void agregarPersonaTest(){
         getDriver().get(TBUtils.getUrl("personas"));
 
+        TBUtils.sleep(3000);
         Assert.assertTrue(personaView.isDisplayed());
         personaView.getNuevaPersonaButton().first().click();
         personaView.getNameTextField().first().setValue("Max");
@@ -54,7 +55,7 @@ public class AgregarPersonaIT extends TestBenchTestCase{
         personaView.getTelefonoTextField().first().setValue("45345678");
         personaView.getCelularTextField().first().setValue("1234669874");
         personaView.getGuardarButton().first().click();
-
+        TBUtils.sleep(3000);
         Assert.assertFalse(personaView.isFormDisplayed());
     }
 

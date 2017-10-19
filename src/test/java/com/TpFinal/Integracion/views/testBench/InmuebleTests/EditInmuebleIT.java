@@ -44,18 +44,19 @@ public class EditInmuebleIT  extends TestBenchTestCase{
     @Test
     public void editPersonaTest(){
         getDriver().get(TBUtils.getUrl("inmuebles"));
+        TBUtils.sleep(3000);
         Assert.assertTrue(inmuebleView.isDisplayed());
 
         //Edit persona
-        TBUtils.sleep(5000);
-        inmuebleView.getEditButton("Accion 1").click();
-        TBUtils.sleep(5000);
+        TBUtils.sleep(3000);
+        inmuebleView.getEditButton("Accion 0").click();
+        TBUtils.sleep(3000);
 
         //Edit name
         inmuebleView.getCalleTextField().first().setValue("Falsa");
         inmuebleView.getNumeroTextField().first().setValue("123");
         inmuebleView.getGuardarButton().first().click();
-        TBUtils.sleep(5000);
+        TBUtils.sleep(3000);
 
         Assert.assertFalse(inmuebleView.isFormDisplayed());
     }
