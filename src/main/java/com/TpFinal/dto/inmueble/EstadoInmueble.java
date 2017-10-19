@@ -1,5 +1,8 @@
 package com.TpFinal.dto.inmueble;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum EstadoInmueble {
     Alquilado, EnAlquiler, EnAlquilerYVenta, EnVenta, NoPublicado, Vendido;
     @Override
@@ -23,5 +26,9 @@ public enum EstadoInmueble {
 	    break;
 	}
 	return ret;
+    }
+
+    public static List<EstadoInmueble> toListPublicado() {
+	return Arrays.asList(EstadoInmueble.EnAlquiler,EstadoInmueble.EnVenta,EstadoInmueble.EnAlquilerYVenta);
     }
 }

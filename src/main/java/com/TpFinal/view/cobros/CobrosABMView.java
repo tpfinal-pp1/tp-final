@@ -19,7 +19,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -37,6 +36,8 @@ public class CobrosABMView extends DefaultLayout implements View {
     private CobrosForm cobrosForm = new CobrosForm(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
+
+    private int acciones;
 
     public CobrosABMView() {
         super();
@@ -239,6 +240,8 @@ public class CobrosABMView extends DefaultLayout implements View {
                 pagar.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
                 CssLayout hl = new CssLayout(ver, pagar);
                 hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+                hl.setCaption("Accion "+acciones);
+                acciones++;
                 return hl;
             }).setCaption("Acciones");
 

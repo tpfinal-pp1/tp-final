@@ -62,7 +62,7 @@ public class ContratoDuracionService {
 	public static ContratoDuracion getInstancia() {
 		return new ContratoDuracion.Builder()
 				.setDescripcion("")
-				.setDuracion(0)
+				.setDuracion(1)
 				.build();
 	}
 	

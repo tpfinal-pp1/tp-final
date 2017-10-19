@@ -14,8 +14,8 @@ import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.ContratoVenta;
-import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
@@ -123,7 +123,7 @@ public class GeneradorDeDatos {
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {
-	DuracionContrato duracion = duracionRandom();
+	ContratoDuracion duracion = duracionRandom();
 	return new ContratoAlquiler.Builder()
 		.setDiaDePago(1 + random.nextInt(28))
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
@@ -144,7 +144,7 @@ public class GeneradorDeDatos {
 	return random.nextBoolean()? TipoInteres.Acumulativo: TipoInteres.Simple;
     }
 
-    private static Integer intervaloRandom(DuracionContrato duracion) {
+    private static Integer intervaloRandom(ContratoDuracion duracion) {
 	Integer ret = 1+random.nextInt(duracion.getDuracion());
 	while(duracion.getDuracion() % ret != 0) {
 	    ret = 1+random.nextInt(duracion.getDuracion());
@@ -152,9 +152,10 @@ public class GeneradorDeDatos {
 	return ret;
     }
 
-    private static DuracionContrato duracionRandom() {
-	return random.nextBoolean()? DuracionContrato.TreintaySeisMeses : DuracionContrato.VeinticuatroMeses;
-    }
+    private static ContratoDuracion duracionRandom() {
+    	Integer valor = random.nextInt(100);
+    	return new ContratoDuracion.Builder().setDescripcion(String.valueOf(valor)+ " Meses").setDuracion(valor).build();
+    	  }
 
     private static BigDecimal cuotaRandom() {
 	return BigDecimal.valueOf(random.nextInt(10)*1000+random.nextInt(10)*100);

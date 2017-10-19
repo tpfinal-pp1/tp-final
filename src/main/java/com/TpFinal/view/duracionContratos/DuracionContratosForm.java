@@ -1,5 +1,6 @@
 package com.TpFinal.view.duracionContratos;
 
+import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.view.component.BlueLabel;
@@ -7,6 +8,7 @@ import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
@@ -69,11 +71,15 @@ public class DuracionContratosForm extends FormLayout {
         //binder.bindInstanceFields(this); //Binding automatico
         descripcion.setRequiredIndicatorVisible(true);
         cantidad.setRequiredIndicatorVisible(true);
-        binderContratoDuracion.forField(descripcion).asRequired("Ingrese un nombre").bind(ContratoDuracion::getDescripcion,ContratoDuracion::setDescripcion);
-
-        binderContratoDuracion.forField(cantidad).asRequired("Ingrese un teléfono").bind(ContratoDuracion::getDuracionString,ContratoDuracion::setDuracionString);
-
         
+        binderContratoDuracion.forField(descripcion).asRequired("Ingrese una descripcion").bind(ContratoDuracion::getDescripcion,ContratoDuracion::setDescripcion);
+                
+        binderContratoDuracion.forField(this.cantidad).withNullRepresentation("")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n > 0, "Ingrese una cantidad de meses mayor a 0")
+		.bind(ContratoDuracion::getDuracion, ContratoDuracion::setDuracion);
+        
+       
     }
 
     private void buildLayout() {
@@ -81,17 +87,6 @@ public class DuracionContratosForm extends FormLayout {
         setMargin(true);
 
         tabSheet=new TabSheet();
-
-
-        BlueLabel Publicaciones = new  BlueLabel("Operaciones");
-        BlueLabel info = new  BlueLabel("Información Adicional");
-        BlueLabel contacto = new  BlueLabel("Contacto");
-        
-        TinyButton contratos=new TinyButton("Ver Contratos");
-        contratos.setEnabled(false);
-        TinyButton busquedas= new TinyButton("Ver Busquedas");
-        busquedas.setEnabled(false);
-
 
         FormLayout principal=new FormLayout(descripcion, cantidad);
         

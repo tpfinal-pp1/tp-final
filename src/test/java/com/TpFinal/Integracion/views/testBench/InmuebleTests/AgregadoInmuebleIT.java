@@ -47,11 +47,14 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
     public void agregadoInmuebleTest() {
        // initializeDriver().get("http://inmobi.ddns.net/");
         getDriver().get(TBUtils.getUrl("inmuebles"));
+        //TBUtils.sleep(3000);
+
 
         //Agregar inmueble
         //Tab "Datos Principales"
         Assert.assertTrue(inmuebleView.getGrid().exists());
         inmuebleView.getNuevoInmuebleButton().first().click();
+        //TBUtils.sleep(3000);
 
         //Tab "Datos principales"
         List<String> tabsheet1Options = inmuebleView.getTabSheet().first().getTabCaptions();
@@ -82,6 +85,7 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
         String selectedProvince = provinces.get(1);
         inmuebleView.getProvinciaComboBox().first().selectByText(selectedProvince);
 
+        //TBUtils.sleep(3000);
         //Tab "Caracteristicas"
         inmuebleView.getTabSheet().first().openTab("Características");
         inmuebleView.getAmbientesTextField().first().setValue("2");
@@ -90,8 +94,7 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
         inmuebleView.getSupTotalTextField().first().setValue("100");
         inmuebleView.getSupCubiertaTextField().first().setValue("300");
 
-
-
+        //TBUtils.sleep(3000);
         //CheckBoxes
         inmuebleView.getAestrenarCheckBox().first().click();
         inmuebleView.getJardnCheckBox().first().click();
@@ -129,6 +132,7 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
 */
         //Save inmueble.
         inmuebleView.getGuardarButton().first().click();
+        //TBUtils.sleep(3000);
         //ButtonElement llenarcomboButton = $(ButtonElement.class).caption("llenar combo").first();
        // llenarcomboButton.click();
 

@@ -4,7 +4,6 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
-import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
@@ -55,6 +54,11 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
+
+
+    // acciones segun numero de fila
+   private int acciones = 0;
+
 
     public ContratoABMView() {
 	super();
@@ -197,19 +201,21 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    finalizarCarga.setDescription("Finalizar Carga");
 
 	    HorizontalLayout hl = new HorizontalLayout(edit, finalizarCarga, renovarContrato, del);
+	    hl.setCaption("Accion "+acciones);
+	    acciones++;
 	    hl.forEach(button -> button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL));
 	    hl.setSpacing(false);
+	    hl.setCaption("Accion " + acciones);
+	    acciones++;
 
 	    EstadoContrato estado = contrato.getEstadoContrato();
 	    if (estado == EstadoContrato.EnProcesoDeCarga) {
 		renovarContrato.setEnabled(false);
 	    } else if (estado == EstadoContrato.Vigente || estado == EstadoContrato.ProximoAVencer) {
-		edit.setEnabled(true);
 		del.setEnabled(false);
 		finalizarCarga.setEnabled(false);
 		renovarContrato.setEnabled(false);
-	    } else { // Estado.Vencido
-		edit.setEnabled(false);
+	    } else { // Estado.Vencido		
 		del.setEnabled(false);
 		finalizarCarga.setEnabled(false);
 		if (contrato instanceof ContratoVenta)
@@ -224,10 +230,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 		}
 	    });
 	    hl.setSpacing(false);
-
 	    return hl;
 	};
-
     }
 
     public void setComponentsVisible(boolean b) {

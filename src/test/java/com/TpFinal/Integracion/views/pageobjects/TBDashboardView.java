@@ -12,9 +12,7 @@ public class TBDashboardView extends TestBenchTestCase {
 
     public TBDashboardView(WebDriver driver) {
         setDriver(driver);
-
     }
-
 
     public String getDashboardTitle() {
         return $(LabelElement.class).id(DashboardView.TITLE_ID).getText();

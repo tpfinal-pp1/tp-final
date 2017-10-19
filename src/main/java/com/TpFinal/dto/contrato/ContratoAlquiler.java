@@ -51,9 +51,11 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     private Integer intervaloActualizacion;
     @Column(name = "diaDePago")
     private Integer diaDePago;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "duracionContrato")
-    private DuracionContrato duracionContrato;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.SAVE_UPDATE ,CascadeType.MERGE})
+    @JoinColumn(name = "duracionContrato")
+    private ContratoDuracion duracionContrato;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.SAVE_UPDATE ,CascadeType.MERGE})
@@ -64,6 +66,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE })
     @JoinColumn(name = "id_propietario")
     private Persona propietario;
+    
     @OneToMany(mappedBy="contrato", fetch=FetchType.EAGER)
     @Cascade({CascadeType.ALL})
     private Set<Cobro>cobros;
@@ -151,11 +154,11 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
     }
 
-    public DuracionContrato getDuracionContrato() {
+    public ContratoDuracion getDuracionContrato() {
 	return duracionContrato;
     }
 
-    public void setDuracionContrato(DuracionContrato duracionContrato) {
+    public void setDuracionContrato(ContratoDuracion duracionContrato) {
 	this.duracionContrato = duracionContrato;
     }
 
@@ -257,7 +260,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	clon.setId(null);
 	clon.setDiaDePago(diaDePago.intValue());
 	clon.setDocumento(null);
-	clon.setDuracionContrato(DuracionContrato.valueOf(duracionContrato.name()));
+	clon.setDuracionContrato(duracionContrato);
 	clon.setInmueble(inmueble);
 	clon.setEstadoContrato(EstadoContrato.EnProcesoDeCarga);
 	clon.setInquilinoContrato(inquilinoContrato);
@@ -273,7 +276,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     }
     public static class Builder {
 
-	private DuracionContrato duracionContrato;
+	private ContratoDuracion duracionContrato;
 	private TipoInteres tipoInteresPunitorio;
 	private TipoInteres tipoIncrementoCuota;
 	private Inmueble inmueble;
@@ -343,7 +346,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	    return this;
 	}
 
-	public Builder setDuracionContrato(DuracionContrato duracionContrato) {
+	public Builder setDuracionContrato(ContratoDuracion duracionContrato) {
 	    this.duracionContrato = duracionContrato;
 	    return this;
 	}
