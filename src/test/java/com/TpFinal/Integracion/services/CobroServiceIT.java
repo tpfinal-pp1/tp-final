@@ -177,7 +177,7 @@ public class CobroServiceIT {
 		for(int i =0; i< diasAtraso; i++) {
 			valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));
 		}
-		
+	
 		valorAnterior=valorAnterior.setScale(2, RoundingMode.CEILING);
 		//assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
 		
@@ -291,7 +291,5 @@ public class CobroServiceIT {
     	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
     	  }
     
-    private ContratoDuracion instanciaContratoDuracion36() {
-    	return new ContratoDuracion.Builder().setDescripcion("36 Horas").setDuracion(36).build();
-    	  }
+    
 }
