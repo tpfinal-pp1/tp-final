@@ -84,7 +84,7 @@ public class TBContratoView extends TestBenchTestCase {
         cancelNuevoAlquiler                 = $(VerticalLayoutElement.class).$(ButtonElement.class);
         duracinComboBox                     = $(ComboBoxElement.class).caption("Duración");
         dadePagoTextField                   = $(TextFieldElement.class).caption("Día de Pago");
-        recargoPunitorioTextField           = $(TextFieldElement.class).caption("Recargo Punitorio");
+        recargoPunitorioTextField           = $(TextFieldElement.class).caption("Recargo Punitorio(%)");
         tipoInteresComboBox                 = $(ComboBoxElement.class).caption("Tipo Interes");
        //org.vaadin.risto.stepper.IntStepperElement frecuenciadeIncrementomesesorgvaadinristostepperIntStepper = $(org.vaadin.risto.stepper.IntStepperElement.class).caption("Frecuencia de Incremento(meses)").first();
         aumentoporActualizacinTextField     = $(TextFieldElement.class).caption("Aumento por Actualización");
