@@ -66,6 +66,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE })
     @JoinColumn(name = "id_propietario")
     private Persona propietario;
+    
     @OneToMany(mappedBy="contrato", fetch=FetchType.EAGER)
     @Cascade({CascadeType.ALL})
     private Set<Cobro>cobros;
