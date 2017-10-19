@@ -2,6 +2,8 @@ package com.TpFinal.view.cobros;
 
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -9,6 +11,7 @@ import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.services.CobroService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
@@ -28,6 +31,9 @@ import com.vaadin.server.Setter;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,383 +41,112 @@ import java.util.List;
  * Created by Max on 10/14/2017.
  */
 public class CobrosForm extends FormLayout {
-    private InmuebleService inmbService = new InmuebleService();
-    private PersonaService personaService = new PersonaService();
-    private Inmueble inmueble;
-
-    // Acciones
-    private Button save = new Button("Guardar");
-    DeleteButton delete = new DeleteButton("Eliminar",
-            VaadinIcons.WARNING,"¿Esta seguro que desea eliminar?","20%", new Button.ClickListener() {
-        @Override
-        public void buttonClick(Button.ClickEvent clickEvent) {
-            delete();
-        }
-    });
+    private CobroService inmbService = new CobroService();
+    private Cobro cobro;
 
     //TabSheet
     TabSheet inmuebleFromTabSheet;
-    FormLayout principal;
-    FormLayout caracteristicas1;
-
-    // TabPrincipal
-    private final ComboBox<Persona> comboPropietario = new ComboBox<>();
-    private Persona persona = new Persona();
-    private Button btnNuevoPropietario = new Button();
-    private ComboBox<ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
-    private RadioButtonGroup<TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
-
-    // TabDireccion
-    private TextField calle = new TextField("Calle");
-    private TextField nro = new TextField("Número");
-    private TextField codPostal = new TextField("Código postal");
-    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
-    private ComboBox<Provincia> provincias = new ComboBox<>("Provincia");
-    private TinyButton buscarUbicacion = new TinyButton("Buscar Ubicación", VaadinIcons.MAP_MARKER);
-
-    // TabCaracteristicas 1
-    private TextField ambientes = new TextField("Ambientes");
-    private TextField cocheras = new TextField("Cocheras");
-    private TextField dormitorios = new TextField("Dormitorios");
-    private TextField supTotal = new TextField("Sup. Total");
-    private TextField supCubierta = new TextField("Sup. Cubierta");
-
-    // TabCaracteristicas 2
-    private CheckBox aEstrenar = new CheckBox("A estrenar");
-    private CheckBox aireAcond = new CheckBox("Aire Acondicionado");
-    private CheckBox cJardin = new CheckBox("Jardín");
-    private CheckBox cParrilla = new CheckBox("Parrilla");
-    private CheckBox cPpileta = new CheckBox("Pileta");
-
-    PersonaService service = new PersonaService();
+    FormLayout flPrincipal;
+    
+    //tab principal
+    TextField tfInmueble = new TextField("Inmueble");
+    TextField tfDiasAtraso= new TextField("Dias de atraso");
+    TextField tfNumeroDeCota = new TextField("Número de cuota");
+    TextField tfMontoOriginal = new TextField("Monto sin interés $");
+    TextField tfMontoTotal = new TextField("Monto total $");
+    TextField tfMontoInteres = new TextField("Interés $");
+    TextField tfComision = new TextField("Comisión $");
+    TextField tfMontoPropietario = new TextField("Ganancia propietario $");
+    DateField tfFechaVencimiento = new DateField("fechaDeVencimiento");
+    DateField tfFechaDePago = new DateField("Fecha del pago");
+    
+    
     private CobrosABMView abmView;
-    private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
+    private Binder<Cobro> binderCobro = new Binder<>(Cobro.class);
     private ProvinciaService provinciaService = new ProvinciaService();
-
-    TabSheet tabSheet;
+    
+    //TabSheet tabSheet;
 
     public CobrosForm(CobrosABMView abmView) {
         this.abmView = abmView;
         configureComponents();
         binding();
         buildLayout();
-        updateComboPersonas();
-
     }
 
     private void configureComponents() {
-        delete.setStyleName(ValoTheme.BUTTON_DANGER);
-        save.addClickListener(e -> this.save());
-
-
-
-        btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
-        save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        setVisible(false);
-        localidades.setItems(provinciaService.getLocalidades());
-        provincias.setItems(provinciaService.getProvincias());
-        //provincias.setTextInputAllowed(false);
-        provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
-            @Override
-            public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
-                Provincia provincia = valueChangeEvent.getValue();
-
-
-                if (provincia != null) {
-                    localidades.setEnabled(true);
-                    localidades.setItems(provincia.getLocalidades());
-                    localidades.setSelectedItem(provincia.getLocalidades().get(0));
-                }
-                else{
-                    localidades.setEnabled(false);
-                    localidades.setSelectedItem(null);
-                }
-
-            }
-
-        });
-
-
-        localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
-            @Override
-            public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
-
-                if (valueChangeEvent.getValue() != null) {
-                    String CP=valueChangeEvent.getValue().getCodigoPostal();
-                    if(!CP.equals("0"))
-                        codPostal.setValue(CP);
-
-                    else
-                        codPostal.setValue("");
-                }
-
-            }
-
-        });
-        comboPropietario.setTextInputAllowed(true);
-        clasesInmueble.setTextInputAllowed(true);
-        localidades.setTextInputAllowed(true);
-        provincias.setTextInputAllowed(true);
-
-
-    }
-
-    private void setNewPropietario() {
-        this.persona = new Persona();
-        persona.addRol(new Propietario());
-        Propietario propietario = (Propietario)persona.getRol(Rol.Propietario);
-        propietario.addInmueble(this.inmueble);
-
-        new PersonaFormWindow(this.persona) {
-            @Override
-            public void onSave() {
-                personaService.saveOrUpdate(persona);
-                updateComboPersonas();
-                comboPropietario.setSelectedItem(persona);
-            }
-        };
-
+    	//TODO
     }
 
     private void binding() {
+    	binderCobro.forField(tfInmueble)
+    	.bind(cobro -> cobro.getContrato().getInmueble().getDireccion().toString(), (cobro, sarasa) -> {});
+    	
+    	binderCobro.forField(tfDiasAtraso)
+    	.bind(cobro -> {
+    		Long l=new Long(0);
+    		if(cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
+    			l= ChronoUnit.DAYS.between(cobro.getFechaDeVencimiento(), LocalDate.now());
+        		if(l.compareTo(new Long(0))==-1)
+        			l= new Long(0);
+    		}else if(cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
+    			l=ChronoUnit.DAYS.between(cobro.getFechaDeVencimiento(), cobro.getFechaDePago());
+    		}
+    		return l.toString();
+    	}, (cobro, dias)->{});
+    	
+    	binderCobro.forField(this.tfNumeroDeCota)
+    	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+    	.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
+    	.bind(cobro -> cobro.getNumeroCuota(), (cobro,numero) ->{cobro.setNumeroCuota(numero);});
+    	
+    	binderCobro.forField(this.tfMontoOriginal)
+    	.bind(cobro -> cobro.getMontoOriginal().toString(), (cobro, monto)-> cobro.setMontoOriginal(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfMontoInteres)
+    	.bind(cobro -> cobro.getInteres().toString(), (cobro, monto)-> cobro.setInteres(new BigDecimal(monto)));
 
-        binderInmueble.forField(this.aEstrenar)
-                .bind(Inmueble::getaEstrenar, Inmueble::setaEstrenar);
-
-        binderInmueble.forField(this.aireAcond)
-                .bind(Inmueble::getConAireAcondicionado, Inmueble::setConAireAcondicionado);
-
-        binderInmueble.forField(this.ambientes).withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-                .withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-                .bind(Inmueble::getCantidadAmbientes, Inmueble::setCantidadAmbientes);
-
-        binderInmueble.forField(this.cJardin)
-                .bind(Inmueble::getConJardin, Inmueble::setConJardin);
-
-        binderInmueble.forField(this.clasesInmueble)
-                .bind(Inmueble::getClaseInmueble, Inmueble::setClaseInmueble);
-
-        binderInmueble.forField(this.cocheras)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-                .withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-                .bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
-
-        binderInmueble.forField(this.cParrilla)
-                .bind(Inmueble::getConParilla, Inmueble::setConParilla);
-
-        binderInmueble.forField(this.cPpileta)
-                .bind(Inmueble::getConPileta, Inmueble::setConPileta);
-
-        binderInmueble.forField(this.dormitorios)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-                .withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-                .bind(Inmueble::getCantidadDormitorios, Inmueble::setCantidadDormitorios);
-
-        binderInmueble.forField(this.codPostal)
-                .withNullRepresentation("")
-                .bind(inmueble -> inmueble.getDireccion().getCodPostal(),
-                        (inmueble, cod) -> inmueble.getDireccion().setCodPostal(cod));
-
-        binderInmueble.forField(this.nro).asRequired("Ingrese la altura")
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-                .withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
-                .bind(inmueble -> inmueble.getDireccion().getNro(),
-                        (inmueble, nro) -> inmueble.getDireccion().setNro(nro));
-
-        binderInmueble.forField(this.calle).asRequired("Ingrese el nombre de la calle")
-                .withNullRepresentation("")
-                .bind(inmueble -> inmueble.getDireccion().getCalle(),
-                        (inmueble, calle) -> inmueble.getDireccion().setCalle(calle));
-
-        binderInmueble.forField(this.localidades).withValidator(localidad -> localidades.isEnabled(), "Debe seleccionar una provincia primero")
-                .asRequired("Seleccione una localidad").bind(inmueble -> {
-                    Direccion dir = inmueble.getDireccion();
-
-                    return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
-                            .getProvincia()) : null;
-
-                },
-                (inmueble, localidad) -> {
-                    if (inmueble.getDireccion() == null)
-                        inmueble.setDireccion(new Direccion());
-                    if (localidad != null) {
-                        inmueble.getDireccion().setLocalidad(localidad.getNombre());
-                        inmueble.getDireccion().setCodPostal(localidad.getCodigoPostal());
-                        inmueble.getDireccion().setProvincia(localidad.getProvincia().getNombre());
-                    }
-                });
-
-        binderInmueble.forField(this.provincias).asRequired("Seleccione una provincia")
-                .bind(inmueble -> {
-                            Direccion dir = inmueble.getDireccion();
-                            return dir != null ? provinciaService.getProvinciaFromString(dir.getProvincia()) : null;
-                        },
-                        (inmueble, provincia) -> {
-                            if (inmueble.getDireccion() == null)
-                                inmueble.setDireccion(new Direccion());
-                            if (provincia != null) {
-                                inmueble.getDireccion().setProvincia(provincia.getNombre());
-                            }
-                        });
-
-        binderInmueble.forField(this.comboPropietario).asRequired(
-                "Debe seleccionar o cargar un propietario del inmueble!")
-                .withNullRepresentation(new Persona())
-                .bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
-
-        binderInmueble.forField(this.supCubierta)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-                .withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-                .bind(Inmueble::getSuperficieCubierta, Inmueble::setSuperficieCubierta);
-
-        binderInmueble.forField(this.supTotal)
-                .withNullRepresentation("")
-                .withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-                .withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-                .bind(Inmueble::getSuperficieTotal, Inmueble::setSuperficieTotal);
-
-        binderInmueble.forField(this.tiposInmueble)
-                .bind(Inmueble::getTipoInmueble, Inmueble::setTipoInmueble);
-
-    }
-
-    private Setter<Inmueble, Persona> setPropietario() {
-        return (inmueble, persona) -> {
-            if (persona != null) {
-                Propietario rolP;
-                if (persona.contiene(Rol.Propietario) == false) {
-                    persona.addRol(new Propietario());
-                }
-                rolP = (Propietario) persona.getRol(Rol.Propietario);
-                rolP.addInmueble(inmueble);
-                rolP.setPersona(persona);
-                inmueble.setPropietario(rolP);
-            }
-        };
-
+    	binderCobro.forField(this.tfMontoTotal)
+    	.bind(cobro -> cobro.getMontoRecibido().toString(), (cobro, monto)-> cobro.setMontoRecibido(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfMontoPropietario)
+    	.bind(cobro -> cobro.getMontoPropietario().toString(), (cobro, monto)-> cobro.setMontoPropietario(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfComision)
+    	.bind(cobro -> cobro.getComision().toString(), (cobro, monto)-> cobro.setComision(new BigDecimal(monto)));
+    	
+    	binderCobro.forField(this.tfFechaVencimiento)
+    	.bind(cobro -> cobro.getFechaDeVencimiento(), (cobro, fecha) -> cobro.setFechaDeVencimiento(fecha));
+    	
+    	binderCobro.forField(this.tfFechaDePago)
+    	.bind(cobro -> cobro.getFechaDePago(), (cobro, fecha) -> cobro.setFechaDePago(fecha));
+    	
+    	
     }
 
     private void buildLayout() {
-        // addStyleName("v-scrollable");
-        buscarUbicacion.setEnabled(false);
-        btnNuevoPropietario.setIcon(VaadinIcons.PLUS);
-        comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-        btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-        btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-
-        if (this.abmView.isIsonMobile()) {
-
-            localidades.setWidth("55%");
-            provincias.setWidth("55%");
-            clasesInmueble.setWidth("58%");
-        } else {
-            tiposInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
-            localidades.setWidth("72%");
-            provincias.setWidth("72%");
-            clasesInmueble.setWidth("72%");
-
-        }
-
-        HorizontalLayout propietarioCombo = new HorizontalLayout();
-        propietarioCombo.addComponents(comboPropietario, btnNuevoPropietario);
-        propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-        propietarioCombo.setCaption("Propietario");
-        propietarioCombo.setExpandRatio(comboPropietario, 1f);
-
-
-
-        principal = new FormLayout(propietarioCombo, clasesInmueble, tiposInmueble,
-                new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal, buscarUbicacion);
-
-        caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
-                supCubierta, new BlueLabel("Adiconales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
-
-        this.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-
-        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-
-        caracteristicas1.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-
-        inmuebleFromTabSheet = new TabSheet();
-        inmuebleFromTabSheet.addTab(principal, "Datos Principales");
-        inmuebleFromTabSheet.addTab(caracteristicas1, "Características");
-
-
-        HorizontalLayout actions = new HorizontalLayout(save, delete);
-        addComponents(inmuebleFromTabSheet, actions);
-        actions.setSpacing(true);
-
-        inmuebleFromTabSheet.setSelectedTab(principal);
-        principal.addComponents();
-
+    	flPrincipal = new FormLayout(tfInmueble,tfNumeroDeCota, tfDiasAtraso,tfMontoOriginal, tfMontoInteres, tfMontoTotal, tfMontoPropietario, tfComision, tfFechaVencimiento, tfFechaDePago);
+    	inmuebleFromTabSheet = new TabSheet();
+    	inmuebleFromTabSheet.addTab(flPrincipal, "Datos Principales");
+    	addComponents(inmuebleFromTabSheet);
+    	inmuebleFromTabSheet.setSelectedTab(flPrincipal);
+    	flPrincipal.addComponents();
+    	this.setEditables();
+    	this.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+    	flPrincipal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
     }
 
-    public void setInmueble(Inmueble inmueble) {
+    public void setCobro(Cobro cobro) {
 
-        if(inmueble != null) {
-            this.inmueble = inmueble;
-            binderInmueble.readBean(this.inmueble);
-            delete.setVisible(true);
+        if(cobro != null) {
+            this.cobro = cobro;
+            binderCobro.readBean(this.cobro);
         }else {
-            this.inmueble = InmuebleService.getInstancia();
-            localidades.setEnabled(false);
-            delete.setVisible(false);
         }
         setVisible(true);
         getABMView().setComponentsVisible(false);
         if (getABMView().isIsonMobile())
             this.focus();
-
-    }
-
-    private void updateComboPersonas() {
-        PersonaService ps = new PersonaService();
-        comboPropietario.setItems(ps.readAll());
-    }
-
-    private void delete() {
-        inmbService.delete(inmueble);
-        abmView.getController().updateList();
-        setVisible(false);
-        getABMView().setComponentsVisible(true);
-        getABMView().showSuccessNotification("Borrado: " + inmueble.getDireccion().toString() + " de " +
-                inmueble.getPropietario().toString());
-
-    }
-
-
-    private void save() {
-
-        boolean success = false;
-        try {
-            binderInmueble.writeBean(inmueble);
-            if (inmueble.getPropietario().getPersona() != null)
-                success = inmbService.merge(inmueble);
-            if (success)
-                getABMView().showSuccessNotification("Inmuble Guardado");
-            else
-                getABMView().showSuccessNotification("No se han realizado modificaciones");
-
-        } catch (ValidationException e) {
-            Utils.mostarErroresValidator(e);
-            checkFieldsPerTab(e.getFieldValidationErrors());
-
-            return;
-        } catch (Exception e) {
-            e.printStackTrace();
-            Notification.show("Error: " + e.toString(), Notification.Type.WARNING_MESSAGE);
-        }
-
-        abmView.getController().updateList();
-        setVisible(false);
-        getABMView().setComponentsVisible(true);
-
     }
 
     public void cancel() {
@@ -425,79 +160,29 @@ public class CobrosForm extends FormLayout {
     }
 
     public void clearFields() {
-        this.aEstrenar.clear();
-        this.aireAcond.clear();
-        this.aireAcond.clear();
-        this.ambientes.clear();
-        this.calle.clear();
-        this.cJardin.clear();
-        this.clasesInmueble.clear();
-        this.cocheras.clear();
-        this.codPostal.clear();
-        this.comboPropietario.clear();
-        this.cParrilla.clear();
-        this.cPpileta.clear();
-        this.dormitorios.clear();
-        this.localidades.clear();
-        this.nro.clear();
-        this.provincias.clear();
-        this.supCubierta.clear();
-        this.supTotal.clear();
-        this.tiposInmueble.clear();
+       //TODO
     }
 
-    private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
-        boolean tabPrincipalInvalidFields = false ;
-        boolean tabCaracteristicasInvalidFields =false;
-        //TabElements for tab principal
-        List<Component> tabPrincipalComponents = new ArrayList<Component>();
-        tabPrincipalComponents.add(comboPropietario);
-        tabPrincipalComponents.add(clasesInmueble);
-        tabPrincipalComponents.add(tiposInmueble);
-        tabPrincipalComponents.add(new BlueLabel("Direccion"));
-        tabPrincipalComponents.add(calle);
-        tabPrincipalComponents.add(nro);
-        tabPrincipalComponents.add(provincias);
-        tabPrincipalComponents.add(localidades);
-        tabPrincipalComponents.add(codPostal);
-        tabPrincipalComponents.add(buscarUbicacion);
-        for(BindingValidationStatus invalidField : invalidComponents){
-            tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
-            if(tabPrincipalInvalidFields)
-                break;
-        }
-        System.out.println(tabPrincipalInvalidFields);
-        //Tab elements for tab caracteristicas
-        List<Component> tapCaracteristicasComponents = new ArrayList<Component>();
-        tapCaracteristicasComponents.add(ambientes);
-        tapCaracteristicasComponents.add(cocheras);
-        tapCaracteristicasComponents.add(dormitorios);
-        tapCaracteristicasComponents.add( new BlueLabel("Adiconales"));
-        tapCaracteristicasComponents.add(supTotal);
-        tapCaracteristicasComponents.add(supCubierta);
-        tapCaracteristicasComponents.add(aEstrenar);
-        tapCaracteristicasComponents.add(aireAcond);
-        tapCaracteristicasComponents.add(cJardin);
-        tapCaracteristicasComponents.add(cParrilla);
-        tapCaracteristicasComponents.add(cPpileta);
-        for(BindingValidationStatus invalidField : invalidComponents){
-            tabCaracteristicasInvalidFields = tapCaracteristicasComponents.contains(invalidField.getField());
-            if(tabCaracteristicasInvalidFields)
-                break;
-        }
-        System.out.println(tabCaracteristicasInvalidFields);
-        if(tabPrincipalInvalidFields && !tabCaracteristicasInvalidFields) {
-            Notification.show("Error al guardar, porfavor revise los campos principales", Notification.Type.WARNING_MESSAGE);
-            inmuebleFromTabSheet.setSelectedTab(principal);
-        }
-
-        else if(!tabPrincipalInvalidFields && tabCaracteristicasInvalidFields) {
-            Notification.show("Error al guardar, porfavor revise las caracterisitcas del inmueble e intente de nuevo", Notification.Type.WARNING_MESSAGE);
-            inmuebleFromTabSheet.setSelectedTab(caracteristicas1);
-        }
-        else{
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo", Notification.Type.WARNING_MESSAGE);
-        }
+    private void setEditables() {
+    	tfInmueble.setEnabled(false);
+    	tfDiasAtraso.setEnabled(false);
+        tfNumeroDeCota.setEnabled(false);
+        tfMontoOriginal.setEnabled(false);
+        tfMontoTotal.setEnabled(false); 
+        tfMontoInteres.setEnabled(false);
+        tfComision.setEnabled(false); 
+        tfMontoPropietario.setEnabled(false); 
+        tfFechaVencimiento.setEnabled(false);
+        tfFechaDePago.setEnabled(false);
+        tfInmueble.setWidth("100%");
+        tfDiasAtraso.setWidth("100%");
+        tfNumeroDeCota.setWidth("100%");
+        tfMontoOriginal.setWidth("100%");
+        tfMontoTotal.setWidth("100%");
+        tfMontoInteres.setWidth("100%");
+        tfComision.setWidth("100%");
+        tfMontoPropietario.setWidth("100%"); 
+        tfFechaVencimiento.setWidth("100%");
+        tfFechaDePago.setWidth("100%");
     }
-
 }

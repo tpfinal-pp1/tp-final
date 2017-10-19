@@ -16,9 +16,11 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -53,7 +55,7 @@ public class CobrosABMView extends DefaultLayout implements View {
     private void buildLayout() {
         CssLayout filtering = new CssLayout();
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
+        filtering.addComponents(filter, clearFilterTextBtn);
         buildToolbar("Cobros", filtering);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, cobrosForm);
@@ -145,6 +147,7 @@ public class CobrosABMView extends DefaultLayout implements View {
             configureFilter();
             configureGrid();
             updateList();
+            cobrosForm.cancel();
         }
 
         private void configureFilter() {
@@ -165,10 +168,9 @@ public class CobrosABMView extends DefaultLayout implements View {
                         setComponentsVisible(true);
                     cobrosForm.setVisible(false);
                     cobrosForm.clearFields();
+                    cobrosForm.setVisible(false);
                 }
             });
-
-
 
             Grid.Column<Cobro,String> inmuebleCol = grid.addColumn(cobro -> {
                 String ret = "";
@@ -182,12 +184,14 @@ public class CobrosABMView extends DefaultLayout implements View {
                 return ret;
             }).setCaption("Tipo");
 
-            grid.addColumn(Cobro::getFechaDeVencimiento).setCaption("Fecha De Vencimiento");
+            grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption("Fecha De Vencimiento");
 
            Grid.Column<Cobro, String> fechaCobroCol= grid.addColumn(cobro -> {
             		String ret="";
-            		if(cobro.getFechaDePago()!=null)
-            			ret=cobro.getFechaDePago().toString();
+            		if(cobro.getFechaDePago()!=null) {
+            			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+            			ret=cobro.getFechaDePago().format(formatters);
+            		}
             		else
             			ret="No ha sido pagado";
             		return ret;
@@ -210,8 +214,8 @@ public class CobrosABMView extends DefaultLayout implements View {
                 Button ver = new Button(VaadinIcons.EYE);
                 ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
                 ver.addClickListener(e -> {
-                	 Notification.show("A Implementar!!!!!",
-                             Notification.Type.WARNING_MESSAGE);
+                	 //TODO
+                	cobrosForm.setCobro(cobro);
 
                 });
 
