@@ -102,7 +102,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoView.getTipoMonedaRadioButtonGroupAlquiler().first().selectByText("Pesos");
 
         contratoView.getGuardarButtonAlquiler().first().click();
-        //TBUtils.sleep(3000);
+        TBUtils.sleep(3000);
         Assert.assertFalse(contratoView.isAlquilerFormDisplayed());
 
 
