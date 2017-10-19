@@ -62,21 +62,19 @@ public class TBPersonaView extends TestBenchTestCase{
 
     public ElementQuery<ButtonElement> getGuardarButton() { return guardarButton; }
 
-    private ElementQuery<HorizontalLayoutElement> getHorizontalLayoutAcciones() { return horizontalLayoutAcciones; }
+    private ElementQuery<HorizontalLayoutElement> getHorizontalLayoutAcciones(String caption) { return horizontalLayoutAcciones.caption(caption); }
 
-    private HorizontalLayoutElement getHorizontalLayoutElement(String caption){ return getHorizontalLayoutAcciones().caption(caption).first(); }
+    private ElementQuery<ButtonElement> getButtonEdit(String caption) { return buttonEdit = getHorizontalLayoutAcciones(caption).$$(ButtonElement.class); }
 
-    private ElementQuery<ButtonElement> getButtonEdit(String caption) { return buttonEdit = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+    private ElementQuery<ButtonElement> getButtonRemove(String caption) { return  buttonRemove = getHorizontalLayoutAcciones(caption).$$(ButtonElement.class); }
 
-    private ElementQuery<ButtonElement> getButtonRemove(String caption) { return  buttonRemove = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
-
-    private ElementQuery<ButtonElement> getButtonCriterio(String caption) { return  buttonCriterio = getHorizontalLayoutElement(caption).$(ButtonElement.class); }
+    private ElementQuery<ButtonElement> getButtonCriterio(String caption) { return  buttonCriterio = getHorizontalLayoutAcciones(caption).$$(ButtonElement.class); }
 
     public ButtonElement getEditButton(String caption){ return getButtonEdit(caption).first(); }
 
-    public ButtonElement getRemoveButton(String caption){ return getButtonRemove(caption).first(); }
+    public ButtonElement getRemoveButton(String caption){ return getButtonRemove(caption).get(1); }
 
-    public ButtonElement getCriterioButton(String caption){ return getButtonCriterio(caption).first(); }
+    public ButtonElement getCriterioButton(String caption){ return getButtonCriterio(caption).get(2); }
 
     public boolean isDisplayed(){ return this.peopleGrid.exists(); }
 

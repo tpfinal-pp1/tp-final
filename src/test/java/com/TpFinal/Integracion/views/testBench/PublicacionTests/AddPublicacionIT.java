@@ -46,11 +46,13 @@ public class AddPublicacionIT extends TestBenchTestCase {
     @Test
     public void addPublicacionTest(){
         getDriver().get(TBUtils.getUrl("publicaciones"));
+        TBUtils.sleep(3000);
         Assert.assertTrue($(GridElement.class).exists());
 
         //New Publication
         publicacionView.getNuevaButton().first().click();
 
+        TBUtils.sleep(3000);
         //RadioButtons
         publicacionView.getRadioButtonGroup().first().selectByText("Venta");
         publicacionView.getEstadodelapublicacionRadioButtonGroup().first().selectByText("Terminada");
@@ -70,6 +72,7 @@ public class AddPublicacionIT extends TestBenchTestCase {
         publicacionView.getMonedaComboBox().first().selectByText("Pesos");
 
         publicacionView.getGuardarButton().first().click();
+        TBUtils.sleep(3000);
 
         //Verify the form is closed
         Assert.assertFalse(publicacionView.isFormDisplayed());

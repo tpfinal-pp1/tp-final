@@ -44,17 +44,18 @@ public class EditPersonaIT extends TestBenchTestCase {
     @Test
     public void editPersonaTest(){
         getDriver().get(TBUtils.getUrl("personas"));
-        TBUtils.sleep(1000);
+        TBUtils.sleep(3000);
         Assert.assertTrue(personaView.isDisplayed());
 
         //Edit persona
-        personaView.getEditButton("Accion 2").click();
-        TBUtils.sleep(5000);
+        TBUtils.sleep(3000);
+        personaView.getEditButton("Accion 0").click();
+        TBUtils.sleep(3000);
 
         //Edit name
         personaView.getNameTextField().first().setValue("Cosme");
         personaView.getGuardarButton().first().click();
-        TBUtils.sleep(5000);
+        TBUtils.sleep(3000);
 
         Assert.assertFalse(personaView.isFormDisplayed());
     }

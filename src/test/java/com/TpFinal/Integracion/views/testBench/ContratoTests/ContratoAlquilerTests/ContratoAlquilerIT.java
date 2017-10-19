@@ -44,6 +44,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
     @Test
     public void addContratoAlquilerTest(){
         getDriver().get(TBUtils.getUrl("contratos"));
+       // TBUtils.sleep(3000);
         Assert.assertTrue(contratoView.isDisplayed());
 
 
@@ -101,7 +102,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoView.getTipoMonedaRadioButtonGroupAlquiler().first().selectByText("Pesos");
 
         contratoView.getGuardarButtonAlquiler().first().click();
-
+        //TBUtils.sleep(3000);
         Assert.assertFalse(contratoView.isAlquilerFormDisplayed());
 
 

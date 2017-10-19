@@ -14,7 +14,7 @@ public class TBUtils {
 
     private static final String RESTART_URL ="http://localhost:8080/?restartApplication=true";
     private static final String NORMAL_URL ="http://localhost:8080/";
-    private static boolean visible=false; //Dejar en false antes de comitear!! importantisimo
+    private static boolean visible=false ; //Dejar en false antes de comitear!! importantisimo
 
 
 
@@ -32,6 +32,8 @@ public class TBUtils {
         else{  //Chrome
             ChromeDriverManager.getInstance().setup();
             WebDriver driver = new ChromeDriver();
+            driver.manage().window().setSize(
+                    new Dimension(1920, 1080));
             driver.get(RESTART_URL);
             return driver;
         }
