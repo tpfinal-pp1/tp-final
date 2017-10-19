@@ -149,25 +149,27 @@ public class ReportesView extends DefaultLayout implements View {
 
 	public  boolean generarReporte(){
     	TipoReporte tipoReporte=tipoReporteCB.getValue();
-    	String ubicacionReporte=new Utils().pathWhenCompiled()+ tipoReporte.getArchivoReporte();
+    	String ubicacionReporte=new Utils().resourcesPath()+ tipoReporte.getArchivoReporte();
     	List<Object> objetos=tipoReporte.getObjetos();
 
 		//Te trae el nombre del archivo en base a seleccion del combo
-		try{
-			this.reporte = (JasperReport)JRLoader.
-					loadObjectFromFile(ubicacionReporte);
-		}
-		catch (Exception e){
-			try {
-				this.reporte = (JasperReport)JRLoader.
-						loadObjectFromFile(tipoReporte.getArchivoReporte());
-			}
-			catch (Exception d){
-				System.err.println("No se encontro el archivo "+tipoReporte.getArchivoReporte()+"" +
-						" en "+File.separator+tipoReporte.getArchivoReporte());
-			}
-			}
+		File root=new File(File.separator+tipoReporte.getArchivoReporte());
+		File root2=new File(tipoReporte.getArchivoReporte());
+		File webapp=new File(new Utils().resourcesPath()+tipoReporte.getArchivoReporte());
 
+			System.out.println(File.separator+tipoReporte.getArchivoReporte()+"Existe: "+root.exists());
+
+			System.out.println(tipoReporte.getArchivoReporte()+"Existe: "+root2.exists());
+
+			System.out.println(new Utils().resourcesPath()+tipoReporte.getArchivoReporte()+"Existe: "+webapp.exists());
+
+
+		try {
+			this.reporte = (JasperReport)JRLoader.
+                            loadObject(root);
+		} catch (JRException e) {
+
+		}
 
 
 
