@@ -167,8 +167,6 @@ public class CobrosABMView extends DefaultLayout implements View {
                 }
             });
 
-
-
             Grid.Column<Cobro,String> inmuebleCol = grid.addColumn(cobro -> {
                 String ret = "";
                 ret = cobro.getContrato().getInmueble().toString();

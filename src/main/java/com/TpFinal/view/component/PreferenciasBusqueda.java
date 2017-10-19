@@ -36,7 +36,7 @@ public abstract class PreferenciasBusqueda extends Window {
     InmuebleService inmuebleService = new InmuebleService();
     ProvinciaService provinciaService = new ProvinciaService();
     // Componentes
-    ComboBox<ClaseInmueble> cbClaseInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
+    CheckBoxGroup<ClaseInmueble> clasesDeInmueble = new CheckBoxGroup<>("", ClaseInmueble.toList());
     ComboBox<Provincia> cbProvincia = new ComboBox<>("Provincia", provinciaService.getProvincias());
     ComboBox<Localidad> cbLocalidad = new ComboBox<>("Localidad", provinciaService.getLocalidades());
     RadioButtonGroup<TipoInmueble> rbgTipoInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
@@ -58,6 +58,7 @@ public abstract class PreferenciasBusqueda extends Window {
     Button borrar = new Button("Limpiar", e -> cleanPreferences());
 
     public PreferenciasBusqueda(CriterioBusquedaInmuebleDTO criterio) {
+	super("Preferencias de Búsqueda");
 	this.criterio = criterio;
 	buildLayout();
 	configureComponents();
@@ -68,7 +69,35 @@ public abstract class PreferenciasBusqueda extends Window {
     }
 
     private void buildLayout() {
-	// TODO Auto-generated method stub
+	this.setWidthUndefined();
+	setId(ID);
+	Responsive.makeResponsive(this);
+
+	setModal(true);
+	setCloseShortcut(KeyCode.ESCAPE, null);
+	setResizable(false);
+	setClosable(true);
+	setDraggable(false);
+	setHeight(90.0f, Unit.PERCENTAGE);
+	setWidth(45.0f, Unit.PERCENTAGE);
+	center();
+
+	VerticalLayout content = new VerticalLayout();
+	content.setSizeFull();
+	content.setMargin(new MarginInfo(true, true, false, false));
+//	content.setSpacing(false);
+	//content.setStyleName(ValoTheme.LAYOUT_WELL);
+	setContent(content);
+
+	TabSheet categoriasBusqueda = new TabSheet();
+	categoriasBusqueda.setSizeFull();
+	content.addComponent(categoriasBusqueda);
+	content.setExpandRatio(categoriasBusqueda, 1f);
+	categoriasBusqueda.addStyleName("test");
+	categoriasBusqueda.addTab(caracteristicasPrincipales());
+	categoriasBusqueda.addTab(caracteristicasAdicionales());
+	categoriasBusqueda.addTab(clasesDeInmueble());
+	content.addComponent(acciones());
 
     }
 
@@ -85,36 +114,6 @@ public abstract class PreferenciasBusqueda extends Window {
     public abstract void onSave();
 
     private void configureComponents() {
-	this.setWidthUndefined();
-	setId(ID);
-	Responsive.makeResponsive(this);
-
-	setModal(true);
-	setCloseShortcut(KeyCode.ESCAPE, null);
-	setResizable(false);
-	setClosable(true);
-	setHeight(90.0f, Unit.PERCENTAGE);
-        setWidth(45.0f, Unit.PERCENTAGE);
-        center();
-
-	VerticalLayout content = new VerticalLayout();
-	content.setSizeFull();
-	content.setMargin(new MarginInfo(true, false, false, false));
-	content.setSpacing(false);
-	setContent(content);
-
-	TabSheet detailsWrapper = new TabSheet();
-	detailsWrapper.setSizeFull();
-	detailsWrapper.addStyleName(ValoTheme.TABSHEET_PADDED_TABBAR);
-	detailsWrapper.addStyleName(ValoTheme.TABSHEET_ICONS_ON_TOP);
-	detailsWrapper.addStyleName(ValoTheme.TABSHEET_CENTERED_TABS);
-	content.addComponent(detailsWrapper);
-	content.setExpandRatio(detailsWrapper, 1f);
-
-	detailsWrapper.addComponent(buildSearchPreferencesTab());
-	// detailsWrapper.addComponent(buildPreferencesTab());
-
-	content.addComponent(buildFooter());
 
     }
 
@@ -159,41 +158,79 @@ public abstract class PreferenciasBusqueda extends Window {
 	    // exito.setStyleName("bar success small");
 	    // exito.setPosition(Position.BOTTOM_CENTER);
 	    // exito.show(Page.getCurrent());
-	    
+
 	}
 	close();
 
     }
 
-    private Component buildFooter() {	
-	HorizontalLayout actions = new HorizontalLayout(guardar, buscar, borrar);
+    private Component acciones() {
+	
+	HorizontalLayout actions = new HorizontalLayout();
 	actions.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
 	actions.setWidth(100.0f, Unit.PERCENTAGE);
 	actions.setSpacing(false);
+	actions.setDefaultComponentAlignment(Alignment.MIDDLE_CENTER);
+	actions.addComponents(guardar, buscar, borrar);
+	actions.forEach(c -> c.setWidth("90%"));
+	
 	return actions;
     }
 
-    private Component buildSearchPreferencesTab() {
+    private HorizontalLayout clasesDeInmueble() {
 	HorizontalLayout root = new HorizontalLayout();
-	root.setCaption("Preferencias de Búsqueda");
-	root.setIcon(VaadinIcons.SEARCH);
+	root.removeStyleName("v-scrollable");
+	root.setCaption("Clases de Inmueble");
 	root.setWidth(100.0f, Unit.PERCENTAGE);
 	root.setMargin(true);
-	root.addStyleName("profile-form");
+	
 
 	FormLayout details = new FormLayout();
 	details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	root.addComponent(details);
 	root.setExpandRatio(details, 1);
-
-	rbgTipoInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 	
+	details.addComponents(this.clasesDeInmueble);
+	details.forEach(component -> component.setWidth("100%"));
+	return root;
+    }
+
+    private Component caracteristicasPrincipales() {
+	
+	HorizontalLayout root = new HorizontalLayout();
+	root.setCaption("Características Principales");
+	root.setWidth(100.0f, Unit.PERCENTAGE);
+	root.setMargin(true);
+	
+	FormLayout details = new FormLayout();
+	details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	root.addComponent(details);
+	root.setExpandRatio(details, 1);
+	rbgTipoInmueble.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
+
 	details.addComponents(
-		this.cbClaseInmueble,
 		this.rbgTipoInmueble,
 		this.cbProvincia,
 		this.cbLocalidad,
-		this.minMaxPrecio,
+		this.minMaxPrecio);
+		
+	details.forEach(component -> component.setWidth("100%"));
+	return root;
+    }
+
+    private Component caracteristicasAdicionales() {
+	
+	HorizontalLayout root = new HorizontalLayout();
+	root.setCaption("Características Adicionales");
+	root.setWidth(100.0f, Unit.PERCENTAGE);
+	root.setMargin(true);
+	
+	FormLayout details = new FormLayout();
+	details.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	root.addComponent(details);
+	root.setExpandRatio(details, 1);
+	
+	details.addComponents(
 		this.minMaxAmbientes,
 		this.minMaxCocheras,
 		this.minMaxDormitorios,
@@ -203,8 +240,7 @@ public abstract class PreferenciasBusqueda extends Window {
 		this.conAireAcond,
 		this.conJardin,
 		this.conParrila,
-		this.conPileta
-		);
+		this.conPileta);
 	details.forEach(component -> component.setWidth("100%"));
 	return root;
     }

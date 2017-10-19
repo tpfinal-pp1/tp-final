@@ -56,6 +56,9 @@ public class ContratoABMView extends DefaultLayout implements View {
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
 
+    // acciones segun numero de fila
+    int acciones = 0;
+
     public ContratoABMView() {
 	super();
 	buildLayout();
@@ -199,17 +202,17 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    HorizontalLayout hl = new HorizontalLayout(edit, finalizarCarga, renovarContrato, del);
 	    hl.forEach(button -> button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL));
 	    hl.setSpacing(false);
+	    hl.setCaption("Accion " + acciones);
+	    acciones++;
 
 	    EstadoContrato estado = contrato.getEstadoContrato();
 	    if (estado == EstadoContrato.EnProcesoDeCarga) {
 		renovarContrato.setEnabled(false);
 	    } else if (estado == EstadoContrato.Vigente || estado == EstadoContrato.ProximoAVencer) {
-		edit.setEnabled(true);
 		del.setEnabled(false);
 		finalizarCarga.setEnabled(false);
 		renovarContrato.setEnabled(false);
-	    } else { // Estado.Vencido
-		edit.setEnabled(false);
+	    } else { // Estado.Vencido		
 		del.setEnabled(false);
 		finalizarCarga.setEnabled(false);
 		if (contrato instanceof ContratoVenta)
@@ -224,10 +227,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 		}
 	    });
 	    hl.setSpacing(false);
-
 	    return hl;
 	};
-
     }
 
     public void setComponentsVisible(boolean b) {

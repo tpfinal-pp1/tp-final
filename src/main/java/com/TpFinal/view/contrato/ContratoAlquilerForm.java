@@ -90,7 +90,7 @@ public class ContratoAlquilerForm extends FormLayout {
     TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio");
     ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>("Tipo Interes");
     ComboBox<ContratoDuracion> cbDuracionContrato = new ComboBox<>("Duración");
-    IntStepper stIncremento = new IntStepper("");
+    TextField stIncremento = new TextField("Frecuencia de Incremento");
 
     TextField tfPActualizacion = new TextField("");
     ComboBox<TipoInteres> cbtipointeres = new ComboBox<>("Tipo Interes");
@@ -167,14 +167,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		}
 	    }
 	});
-
-	cbDuracionContrato.addValueChangeListener(e -> {
-	    if (e != null) {
-		ContratoDuracion duracion = e.getValue();
-		if (duracion != null)
-		    stIncremento.setMaxValue(duracion.getDuracion());
-	    }
-	});
+	
 
 	setVisible(false);
     }
@@ -257,7 +250,9 @@ public class ContratoAlquilerForm extends FormLayout {
 	binderContratoAlquiler.forField(rbgTipoMoneda).asRequired("Seleccione un Tipo de Moneda")
 		.bind("moneda");
 
-	binderContratoAlquiler.forField(this.stIncremento).asRequired(
+	binderContratoAlquiler.forField(this.stIncremento)
+	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+	.asRequired(
 		"Ingrese una frecuencia de incremento de la cuota")
 		.withValidator(v -> {
 		    ContratoDuracion d = this.cbDuracionContrato.getValue();
@@ -334,11 +329,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	tabSheet = new TabSheet();
 
 	BlueLabel seccionDoc = new BlueLabel("Documento Word");
-
-	stIncremento.setValue(1);
-	stIncremento.setMinValue(1);
-	stIncremento.setMaxValue(36);
-	stIncremento.setStepAmount(1);
+	
 	stIncremento.setWidth("77%");
 	if (!this.contratoABMView.checkIfOnMobile()) {
 	    rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
@@ -391,13 +382,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
 	    binderContratoAlquiler.readBean(contratoAlquiler);
-	    if (contratoAlquiler.getDuracionContrato() != null) {
-		stIncremento.setMaxValue(contratoAlquiler.getDuracionContrato().getDuracion());
-	    }
+	   
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
-	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
-	    stIncremento.setValue(1);
+	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());	   
 	}
 
 	setVisible(true);
