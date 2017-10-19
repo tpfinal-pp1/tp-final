@@ -134,7 +134,8 @@ public class ReportesView extends DefaultLayout implements View {
 				pdfComponent.setPDF(reportName);
     		else{
 
-    			showErrorNotification("Error al generar el reporte:"+reportName);}
+    			showErrorNotification("Error al generar el reporte:"+TipoReporte.Inquilino.getArchivoReporte());}
+
     	});
 
 
