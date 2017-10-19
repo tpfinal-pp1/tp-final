@@ -37,9 +37,19 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ReportesView extends DefaultLayout implements View {
-Button newReport = new Button("Generar");
+
+	private JasperReport reporte;
+	private JasperPrint reporteLleno;
+	Map<String, Object> parametersMap = new HashMap<String, Object>();
+	PDFComponent pdfComponent=new PDFComponent();
+	ComboBox<TipoReporte> tipoReporteCB= new ComboBox<TipoReporte>(
+			null,TipoReporte.toList());
+	HorizontalLayout mainLayout;
+	String reportName="";
+	Button newReport = new Button("Generar");
+	Notification error ;
 	public enum TipoReporte {
-		Propietario(new Utils().pathWhenCompiled+"reportePropietarios.jasper"),Inquilino(""),Interesado("");
+		Propietario("reportePropietarios.jasper"),Inquilino(""),Interesado("");
 
 		private final String archivoReporte;
 
@@ -77,15 +87,6 @@ Button newReport = new Button("Generar");
 
 	}
 
-	private JasperReport reporte;
-    private JasperPrint reporteLleno;
-    Map<String, Object> parametersMap = new HashMap<String, Object>();
-
-    PDFComponent pdfComponent=new PDFComponent();
-    ComboBox<TipoReporte> tipoReporteCB= new ComboBox<TipoReporte>(
-    		null,TipoReporte.toList());
-    HorizontalLayout mainLayout;
-    String reportName="";
 
 
 
@@ -128,13 +129,17 @@ Button newReport = new Button("Generar");
     	newReport.addClickListener(e -> {
 
 
-    		boolean success=generarReporte();
-        	if(success)
+			boolean success=generarReporte();
+			if(success){
 				pdfComponent.setPDF(reportName);
-    		else{
+				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
+			else{
+				System.err.println("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());
+				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
 
-    			showErrorNotification("Error al generar el reporte");}
-    	});
+
+
+		});
 
 
     }
@@ -144,12 +149,30 @@ Button newReport = new Button("Generar");
 
 	public  boolean generarReporte(){
     	TipoReporte tipoReporte=tipoReporteCB.getValue();
-    	String nombreReporte=tipoReporte.getArchivoReporte();
+    	String ubicacionReporte=new Utils().pathWhenCompiled()+ tipoReporte.getArchivoReporte();
     	List<Object> objetos=tipoReporte.getObjetos();
 
 		//Te trae el nombre del archivo en base a seleccion del combo
+		try{
+			this.reporte = (JasperReport)JRLoader.
+					loadObjectFromFile(ubicacionReporte);
+		}
+		catch (Exception e){
+			try {
+				this.reporte = (JasperReport)JRLoader.
+						loadObjectFromFile(tipoReporte.getArchivoReporte());
+			}
+			catch (Exception d){
+				System.err.println("No se encontro el archivo "+tipoReporte.getArchivoReporte()+"" +
+						" en "+File.separator+tipoReporte.getArchivoReporte());
+			}
+			}
+
+
+
+
 		try {
-			this.reporte = (JasperReport)JRLoader.loadObjectFromFile(nombreReporte);
+
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();
@@ -186,12 +209,12 @@ Button newReport = new Button("Generar");
     	newReport.setVisible(true);
     }
 	public void showErrorNotification(String notification) {
-		Notification success = new Notification(
+		error= new Notification(
 				notification);
-		success.setDelayMsec(4000);
-		success.setStyleName("bar error small");
-		success.setPosition(Position.BOTTOM_CENTER);
-		success.show(Page.getCurrent());
+		error.setDelayMsec(4000);
+		error.setStyleName("bar error small");
+		error.setPosition(Position.BOTTOM_CENTER);
+		error.show(Page.getCurrent());
 	}
 
 
