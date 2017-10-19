@@ -77,7 +77,6 @@ public class CobrosForm extends FormLayout {
     	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
     	.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
     	.bind(cobro -> cobro.getNumeroCuota(), (cobro,numero) ->{cobro.setNumeroCuota(numero);});
-    	
     }
 
     private void buildLayout() {
