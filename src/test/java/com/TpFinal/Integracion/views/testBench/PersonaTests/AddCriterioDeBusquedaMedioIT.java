@@ -83,6 +83,7 @@ public class AddCriterioDeBusquedaMedioIT extends TestBenchTestCase{
 		//Eligiendo tipo de moneda
 		busquedaInteresadoView.getTipoMonedaRadioButtonGroup().first().selectByText("Dolares");
 		
+		//Obtengo las pestañas posibles dentro del form de criterios de busqueda
 		List<String> tabsheet1Options = busquedaInteresadoView.getTabSheet1().first().getTabCaptions();
 		Assert.assertEquals(tabsheet1Options.get(0),"Características Principales");
         Assert.assertEquals(tabsheet1Options.get(1),"Características Adicionales");
@@ -113,6 +114,7 @@ public class AddCriterioDeBusquedaMedioIT extends TestBenchTestCase{
         
         busquedaInteresadoView.getJardnCheckBox().first().click();
         
+        //Selecciono la opcion de parrilla
         busquedaInteresadoView.getParrilaCheckBox().first().click();
 		
 		//Click boton guardar
