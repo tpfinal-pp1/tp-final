@@ -154,7 +154,6 @@ public class GeneradorDeDatos {
     }
 
     private static TipoInteres tipoIncrementoRandom() {
-	
 	return random.nextBoolean()? TipoInteres.Acumulativo: TipoInteres.Simple;
     }
 
