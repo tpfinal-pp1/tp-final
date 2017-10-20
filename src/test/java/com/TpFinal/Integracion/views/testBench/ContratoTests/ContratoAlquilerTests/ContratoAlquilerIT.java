@@ -39,7 +39,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoView = mainView.getContratoView();
     }
 
-    @Test
+    @Ignore
     public void addContratoAlquilerTest(){
         getDriver().get(TBUtils.getUrl("contratos"));
        // TBUtils.sleep(3000);
@@ -59,7 +59,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
 
         //ComboboxInmueble
         List<String> inmuebleList = contratoAlquilerForm.getInmuebleComboBox().first().getPopupSuggestions();
-        String selectedInmueble = inmuebleList.get(2);
+        String selectedInmueble = inmuebleList.get(3);
         contratoAlquilerForm.getInmuebleComboBox().first().selectByText(selectedInmueble);
 
         //ComboboxInquilino
@@ -78,14 +78,16 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         //Tab "condiciones"
         contratoAlquilerForm.getTabSheet1().first().openTab("Condiciones");
 
-        //textfield punitario
-        contratoAlquilerForm.getFrecuenciadeIncrementomesesTextField().first().setValue("1");
-
+       
         //ComboDuracion
         List<String> durationList = contratoAlquilerForm.getDuracinComboBox().first().getPopupSuggestions();
         String selectedDuration = durationList.get(1);
         contratoAlquilerForm.getDuracinComboBox().first().selectByText(selectedDuration);
 
+        //textfield punitario
+        contratoAlquilerForm.getFrecuenciadeIncrementomesesTextField().first().setValue("3");
+
+        
         //ComboInteres
         List<String> intereList = contratoAlquilerForm.getTipoInteres().getPopupSuggestions();
         String selectedIntere = intereList.get(1);
@@ -106,7 +108,9 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoAlquilerForm.getTipoMonedaRadioButtonGroup().first().selectByText("Pesos");
 
         contratoAlquilerForm.getGuardarButton().first().click();
-        TBUtils.sleep(3000);
+        
+        TBUtils.sleep(5000);
+        
         Assert.assertFalse(contratoAlquilerForm.isDisplayed());
 
 
