@@ -7,6 +7,7 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.component.ImageVisualizer;
 import com.TpFinal.view.component.PreferenciasBusqueda;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
@@ -15,6 +16,7 @@ import com.vaadin.annotations.Title;
 import com.vaadin.client.renderers.ImageRenderer;
 
 import com.vaadin.data.ValueProvider;
+import com.vaadin.event.MouseEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -249,8 +251,15 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			inmuebleService.getPortada(inmueble)));
 		image.setWidth(280, Sizeable.Unit.PIXELS);
 		image.setHeight(200, Sizeable.Unit.PIXELS);
+		image.addClickListener(new MouseEvents.ClickListener() {
+			@Override
+			public void click(MouseEvents.ClickEvent clickEvent) {
+				new ImageVisualizer();
+			}
+		});
 		return image;
 	    }).setCaption("Portada");
+
 	    grid.addColumn(inmueble -> {
 		String ret = "";
 		if (inmueble.getDireccion() != null) {
@@ -302,6 +311,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 		verFotos.addClickListener(click -> {
+			new ImageVisualizer();
 		    Notification.show("A Implementar: Abrir Pantalla para ver fotos",
 			    Notification.Type.WARNING_MESSAGE);
 		});
