@@ -24,6 +24,8 @@ import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
+import com.TpFinal.services.CobroService;
+import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.vaadin.server.VaadinRequest;
@@ -44,8 +46,11 @@ public class GeneradorDeDatos {
     private static DAOPersonaImpl daoPer = new DAOPersonaImpl();
     private static DAOPublicacionImpl daoope = new DAOPublicacionImpl();
     private static ProvinciaService serviceProvincia;
+    private static CobroService cobroService;
 
     private static DAOContratoImpl daoContratos = new DAOContratoImpl();
+
+    private static ContratoService contratoService = new ContratoService();
 
     private static String getTelefeno() {
 	return Integer.toString(
@@ -67,6 +72,8 @@ public class GeneradorDeDatos {
     public static void generarDatos(int cantidad, ProvinciaService.modoLecturaJson modoLectura) {
 
 	serviceProvincia = new ProvinciaService(modoLectura);
+	cobroService = new CobroService();
+	
 
 	List<Provincia> provincias = serviceProvincia.getProvincias();
 	try {
@@ -104,7 +111,13 @@ public class GeneradorDeDatos {
 		    contratoAlquiler.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
 		    inmueble.addContrato(contratoAlquiler);
 		    daoContratos.saveOrUpdate(contratoAlquiler);
+		    
 		    daoInm.saveOrUpdate(inmueble);
+		    if (contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente)) {
+			System.out.println("un contrato vigente");
+			contratoService.addCobros(contratoAlquiler);		
+			daoContratos.saveOrUpdate(contratoAlquiler);
+		    }
 		    
 
 		}
@@ -130,10 +143,11 @@ public class GeneradorDeDatos {
 		.setFechaCelebracion(fechaRandom())
 		.setInmueble(inmueble)
 		.setInquilinoContrato(inquilino)
-		.setInteresPunitorio(random.nextDouble())
+		.setInteresPunitorio(0.1)
 		.setValorIncial(cuotaRandom())
 		.setDuracionContrato(duracion)
 		.setIntervaloActualizacion(intervaloRandom(duracion))
+		.setPorcentajeIncremento(0.1)
 		.setTipoIncrementoCuota(tipoIncrementoRandom())
 		.setTipoInteresPunitorio(tipoIncrementoRandom())
 		.build();
