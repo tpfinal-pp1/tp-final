@@ -59,9 +59,7 @@ public class CobroService {
 				if(cantidadDias>0) {
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
-						System.out.println("En la bd "+interes.toString());
 						interes=interes.divide(new BigDecimal("100"));
-						System.out.println("despues de pasarlo a decimal "+interes.toString());
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
 						interes=c.getMontoOriginal().multiply(interes);
 						c.setInteres(interes);
@@ -97,7 +95,7 @@ public class CobroService {
 	//Ver que se necesita "arriba"
 	 public synchronized List<Cobro> findAll(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
-	        List<Cobro> cobros=dao.readAllActives();
+	        List<Cobro> cobros=this.readAll();
 	        if(stringFilter!=""){
 
 	            for (Cobro cobro : cobros) {
@@ -116,11 +114,11 @@ public class CobroService {
 	            arrayList.addAll(cobros);
 	        }
 
-	        Collections.sort(arrayList, new Comparator<Persona>() {
+	        Collections.sort(arrayList, new Comparator<Cobro>() {
 
 	            @Override
-	            public int compare(Persona o1, Persona o2) {
-	                return (int) (o2.getId() - o1.getId());
+	            public int compare(Cobro o1, Cobro o2) {
+	                return (int) o1.getFechaDeVencimiento().compareTo(o2.getFechaDeVencimiento());
 	            }
 	        });
 	        return arrayList;
@@ -129,16 +127,15 @@ public class CobroService {
 		//Ver que se necesita "arriba"
 	 public synchronized List<Cobro> findByEstado(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
-	        List<Cobro> cobros=dao.readAllActives();
+	        List<Cobro> cobros=this.readAll();
 	        if(stringFilter!=""){
 
 	            for (Cobro cobro : cobros) {
 
 	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
 	                                            || cobro.getEstadoCobroString().toLowerCase()
-	                                            .contains(stringFilter.toLowerCase());
+	                                            .equals(stringFilter.toLowerCase());
 	                    if (passesFilter) {
-
 	                        arrayList.add(cobro);
 	                    }
 
@@ -148,11 +145,11 @@ public class CobroService {
 	            arrayList.addAll(cobros);
 	        }
 
-	        Collections.sort(arrayList, new Comparator<Persona>() {
+	        Collections.sort(arrayList, new Comparator<Cobro>() {
 
 	            @Override
-	            public int compare(Persona o1, Persona o2) {
-	                return (int) (o2.getId() - o1.getId());
+	            public int compare(Cobro o1, Cobro o2) {
+	                return (int) o1.getFechaDeVencimiento().compareTo(o2.getFechaDeVencimiento());
 	            }
 	        });
 	        return arrayList;
