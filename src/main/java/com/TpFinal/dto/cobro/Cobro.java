@@ -27,6 +27,9 @@ import com.TpFinal.dto.contrato.ContratoAlquiler;
 @Entity
 @Table(name="cobros")
 public class Cobro implements Identificable, BorradoLogico {
+	
+	 public static final String pEstadoCobro = "estadoCobro";
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -47,7 +50,7 @@ public class Cobro implements Identificable, BorradoLogico {
 	private LocalDate fechaDePago;
 	@Column(name="fechaDeVencimiento")
 	private LocalDate fechaDeVencimiento;
-	@Column(name="estadoCobro")
+	@Column(name= Cobro.pEstadoCobro)
 	@Enumerated(EnumType.STRING)
 	private EstadoCobro estadoCobro;
 	@Column(name="estadoRegistro")
