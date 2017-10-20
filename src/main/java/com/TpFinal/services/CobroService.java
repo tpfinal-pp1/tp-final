@@ -59,9 +59,7 @@ public class CobroService {
 				if(cantidadDias>0) {
 					if(c.getContrato().getTipoInteresPunitorio().equals(TipoInteres.Simple)) {
 						BigDecimal interes= new BigDecimal(c.getContrato().getInteresPunitorio().toString());
-						System.out.println("En la bd "+interes.toString());
 						interes=interes.divide(new BigDecimal("100"));
-						System.out.println("despues de pasarlo a decimal "+interes.toString());
 						interes=interes.multiply(new BigDecimal(cantidadDias.toString()));
 						interes=c.getMontoOriginal().multiply(interes);
 						c.setInteres(interes);
