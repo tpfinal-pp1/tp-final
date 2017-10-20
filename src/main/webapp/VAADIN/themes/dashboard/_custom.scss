@@ -8,6 +8,9 @@
 
 .meetings {
 
+
+    .v-vaadin-grid { height: auto; }
+
     .v-calendar-event-month:hover {
         position: absolute;
         width: inherit;
