@@ -1,5 +1,6 @@
 package com.TpFinal.Integracion.views.testBench.ContratoTests.ContratoAlquilerTests;
 
+import com.TpFinal.Integracion.views.pageobjects.TBContratoAlquilerForm;
 import com.TpFinal.Integracion.views.pageobjects.TBContratoView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
@@ -48,60 +49,65 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         //New Aqluiler
         contratoView.getNuevoAlquilerButton().first().click();
 
+        TBContratoAlquilerForm  contratoAlquilerForm = new TBContratoAlquilerForm(getDriver());
+
         //Tab "Datos principales"
-        List<String> tabsheet1Options = contratoView.getTabSheet1().first().getTabCaptions();
+        List<String> tabsheet1Options = contratoAlquilerForm.getTabSheet1().first().getTabCaptions();
         Assert.assertEquals(tabsheet1Options.get(0),"Alquiler");
         Assert.assertEquals(tabsheet1Options.get(1),"Condiciones");
-        contratoView.getTabSheet1().first().openTab("Alquiler");
+        contratoAlquilerForm.getTabSheet1().first().openTab("Alquiler");
 
         //ComboboxInmueble
-        List<String> inmuebleList = contratoView.getInmuebleComboBoxAlquiler().first().getPopupSuggestions();
+        List<String> inmuebleList = contratoAlquilerForm.getInmuebleComboBox().first().getPopupSuggestions();
         String selectedInmueble = inmuebleList.get(2);
-        contratoView.getInmuebleComboBoxAlquiler().first().selectByText(selectedInmueble);
+        contratoAlquilerForm.getInmuebleComboBox().first().selectByText(selectedInmueble);
 
         //ComboboxInquilino
-        List<String> inquilinoList = contratoView.getInquilinoComboBoxAlquiler().first().getPopupSuggestions();
+        List<String> inquilinoList = contratoAlquilerForm.getInquilinoComboBox().first().getPopupSuggestions();
         String selectedInquilino = inquilinoList.get(1);
-        contratoView.getInquilinoComboBoxAlquiler().first().selectByText(selectedInquilino);
+        contratoAlquilerForm.getInquilinoComboBox().first().selectByText(selectedInquilino);
 
         //DateField Celebracion
-        contratoView.getFechadeCelebracionDateFieldAlquiler().first().setValue("22/10/2017");
+        contratoAlquilerForm.getFechadeCelebracionDateField().first().setValue("22/10/2017");
 
         //TODO Doc contrato
-        contratoView.getEstadodocumentoTextFieldAlquiler().first();
-        contratoView.getUploadDocAlquiler().first();
-        contratoView.getDownloadContratoAlquiler().first();
+        contratoAlquilerForm.getEstadodocumentoTextField().first();
+        contratoAlquilerForm.getUploadButton().first();
+        contratoAlquilerForm.getDownlooadButton().first();
 
         //Tab "condiciones"
-        contratoView.getTabSheet1().first().openTab("Condiciones");
+        contratoAlquilerForm.getTabSheet1().first().openTab("Condiciones");
+
+        //textfield punitario
+        contratoAlquilerForm.getFrecuenciadeIncrementomesesTextField().first().setValue("1");
 
         //ComboDuracion
-        List<String> durationList = contratoView.getDuracinComboBox().first().getPopupSuggestions();
+        List<String> durationList = contratoAlquilerForm.getDuracinComboBox().first().getPopupSuggestions();
         String selectedDuration = durationList.get(1);
-        contratoView.getDuracinComboBox().first().selectByText(selectedDuration);
+        contratoAlquilerForm.getDuracinComboBox().first().selectByText(selectedDuration);
 
         //ComboInteres
-        List<String> intereList = contratoView.getTipoInteresComboBox().first().getPopupSuggestions();
+        List<String> intereList = contratoAlquilerForm.getTipoInteres().getPopupSuggestions();
         String selectedIntere = intereList.get(1);
-        contratoView.getTipoInteresComboBox().first().selectByText(selectedIntere);
+        contratoAlquilerForm.getTipoInteres().selectByText(selectedIntere);
 
-        contratoView.getDiadePagoTextField().first().setValue("2");
+        contratoAlquilerForm.getDadePagoTextField().first().setValue("2");
 
-        contratoView.getRecargoPunitorioTextField().first().setValue("2");
-        contratoView.getAumentoporActualizacinTextField().first().setValue("4");
+        contratoAlquilerForm.getRecargoPunitorioTextField().first().setValue("2");
+        contratoAlquilerForm.getAumentoporActualizacinTextField().first().setValue("4");
 
-        //ComboInteresMonto IMPORTANTE USAR GET(1)
-        List<String> interesList = contratoView.getTipoInteresComboBoxMonto().get(1).getPopupSuggestions();
+        //ComboInteresMonto
+        List<String> interesList = contratoAlquilerForm.getTipoInteresMonto().getPopupSuggestions();
         String selectedInteres = interesList.get(1);
-        contratoView.getTipoInteresComboBoxMonto().get(1).selectByText(selectedInteres);
+        contratoAlquilerForm.getTipoInteresMonto().selectByText(selectedInteres);
 
-        contratoView.getValorInicialTextField().first().setValue("20000");
+        contratoAlquilerForm.getValorInicialTextField().first().setValue("20000");
 
-        contratoView.getTipoMonedaRadioButtonGroupAlquiler().first().selectByText("Pesos");
+        contratoAlquilerForm.getTipoMonedaRadioButtonGroup().first().selectByText("Pesos");
 
-        contratoView.getGuardarButtonAlquiler().first().click();
-        //TBUtils.sleep(3000);
-        //Assert.assertFalse(contratoView.isAlquilerFormDisplayed());
+        contratoAlquilerForm.getGuardarButton().first().click();
+        TBUtils.sleep(3000);
+        Assert.assertFalse(contratoAlquilerForm.isDisplayed());
 
 
 

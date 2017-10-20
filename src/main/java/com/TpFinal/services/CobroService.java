@@ -47,6 +47,10 @@ public class CobroService {
 		return ret;
 	}
 	
+	public List<Cobro> readCobrosByEstado(EstadoCobro estado){
+		return  dao.findCobrobyEstado(estado);
+	}
+	
 	//lo deje en public para testearlo
 	public void calcularDatosFaltantes(List<Cobro>cobros) {
 		cobros.forEach(c ->{

@@ -45,7 +45,7 @@ public class CobrosABMView extends DefaultLayout implements View {
     Button seleccionFiltro = new Button("Filtrar");
     Window sw = new Window("Filtrar");
 
-    private int acciones;
+    private int acciones = 0;
 
     public CobrosABMView() {
         super();
