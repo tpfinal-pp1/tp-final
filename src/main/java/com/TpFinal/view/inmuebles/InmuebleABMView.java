@@ -204,7 +204,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		return ret;
 	    }).setCaption("Dirección");
 
-		grid.setRowHeight(200);
+		grid.setRowHeight(200);//FIXME por el header que se agranda tambien
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
