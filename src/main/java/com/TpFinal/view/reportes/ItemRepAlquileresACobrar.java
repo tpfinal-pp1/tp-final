@@ -11,7 +11,6 @@ import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.persona.Inquilino;
 
-
 public class ItemRepAlquileresACobrar {
     // Inquilino - Fecha de Vencimiento - Monto - Fecha de Cobro
     private Integer anio;
@@ -20,11 +19,13 @@ public class ItemRepAlquileresACobrar {
     private String monto;
     private String nombre;
     private String apellido;
+    private Integer numeroMes;
 
     public ItemRepAlquileresACobrar(Inquilino i, Cobro c, TipoMoneda tipoMoneda) {
 	LocalDate fecha = c.getFechaDeVencimiento();
 	anio = fecha.getYear();
 	mes = fecha.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"));
+	numeroMes = fecha.getMonthValue();
 	fechaVencimiento = fecha.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter());
 	monto = TipoMoneda.getSimbolo(tipoMoneda) + " " + c.getMontoRecibido().toString();
 	nombre = i.getPersona().getNombre();
@@ -35,16 +36,20 @@ public class ItemRepAlquileresACobrar {
 	return anio;
     }
 
+    public Integer getNumeroMes() {
+        return numeroMes;
+    }
+
+    public void setNumeroMes(Integer numeroMes) {
+        this.numeroMes = numeroMes;
+    }
+
     public void setAnio(Integer anio) {
 	this.anio = anio;
     }
 
     public String getMes() {
 	return mes;
-    }
-    
-    public int getMesNumero() {
-	return getFechaVencimientoEnDate().getMonthValue();
     }
 
     public void setMes(String mes) {
@@ -56,12 +61,9 @@ public class ItemRepAlquileresACobrar {
     }
 
     public LocalDate getFechaVencimientoEnDate() {
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/YYYY");
-	formatter = formatter.withLocale(Locale.forLanguageTag("es-AR"));
-	return LocalDate.parse(fechaVencimiento, formatter);
+	return LocalDate.parse(fechaVencimiento, DateTimeFormatter.ofPattern("dd/MM/YYYY").withLocale(Locale
+		.forLanguageTag("es-AR")));
     }
-    
-    
 
     public void setFechaVencimiento(String fechaVencimiento) {
 	this.fechaVencimiento = fechaVencimiento;
@@ -96,7 +98,5 @@ public class ItemRepAlquileresACobrar {
 	return "" + anio + " - " + mes + " - fecha venc.: " + fechaVencimiento
 		+ " - monto: " + monto + " - inquilino: " + nombre + " " + apellido;
     }
-    
-    
 
 }

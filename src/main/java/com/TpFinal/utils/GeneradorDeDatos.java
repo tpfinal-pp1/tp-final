@@ -73,12 +73,11 @@ public class GeneradorDeDatos {
 
 	serviceProvincia = new ProvinciaService(modoLectura);
 	cobroService = new CobroService();
-	
 
 	List<Provincia> provincias = serviceProvincia.getProvincias();
 	try {
-	if(daoInm.readAll().size()==0) {
-	    for (int i = 0; i < cantidad; i++) {
+	    if (daoInm.readAll().size() == 0) {
+		for (int i = 0; i < cantidad; i++) {
 
 		    Provincia provincia = provinciaRandom(provincias);
 		    Localidad localidad = localidadRandom(provincia);
@@ -92,14 +91,14 @@ public class GeneradorDeDatos {
 		    Persona comprador = personaRandom();
 		    Persona inquilino = personaRandom();
 		    daoPer.saveOrUpdate(comprador);
-		    
+
 		    Inquilino inq = asignarRolInquilinoA(inquilino);
 		    daoPer.saveOrUpdate(inquilino);
 
-		    ContratoVenta contratoVenta =contratoVentaDe(inmueble, pubVenta, comprador);
-		    contratoVenta.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
-		    
-		    
+		    ContratoVenta contratoVenta = contratoVentaDe(inmueble, pubVenta, comprador);
+		    contratoVenta.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato
+			    .values().length)]);
+
 		    daoPer.saveOrUpdate(p);
 		    daoInm.create(inmueble);
 		    inmueble.setPropietario(prop);
@@ -107,35 +106,35 @@ public class GeneradorDeDatos {
 		    daoope.saveOrUpdate(pubVenta);
 		    daoope.saveOrUpdate(pubAlquiler);
 		    inmueble.addContrato(contratoVenta);
-		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble,inq);
-		    contratoAlquiler.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato.values().length)]);
+		    ContratoAlquiler contratoAlquiler = contratoAlquilerDe(inmueble, inq);
+		    contratoAlquiler.setEstadoContrato(EstadoContrato.values()[random.nextInt(EstadoContrato
+			    .values().length)]);
 		    inmueble.addContrato(contratoAlquiler);
 		    daoContratos.saveOrUpdate(contratoAlquiler);
-		    
+
 		    daoInm.saveOrUpdate(inmueble);
 		    if (contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente)) {
 			System.out.println("un contrato vigente");
-			contratoService.addCobros(contratoAlquiler);		
-			contratoService.saveOrUpdate(contratoAlquiler, null);
+			contratoService.addCobros(contratoAlquiler);
+			daoContratos.saveOrUpdate(contratoAlquiler);
 		    }
-		    
 
 		}
 		System.out.println("Agregados\n"
-		+ daoInm.readAll().size() +" inmuebles.\n"
-		+ daoope.readAll().size() +" publicaciones.\n"
-		+ daoContratos.readAll().size() +" contratos.\n"
-		+ daoPer.readAll().size() +" personas.\n"
-		+ "a la base de datos.");
-		
+			+ daoInm.readAll().size() + " inmuebles.\n"
+			+ daoope.readAll().size() + " publicaciones.\n"
+			+ daoContratos.readAll().size() + " contratos.\n"
+			+ daoPer.readAll().size() + " personas.\n"
+			+ "a la base de datos.");
+
 		System.out.println("Items reporte: ");
-		contratoService.getListadoAlquileresACobrar(1, 1900, 12, 2100).forEach(System.out::println);;
-	    
+		contratoService.getListadoAlquileresACobrar(1, 1900, 12, 2100).forEach(System.out::println);
+
+	    }
+	} catch (Exception e) {
+
 	}
-	} catch(Exception e){
-	    
-	}
-	
+
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {
@@ -157,30 +156,31 @@ public class GeneradorDeDatos {
     }
 
     private static TipoInteres tipoIncrementoRandom() {
-	return random.nextBoolean()? TipoInteres.Acumulativo: TipoInteres.Simple;
+	return random.nextBoolean() ? TipoInteres.Acumulativo : TipoInteres.Simple;
     }
 
     private static Integer intervaloRandom(ContratoDuracion duracion) {
-	Integer ret = 1+random.nextInt(duracion.getDuracion());
-	while(duracion.getDuracion() % ret != 0) {
-	    ret = 1+random.nextInt(duracion.getDuracion());
+	Integer ret = 1 + random.nextInt(duracion.getDuracion());
+	while (duracion.getDuracion() % ret != 0) {
+	    ret = 1 + random.nextInt(duracion.getDuracion());
 	}
 	return ret;
     }
 
     private static ContratoDuracion duracionRandom() {
-    	Integer valor = random.nextInt(100);
-    	return new ContratoDuracion.Builder().setDescripcion(String.valueOf(valor)+ " Meses").setDuracion(valor).build();
-    	  }
+	Integer valor = random.nextInt(100);
+	return new ContratoDuracion.Builder().setDescripcion(String.valueOf(valor) + " Meses").setDuracion(valor)
+		.build();
+    }
 
     private static BigDecimal cuotaRandom() {
-	return BigDecimal.valueOf(random.nextInt(10)*1000+random.nextInt(10)*100);
+	return BigDecimal.valueOf(random.nextInt(10) * 1000 + random.nextInt(10) * 100);
     }
 
     private static ContratoVenta contratoVentaDe(Inmueble inmueble, PublicacionVenta pubVenta, Persona comprador) {
 	return new ContratoVenta.Builder()
 		.setComprador(comprador)
-		.setFechaCelebracion(fechaRandom())	
+		.setFechaCelebracion(fechaRandom())
 		.setPrecioVenta(pubVenta.getPrecio())
 		.setInmueble(inmueble)
 		.build();
@@ -207,7 +207,7 @@ public class GeneradorDeDatos {
     }
 
     private static TipoMoneda tipoMonedaRandom() {
-	return random.nextBoolean()? TipoMoneda.Dolares : TipoMoneda.Pesos;
+	return random.nextBoolean() ? TipoMoneda.Dolares : TipoMoneda.Pesos;
     }
 
     private static PublicacionAlquiler publicacionAlquilerRandom(Inmueble inmueble) {
