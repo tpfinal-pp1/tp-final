@@ -200,10 +200,27 @@ public class InmuebleABMView extends DefaultLayout implements View {
 				@Override
 				public boolean onSave() {
 					inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
-					 updateList();
+					updateList();
 					return false;
 				}
-				
+
+				@Override
+				public boolean onClean() {
+					boolean success=true;
+					try {
+						 inmuebleSupplier = () -> inmuebleService.readAll();
+						 updateList();
+					} catch (Exception e) {
+						success=false;
+						e.printStackTrace();
+					}
+					return success;
+				}
+
+				@Override
+				public boolean searchVisible() {
+					return false;
+				}
 			};
 		});
 	}
