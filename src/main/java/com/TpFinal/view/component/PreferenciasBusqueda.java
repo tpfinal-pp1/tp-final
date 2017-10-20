@@ -118,6 +118,7 @@ public abstract class PreferenciasBusqueda extends Window {
 
     private void cleanPreferences() {
 	binderBusqueda.getFields().forEach(field -> field.clear());
+	onClean();
     }
 
     private void search() {
@@ -136,10 +137,12 @@ public abstract class PreferenciasBusqueda extends Window {
     }
 
     public abstract boolean onSave();
+    public abstract boolean onClean();
+    public abstract boolean searchVisible();
 
     private void configureComponents() {
 	configureCombosProvinciaYLocalidad();
-
+	this.buscar.setVisible(searchVisible());
     }
 
     private void configureCombosProvinciaYLocalidad() {
