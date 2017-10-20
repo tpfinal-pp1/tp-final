@@ -56,7 +56,7 @@ public class Persona implements Identificable, BorradoLogico {
     @NotNull
     private EstadoRegistro estadoRegistro;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne(orphanRemoval = true, fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
     private CriterioBusqInmueble prefBusqueda;
 
