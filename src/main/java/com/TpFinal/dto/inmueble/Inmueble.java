@@ -14,10 +14,13 @@ import java.util.Set;
 
 import javax.persistence.*;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Table(name = "Inmuebles")
 public class Inmueble implements Identificable, BorradoLogico {
     public static final String pIdInmueble = "idInmueble";
