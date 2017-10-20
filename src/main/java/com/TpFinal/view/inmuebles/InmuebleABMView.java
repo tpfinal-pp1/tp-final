@@ -74,9 +74,11 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
-	filtering.addComponents(filter, clearFilterTextBtn, newItem);
+
+	filtering.addComponents(btnSearch,filter, clearFilterTextBtn, newItem);
+
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	HorizontalLayout hlf= new HorizontalLayout(btnSearch, filtering);
+	HorizontalLayout hlf= new HorizontalLayout( filtering);
 
 	buildToolbar("Inmuebles", hlf);
 	grid.setSizeFull();
@@ -95,6 +97,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
 	filter.setVisible(b);
+	btnSearch.setVisible(b);
 	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
@@ -228,10 +231,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	private void configureFilter() {
 	    filter.addValueChangeListener(e -> filtrarPorCalle(filter.getValue()));
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);
-	    filter.setPlaceholder("Filtrar");
-	    filter.setIcon(VaadinIcons.SEARCH);
-	    filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-	    clearFilterTextBtn.setDescription("Limpiar filtro");
+	    filter.setPlaceholder("Filtrar"); clearFilterTextBtn.setDescription("Limpiar filtro");
 	    clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	}
 
@@ -272,6 +272,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	private ValueProvider<Inmueble, HorizontalLayout> configurarAcciones() {
 	    return inmueble -> {
+
 		Button edit = new Button(VaadinIcons.EDIT);
 		edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		edit.addClickListener(e -> {

@@ -123,7 +123,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	filter.setValueChangeMode(ValueChangeMode.LAZY);
 	filter.setPlaceholder("Filtrar");
 	filter.addValueChangeListener(e -> updateList());
-	clearFilterTextBtn.setDescription("Limpiar filtro");
+
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);

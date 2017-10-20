@@ -100,7 +100,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	filter.addValueChangeListener(e -> updateList());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-	clearFilterTextBtn.setDescription("Limpiar filtro");
+
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
     }
 

@@ -264,13 +264,15 @@ public class PublicacionForm extends FormLayout {
                 }
 
                   delete.setVisible(true);
-                  tipoPublicacion.setEnabled(false);
+                    tipoPublicacion.setEnabled(false);
+                  tipoPublicacion.setVisible(false);
 
 
 
              }
              else{
                 tabSheet.getTab(0).setCaption("Publicación");
+                tipoPublicacion.setVisible(true);
                 tipoPublicacion.setEnabled(true);
                 delete.setVisible(false);
                 tipoPublicacion.setRequiredIndicatorVisible(true);
