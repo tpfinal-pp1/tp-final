@@ -15,7 +15,7 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
-import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -164,7 +164,7 @@ public class DAOPersonaImplIT {
     @Test
     public void personaConPrefBusqueda() {
 	Persona p = instancia("1");
-	p.setPrefBusqueda(new CriterioBusquedaInmuebleDTO.Builder()
+	p.setPrefBusqueda(new CriterioBusqInmueble.Builder()
 		.setaEstrenar(true)
 		.build());
 	

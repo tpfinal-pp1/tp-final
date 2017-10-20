@@ -2,14 +2,17 @@
 package com.TpFinal.dto.inmueble;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +26,7 @@ import com.TpFinal.dto.publicacion.TipoPublicacion;
 
 @Entity
 @Table(name = "CriteriosBusquedaPersona")
-public class CriterioBusquedaInmuebleDTO implements Identificable {
+public class CriterioBusqInmueble implements Identificable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -34,10 +37,10 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
     private Integer maxCantCocheras;
     private Integer minCantDormitorios;
     private Integer maxCantDormitorios;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "clase_inmueble")
     @Enumerated(EnumType.STRING)
-    private List<ClaseInmueble> clasesDeInmueble;
+    private Set<ClaseInmueble> clasesDeInmueble = new HashSet<>();
     private Boolean conAireAcondicionado;
     private Boolean conParrilla;
     private Boolean conPileta;
@@ -59,11 +62,11 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
     @Enumerated(EnumType.STRING)
     private TipoPublicacion tipoPublicacion;
 
-    public CriterioBusquedaInmuebleDTO() {
+    public CriterioBusqInmueble() {
 	super();
     }
 
-    public CriterioBusquedaInmuebleDTO(CriterioBusquedaInmuebleDTO.Builder builder) {
+    public CriterioBusqInmueble(CriterioBusqInmueble.Builder builder) {
 	super();
 	this.aEstrenar = builder.aEstrenar;
 	this.minCantAmbientes = builder.minCantAmbientes;
@@ -90,6 +93,21 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 	this.maxPrecio = builder.maxPrecio;
 	this.tipoMoneda = builder.tipoMoneda;
 	this.tipoPublicacion = builder.tipoPublicacion;
+    }
+    
+
+    @Override
+    public String toString() {
+	return "CriterioBusqInmueble [id=" + id + ", aEstrenar=" + aEstrenar + ", minCantAmbientes=" + minCantAmbientes
+		+ ", maxCantAmbientes=" + maxCantAmbientes + ", minCantCocheras=" + minCantCocheras
+		+ ", maxCantCocheras=" + maxCantCocheras + ", minCantDormitorios=" + minCantDormitorios
+		+ ", maxCantDormitorios=" + maxCantDormitorios + ", clasesDeInmueble=" + clasesDeInmueble
+		+ ", conAireAcondicionado=" + conAireAcondicionado + ", conParrilla=" + conParrilla + ", conPileta="
+		+ conPileta + ", conJardin=" + conJardin + ", localidad=" + localidad + ", provincia=" + provincia
+		+ ", estadoInmueble=" + estadoInmueble + ", minSupCubierta=" + minSupCubierta + ", maxSupCubierta="
+		+ maxSupCubierta + ", minSupTotal=" + minSupTotal + ", maxSupTotal=" + maxSupTotal + ", tipoInmueble="
+		+ tipoInmueble + ", minPrecio=" + minPrecio + ", maxPrecio=" + maxPrecio + ", tipoMoneda=" + tipoMoneda
+		+ ", tipoPublicacion=" + tipoPublicacion + "]";
     }
 
     public Boolean getaEstrenar() {
@@ -148,11 +166,11 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 	this.maxCantDormitorios = maxCantDormitorios;
     }
 
-    public List<ClaseInmueble> getClasesDeInmueble() {
+    public Set<ClaseInmueble> getClasesDeInmueble() {
 	return clasesDeInmueble;
     }
 
-    public void setClasesDeInmueble(List<ClaseInmueble> clasesDeInmueble) {
+    public void setClasesDeInmueble(Set<ClaseInmueble> clasesDeInmueble) {
 	this.clasesDeInmueble = clasesDeInmueble;
     }
 
@@ -288,9 +306,9 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
     public boolean equals(Object o) {
 	if (this == o)
 	    return true;
-	if (!(o instanceof CriterioBusquedaInmuebleDTO))
+	if (!(o instanceof CriterioBusqInmueble))
 	    return false;
-	CriterioBusquedaInmuebleDTO other = (CriterioBusquedaInmuebleDTO) o;
+	CriterioBusqInmueble other = (CriterioBusqInmueble) o;
 	return getId() != null && Objects.equals(getId(), other.getId());
     }
 
@@ -308,7 +326,7 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 	private Integer maxCantCocheras;
 	private Integer minCantDormitorios;
 	private Integer maxCantDormitorios;
-	private List<ClaseInmueble> clasesDeInmueble;
+	private Set<ClaseInmueble> clasesDeInmueble = new HashSet<>();
 	private Boolean conAireAcondicionado;
 	private Boolean conParrilla;
 	private Boolean conPileta;
@@ -360,7 +378,7 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 	    return this;
 	}
 
-	public Builder setClasesDeInmueble(List<ClaseInmueble> clasesDeInmueble) {
+	public Builder setClasesDeInmueble(Set<ClaseInmueble> clasesDeInmueble) {
 	    this.clasesDeInmueble = clasesDeInmueble;
 	    return this;
 	}
@@ -445,8 +463,8 @@ public class CriterioBusquedaInmuebleDTO implements Identificable {
 	    return this;
 	}
 
-	public CriterioBusquedaInmuebleDTO build() {
-	    return new CriterioBusquedaInmuebleDTO(this);
+	public CriterioBusqInmueble build() {
+	    return new CriterioBusqInmueble(this);
 	}
 
     }

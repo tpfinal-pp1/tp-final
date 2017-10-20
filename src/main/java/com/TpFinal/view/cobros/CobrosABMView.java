@@ -2,6 +2,8 @@ package com.TpFinal.view.cobros;
 
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;
@@ -13,6 +15,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
+import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
@@ -38,8 +41,11 @@ public class CobrosABMView extends DefaultLayout implements View {
     private CobrosForm cobrosForm = new CobrosForm(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
+    RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
+    Button seleccionFiltro = new Button(VaadinIcons.SEARCH_MINUS);
+    Window sw = new Window("Filtrar");
 
-    private int acciones;
+    private int acciones = 0;
 
     public CobrosABMView() {
         super();
@@ -55,8 +61,10 @@ public class CobrosABMView extends DefaultLayout implements View {
     private void buildLayout() {
         CssLayout filtering = new CssLayout();
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+        
         filtering.addComponents(filter, clearFilterTextBtn);
-        buildToolbar("Cobros", filtering);
+        HorizontalLayout hlf = new HorizontalLayout(seleccionFiltro, filtering);
+        buildToolbar("Cobros", hlf);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, cobrosForm);
         mainLayout.setSizeFull();
@@ -148,6 +156,7 @@ public class CobrosABMView extends DefaultLayout implements View {
             configureGrid();
             updateList();
             cobrosForm.cancel();
+           
         }
 
         private void configureFilter() {
@@ -158,7 +167,46 @@ public class CobrosABMView extends DefaultLayout implements View {
             filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
             clearFilterTextBtn.setDescription("Limpiar filtro");
             clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+            seleccionFiltro.addClickListener(e -> abriVentanaSelectoraFiltros());
         }
+        
+        private void abriVentanaSelectoraFiltros() {
+        	HorizontalLayout hl = new HorizontalLayout(filtroRoles);
+        	hl.setMargin(true);
+        	hl.setSpacing(true);
+        	sw.setContent(hl);
+        	filtroRoles.setItems("Todos", "Cobrados", "No cobrados");
+        	filtroRoles.addValueChangeListener(l -> {
+        	    System.out.println(l.getValue());
+        	    String valor = l.getValue();
+        	    filter(valor);
+        	});
+        	Responsive.makeResponsive(sw);
+        	sw.setModal(true);
+        	sw.setResizable(false);
+        	sw.setClosable(true);
+        	sw.setVisible(true);
+        	sw.center();
+        	UI.getCurrent().addWindow(sw);
+        	sw.focus();
+        }
+        
+        public void filter(String valor) {
+        	List<Cobro> customers = null;
+        	if (valor.equals("Todos")) {
+        		 customers = cobroService.findAll(filter.getValue());
+        	}
+        	else if (valor.equals("Cobrados")) {
+        		customers = cobroService.findByEstado(EstadoCobro.COBRADO.toString());
+
+        	}
+        	else if (valor.equals("No cobrados")) {
+        		customers = cobroService.findByEstado(EstadoCobro.NOCOBRADO.toString());
+
+        	}
+        	grid.setItems(customers);
+       }
+
 
         @SuppressWarnings("unchecked")
 		private void configureGrid() {

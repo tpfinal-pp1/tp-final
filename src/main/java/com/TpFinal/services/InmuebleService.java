@@ -7,7 +7,7 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Coordenada;
-import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -16,7 +16,10 @@ import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.util.CurrentInstance;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -46,7 +49,7 @@ public class InmuebleService {
 	return dao.findById(id);
     }
 
-    public List<Inmueble> findByCaracteristicas(CriterioBusquedaInmuebleDTO criterio) {
+    public List<Inmueble> findByCaracteristicas(CriterioBusqInmueble criterio) {
 	return dao.findInmueblesbyCaracteristicas(criterio);
     }
 
@@ -77,6 +80,11 @@ public class InmuebleService {
 		.setTipoInmueble(TipoInmueble.Vivienda)
 		.build();
     }
+
+    public String getPortada(Inmueble inmueble){
+		return "img"+ File.separator+"casa.jpg";
+	}
+
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
 	List<Inmueble> inmuebles = dao.readAllActives().stream()

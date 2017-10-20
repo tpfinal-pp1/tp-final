@@ -17,8 +17,6 @@ public class TBUtils {
     private static boolean visible=false ; //Dejar en false antes de comitear!! importantisimo
 
 
-
-
     public static WebDriver initializeDriver() {
         if(!visible) {//PHANTOM
             PhantomJsDriverManager.getInstance().setup();

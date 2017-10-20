@@ -3,7 +3,7 @@ package com.TpFinal.dto.persona;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
-import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
@@ -58,7 +58,7 @@ public class Persona implements Identificable, BorradoLogico {
 
     @OneToOne(orphanRemoval = true)
     @Cascade({ CascadeType.ALL })
-    private CriterioBusquedaInmuebleDTO prefBusqueda;
+    private CriterioBusqInmueble prefBusqueda;
 
     public Persona() {
 	super();
@@ -312,16 +312,16 @@ public class Persona implements Identificable, BorradoLogico {
 	return ret;
     }
     
-    public CriterioBusquedaInmuebleDTO getPrefBusqueda() {
+    public CriterioBusqInmueble getPrefBusqueda() {
         return prefBusqueda;
     }
 
-    public void setPrefBusqueda(CriterioBusquedaInmuebleDTO prefBusqueda) {
+    public void setPrefBusqueda(CriterioBusqInmueble prefBusqueda) {
         this.prefBusqueda = prefBusqueda;
     }
 
     public static class Builder {
-	private CriterioBusquedaInmuebleDTO prefBusqueda;
+	private CriterioBusqInmueble prefBusqueda;
 	private Long id;
 	private String nombre;
 	private String apellido;
@@ -378,7 +378,7 @@ public class Persona implements Identificable, BorradoLogico {
 	    return this;
 	}
 	
-	public Builder setPrefBusqueda(CriterioBusquedaInmuebleDTO dato) {
+	public Builder setPrefBusqueda(CriterioBusqInmueble dato) {
 	    this.prefBusqueda = dato;
 	    return this;
 	}

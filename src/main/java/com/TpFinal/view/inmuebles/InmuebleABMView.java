@@ -1,30 +1,36 @@
 package com.TpFinal.view.inmuebles;
 
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.component.PreferenciasBusqueda;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+
+import com.vaadin.client.renderers.ImageRenderer;
+
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
+import com.vaadin.server.Sizeable;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
+import com.vaadin.shared.ui.grid.HeightMode;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
+import java.util.function.Supplier;
 
 @Title("Inmuebles")
 @Theme("valo")
@@ -42,6 +48,8 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private InmuebleForm inmuebleForm = new InmuebleForm(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
+    private Supplier<List<Inmueble>> inmuebleSupplier;
+    private Button btnSearch=new Button(VaadinIcons.SEARCH_MINUS);
 
     // acciones segun numero de fila
     int acciones = 0;
@@ -53,6 +61,13 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
     }
 
+    public InmuebleABMView(Supplier<List<Inmueble>> supplier) {
+	super();
+	inmuebleSupplier = supplier;
+	buildLayout();
+	controller.configureComponents();
+    }
+
     public Controller getController() {
 	return controller;
     }
@@ -61,8 +76,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	CssLayout filtering = new CssLayout();
 	filtering.addComponents(filter, clearFilterTextBtn, newItem);
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	HorizontalLayout hlf= new HorizontalLayout(btnSearch, filtering);
 
-	buildToolbar("Inmuebles", filtering);
+	buildToolbar("Inmuebles", hlf);
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, inmuebleForm);
 	mainLayout.setSizeFull();
@@ -115,6 +131,11 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	filter.clear();
     }
 
+    public void setSupplier(Supplier<List<Inmueble>> supplier) {
+	this.inmuebleSupplier = supplier;
+
+    }
+
     /*
      * 
      * Deployed as a Servlet or Portlet.
@@ -152,9 +173,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	private InmuebleService inmuebleService = new InmuebleService();
 
 	public void configureComponents() {
+	    if (inmuebleSupplier == null)
+		inmuebleSupplier = () -> inmuebleService.readAll();
 	    configureFilter();
 	    configureNewItem();
 	    configureGrid();
+	    configureSearch();
 	    updateList();
 	}
 
@@ -165,6 +189,40 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		inmuebleForm.setInmueble(null);
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	}
+	
+	@SuppressWarnings("serial")
+	private void configureSearch() {
+		btnSearch.addClickListener(click ->{
+			CriterioBusqInmueble criterio= new CriterioBusqInmueble();
+			new PreferenciasBusqueda(criterio) {
+				
+				@Override
+				public boolean onSave() {
+					inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
+					updateList();
+					return false;
+				}
+
+				@Override
+				public boolean onClean() {
+					boolean success=true;
+					try {
+						 inmuebleSupplier = () -> inmuebleService.readAll();
+						 updateList();
+					} catch (Exception e) {
+						success=false;
+						e.printStackTrace();
+					}
+					return success;
+				}
+
+				@Override
+				public boolean searchVisible() {
+					return false;
+				}
+			};
+		});
 	}
 
 	private void configureFilter() {
@@ -186,7 +244,13 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		    inmuebleForm.clearFields();
 		}
 	    });
-
+	    grid.addComponentColumn(inmueble -> {
+		Image image = new Image("", new ThemeResource(
+			inmuebleService.getPortada(inmueble)));
+		image.setWidth(280, Sizeable.Unit.PIXELS);
+		image.setHeight(200, Sizeable.Unit.PIXELS);
+		return image;
+	    }).setCaption("Portada");
 	    grid.addColumn(inmueble -> {
 		String ret = "";
 		if (inmueble.getDireccion() != null) {
@@ -197,10 +261,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		return ret;
 	    }).setCaption("Dirección");
 
+	    grid.setRowHeight(200);// FIXME por el header que se agranda tambien
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
 	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+
 	    grid.getColumns().forEach(c -> c.setResizable(false));
 	}
 
@@ -249,7 +315,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	public void updateList() {
-	    List<Inmueble> inmuebles = inmuebleService.readAll();
+	    List<Inmueble> inmuebles = inmuebleSupplier.get();
 	    grid.setItems(inmuebles);
 	}
 
