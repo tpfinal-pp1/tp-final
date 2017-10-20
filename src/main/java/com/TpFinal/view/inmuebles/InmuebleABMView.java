@@ -1,11 +1,13 @@
 package com.TpFinal.view.inmuebles;
 
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.component.PreferenciasBusqueda;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -47,6 +49,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     private Controller controller = new Controller();
     private Supplier<List<Inmueble>> inmuebleSupplier;
+    private Button btnSearch=new Button(VaadinIcons.SEARCH_MINUS);
 
     // acciones segun numero de fila
     int acciones = 0;
@@ -73,8 +76,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	CssLayout filtering = new CssLayout();
 	filtering.addComponents(filter, clearFilterTextBtn, newItem);
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	HorizontalLayout hlf= new HorizontalLayout(btnSearch, filtering);
 
-	buildToolbar("Inmuebles", filtering);
+	buildToolbar("Inmuebles", hlf);
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, inmuebleForm);
 	mainLayout.setSizeFull();
@@ -174,6 +178,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    configureFilter();
 	    configureNewItem();
 	    configureGrid();
+	    configureSearch();
 	    updateList();
 	}
 
@@ -184,6 +189,23 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		inmuebleForm.setInmueble(null);
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	}
+	
+	@SuppressWarnings("serial")
+	private void configureSearch() {
+		btnSearch.addClickListener(click ->{
+			CriterioBusqInmueble criterio= new CriterioBusqInmueble();
+			new PreferenciasBusqueda(criterio) {
+				
+				@Override
+				public boolean onSave() {
+					inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
+					 updateList();
+					return false;
+				}
+				
+			};
+		});
 	}
 
 	private void configureFilter() {
