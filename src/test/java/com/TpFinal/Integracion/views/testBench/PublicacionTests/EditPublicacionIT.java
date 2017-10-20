@@ -72,7 +72,7 @@ public class EditPublicacionIT extends TestBenchTestCase{
         publicacionView.getGuardarButton().first().click();
         TBUtils.sleep(3000);
         
-        //Verificamos que el form ya no se muestre
+        //Verificamos que el form de publicación ya no se muestre
         Assert.assertFalse(publicacionView.isFormDisplayed());
     }
 
