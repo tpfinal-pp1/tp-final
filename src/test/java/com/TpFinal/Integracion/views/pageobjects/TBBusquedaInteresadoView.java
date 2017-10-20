@@ -129,4 +129,6 @@ public class TBBusquedaInteresadoView extends TestBenchTestCase{
     public ElementQuery<ButtonElement> getBuscarButton() { return buscarButton; }
 
     public ElementQuery<ButtonElement> getLimpiarButton() { return limpiarButton; }
+
+    public boolean isDisplayed(){return this.guardarButton.exists();}
 }

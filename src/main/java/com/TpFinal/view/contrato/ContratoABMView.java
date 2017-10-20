@@ -201,12 +201,9 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    finalizarCarga.setDescription("Finalizar Carga");
 
 	    HorizontalLayout hl = new HorizontalLayout(edit, finalizarCarga, renovarContrato, del);
-	    hl.setCaption("Accion "+acciones);
-	    acciones++;
 	    hl.forEach(button -> button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL));
 	    hl.setSpacing(false);
-	    hl.setCaption("Accion " + acciones);
-	    acciones++;
+
 
 	    EstadoContrato estado = contrato.getEstadoContrato();
 	    if (estado == EstadoContrato.EnProcesoDeCarga) {
@@ -230,6 +227,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 		}
 	    });
 	    hl.setSpacing(false);
+		hl.setCaption("Accion " + acciones);
+		acciones++;
 	    return hl;
 	};
     }
