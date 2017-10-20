@@ -19,8 +19,6 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 @Entity
-@Cacheable
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @Table(name = "Inmuebles")
 public class Inmueble implements Identificable, BorradoLogico {
     public static final String pIdInmueble = "idInmueble";
@@ -112,6 +110,22 @@ public class Inmueble implements Identificable, BorradoLogico {
     @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	protected Set<Imagen> imagenes = new HashSet<>();
+
+	public Set<Imagen> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(Set<Imagen> imagenes) {
+		this.imagenes = imagenes;
+	}
+
+	public Imagen getPortada() {
+		return portada;
+	}
+
+	public void setPortada(Imagen portada) {
+		this.portada = portada;
+	}
 
 	@OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
