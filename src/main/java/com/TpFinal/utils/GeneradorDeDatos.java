@@ -116,7 +116,7 @@ public class GeneradorDeDatos {
 		    if (contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente)) {
 			System.out.println("un contrato vigente");
 			contratoService.addCobros(contratoAlquiler);		
-			daoContratos.saveOrUpdate(contratoAlquiler);
+			contratoService.saveOrUpdate(contratoAlquiler, null);
 		    }
 		    
 
@@ -143,13 +143,13 @@ public class GeneradorDeDatos {
 		.setFechaCelebracion(fechaRandom())
 		.setInmueble(inmueble)
 		.setInquilinoContrato(inquilino)
-		.setInteresPunitorio(0.1)
+		.setInteresPunitorio(new Double(1))
 		.setValorIncial(cuotaRandom())
 		.setDuracionContrato(duracion)
 		.setIntervaloActualizacion(intervaloRandom(duracion))
-		.setPorcentajeIncremento(0.1)
-		.setTipoIncrementoCuota(tipoIncrementoRandom())
-		.setTipoInteresPunitorio(tipoIncrementoRandom())
+		.setPorcentajeIncremento(new Double(1))
+		.setTipoIncrementoCuota(TipoInteres.Simple)
+		.setTipoInteresPunitorio(TipoInteres.Simple)
 		.build();
     }
 
