@@ -52,7 +52,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     RadioButtonGroup<String>filtroRoles= new RadioButtonGroup<>();
-    Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
+ //   Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
     
     
@@ -85,10 +85,12 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
          */
    
         filter.addValueChangeListener(e -> updateList());
+        filter.setIcon(VaadinIcons.SEARCH);
+        filter.setStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
         filter.setValueChangeMode(ValueChangeMode.LAZY);
         filter.setPlaceholder("Filtrar");
         filter.addValueChangeListener(e -> updateList());
-        clearFilterTextBtn.setDescription("Limpiar filtro");
+
         clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
         newItem.addClickListener(e -> {
@@ -180,7 +182,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b){
     	newItem.setVisible(b);
         filter.setVisible(b);
-        seleccionFiltro.setVisible(b);
+       // seleccionFiltro.setVisible(b);
         //clearFilterTextBtn.setVisible(b);
         if(isonMobile)
             grid.setVisible(b);
@@ -191,7 +193,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 
         CssLayout filtering = new CssLayout();
         HorizontalLayout hl= new HorizontalLayout();
-        filtering.addComponents(seleccionFiltro,filter, clearFilterTextBtn,newItem);
+        filtering.addComponents(filter, clearFilterTextBtn,newItem);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         hl.addComponent(filtering);
         

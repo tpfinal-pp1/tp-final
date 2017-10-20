@@ -62,8 +62,8 @@ public class CobrosABMView extends DefaultLayout implements View {
         CssLayout filtering = new CssLayout();
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         
-        filtering.addComponents(filter, clearFilterTextBtn);
-        HorizontalLayout hlf = new HorizontalLayout(seleccionFiltro, filtering);
+        filtering.addComponents(seleccionFiltro,filter, clearFilterTextBtn);
+        HorizontalLayout hlf = new HorizontalLayout( filtering);
         buildToolbar("Cobros", hlf);
         grid.setSizeFull();
         mainLayout = new HorizontalLayout(grid, cobrosForm);
@@ -80,6 +80,7 @@ public class CobrosABMView extends DefaultLayout implements View {
      */
     public void setComponentsVisible(boolean b) {
         filter.setVisible(b);
+        seleccionFiltro.setVisible(b);
         // clearFilterTextBtn.setVisible(b);
         if (isonMobile)
             grid.setVisible(b);
@@ -163,8 +164,8 @@ public class CobrosABMView extends DefaultLayout implements View {
             filter.addValueChangeListener(e -> updateList());
             filter.setValueChangeMode(ValueChangeMode.LAZY);
             filter.setPlaceholder("Filtrar");
-            filter.setIcon(VaadinIcons.SEARCH);
-            filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+
+
             clearFilterTextBtn.setDescription("Limpiar filtro");
             clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
             seleccionFiltro.addClickListener(e -> abriVentanaSelectoraFiltros());

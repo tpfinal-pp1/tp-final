@@ -1,4 +1,4 @@
-package com.TpFinal.view.dummy.pdf;
+package com.TpFinal.view.component;
 
 
 import com.TpFinal.services.DashboardEventBus;

@@ -40,7 +40,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
-    Button seleccionFiltro = new Button(VaadinIcons.SEARCH);
+    Button seleccionFiltro = new Button(VaadinIcons.SEARCH_MINUS);
     Window sw = new Window("Filtrar");
 
     HorizontalLayout mainLayout;
@@ -174,7 +174,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 	filter.setValueChangeMode(ValueChangeMode.LAZY);
 	filter.setPlaceholder("Filtrar");
 	filter.addValueChangeListener(e -> updateList());
-	clearFilterTextBtn.setDescription("Limpiar filtro");
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	if (isonMobile) {
 	    filter.setWidth("100%");
