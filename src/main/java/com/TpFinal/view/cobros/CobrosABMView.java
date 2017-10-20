@@ -193,12 +193,17 @@ public class CobrosABMView extends DefaultLayout implements View {
         
         public void filter(String valor) {
         	List<Cobro> customers = null;
-        	if (valor.equals("Todos"))
-        	    customers = cobroService.findAll(filter.getValue());
-        	else if (valor.equals("Cobrados"))
-        	    customers = cobroService.findByEstado(EstadoCobro.COBRADO.toString());
-        	else if (valor.equals("No cobrados"))
-        	    customers = cobroService.findByEstado(EstadoCobro.NOCOBRADO.toString());
+        	if (valor.equals("Todos")) {
+        		 customers = cobroService.findAll(filter.getValue());
+        	}
+        	else if (valor.equals("Cobrados")) {
+        		customers = cobroService.findByEstado(EstadoCobro.COBRADO.toString());
+
+        	}
+        	else if (valor.equals("No cobrados")) {
+        		customers = cobroService.findByEstado(EstadoCobro.NOCOBRADO.toString());
+
+        	}
         	grid.setItems(customers);
        }
 

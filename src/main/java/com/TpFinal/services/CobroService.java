@@ -97,7 +97,7 @@ public class CobroService {
 	//Ver que se necesita "arriba"
 	 public synchronized List<Cobro> findAll(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
-	        List<Cobro> cobros=dao.readAllActives();
+	        List<Cobro> cobros=this.readAll();
 	        if(stringFilter!=""){
 
 	            for (Cobro cobro : cobros) {
@@ -129,16 +129,15 @@ public class CobroService {
 		//Ver que se necesita "arriba"
 	 public synchronized List<Cobro> findByEstado(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
-	        List<Cobro> cobros=dao.readAllActives();
+	        List<Cobro> cobros=this.readAll();
 	        if(stringFilter!=""){
 
 	            for (Cobro cobro : cobros) {
 
 	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
 	                                            || cobro.getEstadoCobroString().toLowerCase()
-	                                            .contains(stringFilter.toLowerCase());
+	                                            .equals(stringFilter.toLowerCase());
 	                    if (passesFilter) {
-
 	                        arrayList.add(cobro);
 	                    }
 
