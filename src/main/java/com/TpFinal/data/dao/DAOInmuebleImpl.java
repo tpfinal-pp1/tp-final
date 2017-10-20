@@ -11,7 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
-import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -36,7 +36,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
     }
 
     @Override
-    public List<Inmueble> findInmueblesbyCaracteristicas(CriterioBusquedaInmuebleDTO criterio) {
+    public List<Inmueble> findInmueblesbyCaracteristicas(CriterioBusqInmueble criterio) {
 
 	DetachedCriteria query = null;
 	List<Inmueble> resultadoQuery = new ArrayList<>();
@@ -79,7 +79,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	return resultadoQuery;
     }
 
-    private void addRestriccionesDeInmueble(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio,
+    private void addRestriccionesDeInmueble(DetachedCriteria query, CriterioBusqInmueble criterio,
 	    String alias) {
 	query.add(Restrictions.eq(alias + "estadoRegistro", EstadoRegistro.ACTIVO));
 	if (criterio.getaEstrenar() != null) {
@@ -178,7 +178,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	}
     }
 
-    private void addRestriccionesDeAlquiler(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
+    private void addRestriccionesDeAlquiler(DetachedCriteria query, CriterioBusqInmueble criterio) {
 	if (criterio.getMinPrecio() != null) {
 	    query.add(Restrictions.ge(PublicacionAlquiler.pPrecioAlquiler, criterio.getMinPrecio()));
 	}
@@ -188,7 +188,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	}
     }
 
-    private void addRestriccionesDeVenta(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
+    private void addRestriccionesDeVenta(DetachedCriteria query, CriterioBusqInmueble criterio) {
 	if (criterio.getMinPrecio() != null) {
 	    query.add(Restrictions.ge(PublicacionVenta.pPrecioVenta, criterio.getMinPrecio()));
 	}
@@ -198,7 +198,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	}
     }
 
-    private void addRestriccionesDeVentaOAlquiler(DetachedCriteria query, CriterioBusquedaInmuebleDTO criterio) {
+    private void addRestriccionesDeVentaOAlquiler(DetachedCriteria query, CriterioBusqInmueble criterio) {
 	if (criterio.getMinPrecio() != null) {
 	    Disjunction disjuncion = Restrictions.disjunction();
 	    disjuncion.add(Restrictions.ge(PublicacionAlquiler.pPrecioAlquiler, criterio.getMinPrecio()));

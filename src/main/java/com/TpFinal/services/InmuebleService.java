@@ -7,7 +7,7 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Coordenada;
-import com.TpFinal.dto.inmueble.CriterioBusquedaInmuebleDTO;
+import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -49,7 +49,7 @@ public class InmuebleService {
 	return dao.findById(id);
     }
 
-    public List<Inmueble> findByCaracteristicas(CriterioBusquedaInmuebleDTO criterio) {
+    public List<Inmueble> findByCaracteristicas(CriterioBusqInmueble criterio) {
 	return dao.findInmueblesbyCaracteristicas(criterio);
     }
 

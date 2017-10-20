@@ -48,8 +48,8 @@ public class PersonaABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
 
-    //Para identificar los layout de acciones
-	private int acciones = 0;
+    // Para identificar los layout de acciones
+    private int acciones = 0;
 
     public PersonaABMView() {
 	super();
@@ -111,11 +111,18 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 	    Button addIntereses = new Button(VaadinIcons.THUMBS_UP_O);
 	    addIntereses.addClickListener(click -> {
-		new PreferenciasBusqueda(null) {
+		new PreferenciasBusqueda(persona.getPrefBusqueda()) {
 
 		    @Override
-		    public void onSave() {
-			Notification.show("A Implementar Logica", Type.WARNING_MESSAGE);
+		    public boolean onSave() {
+			persona.setPrefBusqueda(getCriterio());
+			if (personaService.saveOrUpdate(persona)) {
+			    showSuccessNotification("Preferencias Guardadas");
+			    return true;
+			} else {
+			    showErrorNotification("No se han realizado modificaciones");
+			    return false;
+			}
 
 		    }
 
@@ -125,7 +132,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 	    addIntereses.setDescription("Añadir intereses de búsqueda");
 	    HorizontalLayout hl = new HorizontalLayout(edit, del, addIntereses);
 	    hl.setSpacing(false);
-	    hl.setCaption("Accion "+acciones);
+	    hl.setCaption("Accion " + acciones);
 	    acciones++;
 	    return hl;
 	};
