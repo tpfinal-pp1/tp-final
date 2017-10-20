@@ -94,6 +94,21 @@ public class CriterioBusqInmueble implements Identificable {
 	this.tipoMoneda = builder.tipoMoneda;
 	this.tipoPublicacion = builder.tipoPublicacion;
     }
+    
+
+    @Override
+    public String toString() {
+	return "CriterioBusqInmueble [id=" + id + ", aEstrenar=" + aEstrenar + ", minCantAmbientes=" + minCantAmbientes
+		+ ", maxCantAmbientes=" + maxCantAmbientes + ", minCantCocheras=" + minCantCocheras
+		+ ", maxCantCocheras=" + maxCantCocheras + ", minCantDormitorios=" + minCantDormitorios
+		+ ", maxCantDormitorios=" + maxCantDormitorios + ", clasesDeInmueble=" + clasesDeInmueble
+		+ ", conAireAcondicionado=" + conAireAcondicionado + ", conParrilla=" + conParrilla + ", conPileta="
+		+ conPileta + ", conJardin=" + conJardin + ", localidad=" + localidad + ", provincia=" + provincia
+		+ ", estadoInmueble=" + estadoInmueble + ", minSupCubierta=" + minSupCubierta + ", maxSupCubierta="
+		+ maxSupCubierta + ", minSupTotal=" + minSupTotal + ", maxSupTotal=" + maxSupTotal + ", tipoInmueble="
+		+ tipoInmueble + ", minPrecio=" + minPrecio + ", maxPrecio=" + maxPrecio + ", tipoMoneda=" + tipoMoneda
+		+ ", tipoPublicacion=" + tipoPublicacion + "]";
+    }
 
     public Boolean getaEstrenar() {
 	return aEstrenar;

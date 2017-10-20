@@ -9,6 +9,7 @@ import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.client.data.DataSource;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -25,6 +26,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Title("Inmuebles")
 @Theme("valo")
@@ -42,15 +44,23 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private InmuebleForm inmuebleForm = new InmuebleForm(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
+    private Supplier<List<Inmueble>> inmuebleSupplier;
 
     // acciones segun numero de fila
     int acciones = 0;
 
     public InmuebleABMView() {
-	super();
+	super();	
 	buildLayout();
 	controller.configureComponents();
 
+    }
+    
+    public InmuebleABMView(Supplier<List<Inmueble>> supplier) {
+	super();
+	inmuebleSupplier = supplier;
+	buildLayout();
+	controller.configureComponents();
     }
 
     public Controller getController() {
@@ -114,6 +124,11 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 	filter.clear();
     }
+    
+    public void setSupplier(Supplier<List<Inmueble>> supplier) {
+	    this.inmuebleSupplier = supplier;
+	    
+	}
 
     /*
      * 
@@ -152,6 +167,8 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	private InmuebleService inmuebleService = new InmuebleService();
 
 	public void configureComponents() {
+	    if (inmuebleSupplier == null)
+		inmuebleSupplier = () -> inmuebleService.readAll();
 	    configureFilter();
 	    configureNewItem();
 	    configureGrid();
@@ -249,7 +266,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	public void updateList() {
-	    List<Inmueble> inmuebles = inmuebleService.readAll();
+	    List<Inmueble> inmuebles = inmuebleSupplier.get();
 	    grid.setItems(inmuebles);
 	}
 
@@ -257,6 +274,8 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
 	    grid.setItems(inmuebles);
 	}
+	
+	
 
     }
 
