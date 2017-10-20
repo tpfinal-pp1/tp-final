@@ -12,6 +12,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,7 @@ public class CriterioBusqInmueble implements Identificable {
     private Integer maxCantCocheras;
     private Integer minCantDormitorios;
     private Integer maxCantDormitorios;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "clase_inmueble")
     @Enumerated(EnumType.STRING)
     private Set<ClaseInmueble> clasesDeInmueble = new HashSet<>();
