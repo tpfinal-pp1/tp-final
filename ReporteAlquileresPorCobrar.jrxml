@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.4.3.final using JasperReports Library version 6.4.3  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReporteAlquileresPorCobrar" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="e65f9259-e6de-4f41-ac2b-efa4b028c7b1">
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="80" splitType="Stretch">
+			<frame>
+				<reportElement x="-1" y="0" width="555" height="80" uuid="07cc2d16-b875-476b-9241-f67a05bd7928"/>
+				<staticText>
+					<reportElement mode="Opaque" x="140" y="10" width="310" height="50" backcolor="#80BDFF" uuid="c0c3b6d4-c5c4-4652-b5e3-28581f34b91e"/>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font fontName="Andalus" size="24" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Alquileres Por Cobrar]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="72" splitType="Stretch">
+			<frame>
+				<reportElement x="-1" y="14" width="555" height="56" uuid="1622928e-c79c-4334-9af6-6086cf52fec6"/>
+				<staticText>
+					<reportElement mode="Opaque" x="1" y="0" width="139" height="20" backcolor="#80BDFF" uuid="8b72a653-bfea-4a57-bc35-f63544a17e6f"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="16" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Inquilino]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="140" y="0" width="139" height="20" backcolor="#80BDFF" uuid="867b6a2a-2461-4e58-94a6-a04adcf236a8"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="16" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Fecha de Venc.]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="280" y="0" width="145" height="20" backcolor="#80BDFF" uuid="f93fb00e-35b2-434f-bbef-4b9ee8d4aa0c"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="16" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Monto]]></text>
+				</staticText>
+				<staticText>
+					<reportElement mode="Opaque" x="426" y="0" width="129" height="20" backcolor="#80BDFF" uuid="8b9dd1ef-d9b5-4f39-b080-d59406680848"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="16" isBold="false" isItalic="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[Fecha de Cobro]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="82" splitType="Stretch">
+			<frame>
+				<reportElement x="0" y="0" width="555" height="80" uuid="65b1366d-7ee2-4f61-ad9a-a574eb54722b"/>
+				<textField>
+					<reportElement x="0" y="0" width="139" height="30" uuid="1448062e-6049-44be-822c-9552babfaf5c"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="140" y="0" width="139" height="30" uuid="cdbfc1e2-4f1a-4b9c-b18b-c7f8f95d8cc0"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="282" y="0" width="143" height="30" uuid="f81a6cee-3ef3-40f9-885c-c92fa499feb4"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="425" y="0" width="129" height="30" uuid="b9db0014-1ad3-4665-9eec-989e4efb3232"/>
+					<textElement>
+						<font fontName="DejaVu Sans" size="14"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
