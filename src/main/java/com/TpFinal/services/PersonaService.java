@@ -92,7 +92,7 @@ public class PersonaService {
 	    }
 
 	public static Inquilino getPersonaConInquilino() {
-	    Persona p = new Persona();
+	    Persona p = new Persona.Builder().setNombre("nombre").setApellido("apellido").build();
 	    Inquilino i = new Inquilino.Builder().setPersona(p).build();
 	    p.getRoles().add(i);
 	    return i;
