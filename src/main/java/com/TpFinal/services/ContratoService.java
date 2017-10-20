@@ -1,6 +1,5 @@
 package com.TpFinal.services;
 
-
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
@@ -9,10 +8,11 @@ import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
-import com.TpFinal.dto.contrato.DuracionContrato;
+
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
@@ -21,6 +21,7 @@ import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -30,8 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.openqa.selenium.internal.FindsById;
+import java.util.stream.Collectors;
 
 public class ContratoService {
     public static enum instancia {
@@ -52,11 +52,56 @@ public class ContratoService {
 	contratoDuracionService = new ContratoDuracionService();
     }
 
+    public List<ItemRepAlquileresACobrar> getListadoAlquileresACobrar(Integer mesDesde, Integer yearDesde,
+	    Integer mesHasta, Integer yearHasta) {
+	CobroService cobroService = new CobroService();
+	LocalDate fechaDesde = LocalDate.of(yearDesde, mesDesde, 1);
+	LocalDate fechaHasta = LocalDate.of(yearHasta, mesHasta, 28);
+	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
+	List<Cobro> cobros = new ArrayList<>();
+	
+	contratosVigentes.forEach(contrato -> {
+	    if (contrato.getCobros() != null) {
+		cobros.addAll(contrato.getCobros().stream()
+			.filter(c -> {
+			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+			})
+			.filter(c -> {
+			    return c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0;
+			})
+			.filter(c -> {
+			    return c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0;
+			})
+			.collect(Collectors.toList()));
+		cobroService.calcularDatosFaltantes(cobros);
+		cobros.forEach(cobro -> itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
+			cobro, contrato.getMoneda())));
+	    }
+	});
+	
+	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
+		.thenComparing(i -> {return i.getFechaVencimientoEnDate().getMonthValue();})
+		.thenComparing(ItemRepAlquileresACobrar::getApellido)
+		.thenComparing(ItemRepAlquileresACobrar::getNombre));
+	
+	return itemsReporte;
+    }
+
+    private List<ContratoAlquiler> getContratosAlquilerVigentes() {
+	List<ContratoAlquiler> contratosVigentes = daoAlquiler.readAllActives().stream()
+		.filter(c -> {
+		    return c.getEstadoContrato().equals(EstadoContrato.Vigente);
+		})
+		.collect(Collectors.toList());
+	return contratosVigentes;
+    }
+
     public boolean saveOrUpdate(Contrato contrato, File doc) {
 	boolean ret = false;
 	if (contrato.getId() != null) {
 	    Contrato contratoAntiguo = daoContrato.findById(contrato.getId());
-	    if (contrato.getInmueble()!= null && !contratoAntiguo.getInmueble().equals(contrato.getInmueble())) {
+	    if (contrato.getInmueble() != null && !contratoAntiguo.getInmueble().equals(contrato.getInmueble())) {
 		inmuebleService.desvincularContrato(contratoAntiguo);
 	    }
 	}
@@ -69,7 +114,7 @@ public class ContratoService {
 	    }
 	} else {
 	    ContratoAlquiler c = (ContratoAlquiler) contrato;
-	    System.out.println("interes "+c.getInteresPunitorio());
+	    System.out.println("interes " + c.getInteresPunitorio());
 	    if (doc != null)
 		ret = daoAlquiler.mergeContrato(c, doc);
 	    else
@@ -180,49 +225,51 @@ public class ContratoService {
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.build();
     }
-    
+
     public void addCobros(ContratoAlquiler contrato) {
-    	if(contrato.getDuracionContrato()!=null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente) 
-    			&& (contrato.getCobros()==null || contrato.getCobros().size()==0)) {
-    		
-    		BigDecimal valorAnterior = contrato.getValorInicial();
-    		for(int i=0; i<contrato.getDuracionContrato().getDuracion(); i++) {
-    			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
-    			LocalDate fechaCobro=LocalDate.of(contrato.getFechaCelebracion().getYear(), contrato.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
-    			if(contrato.getFechaCelebracion().getDayOfMonth()>=(int)contrato.getDiaDePago()) {
-        			fechaCobro=fechaCobro.plusMonths(i+1);
-    			}else {
-    				fechaCobro=fechaCobro.plusMonths(i);
-    			}
-    			
-    			Cobro c =new Cobro.Builder()
-    					.setNumeroCuota(i+1)
-    					.setFechaDeVencimiento(fechaCobro)
-    					.setMontoOriginal(valorAnterior)
-    					.setMontoRecibido(valorAnterior)
-    					.setInteres(new BigDecimal(0))
-    					.setMontoPropietario(new BigDecimal(0))
-    					.setComision(new BigDecimal(0))
-    					.build();
-    			c.setComision(valorAnterior.multiply(new BigDecimal(0.06)));
-    			c.setMontoPropietario(valorAnterior.subtract(c.getComision()));
-    			
-    			if((i+1) % contrato.getIntervaloActualizacion()==0) {
-    				if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
-    					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
-    					incremento=incremento.divide(new BigDecimal("100"));
-    					BigDecimal aux = valorAnterior.multiply(incremento);
-    					valorAnterior=valorAnterior.add(aux);
-    				}else if(contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
-    					BigDecimal incremento= new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
-    					incremento=incremento.divide(new BigDecimal("100"));
-    					BigDecimal aux = contrato.getValorInicial().multiply(incremento);
-    					valorAnterior=valorAnterior.add(aux);
-    				}
-    			}
-    			contrato.addCobro(c);
-    		}
-    	}
+	if (contrato.getDuracionContrato() != null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente)
+		&& (contrato.getCobros() == null || contrato.getCobros().size() == 0)) {
+
+	    BigDecimal valorAnterior = contrato.getValorInicial();
+	    for (int i = 0; i < contrato.getDuracionContrato().getDuracion(); i++) {
+		// si el dia de celebracion es mayor o igual al dia de pago entonces las coutas
+		// empiezan el proximo mes
+		LocalDate fechaCobro = LocalDate.of(contrato.getFechaCelebracion().getYear(), contrato
+			.getFechaCelebracion().getMonthValue(), contrato.getDiaDePago());
+		if (contrato.getFechaCelebracion().getDayOfMonth() >= (int) contrato.getDiaDePago()) {
+		    fechaCobro = fechaCobro.plusMonths(i + 1);
+		} else {
+		    fechaCobro = fechaCobro.plusMonths(i);
+		}
+
+		Cobro c = new Cobro.Builder()
+			.setNumeroCuota(i + 1)
+			.setFechaDeVencimiento(fechaCobro)
+			.setMontoOriginal(valorAnterior)
+			.setMontoRecibido(valorAnterior)
+			.setInteres(new BigDecimal(0))
+			.setMontoPropietario(new BigDecimal(0))
+			.setComision(new BigDecimal(0))
+			.build();
+		c.setComision(valorAnterior.multiply(new BigDecimal(0.06)));
+		c.setMontoPropietario(valorAnterior.subtract(c.getComision()));
+
+		if ((i + 1) % contrato.getIntervaloActualizacion() == 0) {
+		    if (contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
+			BigDecimal incremento = new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+			incremento = incremento.divide(new BigDecimal("100"));
+			BigDecimal aux = valorAnterior.multiply(incremento);
+			valorAnterior = valorAnterior.add(aux);
+		    } else if (contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
+			BigDecimal incremento = new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+			incremento = incremento.divide(new BigDecimal("100"));
+			BigDecimal aux = contrato.getValorInicial().multiply(incremento);
+			valorAnterior = valorAnterior.add(aux);
+		    }
+		}
+		contrato.addCobro(c);
+	    }
+	}
     }
 
 }

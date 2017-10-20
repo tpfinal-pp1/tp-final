@@ -13,4 +13,8 @@ public enum TipoMoneda {Pesos,Dolares;
         }
         return ret;
     }
+    
+    public static String getSimbolo(TipoMoneda tipo) {
+	return tipo.equals(TipoMoneda.Dolares)? "U$S" : "$";
+    }
 }

@@ -127,6 +127,9 @@ public class GeneradorDeDatos {
 		+ daoContratos.readAll().size() +" contratos.\n"
 		+ daoPer.readAll().size() +" personas.\n"
 		+ "a la base de datos.");
+		
+		System.out.println("Items reporte: ");
+		contratoService.getListadoAlquileresACobrar(1, 1900, 12, 2100).forEach(System.out::println);;
 	    
 	}
 	} catch(Exception e){
