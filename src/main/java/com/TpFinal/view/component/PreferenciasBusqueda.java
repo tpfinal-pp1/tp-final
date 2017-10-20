@@ -84,6 +84,10 @@ public abstract class PreferenciasBusqueda extends Window {
 	UI.getCurrent().addWindow(this);
 	this.focus();
     }
+    
+    public abstract boolean onSave();
+    public abstract boolean onClean();
+    public abstract boolean searchVisible();
 
     private void buildLayout() {
 	this.setWidthUndefined();
@@ -133,12 +137,7 @@ public abstract class PreferenciasBusqueda extends Window {
 	    Utils.mostarErroresValidator(e);
 	    return;
 	}
-
     }
-
-    public abstract boolean onSave();
-    public abstract boolean onClean();
-    public abstract boolean searchVisible();
 
     private void configureComponents() {
 	configureCombosProvinciaYLocalidad();
