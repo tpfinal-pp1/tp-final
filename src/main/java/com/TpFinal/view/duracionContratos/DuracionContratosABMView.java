@@ -1,14 +1,17 @@
 package com.TpFinal.view.duracionContratos;
 
 import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.DashboardEvent;
 
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -40,6 +43,10 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
      * com.vaadin.ui package and there are over 500 more in
      * vaadin.com/directory.
      */
+	
+	// Para identificar los layout de acciones
+    private int acciones = 0;
+    
     TextField filter = new TextField();
     private Grid<ContratoDuracion> grid = new Grid<>(ContratoDuracion.class);
     Button newItem = new Button("Nuevo");
@@ -94,6 +101,8 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
         grid.setColumns("descripcion", "duracion");
         grid.getColumn("descripcion").setCaption("Descripcion");
         grid.getColumn("duracion").setCaption("Duracion");
+        grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+        grid.getColumns().forEach(col -> col.setResizable(false));
      
 
         Responsive.makeResponsive(this);
@@ -121,7 +130,41 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 
         updateList();
     }
+    
+    private ValueProvider<ContratoDuracion, HorizontalLayout> configurarAcciones() {
 
+    	return contratoduracion -> {
+
+    	    Button edit = new Button(VaadinIcons.EDIT);
+    	    edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+    	    edit.addClickListener(e -> {
+    	    DuracionContratosForm.setContratoDuracion(contratoduracion);
+    	    });
+    	    edit.setDescription("Editar");
+
+    	    Button del = new Button(VaadinIcons.TRASH);
+    	    del.addClickListener(click -> {
+    		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+    			VaadinIcons.WARNING,
+    			"¿Esta seguro que desea Eliminar?",
+    			"100px",
+    			confirmacion -> {
+    				service.delete(contratoduracion);
+    			    showSuccessNotification("Duración de contrato borrada: " + contratoduracion.getDescripcion());
+    			    updateList();
+    			});
+    	    });
+    	    
+    	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+    	    del.setDescription("Borrar");
+    	    
+    	    HorizontalLayout hl = new HorizontalLayout(edit, del);
+    	    hl.setSpacing(false);
+    	    hl.setCaption("Accion " + acciones);
+    	    acciones++;
+    	    return hl;
+    	};
+    }
     /*
      * Robust layouts.
      *
