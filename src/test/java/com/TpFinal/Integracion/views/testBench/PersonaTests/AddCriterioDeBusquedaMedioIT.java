@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -19,7 +18,7 @@ import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 
-public class AddCriterioDeBusquedaIT extends TestBenchTestCase{
+public class AddCriterioDeBusquedaMedioIT extends TestBenchTestCase{
 
 	private TBLoginView loginView;
 	private TBMainView mainView;
@@ -52,7 +51,7 @@ public class AddCriterioDeBusquedaIT extends TestBenchTestCase{
 	public void agregarCriteriosDeBusqueda() {
 		getDriver().get(TBUtils.getUrl("personas"));
 
-		TBUtils.sleep(3000);
+		TBUtils.sleep(4000);
 		Assert.assertTrue(personaView.isDisplayed());
 
 		personaView.getCriterioButton("Accion 2").click();
@@ -84,8 +83,44 @@ public class AddCriterioDeBusquedaIT extends TestBenchTestCase{
 		//Eligiendo tipo de moneda
 		busquedaInteresadoView.getTipoMonedaRadioButtonGroup().first().selectByText("Dolares");
 		
+		//Obtengo las pestañas posibles dentro del form de criterios de busqueda
+		List<String> tabsheet1Options = busquedaInteresadoView.getTabSheet1().first().getTabCaptions();
+		Assert.assertEquals(tabsheet1Options.get(0),"Características Principales");
+        Assert.assertEquals(tabsheet1Options.get(1),"Características Adicionales");
+        Assert.assertEquals(tabsheet1Options.get(2),"Clases de Inmueble");
+        busquedaInteresadoView.getTabSheet1().first().openTab("Características Adicionales");
+        
+        busquedaInteresadoView.getAmbientesMinimoTextField().setValue("2");
+        
+        busquedaInteresadoView.getAmbientesMaximoTextField().setValue("6");
+        
+        busquedaInteresadoView.getCocherasMinimoTextField().setValue("3");
+        
+        busquedaInteresadoView.getCocherasMaximoTextField().setValue("7");
+        
+        busquedaInteresadoView.getDomirtoriosMinimoTextField().setValue("3");
+        
+        busquedaInteresadoView.getDormitoriosMaximoTextField().setValue("7");
+        
+        busquedaInteresadoView.getSupTotalMinimoTextField().setValue("3");
+        
+        busquedaInteresadoView.getSupTotalMaximoTextField().setValue("9");
+        
+        busquedaInteresadoView.getSupCubiertaMinimoTextField().setValue("7");
+        
+        busquedaInteresadoView.getSupCubiertaMaximoTextField().setValue("778");
+        
+        busquedaInteresadoView.getAireAcondicionadoCheckBox().first().click();
+        
+        busquedaInteresadoView.getJardnCheckBox().first().click();
+        
+        //Selecciono la opcion de parrilla
+        busquedaInteresadoView.getParrilaCheckBox().first().click();
+		
 		//Click boton guardar
 		busquedaInteresadoView.getGuardarButton().first().click();
+		
+		
 
 	}
 
