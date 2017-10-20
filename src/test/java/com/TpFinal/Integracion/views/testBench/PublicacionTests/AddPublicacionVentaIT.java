@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Max on 10/12/2017.
  */
-public class AddPublicacionIT extends TestBenchTestCase {
+public class AddPublicacionVentaIT extends TestBenchTestCase {
 
 
     private TBLoginView loginView;

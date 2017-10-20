@@ -7,6 +7,9 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,19 +47,48 @@ public class EditInmuebleIT  extends TestBenchTestCase{
     @Test
     public void editPersonaTest(){
         getDriver().get(TBUtils.getUrl("inmuebles"));
-        TBUtils.sleep(3000);
+        TBUtils.sleep(8000);
         Assert.assertTrue(inmuebleView.isDisplayed());
 
-        //Edit persona
-        TBUtils.sleep(3000);
-        inmuebleView.getEditButton("Accion 0").click();
-        TBUtils.sleep(3000);
+        //Edit inmueble
+        TBUtils.sleep(6000);
+        inmuebleView.getEditButton("Accion 1").click();
+        TBUtils.sleep(6000);
 
         //Edit name
         inmuebleView.getCalleTextField().first().setValue("Falsa");
         inmuebleView.getNumeroTextField().first().setValue("123");
+        
+        //Combobox provincias
+        List<String> provinces = inmuebleView.getProvinciaComboBox().first().getPopupSuggestions();
+        String selectedProvince = provinces.get(1);
+        inmuebleView.getProvinciaComboBox().first().selectByText(selectedProvince);
+        
+        List<String> localidades = inmuebleView.getLocalidadComboBox().first().getPopupSuggestions();
+        String localidadSelected = localidades.get(1);
+        inmuebleView.getLocalidadComboBox().first().selectByText(localidadSelected);
+        
+        inmuebleView.getCodigopostalTextField().first().setValue("32433334");
+        
+        List<String> clases = inmuebleView.getClaseComboBox().first().getPopupSuggestions();
+        String claseSelected = clases.get(3);
+        inmuebleView.getClaseComboBox().first().selectByText(claseSelected);
+        
+      //Tab "Caracteristicas"
+        inmuebleView.getTabSheet().first().openTab("Características");
+        inmuebleView.getAmbientesTextField().first().setValue("222");
+        inmuebleView.getCocherasTextField().first().setValue("333");
+        inmuebleView.getDormitoriosTextField().first().setValue("225");
+        inmuebleView.getSupTotalTextField().first().setValue("1002");
+        inmuebleView.getSupCubiertaTextField().first().setValue("30222220");
+
+        inmuebleView.getAireAcondicionadoCheckBox().first().click();
+        inmuebleView.getAestrenarCheckBox().first().click();
+        
         inmuebleView.getGuardarButton().first().click();
         TBUtils.sleep(3000);
+        
+        
 
         Assert.assertFalse(inmuebleView.isFormDisplayed());
     }
