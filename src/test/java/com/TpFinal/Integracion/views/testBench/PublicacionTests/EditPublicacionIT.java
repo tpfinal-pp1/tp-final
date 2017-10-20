@@ -7,6 +7,9 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -41,22 +44,35 @@ public class EditPublicacionIT extends TestBenchTestCase{
 
     @Test
     public void addPublicacionTest(){
+    	
+    	//Accedemos a la pestaña de publicaciones
         getDriver().get(TBUtils.getUrl("publicaciones"));
         TBUtils.sleep(3000);
         Assert.assertTrue(publicacionView.isDisplayed());
 
 
-        //Edit Publicacion
+        //Editamos la primera publicacion
         TBUtils.sleep(3000);
         publicacionView.getEditButton("Accion 0").click();
 
         TBUtils.sleep(3000);
 
-        //Edit name
+        //Elegimos la opcion "terminada" del radiobutton
+        publicacionView.getEstadodelapublicacionRadioButtonGroup().first().selectByText("Terminada");
+        
+        //Edit monto
         publicacionView.getMontoTextField().first().setValue("2000000000000");
+        
+        //Obtenemos los tipos de monedas del combo
+        List<String> monedas = publicacionView.getMonedaComboBox().first().getPopupSuggestions();
+        String monedaSelected = monedas.get(1);
+        publicacionView.getMonedaComboBox().first().selectByText(monedaSelected);
+        
+        //Clickeamos guardar
         publicacionView.getGuardarButton().first().click();
         TBUtils.sleep(3000);
-
+        
+        //Verificamos que el form de publicación ya no se muestre
         Assert.assertFalse(publicacionView.isFormDisplayed());
     }
 

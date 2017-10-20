@@ -347,7 +347,7 @@ public class InmuebleForm extends FormLayout {
 		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal, buscarUbicacion);
 
 	 caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
-		supCubierta, new BlueLabel("Adiconales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
+		supCubierta, new BlueLabel("Adicionales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
 
 	this.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
