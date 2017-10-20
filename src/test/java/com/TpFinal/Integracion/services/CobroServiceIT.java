@@ -229,6 +229,7 @@ public class CobroServiceIT {
 		
 		assertEquals(1, cobros3.size());
 		assertEquals(3, cobros4.size());
+		assertNotEquals(2, cobros4.size());
 		
 		
 	}
