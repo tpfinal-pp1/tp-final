@@ -3,8 +3,8 @@
 	GNU Lesser General Public License (LGPL), version 2.1 or later. ~ See the 
 	lgpl.txt file in the root directory or <http://www.gnu.org/licenses/lgpl-2.1.html>. -->
 <!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 
 <hibernate-configuration>
 
@@ -39,13 +39,16 @@
 		<mapping class="com.TpFinal.dto.contrato.ContratoDuracion" />
 		<mapping class="com.TpFinal.dto.cobro.Cobro" />
 		<mapping class="com.TpFinal.dto.inmueble.CriterioBusqInmueble" />
+		<mapping class="com.TpFinal.dto.inmueble.Imagen" />
 
 
 
-		
+
 
 
 
 	</session-factory>
 
 </hibernate-configuration>
+
+

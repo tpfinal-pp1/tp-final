@@ -16,7 +16,10 @@ import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.util.CurrentInstance;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -77,6 +80,11 @@ public class InmuebleService {
 		.setTipoInmueble(TipoInmueble.Vivienda)
 		.build();
     }
+
+    public String getPortada(Inmueble inmueble){
+		return "img"+ File.separator+"casa.jpg";
+	}
+
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
 	List<Inmueble> inmuebles = dao.readAllActives().stream()
