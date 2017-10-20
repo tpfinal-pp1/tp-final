@@ -68,6 +68,7 @@ public class EditInmuebleIT  extends TestBenchTestCase{
         String localidadSelected = localidades.get(1);
         inmuebleView.getLocalidadComboBox().first().selectByText(localidadSelected);
         
+        //Seteando codigo postal
         inmuebleView.getCodigopostalTextField().first().setValue("32433334");
         
         List<String> clases = inmuebleView.getClaseComboBox().first().getPopupSuggestions();
