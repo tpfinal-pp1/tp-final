@@ -2,10 +2,7 @@ package com.TpFinal.Integracion.views.pageobjects;
 
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.elements.ButtonElement;
-import com.vaadin.testbench.elements.GridElement;
-import com.vaadin.testbench.elements.HorizontalLayoutElement;
-import com.vaadin.testbench.elements.TextFieldElement;
+import com.vaadin.testbench.elements.*;
 import org.openqa.selenium.WebDriver;
 
 /**
@@ -27,6 +24,12 @@ public class TBPersonaView extends TestBenchTestCase{
     private ElementQuery<ButtonElement> buttonEdit ;
     private ElementQuery<ButtonElement> buttonRemove ;
     private ElementQuery<ButtonElement> buttonCriterio ;
+    private ElementQuery<ButtonElement> siButton ;
+    private ElementQuery<ButtonElement> noButton ;
+    private ElementQuery<WindowElement> eliminarWindow ;
+    private ElementQuery<TextFieldElement> filterField;
+    private ElementQuery<ButtonElement> botonLupa;
+    private ElementQuery<ButtonElement> botonCerrarFilter;
 
 
     public TBPersonaView (WebDriver driver){
@@ -41,6 +44,12 @@ public class TBPersonaView extends TestBenchTestCase{
         celularTextField         = $(TextFieldElement.class).caption("Celular");
         guardarButton            = $(ButtonElement.class).caption("Guardar");
         horizontalLayoutAcciones = $(GridElement.class).$$(HorizontalLayoutElement.class);
+        siButton                 = $(ButtonElement.class).caption("Si");
+        noButton                 = $(ButtonElement.class).caption("No");
+        eliminarWindow           = $$(WindowElement.class).caption("Eliminar");
+        filterField = $(TextFieldElement.class);
+        botonLupa = $(VerticalLayoutElement.class).$(ButtonElement.class);
+        botonCerrarFilter = $(VerticalLayoutElement.class).$(ButtonElement.class);
     }
 
 
@@ -76,7 +85,19 @@ public class TBPersonaView extends TestBenchTestCase{
 
     public ButtonElement getCriterioButton(String caption){ return getButtonCriterio(caption).get(2); }
 
+    public ElementQuery<TextFieldElement> getFilterField(){return filterField;}
+
+    public ButtonElement getButtonLupa(){return botonLupa.first();}
+
+    public ButtonElement getButtonCerrarFilter(){return botonCerrarFilter.get(1);}
+
     public boolean isDisplayed(){ return this.peopleGrid.exists(); }
 
     public boolean isFormDisplayed() { return this.guardarButton.exists(); }
+
+    public ElementQuery<ButtonElement> getSiButton() { return siButton; }
+
+    public ElementQuery<ButtonElement> getNoButton() { return noButton; }
+
+    public ElementQuery<WindowElement> getEliminarWindow() { return eliminarWindow; }
 }
