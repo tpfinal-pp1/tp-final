@@ -59,24 +59,32 @@ public class AddCriterioDeBusquedaIT extends TestBenchTestCase{
 
 		busquedaInteresadoView = new TBBusquedaInteresadoView(driver);
 
+		//Eligiendo el tipo
 		busquedaInteresadoView.getTipoRadioButtonGroup().first().selectByText("Vivienda");
 
+		//Eligiendo estado
 		busquedaInteresadoView.getEstadoRadioButtonGroup().first().selectByText("En Alquiler");
 
+		//Eligiendo provincia del combobox
 		List<String> provinciasList = busquedaInteresadoView.getProvinciaComboBox().first().getPopupSuggestions();
 		String selectedProvincia = provinciasList.get(2);
 		busquedaInteresadoView.getProvinciaComboBox().first().selectByText(selectedProvincia);
 		
+		//Eligiendo localidad del combobox
 		List<String> localidadList = busquedaInteresadoView.getLocalidadComboBox().first().getPopupSuggestions();
 		String selectedLocalidad = localidadList.get(2);
 		busquedaInteresadoView.getLocalidadComboBox().first().selectByText(selectedLocalidad);
 		
+		//Seteando precion minimo
 		busquedaInteresadoView.getPrecioMinimoTextField().setValue("224");
 		
+		//Seteando precion maximo
 		busquedaInteresadoView.getPrecioMaximoTextField().setValue("772778");
 		
+		//Eligiendo tipo de moneda
 		busquedaInteresadoView.getTipoMonedaRadioButtonGroup().first().selectByText("Dolares");
 		
+		//Click boton guardar
 		busquedaInteresadoView.getGuardarButton().first().click();
 
 	}
