@@ -67,12 +67,12 @@ public class AddCriterioDeBusquedaIT extends TestBenchTestCase{
 
 		//Eligiendo provincia del combobox
 		List<String> provinciasList = busquedaInteresadoView.getProvinciaComboBox().first().getPopupSuggestions();
-		String selectedProvincia = provinciasList.get(2);
+		String selectedProvincia = provinciasList.get(1);
 		busquedaInteresadoView.getProvinciaComboBox().first().selectByText(selectedProvincia);
 		
 		//Eligiendo localidad del combobox
 		List<String> localidadList = busquedaInteresadoView.getLocalidadComboBox().first().getPopupSuggestions();
-		String selectedLocalidad = localidadList.get(2);
+		String selectedLocalidad = localidadList.get(1);
 		busquedaInteresadoView.getLocalidadComboBox().first().selectByText(selectedLocalidad);
 		
 		//Seteando precion minimo
