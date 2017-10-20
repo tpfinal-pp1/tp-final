@@ -195,6 +195,45 @@ public class CobroServiceIT {
 		
 	}
 	
+	@Test
+	public void verificandoReadCobrosByEstado() {
+		
+		Cobro cobro = instanciaCobro(2);
+		cobro.setEstadoCobro(EstadoCobro.COBRADO);
+		
+		Cobro cobro2 = instanciaCobro(2);
+		cobro2.setEstadoCobro(EstadoCobro.NOCOBRADO);
+		
+		service.save(cobro);
+		service.save(cobro2);
+		
+		List <Cobro> cobrosNoCobrados = service.readCobrosByEstado(EstadoCobro.NOCOBRADO);
+		
+		assertEquals(1, cobrosNoCobrados.size());
+		
+		List <Cobro> cobros2 = service.readCobrosByEstado(EstadoCobro.COBRADO);
+		
+		assertEquals(1, cobros2.size());
+		
+		Cobro cobro3 = instanciaCobro(2);
+		cobro3.setEstadoCobro(EstadoCobro.NOCOBRADO);
+		
+		Cobro cobro4 = instanciaCobro(2);
+		cobro4.setEstadoCobro(EstadoCobro.NOCOBRADO);
+		
+		service.save(cobro3);
+		service.save(cobro4);
+		
+		List <Cobro> cobros3 = service.readCobrosByEstado(EstadoCobro.COBRADO);
+		List <Cobro> cobros4 = service.readCobrosByEstado(EstadoCobro.NOCOBRADO);
+		
+		assertEquals(1, cobros3.size());
+		assertEquals(3, cobros4.size());
+		assertNotEquals(2, cobros4.size());
+		
+		
+	}
+	
     private ContratoAlquiler instanciaAlquilerConInteresSimple() {
     	LocalDate fecha=LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth());
     	fecha=fecha.minusDays(2);
