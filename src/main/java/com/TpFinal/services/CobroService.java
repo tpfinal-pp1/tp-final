@@ -112,11 +112,11 @@ public class CobroService {
 	            arrayList.addAll(cobros);
 	        }
 
-	        Collections.sort(arrayList, new Comparator<Persona>() {
+	        Collections.sort(arrayList, new Comparator<Cobro>() {
 
 	            @Override
-	            public int compare(Persona o1, Persona o2) {
-	                return (int) (o2.getId() - o1.getId());
+	            public int compare(Cobro o1, Cobro o2) {
+	                return (int) o1.getFechaDeVencimiento().compareTo(o2.getFechaDeVencimiento());
 	            }
 	        });
 	        return arrayList;
@@ -144,11 +144,11 @@ public class CobroService {
 	            arrayList.addAll(cobros);
 	        }
 
-	        Collections.sort(arrayList, new Comparator<Persona>() {
+	        Collections.sort(arrayList, new Comparator<Cobro>() {
 
 	            @Override
-	            public int compare(Persona o1, Persona o2) {
-	                return (int) (o2.getId() - o1.getId());
+	            public int compare(Cobro o1, Cobro o2) {
+	                return (int) o1.getFechaDeVencimiento().compareTo(o2.getFechaDeVencimiento());
 	            }
 	        });
 	        return arrayList;
