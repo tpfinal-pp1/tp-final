@@ -15,6 +15,8 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.Utils;
+import com.TpFinal.view.inmuebles.InmuebleABMView;
+import com.TpFinal.view.inmuebles.InmuebleABMViewWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
@@ -115,12 +117,21 @@ public abstract class PreferenciasBusqueda extends Window {
     }
 
     private void cleanPreferences() {
-	// TODO Auto-generated method stub
-
+	binderBusqueda.getFields().forEach(field -> field.clear());
     }
 
     private void search() {
-	// TODO Auto-generated method stub
+	try {
+	    binderBusqueda.writeBean(criterio);	   
+	    InmuebleService inmuebleService = new InmuebleService();
+	    new InmuebleABMViewWindow("Resultado Búsqueda", () -> inmuebleService.findByCaracteristicas(criterio));
+
+	} catch (ValidationException e) {
+	    Notification.show("Errores de Validación, por favor revise los campos e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	    Utils.mostarErroresValidator(e);
+	    return;
+	}
 
     }
 
@@ -154,7 +165,7 @@ public abstract class PreferenciasBusqueda extends Window {
     }
 
     private void binding() {
-	binderBusqueda.forField(this.aEstrenar)
+	binderBusqueda.forField(this.aEstrenar).withNullRepresentation(false)
 		.bind(CriterioBusqInmueble::getaEstrenar, CriterioBusqInmueble::setaEstrenar);
 	binderBusqueda.forField(this.cbLocalidad)
 		.bind(criterio -> {
@@ -177,13 +188,13 @@ public abstract class PreferenciasBusqueda extends Window {
 			});
 	binderBusqueda.forField(this.clasesDeInmueble)
 		.bind(CriterioBusqInmueble::getClasesDeInmueble, CriterioBusqInmueble::setClasesDeInmueble);
-	binderBusqueda.forField(this.conAireAcond)
+	binderBusqueda.forField(this.conAireAcond).withNullRepresentation(false)
 		.bind(CriterioBusqInmueble::getConAireAcondicionado, CriterioBusqInmueble::setConAireAcondicionado);
-	binderBusqueda.forField(this.conJardin)
+	binderBusqueda.forField(this.conJardin).withNullRepresentation(false)
 		.bind(CriterioBusqInmueble::getConJardin, CriterioBusqInmueble::setConJardin);
-	binderBusqueda.forField(this.conParrila)
+	binderBusqueda.forField(this.conParrila).withNullRepresentation(false)
 		.bind(CriterioBusqInmueble::getConParrilla, CriterioBusqInmueble::setConParrilla);
-	binderBusqueda.forField(this.conPileta)
+	binderBusqueda.forField(this.conPileta).withNullRepresentation(false)
 		.bind(CriterioBusqInmueble::getConPileta, CriterioBusqInmueble::setConPileta);
 	bindearMinMaxParaInteger(this.minMaxAmbientes,
 		CriterioBusqInmueble::getMinCantAmbientes, CriterioBusqInmueble::setMinCantAmbientes,
@@ -337,7 +348,7 @@ public abstract class PreferenciasBusqueda extends Window {
 	if (criterio != null) {
 	    binderBusqueda.readBean(criterio);
 	} else {
-	    criterio = new CriterioBusqInmueble();
+	    criterio = new CriterioBusqInmueble.Builder().build();
 	}
 	setVisible(true);
     }
@@ -447,7 +458,7 @@ public abstract class PreferenciasBusqueda extends Window {
 	details.forEach(component -> component.setWidth("100%"));
 	return root;
     }
-    
+
     public CriterioBusqInmueble getCriterio() {
 	return criterio;
     }
