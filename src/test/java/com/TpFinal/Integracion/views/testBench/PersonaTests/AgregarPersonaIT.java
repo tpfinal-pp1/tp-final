@@ -1,5 +1,6 @@
 package com.TpFinal.Integracion.views.testBench.PersonaTests;
 
+import com.TpFinal.Integracion.views.pageobjects.TBBusquedaInteresadoView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
 import com.TpFinal.Integracion.views.pageobjects.TBPersonaView;
@@ -7,8 +8,12 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
+
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,7 +25,7 @@ public class AgregarPersonaIT extends TestBenchTestCase{
     private TBLoginView loginView;
     private TBMainView mainView;
     private TBPersonaView personaView;
-
+    
     @Rule
     public ScreenshotOnFailureRule screenshotOnFailureRule =
             new ScreenshotOnFailureRule(this, true);
@@ -34,10 +39,12 @@ public class AgregarPersonaIT extends TestBenchTestCase{
         Parameters.setScreenshotRetryDelay(10);
         Parameters.setScreenshotComparisonCursorDetection(true);
         setDriver(TBUtils.initializeDriver());
+        
         loginView = TBUtils.loginView(this.getDriver());
         mainView=loginView.login();
 
         personaView = mainView.getPersonaView();
+       
 
     }
 
@@ -57,6 +64,11 @@ public class AgregarPersonaIT extends TestBenchTestCase{
         personaView.getGuardarButton().first().click();
         TBUtils.sleep(3000);
         Assert.assertFalse(personaView.isFormDisplayed());
+        
+        
     }
+    
+  
+    	
 
 }
