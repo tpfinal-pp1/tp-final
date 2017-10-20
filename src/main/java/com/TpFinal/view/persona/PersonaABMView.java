@@ -126,6 +126,16 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 		    }
 
+			@Override
+			public boolean onClean() {
+				return true;
+			}
+
+			@Override
+			public boolean searchVisible() {
+				return true;
+			}
+
 		};
 	    });
 	    addIntereses.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);

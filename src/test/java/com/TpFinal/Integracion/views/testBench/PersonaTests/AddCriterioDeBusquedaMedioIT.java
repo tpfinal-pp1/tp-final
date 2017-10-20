@@ -90,6 +90,7 @@ public class AddCriterioDeBusquedaMedioIT extends TestBenchTestCase{
         Assert.assertEquals(tabsheet1Options.get(2),"Clases de Inmueble");
         busquedaInteresadoView.getTabSheet1().first().openTab("Características Adicionales");
         
+        //Seteando cantidad ambiente minimo
         busquedaInteresadoView.getAmbientesMinimoTextField().setValue("2");
         
         busquedaInteresadoView.getAmbientesMaximoTextField().setValue("6");
