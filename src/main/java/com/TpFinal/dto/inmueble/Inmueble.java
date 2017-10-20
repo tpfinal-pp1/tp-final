@@ -7,23 +7,14 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.Publicacion;
 
+import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -116,7 +107,32 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     protected Set<Contrato> contratos = new HashSet<>();
 
-    public Inmueble() {
+    @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+	protected Set<Imagen> imagenes = new HashSet<>();
+
+	public Set<Imagen> getImagenes() {
+		return imagenes;
+	}
+
+	public void setImagenes(Set<Imagen> imagenes) {
+		this.imagenes = imagenes;
+	}
+
+	public Imagen getPortada() {
+		return portada;
+	}
+
+	public void setPortada(Imagen portada) {
+		this.portada = portada;
+	}
+
+	@OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+	protected Imagen portada;
+
+
+	public Inmueble() {
 	super();
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }

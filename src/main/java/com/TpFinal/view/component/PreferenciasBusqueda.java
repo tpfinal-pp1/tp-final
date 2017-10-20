@@ -124,7 +124,6 @@ public abstract class PreferenciasBusqueda extends Window {
 	try {
 	    binderBusqueda.writeBean(criterio);	   
 	    InmuebleService inmuebleService = new InmuebleService();
-	    System.out.println(criterio);
 	    new InmuebleABMViewWindow("Resultado Búsqueda", () -> inmuebleService.findByCaracteristicas(criterio));
 
 	} catch (ValidationException e) {

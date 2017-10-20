@@ -1,7 +1,7 @@
 // Import all the mixins for this theme
 @import "addons.scss";
 @import "dashboard";
-@import "_custom_calendar.scss";
+@import "custom";
 
 .dashboard {
   // Output the actual theme selectors

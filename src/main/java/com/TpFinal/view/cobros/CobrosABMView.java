@@ -39,7 +39,7 @@ public class CobrosABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     private Controller controller = new Controller();
 
-    private int acciones;
+    private int acciones = 0;
 
     public CobrosABMView() {
         super();

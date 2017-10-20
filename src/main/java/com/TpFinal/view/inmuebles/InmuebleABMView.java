@@ -9,22 +9,24 @@ import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.client.data.DataSource;
+
+import com.vaadin.client.renderers.ImageRenderer;
+
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
+import com.vaadin.server.Sizeable;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
+import com.vaadin.shared.ui.grid.HeightMode;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -50,12 +52,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
     int acciones = 0;
 
     public InmuebleABMView() {
-	super();	
+	super();
 	buildLayout();
 	controller.configureComponents();
 
     }
-    
+
     public InmuebleABMView(Supplier<List<Inmueble>> supplier) {
 	super();
 	inmuebleSupplier = supplier;
@@ -124,11 +126,11 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 	filter.clear();
     }
-    
+
     public void setSupplier(Supplier<List<Inmueble>> supplier) {
-	    this.inmuebleSupplier = supplier;
-	    
-	}
+	this.inmuebleSupplier = supplier;
+
+    }
 
     /*
      * 
@@ -203,7 +205,13 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		    inmuebleForm.clearFields();
 		}
 	    });
-
+	    grid.addComponentColumn(inmueble -> {
+		Image image = new Image("", new ThemeResource(
+			inmuebleService.getPortada(inmueble)));
+		image.setWidth(280, Sizeable.Unit.PIXELS);
+		image.setHeight(200, Sizeable.Unit.PIXELS);
+		return image;
+	    }).setCaption("Portada");
 	    grid.addColumn(inmueble -> {
 		String ret = "";
 		if (inmueble.getDireccion() != null) {
@@ -214,10 +222,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		return ret;
 	    }).setCaption("Dirección");
 
+	    grid.setRowHeight(200);// FIXME por el header que se agranda tambien
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
 	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+
 	    grid.getColumns().forEach(c -> c.setResizable(false));
 	}
 
@@ -274,8 +284,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
 	    grid.setItems(inmuebles);
 	}
-	
-	
 
     }
 
