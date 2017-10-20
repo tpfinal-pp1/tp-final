@@ -42,7 +42,7 @@ public class CobrosABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     private Controller controller = new Controller();
     RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
-    Button seleccionFiltro = new Button("Filtrar");
+    Button seleccionFiltro = new Button(VaadinIcons.SEARCH_MINUS);
     Window sw = new Window("Filtrar");
 
     private int acciones = 0;
