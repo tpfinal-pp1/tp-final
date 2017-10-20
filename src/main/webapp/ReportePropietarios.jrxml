@@ -28,8 +28,8 @@
 			<frame>
 				<reportElement x="0" y="0" width="550" height="60" uuid="aaebb0cf-4b53-4a87-865a-8a173adf137b"/>
 				<staticText>
-					<reportElement mode="Opaque" x="180" y="0" width="200" height="40" forecolor="#695555" backcolor="#66FFFF" uuid="b397e44f-3440-4240-a4c4-9758398ad85b"/>
-					<textElement textAlignment="Center">
+					<reportElement mode="Opaque" x="180" y="0" width="300" height="40" forecolor="#695555" backcolor="#66CCFF" uuid="b397e44f-3440-4240-a4c4-9758398ad85b"/>
+					<textElement textAlignment="Left">
 						<font size="18" isBold="true" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[Lista de Propietarios]]></text>
@@ -73,21 +73,21 @@
 					<text><![CDATA[Apellido]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="220" y="0" width="110" height="30" forecolor="#705151" backcolor="#66CCFF" uuid="c671f071-db93-455b-ab6d-6dff3c45ce73"/>
+					<reportElement mode="Opaque" x="220" y="0" width="100" height="30" forecolor="#705151" backcolor="#66CCFF" uuid="c671f071-db93-455b-ab6d-6dff3c45ce73"/>
 					<textElement textAlignment="Left">
 						<font size="16" isBold="true" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[DNI]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="330" y="0" width="110" height="30" forecolor="#705151" backcolor="#66CCFF" uuid="685f3374-518c-4767-a2ca-f67cec16849a"/>
+					<reportElement mode="Opaque" x="320" y="0" width="100" height="30" forecolor="#705151" backcolor="#66CCFF" uuid="685f3374-518c-4767-a2ca-f67cec16849a"/>
 					<textElement textAlignment="Left">
 						<font size="16" isBold="true" isItalic="false"/>
 					</textElement>
 					<text><![CDATA[Teléfono]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="440" y="0" width="110" height="30" forecolor="#705151" backcolor="#66CCFF" uuid="14ff89bb-d1f6-42bd-b0b6-cff7e43837dd"/>
+					<reportElement mode="Opaque" x="420" y="0" width="130" height="30" forecolor="#705151" backcolor="#66CCFF" uuid="14ff89bb-d1f6-42bd-b0b6-cff7e43837dd"/>
 					<textElement textAlignment="Left">
 						<font size="16" isBold="true" isItalic="false"/>
 					</textElement>
@@ -97,39 +97,39 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="32" splitType="Stretch">
+		<band height="44" splitType="Stretch">
 			<frame>
-				<reportElement x="0" y="0" width="550" height="30" uuid="a5e02dfd-6c09-4d7c-af70-4db7e316fe32"/>
+				<reportElement x="0" y="0" width="550" height="40" uuid="a5e02dfd-6c09-4d7c-af70-4db7e316fe32"/>
 				<textField>
-					<reportElement x="0" y="0" width="110" height="30" uuid="527cb7b8-6387-4e56-950d-402fdf65ad46"/>
+					<reportElement x="0" y="0" width="110" height="40" uuid="527cb7b8-6387-4e56-950d-402fdf65ad46"/>
 					<textElement>
 						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="110" y="0" width="110" height="30" uuid="540a44c5-e632-4fba-8c73-7cf2838c4356"/>
+					<reportElement x="110" y="0" width="110" height="40" uuid="540a44c5-e632-4fba-8c73-7cf2838c4356"/>
 					<textElement>
 						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{apellido}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="220" y="0" width="110" height="30" uuid="efb8045f-05b2-4d22-ba9b-def96f4893e5"/>
+					<reportElement x="220" y="0" width="100" height="40" uuid="efb8045f-05b2-4d22-ba9b-def96f4893e5"/>
 					<textElement>
 						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{DNI}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="330" y="0" width="110" height="30" uuid="f37dd64e-2411-4c3c-a74b-244131e3ed5b"/>
+					<reportElement x="320" y="0" width="100" height="40" uuid="f37dd64e-2411-4c3c-a74b-244131e3ed5b"/>
 					<textElement>
 						<font size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="440" y="0" width="110" height="30" uuid="0bbaabb6-b831-4332-a959-f6154f04fe7f"/>
+					<reportElement x="420" y="0" width="130" height="40" uuid="0bbaabb6-b831-4332-a959-f6154f04fe7f"/>
 					<textElement>
 						<font size="12"/>
 					</textElement>
