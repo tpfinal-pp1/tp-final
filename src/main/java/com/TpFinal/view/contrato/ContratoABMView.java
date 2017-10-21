@@ -13,25 +13,20 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
-import com.vaadin.data.Binder;
 import com.vaadin.data.ValueProvider;
-import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Locale;
 
@@ -193,6 +188,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	adicionales.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_TINY, ValoTheme.BUTTON_ICON_ONLY);
 	adicionales.setWidth("90%");
 	adicionales.setDescription("Búsqueda por Año y Mes");
+	adicionales.setCaption("Boton desde");
 	adicionales.addClickListener(e -> {
 	    if (adicionales.getIcon().equals(VaadinIcons.BOOKMARK)) {
 		adicionales.setIcon(VaadinIcons.BOOKMARK_O);
