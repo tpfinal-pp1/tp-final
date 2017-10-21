@@ -175,7 +175,12 @@ public class DuracionContratosForm extends FormLayout {
         setVisible(false);
         getAddressbookView().setComponentsVisible(true);
     }
-
+    
+    public void clearFields() {
+    	descripcion.clear();
+    	cantidad.clear();
+    }
+    
     public DuracionContratosABMView getAddressbookView() {
         return addressbookView;
     }
