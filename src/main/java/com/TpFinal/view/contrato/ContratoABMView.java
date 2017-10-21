@@ -120,13 +120,24 @@ public class ContratoABMView extends DefaultLayout implements View {
 	HeaderRow filterRow = grid.appendHeaderRow();
 	filterRow.getCell("tipo").setComponent(filtroTipo());
 	// filterRow.getCell("fecha celebracion").setComponent(filtroFecha());
-	// filterRow.getCell("estado").setComponent(filtroEstado());
+	filterRow.getCell("estado").setComponent(filtroEstado());
 
     }
 
     private Component filtroEstado() {
-	// TODO Auto-generated method stub
-	return null;
+	ComboBox<EstadoContrato> filtroEstado = new ComboBox<>();
+	filtroEstado.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	filtroEstado.setPlaceholder("Sin Filtro");
+	filtroEstado.setItems(EstadoContrato.toList());
+	filtroEstado.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		filtro.setEstado(contrato -> contrato.getEstadoContrato().equals(e.getValue()));
+	    } else {
+		filtro.setEstado(contrato -> true);
+	    }
+	    updateList();
+	});
+	return filtroEstado;
     }
 
     private Component filtroFecha() {
@@ -137,7 +148,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     private Component filtroTipo() {
 	ComboBox<FiltroContrato.tipo> filtroTipo = new ComboBox<>();
 	filtroTipo.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-	filtroTipo.setPlaceholder("sin filtro");
+	filtroTipo.setPlaceholder("Sin Filtro");
 	filtroTipo.setItems(Arrays.asList(FiltroContrato.tipo.Alquiler, FiltroContrato.tipo.Venta));
 	filtroTipo.addValueChangeListener(e -> {
 	    if (e.getValue() != null) {
