@@ -20,6 +20,7 @@ public class ItemRepAlquileresACobrar {
     private String nombre;
     private String apellido;
     private Integer numeroMes;
+    private String nombreYApellido;
 
     public ItemRepAlquileresACobrar(Inquilino i, Cobro c, TipoMoneda tipoMoneda) {
 	LocalDate fecha = c.getFechaDeVencimiento();
@@ -30,6 +31,7 @@ public class ItemRepAlquileresACobrar {
 	monto = TipoMoneda.getSimbolo(tipoMoneda) + " " + c.getMontoRecibido().toString();
 	nombre = i.getPersona().getNombre();
 	apellido = i.getPersona().getApellido();
+	nombreYApellido = nombre + " " + apellido;
     }
 
     public Integer getAnio() {
@@ -92,8 +94,16 @@ public class ItemRepAlquileresACobrar {
     public void setApellido(String apellido) {
 	this.apellido = apellido;
     }
+    
+    public String getNombreYApellido() {
+		return nombreYApellido;
+	}
 
-    @Override
+	public void setNombreYApellido(String nombreYApellido) {
+		this.nombreYApellido = nombreYApellido;
+	}
+
+	@Override
     public String toString() {
 	return "" + anio + " - " + mes + " - fecha venc.: " + fechaVencimiento
 		+ " - monto: " + monto + " - inquilino: " + nombre + " " + apellido;
