@@ -20,6 +20,9 @@ public class TBContratoView extends TestBenchTestCase {
     private ElementQuery<ButtonElement> finalizarContratoButton;
     private ElementQuery<ButtonElement> renovarContratoButton;
     private ElementQuery<ButtonElement> eliminarContratoButton;
+    private ElementQuery<WindowElement> eliminarWindow ;
+    private ElementQuery<ButtonElement> siButton ;
+    private ElementQuery<ButtonElement> noButton ;
 
 
 
@@ -33,10 +36,8 @@ public class TBContratoView extends TestBenchTestCase {
         nuevaVentaButton = $(ButtonElement.class).caption("Nueva Venta");
         nuevoAlquilerButton = $(ButtonElement.class).caption("Nuevo Alquiler");
         accion0HorizontalLayout = $(HorizontalLayoutElement.class).caption("Accion 0");
-        editButton = $(HorizontalLayoutElement.class).caption("Accion 0").$$(ButtonElement.class);
-        finalizarContratoButton = $(HorizontalLayoutElement.class).caption("Accion 0").$$(ButtonElement.class);
-        renovarContratoButton = $(HorizontalLayoutElement.class).caption("Accion 0").$$(ButtonElement.class);
-        eliminarContratoButton = $(HorizontalLayoutElement.class).caption("Accion 0").$$(ButtonElement.class);
+        siButton = $(ButtonElement.class).caption("Si");
+        noButton = $(ButtonElement.class).caption("No");
     }
 
 
@@ -68,5 +69,13 @@ public class TBContratoView extends TestBenchTestCase {
 
     public ElementQuery<ButtonElement> getNuevoAlquilerButton(){ return nuevoAlquilerButton;}
 
+    public ElementQuery<WindowElement> getEliminarWindow() { return eliminarWindow; }
+
+    public ElementQuery<ButtonElement> getSiButton() { return siButton; }
+
+    public ElementQuery<ButtonElement> getNoButton() { return noButton; }
+
     public boolean isDisplayed(){ return this.grid1.exists();}
+
+    public boolean isEliminarWindowDisplayed(){ return eliminarWindow.exists();}
 }
