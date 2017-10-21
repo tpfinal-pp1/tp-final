@@ -17,9 +17,11 @@ import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOInmobiliariaImpl;
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
@@ -67,6 +69,7 @@ public class DAOInmuebleImplIT {
     private void desvincular() {
 	dao.readAll().forEach(i -> {
 	    i.setPropietario(null);
+	    i.setInmobiliaria(null);
 	    dao.saveOrUpdate(i);
 	});
     }
@@ -949,6 +952,17 @@ public class DAOInmuebleImplIT {
 	daop.saveOrUpdate(p);
 
     }
+    
+    @Test
+    public void testConInmobiliaria() {
+    	Inmobiliaria inmo=unaInmobiliaria();
+    	Inmueble inm= unInmuebleNoPublicado();
+    	inm.setInmobiliaria(inmo);
+    	dao.saveOrUpdate(inm);
+    	assertEquals(1, dao.readAll().get(0).getInmobiliaria().getInmuebles().size());
+    	DAOInmobiliariaImpl daoinmo = new DAOInmobiliariaImpl();
+    	assertEquals(1, daoinmo.readAll().get(0).getInmuebles().size());
+    }
 
     // @Test
     public void testGeneradorDeDatos() {
@@ -1158,6 +1172,13 @@ public class DAOInmuebleImplIT {
 		.setInmueble(inmueble)
 		.build());
 	return inmueble;
+    }
+    
+    private Inmobiliaria unaInmobiliaria() {
+    	return new Inmobiliaria.Builder()
+    			.setNombre("Inmobiliaria Eastwood")
+    			.setCuit("132d1as32d1")
+    			.build();
     }
 
 }
