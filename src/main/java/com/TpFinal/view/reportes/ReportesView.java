@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.*;
 
 import com.TpFinal.utils.Utils;
-import com.TpFinal.view.dummy.pdf.PDFComponent;
+import com.TpFinal.view.component.PDFComponent;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
 import net.sf.jasperreports.engine.*;
