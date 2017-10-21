@@ -119,7 +119,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	// TODO decidir la ui para el filtrado.
 	HeaderRow filterRow = grid.appendHeaderRow();
 	filterRow.getCell("tipo").setComponent(filtroTipo());
-	// filterRow.getCell("fecha celebracion").setComponent(filtroFecha());
+	filterRow.getCell("fecha celebracion").setComponent(filtroFecha());
 	filterRow.getCell("estado").setComponent(filtroEstado());
 
     }
@@ -133,7 +133,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    if (e.getValue() != null) {
 		filtro.setEstado(contrato -> contrato.getEstadoContrato().equals(e.getValue()));
 	    } else {
-		filtro.setEstado(contrato -> true);
+		filtro.clearFiltro(filtro.getEstado());
 	    }
 	    updateList();
 	});
@@ -141,8 +141,42 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private Component filtroFecha() {
-	// TODO Auto-generated method stub
-	return null;
+	HorizontalLayout hl = new HorizontalLayout();
+	DateField fDesde = new DateField();
+	fDesde.setPlaceholder("Desde");
+	fDesde.setParseErrorMessage("Formato de fecha no reconocido");
+	fDesde.addValueChangeListener(e -> {
+	    if (fDesde.getValue() != null) {
+		filtro.setFechaDesde(contrato -> {
+		    return fDesde.getValue() == null ? true
+			    : contrato.getFechaCelebracion().compareTo(fDesde.getValue()) >= 0;
+		});
+	    } else {
+		filtro.clearFiltro(filtro.getFechaDesde());
+	    }
+	    updateList();
+	});
+	
+	DateField fHasta = new DateField();
+	fHasta.setPlaceholder("Hasta");
+	fHasta.setParseErrorMessage("Formato de fecha no reconocido");
+	fHasta.addValueChangeListener(e -> {
+	    if (fHasta.getValue() != null) {
+		filtro.setFechaHasta(contrato -> {
+		    return fHasta.getValue() == null ? true
+			    : contrato.getFechaCelebracion().compareTo(fHasta.getValue()) <= 0;
+		});
+	    } else {
+		filtro.clearFiltro(filtro.getFechaHasta());
+	    }
+	    updateList();
+	});
+	
+	hl.addComponents(fDesde,fHasta);
+	hl.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY, ValoTheme.DATEFIELD_BORDERLESS));
+	hl.setWidth("150px");
+	hl.setSpacing(false);
+	return hl;
     }
 
     private Component filtroTipo() {
@@ -158,7 +192,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		    filtro.setTipo(contrato -> contrato instanceof ContratoVenta);
 		}
 	    } else {
-		filtro.setTipo(contrato -> true);
+		filtro.clearFiltro(filtro.getTipo());
 	    }
 	    updateList();
 	});
