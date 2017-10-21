@@ -13,24 +13,16 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 
-import com.vaadin.client.renderers.ImageRenderer;
-
 import com.vaadin.data.ValueProvider;
-import com.vaadin.event.MouseEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.Page;
-import com.vaadin.server.Resource;
-import com.vaadin.server.Sizeable;
-import com.vaadin.server.ThemeResource;
+import com.vaadin.server.*;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.shared.ui.grid.HeightMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -257,7 +249,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		}
 		return ret;
 	    }).setCaption("Dirección");
-		
+
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
@@ -298,9 +290,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 		verFotos.addClickListener(click -> {
-			new ImageVisualizer();
-		    Notification.show("A Implementar: Abrir Pantalla para ver fotos",
-			    Notification.Type.WARNING_MESSAGE);
+			ImageVisualizer imgv=new ImageVisualizer();
+			imgv.singleImage(inmuebleService.getPortada(inmueble));
+
 		});
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");

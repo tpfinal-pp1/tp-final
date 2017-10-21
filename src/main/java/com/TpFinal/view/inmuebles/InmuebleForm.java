@@ -13,10 +13,9 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.Utils;
-import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
-import com.TpFinal.view.component.TinyButton;
+import com.TpFinal.view.component.*;
 import com.TpFinal.view.persona.PersonaFormWindow;
+import com.google.gwt.dom.client.Style;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
@@ -24,10 +23,18 @@ import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Resource;
 import com.vaadin.server.Setter;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.easymock.internal.matchers.Not;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,10 +88,11 @@ public class InmuebleForm extends FormLayout {
     private CheckBox cParrilla = new CheckBox("Parrilla");
     private CheckBox cPpileta = new CheckBox("Pileta");
 
-    PersonaService service = new PersonaService();
     private InmuebleABMView abmView;
     private Binder<Inmueble> binderInmueble = new Binder<>(Inmueble.class);
     private ProvinciaService provinciaService = new ProvinciaService();
+
+	private Image imagen ;
 
     TabSheet tabSheet;
 
@@ -342,9 +350,44 @@ public class InmuebleForm extends FormLayout {
 	propietarioCombo.setExpandRatio(comboPropietario, 1f);
 
 
+	imagen = new Image(null,null);
+	imagen.setWidth(100.0f, Unit.PIXELS);
+	imagen.setCaption(null);
+	VerticalLayout portada=new VerticalLayout(imagen,new UploadButton(new UploadReceiver() {
+		@Override
+		public void onSuccessfullUpload(String filename) {
+			if(filename!=null&&filename!="") {
+				System.out.println("fILENAME:"+filename);
+				inmueble.setNombreArchivoPortada(filename);
+				imagen.setIcon(null);
+				if(inmueble.getId()!=null)
+					imagen.setSource(inmbService.getPortada(inmueble)); //TODO DEJAR LINDO TODO ESTO
+				else{
+					imagen.setSource(new StreamResource(new StreamResource.StreamSource() {
+						@Override
+						public InputStream getStream() {
+							try {
+
+								return new FileInputStream("Files" + File.separator + filename);
+							} catch (FileNotFoundException e) {
+
+							}
+							return null;
+						}
+					}, "Files" + File.separator + inmueble.getNombreArchivoPortada()));
+				}
+				imagen.setWidth(100.0f, Unit.PIXELS);
+				imagen.setCaption(null);
+			}
+
+		}
+	}));
+	portada.setCaption("Portada");
+	portada.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	buscarUbicacion.setCaption("Ubicación");
 
 	 principal = new FormLayout(propietarioCombo, clasesInmueble, tiposInmueble,
-		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal, buscarUbicacion);
+		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal,new BlueLabel("Adicional"),portada, buscarUbicacion);
 
 	 caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
 		supCubierta, new BlueLabel("Adicionales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
@@ -358,6 +401,10 @@ public class InmuebleForm extends FormLayout {
 	inmuebleFromTabSheet = new TabSheet();
 	inmuebleFromTabSheet.addTab(principal, "Datos Principales");
 	inmuebleFromTabSheet.addTab(caracteristicas1, "Características");
+
+
+
+	//pic.setSpacing(true);
 
 
 	HorizontalLayout actions = new HorizontalLayout(save, delete, test);
@@ -374,8 +421,19 @@ public class InmuebleForm extends FormLayout {
 	if(inmueble != null) {
 	this.inmueble = inmueble;
 	binderInmueble.readBean(this.inmueble);
+	Resource res=inmbService.getPortada(this.inmueble);
+	if(res==null){
+		imagen.setIcon(new ThemeResource("sinPortada.png"));
+		imagen.setSource(null);
+	}
+	else{
+		imagen.setSource(res);}
+
+	Notification.show(this.inmueble.getNombreArchivoPortada());
 	delete.setVisible(true);
 	}else {
+		imagen.setSource(null);
+		imagen.setIcon(new ThemeResource("sinPortada.png"));
 	    this.inmueble = InmuebleService.getInstancia();
 		localidades.setEnabled(false);
 	    delete.setVisible(false);
@@ -407,7 +465,9 @@ public class InmuebleForm extends FormLayout {
 
 	boolean success = false;
 	try {
+
 	    binderInmueble.writeBean(inmueble);
+		Notification.show(inmueble.nombreArchivoPortada);
 	    if (inmueble.getPropietario().getPersona() != null)
 		success = inmbService.merge(inmueble);
 	    if (success)
