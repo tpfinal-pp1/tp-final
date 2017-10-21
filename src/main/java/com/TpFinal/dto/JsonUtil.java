@@ -21,6 +21,7 @@ public class JsonUtil {
 	    	
 		List<LocalidadRAW> ret=null;
 		Gson gson=new Gson();
+		
 		 try
 		 {
 			 Type tipo = new TypeToken<List<LocalidadRAW>>(){}.getType();

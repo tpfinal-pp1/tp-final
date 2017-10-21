@@ -1,5 +1,6 @@
 package com.TpFinal.view.persona;
 
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.DashboardEvent;
@@ -23,15 +24,8 @@ import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
-
-/* User Interface written in Java.
- *
- * Define the user interface shown on the Vaadin generated web page by extending the UI class.
- * By default, a new UI instance is automatically created when the page is loaded. To reuse
- * the same instance, add @PreserveOnRefresh.
- */
-
-@Title("Addressbook")
+import java.util.function.Supplier;
+@Title("Personas")
 @Theme("valo")
 public class PersonaABMView extends DefaultLayout implements View {
 
@@ -47,6 +41,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     PersonaForm personaForm = new PersonaForm(this);
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
+    
 
     // Para identificar los layout de acciones
     private int acciones = 0;
