@@ -1,11 +1,17 @@
 package com.TpFinal.view.inmobiliaria;
 
+import com.TpFinal.dto.Localidad;
+import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
+import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.InmobiliariaService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.services.ProvinciaService;
 import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -17,6 +23,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -38,10 +45,18 @@ public abstract class InmobiliariaWindow extends Window {
 	 public static final String ID = "profilepreferenceswindow";
 
 	 	private Inmobiliaria inmobiliaria;
+	 	private ProvinciaService provinciaService= new ProvinciaService();
 	    private Binder<Inmobiliaria> binderInmobiliaria = new Binder<>(Inmobiliaria.class);
-	    InmobiliariaService service = new InmobiliariaService();
-	    TextField nombre = new TextField("Nombre");
-	    TextField cuit = new TextField("Cuit");
+	    private  InmobiliariaService service = new InmobiliariaService();
+	    private TextField nombre = new TextField("Nombre");
+	    private TextField cuit = new TextField("Cuit");
+	    private TextField telefono = new TextField("Telefono");
+	    private TextField mail = new TextField("Mail");
+	    private TextField calle = new TextField("Calle");
+	    private TextField nro = new TextField("Número");
+	    private TextField codPostal = new TextField("Código postal");
+	    private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
+	    private ComboBox<Provincia> provincias = new ComboBox<>("Provincia");
 
 	    public InmobiliariaWindow(Inmobiliaria p) {
 	        this.inmobiliaria=p;
@@ -78,6 +93,38 @@ public abstract class InmobiliariaWindow extends Window {
 	        detailsWrapper.addStyleName(ValoTheme.TABSHEET_CENTERED_TABS);
 	        content.addComponent(detailsWrapper);
 	        content.setExpandRatio(detailsWrapper, 1f);
+	        
+	        localidades.setItems(provinciaService.getLocalidades());
+	    	provincias.setItems(provinciaService.getProvincias());
+	    	
+	    	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
+	    		@Override
+	    		public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
+	    			Provincia provincia = valueChangeEvent.getValue();
+	    			if (provincia != null) {
+	    				localidades.setEnabled(true);
+	    				localidades.setItems(provincia.getLocalidades());
+	    				localidades.setSelectedItem(provincia.getLocalidades().get(0));
+	    			} else {
+	    				localidades.setEnabled(false);
+	    				localidades.setSelectedItem(null);
+	    			}
+	    		}
+	    	});
+
+	    	localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
+	    	    @Override
+	    	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
+	    		if (valueChangeEvent.getValue() != null) {
+	    			String CP=valueChangeEvent.getValue().getCodigoPostal();
+	    			if(!CP.equals("0"))
+	    		    	codPostal.setValue(CP);
+
+	    			else
+	    				codPostal.setValue("");
+	    		}
+	    	    }
+	    	});
 
 	        detailsWrapper.addComponent(buildProfileTab());
 	        //  detailsWrapper.addComponent(buildPreferencesTab());
@@ -91,9 +138,77 @@ public abstract class InmobiliariaWindow extends Window {
 	        nombre.setRequiredIndicatorVisible(true);
 	       // telefono.setRequiredIndicatorVisible(true);
 	        cuit.setRequiredIndicatorVisible(true);
+	        telefono.setRequiredIndicatorVisible(true);
+	        mail.setRequiredIndicatorVisible(true);
+	        localidades.setRequiredIndicatorVisible(true);
+	        provincias.setRequiredIndicatorVisible(true);
+	        codPostal.setRequiredIndicatorVisible(true);
+	        nro.setRequiredIndicatorVisible(true);
+	        calle.setRequiredIndicatorVisible(true);
 	        
-	        binderInmobiliaria.forField(nombre).bind(i -> i.getNombre(), (i, nom)-> i.setNombre(nom));
-	        binderInmobiliaria.forField(cuit).bind(i -> i.getCuit(), (i, c)-> i.setCuit(c));
+	        binderInmobiliaria.forField(nombre)
+	        .asRequired("Ingrese un nombre")
+	        .bind(i -> i.getNombre(), (i, nom)-> i.setNombre(nom));
+	        
+	        binderInmobiliaria.forField(cuit)
+	        .asRequired("Ingrese un cuit")
+	        .bind(i -> i.getCuit(), (i, c)-> i.setCuit(c));
+	        
+	        binderInmobiliaria.forField(telefono)
+	        .asRequired("Ingrese un telefono")
+	        .bind(i -> i.getTelefono(), (i, c)-> i.setTelefono(c));
+	        
+	        binderInmobiliaria.forField(mail)
+	        .withValidator(new EmailValidator("Introduzca un email valido"))
+	        .bind(i -> i.getCuit(), (i, c)-> i.setCuit(c));
+	        
+	        binderInmobiliaria.forField(this.localidades).withValidator(localidad -> localidades.isEnabled(), "Debe seleccionar una provincia primero")
+			.asRequired("Seleccione una localidad").bind(inmobiliaria -> {
+		    	Direccion dir = inmobiliaria.getDireccion();
+
+					return dir != null ? provinciaService.getLocalidadFromNombreAndProvincia(dir.getLocalidad(), dir
+							.getProvincia()) : null;
+
+			},
+			(inmobiliaria, localidad) -> {
+			    if (inmobiliaria.getDireccion() == null)
+					inmobiliaria.setDireccion(new Direccion());
+			    if (localidad != null) {
+					inmobiliaria.getDireccion().setLocalidad(localidad.getNombre());
+					inmobiliaria.getDireccion().setCodPostal(localidad.getCodigoPostal());
+					inmobiliaria.getDireccion().setProvincia(localidad.getProvincia().getNombre());
+			    }
+			});
+
+	        binderInmobiliaria.forField(this.provincias).asRequired("Seleccione una provincia")
+			.bind(inmobiliaria -> {
+			    Direccion dir = inmobiliaria.getDireccion();
+			    return dir != null ? provinciaService.getProvinciaFromString(dir.getProvincia()) : null;
+			},
+				(inmueble, provincia) -> {
+				    if (inmueble.getDireccion() == null)
+						inmueble.setDireccion(new Direccion());
+				    if (provincia != null) {
+						inmueble.getDireccion().setProvincia(provincia.getNombre());
+				    }
+				});
+	        
+	        binderInmobiliaria.forField(this.codPostal)
+			.withNullRepresentation("")
+			.bind(inmobiliaria -> inmobiliaria.getDireccion().getCodPostal(),
+				(inmobiliaria, cod) -> inmobiliaria.getDireccion().setCodPostal(cod));
+
+	        binderInmobiliaria.forField(this.nro).asRequired("Ingrese la altura")
+			.withNullRepresentation("")
+			.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+			.withValidator(n -> n >= 0, "Debe ingresar una altura no negativa!")
+			.bind(inmobiliaria -> inmobiliaria.getDireccion().getNro(),
+				(inmobiliaria, nro) -> inmobiliaria.getDireccion().setNro(nro));
+
+	        binderInmobiliaria.forField(this.calle).asRequired("Ingrese el nombre de la calle")
+			.withNullRepresentation("")
+			.bind(inmobiliaria -> inmobiliaria.getDireccion().getCalle(),
+				(inmobiliaria, calle) -> inmobiliaria.getDireccion().setCalle(calle));
 	    }
 
 	    private void setInmobiliaria(Inmobiliaria inmo) {
@@ -174,6 +289,13 @@ public abstract class InmobiliariaWindow extends Window {
 	        details.addComponent(nombre);
 	        cuit = new TextField("Cuit");
 	        details.addComponent(cuit);
+	        details.addComponent(telefono);
+	        details.addComponent(mail);
+	        details.addComponent(calle);
+	        details.addComponent(nro);
+	        details.addComponent(provincias);
+	        details.addComponent(localidades);
+	        details.addComponent(codPostal);
 
 	        return root;
 	    }

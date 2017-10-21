@@ -66,6 +66,12 @@ public class InmobiliariaServiceIT {
 		}
 		
 		assertEquals(10, inm.readAll().size());
+		inm.readAll().forEach(i -> {
+			assertNotEquals(null, i.getCuit());
+			assertNotEquals(null, i.getMail());
+			assertNotEquals(null, i.getDireccion());
+			assertNotEquals(null, i.getTelefono());
+		});
 		inm.readAll().forEach(i -> System.out.println(i.toString()));
 	}
 	
@@ -108,6 +114,17 @@ public class InmobiliariaServiceIT {
     	return new Inmobiliaria.Builder()
     			.setNombre("Inmobiliaria Eastwood "+n)
     			.setCuit("132d1as32d1 "+n)
+    			.setTelefono("2131 "+n)
+    			.setMail("ddasd"+n)
+    			.setDireccion(new Direccion.Builder()
+    					.setCalle("Una calle"+n)
+    					.setCodPostal("asd123")
+    					.setCoordenada(new Coordenada())
+    					.setLocalidad("una Localidad")
+    					.setNro(Integer.parseInt(n))
+    					.setPais("Argentina")
+    					.setProvincia("Buenos Aires")
+    					.build())
     			.build();
     }
 

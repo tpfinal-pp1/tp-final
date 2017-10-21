@@ -205,6 +205,7 @@ public class InmuebleForm extends FormLayout {
     private void setNewInmobiliaria() {
     	this.inmobiliaria = new Inmobiliaria();
     	this.inmobiliaria.addInmueble(this.inmueble);
+    	inmobiliaria.setDireccion(new Direccion.Builder().build());
 
 
     	new InmobiliariaWindow(this.inmobiliaria) {

@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -20,6 +21,7 @@ import com.TpFinal.dto.Apropiable;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
 @Entity
 @Table(name = "inmobiliarias")
@@ -38,6 +40,13 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 	private Set<Inmueble>inmuebles=new HashSet<>();;
 	@Column(name="estadoRegistro")
 	private EstadoRegistro estadoRegistro;
+	@OneToOne
+	@Cascade(CascadeType.ALL)
+	private Direccion direccion;
+	@Column(name = "mail")
+	private String mail;
+	@Column(name = "telefono")
+	private String telefono;
 	
 	
 	public Inmobiliaria() {this.estadoRegistro=EstadoRegistro.ACTIVO;}
@@ -46,6 +55,9 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 		this.nombre=b.nombre;
 		this.cuit=b.cuit;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
+		this.direccion=b.direccion;
+		this.mail=b.mail;
+		this.telefono=b.telefono;
 	}
 	
 	public String getNombre() {
@@ -70,6 +82,30 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 
 	public void setCuit(String cuit) {
 		this.cuit = cuit;
+	}
+	
+	public Direccion getDireccion() {
+		return direccion;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setDireccion(Direccion direccion) {
+		this.direccion = direccion;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
 	}
 
 	@Override
@@ -178,6 +214,9 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 		private String nombre;
 		private Set<Inmueble>inmuebles=new HashSet<>();
 		private String cuit;
+		private Direccion direccion;
+		private String mail;
+		private String telefono;
 		
 		public Builder setNombre(String nombre) {
 			this.nombre=nombre;
@@ -193,6 +232,20 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 			this.cuit=dato;
 			return this;
 		}
+		public Builder setDireccion(Direccion dato){
+			this.direccion=dato;
+			return this;
+		}
+		public Builder setMail(String dato){
+			this.mail=dato;
+			return this;
+		}
+		public Builder setTelefono(String dato){
+			this.telefono=dato;
+			return this;
+		}
+		
+		
 		
 		public Inmobiliaria build() {
 			return new Inmobiliaria(this);
