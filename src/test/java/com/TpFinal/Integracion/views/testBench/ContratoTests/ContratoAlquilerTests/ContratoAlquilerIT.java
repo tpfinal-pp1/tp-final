@@ -39,8 +39,9 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoView = mainView.getContratoView();
     }
 
-    @Ignore
+    @Test
     public void addContratoAlquilerTest(){
+        int indexCombo = 1;
         getDriver().get(TBUtils.getUrl("contratos"));
        // TBUtils.sleep(3000);
         Assert.assertTrue(contratoView.isDisplayed());
@@ -59,13 +60,13 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
 
         //ComboboxInmueble
         List<String> inmuebleList = contratoAlquilerForm.getInmuebleComboBox().first().getPopupSuggestions();
-        String selectedInmueble = inmuebleList.get(3);
-        contratoAlquilerForm.getInmuebleComboBox().first().selectByText(selectedInmueble);
+        String selectedInmueble = inmuebleList.get(indexCombo);
+        contratoAlquilerForm.getInmuebleComboBox().first().selectByText("calle 149 n°5300, Antiguo, Jujuy");
 
         //ComboboxInquilino
         List<String> inquilinoList = contratoAlquilerForm.getInquilinoComboBox().first().getPopupSuggestions();
-        String selectedInquilino = inquilinoList.get(1);
-        contratoAlquilerForm.getInquilinoComboBox().first().selectByText(selectedInquilino);
+        String selectedInquilino = inquilinoList.get(indexCombo);
+        contratoAlquilerForm.getInquilinoComboBox().first().selectByText("Rosalina Marilou");
 
         //DateField Celebracion
         contratoAlquilerForm.getFechadeCelebracionDateField().first().setValue("22/10/2017");
@@ -75,17 +76,17 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoAlquilerForm.getUploadButton().first();
         contratoAlquilerForm.getDownlooadButton().first();
 
+
         //Tab "condiciones"
         contratoAlquilerForm.getTabSheet1().first().openTab("Condiciones");
 
-       
         //ComboDuracion
         List<String> durationList = contratoAlquilerForm.getDuracinComboBox().first().getPopupSuggestions();
-        String selectedDuration = durationList.get(1);
-        contratoAlquilerForm.getDuracinComboBox().first().selectByText(selectedDuration);
+        String selectedDuration = durationList.get(0);
+        contratoAlquilerForm.getDuracinComboBox().first().selectByText("14 Meses");
 
         //textfield punitario
-        contratoAlquilerForm.getFrecuenciadeIncrementomesesTextField().first().setValue("3");
+        contratoAlquilerForm.getFrecuenciadeIncrementomesesTextField().first().setValue("2");
 
         
         //ComboInteres
@@ -103,14 +104,15 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         String selectedInteres = interesList.get(1);
         contratoAlquilerForm.getTipoInteresMonto().selectByText(selectedInteres);
 
+        //Seteando valor inicial
         contratoAlquilerForm.getValorInicialTextField().first().setValue("20000");
 
         contratoAlquilerForm.getTipoMonedaRadioButtonGroup().first().selectByText("Pesos");
 
         contratoAlquilerForm.getGuardarButton().first().click();
         
-        TBUtils.sleep(5000);
-        
+        TBUtils.sleep(3000);
+
         Assert.assertFalse(contratoAlquilerForm.isDisplayed());
 
 

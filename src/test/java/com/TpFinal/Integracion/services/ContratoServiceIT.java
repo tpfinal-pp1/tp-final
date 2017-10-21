@@ -28,6 +28,7 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
@@ -62,24 +63,32 @@ public class ContratoServiceIT {
 
     @Test
     public void save() {
-	service.saveOrUpdate(instanciaAlquiler("1"), null);
-	service.saveOrUpdate(instanciaAlquiler("2"), null);
-	service.saveOrUpdate(instanciaAlquiler("3"), null);
-	service.saveOrUpdate(instanciaVenta("1"), null);
-	service.saveOrUpdate(instanciaVenta("2"), null);
-	service.saveOrUpdate(instanciaVenta("3"), null);
+	try {
+	    service.saveOrUpdate(instanciaAlquiler("1"), null);
+	    service.saveOrUpdate(instanciaAlquiler("2"), null);
+	    service.saveOrUpdate(instanciaAlquiler("3"), null);
+	    service.saveOrUpdate(instanciaVenta("1"), null);
+	    service.saveOrUpdate(instanciaVenta("2"), null);
+	    service.saveOrUpdate(instanciaVenta("3"), null);
+	} catch (ContratoServiceException e) {
+	    e.printStackTrace();
+	}
 
 	assertEquals(6, service.readAll().size());
     }
 
     @Test
     public void logicalDelete() {
-	service.saveOrUpdate(instanciaAlquiler("1"), null);
-	service.saveOrUpdate(instanciaAlquiler("2"), null);
-	service.saveOrUpdate(instanciaAlquiler("3"), null);
-	service.saveOrUpdate(instanciaVenta("1"), null);
-	service.saveOrUpdate(instanciaVenta("2"), null);
-	service.saveOrUpdate(instanciaVenta("3"), null);
+	try {
+	    service.saveOrUpdate(instanciaAlquiler("1"), null);
+	    service.saveOrUpdate(instanciaAlquiler("2"), null);
+	    service.saveOrUpdate(instanciaAlquiler("3"), null);
+	    service.saveOrUpdate(instanciaVenta("1"), null);
+	    service.saveOrUpdate(instanciaVenta("2"), null);
+	    service.saveOrUpdate(instanciaVenta("3"), null);
+	} catch (ContratoServiceException e) {
+	    e.printStackTrace();
+	}
 
 	service.delete(service.readAll().get(0));
 	service.delete(service.readAll().get(0));
@@ -89,22 +98,34 @@ public class ContratoServiceIT {
 
     @Test
     public void update() {
-	service.saveOrUpdate(instanciaAlquiler("1"), null);
-	service.saveOrUpdate(instanciaAlquiler("2"), null);
-	service.saveOrUpdate(instanciaAlquiler("3"), null);
-	service.saveOrUpdate(instanciaVenta("1"), null);
-	service.saveOrUpdate(instanciaVenta("2"), null);
-	service.saveOrUpdate(instanciaVenta("3"), null);
+	try {
+	    service.saveOrUpdate(instanciaAlquiler("1"), null);
+	    service.saveOrUpdate(instanciaAlquiler("2"), null);
+	    service.saveOrUpdate(instanciaAlquiler("3"), null);
+	    service.saveOrUpdate(instanciaVenta("1"), null);
+	    service.saveOrUpdate(instanciaVenta("2"), null);
+	    service.saveOrUpdate(instanciaVenta("3"), null);
+	} catch (ContratoServiceException e) {
+	    e.printStackTrace();
+	}
 
 	service.readAll().forEach(a -> {
 	    if (a.getClass().equals(ContratoAlquiler.class)) {
 		ContratoAlquiler ca = (ContratoAlquiler) a;
 		ca.setValorInicial(new BigDecimal("100.00"));
-		service.saveOrUpdate(ca, null);
+		try {
+		    service.saveOrUpdate(ca, null);
+		} catch (ContratoServiceException e) {
+		    e.printStackTrace();
+		}
 	    } else {
 		ContratoVenta cv = (ContratoVenta) a;
 		cv.setPrecioVenta(new BigDecimal("100.00"));
-		service.saveOrUpdate(cv, null);
+		try {
+		    service.saveOrUpdate(cv, null);
+		} catch (ContratoServiceException e) {
+		    e.printStackTrace();
+		}
 	    }
 
 	});

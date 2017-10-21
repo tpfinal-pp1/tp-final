@@ -13,6 +13,7 @@ public class TBInmuebleView extends TestBenchTestCase{
 
     private ElementQuery<GridElement> grid    ;
     private ElementQuery<TextFieldElement> filterText                ;
+    private ElementQuery<ButtonElement> inmuebleLupa;
     private ElementQuery<ButtonElement> quitFilter                    ;
     private ElementQuery<ButtonElement> nuevoInmuebleButton          ;
     private ElementQuery<TabSheetElement> tabSheet                    ;
@@ -43,6 +44,10 @@ public class TBInmuebleView extends TestBenchTestCase{
     private ElementQuery<ButtonElement> buttonRemove ;
     private ElementQuery<ButtonElement> buttonImage;
 
+    private ElementQuery<WindowElement> eliminarWindow ;
+    private ElementQuery<ButtonElement> siButton ;
+    private ElementQuery<ButtonElement> noButton ;
+
     private TBPersonaInmueblePopupView personaInmueblePopupView;
 
 
@@ -50,6 +55,7 @@ public class TBInmuebleView extends TestBenchTestCase{
         setDriver(driver);
         grid                        = $(GridElement.class);
         filterText                  = $(TextFieldElement.class);
+        inmuebleLupa                = $(VerticalLayoutElement.class).$(ButtonElement.class);
         quitFilter                  = $(VerticalLayoutElement.class).$(ButtonElement.class);
         nuevoInmuebleButton         = $(ButtonElement.class).caption("Nuevo");
         tabSheet                    = $(TabSheetElement.class);
@@ -76,6 +82,10 @@ public class TBInmuebleView extends TestBenchTestCase{
         parrillaCheckBox            = $(CheckBoxElement.class).caption("Parrilla");
         piletaCheckBox              = $(CheckBoxElement.class).caption("Pileta");
         horizontalLayoutAcciones =  $(HorizontalLayoutElement.class);
+
+        eliminarWindow = $$(WindowElement.class).caption("Eliminar");
+        siButton = $(ButtonElement.class).caption("Si");
+        noButton = $(ButtonElement.class).caption("No");
     }
 
 
@@ -84,6 +94,8 @@ public class TBInmuebleView extends TestBenchTestCase{
     public ElementQuery<TextFieldElement> getFilterText() { return filterText; }
 
     public ElementQuery<ButtonElement> getQuitFilter() { return quitFilter; }
+
+    public ElementQuery<ButtonElement> getInmuebleLupa() { return inmuebleLupa; }
 
     public ElementQuery<ButtonElement> getNuevoInmuebleButton() { return nuevoInmuebleButton; }
 
@@ -152,4 +164,14 @@ public class TBInmuebleView extends TestBenchTestCase{
     public boolean isFormDisplayed(){ return this.guardarButton.exists(); }
 
     public TBPersonaInmueblePopupView getPersonaInmueblePopupView() { return personaInmueblePopupView = new TBPersonaInmueblePopupView(getDriver()); }
+
+    public ElementQuery<WindowElement> getEliminarWindow() { return eliminarWindow; }
+
+    public ElementQuery<ButtonElement> getSiButton() { return siButton; }
+
+    public ElementQuery<ButtonElement> getNoButton() { return noButton; }
+
+    public boolean isEliminarWindowDisplayed(){return this.eliminarWindow.exists();}
+
+
 }

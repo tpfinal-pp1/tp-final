@@ -21,6 +21,8 @@ import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.exceptions.services.ContratoServiceException;
+import com.TpFinal.view.contrato.FiltroContrato;
 import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
 
 import java.io.File;
@@ -107,7 +109,7 @@ public class ContratoService {
 	return contratosVigentes;
     }
 
-    public boolean saveOrUpdate(Contrato contrato, File doc) {
+    public boolean saveOrUpdate(Contrato contrato, File doc) throws ContratoServiceException {
 	boolean ret = false;
 	if (contrato.getId() != null) {
 	    Contrato contratoAntiguo = daoContrato.findById(contrato.getId());
@@ -119,16 +121,26 @@ public class ContratoService {
 	    ContratoVenta c = (ContratoVenta) contrato;
 	    if (doc != null) {
 		ret = daoVenta.mergeContrato(c, doc);
+		if (ret == false)
+		    throw new ContratoServiceException("Fallo daoVenta.mergeContrato(c,doc) ");
+
 	    } else {
 		ret = daoVenta.merge(c);
+		if (ret == false)
+		    throw new ContratoServiceException("Fallo daoVenta.merge(c)");
 	    }
 	} else {
 	    ContratoAlquiler c = (ContratoAlquiler) contrato;
-	    System.out.println("interes " + c.getInteresPunitorio());
-	    if (doc != null)
+
+	    if (doc != null) {
 		ret = daoAlquiler.mergeContrato(c, doc);
-	    else
+		if (ret == false)
+		    throw new ContratoServiceException("Fallo daAlquiler.mergeContrato(c, doc)");
+	    } else {
 		ret = daoAlquiler.merge(c);
+		if (ret == false)
+		    throw new ContratoServiceException("Fallo daoAlquiler.merge(c)");
+	    }
 	}
 
 	return ret;
@@ -179,6 +191,13 @@ public class ContratoService {
 	    }
 	});
 	return arrayList;
+    }
+
+    public List<Contrato> findAll(FiltroContrato filtro) {
+	return daoContrato.readAllActives()
+		.stream()
+		.filter(filtro.getFiltroCompuesto())
+		.collect(Collectors.toList());
     }
 
     public static LocalDate getFechaVencimiento(ContratoAlquiler c) {
