@@ -13,7 +13,9 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.data.Binder;
 import com.vaadin.data.ValueProvider;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -26,9 +28,12 @@ import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 /* User Interface written in Java.
  *
@@ -95,7 +100,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureFilter() {
-	
+
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
     }
 
@@ -172,6 +177,134 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     private Component filtroFecha() {
 	HorizontalLayout hl = new HorizontalLayout();
+	DateField fDesde = filtroFDesde();
+	DateField fHasta = filtroFHasta();
+	TextField anio = filtroAnio();
+	TextField mes = filtroMes();
+	
+	HorizontalLayout hlFechas = hlFechas(fDesde,fHasta);
+	HorizontalLayout hlAnioMes = hlAnioMes(anio,mes);
+
+	Button adicionales = new Button(VaadinIcons.BOOKMARK);
+	adicionales.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_TINY, ValoTheme.BUTTON_ICON_ONLY);
+	adicionales.setWidth("90%");
+	adicionales.setDescription("Búsqueda por Año y Mes");
+	adicionales.addClickListener(e -> {
+	    if (adicionales.getIcon().equals(VaadinIcons.BOOKMARK)) {
+		adicionales.setIcon(VaadinIcons.BOOKMARK_O);
+		adicionales.setDescription("Búsqueda por fechas");
+		fDesde.clear();
+		fHasta.clear();		
+		filtro.clearFiltro(filtro.getAnio());
+		filtro.clearFiltro(filtro.getMes());
+		mostrarAnioMes(hl, adicionales, hlAnioMes);		
+	    } else {
+		adicionales.setIcon(VaadinIcons.BOOKMARK);
+		adicionales.setDescription("Búsqueda por Año y Mes");
+		anio.clear();
+		mes.clear();
+		filtro.clearFiltro(filtro.getAnio());
+		filtro.clearFiltro(filtro.getMes());
+		mostrarFechas(hl, adicionales, hlFechas);		
+	    }
+	    updateList();
+	});
+
+	mostrarFechas(hl, adicionales, hlFechas);
+	return hl;
+    }
+
+    private void mostrarFechas(HorizontalLayout hl, Button adicionales, HorizontalLayout hlFechas) {	
+	hl.removeAllComponents();	
+	hl.addComponents(adicionales, hlFechas);
+	hl.setWidth("175px");
+	hl.setSpacing(false);
+	hl.setExpandRatio(adicionales, 0.10f);
+	hl.setExpandRatio(hlFechas, 1);
+    }
+
+    private void mostrarAnioMes(HorizontalLayout hl, Button adicionales, HorizontalLayout hlAnioMes) {
+	hl.removeAllComponents();
+	hl.addComponents(adicionales, hlAnioMes);
+	hl.setWidth("175px");
+	hl.setSpacing(false);
+	hl.setExpandRatio(adicionales, 0.10f);
+	hl.setExpandRatio(hlAnioMes, 1);
+    }
+
+    private HorizontalLayout hlFechas(DateField fDesde,DateField fHasta) {
+	
+	HorizontalLayout hlFechas = new HorizontalLayout(fDesde, fHasta);
+	hlFechas.setSpacing(false);
+	hlFechas.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY,
+		ValoTheme.DATEFIELD_BORDERLESS));
+	hlFechas.setWidth("160px");
+	return hlFechas;
+    }
+
+    private HorizontalLayout hlAnioMes(TextField anio,TextField mes) {
+	
+	anio.setWidth("100%");
+	mes.setWidth("100%");
+	HorizontalLayout hl = new HorizontalLayout(anio, mes);
+	hl.setSpacing(true);
+	hl.forEach(component -> component.addStyleNames(ValoTheme.TEXTFIELD_ALIGN_CENTER, ValoTheme.TEXTFIELD_TINY,
+		ValoTheme.TEXTFIELD_BORDERLESS));
+	hl.setWidth("160px");
+	hl.setExpandRatio(anio, 0.5f);
+	hl.setExpandRatio(mes, 0.5f);
+	return hl;
+    }
+
+    private TextField filtroMes() {
+	TextField mes = new TextField();
+	mes.setPlaceholder("Mes");
+	mes.addBlurListener(e -> {
+	    if (!mes.isVisible())
+		mes.clear();
+	});
+	mes.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		filtro.setMes(contrato -> contrato.getFechaCelebracion()
+			.getMonth()
+			.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"))
+			.toLowerCase().contains(mes.getValue().toLowerCase()));
+		;
+	    } else {
+		filtro.setMes(contrato -> true);
+	    }
+	    updateList();
+	});
+	return mes;
+    }
+
+    private TextField filtroAnio() {
+
+	TextField anio = new TextField();
+	anio.setPlaceholder("Año");
+	anio.addBlurListener(e -> {
+	    if (!anio.isVisible())
+		anio.setValue("");
+	});
+	anio.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		Integer anioInt;
+		try {
+		    anioInt = Integer.parseInt(anio.getValue());
+		    filtro.setAnio(contrato -> contrato.getFechaCelebracion().getYear() == anioInt);
+		} catch (Exception ex) {
+		    filtro.setAnio(contrato -> true);
+		}
+	    } else {
+		filtro.setAnio(contrato -> true);
+	    }
+	    updateList();
+	});
+
+	return anio;
+    }
+
+    private DateField filtroFDesde() {
 	DateField fDesde = new DateField();
 	fDesde.setPlaceholder("Desde");
 	fDesde.setParseErrorMessage("Formato de fecha no reconocido");
@@ -186,7 +319,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	    updateList();
 	});
+	return fDesde;
+    }
 
+    private DateField filtroFHasta() {
 	DateField fHasta = new DateField();
 	fHasta.setPlaceholder("Hasta");
 	fHasta.setParseErrorMessage("Formato de fecha no reconocido");
@@ -201,12 +337,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	    updateList();
 	});
-
-	hl.addComponents(fDesde, fHasta);
-	hl.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY, ValoTheme.DATEFIELD_BORDERLESS));
-	hl.setWidth("150px");
-	hl.setSpacing(false);
-	return hl;
+	return fHasta;
     }
 
     private Component filtroTipo() {
@@ -347,7 +478,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b) {
 	nuevaVenta.setVisible(b);
 	nuevoAlquiler.setVisible(b);
-	
+
 	if (checkIfOnMobile()) {
 	    clearFilterTextBtn.setVisible(!b);
 	}
@@ -367,7 +498,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	    // layout.setSpacing(false);
 	    // layout.setResponsive(true);
-	   
+
 	    // Responsive.makeResponsive(layout);
 	    // filter.setWidth("58%");
 	    nuevaVenta.setCaption("Venta");

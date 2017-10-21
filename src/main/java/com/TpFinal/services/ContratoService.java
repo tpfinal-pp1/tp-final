@@ -194,10 +194,12 @@ public class ContratoService {
     }
 
     public List<Contrato> findAll(FiltroContrato filtro) {
-	return daoContrato.readAllActives()
+	List<Contrato> contratos = daoContrato.readAllActives()
 		.stream()
 		.filter(filtro.getFiltroCompuesto())
 		.collect(Collectors.toList());
+	contratos.sort(Comparator.comparing(Contrato::getId));
+	return contratos;
     }
 
     public static LocalDate getFechaVencimiento(ContratoAlquiler c) {
