@@ -116,25 +116,17 @@ public class Inmueble implements Identificable, BorradoLogico {
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	protected Set<Imagen> imagenes = new HashSet<>();
 
-	public Set<Imagen> getImagenes() {
-		return imagenes;
-	}
-
-	public void setImagenes(Set<Imagen> imagenes) {
-		this.imagenes = imagenes;
-	}
-
-	public Imagen getPortada() {
-		return portada;
-	}
-
-	public void setPortada(Imagen portada) {
-		this.portada = portada;
-	}
-
 	@OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	protected Imagen portada;
+
+	@Column(name = "archivoPortada")
+	public String nombreArchivoPortada;
+
+
+
+
+
 
 
 	public Inmueble() {
@@ -165,11 +157,33 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
+
     @Override
     public Long getId() {
 	return idInmueble;
     }
+	public Set<Imagen> getImagenes() {
+		return imagenes;
+	}
 
+	public void setImagenes(Set<Imagen> imagenes) {
+		this.imagenes = imagenes;
+	}
+	public String getNombreArchivoPortada() {
+		return nombreArchivoPortada;
+	}
+
+	public void setNombreArchivoPortada(String nombreArchivoPortada) {
+		this.nombreArchivoPortada = nombreArchivoPortada;
+	}
+
+	public Imagen getPortada() {
+		return portada;
+	}
+
+	public void setPortada(Imagen portada) {
+		this.portada = portada;
+	}
     @SuppressWarnings("unused")
     private void setIdInmueble(Long idInmueble) {
 	this.idInmueble = idInmueble;

@@ -24,12 +24,8 @@ public abstract class UploadReceiver implements Receiver {
         dir.mkdir();
 
     }
-    public UploadReceiver(String filePath)
 
-    {
-        this.filePath=filePath;
 
-    }
 
 
 

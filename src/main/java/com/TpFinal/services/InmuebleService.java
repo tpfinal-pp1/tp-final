@@ -16,10 +16,15 @@ import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.util.CurrentInstance;
+import com.google.gwt.user.server.rpc.UnexpectedException;
+import com.vaadin.server.FileResource;
+import com.vaadin.server.Resource;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.ThemeResource;
 
-import java.io.File;
+import java.io.*;
+import java.nio.file.CopyOption;
+import java.nio.file.Files;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -38,6 +43,7 @@ public class InmuebleService {
     }
 
     public boolean merge(Inmueble entidad) {
+		System.out.println(entidad.nombreArchivoPortada);
 	return dao.merge(entidad);
     }
 
@@ -81,9 +87,34 @@ public class InmuebleService {
 		.build();
     }
 
-    public String getPortada(Inmueble inmueble){
-		return "img"+ File.separator+"casa.jpg";
+    public Resource getPortada(Inmueble inmueble){
+    	if(inmueble!=null&&inmueble.getId()!=null) {
+			if (new File("Files" + File.separator + inmueble.getNombreArchivoPortada()).exists()) {
+				StreamResource str = new StreamResource(new StreamResource.StreamSource() {
+					@Override
+					public InputStream getStream() {
+						try {
+
+							return new FileInputStream("Files" + File.separator + inmueble.getNombreArchivoPortada());
+						} catch (FileNotFoundException e) {
+
+						}
+						return null;
+					}
+				}, "Files" + File.separator + inmueble.getNombreArchivoPortada());
+
+				return str;
+			}
+
+
+		}
+		System.out.println("Portada Nula");
+		return null;
+
 	}
+
+
+
 
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
@@ -171,5 +202,6 @@ public class InmuebleService {
 	}
 	return ret;
     }
+
 
 }
