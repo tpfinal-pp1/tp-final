@@ -165,8 +165,12 @@ public class ContratoABMView extends DefaultLayout implements View {
 	filtroEstado.setPlaceholder("Sin Filtro");
 	filtroEstado.setItems(EstadoContrato.toList());
 	filtroEstado.addValueChangeListener(e -> {
+	    Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
 	    if (e.getValue() != null) {
-		filtro.setEstado(contrato -> contrato.getEstadoContrato().equals(e.getValue()));
+		if (!filtroEstado.isEmpty())
+		    filtro.setEstado(contrato -> contrato.getEstadoContrato().equals(e.getValue()));
+		else
+		    filtro.clearFiltro(filtro.getEstado());
 	    } else {
 		filtro.clearFiltro(filtro.getEstado());
 	    }
@@ -181,9 +185,9 @@ public class ContratoABMView extends DefaultLayout implements View {
 	DateField fHasta = filtroFHasta();
 	TextField anio = filtroAnio();
 	TextField mes = filtroMes();
-	
-	HorizontalLayout hlFechas = hlFechas(fDesde,fHasta);
-	HorizontalLayout hlAnioMes = hlAnioMes(anio,mes);
+
+	HorizontalLayout hlFechas = hlFechas(fDesde, fHasta);
+	HorizontalLayout hlAnioMes = hlAnioMes(anio, mes);
 
 	Button adicionales = new Button(VaadinIcons.BOOKMARK);
 	adicionales.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_TINY, ValoTheme.BUTTON_ICON_ONLY);
@@ -194,10 +198,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 		adicionales.setIcon(VaadinIcons.BOOKMARK_O);
 		adicionales.setDescription("Búsqueda por fechas");
 		fDesde.clear();
-		fHasta.clear();		
+		fHasta.clear();
 		filtro.clearFiltro(filtro.getAnio());
 		filtro.clearFiltro(filtro.getMes());
-		mostrarAnioMes(hl, adicionales, hlAnioMes);		
+		mostrarAnioMes(hl, adicionales, hlAnioMes);
 	    } else {
 		adicionales.setIcon(VaadinIcons.BOOKMARK);
 		adicionales.setDescription("Búsqueda por Año y Mes");
@@ -205,7 +209,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		mes.clear();
 		filtro.clearFiltro(filtro.getAnio());
 		filtro.clearFiltro(filtro.getMes());
-		mostrarFechas(hl, adicionales, hlFechas);		
+		mostrarFechas(hl, adicionales, hlFechas);
 	    }
 	    updateList();
 	});
@@ -214,8 +218,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	return hl;
     }
 
-    private void mostrarFechas(HorizontalLayout hl, Button adicionales, HorizontalLayout hlFechas) {	
-	hl.removeAllComponents();	
+    private void mostrarFechas(HorizontalLayout hl, Button adicionales, HorizontalLayout hlFechas) {
+	hl.removeAllComponents();
 	hl.addComponents(adicionales, hlFechas);
 	hl.setWidth("175px");
 	hl.setSpacing(false);
@@ -232,8 +236,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	hl.setExpandRatio(hlAnioMes, 1);
     }
 
-    private HorizontalLayout hlFechas(DateField fDesde,DateField fHasta) {
-	
+    private HorizontalLayout hlFechas(DateField fDesde, DateField fHasta) {
+
 	HorizontalLayout hlFechas = new HorizontalLayout(fDesde, fHasta);
 	hlFechas.setSpacing(false);
 	hlFechas.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY,
@@ -242,8 +246,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	return hlFechas;
     }
 
-    private HorizontalLayout hlAnioMes(TextField anio,TextField mes) {
-	
+    private HorizontalLayout hlAnioMes(TextField anio, TextField mes) {
+
 	anio.setWidth("100%");
 	mes.setWidth("100%");
 	HorizontalLayout hl = new HorizontalLayout(anio, mes);
