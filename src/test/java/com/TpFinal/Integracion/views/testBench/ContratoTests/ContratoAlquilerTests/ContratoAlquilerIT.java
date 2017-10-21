@@ -104,6 +104,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         String selectedInteres = interesList.get(1);
         contratoAlquilerForm.getTipoInteresMonto().selectByText(selectedInteres);
 
+        //Seteando valor inicial
         contratoAlquilerForm.getValorInicialTextField().first().setValue("20000");
 
         contratoAlquilerForm.getTipoMonedaRadioButtonGroup().first().selectByText("Pesos");
