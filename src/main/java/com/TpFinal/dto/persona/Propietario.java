@@ -9,6 +9,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
+import com.TpFinal.dto.Apropiable;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.inmueble.Inmueble;
 
@@ -16,7 +17,7 @@ import com.TpFinal.dto.inmueble.Inmueble;
 @Entity
 @Table(name="propietarios")
 @PrimaryKeyJoinColumn(name="id")
-public class Propietario extends RolPersona {
+public class Propietario extends RolPersona implements Apropiable {
 	
 	
 	
@@ -54,7 +55,10 @@ public class Propietario extends RolPersona {
 	    this.inmuebles = inmuebles;
 	}
 	
-	
+	@Override
+	public String getNombreCompleto() {
+		return this.getPersona().getNombre()+" "+this.getPersona().getApellido();
+	}
 
 	@Override
 	public String toString() {
@@ -109,6 +113,8 @@ public class Propietario extends RolPersona {
 			return new Propietario(this);
 		}
 	}
+
+
 	
 	
 
