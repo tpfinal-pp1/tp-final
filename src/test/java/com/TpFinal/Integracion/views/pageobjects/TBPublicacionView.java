@@ -26,7 +26,9 @@ public class TBPublicacionView extends TestBenchTestCase {
     private ElementQuery<ButtonElement> buttonEdit ;
     private ElementQuery<ButtonElement> buttonRemove ;
 
-
+    private ElementQuery<WindowElement> eliminarWindow ;
+    private ElementQuery<ButtonElement> siButton ;
+    private ElementQuery<ButtonElement> noButton ;
 
     public TBPublicacionView(WebDriver driver){
         setDriver(driver);
@@ -43,6 +45,10 @@ public class TBPublicacionView extends TestBenchTestCase {
         monedaComboBox = $(ComboBoxElement.class).caption("Moneda");
         guardarButton = $(ButtonElement.class).caption("Guardar");
         horizontalLayoutAcciones = $(GridElement.class).$$(HorizontalLayoutElement.class);
+
+        eliminarWindow = $$(WindowElement.class).caption("Eliminar");
+        siButton = $(ButtonElement.class).caption("Si");
+        noButton = $(ButtonElement.class).caption("No");
     }
 
     public ElementQuery<GridElement> getGrid1() { return grid1; }
@@ -79,8 +85,15 @@ public class TBPublicacionView extends TestBenchTestCase {
 
     public ButtonElement getRemoveButton(String caption){ return getButtonRemove(caption).get(1); }
 
-
     public boolean isDisplayed(){ return this.grid1.exists();}
 
     public boolean isFormDisplayed(){ return this.guardarButton.exists();}
+
+    public ElementQuery<WindowElement> getEliminarWindow() { return eliminarWindow; }
+
+    public ElementQuery<ButtonElement> getSiButton() { return siButton; }
+
+    public ElementQuery<ButtonElement> getNoButton() { return noButton; }
+
+    public boolean isEliminarWindowDisplayed(){return this.eliminarWindow.exists();}
 }

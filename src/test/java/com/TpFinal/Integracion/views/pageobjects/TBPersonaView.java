@@ -100,4 +100,6 @@ public class TBPersonaView extends TestBenchTestCase{
     public ElementQuery<ButtonElement> getNoButton() { return noButton; }
 
     public ElementQuery<WindowElement> getEliminarWindow() { return eliminarWindow; }
+
+    public boolean isEliminarWindowDisplayed(){return this.eliminarWindow.exists();}
 }
