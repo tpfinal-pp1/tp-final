@@ -56,7 +56,7 @@ public class EditContratoAlquiler extends TestBenchTestCase{
         TBUtils.sleep(4000);
         
         //La del conflicto
-        contratoView.getEditButton("Accion 2").click();
+        contratoView.getEditButton("Accion 0").click();
         
         TBContratoAlquilerForm  contratoAlquilerForm = new TBContratoAlquilerForm(getDriver());
         
