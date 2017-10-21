@@ -105,6 +105,15 @@ public class FiltroContrato {
 	actualizarComposicion();
     }
 
+    public Predicate<Contrato> getIntervinientes() {
+        return intervinientes;
+    }
+
+    public void setIntervinientes(Predicate<Contrato> intervinientes) {
+        this.intervinientes = intervinientes;
+        actualizarComposicion();
+    }
+
     public List<Predicate<Contrato>> getTodosLosFiltros() {
 	return filtros;
     }

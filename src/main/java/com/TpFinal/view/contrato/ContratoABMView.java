@@ -42,7 +42,6 @@ import java.util.List;
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ContratoABMView extends DefaultLayout implements View {
 
-    private TextField filter = new TextField();
     private Grid<Contrato> grid = new Grid<>();
     private Button nuevoAlquiler = new Button("Nuevo Alquiler");
     private Button nuevaVenta = new Button("Nueva Venta");
@@ -96,13 +95,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureFilter() {
-	filter.addValueChangeListener(e -> updateList());
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
-	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
-	filter.setIcon(VaadinIcons.SEARCH);
-	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-
+	
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
     }
 
@@ -116,12 +109,49 @@ public class ContratoABMView extends DefaultLayout implements View {
 	grid.addColumn(getIntervinientes()).setCaption("Intervinientes").setId("intervinientes");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.getColumns().forEach(col -> col.setResizable(false));
-	// TODO decidir la ui para el filtrado.
+
 	HeaderRow filterRow = grid.appendHeaderRow();
 	filterRow.getCell("tipo").setComponent(filtroTipo());
 	filterRow.getCell("fecha celebracion").setComponent(filtroFecha());
 	filterRow.getCell("estado").setComponent(filtroEstado());
+	filterRow.getCell("direccion").setComponent(filtroDireccion());
+	filterRow.getCell("intervinientes").setComponent(filtroIntervinientes());
 
+    }
+
+    private Component filtroIntervinientes() {
+	TextField filtroIntervinientes = new TextField();
+	filtroIntervinientes.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroIntervinientes.setPlaceholder("Sin Filtro");
+	filtroIntervinientes.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		filtro.setIntervinientes(contrato -> {
+		    String intervinientes = getIntervinientes().apply(contrato);
+		    return intervinientes.toLowerCase().contains(filtroIntervinientes.getValue().toLowerCase());
+		});
+	    } else {
+		filtro.setIntervinientes(contrato -> true);
+	    }
+	    updateList();
+	});
+	return filtroIntervinientes;
+    }
+
+    private Component filtroDireccion() {
+	TextField filtroDireccion = new TextField();
+	filtroDireccion.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroDireccion.setPlaceholder("Sin Filtro");
+	filtroDireccion.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		filtro.setDireccion(contrato -> contrato.getInmueble().getDireccion()
+			.toString().toLowerCase()
+			.contains(filtroDireccion.getValue().toLowerCase()));
+	    } else {
+		filtro.setDireccion(contrato -> true);
+	    }
+	    updateList();
+	});
+	return filtroDireccion;
     }
 
     private Component filtroEstado() {
@@ -156,7 +186,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	    updateList();
 	});
-	
+
 	DateField fHasta = new DateField();
 	fHasta.setPlaceholder("Hasta");
 	fHasta.setParseErrorMessage("Formato de fecha no reconocido");
@@ -171,8 +201,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    }
 	    updateList();
 	});
-	
-	hl.addComponents(fDesde,fHasta);
+
+	hl.addComponents(fDesde, fHasta);
 	hl.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY, ValoTheme.DATEFIELD_BORDERLESS));
 	hl.setWidth("150px");
 	hl.setSpacing(false);
@@ -317,7 +347,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b) {
 	nuevaVenta.setVisible(b);
 	nuevoAlquiler.setVisible(b);
-	filter.setVisible(b);
+	
 	if (checkIfOnMobile()) {
 	    clearFilterTextBtn.setVisible(!b);
 	}
@@ -337,7 +367,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	    // layout.setSpacing(false);
 	    // layout.setResponsive(true);
-	    filter.setSizeUndefined();
+	   
 	    // Responsive.makeResponsive(layout);
 	    // filter.setWidth("58%");
 	    nuevaVenta.setCaption("Venta");
@@ -347,12 +377,12 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 	    // layout.setMargin(false);
 	    // layout.setSizeUndefined();
-	    filtering.addComponents(filter, clearFilterTextBtn, nuevaVenta, nuevoAlquiler);
+	    filtering.addComponents(clearFilterTextBtn, nuevaVenta, nuevoAlquiler);
 	    clearFilterTextBtn.setVisible(false);
 
 	} else {
 	    HorizontalLayout layout = new HorizontalLayout(nuevaVenta, nuevoAlquiler);
-	    filtering.addComponents(filter, clearFilterTextBtn, layout);
+	    filtering.addComponents(clearFilterTextBtn, layout);
 
 	}
 
@@ -404,7 +434,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    ContratoAlquilerForm.cancel();
 	}
 
-	filter.clear();
     }
 
     public boolean checkIfOnMobile() {
