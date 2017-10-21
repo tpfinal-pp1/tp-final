@@ -2,6 +2,7 @@ package com.TpFinal.view.inmuebles;
 
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
+import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -9,6 +10,7 @@ import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.services.InmobiliariaService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
@@ -16,6 +18,7 @@ import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
+import com.TpFinal.view.inmobiliaria.InmobiliariaWindow;
 import com.TpFinal.view.persona.PersonaFormWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
@@ -29,13 +32,17 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
     private InmuebleService inmbService = new InmuebleService();
     private PersonaService personaService = new PersonaService();
+    private InmobiliariaService inmobiliariaService = new InmobiliariaService();
     private Inmueble inmueble;
+    private Inmobiliaria inmobiliaria = new Inmobiliaria();
 
     // Acciones
     private Button save = new Button("Guardar");
@@ -54,8 +61,10 @@ public class InmuebleForm extends FormLayout {
 
     // TabPrincipal
     private final ComboBox<Persona> comboPropietario = new ComboBox<>();
+    private final ComboBox<Inmobiliaria> comboInmobiliaria = new ComboBox<>();
     private Persona persona = new Persona();
-    private Button btnNuevoPropietario = new Button();
+    private Button btnNuevoPropietario = new Button(VaadinIcons.PLUS);
+    private Button btnNuevaInmobiliaria = new Button(VaadinIcons.PLUS);
     private ComboBox<ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
     private RadioButtonGroup<TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
 
@@ -97,7 +106,7 @@ public class InmuebleForm extends FormLayout {
 	binding();
 	buildLayout();
 	updateComboPersonas();
-
+	updateComboInmobiliaria();
     }
 
     private void configureComponents() {
@@ -107,6 +116,7 @@ public class InmuebleForm extends FormLayout {
 
 
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
+	btnNuevaInmobiliaria.addClickListener(e -> this.setNewInmobiliaria());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 	setVisible(false);
@@ -166,6 +176,7 @@ public class InmuebleForm extends FormLayout {
 	});
 
 	comboPropietario.setTextInputAllowed(true);
+	comboInmobiliaria.setTextInputAllowed(true);
 	clasesInmueble.setTextInputAllowed(true);
 	localidades.setTextInputAllowed(true);
 	provincias.setTextInputAllowed(true);
@@ -189,6 +200,29 @@ public class InmuebleForm extends FormLayout {
 	    }
 	};
 
+    }
+    
+    private void setNewInmobiliaria() {
+    	this.inmobiliaria = new Inmobiliaria();
+    	this.inmobiliaria.addInmueble(this.inmueble);
+
+
+    	new InmobiliariaWindow(this.inmobiliaria) {
+			
+			@Override
+			public void onSave() {
+				inmobiliariaService.saveOrUpdate(inmobiliaria);
+	    		updateComboInmobiliaria();
+	    		comboInmobiliaria.setSelectedItem(inmobiliaria);
+				System.out.println("Cantidad de personas despues de guardar "+inmobiliariaService.readAll().size());
+			}
+    	};
+    }
+    
+    private void updateComboInmobiliaria() {
+    	List<Inmobiliaria>inms=this.inmobiliariaService.readAll();
+    	comboInmobiliaria.setItems(inms);
+    	System.out.println(inms.size());
     }
 
     private void binding() {
@@ -280,6 +314,9 @@ public class InmuebleForm extends FormLayout {
 		"Debe seleccionar o cargar un propietario del inmueble!")
 		.withNullRepresentation(new Persona())
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
+	
+	binderInmueble.forField(this.comboInmobiliaria)
+			.bind(inmueble -> inmueble.getInmobiliaria(), setInmobiliaria());
 
 	binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
@@ -313,6 +350,17 @@ public class InmuebleForm extends FormLayout {
 	};
 
     }
+    
+    private Setter<Inmueble, Inmobiliaria> setInmobiliaria() {
+	return (inmueble, inmobiliaria) -> {
+	    if (inmobiliaria != null) {
+		if (!inmobiliaria.getInmuebles().contains(inmueble)) {
+		    inmobiliaria.addInmueble(inmueble);
+		}
+	    }
+	};
+
+    }
 
     private void buildLayout() {
 	// addStyleName("v-scrollable");
@@ -321,6 +369,9 @@ public class InmuebleForm extends FormLayout {
 	comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
+	comboInmobiliaria.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	btnNuevaInmobiliaria.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+	btnNuevaInmobiliaria.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
 	if (this.abmView.isIsonMobile()) {
 
@@ -340,10 +391,18 @@ public class InmuebleForm extends FormLayout {
 	propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	propietarioCombo.setCaption("Propietario");
 	propietarioCombo.setExpandRatio(comboPropietario, 1f);
+	
+	HorizontalLayout inmobiliariaCombo = new HorizontalLayout();
+	inmobiliariaCombo.addComponents(comboInmobiliaria, btnNuevaInmobiliaria);
+	inmobiliariaCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	inmobiliariaCombo.setCaption("inmobiliaria");
+	inmobiliariaCombo.setExpandRatio(comboInmobiliaria, 1f);
+	
+	
 
 
 
-	 principal = new FormLayout(propietarioCombo, clasesInmueble, tiposInmueble,
+	 principal = new FormLayout(propietarioCombo,inmobiliariaCombo, clasesInmueble, tiposInmueble,
 		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal, buscarUbicacion);
 
 	 caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
@@ -452,6 +511,7 @@ public class InmuebleForm extends FormLayout {
 	this.cocheras.clear();
 	this.codPostal.clear();
 	this.comboPropietario.clear();
+	this.comboInmobiliaria.clear();
 	this.cParrilla.clear();
 	this.cPpileta.clear();
 	this.dormitorios.clear();
@@ -469,6 +529,7 @@ public class InmuebleForm extends FormLayout {
     	//TabElements for tab principal
 		List<Component> tabPrincipalComponents = new ArrayList<Component>();
 		tabPrincipalComponents.add(comboPropietario);
+		tabPrincipalComponents.add(comboInmobiliaria);
 		tabPrincipalComponents.add(clasesInmueble);
 		tabPrincipalComponents.add(tiposInmueble);
 		tabPrincipalComponents.add(new BlueLabel("Direccion"));

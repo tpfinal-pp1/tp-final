@@ -40,7 +40,7 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 	private EstadoRegistro estadoRegistro;
 	
 	
-	public Inmobiliaria() {}
+	public Inmobiliaria() {this.estadoRegistro=EstadoRegistro.ACTIVO;}
 	
 	private Inmobiliaria(Builder b) {
 		this.nombre=b.nombre;
@@ -167,6 +167,11 @@ public class Inmobiliaria implements Identificable, BorradoLogico, Apropiable {
 		} else if (!nombre.equals(other.nombre))
 			return false;
 		return true;
+	}
+	
+	@Override
+	public String toString() {
+		return this.nombre;
 	}
 
 	public static class Builder{
