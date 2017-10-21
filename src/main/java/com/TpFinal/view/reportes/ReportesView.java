@@ -16,6 +16,9 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
+import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
+import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
+import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -37,6 +40,8 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ReportesView extends DefaultLayout implements View {
+	
+	private static DAOContratoAlquiler daoContratoAlquiler;
 
 	private JasperReport reporte;
 	private JasperPrint reporteLleno;
@@ -49,7 +54,7 @@ public class ReportesView extends DefaultLayout implements View {
 	Button newReport = new Button("Generar");
 	Notification error ;
 	public enum TipoReporte {
-		Propietario("ReportePropietarios.jasper"),Inquilino(""),Interesado("");
+		Propietario("ReportePropietarios.jasper"),Inquilino(""),Interesado(""), AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper");
 
 		private final String archivoReporte;
 
@@ -67,6 +72,25 @@ public class ReportesView extends DefaultLayout implements View {
 							Rol.Propietario.toString()));break;
 				case Inquilino:
 					System.out.println("Implementar Inquilino");break;
+					
+				case AlquileresPorCobrar:
+					List<Object> objects2 = new ArrayList<Object>();
+					objects=new ArrayList<Object>();
+					daoContratoAlquiler.readAllActives().forEach(e -> {
+						e.getCobros().forEach(z -> {
+							if (z.getEstadoCobro() == EstadoCobro.NOCOBRADO) {
+							objects2.add(new ItemRepAlquileresACobrar(e.getInquilinoContrato(), z, e.getMoneda()));
+							}
+							
+							
+						});
+						
+						
+						
+					});
+					
+					objects = objects2;break;
+					
 
 			}
 		 	return  objects;
@@ -95,6 +119,7 @@ public class ReportesView extends DefaultLayout implements View {
     	super();
     	  buildLayout();
           configureComponents();
+          daoContratoAlquiler = new DAOContratoAlquilerImpl();
           newReport.click();
 
     }    
