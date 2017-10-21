@@ -288,6 +288,7 @@ public abstract class InmobiliariaWindow extends Window {
 	        nombre = new TextField("Nombre");
 	        details.addComponent(nombre);
 	        cuit = new TextField("Cuit");
+	        codPostal.setEnabled(false);
 	        details.addComponent(cuit);
 	        details.addComponent(telefono);
 	        details.addComponent(mail);
