@@ -13,6 +13,7 @@ public class TBInmuebleView extends TestBenchTestCase{
 
     private ElementQuery<GridElement> grid    ;
     private ElementQuery<TextFieldElement> filterText                ;
+    private ElementQuery<ButtonElement> inmuebleLupa;
     private ElementQuery<ButtonElement> quitFilter                    ;
     private ElementQuery<ButtonElement> nuevoInmuebleButton          ;
     private ElementQuery<TabSheetElement> tabSheet                    ;
@@ -50,6 +51,7 @@ public class TBInmuebleView extends TestBenchTestCase{
         setDriver(driver);
         grid                        = $(GridElement.class);
         filterText                  = $(TextFieldElement.class);
+        inmuebleLupa                = $(VerticalLayoutElement.class).$(ButtonElement.class);
         quitFilter                  = $(VerticalLayoutElement.class).$(ButtonElement.class);
         nuevoInmuebleButton         = $(ButtonElement.class).caption("Nuevo");
         tabSheet                    = $(TabSheetElement.class);
@@ -84,6 +86,8 @@ public class TBInmuebleView extends TestBenchTestCase{
     public ElementQuery<TextFieldElement> getFilterText() { return filterText; }
 
     public ElementQuery<ButtonElement> getQuitFilter() { return quitFilter; }
+
+    public ElementQuery<ButtonElement> getInmuebleLupa() { return inmuebleLupa; }
 
     public ElementQuery<ButtonElement> getNuevoInmuebleButton() { return nuevoInmuebleButton; }
 

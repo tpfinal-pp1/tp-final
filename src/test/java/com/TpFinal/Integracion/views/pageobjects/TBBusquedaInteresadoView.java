@@ -80,6 +80,8 @@ public class TBBusquedaInteresadoView extends TestBenchTestCase{
 
     public TextFieldElement getPrecioMaximoTextField() { return this.precioMaximoTextField.get(1) ; }
 
+
+
     public ElementQuery<RadioButtonGroupElement> getTipoRadioButtonGroup() { return tipoRadioButtonGroup; }
 
     public ElementQuery<RadioButtonGroupElement> getEstadoRadioButtonGroup() { return estadoRadioButtonGroup; }
