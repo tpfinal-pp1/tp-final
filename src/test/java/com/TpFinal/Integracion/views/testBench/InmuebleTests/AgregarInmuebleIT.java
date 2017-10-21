@@ -82,7 +82,8 @@ public class AgregarInmuebleIT extends TestBenchTestCase{
         inmuebleView.getParrillaCheckBox().first().click();
         inmuebleView.getAireAcondicionadoCheckBox().first().click();
         inmuebleView.getPiletaCheckBox().first().click();
-
+        
+        //Seleccionando checkbox jardin
         inmuebleView.getJardnCheckBox().first().click();
         inmuebleView.getParrillaCheckBox().first().click();
 

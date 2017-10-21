@@ -94,6 +94,8 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
         clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
         newItem.addClickListener(e -> {
+        	
+        	DuracionContratosForm.clearFields();
             grid.asSingleSelect().clear();
             DuracionContratosForm.setContratoDuracion(null);
         });
@@ -108,15 +110,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
      
 
         Responsive.makeResponsive(this);
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() == null) {
-        	if (DuracionContratosForm.isVisible())
-        	    setComponentsVisible(true);
-                DuracionContratosForm.setVisible(false);
-            } else {
-                DuracionContratosForm.setContratoDuracion(event.getValue());
-            }
-        });
+    
 
        // grid.setSelectionMode(Grid.SelectionMod
         //
@@ -282,6 +276,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     }
 
     }
+    
 
     @Override
     public void enter(final ViewChangeListener.ViewChangeEvent event) {
