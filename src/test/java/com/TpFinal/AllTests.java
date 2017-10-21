@@ -18,5 +18,4 @@ import com.TpFinal.UnitTests.dto.AllDTO;
 @RunWith(Suite.class)
 @SuiteClasses({AllTestsDAO.class,AllTestsService.class,AllUtilsTest.class,AllDTO.class})
 public class AllTests {
-	
 }

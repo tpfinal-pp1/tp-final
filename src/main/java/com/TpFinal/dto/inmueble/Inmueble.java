@@ -4,6 +4,7 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.Publicacion;
 
@@ -98,6 +99,10 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Cascade({ CascadeType.ALL })
     @JoinColumn(name = "id_proppietario")
     private Propietario propietario;
+    
+    @ManyToOne
+    @Cascade({CascadeType.SAVE_UPDATE})
+    private Inmobiliaria inmobiliaria;
 
     @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
     @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
@@ -147,6 +152,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.tipoInmueble = inmuebleBuilder.tipoInmueble;
 	this.publicaciones = inmuebleBuilder.publicaciones;
 	this.propietario = inmuebleBuilder.propietario;
+	this.inmobiliaria=inmuebleBuilder.inmobiliaria;
 	this.contratos = inmuebleBuilder.contratos;
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
@@ -339,8 +345,21 @@ public class Inmueble implements Identificable, BorradoLogico {
 	if (propietario != null)
 	    propietario.addInmueble(this);
     }
+    
+    public Inmobiliaria getInmobiliaria() {
+		return inmobiliaria;
+	}
 
-    @Override
+	public void setInmobiliaria(Inmobiliaria inmobiliaria) {
+		if (this.inmobiliaria != null && !this.inmobiliaria.equals(inmobiliaria)) {
+		    this.inmobiliaria.removeInmueble(this);
+		}
+		this.inmobiliaria = inmobiliaria;
+		if (inmobiliaria != null)
+		    inmobiliaria.addInmueble(this);
+	}
+
+	@Override
     public void setEstadoRegistro(EstadoRegistro estado) {
 	this.estadoRegistro = estado;
     }
@@ -468,6 +487,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	private ClaseInmueble claseInmueble;
 	private Direccion direccion;
 	private Set<Publicacion> publicaciones = new HashSet<>();
+	private Inmobiliaria inmobiliaria;
 
 	public Builder setCantidadAmbientes(Integer cantidadAmbientes) {
 	    this.cantidadAmbientes = cantidadAmbientes;
@@ -562,6 +582,11 @@ public class Inmueble implements Identificable, BorradoLogico {
 	public Builder addContrato(Contrato contrato) {
 	    contratos.add(contrato);
 	    return this;
+	}
+	
+	public Builder setInmobiliaria(Inmobiliaria dato) {
+		this.inmobiliaria=dato;
+		return this;
 	}
 
 	public Inmueble build() {
