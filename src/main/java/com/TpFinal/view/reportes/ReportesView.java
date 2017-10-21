@@ -54,12 +54,22 @@ public class ReportesView extends DefaultLayout implements View {
 	Button newReport = new Button("Generar");
 	Notification error ;
 	public enum TipoReporte {
-		Propietario("ReportePropietarios.jasper"),Inquilino(""),Interesado(""), AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper");
+		Propietario("ReportePropietarios.jasper"),AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper");
 
 		private final String archivoReporte;
 
 		 TipoReporte(String archivoReporte) {
 			this.archivoReporte=archivoReporte;
+		}
+
+		@Override
+		public String toString(){
+		 	switch (this){
+				case Propietario:return "Propietario";
+				case AlquileresPorCobrar:return  "Alquileres a Cobrar  ";
+				default:return super.toString();
+
+			}
 		}
 
 
@@ -70,8 +80,6 @@ public class ReportesView extends DefaultLayout implements View {
 					PersonaService servicePersona = new PersonaService();
 					objects=new ArrayList<Object>(servicePersona.findForRole(
 							Rol.Propietario.toString()));break;
-				case Inquilino:
-					System.out.println("Implementar Inquilino");break;
 					
 				case AlquileresPorCobrar:
 					List<Object> objects2 = new ArrayList<Object>();
@@ -129,6 +137,7 @@ public class ReportesView extends DefaultLayout implements View {
 
         filtering.addComponents(tipoReporteCB,newReport);
         tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+       // tipoReporteCB.setWidth("100%");
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
 
@@ -154,14 +163,12 @@ public class ReportesView extends DefaultLayout implements View {
 
     	newReport.addClickListener(e -> {
 
-
-			boolean success=generarReporte();
-			if(success){
+			try {
+				boolean success = generarReporte();
 				pdfComponent.setPDF(reportName);
-				}
-			else{
-
-				showErrorNotification("Error al generar el reporte:"+TipoReporte.Propietario.getArchivoReporte());}
+			}
+			catch (Exception f){
+				showErrorNotification("Error al generar el reporte");}
 
 
 
@@ -182,12 +189,7 @@ public class ReportesView extends DefaultLayout implements View {
 		File root=new File(File.separator+tipoReporte.getArchivoReporte());
 		File root2=new File(tipoReporte.getArchivoReporte());
 		File webapp=new File(new Utils().resourcesPath()+tipoReporte.getArchivoReporte());
-/*
-			System.out.println(tipoReporte.getArchivoReporte()+" Existe: "+root2.exists());
 
-			System.out.println(new Utils().resourcesPath()+tipoReporte.getArchivoReporte()+" Existe: "+webapp.exists());
-
-*/
 		try {
 			this.reporte = (JasperReport)JRLoader.
 					loadObject(webapp);
@@ -196,8 +198,8 @@ public class ReportesView extends DefaultLayout implements View {
 			try {
 				this.reporte = (JasperReport)JRLoader.
 						loadObject(root2);
-			} catch (JRException e1) {
-				e1.printStackTrace();
+			} catch (Exception e1) {
+
 			}
 		}
 
@@ -207,7 +209,7 @@ public class ReportesView extends DefaultLayout implements View {
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
 			return crearArchivo();
-		} catch (JRException e) {
+		} catch (Exception e) {
 
 			return false;
 		}
@@ -230,7 +232,7 @@ public class ReportesView extends DefaultLayout implements View {
 			exporter.exportReport();
 			return true;
 		} catch (JRException e) {
-			e.printStackTrace();
+
 			return false;
 
 		}
