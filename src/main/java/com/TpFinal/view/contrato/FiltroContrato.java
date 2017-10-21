@@ -13,7 +13,10 @@ public class FiltroContrato {
     };
 
     private Predicate<Contrato> tipo = contrato -> true;
-    private Predicate<Contrato> fechaCelebracion = contrato -> true;
+    private Predicate<Contrato> fechaDesde = contrato -> true;
+    private Predicate<Contrato> fechaHasta = contrato -> true;
+    private Predicate<Contrato> anio = contrato -> true;
+    private Predicate<Contrato> mes = contrato -> true;
     private Predicate<Contrato> estado = contrato -> true;
     private Predicate<Contrato> direccion = contrato -> true;
     private Predicate<Contrato> intervinientes = contrato -> true;
@@ -21,7 +24,7 @@ public class FiltroContrato {
     private Predicate<Contrato> filtroCompuesto;
 
     public FiltroContrato() {
-	filtros.addAll(Arrays.asList(tipo, fechaCelebracion, estado, direccion, intervinientes));
+	filtros.addAll(Arrays.asList(tipo, fechaDesde, fechaHasta, anio, mes, estado, direccion, intervinientes));
 	filtroCompuesto = contrato -> true;
     }
 
@@ -31,8 +34,12 @@ public class FiltroContrato {
 
     private void actualizarComposicion() {
 	filtros.clear();
-	filtros.addAll(Arrays.asList(tipo, fechaCelebracion, estado, direccion, intervinientes));
+	filtros.addAll(Arrays.asList(tipo, fechaDesde, fechaHasta, anio, mes, estado, direccion, intervinientes));
 	filtroCompuesto = filtros.stream().reduce(contrato -> true, Predicate::and);
+    }
+
+    public void clearFiltro(Predicate<Contrato> filtro) {
+	filtro = contrato -> true;
     }
 
     public Predicate<Contrato> getTipo() {
@@ -42,15 +49,42 @@ public class FiltroContrato {
     public void setTipo(Predicate<Contrato> tipo) {
 	this.tipo = tipo;
 	actualizarComposicion();
+    }    
+
+    public Predicate<Contrato> getFechaDesde() {
+        return fechaDesde;
     }
 
-    public Predicate<Contrato> getFechaCelebracion() {
-	return fechaCelebracion;
+    public void setFechaDesde(Predicate<Contrato> fechaDesde) {
+        this.fechaDesde = fechaDesde;
+        actualizarComposicion();
     }
 
-    public void setFechaCelebracion(Predicate<Contrato> fechaCelebracion) {
-	this.fechaCelebracion = fechaCelebracion;
-	actualizarComposicion();
+    public Predicate<Contrato> getFechaHasta() {
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(Predicate<Contrato> fechaHasta) {
+        this.fechaHasta = fechaHasta;
+        actualizarComposicion();
+    }
+
+    public Predicate<Contrato> getAnio() {
+        return anio;
+    }
+
+    public void setAnio(Predicate<Contrato> anio) {
+        this.anio = anio;
+        actualizarComposicion();
+    }
+
+    public Predicate<Contrato> getMes() {
+        return mes;
+    }
+
+    public void setMes(Predicate<Contrato> mes) {
+        this.mes = mes;
+        actualizarComposicion();
     }
 
     public Predicate<Contrato> getEstado() {
