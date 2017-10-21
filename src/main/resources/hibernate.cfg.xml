@@ -40,6 +40,7 @@
 		<mapping class="com.TpFinal.dto.cobro.Cobro" />
 		<mapping class="com.TpFinal.dto.inmueble.CriterioBusqInmueble" />
 		<mapping class="com.TpFinal.dto.inmueble.Imagen" />
+		<mapping class="com.TpFinal.dto.inmobiliaria.Inmobiliaria" />
 
 
 
