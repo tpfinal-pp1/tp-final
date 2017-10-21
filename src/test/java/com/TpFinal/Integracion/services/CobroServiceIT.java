@@ -30,6 +30,7 @@ import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.ContratoService;
 
@@ -125,7 +126,11 @@ public class CobroServiceIT {
 		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
 		contratoService.addCobros(ca);
 		//aca deberia guardar el contrato con sus cobros
+		try {
 		contratoService.saveOrUpdate(ca, null);
+		}catch(ContratoServiceException e) {
+		    e.printStackTrace();
+		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
 		assertEquals(24, ca.getCobros().size());
 		List<Cobro>cos=service.readAll();
@@ -155,7 +160,12 @@ public class CobroServiceIT {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativo();
 		contratoService.addCobros(ca);
-		contratoService.saveOrUpdate(ca, null);
+		try {
+		    contratoService.saveOrUpdate(ca, null);
+		} catch (ContratoServiceException e) {
+		   
+		    e.printStackTrace();
+		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
 		assertEquals(24, service.readAll().size());
 		List<Cobro>cos=service.readAll();
@@ -187,7 +197,12 @@ public class CobroServiceIT {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativoNoVigente();
 		contratoService.addCobros(ca);
-		contratoService.saveOrUpdate(ca, null);
+		try {
+		    contratoService.saveOrUpdate(ca, null);
+		} catch (ContratoServiceException e) {
+		  
+		    e.printStackTrace();
+		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
 		assertEquals(0, ca.getCobros().size());
 		assertEquals(0, service.readAll().size());
