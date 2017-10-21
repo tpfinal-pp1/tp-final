@@ -22,9 +22,12 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.List;
 
 /* User Interface written in Java.
@@ -54,11 +57,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 
     ContratoService service = new ContratoService();
     private List<Contrato> contratos;
-
+    private FiltroContrato filtro = new FiltroContrato();
 
     // acciones segun numero de fila
-   private int acciones = 0;
-
+    private int acciones = 0;
 
     public ContratoABMView() {
 	super();
@@ -105,16 +107,51 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureGrid() {
-	contratos = service.findAll(filter.getValue());
-	grid.addColumn(getTipoContrato()).setCaption("Tipo");
-	grid.addColumn(Contrato::getFechaCelebracion, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
-		"Fecha de celebración");
-	grid.addColumn(Contrato::getEstadoContrato).setCaption("Estado");
-	grid.addColumn(contrato -> contrato.getInmueble().getDireccion()).setCaption("Dirección");
-	grid.addColumn(getIntervinientes()).setCaption("Intervinientes");
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
-	grid.getColumns().forEach(col -> col.setResizable(false));
 
+	grid.addColumn(getTipoContrato()).setCaption("Tipo").setId("tipo");
+	grid.addColumn(Contrato::getFechaCelebracion, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
+		"Fecha de celebración").setId("fecha celebracion");
+	grid.addColumn(Contrato::getEstadoContrato).setCaption("Estado").setId("estado");
+	grid.addColumn(contrato -> contrato.getInmueble().getDireccion()).setCaption("Dirección").setId("direccion");
+	grid.addColumn(getIntervinientes()).setCaption("Intervinientes").setId("intervinientes");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.getColumns().forEach(col -> col.setResizable(false));
+	// TODO decidir la ui para el filtrado.
+	HeaderRow filterRow = grid.appendHeaderRow();
+	filterRow.getCell("tipo").setComponent(filtroTipo());
+	// filterRow.getCell("fecha celebracion").setComponent(filtroFecha());
+	// filterRow.getCell("estado").setComponent(filtroEstado());
+
+    }
+
+    private Component filtroEstado() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    private Component filtroFecha() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    private Component filtroTipo() {
+	ComboBox<FiltroContrato.tipo> filtroTipo = new ComboBox<>();
+	filtroTipo.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	filtroTipo.setPlaceholder("sin filtro");
+	filtroTipo.setItems(Arrays.asList(FiltroContrato.tipo.Alquiler, FiltroContrato.tipo.Venta));
+	filtroTipo.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (e.getValue().equals(FiltroContrato.tipo.Alquiler)) {
+		    filtro.setTipo(contrato -> contrato instanceof ContratoAlquiler);
+		} else {
+		    filtro.setTipo(contrato -> contrato instanceof ContratoVenta);
+		}
+	    } else {
+		filtro.setTipo(contrato -> true);
+	    }
+	    updateList();
+	});
+	return filtroTipo;
     }
 
     private ValueProvider<Contrato, String> getIntervinientes() {
@@ -204,7 +241,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    hl.forEach(button -> button.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL));
 	    hl.setSpacing(false);
 
-
 	    EstadoContrato estado = contrato.getEstadoContrato();
 	    if (estado == EstadoContrato.EnProcesoDeCarga) {
 		renovarContrato.setEnabled(false);
@@ -212,7 +248,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		del.setEnabled(false);
 		finalizarCarga.setEnabled(false);
 		renovarContrato.setEnabled(false);
-	    } else { // Estado.Vencido		
+	    } else { // Estado.Vencido
 		del.setEnabled(false);
 		finalizarCarga.setEnabled(false);
 		if (contrato instanceof ContratoVenta)
@@ -227,8 +263,8 @@ public class ContratoABMView extends DefaultLayout implements View {
 		}
 	    });
 	    hl.setSpacing(false);
-		hl.setCaption("Accion " + acciones);
-		acciones++;
+	    hl.setCaption("Accion " + acciones);
+	    acciones++;
 	    return hl;
 	};
     }
@@ -304,7 +340,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	contratos = service.findAll(filter.getValue());
+	contratos = service.findAll(filtro);
 	grid.setItems(contratos);
 
     }
