@@ -246,19 +246,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		    inmuebleForm.clearFields();
 		}
 	    });
-	    grid.addComponentColumn(inmueble -> {
-		Image image = new Image("", new ThemeResource(
-			inmuebleService.getPortada(inmueble)));
-		image.setWidth(280, Sizeable.Unit.PIXELS);
-		image.setHeight(200, Sizeable.Unit.PIXELS);
-		image.addClickListener(new MouseEvents.ClickListener() {
-			@Override
-			public void click(MouseEvents.ClickEvent clickEvent) {
-				new ImageVisualizer();
-			}
-		});
-		return image;
-	    }).setCaption("Portada");
+
 
 	    grid.addColumn(inmueble -> {
 		String ret = "";
@@ -269,8 +257,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		}
 		return ret;
 	    }).setCaption("Dirección");
-
-	    grid.setRowHeight(200);// FIXME por el header que se agranda tambien
+		
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
