@@ -20,7 +20,7 @@ public class FiltroPublicacion {
 		private Predicate<Publicacion> filtroCompuesto;
 
 		public FiltroPublicacion() {
-			filtros.addAll(Arrays.asList(propietario,fechaHasta, fechaDesde, inmueble, estadoPublicacion, operacion));
+			filtros.addAll(Arrays.asList(propietario,fechaHasta, anio, mes, fechaDesde, inmueble, estadoPublicacion, operacion));
 			filtroCompuesto = publicacion -> true;
 		}
 
@@ -30,7 +30,7 @@ public class FiltroPublicacion {
 
 		private void actualizarComposicion() {
 			filtros.clear();
-			filtros.addAll(Arrays.asList(propietario, fechaDesde, inmueble, estadoPublicacion));
+			filtros.addAll(Arrays.asList(propietario,fechaHasta, anio, mes, fechaDesde, inmueble, estadoPublicacion, operacion));
 			filtroCompuesto = filtros.stream().reduce(publicacion -> true, Predicate::and);
 		}
 
@@ -58,10 +58,11 @@ public class FiltroPublicacion {
 
 		public void setFechaHasta(Predicate<Publicacion> fechaHasta) {
 			this.fechaHasta = fechaHasta;
+			actualizarComposicion();
 		}
 
-		public void setFechaDesde(Predicate<Publicacion> tipo) {
-			this.fechaDesde = tipo;
+		public void setFechaDesde(Predicate<Publicacion> desde) {
+			this.fechaDesde = desde;
 			actualizarComposicion();
 		}
 
@@ -93,6 +94,7 @@ public class FiltroPublicacion {
 
 		public void setOperacion(Predicate<Publicacion> operacion) {
 			this.operacion = operacion;
+			actualizarComposicion();
 		}
 		
 		public Predicate<Publicacion> getAnio() {
@@ -103,20 +105,14 @@ public class FiltroPublicacion {
 			return mes;
 		}
 
-		public Predicate<Publicacion> getEstadoPublicacion() {
-			return estadoPublicacion;
-		}
-
 		public void setAnio(Predicate<Publicacion> anio) {
 			this.anio = anio;
+			actualizarComposicion();
 		}
 
 		public void setMes(Predicate<Publicacion> mes) {
 			this.mes = mes;
-		}
-
-		public void setEstadoPublicacion(Predicate<Publicacion> estadoPublicacion) {
-			this.estadoPublicacion = estadoPublicacion;
+			actualizarComposicion();
 		}
 
 		public void setTodosLosFiltros(List<Predicate<Publicacion>> todosLosFiltros) {

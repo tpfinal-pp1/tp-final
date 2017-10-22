@@ -108,23 +108,23 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
     
     private Component filtroOperacion() {
-    	ComboBox<TipoPublicacion> filtroEstado = new ComboBox<>();
-		filtroEstado.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-		filtroEstado.setPlaceholder("Sin Filtro");
-		filtroEstado.setItems(TipoPublicacion.toList());
-		filtroEstado.addValueChangeListener(e -> {
-			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
+    	ComboBox<TipoPublicacion> filtroOperacion = new ComboBox<>();
+		filtroOperacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+		filtroOperacion.setPlaceholder("Sin Filtro");
+		filtroOperacion.setItems(TipoPublicacion.toList());
+		filtroOperacion.addValueChangeListener(e -> {
+			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroOperacion.getValue());
 			if (e.getValue() != null) {
-				if (!filtroEstado.isEmpty())
-					filtro.setEstado(contrato -> contrato.getTipoPublicacion().equals(e.getValue()));
+				if (!filtroOperacion.isEmpty())
+					filtro.setOperacion(contrato -> contrato.getTipoPublicacion().equals(e.getValue()));
 				else
-					filtro.setEstado(contrato -> true);
+					filtro.setOperacion(contrato -> true);
 			} else {
-				filtro.setEstado(contrato -> true);
+				filtro.setOperacion(contrato -> true);
 			}
 			updateList();
 		});
-		return filtroEstado;
+		return filtroOperacion;
     }
     
     private Component filtroPropietario() {
