@@ -21,6 +21,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -107,6 +108,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 
     public void setValorInicial(BigDecimal valorInicial) {
 	this.valorInicial = valorInicial;
+	this.valorInicial=this.valorInicial.setScale(2, RoundingMode.CEILING);
     }
 
     public Integer getDiaDePago() {
