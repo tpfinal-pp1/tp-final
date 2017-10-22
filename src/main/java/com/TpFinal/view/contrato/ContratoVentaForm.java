@@ -112,11 +112,9 @@ public class ContratoVentaForm extends FormLayout {
 			PublicacionVenta asociado=service.getPublicacionVentaActiva(inmueble);
 			if(asociado!=null) {
 				
-//				contratoVenta.setPrecioVenta(asociado.getPrecio());
-//				contratoVenta.setMoneda(asociado.getMoneda());
-				System.out.println(asociado.getPrecio().toString());
-				tfPrecioDeVenta.setValue(asociado.getPrecio().toString());
-				rbgTipoMoneda.setSelectedItem(asociado.getMoneda());
+				contratoVenta.setPrecioVenta(asociado.getPrecio());
+				contratoVenta.setMoneda(asociado.getMoneda());
+				binderContratoVenta.readBean(contratoVenta);
 			}
 		    }
 		}
