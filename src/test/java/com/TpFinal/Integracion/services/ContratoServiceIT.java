@@ -308,7 +308,7 @@ public class ContratoServiceIT {
     	service.readAll().forEach(c -> service.delete(c));
     	
     	
-    	System.out.println("CANTIDAD DE CONTRATOS DESPUES DE BORRAR 2, ES : " + service.readAll().size());
+    	System.out.println("CANTIDAD DE CONTRATOS DESPUES DE BORRAR 2 CONTRATOS, ES : " + service.readAll().size());
     	
     	System.out.println("CANTIDAD DE CONTRATOS DE ALQUILER VIGENTES: "+ service.getContratosAlquilerVigentes().size());
 
