@@ -383,6 +383,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		del.setDescription("Borrar");
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
+
 		verFotos.addClickListener(click -> {
 			Resource resource=inmuebleService.getPortada(inmueble);
 			if(resource!=null) {
@@ -396,6 +397,10 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		});
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
+		String archivoPortada=inmueble.getNombreArchivoPortada();
+		if(archivoPortada==null||archivoPortada=="")
+			verFotos.setEnabled(false);
+
 
 		Button verIntesados = new Button(VaadinIcons.SEARCH);
 		verIntesados.addClickListener(click -> {

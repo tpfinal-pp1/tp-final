@@ -483,6 +483,7 @@ public class InmuebleForm extends FormLayout {
 		imagen.setIcon(new ThemeResource("sinPortada.png"));
 		imagen.setSource(null);
 	    } else {
+	    	imagen.setIcon(null);
 		imagen.setSource(res);
 	    }
 
