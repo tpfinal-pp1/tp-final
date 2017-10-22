@@ -11,6 +11,7 @@ import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
@@ -100,7 +101,7 @@ public class ContratoAlquilerForm extends FormLayout {
     ContratoService service = new ContratoService();
     InmuebleService inmuebleService = new InmuebleService();
     PersonaService personaService = new PersonaService();
-    ContratoDuracionService contratoDuracionService= new ContratoDuracionService();
+    ContratoDuracionService contratoDuracionService = new ContratoDuracionService();
     private ContratoABMView contratoABMView;
     private Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
     Persona person = new Persona(); // TODO ver donde se usa persona p.
@@ -142,7 +143,12 @@ public class ContratoAlquilerForm extends FormLayout {
 			tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
 			contratoAlquiler.setInmueble(inmueble);
 			contratoAlquiler.setPropietario(propietario);
-			;
+			PublicacionAlquiler asociado = service.getPublicacionAlquilerActiva(inmueble);
+			if (asociado != null) {
+			    contratoAlquiler.setValorInicial(asociado.getValorCuota());
+			    contratoAlquiler.setMoneda(asociado.getMoneda());
+			    binderContratoAlquiler.readBean(contratoAlquiler);
+			}
 		    }
 		}
 	    }
@@ -167,7 +173,6 @@ public class ContratoAlquilerForm extends FormLayout {
 		}
 	    }
 	});
-	
 
 	setVisible(false);
     }
@@ -251,9 +256,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind("moneda");
 
 	binderContratoAlquiler.forField(this.stIncremento)
-	.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-	.asRequired(
-		"Ingrese una frecuencia de incremento de la cuota")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.asRequired(
+			"Ingrese una frecuencia de incremento de la cuota")
 		.withValidator(v -> {
 		    ContratoDuracion d = this.cbDuracionContrato.getValue();
 		    if (d != null) {
@@ -329,7 +334,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	tabSheet = new TabSheet();
 
 	BlueLabel seccionDoc = new BlueLabel("Documento Word");
-	
+
 	stIncremento.setWidth("77%");
 	if (!this.contratoABMView.checkIfOnMobile()) {
 	    rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
@@ -382,10 +387,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
 	    binderContratoAlquiler.readBean(contratoAlquiler);
-	   
+
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
-	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());	   
+	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
 	}
 
 	setVisible(true);

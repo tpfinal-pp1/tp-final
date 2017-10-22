@@ -16,6 +16,7 @@ import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.Objects;
@@ -67,6 +68,7 @@ public class ContratoVenta extends Contrato  implements Cloneable{
 
     public void setPrecioVenta(BigDecimal precioVenta) {
 	this.precioVenta = precioVenta;
+	this.precioVenta=this.precioVenta.setScale(2, RoundingMode.CEILING);
     }
 
     public Persona getComprador() {

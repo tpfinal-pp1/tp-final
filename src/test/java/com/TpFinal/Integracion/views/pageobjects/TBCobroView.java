@@ -22,6 +22,9 @@ public class TBCobroView extends TestBenchTestCase{
     private ElementQuery<ButtonElement> siButton;
     private ElementQuery<ButtonElement> quitForm;
 
+    private ElementQuery<WindowElement> filtrarWindow;
+    private ElementQuery<RadioButtonGroupElement> radioButtonGroup1 ;
+
     public TBCobroView(WebDriver driver){
          setDriver(driver);
 
@@ -35,7 +38,8 @@ public class TBCobroView extends TestBenchTestCase{
          siButton = $(ButtonElement.class).caption("Si");
          quitForm = $(VerticalLayoutElement.class).$(ButtonElement.class);
 
-
+         filtrarWindow = $$(WindowElement.class).caption("Filtrar");
+         radioButtonGroup1 = $(RadioButtonGroupElement.class);
     }
 
     private ElementQuery<ButtonElement> getEdit(String caption){ return  button3 = $(CssLayoutElement.class).caption(caption).$$(ButtonElement.class);}
@@ -67,4 +71,10 @@ public class TBCobroView extends TestBenchTestCase{
     public boolean isFormDisplayed(){ return quitForm.exists();}
 
     public boolean isCobrarWindowDisplayed(){return cobraralquilerWindow.exists();}
+
+    public ElementQuery<WindowElement> getFiltrarWindow() { return filtrarWindow; }
+
+    public ElementQuery<RadioButtonGroupElement> getRadioButtonGroup1() { return radioButtonGroup1; }
+
+    public boolean isFilterWindowDisplayed(){ return this.filtrarWindow.exists();}
 }
