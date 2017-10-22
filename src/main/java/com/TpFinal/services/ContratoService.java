@@ -222,7 +222,7 @@ public class ContratoService {
 	}
 
 
-	private List<ContratoAlquiler> getContratosAlquilerVigentes() {
+	public List<ContratoAlquiler> getContratosAlquilerVigentes() {
 		List<ContratoAlquiler> contratosVigentes = daoAlquiler.readAllActives().stream()
 				.filter(c -> {
 					return c.getEstadoContrato().equals(EstadoContrato.Vigente);
