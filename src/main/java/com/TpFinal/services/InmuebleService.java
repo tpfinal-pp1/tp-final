@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class InmuebleService {
@@ -201,6 +202,15 @@ public class InmuebleService {
 		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente);
 	}
 	return ret;
+    }
+
+    public static List<Publicacion> getPublicacionesActivas(Inmueble i) {
+	List<Publicacion> publicaciones = i.getPublicaciones().stream().collect(Collectors.toList());
+	
+	return publicaciones.stream()
+		.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO))
+		.filter(p -> p.getEstadoPublicacion().equals(EstadoPublicacion.Activa))
+		.collect(Collectors.toList());
     }
 
 
