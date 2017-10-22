@@ -28,6 +28,7 @@ import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.regexp.RE;
 
 import java.util.List;
 import java.util.function.Supplier;
@@ -383,9 +384,15 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 		verFotos.addClickListener(click -> {
-		    ImageVisualizer imgv = new ImageVisualizer();
-		    imgv.singleImage(inmuebleService.getPortada(inmueble));
-
+			Resource resource=inmuebleService.getPortada(inmueble);
+			if(resource!=null) {
+				ImageVisualizer imgv = new ImageVisualizer();
+				imgv.singleImage(resource);
+			}
+			else {
+				Notification.show("Este imueble no posee portada");
+				 
+			}
 		});
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
