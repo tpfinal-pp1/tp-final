@@ -6,6 +6,7 @@ import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.*;
 import com.TpFinal.exceptions.services.PublicacionServiceException;
+import com.TpFinal.view.publicacion.FiltroPublicacion;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PublicacionService {
     private DAOPublicacion daoPublicacion;
@@ -86,6 +88,15 @@ public class PublicacionService {
 	}
 	return arrayList;
 
+    }
+    
+    public List<Publicacion> findAll(FiltroPublicacion filtro) {
+    	List<Publicacion> publicaciones = daoPublicacion.readAllActives()
+				.stream()
+				.filter(filtro.getFiltroCompuesto())
+				.collect(Collectors.toList());
+		publicaciones.sort(Comparator.comparing(Publicacion::getId));
+		return publicaciones;
     }
 
     static PublicacionAlquiler InstanciaPublicacionAlquiler() {
