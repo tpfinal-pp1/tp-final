@@ -43,7 +43,7 @@ public class AddPublicacionAlquilerIT extends TestBenchTestCase {
         publicacionView = mainView.getPublicacionView();
     }
 
-    @Test
+    @Ignore
     public void addPublicacionTest(){
         getDriver().get(TBUtils.getUrl("publicaciones"));
         TBUtils.sleep(3000);
