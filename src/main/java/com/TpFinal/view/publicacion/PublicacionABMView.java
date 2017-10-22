@@ -1,6 +1,8 @@
 package com.TpFinal.view.publicacion;
 
+import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -17,9 +19,12 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Title("Addressbook")
 @Theme("valo")
@@ -38,6 +43,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
     HorizontalLayout mainLayout;
     // ContratoVentaForm is an example of a custom component class
     PublicacionForm publicacionForm = new PublicacionForm(this);
+    private FiltroPublicacion filtro = new FiltroPublicacion();
 
     private boolean isonMobile = false;
 
@@ -68,10 +74,263 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	grid.setColumns("inmueble", "tipoPublicacion", "fechaPublicacion", "estadoPublicacion");
 	grid.getColumn("tipoPublicacion").setCaption("Operación");
 	grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
-	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario");
+	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario").setId("propietario");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	grid.getColumns().forEach(c -> c.setResizable(false));
+	
+	  HeaderRow filterRow = grid.appendHeaderRow();
+			filterRow.getCell("inmueble").setComponent(filtroInmueble());
+			filterRow.getCell("tipoPublicacion").setComponent(filtroOperacion());
+			filterRow.getCell("fechaPublicacion").setComponent(filtroFecha());
+			filterRow.getCell("propietario").setComponent(filtroPropietario());
+			filterRow.getCell("estadoPublicacion").setComponent(filtroEstado());
     }
+    
+    private Component filtroInmueble() {
+    	TextField filtroInmueble = new TextField();
+		filtroInmueble.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+		filtroInmueble.setPlaceholder("Sin Filtro");
+		filtroInmueble.addValueChangeListener(e -> {
+			if (e.getValue() != null) {
+				if(!filtroInmueble.isEmpty()) {
+					filtro.setInmueble(Publicacion -> Publicacion.getInmueble().getDireccion()
+							.toString().toLowerCase()
+							.contains(filtroInmueble.getValue().toLowerCase()));
+				}else
+					filtro.setInmueble(Publicacion -> true);
+				
+			} else {
+				filtro.setInmueble(Publicacion -> true);
+			}
+			updateList();
+		});
+		return filtroInmueble;
+    }
+    
+    private Component filtroOperacion() {
+    	ComboBox<TipoPublicacion> filtroOperacion = new ComboBox<>();
+		filtroOperacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+		filtroOperacion.setPlaceholder("Sin Filtro");
+		filtroOperacion.setItems(TipoPublicacion.toList());
+		filtroOperacion.addValueChangeListener(e -> {
+			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroOperacion.getValue());
+			if (e.getValue() != null) {
+				if (!filtroOperacion.isEmpty())
+					filtro.setOperacion(contrato -> contrato.getTipoPublicacion().equals(e.getValue()));
+				else
+					filtro.setOperacion(contrato -> true);
+			} else {
+				filtro.setOperacion(contrato -> true);
+			}
+			updateList();
+		});
+		return filtroOperacion;
+    }
+    
+    private Component filtroPropietario() {
+    	TextField filtroPropietario = new TextField();
+		filtroPropietario.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+		filtroPropietario.setPlaceholder("Sin Filtro");
+		filtroPropietario.addValueChangeListener(e -> {
+			if (e.getValue() != null) {
+				if(!filtroPropietario.isEmpty()) {
+					filtro.setPropietario(Publicacion -> Publicacion.getInmueble().getPropietario()
+							.toString().toLowerCase()
+							.contains(filtroPropietario.getValue().toLowerCase()));
+				}else
+					filtro.setPropietario(Publicacion -> true);
+			} else {
+				filtro.setPropietario(Publicacion -> true);
+			}
+			updateList();
+		});
+		return filtroPropietario;
+    }
+    
+    private Component filtroEstado() {
+    	ComboBox<EstadoPublicacion> filtroEstado = new ComboBox<>();
+		filtroEstado.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+		filtroEstado.setPlaceholder("Sin Filtro");
+		filtroEstado.setItems(EstadoPublicacion.toList());
+		filtroEstado.addValueChangeListener(e -> {
+			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
+			if (e.getValue() != null) {
+				if (!filtroEstado.isEmpty())
+					filtro.setEstado(publicacion -> publicacion.getEstadoPublicacion().equals(e.getValue()));
+				else
+					filtro.setEstado(publicacion -> true);
+			} else {
+				filtro.setEstado(publicacion -> true);
+			}
+			updateList();
+		});
+		return filtroEstado;
+    }
+    
+    private Component filtroFecha() {
+		HorizontalLayout hl = new HorizontalLayout();
+		DateField fDesde = filtroFDesde();
+		DateField fHasta = filtroFHasta();
+		TextField anio = filtroAnio();
+		TextField mes = filtroMes();
+
+		HorizontalLayout hlFechas = hlFechas(fDesde, fHasta);
+		HorizontalLayout hlAnioMes = hlAnioMes(anio, mes);
+
+		Button adicionales = new Button(VaadinIcons.BOOKMARK);
+		adicionales.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_TINY, ValoTheme.BUTTON_ICON_ONLY);
+		adicionales.setWidth("90%");
+		adicionales.setDescription("Búsqueda por Año y Mes");
+		adicionales.setCaption("Boton desde");
+		adicionales.addClickListener(e -> {
+			if (adicionales.getIcon().equals(VaadinIcons.BOOKMARK)) {
+				adicionales.setIcon(VaadinIcons.BOOKMARK_O);
+				adicionales.setDescription("Búsqueda por fechas");
+				fDesde.clear();
+				fHasta.clear();
+				filtro.setAnio(c -> true);
+				filtro.setMes(f -> true);
+				mostrarAnioMes(hl, adicionales, hlAnioMes);
+			} else {
+				adicionales.setIcon(VaadinIcons.BOOKMARK);
+				adicionales.setDescription("Búsqueda por Año y Mes");
+				anio.clear();
+				mes.clear();
+				filtro.setAnio(c -> true);
+				filtro.setMes(f -> true);
+				mostrarFechas(hl, adicionales, hlFechas);
+			}
+			updateList();
+		});
+		mostrarFechas(hl, adicionales, hlFechas);
+		return hl;
+	}
+
+	private void mostrarFechas(HorizontalLayout hl, Button adicionales, HorizontalLayout hlFechas) {
+		hl.removeAllComponents();
+		hl.addComponents(adicionales, hlFechas);
+		hl.setWidth("175px");
+		hl.setSpacing(false);
+		hl.setExpandRatio(adicionales, 0.10f);
+		hl.setExpandRatio(hlFechas, 1);
+	}
+
+	private void mostrarAnioMes(HorizontalLayout hl, Button adicionales, HorizontalLayout hlAnioMes) {
+		hl.removeAllComponents();
+		hl.addComponents(adicionales, hlAnioMes);
+		hl.setWidth("175px");
+		hl.setSpacing(false);
+		hl.setExpandRatio(adicionales, 0.10f);
+		hl.setExpandRatio(hlAnioMes, 1);
+	}
+
+	private HorizontalLayout hlFechas(DateField fDesde, DateField fHasta) {
+
+		HorizontalLayout hlFechas = new HorizontalLayout(fDesde, fHasta);
+		hlFechas.setSpacing(false);
+		hlFechas.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY,
+				ValoTheme.DATEFIELD_BORDERLESS));
+		hlFechas.setWidth("160px");
+		return hlFechas;
+	}
+
+	private HorizontalLayout hlAnioMes(TextField anio, TextField mes) {
+
+		anio.setWidth("100%");
+		mes.setWidth("100%");
+		HorizontalLayout hl = new HorizontalLayout(anio, mes);
+		hl.setSpacing(true);
+		hl.forEach(component -> component.addStyleNames(ValoTheme.TEXTFIELD_ALIGN_CENTER, ValoTheme.TEXTFIELD_TINY,
+				ValoTheme.TEXTFIELD_BORDERLESS));
+		hl.setWidth("160px");
+		hl.setExpandRatio(anio, 0.5f);
+		hl.setExpandRatio(mes, 0.5f);
+		return hl;
+	}
+
+	private TextField filtroMes() {
+		TextField mes = new TextField();
+		mes.setPlaceholder("Mes");
+		mes.addBlurListener(e -> {
+			if (!mes.isVisible())
+				mes.clear();
+		});
+		mes.addValueChangeListener(e -> {
+			if (e.getValue() != null) {
+				filtro.setMes(contrato -> contrato.getFechaPublicacion()
+						.getMonth()
+						.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"))
+						.toLowerCase().contains(mes.getValue().toLowerCase()));
+				;
+			} else {
+				filtro.setMes(contrato -> true);
+			}
+			updateList();
+		});
+		return mes;
+	}
+
+	private TextField filtroAnio() {
+
+		TextField anio = new TextField();
+		anio.setPlaceholder("Año");
+		anio.addBlurListener(e -> {
+			if (!anio.isVisible())
+				anio.setValue("");
+		});
+		anio.addValueChangeListener(e -> {
+			if (e.getValue() != null) {
+				Integer anioInt;
+				try {
+					anioInt = Integer.parseInt(anio.getValue());
+					filtro.setAnio(contrato -> contrato.getFechaPublicacion().getYear() == anioInt);
+				} catch (Exception ex) {
+					filtro.setAnio(contrato -> true);
+				}
+			} else {
+				filtro.setAnio(contrato -> true);
+			}
+			updateList();
+		});
+
+		return anio;
+	}
+
+	private DateField filtroFDesde() {
+		DateField fDesde = new DateField();
+		fDesde.setPlaceholder("Desde");
+		fDesde.setParseErrorMessage("Formato de fecha no reconocido");
+		fDesde.addValueChangeListener(e -> {
+			if (fDesde.getValue() != null) {
+				filtro.setFechaDesde(contrato -> {
+					return fDesde.getValue() == null ? true
+							: contrato.getFechaPublicacion().compareTo(fDesde.getValue()) >= 0;
+				});
+			} else {
+				filtro.setFechaDesde(f -> true);
+			}
+			updateList();
+		});
+		return fDesde;
+	}
+
+	private DateField filtroFHasta() {
+		DateField fHasta = new DateField();
+		fHasta.setPlaceholder("Hasta");
+		fHasta.setParseErrorMessage("Formato de fecha no reconocido");
+		fHasta.addValueChangeListener(e -> {
+			if (fHasta.getValue() != null) {
+				filtro.setFechaHasta(contrato -> {
+					return fHasta.getValue() == null ? true
+							: contrato.getFechaPublicacion().compareTo(fHasta.getValue()) <= 0;
+				});
+			} else {
+				filtro.setFechaHasta(f -> true);
+			}
+			updateList();
+		});
+		return fHasta;
+	}
 
     private ValueProvider<Publicacion, HorizontalLayout> configurarAcciones() {
 	return publicacion -> {
@@ -186,7 +445,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	List<Publicacion> customers = publicacionService.readAll(filter.getValue());
+	List<Publicacion> customers = publicacionService.findAll(filtro);
 	grid.setItems(customers);
 
     }

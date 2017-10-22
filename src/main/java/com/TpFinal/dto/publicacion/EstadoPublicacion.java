@@ -1,6 +1,7 @@
 package com.TpFinal.dto.publicacion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -9,11 +10,6 @@ import java.util.List;
 public enum EstadoPublicacion { Activa,Terminada;
 
     public static List<EstadoPublicacion> toList() {
-        EstadoPublicacion[] tipos = EstadoPublicacion.values();
-        List<EstadoPublicacion> ret = new ArrayList<>();
-        for (EstadoPublicacion t : tipos) {
-            ret.add(t);
-        }
-        return ret;
+    	return Arrays.asList(EstadoPublicacion.Activa, EstadoPublicacion.Terminada);
     }
 }
