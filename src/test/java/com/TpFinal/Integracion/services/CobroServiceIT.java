@@ -61,7 +61,7 @@ public class CobroServiceIT {
 	public void tearDown() throws Exception {
 		removerAsociaciones();
 		daoCobro.readAll().forEach(c -> daoCobro.delete(c));
-		daoContrato.readAll().forEach(c -> c.getDuracionContrato().removeContratosAlquiler(c));
+		//daoContrato.readAll().forEach(c -> c.getDuracionContrato().removeContratosAlquiler(c));
 		
 		//daoContratoDuracion.readAll().forEach(c -> daoContratoDuracion.delete(c));
 	}

@@ -7,16 +7,20 @@ import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
+import com.TpFinal.data.dao.DAOCobroImpl;
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
+import com.TpFinal.data.dao.interfaces.DAOCobro;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.dto.EstadoRegistro;
@@ -38,7 +42,11 @@ public class ContratoServiceIT {
     private ContratoService service;
     private DAOContratoVenta daoVenta;
     private DAOContratoAlquiler daoAlquiler;
+    private DAOCobro daoCobro;
     List<Contrato> contratos = new ArrayList<>();
+    List<Cobro>cobros= new ArrayList<>();
+    
+    List<ItemRepAlquileresACobrar> lista ;
 
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
@@ -50,15 +58,56 @@ public class ContratoServiceIT {
 	service = new ContratoService();
 	daoVenta = new DAOContratoVentaImpl();
 	daoAlquiler = new DAOContratoAlquilerImpl();
+	daoCobro = new DAOCobroImpl();
 	daoVenta.readAll().forEach(c -> daoVenta.delete(c));
-	daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
+	//daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
+	/*daoAlquiler.readAll().forEach(c -> {
+		Set<Cobro> cobros = c.getCobros();
+		cobros.forEach(z -> daoAlquiler.delete(z.getContrato()));
+	
+	});
+	*/
+	
+	
+	daoCobro.readAll().forEach(c -> {
+		c.getContrato().removeCobro(c);
+	});
+	
+	service.readAll().forEach(c -> service.delete(c));
+	
+	//daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
+	
 	contratos.clear();
     }
 
     @After
     public void tearDown() throws Exception {
 	daoVenta.readAll().forEach(c -> daoVenta.delete(c));
-	daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
+	
+	
+	/*daoAlquiler.readAll().forEach(c -> {daoAlquiler.delete(c);
+	Set<Cobro> cobros = c.getCobros();
+		cobros.forEach(a -> {
+			daoCobro.delete(a);
+		});
+	});*/
+	//daoAlquiler.readAll().forEach(c -> daoAlquiler.delete(c));
+	daoCobro.readAll().forEach(c -> {
+		c.getContrato().removeCobro(c);
+	});
+	
+	service.readAll().forEach(c -> service.delete(c));
+	/*
+	daoAlquiler.readAll().forEach(c -> {
+		c.getCobros().forEach(z -> {
+			c.removeCobro(z);
+		});
+		
+	
+	});
+	
+	*/
+	
     }
 
     @Test
@@ -210,7 +259,62 @@ public class ContratoServiceIT {
 	    fecha = fecha.plusMonths(1);
 	}
     }
+    
+    @Test
+    public void testeandoverificarSiExisteCobroConMasDeUnAnio() throws ContratoServiceException {
+    	
+    	 	
+        LocalDate fechaPrueba = LocalDate.of(2017, 10, 22);
+        ContratoAlquiler ca = instanciaAlquilerAcumulativo();
+    	service.addCobros(ca);
+    	service.saveOrUpdate(ca, null);
+    	
+    	ca.getCobros().forEach(e -> {
+    		
+    		System.out.println(e.getFechaDeVencimiento().getYear() + " " + fechaPrueba.getYear());
+    	});
+    	
+    	   	
+    	
+    	ContratoAlquiler ca2 = instanciaAlquilerAcumulativoConAñoViejo();
+    	
+    	service.addCobros(ca2);
+    	service.saveOrUpdate(ca2, null);
+    	
+    	ca2.getCobros().forEach(e -> {
+    		
+    		System.out.println(e.getFechaDeVencimiento().getYear() + " " + fechaPrueba.getYear());
+    	});
+    	
+    	    	
+    	System.out.println("EXISTE COBRO CON DIF DE UN ANIO?: "+service.verificarSiExisteCobroConMasDeUnAnio(fechaPrueba));
+  	
+  	
+    	System.out.println("CANTIDAD DE CONTRATOS VIGENTES DESPUES DE AGREGAR 2: " + service.getContratosAlquilerVigentes().size());
+    	
+    	service.readAll().forEach(e ->{
+    		
+    	System.out.println("ESTE ES EL ESTADO DE LOS DOS CONTRATOS AGREGADOS: "+e.getEstadoContrato());
+    		
+    	});
+        
+    	assertEquals(service.verificarSiExisteCobroConMasDeUnAnio(fechaPrueba),true);
+    	    	 	
+    	daoCobro.readAll().forEach(c -> {
+    		c.getContrato().removeCobro(c);
+    	});
+    	
+    	   	
+    	service.readAll().forEach(c -> service.delete(c));
+    	
+    	
+    	System.out.println("CANTIDAD DE CONTRATOS DESPUES DE BORRAR 2, ES : " + service.readAll().size());
+    	
+    	System.out.println("CANTIDAD DE CONTRATOS DE ALQUILER VIGENTES: "+ service.getContratosAlquilerVigentes().size());
 
+    }
+    
+   
     private ContratoVenta instanciaVenta(String numero) {
 	return new ContratoVenta.Builder()
 		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
@@ -265,6 +369,24 @@ public class ContratoServiceIT {
 	ca.setEstadoContrato(EstadoContrato.Vigente);
 	return ca;
     }
+    
+    private ContratoAlquiler instanciaAlquilerAcumulativoConAñoViejo() {
+    	ContratoAlquiler ca = new ContratoAlquiler.Builder()
+    		.setFechaCelebracion(LocalDate.of(2016, 05, 12))
+    		.setValorIncial(new BigDecimal("100.00"))
+    		.setDiaDePago(new Integer(11))
+    		.setInteresPunitorio(new Double(50))
+    		.setIntervaloActualizacion(new Integer(2))
+    		.setTipoIncrementoCuota(TipoInteres.Acumulativo)
+    		.setTipoInteresPunitorio(TipoInteres.Simple)
+    		.setPorcentajeIncremento(new Double(50))
+    		.setInquilinoContrato(null)
+    		.setDuracionContrato(instanciaContratoDuracion24())
+    		.setEstadoRegistro(EstadoRegistro.ACTIVO)
+    		.build();
+    	ca.setEstadoContrato(EstadoContrato.Vigente);
+    	return ca;
+        }
 
     private ContratoDuracion instanciaContratoDuracion24() {
 	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
