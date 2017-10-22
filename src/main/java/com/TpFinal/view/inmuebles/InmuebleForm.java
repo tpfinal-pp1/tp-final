@@ -442,11 +442,12 @@ public class InmuebleForm extends FormLayout {
 	    }
 	}));
 	portada.setCaption("Portada");
+	buscarUbicacion.setCaption("Ubicación");
 	portada.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	buscarUbicacion.setCaption("Ubicación");
 
 	principal = new FormLayout(propietarioCombo, inmobiliariaCombo, clasesInmueble, tiposInmueble,
-		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal, buscarUbicacion);
+		new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal,new BlueLabel("Adicional"), portada,buscarUbicacion);
 
 	caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
 		supCubierta, new BlueLabel("Adicionales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
