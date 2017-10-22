@@ -7,6 +7,7 @@ import com.TpFinal.dto.inmueble.TipoMoneda;
 import javax.persistence.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -15,15 +16,6 @@ import java.util.Objects;
 public class PublicacionAlquiler extends Publicacion {
 	
 	public static final String pPrecioAlquiler = "valorCuota";
-
-	public BigDecimal getValorCuota() {
-		return valorCuota;
-	}
-
-	public void setValorCuota(BigDecimal valorCuota) {
-		this.valorCuota = valorCuota;
-	}
-
 	@Column(name = pPrecioAlquiler)
 	private BigDecimal valorCuota;
 
@@ -31,6 +23,14 @@ public class PublicacionAlquiler extends Publicacion {
 	@Column(name = "moneda")
 	private TipoMoneda moneda;
 
+	public BigDecimal getValorCuota() {
+		return valorCuota;
+	}
+
+	public void setValorCuota(BigDecimal valorCuota) {
+		this.valorCuota = valorCuota;
+		this.valorCuota=this.valorCuota.setScale(2, RoundingMode.CEILING);
+	}
 	
 	public PublicacionAlquiler() {
 		super();
@@ -42,7 +42,7 @@ public class PublicacionAlquiler extends Publicacion {
 		this.fechaPublicacion = b.fechaPublicacion;
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
-		this.valorCuota = b.valorCuota;
+		this.valorCuota = b.valorCuota.setScale(2, RoundingMode.CEILING);;
 		tipoPublicacion = TipoPublicacion.Alquiler;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
