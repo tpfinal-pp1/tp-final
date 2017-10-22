@@ -73,6 +73,14 @@ public class PersonaABMView extends DefaultLayout implements View {
 	grid.getColumn("DNI").setCaption("DNI");
 	grid.getColumn("nombre").setCaption("Nombre");
 	grid.getColumn("apellido").setCaption("Apellido ");
+	grid.addColumn(persona -> {
+	    String ret = "";
+	    if (persona.getPrefBusqueda() != null)
+		ret = "Interesado, ";
+	    for (Rol rol : persona.giveMeYourRoles())
+		ret += rol + ", ";
+	    return ret.length() >= 2 ? ret.substring(0, ret.length() - 2) : "Sin Rol";
+	}).setCaption("Rol");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	grid.getColumns().forEach(col -> col.setResizable(false));
     }
@@ -113,9 +121,11 @@ public class PersonaABMView extends DefaultLayout implements View {
 			persona.setPrefBusqueda(getCriterio());
 			if (personaService.saveOrUpdate(persona)) {
 			    showSuccessNotification("Preferencias Guardadas");
+			    updateList();
 			    return true;
 			} else {
 			    showErrorNotification("No se han realizado modificaciones");
+			    updateList();
 			    return false;
 			}
 
