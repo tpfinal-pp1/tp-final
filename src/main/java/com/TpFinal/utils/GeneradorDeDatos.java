@@ -22,6 +22,7 @@ import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.CobroService;
@@ -87,7 +88,9 @@ public class GeneradorDeDatos {
 		    Propietario prop = asignarRolPropietarioA(p);
 
 		    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);
+		    pubVenta.setEstadoPublicacion(EstadoPublicacion.Activa);
 		    PublicacionAlquiler pubAlquiler = publicacionAlquilerRandom(inmueble);
+		    pubAlquiler.setEstadoPublicacion(EstadoPublicacion.Terminada);
 		    Persona comprador = personaRandom();
 		    Persona inquilino = personaRandom();
 		    daoPer.saveOrUpdate(comprador);
