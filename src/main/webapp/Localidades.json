@@ -315,7 +315,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "BaÃ±os Termales",
+   "loc_nombre": "Baños Termales",
    "loc_cpostal": 4190,
    "prv_nombre": "Salta"
  },
@@ -505,12 +505,12 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "CaÃ±ada De La Junta",
+   "loc_nombre": "Cañada De La Junta",
    "loc_cpostal": 4193,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "CaÃ±adon De Las Juntas",
+   "loc_nombre": "Cañadon De Las Juntas",
    "loc_cpostal": 4193,
    "prv_nombre": "Salta"
  },
@@ -540,7 +540,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "CachiÃ±al",
+   "loc_nombre": "Cachiñal",
    "loc_cpostal": 4409,
    "prv_nombre": "Salta"
  },
@@ -715,7 +715,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "CastaÃ±ares",
+   "loc_nombre": "Castañares",
    "loc_cpostal": 4425,
    "prv_nombre": "Salta"
  },
@@ -800,17 +800,17 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "ChaÃ±ar",
+   "loc_nombre": "Chañar",
    "loc_cpostal": 4633,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "ChaÃ±ar Aguada",
+   "loc_nombre": "Chañar Aguada",
    "loc_cpostal": 4193,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "ChaÃ±ar Muyo",
+   "loc_nombre": "Chañar Muyo",
    "loc_cpostal": 4446,
    "prv_nombre": "Salta"
  },
@@ -1205,7 +1205,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "El Ã‘ato",
+   "loc_nombre": "El Ñato",
    "loc_cpostal": 4561,
    "prv_nombre": "Salta"
  },
@@ -1950,7 +1950,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Estacion CachiÃ±al",
+   "loc_nombre": "Estacion Cachiñal",
    "loc_cpostal": 4411,
    "prv_nombre": "Salta"
  },
@@ -2290,7 +2290,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Isla De CaÃ±as",
+   "loc_nombre": "Isla De Cañas",
    "loc_cpostal": 4531,
    "prv_nombre": "Salta"
  },
@@ -2515,7 +2515,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4427,
    "prv_nombre": "Salta"
  },
@@ -2760,12 +2760,12 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "La MontaÃ±a",
+   "loc_nombre": "La Montaña",
    "loc_cpostal": 4400,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "La MontaÃ±a",
+   "loc_nombre": "La Montaña",
    "loc_cpostal": 4535,
    "prv_nombre": "Salta"
  },
@@ -2925,17 +2925,17 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "La ViÃ±a",
+   "loc_nombre": "La Viña",
    "loc_cpostal": 4432,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "La ViÃ±a",
+   "loc_nombre": "La Viña",
    "loc_cpostal": 4425,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "La ViÃ±a",
+   "loc_nombre": "La Viña",
    "loc_cpostal": 4427,
    "prv_nombre": "Salta"
  },
@@ -3015,22 +3015,22 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 4434,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 4633,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 4421,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 4561,
    "prv_nombre": "Salta"
  },
@@ -3270,7 +3270,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Las ViÃ±as",
+   "loc_nombre": "Las Viñas",
    "loc_cpostal": 4427,
    "prv_nombre": "Salta"
  },
@@ -3355,12 +3355,12 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Los BaÃ±ados",
+   "loc_nombre": "Los Bañados",
    "loc_cpostal": 4440,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Los BaÃ±os",
+   "loc_nombre": "Los Baños",
    "loc_cpostal": 4193,
    "prv_nombre": "Salta"
  },
@@ -3450,7 +3450,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Los PeÃ±ones",
+   "loc_nombre": "Los Peñones",
    "loc_cpostal": 4401,
    "prv_nombre": "Salta"
  },
@@ -3760,7 +3760,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Mision ChaqueÃ±a",
+   "loc_nombre": "Mision Chaqueña",
    "loc_cpostal": 4554,
    "prv_nombre": "Salta"
  },
@@ -3885,7 +3885,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "MuÃ±ano Kilometro 1308",
+   "loc_nombre": "Muñano Kilometro 1308",
    "loc_cpostal": 4411,
    "prv_nombre": "Salta"
  },
@@ -3900,7 +3900,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Nuestra SeÃ±ora De Talavera",
+   "loc_nombre": "Nuestra Señora De Talavera",
    "loc_cpostal": 4452,
    "prv_nombre": "Salta"
  },
@@ -4210,22 +4210,22 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "PeÃ±aflor",
+   "loc_nombre": "Peñaflor",
    "loc_cpostal": 4423,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "PeÃ±alva",
+   "loc_nombre": "Peñalva",
    "loc_cpostal": 4401,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "PeÃ±as Azules",
+   "loc_nombre": "Peñas Azules",
    "loc_cpostal": 4421,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "PeÃ±as Blancas",
+   "loc_nombre": "Peñas Blancas",
    "loc_cpostal": 4419,
    "prv_nombre": "Salta"
  },
@@ -4480,7 +4480,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Pozo Del ChaÃ±ar",
+   "loc_nombre": "Pozo Del Chañar",
    "loc_cpostal": 4554,
    "prv_nombre": "Salta"
  },
@@ -4645,7 +4645,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Puesto Del PaÃ±uelo",
+   "loc_nombre": "Puesto Del Pañuelo",
    "loc_cpostal": 4554,
    "prv_nombre": "Salta"
  },
@@ -4695,7 +4695,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "QueÃ±ua",
+   "loc_nombre": "Queñua",
    "loc_cpostal": 4530,
    "prv_nombre": "Salta"
  },
@@ -4720,7 +4720,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Quebrada MuÃ±ano",
+   "loc_nombre": "Quebrada Muñano",
    "loc_cpostal": 4409,
    "prv_nombre": "Salta"
  },
@@ -4835,7 +4835,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Rio UrueÃ±a",
+   "loc_nombre": "Rio Urueña",
    "loc_cpostal": 4193,
    "prv_nombre": "Salta"
  },
@@ -5025,7 +5025,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "San Antonio La ViÃ±a",
+   "loc_nombre": "San Antonio La Viña",
    "loc_cpostal": 4421,
    "prv_nombre": "Salta"
  },
@@ -5170,7 +5170,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "San Jose De La ViÃ±a",
+   "loc_nombre": "San Jose De La Viña",
    "loc_cpostal": 4423,
    "prv_nombre": "Salta"
  },
@@ -5640,7 +5640,7 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "SiÃ±unto",
+   "loc_nombre": "Siñunto",
    "loc_cpostal": 4421,
    "prv_nombre": "Salta"
  },
@@ -6050,17 +6050,17 @@
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "ViÃ±aco",
+   "loc_nombre": "Viñaco",
    "loc_cpostal": 4423,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "ViÃ±al Pozo",
+   "loc_nombre": "Viñal Pozo",
    "loc_cpostal": 4448,
    "prv_nombre": "Salta"
  },
  {
-   "loc_nombre": "Viaducto El MuÃ±al",
+   "loc_nombre": "Viaducto El Muñal",
    "loc_cpostal": 4190,
    "prv_nombre": "Salta"
  },
@@ -6435,7 +6435,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "AlbariÃ±o",
+   "loc_nombre": "Albariño",
    "loc_cpostal": 6405,
    "prv_nombre": "Buenos Aires"
  },
@@ -6750,17 +6750,17 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "ArribeÃ±os",
+   "loc_nombre": "Arribeños",
    "loc_cpostal": 6007,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Arroyo Ã‘acurutu",
+   "loc_nombre": "Arroyo Ñacurutu",
    "loc_cpostal": 2800,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Arroyo Ã‘acurutu Chico",
+   "loc_nombre": "Arroyo Ñacurutu Chico",
    "loc_cpostal": 2805,
    "prv_nombre": "Buenos Aires"
  },
@@ -6990,7 +6990,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "B Nuestra SeÃ±ora De La Paz",
+   "loc_nombre": "B Nuestra Señora De La Paz",
    "loc_cpostal": 1727,
    "prv_nombre": "Buenos Aires"
  },
@@ -7210,7 +7210,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Barrio El PorteÃ±o",
+   "loc_nombre": "Barrio El Porteño",
    "loc_cpostal": 1915,
    "prv_nombre": "Buenos Aires"
  },
@@ -7445,7 +7445,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Barrio Villa MuÃ±iz",
+   "loc_nombre": "Barrio Villa Muñiz",
    "loc_cpostal": 8000,
    "prv_nombre": "Buenos Aires"
  },
@@ -7605,7 +7605,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Blas DuraÃ±ona",
+   "loc_nombre": "Blas Durañona",
    "loc_cpostal": 6661,
    "prv_nombre": "Buenos Aires"
  },
@@ -7690,32 +7690,32 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "CaÃ±ada De Arias",
+   "loc_nombre": "Cañada De Arias",
    "loc_cpostal": 6700,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "CaÃ±ada Mariano",
+   "loc_nombre": "Cañada Mariano",
    "loc_cpostal": 8183,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "CaÃ±ada Marta",
+   "loc_nombre": "Cañada Marta",
    "loc_cpostal": 2740,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "CaÃ±ada Rica",
+   "loc_nombre": "Cañada Rica",
    "loc_cpostal": 6620,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "CaÃ±ada Seca",
+   "loc_nombre": "Cañada Seca",
    "loc_cpostal": 6105,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "CaÃ±uelas",
+   "loc_nombre": "Cañuelas",
    "loc_cpostal": 1814,
    "prv_nombre": "Buenos Aires"
  },
@@ -7835,7 +7835,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Campo AristimuÃ±o",
+   "loc_nombre": "Campo Aristimuño",
    "loc_cpostal": 6474,
    "prv_nombre": "Buenos Aires"
  },
@@ -7915,7 +7915,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Campo PeÃ±a Lopez",
+   "loc_nombre": "Campo Peña Lopez",
    "loc_cpostal": 6605,
    "prv_nombre": "Buenos Aires"
  },
@@ -7945,7 +7945,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Campomar ViÃ±edo",
+   "loc_nombre": "Campomar Viñedo",
    "loc_cpostal": 1625,
    "prv_nombre": "Buenos Aires"
  },
@@ -8045,7 +8045,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Capilla Del SeÃ±or",
+   "loc_nombre": "Capilla Del Señor",
    "loc_cpostal": 2812,
    "prv_nombre": "Buenos Aires"
  },
@@ -8840,7 +8840,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Coronel IsleÃ±os",
+   "loc_nombre": "Coronel Isleños",
    "loc_cpostal": 2747,
    "prv_nombre": "Buenos Aires"
  },
@@ -9070,7 +9070,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "DespeÃ±aderos",
+   "loc_nombre": "Despeñaderos",
    "loc_cpostal": 7531,
    "prv_nombre": "Buenos Aires"
  },
@@ -9255,7 +9255,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "DuraÃ±ona",
+   "loc_nombre": "Durañona",
    "loc_cpostal": 7401,
    "prv_nombre": "Buenos Aires"
  },
@@ -9275,7 +9275,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "EgaÃ±a",
+   "loc_nombre": "Egaña",
    "loc_cpostal": 7013,
    "prv_nombre": "Buenos Aires"
  },
@@ -9660,7 +9660,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "El TrebaÃ±on",
+   "loc_nombre": "El Trebañon",
    "loc_cpostal": 6437,
    "prv_nombre": "Buenos Aires"
  },
@@ -9865,7 +9865,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "EspadaÃ±a",
+   "loc_nombre": "Espadaña",
    "loc_cpostal": 7163,
    "prv_nombre": "Buenos Aires"
  },
@@ -10550,7 +10550,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "GoÃ±i",
+   "loc_nombre": "Goñi",
    "loc_cpostal": 7163,
    "prv_nombre": "Buenos Aires"
  },
@@ -10700,7 +10700,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Gregorio VillafaÃ±e",
+   "loc_nombre": "Gregorio Villafañe",
    "loc_cpostal": 6740,
    "prv_nombre": "Buenos Aires"
  },
@@ -10985,7 +10985,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "IbaÃ±ez",
+   "loc_nombre": "Ibañez",
    "loc_cpostal": 7223,
    "prv_nombre": "Buenos Aires"
  },
@@ -11315,7 +11315,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Juana A De La PeÃ±a",
+   "loc_nombre": "Juana A De La Peña",
    "loc_cpostal": 2717,
    "prv_nombre": "Buenos Aires"
  },
@@ -12190,7 +12190,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "La NiÃ±a",
+   "loc_nombre": "La Niña",
    "loc_cpostal": 6513,
    "prv_nombre": "Buenos Aires"
  },
@@ -12305,17 +12305,17 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 7207,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 7241,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 6407,
    "prv_nombre": "Buenos Aires"
  },
@@ -12615,7 +12615,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "La ZarateÃ±a",
+   "loc_nombre": "La Zarateña",
    "loc_cpostal": 6077,
    "prv_nombre": "Buenos Aires"
  },
@@ -13180,7 +13180,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 6475,
    "prv_nombre": "Buenos Aires"
  },
@@ -13415,7 +13415,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Manzo Y NiÃ±o",
+   "loc_nombre": "Manzo Y Niño",
    "loc_cpostal": 2718,
    "prv_nombre": "Buenos Aires"
  },
@@ -13860,12 +13860,12 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "MuÃ±iz",
+   "loc_nombre": "Muñiz",
    "loc_cpostal": 1663,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "MuÃ±oz",
+   "loc_nombre": "Muñoz",
    "loc_cpostal": 7404,
    "prv_nombre": "Buenos Aires"
  },
@@ -13955,7 +13955,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Nueva EspaÃ±a",
+   "loc_nombre": "Nueva España",
    "loc_cpostal": 6553,
    "prv_nombre": "Buenos Aires"
  },
@@ -14080,7 +14080,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "OtoÃ±o",
+   "loc_nombre": "Otoño",
    "loc_cpostal": 7545,
    "prv_nombre": "Buenos Aires"
  },
@@ -14205,7 +14205,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Parque MuÃ±oz",
+   "loc_nombre": "Parque Muñoz",
    "loc_cpostal": 7020,
    "prv_nombre": "Buenos Aires"
  },
@@ -14290,7 +14290,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "PeÃ±aflor",
+   "loc_nombre": "Peñaflor",
    "loc_cpostal": 7225,
    "prv_nombre": "Buenos Aires"
  },
@@ -14375,17 +14375,17 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "PiÃ±eiro",
+   "loc_nombre": "Piñeiro",
    "loc_cpostal": 1921,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "PiÃ±eyro",
+   "loc_nombre": "Piñeyro",
    "loc_cpostal": 1870,
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "PiÃ±eyro",
+   "loc_nombre": "Piñeyro",
    "loc_cpostal": 7548,
    "prv_nombre": "Buenos Aires"
  },
@@ -14620,7 +14620,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Puente CaÃ±ete",
+   "loc_nombre": "Puente Cañete",
    "loc_cpostal": 2740,
    "prv_nombre": "Buenos Aires"
  },
@@ -14730,7 +14730,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "QuiÃ±ihual Estacion",
+   "loc_nombre": "Quiñihual Estacion",
    "loc_cpostal": 7533,
    "prv_nombre": "Buenos Aires"
  },
@@ -14880,7 +14880,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Ricardo GaviÃ±a",
+   "loc_nombre": "Ricardo Gaviña",
    "loc_cpostal": 7313,
    "prv_nombre": "Buenos Aires"
  },
@@ -15945,7 +15945,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Teniente Coronel MiÃ±ana",
+   "loc_nombre": "Teniente Coronel Miñana",
    "loc_cpostal": 7401,
    "prv_nombre": "Buenos Aires"
  },
@@ -16140,7 +16140,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "VaÃ±a",
+   "loc_nombre": "Vaña",
    "loc_cpostal": 7301,
    "prv_nombre": "Buenos Aires"
  },
@@ -16220,7 +16220,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "ViÃ±a",
+   "loc_nombre": "Viña",
    "loc_cpostal": 2754,
    "prv_nombre": "Buenos Aires"
  },
@@ -16455,7 +16455,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Villa EspaÃ±a",
+   "loc_nombre": "Villa España",
    "loc_cpostal": 1884,
    "prv_nombre": "Buenos Aires"
  },
@@ -16795,7 +16795,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "Villa Saenz PeÃ±a",
+   "loc_nombre": "Villa Saenz Peña",
    "loc_cpostal": 1674,
    "prv_nombre": "Buenos Aires"
  },
@@ -16910,7 +16910,7 @@
    "prv_nombre": "Buenos Aires"
  },
  {
-   "loc_nombre": "VillafaÃ±e",
+   "loc_nombre": "Villafañe",
    "loc_cpostal": 6740,
    "prv_nombre": "Buenos Aires"
  },
@@ -17086,7 +17086,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Ã‘urilay",
+   "loc_nombre": "Ñurilay",
    "loc_cpostal": 6279,
    "prv_nombre": "San Luis"
  },
@@ -17221,7 +17221,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Alto De La LeÃ±a",
+   "loc_nombre": "Alto De La Leña",
    "loc_cpostal": 5750,
    "prv_nombre": "San Luis"
  },
@@ -17351,32 +17351,32 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "BaÃ±adito",
+   "loc_nombre": "Bañadito",
    "loc_cpostal": 5711,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "BaÃ±adito Viejo",
+   "loc_nombre": "Bañadito Viejo",
    "loc_cpostal": 5709,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "BaÃ±ado",
+   "loc_nombre": "Bañado",
    "loc_cpostal": 5707,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "BaÃ±ado De Cautana",
+   "loc_nombre": "Bañado De Cautana",
    "loc_cpostal": 5711,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "BaÃ±ado Lindo",
+   "loc_nombre": "Bañado Lindo",
    "loc_cpostal": 5705,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "BaÃ±os Zapallar",
+   "loc_nombre": "Baños Zapallar",
    "loc_cpostal": 5711,
    "prv_nombre": "San Luis"
  },
@@ -17476,7 +17476,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Balde De GuiÃ±azu",
+   "loc_nombre": "Balde De Guiñazu",
    "loc_cpostal": 5715,
    "prv_nombre": "San Luis"
  },
@@ -17681,117 +17681,117 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±a Larga",
+   "loc_nombre": "Caña Larga",
    "loc_cpostal": 5721,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada",
+   "loc_nombre": "Cañada",
    "loc_cpostal": 5715,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada",
+   "loc_nombre": "Cañada",
    "loc_cpostal": 5773,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Angosta",
+   "loc_nombre": "Cañada Angosta",
    "loc_cpostal": 5703,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Blanca",
+   "loc_nombre": "Cañada Blanca",
    "loc_cpostal": 5753,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada De Atras",
+   "loc_nombre": "Cañada De Atras",
    "loc_cpostal": 5771,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada De La Negra",
+   "loc_nombre": "Cañada De La Negra",
    "loc_cpostal": 5777,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada De Las Lagunas",
+   "loc_nombre": "Cañada De Las Lagunas",
    "loc_cpostal": 5773,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada De Los Tigres",
+   "loc_nombre": "Cañada De Los Tigres",
    "loc_cpostal": 5771,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada De Vilan",
+   "loc_nombre": "Cañada De Vilan",
    "loc_cpostal": 5719,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Pasto",
+   "loc_nombre": "Cañada Del Pasto",
    "loc_cpostal": 5750,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Puestito",
+   "loc_nombre": "Cañada Del Puestito",
    "loc_cpostal": 5753,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Grande",
+   "loc_nombre": "Cañada Grande",
    "loc_cpostal": 5777,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 5701,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda De Guzman",
+   "loc_nombre": "Cañada Honda De Guzman",
    "loc_cpostal": 5701,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada La Negra",
+   "loc_nombre": "Cañada La Negra",
    "loc_cpostal": 5881,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada La Tienda",
+   "loc_nombre": "Cañada La Tienda",
    "loc_cpostal": 5753,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Quemada",
+   "loc_nombre": "Cañada Quemada",
    "loc_cpostal": 5709,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Quemada",
+   "loc_nombre": "Cañada Quemada",
    "loc_cpostal": 5753,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada San Antonio",
+   "loc_nombre": "Cañada San Antonio",
    "loc_cpostal": 5750,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±ada Verde",
+   "loc_nombre": "Cañada Verde",
    "loc_cpostal": 5777,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±aditas",
+   "loc_nombre": "Cañaditas",
    "loc_cpostal": 5755,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "CaÃ±itas",
+   "loc_nombre": "Cañitas",
    "loc_cpostal": 5773,
    "prv_nombre": "San Luis"
  },
@@ -17821,7 +17821,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Caleras CaÃ±ada Grande",
+   "loc_nombre": "Caleras Cañada Grande",
    "loc_cpostal": 5759,
    "prv_nombre": "San Luis"
  },
@@ -17986,12 +17986,12 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "ChaÃ±ar De La Legua",
+   "loc_nombre": "Chañar De La Legua",
    "loc_cpostal": 5773,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "ChaÃ±aritos",
+   "loc_nombre": "Chañaritos",
    "loc_cpostal": 5883,
    "prv_nombre": "San Luis"
  },
@@ -18211,7 +18211,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Cruz De CaÃ±a",
+   "loc_nombre": "Cruz De Caña",
    "loc_cpostal": 5701,
    "prv_nombre": "San Luis"
  },
@@ -18306,12 +18306,12 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 5711,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 5770,
    "prv_nombre": "San Luis"
  },
@@ -18416,22 +18416,22 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5711,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5751,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5730,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5703,
    "prv_nombre": "San Luis"
  },
@@ -19431,7 +19431,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La AlcorteÃ±a",
+   "loc_nombre": "La Alcorteña",
    "loc_cpostal": 6216,
    "prv_nombre": "San Luis"
  },
@@ -19551,22 +19551,22 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5750,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5831,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5637,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5721,
    "prv_nombre": "San Luis"
  },
@@ -19611,7 +19611,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La ChaÃ±arienta",
+   "loc_nombre": "La Chañarienta",
    "loc_cpostal": 5719,
    "prv_nombre": "San Luis"
  },
@@ -20366,7 +20366,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "La SeÃ±a",
+   "loc_nombre": "La Seña",
    "loc_cpostal": 5721,
    "prv_nombre": "San Luis"
  },
@@ -20531,7 +20531,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Laguna De La CaÃ±ada",
+   "loc_nombre": "Laguna De La Cañada",
    "loc_cpostal": 5771,
    "prv_nombre": "San Luis"
  },
@@ -20596,12 +20596,12 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5773,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 5722,
    "prv_nombre": "San Luis"
  },
@@ -20811,7 +20811,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5750,
    "prv_nombre": "San Luis"
  },
@@ -20876,7 +20876,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Las Tres CaÃ±adas",
+   "loc_nombre": "Las Tres Cañadas",
    "loc_cpostal": 5721,
    "prv_nombre": "San Luis"
  },
@@ -21026,27 +21026,27 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5703,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5835,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 6279,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5777,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Los ChaÃ±aritos",
+   "loc_nombre": "Los Chañaritos",
    "loc_cpostal": 5721,
    "prv_nombre": "San Luis"
  },
@@ -21301,7 +21301,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Los TamariÃ±os",
+   "loc_nombre": "Los Tamariños",
    "loc_cpostal": 5724,
    "prv_nombre": "San Luis"
  },
@@ -21781,7 +21781,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "PeÃ±on Colorado",
+   "loc_nombre": "Peñon Colorado",
    "loc_cpostal": 5707,
    "prv_nombre": "San Luis"
  },
@@ -22206,7 +22206,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Represa Del ChaÃ±ar",
+   "loc_nombre": "Represa Del Chañar",
    "loc_cpostal": 5703,
    "prv_nombre": "San Luis"
  },
@@ -22476,7 +22476,7 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "San Jose De Los ChaÃ±ares",
+   "loc_nombre": "San Jose De Los Chañares",
    "loc_cpostal": 5750,
    "prv_nombre": "San Luis"
  },
@@ -23016,12 +23016,12 @@
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Tres CaÃ±adas",
+   "loc_nombre": "Tres Cañadas",
    "loc_cpostal": 5713,
    "prv_nombre": "San Luis"
  },
  {
-   "loc_nombre": "Tres CaÃ±adas",
+   "loc_nombre": "Tres Cañadas",
    "loc_cpostal": 5721,
    "prv_nombre": "San Luis"
  },
@@ -23221,7 +23221,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Ã‘andubaysal",
+   "loc_nombre": "Ñandubaysal",
    "loc_cpostal": 2821,
    "prv_nombre": "Entre Rios"
  },
@@ -23251,7 +23251,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "AlbariÃ±o",
+   "loc_nombre": "Albariño",
    "loc_cpostal": 3183,
    "prv_nombre": "Entre Rios"
  },
@@ -23466,7 +23466,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Arroyo Ã‘ancay",
+   "loc_nombre": "Arroyo Ñancay",
    "loc_cpostal": 1647,
    "prv_nombre": "Entre Rios"
  },
@@ -23871,12 +23871,12 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "BaÃ±adero Oficial Burgos",
+   "loc_nombre": "Bañadero Oficial Burgos",
    "loc_cpostal": 3100,
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "BaÃ±adero Oficial Las Galarzas",
+   "loc_nombre": "Bañadero Oficial Las Galarzas",
    "loc_cpostal": 3137,
    "prv_nombre": "Entre Rios"
  },
@@ -23996,12 +23996,12 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "CaÃ±ada De Las Ovejas",
+   "loc_nombre": "Cañada De Las Ovejas",
    "loc_cpostal": 3267,
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "CaÃ±ada Grande",
+   "loc_nombre": "Cañada Grande",
    "loc_cpostal": 3111,
    "prv_nombre": "Entre Rios"
  },
@@ -24146,17 +24146,17 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "ChaÃ±ar",
+   "loc_nombre": "Chañar",
    "loc_cpostal": 3181,
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "ChaÃ±ar Feliciano",
+   "loc_nombre": "Chañar Feliciano",
    "loc_cpostal": 3187,
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "ChaÃ±ar Maria Grande Primera",
+   "loc_nombre": "Chañar Maria Grande Primera",
    "loc_cpostal": 3111,
    "prv_nombre": "Entre Rios"
  },
@@ -24701,7 +24701,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Colonia MabragaÃ±a",
+   "loc_nombre": "Colonia Mabragaña",
    "loc_cpostal": 3283,
    "prv_nombre": "Entre Rios"
  },
@@ -25226,7 +25226,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Doctor Eugenio MuÃ±oz",
+   "loc_nombre": "Doctor Eugenio Muñoz",
    "loc_cpostal": 2823,
    "prv_nombre": "Entre Rios"
  },
@@ -25481,7 +25481,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "EscriÃ±a",
+   "loc_nombre": "Escriña",
    "loc_cpostal": 2828,
    "prv_nombre": "Entre Rios"
  },
@@ -26811,7 +26811,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 3206,
    "prv_nombre": "Entre Rios"
  },
@@ -27331,7 +27331,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Paso MargariÃ±os",
+   "loc_nombre": "Paso Margariños",
    "loc_cpostal": 3200,
    "prv_nombre": "Entre Rios"
  },
@@ -27516,7 +27516,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Puente Ã‘ancay",
+   "loc_nombre": "Puente Ñancay",
    "loc_cpostal": 2823,
    "prv_nombre": "Entre Rios"
  },
@@ -27541,7 +27541,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Puente Del ChaÃ±ar",
+   "loc_nombre": "Puente Del Chañar",
    "loc_cpostal": 3111,
    "prv_nombre": "Entre Rios"
  },
@@ -28511,7 +28511,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Villa PorteÃ±a",
+   "loc_nombre": "Villa Porteña",
    "loc_cpostal": 3191,
    "prv_nombre": "Entre Rios"
  },
@@ -28646,7 +28646,7 @@
    "prv_nombre": "Entre Rios"
  },
  {
-   "loc_nombre": "Ã‘oqueves",
+   "loc_nombre": "Ñoqueves",
    "loc_cpostal": 5471,
    "prv_nombre": "La Rioja"
  },
@@ -28706,7 +28706,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "AicuÃ±a",
+   "loc_nombre": "Aicuña",
    "loc_cpostal": 5361,
    "prv_nombre": "La Rioja"
  },
@@ -28831,7 +28831,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "BaÃ±ados Del Pantano",
+   "loc_nombre": "Bañados Del Pantano",
    "loc_cpostal": 5310,
    "prv_nombre": "La Rioja"
  },
@@ -28936,12 +28936,12 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 5470,
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "CaÃ±ada Verde",
+   "loc_nombre": "Cañada Verde",
    "loc_cpostal": 5471,
    "prv_nombre": "La Rioja"
  },
@@ -29046,12 +29046,12 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "ChaÃ±ar",
+   "loc_nombre": "Chañar",
    "loc_cpostal": 5276,
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "ChaÃ±armuyo",
+   "loc_nombre": "Chañarmuyo",
    "loc_cpostal": 5361,
    "prv_nombre": "La Rioja"
  },
@@ -30016,7 +30016,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5300,
    "prv_nombre": "La Rioja"
  },
@@ -30056,12 +30056,12 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5301,
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5301,
    "prv_nombre": "La Rioja"
  },
@@ -30376,7 +30376,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "PeÃ±as Blancas",
+   "loc_nombre": "Peñas Blancas",
    "loc_cpostal": 5359,
    "prv_nombre": "La Rioja"
  },
@@ -30571,7 +30571,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "Rio De Las CaÃ±as",
+   "loc_nombre": "Rio De Las Cañas",
    "loc_cpostal": 5385,
    "prv_nombre": "La Rioja"
  },
@@ -30581,7 +30581,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "SaÃ±ogasta",
+   "loc_nombre": "Sañogasta",
    "loc_cpostal": 5367,
    "prv_nombre": "La Rioja"
  },
@@ -30871,7 +30871,7 @@
    "prv_nombre": "La Rioja"
  },
  {
-   "loc_nombre": "SeÃ±or De La PeÃ±a",
+   "loc_nombre": "Señor De La Peña",
    "loc_cpostal": 5310,
    "prv_nombre": "La Rioja"
  },
@@ -31121,12 +31121,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "AÃ±atuya",
+   "loc_nombre": "Añatuya",
    "loc_cpostal": 3760,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "AÃ±il",
+   "loc_nombre": "Añil",
    "loc_cpostal": 4184,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -31311,7 +31311,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChuÃ±a Albardon",
+   "loc_nombre": "Chuña Albardon",
    "loc_cpostal": 4208,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -31786,7 +31786,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Barrio La LeÃ±era",
+   "loc_nombre": "Barrio La Leñera",
    "loc_cpostal": 3760,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -31971,7 +31971,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Brea PuÃ±una",
+   "loc_nombre": "Brea Puñuna",
    "loc_cpostal": 4201,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -32041,12 +32041,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Burra HuaÃ±auana",
+   "loc_nombre": "Burra Huañauana",
    "loc_cpostal": 4208,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Burra HuaÃ±una",
+   "loc_nombre": "Burra Huañuna",
    "loc_cpostal": 4208,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -32056,67 +32056,67 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada",
+   "loc_nombre": "Cañada",
    "loc_cpostal": 4203,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada De La Costa",
+   "loc_nombre": "Cañada De La Costa",
    "loc_cpostal": 4220,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada De La Cruz",
+   "loc_nombre": "Cañada De La Cruz",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Medio",
+   "loc_nombre": "Cañada Del Medio",
    "loc_cpostal": 4201,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Escobar",
+   "loc_nombre": "Cañada Escobar",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 4220,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Limpia",
+   "loc_nombre": "Cañada Limpia",
    "loc_cpostal": 4353,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Limpia",
+   "loc_nombre": "Cañada Limpia",
    "loc_cpostal": 3740,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Rica",
+   "loc_nombre": "Cañada Rica",
    "loc_cpostal": 4208,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada San Ramon",
+   "loc_nombre": "Cañada San Ramon",
    "loc_cpostal": 4315,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±ada Tala Pozo",
+   "loc_nombre": "Cañada Tala Pozo",
    "loc_cpostal": 4223,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±as Paso",
+   "loc_nombre": "Cañas Paso",
    "loc_cpostal": 4319,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CaÃ±itas",
+   "loc_nombre": "Cañitas",
    "loc_cpostal": 5253,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -32551,112 +32551,112 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Aguada",
+   "loc_nombre": "Chañar Aguada",
    "loc_cpostal": 4452,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Bajada",
+   "loc_nombre": "Chañar Bajada",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Esquina",
+   "loc_nombre": "Chañar Esquina",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Laguna",
+   "loc_nombre": "Chañar Laguna",
    "loc_cpostal": 4230,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pocito",
+   "loc_nombre": "Chañar Pocito",
    "loc_cpostal": 4225,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4328,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4203,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 3749,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4197,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4225,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4304,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 5257,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo De Abajo",
+   "loc_nombre": "Chañar Pozo De Abajo",
    "loc_cpostal": 4220,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pujio",
+   "loc_nombre": "Chañar Pujio",
    "loc_cpostal": 4302,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pujio",
+   "loc_nombre": "Chañar Pujio",
    "loc_cpostal": 4206,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Sunichaj",
+   "loc_nombre": "Chañar Sunichaj",
    "loc_cpostal": 2354,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Sunichaj",
+   "loc_nombre": "Chañar Sunichaj",
    "loc_cpostal": 2354,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ar Yaco",
+   "loc_nombre": "Chañar Yaco",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ares Altos",
+   "loc_nombre": "Chañares Altos",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±ares Altos",
+   "loc_nombre": "Chañares Altos",
    "loc_cpostal": 5255,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChaÃ±aritos",
+   "loc_nombre": "Chañaritos",
    "loc_cpostal": 5251,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -32791,17 +32791,17 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChuÃ±a Albardon",
+   "loc_nombre": "Chuña Albardon",
    "loc_cpostal": 4208,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChuÃ±a Albardon",
+   "loc_nombre": "Chuña Albardon",
    "loc_cpostal": 4208,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ChuÃ±a Palma",
+   "loc_nombre": "Chuña Palma",
    "loc_cpostal": 4326,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -32936,7 +32936,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Colonia EspaÃ±a",
+   "loc_nombre": "Colonia España",
    "loc_cpostal": 3740,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33041,7 +33041,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "ConsulÃ±oj",
+   "loc_nombre": "Consulñoj",
    "loc_cpostal": 4326,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33211,12 +33211,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CuichicaÃ±a",
+   "loc_nombre": "Cuichicaña",
    "loc_cpostal": 4203,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "CuqueÃ±os",
+   "loc_nombre": "Cuqueños",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33276,12 +33276,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "DoÃ±a Lorenza",
+   "loc_nombre": "Doña Lorenza",
    "loc_cpostal": 2356,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "DoÃ±a Luisa",
+   "loc_nombre": "Doña Luisa",
    "loc_cpostal": 4225,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33381,7 +33381,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El AÃ±il",
+   "loc_nombre": "El Añil",
    "loc_cpostal": 4306,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33511,7 +33511,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El BaÃ±adero",
+   "loc_nombre": "El Bañadero",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33601,7 +33601,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El CaÃ±on",
+   "loc_nombre": "El Cañon",
    "loc_cpostal": 3062,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -33716,12 +33716,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5260,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -34411,7 +34411,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El SeÃ±uelo",
+   "loc_nombre": "El Señuelo",
    "loc_cpostal": 4205,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -34551,7 +34551,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "El ViÃ±alito",
+   "loc_nombre": "El Viñalito",
    "loc_cpostal": 5255,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -34856,7 +34856,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "GuaÃ±agasta",
+   "loc_nombre": "Guañagasta",
    "loc_cpostal": 4328,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -34941,7 +34941,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "GuiÃ±ao",
+   "loc_nombre": "Guiñao",
    "loc_cpostal": 4326,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -35026,7 +35026,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "HuÃ±ajcito",
+   "loc_nombre": "Huñajcito",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -35106,7 +35106,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "IcaÃ±o",
+   "loc_nombre": "Icaño",
    "loc_cpostal": 4334,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -35801,32 +35801,32 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4302,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 3749,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4354,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4313,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4322,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -36541,12 +36541,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 4206,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 4206,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -36911,12 +36911,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5255,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -37171,7 +37171,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 4237,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -37186,7 +37186,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Las PorteÃ±as",
+   "loc_nombre": "Las Porteñas",
    "loc_cpostal": 3741,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -37526,12 +37526,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Los CaÃ±os",
+   "loc_nombre": "Los Caños",
    "loc_cpostal": 5257,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Los CaÃ±os",
+   "loc_nombre": "Los Caños",
    "loc_cpostal": 4321,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -37561,7 +37561,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -37726,7 +37726,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Los NuÃ±ez",
+   "loc_nombre": "Los Nuñez",
    "loc_cpostal": 4201,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -37776,7 +37776,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Los PorteÃ±os",
+   "loc_nombre": "Los Porteños",
    "loc_cpostal": 3741,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -39226,7 +39226,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Pozo CastaÃ±o",
+   "loc_nombre": "Pozo Castaño",
    "loc_cpostal": 3745,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -39276,17 +39276,17 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Pozo Del CastaÃ±o",
+   "loc_nombre": "Pozo Del Castaño",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Pozo Del ChaÃ±ar",
+   "loc_nombre": "Pozo Del Chañar",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Pozo Del ChaÃ±ar",
+   "loc_nombre": "Pozo Del Chañar",
    "loc_cpostal": 5253,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -39881,7 +39881,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "QuisÃ±a Loro",
+   "loc_nombre": "Quisña Loro",
    "loc_cpostal": 4353,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -41786,12 +41786,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "SeÃ±ora Pujio",
+   "loc_nombre": "Señora Pujio",
    "loc_cpostal": 4339,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "SeÃ±ora Pujio",
+   "loc_nombre": "Señora Pujio",
    "loc_cpostal": 4197,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -41866,7 +41866,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Simbol CaÃ±ada",
+   "loc_nombre": "Simbol Cañada",
    "loc_cpostal": 4336,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -41916,7 +41916,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Sinchi CaÃ±a   Establecimiento",
+   "loc_nombre": "Sinchi Caña   Establecimiento",
    "loc_cpostal": 4203,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -42091,7 +42091,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "TacaÃ±itas",
+   "loc_nombre": "Tacañitas",
    "loc_cpostal": 3766,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -42521,12 +42521,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Tres ChaÃ±ares",
+   "loc_nombre": "Tres Chañares",
    "loc_cpostal": 4354,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Tres ChaÃ±ares",
+   "loc_nombre": "Tres Chañares",
    "loc_cpostal": 4322,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -42741,7 +42741,7 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Vaca HuaÃ±una",
+   "loc_nombre": "Vaca Huañuna",
    "loc_cpostal": 4301,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -42856,12 +42856,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Villa GuaÃ±una",
+   "loc_nombre": "Villa Guañuna",
    "loc_cpostal": 4353,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "Villa GuaÃ±una",
+   "loc_nombre": "Villa Guañuna",
    "loc_cpostal": 3740,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -43031,12 +43031,12 @@
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "WiÃ±ano",
+   "loc_nombre": "Wiñano",
    "loc_cpostal": 5250,
    "prv_nombre": "Santiago Del Estero"
  },
  {
-   "loc_nombre": "WiÃ±ano",
+   "loc_nombre": "Wiñano",
    "loc_cpostal": 5251,
    "prv_nombre": "Santiago Del Estero"
  },
@@ -43296,7 +43296,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "CabaÃ±aro Pasaje",
+   "loc_nombre": "Cabañaro Pasaje",
    "loc_cpostal": 3703,
    "prv_nombre": "Chaco"
  },
@@ -43821,7 +43821,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Colonia Rodriguez PeÃ±a",
+   "loc_nombre": "Colonia Rodriguez Peña",
    "loc_cpostal": 3511,
    "prv_nombre": "Chaco"
  },
@@ -43951,7 +43951,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "DoÃ±a Paula",
+   "loc_nombre": "Doña Paula",
    "loc_cpostal": 3705,
    "prv_nombre": "Chaco"
  },
@@ -43976,7 +43976,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "El Ã‘andubay",
+   "loc_nombre": "El Ñandubay",
    "loc_cpostal": 3541,
    "prv_nombre": "Chaco"
  },
@@ -43991,7 +43991,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 3516,
    "prv_nombre": "Chaco"
  },
@@ -44001,7 +44001,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "El CaÃ±on",
+   "loc_nombre": "El Cañon",
    "loc_cpostal": 3714,
    "prv_nombre": "Chaco"
  },
@@ -44361,7 +44361,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Fortin Las ChuÃ±as",
+   "loc_nombre": "Fortin Las Chuñas",
    "loc_cpostal": 3716,
    "prv_nombre": "Chaco"
  },
@@ -44681,7 +44681,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "La Ã‘ata",
+   "loc_nombre": "La Ñata",
    "loc_cpostal": 3540,
    "prv_nombre": "Chaco"
  },
@@ -44701,7 +44701,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 3705,
    "prv_nombre": "Chaco"
  },
@@ -45031,7 +45031,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "La VicuÃ±a",
+   "loc_nombre": "La Vicuña",
    "loc_cpostal": 3513,
    "prv_nombre": "Chaco"
  },
@@ -45091,7 +45091,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Las BreÃ±as",
+   "loc_nombre": "Las Breñas",
    "loc_cpostal": 3722,
    "prv_nombre": "Chaco"
  },
@@ -45581,7 +45581,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Ntra SeÃ±ora De La Concepcion",
+   "loc_nombre": "Ntra Señora De La Concepcion",
    "loc_cpostal": 3703,
    "prv_nombre": "Chaco"
  },
@@ -45601,7 +45601,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Obraje La VicuÃ±a",
+   "loc_nombre": "Obraje La Vicuña",
    "loc_cpostal": 3513,
    "prv_nombre": "Chaco"
  },
@@ -46111,7 +46111,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Pozo El ChaÃ±ar",
+   "loc_nombre": "Pozo El Chañar",
    "loc_cpostal": 3705,
    "prv_nombre": "Chaco"
  },
@@ -46146,7 +46146,7 @@
    "prv_nombre": "Chaco"
  },
  {
-   "loc_nombre": "Presidencia Roque Saenz PeÃ±a",
+   "loc_nombre": "Presidencia Roque Saenz Peña",
    "loc_cpostal": 3700,
    "prv_nombre": "Chaco"
  },
@@ -46776,7 +46776,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Aguada De La PeÃ±a",
+   "loc_nombre": "Aguada De La Peña",
    "loc_cpostal": 5461,
    "prv_nombre": "San Juan"
  },
@@ -46911,37 +46911,37 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os Centenario",
+   "loc_nombre": "Baños Centenario",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os De La Laja",
+   "loc_nombre": "Baños De La Laja",
    "loc_cpostal": 5419,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os De Los Despoblados",
+   "loc_nombre": "Baños De Los Despoblados",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os De San Crispin",
+   "loc_nombre": "Baños De San Crispin",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os Del Cerro",
+   "loc_nombre": "Baños Del Cerro",
    "loc_cpostal": 5431,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os Del Salado",
+   "loc_nombre": "Baños Del Salado",
    "loc_cpostal": 5419,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "BaÃ±os Pismanta",
+   "loc_nombre": "Baños Pismanta",
    "loc_cpostal": 5465,
    "prv_nombre": "San Juan"
  },
@@ -47106,22 +47106,22 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CaÃ±ada",
+   "loc_nombre": "Cañada",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CaÃ±ada De Laguna",
+   "loc_nombre": "Cañada De Laguna",
    "loc_cpostal": 5447,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Pozo",
+   "loc_nombre": "Cañada Del Pozo",
    "loc_cpostal": 5447,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 5431,
    "prv_nombre": "San Juan"
  },
@@ -47246,17 +47246,17 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CastaÃ±o",
+   "loc_nombre": "Castaño",
    "loc_cpostal": 5409,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CastaÃ±o Nuevo",
+   "loc_nombre": "Castaño Nuevo",
    "loc_cpostal": 5403,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "CastaÃ±o Viejo",
+   "loc_nombre": "Castaño Viejo",
    "loc_cpostal": 5405,
    "prv_nombre": "San Juan"
  },
@@ -47271,7 +47271,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Cerro  D  L  BaÃ±itos",
+   "loc_nombre": "Cerro  D  L  Bañitos",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
@@ -47561,7 +47561,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Cerro La CaÃ±ada Amarilla",
+   "loc_nombre": "Cerro La Cañada Amarilla",
    "loc_cpostal": 5460,
    "prv_nombre": "San Juan"
  },
@@ -47826,12 +47826,12 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pintado",
+   "loc_nombre": "Chañar Pintado",
    "loc_cpostal": 5460,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "ChaÃ±ar Seco",
+   "loc_nombre": "Chañar Seco",
    "loc_cpostal": 5443,
    "prv_nombre": "San Juan"
  },
@@ -48206,7 +48206,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5449,
    "prv_nombre": "San Juan"
  },
@@ -48421,7 +48421,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Estancia El ChaÃ±ar Nuevo",
+   "loc_nombre": "Estancia El Chañar Nuevo",
    "loc_cpostal": 5447,
    "prv_nombre": "San Juan"
  },
@@ -48566,7 +48566,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "GuaÃ±izul",
+   "loc_nombre": "Guañizul",
    "loc_cpostal": 5465,
    "prv_nombre": "San Juan"
  },
@@ -48611,7 +48611,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "HuaÃ±izuil",
+   "loc_nombre": "Huañizuil",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
@@ -48771,17 +48771,17 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5419,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5415,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5465,
    "prv_nombre": "San Juan"
  },
@@ -49131,7 +49131,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Las PeÃ±itas",
+   "loc_nombre": "Las Peñitas",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
@@ -49246,7 +49246,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5435,
    "prv_nombre": "San Juan"
  },
@@ -49381,12 +49381,12 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Los ViÃ±edos",
+   "loc_nombre": "Los Viñedos",
    "loc_cpostal": 5413,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Los ViÃ±edos",
+   "loc_nombre": "Los Viñedos",
    "loc_cpostal": 5438,
    "prv_nombre": "San Juan"
  },
@@ -49626,7 +49626,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Nueva EspaÃ±a",
+   "loc_nombre": "Nueva España",
    "loc_cpostal": 5443,
    "prv_nombre": "San Juan"
  },
@@ -49661,7 +49661,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Pampa Del ChaÃ±ar",
+   "loc_nombre": "Pampa Del Chañar",
    "loc_cpostal": 5461,
    "prv_nombre": "San Juan"
  },
@@ -49726,17 +49726,17 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "PeÃ±asco Colorado",
+   "loc_nombre": "Peñasco Colorado",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "PeÃ±asquito",
+   "loc_nombre": "Peñasquito",
    "loc_cpostal": 5405,
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "PeÃ±asquito",
+   "loc_nombre": "Peñasquito",
    "loc_cpostal": 5467,
    "prv_nombre": "San Juan"
  },
@@ -50986,7 +50986,7 @@
    "prv_nombre": "San Juan"
  },
  {
-   "loc_nombre": "Villa MuÃ±oz",
+   "loc_nombre": "Villa Muñoz",
    "loc_cpostal": 5411,
    "prv_nombre": "San Juan"
  },
@@ -51396,17 +51396,17 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "BaÃ±ado De Divisadero",
+   "loc_nombre": "Bañado De Divisadero",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "BaÃ±ado De Ovanta",
+   "loc_nombre": "Bañado De Ovanta",
    "loc_cpostal": 4723,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "BaÃ±os Termales",
+   "loc_nombre": "Baños Termales",
    "loc_cpostal": 5340,
    "prv_nombre": "Catamarca"
  },
@@ -51546,22 +51546,22 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "CaÃ±ada",
+   "loc_nombre": "Cañada",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "CaÃ±ada De Ipizca",
+   "loc_nombre": "Cañada De Ipizca",
    "loc_cpostal": 4701,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "CaÃ±ada De Paez",
+   "loc_nombre": "Cañada De Paez",
    "loc_cpostal": 4701,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "CaÃ±ada Larga",
+   "loc_nombre": "Cañada Larga",
    "loc_cpostal": 4701,
    "prv_nombre": "Catamarca"
  },
@@ -51721,7 +51721,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "CastaÃ±ar",
+   "loc_nombre": "Castañar",
    "loc_cpostal": 5340,
    "prv_nombre": "Catamarca"
  },
@@ -51766,37 +51766,37 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "CerviÃ±o",
+   "loc_nombre": "Cerviño",
    "loc_cpostal": 4718,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChaÃ±ar Laguna",
+   "loc_nombre": "Chañar Laguna",
    "loc_cpostal": 4235,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChaÃ±ar Punco",
+   "loc_nombre": "Chañar Punco",
    "loc_cpostal": 4139,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChaÃ±arcito",
+   "loc_nombre": "Chañarcito",
    "loc_cpostal": 4707,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChaÃ±aritos",
+   "loc_nombre": "Chañaritos",
    "loc_cpostal": 4728,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChaÃ±aritos",
+   "loc_nombre": "Chañaritos",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChaÃ±aryaco",
+   "loc_nombre": "Chañaryaco",
    "loc_cpostal": 4740,
    "prv_nombre": "Catamarca"
  },
@@ -51811,7 +51811,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ChafiÃ±an",
+   "loc_nombre": "Chafiñan",
    "loc_cpostal": 4139,
    "prv_nombre": "Catamarca"
  },
@@ -52131,17 +52131,17 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 4728,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 4707,
    "prv_nombre": "Catamarca"
  },
@@ -52281,12 +52281,12 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "El ChaÃ±aral",
+   "loc_nombre": "El Chañaral",
    "loc_cpostal": 4701,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "El ChaÃ±aral",
+   "loc_nombre": "El Chañaral",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
@@ -52461,7 +52461,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "El PeÃ±on",
+   "loc_nombre": "El Peñon",
    "loc_cpostal": 5340,
    "prv_nombre": "Catamarca"
  },
@@ -52961,7 +52961,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "IcaÃ±o",
+   "loc_nombre": "Icaño",
    "loc_cpostal": 5265,
    "prv_nombre": "Catamarca"
  },
@@ -53206,27 +53206,27 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4715,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4750,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4728,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La CaÃ±ada Larga",
+   "loc_nombre": "La Cañada Larga",
    "loc_cpostal": 5340,
    "prv_nombre": "Catamarca"
  },
@@ -53536,12 +53536,12 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La PeÃ±a",
+   "loc_nombre": "La Peña",
    "loc_cpostal": 4701,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La PeÃ±a",
+   "loc_nombre": "La Peña",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
@@ -53651,17 +53651,17 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La ViÃ±a",
+   "loc_nombre": "La Viña",
    "loc_cpostal": 4750,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La ViÃ±a",
+   "loc_nombre": "La Viña",
    "loc_cpostal": 4722,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "La ViÃ±a De Abajo",
+   "loc_nombre": "La Viña De Abajo",
    "loc_cpostal": 4718,
    "prv_nombre": "Catamarca"
  },
@@ -53751,7 +53751,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 4723,
    "prv_nombre": "Catamarca"
  },
@@ -53956,7 +53956,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5263,
    "prv_nombre": "Catamarca"
  },
@@ -54166,7 +54166,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
@@ -54766,7 +54766,7 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "Paraje Los ChaÃ±aritos",
+   "loc_nombre": "Paraje Los Chañaritos",
    "loc_cpostal": 5260,
    "prv_nombre": "Catamarca"
  },
@@ -54786,17 +54786,17 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "PeÃ±aflor",
+   "loc_nombre": "Peñaflor",
    "loc_cpostal": 4701,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "PeÃ±as Blancas",
+   "loc_nombre": "Peñas Blancas",
    "loc_cpostal": 5340,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "PeÃ±on",
+   "loc_nombre": "Peñon",
    "loc_cpostal": 4700,
    "prv_nombre": "Catamarca"
  },
@@ -55766,12 +55766,12 @@
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "ViÃ±a Del Cerro",
+   "loc_nombre": "Viña Del Cerro",
    "loc_cpostal": 5340,
    "prv_nombre": "Catamarca"
  },
  {
-   "loc_nombre": "VicuÃ±a Pampa",
+   "loc_nombre": "Vicuña Pampa",
    "loc_cpostal": 4750,
    "prv_nombre": "Catamarca"
  },
@@ -55931,7 +55931,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Alfredo PeÃ±a",
+   "loc_nombre": "Alfredo Peña",
    "loc_cpostal": 6333,
    "prv_nombre": "La Pampa"
  },
@@ -56051,7 +56051,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Boliche La AraÃ±a",
+   "loc_nombre": "Boliche La Araña",
    "loc_cpostal": 6301,
    "prv_nombre": "La Pampa"
  },
@@ -56116,7 +56116,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Campo LudueÃ±a",
+   "loc_nombre": "Campo Ludueña",
    "loc_cpostal": 6330,
    "prv_nombre": "La Pampa"
  },
@@ -56321,7 +56321,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Colonia EspaÃ±a",
+   "loc_nombre": "Colonia España",
    "loc_cpostal": 8206,
    "prv_nombre": "La Pampa"
  },
@@ -56671,12 +56671,12 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Dos ChaÃ±ares",
+   "loc_nombre": "Dos Chañares",
    "loc_cpostal": 8204,
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Dos De IpiÃ±a",
+   "loc_nombre": "Dos De Ipiña",
    "loc_cpostal": 8212,
    "prv_nombre": "La Pampa"
  },
@@ -57166,7 +57166,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "IpiÃ±a",
+   "loc_nombre": "Ipiña",
    "loc_cpostal": 8212,
    "prv_nombre": "La Pampa"
  },
@@ -57226,7 +57226,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "La AraÃ±a",
+   "loc_nombre": "La Araña",
    "loc_cpostal": 6301,
    "prv_nombre": "La Pampa"
  },
@@ -57581,7 +57581,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "La GueÃ±ita",
+   "loc_nombre": "La Gueñita",
    "loc_cpostal": 6360,
    "prv_nombre": "La Pampa"
  },
@@ -57641,7 +57641,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "La LeÃ±a",
+   "loc_nombre": "La Leña",
    "loc_cpostal": 6330,
    "prv_nombre": "La Pampa"
  },
@@ -57846,7 +57846,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 8206,
    "prv_nombre": "La Pampa"
  },
@@ -57881,7 +57881,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "La PuÃ±alada",
+   "loc_nombre": "La Puñalada",
    "loc_cpostal": 6323,
    "prv_nombre": "La Pampa"
  },
@@ -58376,7 +58376,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "Lote 22 IpiÃ±a",
+   "loc_nombre": "Lote 22 Ipiña",
    "loc_cpostal": 8212,
    "prv_nombre": "La Pampa"
  },
@@ -58771,7 +58771,7 @@
    "prv_nombre": "La Pampa"
  },
  {
-   "loc_nombre": "QuiÃ±i Malal",
+   "loc_nombre": "Quiñi Malal",
    "loc_cpostal": 8200,
    "prv_nombre": "La Pampa"
  },
@@ -59401,12 +59401,12 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Ã‘acuÃ±an",
+   "loc_nombre": "Ñacuñan",
    "loc_cpostal": 5595,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Ã‘ancuÃ±an",
+   "loc_nombre": "Ñancuñan",
    "loc_cpostal": 5595,
    "prv_nombre": "Mendoza"
  },
@@ -59556,7 +59556,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Alto De Las AraÃ±as",
+   "loc_nombre": "Alto De Las Arañas",
    "loc_cpostal": 5519,
    "prv_nombre": "Mendoza"
  },
@@ -59736,27 +59736,27 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "BaÃ±ado Verde",
+   "loc_nombre": "Bañado Verde",
    "loc_cpostal": 5598,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "BaÃ±os De Azufre",
+   "loc_nombre": "Baños De Azufre",
    "loc_cpostal": 5611,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "BaÃ±os De Capiz",
+   "loc_nombre": "Baños De Capiz",
    "loc_cpostal": 5569,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "BaÃ±os La Salada",
+   "loc_nombre": "Baños La Salada",
    "loc_cpostal": 5569,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "BaÃ±os Lunlunta",
+   "loc_nombre": "Baños Lunlunta",
    "loc_cpostal": 5507,
    "prv_nombre": "Mendoza"
  },
@@ -60066,32 +60066,32 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "CaÃ±ada Amarilla",
+   "loc_nombre": "Cañada Amarilla",
    "loc_cpostal": 5611,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "CaÃ±ada Ancha",
+   "loc_nombre": "Cañada Ancha",
    "loc_cpostal": 5613,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "CaÃ±ada Colorada",
+   "loc_nombre": "Cañada Colorada",
    "loc_cpostal": 5613,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "CaÃ±ada Seca",
+   "loc_nombre": "Cañada Seca",
    "loc_cpostal": 5603,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "CaÃ±adita Alegre",
+   "loc_nombre": "Cañadita Alegre",
    "loc_cpostal": 5519,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "CaÃ±adon De Bonilla",
+   "loc_nombre": "Cañadon De Bonilla",
    "loc_cpostal": 5621,
    "prv_nombre": "Mendoza"
  },
@@ -60271,7 +60271,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Casa De Las PeÃ±as",
+   "loc_nombre": "Casa De Las Peñas",
    "loc_cpostal": 5560,
    "prv_nombre": "Mendoza"
  },
@@ -60366,7 +60366,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Cerro Alto De Las PeÃ±as",
+   "loc_nombre": "Cerro Alto De Las Peñas",
    "loc_cpostal": 5569,
    "prv_nombre": "Mendoza"
  },
@@ -60491,7 +60491,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Cerro De Las LeÃ±as",
+   "loc_nombre": "Cerro De Las Leñas",
    "loc_cpostal": 5539,
    "prv_nombre": "Mendoza"
  },
@@ -60611,7 +60611,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Cerro LagaÃ±oso",
+   "loc_nombre": "Cerro Lagañoso",
    "loc_cpostal": 5539,
    "prv_nombre": "Mendoza"
  },
@@ -60796,7 +60796,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "ChaÃ±aral Redondo",
+   "loc_nombre": "Chañaral Redondo",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -61011,7 +61011,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Colonia CurniÃ±an",
+   "loc_nombre": "Colonia Curniñan",
    "loc_cpostal": 5569,
    "prv_nombre": "Mendoza"
  },
@@ -61076,7 +61076,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Colonia EspaÃ±ola",
+   "loc_nombre": "Colonia Española",
    "loc_cpostal": 5607,
    "prv_nombre": "Mendoza"
  },
@@ -61456,7 +61456,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Dionisio OrdoÃ±ez",
+   "loc_nombre": "Dionisio Ordoñez",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -61531,7 +61531,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Doroteo OrdoÃ±ez",
+   "loc_nombre": "Doroteo Ordoñez",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -61551,7 +61551,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "El Ã‘ango",
+   "loc_nombre": "El Ñango",
    "loc_cpostal": 5589,
    "prv_nombre": "Mendoza"
  },
@@ -61651,7 +61651,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "El CaÃ±ito",
+   "loc_nombre": "El Cañito",
    "loc_cpostal": 5543,
    "prv_nombre": "Mendoza"
  },
@@ -61746,7 +61746,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 5435,
    "prv_nombre": "Mendoza"
  },
@@ -62406,7 +62406,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Estancia La ChuÃ±a",
+   "loc_nombre": "Estancia La Chuña",
    "loc_cpostal": 5594,
    "prv_nombre": "Mendoza"
  },
@@ -62536,7 +62536,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Estanislao OrdoÃ±ez",
+   "loc_nombre": "Estanislao Ordoñez",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -62611,7 +62611,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Florencio OrdoÃ±ez",
+   "loc_nombre": "Florencio Ordoñez",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -63186,12 +63186,12 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5567,
    "prv_nombre": "Mendoza"
  },
@@ -63511,7 +63511,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "La Mina Del PeceÃ±o",
+   "loc_nombre": "La Mina Del Peceño",
    "loc_cpostal": 5600,
    "prv_nombre": "Mendoza"
  },
@@ -63586,12 +63586,12 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 5591,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 5594,
    "prv_nombre": "Mendoza"
  },
@@ -63621,7 +63621,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "La SeÃ±a",
+   "loc_nombre": "La Seña",
    "loc_cpostal": 5634,
    "prv_nombre": "Mendoza"
  },
@@ -63826,7 +63826,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5569,
    "prv_nombre": "Mendoza"
  },
@@ -63981,7 +63981,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Loma Del ChaÃ±ar",
+   "loc_nombre": "Loma Del Chañar",
    "loc_cpostal": 5594,
    "prv_nombre": "Mendoza"
  },
@@ -64756,7 +64756,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Nicolas OrdoÃ±ez",
+   "loc_nombre": "Nicolas Ordoñez",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -64956,7 +64956,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "PeÃ±a",
+   "loc_nombre": "Peña",
    "loc_cpostal": 5594,
    "prv_nombre": "Mendoza"
  },
@@ -65426,7 +65426,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Puesto Del ChaÃ±acal",
+   "loc_nombre": "Puesto Del Chañacal",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -65511,7 +65511,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Puesto Isla ChaÃ±ar",
+   "loc_nombre": "Puesto Isla Chañar",
    "loc_cpostal": 5435,
    "prv_nombre": "Mendoza"
  },
@@ -65586,12 +65586,12 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Puesto La PorteÃ±a",
+   "loc_nombre": "Puesto La Porteña",
    "loc_cpostal": 5613,
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Puesto La SeÃ±a",
+   "loc_nombre": "Puesto La Seña",
    "loc_cpostal": 5636,
    "prv_nombre": "Mendoza"
  },
@@ -65666,7 +65666,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Puesto Los ChaÃ±ares",
+   "loc_nombre": "Puesto Los Chañares",
    "loc_cpostal": 5435,
    "prv_nombre": "Mendoza"
  },
@@ -66176,7 +66176,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Rodriguez PeÃ±a",
+   "loc_nombre": "Rodriguez Peña",
    "loc_cpostal": 5585,
    "prv_nombre": "Mendoza"
  },
@@ -66541,7 +66541,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Tres PorteÃ±as",
+   "loc_nombre": "Tres Porteñas",
    "loc_cpostal": 5589,
    "prv_nombre": "Mendoza"
  },
@@ -66601,7 +66601,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Valle De Las LeÃ±as",
+   "loc_nombre": "Valle De Las Leñas",
    "loc_cpostal": 5612,
    "prv_nombre": "Mendoza"
  },
@@ -66646,7 +66646,7 @@
    "prv_nombre": "Mendoza"
  },
  {
-   "loc_nombre": "Vicente MuÃ±oz",
+   "loc_nombre": "Vicente Muñoz",
    "loc_cpostal": 5590,
    "prv_nombre": "Mendoza"
  },
@@ -66956,12 +66956,12 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Azerradero PiÃ±alito",
+   "loc_nombre": "Azerradero Piñalito",
    "loc_cpostal": 3364,
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "BaÃ±ado Grande",
+   "loc_nombre": "Bañado Grande",
    "loc_cpostal": 3308,
    "prv_nombre": "Misiones"
  },
@@ -67076,17 +67076,17 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "CampiÃ±a De Bonpland",
+   "loc_nombre": "Campiña De Bonpland",
    "loc_cpostal": 3308,
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "CampiÃ±a Grande",
+   "loc_nombre": "Campiña Grande",
    "loc_cpostal": 3308,
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "CampiÃ±as De America",
+   "loc_nombre": "Campiñas De America",
    "loc_cpostal": 3366,
    "prv_nombre": "Misiones"
  },
@@ -67136,7 +67136,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "CapiovisiÃ±o",
+   "loc_nombre": "Capiovisiño",
    "loc_cpostal": 3334,
    "prv_nombre": "Misiones"
  },
@@ -67201,7 +67201,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Colonia Ã‘acangazu",
+   "loc_nombre": "Colonia Ñacangazu",
    "loc_cpostal": 3322,
    "prv_nombre": "Misiones"
  },
@@ -67526,12 +67526,12 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "CuÃ±a Piru",
+   "loc_nombre": "Cuña Piru",
    "loc_cpostal": 3334,
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "CuÃ±a Pora",
+   "loc_nombre": "Cuña Pora",
    "loc_cpostal": 3364,
    "prv_nombre": "Misiones"
  },
@@ -67556,7 +67556,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "DoÃ±a Maria",
+   "loc_nombre": "Doña Maria",
    "loc_cpostal": 3360,
    "prv_nombre": "Misiones"
  },
@@ -67631,7 +67631,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "El SaltiÃ±o",
+   "loc_nombre": "El Saltiño",
    "loc_cpostal": 3363,
    "prv_nombre": "Misiones"
  },
@@ -68081,7 +68081,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "MachadiÃ±o",
+   "loc_nombre": "Machadiño",
    "loc_cpostal": 3357,
    "prv_nombre": "Misiones"
  },
@@ -68276,7 +68276,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Paso PorteÃ±o",
+   "loc_nombre": "Paso Porteño",
    "loc_cpostal": 3355,
    "prv_nombre": "Misiones"
  },
@@ -68291,7 +68291,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Pedro NuÃ±ez",
+   "loc_nombre": "Pedro Nuñez",
    "loc_cpostal": 3300,
    "prv_nombre": "Misiones"
  },
@@ -68301,12 +68301,12 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "PiÃ±alito Norte",
+   "loc_nombre": "Piñalito Norte",
    "loc_cpostal": 3366,
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "PiÃ±alito Sur",
+   "loc_nombre": "Piñalito Sur",
    "loc_cpostal": 3366,
    "prv_nombre": "Misiones"
  },
@@ -68321,7 +68321,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Picada EspaÃ±ola",
+   "loc_nombre": "Picada Española",
    "loc_cpostal": 3315,
    "prv_nombre": "Misiones"
  },
@@ -68521,7 +68521,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Puerto ChuÃ±o",
+   "loc_nombre": "Puerto Chuño",
    "loc_cpostal": 3322,
    "prv_nombre": "Misiones"
  },
@@ -68546,7 +68546,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Puerto EspaÃ±a",
+   "loc_nombre": "Puerto España",
    "loc_cpostal": 3326,
    "prv_nombre": "Misiones"
  },
@@ -68691,7 +68691,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "Puerto SaltiÃ±o",
+   "loc_nombre": "Puerto Saltiño",
    "loc_cpostal": 3357,
    "prv_nombre": "Misiones"
  },
@@ -69126,7 +69126,7 @@
    "prv_nombre": "Misiones"
  },
  {
-   "loc_nombre": "VillafaÃ±e",
+   "loc_nombre": "Villafañe",
    "loc_cpostal": 3363,
    "prv_nombre": "Misiones"
  },
@@ -69181,7 +69181,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Agente Felipe Santiago IbaÃ±ez",
+   "loc_nombre": "Agente Felipe Santiago Ibañez",
    "loc_cpostal": 3624,
    "prv_nombre": "Formosa"
  },
@@ -69246,7 +69246,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "BaÃ±aderos",
+   "loc_nombre": "Bañaderos",
    "loc_cpostal": 3606,
    "prv_nombre": "Formosa"
  },
@@ -69336,12 +69336,12 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "CaÃ±ada Doce",
+   "loc_nombre": "Cañada Doce",
    "loc_cpostal": 3600,
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "CaÃ±ada San Pedro",
+   "loc_nombre": "Cañada San Pedro",
    "loc_cpostal": 3636,
    "prv_nombre": "Formosa"
  },
@@ -69361,7 +69361,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Cabo NoroÃ±a",
+   "loc_nombre": "Cabo Noroña",
    "loc_cpostal": 3606,
    "prv_nombre": "Formosa"
  },
@@ -69496,7 +69496,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Colonia  Francisco J MuÃ±iz",
+   "loc_nombre": "Colonia  Francisco J Muñiz",
    "loc_cpostal": 3630,
    "prv_nombre": "Formosa"
  },
@@ -69541,7 +69541,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Colonia Campo VillafaÃ±e",
+   "loc_nombre": "Colonia Campo Villafañe",
    "loc_cpostal": 3601,
    "prv_nombre": "Formosa"
  },
@@ -69831,7 +69831,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "El Ã‘andu",
+   "loc_nombre": "El Ñandu",
    "loc_cpostal": 3608,
    "prv_nombre": "Formosa"
  },
@@ -69886,7 +69886,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "El CaÃ±on",
+   "loc_nombre": "El Cañon",
    "loc_cpostal": 3634,
    "prv_nombre": "Formosa"
  },
@@ -70051,12 +70051,12 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "El PorteÃ±ito",
+   "loc_nombre": "El Porteñito",
    "loc_cpostal": 3621,
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "El PorteÃ±o",
+   "loc_nombre": "El Porteño",
    "loc_cpostal": 3620,
    "prv_nombre": "Formosa"
  },
@@ -70216,7 +70216,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Estero PatiÃ±o",
+   "loc_nombre": "Estero Patiño",
    "loc_cpostal": 3634,
    "prv_nombre": "Formosa"
  },
@@ -70771,12 +70771,12 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 3636,
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 3603,
    "prv_nombre": "Formosa"
  },
@@ -70961,7 +70961,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Mayor Vicente E VillafaÃ±e",
+   "loc_nombre": "Mayor Vicente E Villafañe",
    "loc_cpostal": 3601,
    "prv_nombre": "Formosa"
  },
@@ -71016,7 +71016,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "MonseÃ±or De Andrea",
+   "loc_nombre": "Monseñor De Andrea",
    "loc_cpostal": 3606,
    "prv_nombre": "Formosa"
  },
@@ -71171,7 +71171,7 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "PorteÃ±o Viejo",
+   "loc_nombre": "Porteño Viejo",
    "loc_cpostal": 3626,
    "prv_nombre": "Formosa"
  },
@@ -71436,12 +71436,12 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Rincon Ã‘andu",
+   "loc_nombre": "Rincon Ñandu",
    "loc_cpostal": 3608,
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Rincon Ã‘aro",
+   "loc_nombre": "Rincon Ñaro",
    "loc_cpostal": 3606,
    "prv_nombre": "Formosa"
  },
@@ -71901,17 +71901,17 @@
    "prv_nombre": "Formosa"
  },
  {
-   "loc_nombre": "Ã‘ireco Sud",
+   "loc_nombre": "Ñireco Sud",
    "loc_cpostal": 8340,
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "Ã‘orquin",
+   "loc_nombre": "Ñorquin",
    "loc_cpostal": 8349,
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "AÃ±elo",
+   "loc_nombre": "Añelo",
    "loc_cpostal": 8305,
    "prv_nombre": "Neuquen"
  },
@@ -72096,17 +72096,17 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "CaÃ±ada Seca",
+   "loc_nombre": "Cañada Seca",
    "loc_cpostal": 8353,
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "CaÃ±adon De Los Indios",
+   "loc_nombre": "Cañadon De Los Indios",
    "loc_cpostal": 8375,
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "CaÃ±adon Del Indio",
+   "loc_nombre": "Cañadon Del Indio",
    "loc_cpostal": 8375,
    "prv_nombre": "Neuquen"
  },
@@ -72666,7 +72666,7 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "Fortin GuaÃ±acos",
+   "loc_nombre": "Fortin Guañacos",
    "loc_cpostal": 8353,
    "prv_nombre": "Neuquen"
  },
@@ -72681,12 +72681,12 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "GoÃ±i Co",
+   "loc_nombre": "Goñi Co",
    "loc_cpostal": 8340,
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "GuaÃ±acos",
+   "loc_nombre": "Guañacos",
    "loc_cpostal": 8353,
    "prv_nombre": "Neuquen"
  },
@@ -72891,7 +72891,7 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 8347,
    "prv_nombre": "Neuquen"
  },
@@ -73451,7 +73451,7 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "PeÃ±a Colorada",
+   "loc_nombre": "Peña Colorada",
    "loc_cpostal": 8373,
    "prv_nombre": "Neuquen"
  },
@@ -73686,7 +73686,7 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "ReÃ±ileo",
+   "loc_nombre": "Reñileo",
    "loc_cpostal": 8353,
    "prv_nombre": "Neuquen"
  },
@@ -73731,7 +73731,7 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "SaÃ±ico",
+   "loc_nombre": "Sañico",
    "loc_cpostal": 8315,
    "prv_nombre": "Neuquen"
  },
@@ -73781,7 +73781,7 @@
    "prv_nombre": "Neuquen"
  },
  {
-   "loc_nombre": "San Patricio Del ChaÃ±ar",
+   "loc_nombre": "San Patricio Del Chañar",
    "loc_cpostal": 8305,
    "prv_nombre": "Neuquen"
  },
@@ -73981,12 +73981,12 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "Ã‘irihuao Estacion Fcgr",
+   "loc_nombre": "Ñirihuao Estacion Fcgr",
    "loc_cpostal": 8400,
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "Ã‘orquinco",
+   "loc_nombre": "Ñorquinco",
    "loc_cpostal": 8415,
    "prv_nombre": "Rio Negro"
  },
@@ -74156,17 +74156,17 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "CaÃ±adon Camallo",
+   "loc_nombre": "Cañadon Camallo",
    "loc_cpostal": 8416,
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "CaÃ±adon Chileno",
+   "loc_nombre": "Cañadon Chileno",
    "loc_cpostal": 8417,
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "CaÃ±adon Del Corral",
+   "loc_nombre": "Cañadon Del Corral",
    "loc_cpostal": 8412,
    "prv_nombre": "Rio Negro"
  },
@@ -74311,12 +74311,12 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "ChurquiÃ±eo",
+   "loc_nombre": "Churquiñeo",
    "loc_cpostal": 8412,
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "Cinco ChaÃ±ares",
+   "loc_nombre": "Cinco Chañares",
    "loc_cpostal": 8520,
    "prv_nombre": "Rio Negro"
  },
@@ -74851,7 +74851,7 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 8417,
    "prv_nombre": "Rio Negro"
  },
@@ -74931,7 +74931,7 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "LanquiÃ±eo",
+   "loc_nombre": "Lanquiñeo",
    "loc_cpostal": 8417,
    "prv_nombre": "Rio Negro"
  },
@@ -75206,7 +75206,7 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "PeÃ±as Blancas",
+   "loc_nombre": "Peñas Blancas",
    "loc_cpostal": 8307,
    "prv_nombre": "Rio Negro"
  },
@@ -75331,7 +75331,7 @@
    "prv_nombre": "Rio Negro"
  },
  {
-   "loc_nombre": "Puesto GaviÃ±a",
+   "loc_nombre": "Puesto Gaviña",
    "loc_cpostal": 8503,
    "prv_nombre": "Rio Negro"
  },
@@ -75631,17 +75631,17 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Ã‘andu",
+   "loc_nombre": "Ñandu",
    "loc_cpostal": 3553,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Ã‘andubay",
+   "loc_nombre": "Ñandubay",
    "loc_cpostal": 3041,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Ã‘anducita",
+   "loc_nombre": "Ñanducita",
    "loc_cpostal": 3072,
    "prv_nombre": "Santa Fe"
  },
@@ -75971,37 +75971,37 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CaÃ±ada De Gomez",
+   "loc_nombre": "Cañada De Gomez",
    "loc_cpostal": 2500,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Ucle",
+   "loc_nombre": "Cañada Del Ucle",
    "loc_cpostal": 2635,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CaÃ±ada Ombu",
+   "loc_nombre": "Cañada Ombu",
    "loc_cpostal": 3551,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CaÃ±ada Rica",
+   "loc_nombre": "Cañada Rica",
    "loc_cpostal": 2105,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CaÃ±ada Rosquin",
+   "loc_nombre": "Cañada Rosquin",
    "loc_cpostal": 2454,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CaÃ±adita",
+   "loc_nombre": "Cañadita",
    "loc_cpostal": 3052,
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CabaÃ±a El Cisne",
+   "loc_nombre": "Cabaña El Cisne",
    "loc_cpostal": 2322,
    "prv_nombre": "Santa Fe"
  },
@@ -76256,7 +76256,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Campo QuiÃ±ones",
+   "loc_nombre": "Campo Quiñones",
    "loc_cpostal": 2258,
    "prv_nombre": "Santa Fe"
  },
@@ -76386,7 +76386,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "CarcaraÃ±a",
+   "loc_nombre": "Carcaraña",
    "loc_cpostal": 2138,
    "prv_nombre": "Santa Fe"
  },
@@ -76486,7 +76486,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "ChaÃ±ar Ladeado",
+   "loc_nombre": "Chañar Ladeado",
    "loc_cpostal": 2643,
    "prv_nombre": "Santa Fe"
  },
@@ -77471,7 +77471,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Estancia La CigueÃ±a",
+   "loc_nombre": "Estancia La Cigueña",
    "loc_cpostal": 3060,
    "prv_nombre": "Santa Fe"
  },
@@ -77896,7 +77896,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Isla Del PorteÃ±o",
+   "loc_nombre": "Isla Del Porteño",
    "loc_cpostal": 3001,
    "prv_nombre": "Santa Fe"
  },
@@ -78206,7 +78206,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "La CigueÃ±a",
+   "loc_nombre": "La Cigueña",
    "loc_cpostal": 3057,
    "prv_nombre": "Santa Fe"
  },
@@ -78496,7 +78496,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 3046,
    "prv_nombre": "Santa Fe"
  },
@@ -78506,7 +78506,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Las ChuÃ±as",
+   "loc_nombre": "Las Chuñas",
    "loc_cpostal": 3061,
    "prv_nombre": "Santa Fe"
  },
@@ -78636,7 +78636,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "LogroÃ±o",
+   "loc_nombre": "Logroño",
    "loc_cpostal": 3066,
    "prv_nombre": "Santa Fe"
  },
@@ -79026,7 +79026,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "OroÃ±o",
+   "loc_nombre": "Oroño",
    "loc_cpostal": 2253,
    "prv_nombre": "Santa Fe"
  },
@@ -79236,7 +79236,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Pueblo MuÃ±oz",
+   "loc_nombre": "Pueblo Muñoz",
    "loc_cpostal": 2119,
    "prv_nombre": "Santa Fe"
  },
@@ -80111,7 +80111,7 @@
    "prv_nombre": "Santa Fe"
  },
  {
-   "loc_nombre": "Villa CaÃ±as",
+   "loc_nombre": "Villa Cañas",
    "loc_cpostal": 2607,
    "prv_nombre": "Santa Fe"
  },
@@ -80351,12 +80351,12 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Ã‘orco",
+   "loc_nombre": "Ñorco",
    "loc_cpostal": 4122,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Ã‘oreo",
+   "loc_nombre": "Ñoreo",
    "loc_cpostal": 4122,
    "prv_nombre": "Tucuman"
  },
@@ -80641,7 +80641,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Alto Nuestra SeÃ±ora Del Valle",
+   "loc_nombre": "Alto Nuestra Señora Del Valle",
    "loc_cpostal": 4109,
    "prv_nombre": "Tucuman"
  },
@@ -80786,7 +80786,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Aparadero Militar Gral MuÃ±oz",
+   "loc_nombre": "Aparadero Militar Gral Muñoz",
    "loc_cpostal": 4142,
    "prv_nombre": "Tucuman"
  },
@@ -80891,7 +80891,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "BaÃ±ado Del Valle",
+   "loc_nombre": "Bañado Del Valle",
    "loc_cpostal": 4111,
    "prv_nombre": "Tucuman"
  },
@@ -81106,77 +81106,77 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada",
+   "loc_nombre": "Cañada",
    "loc_cpostal": 4129,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada Alegre",
+   "loc_nombre": "Cañada Alegre",
    "loc_cpostal": 4119,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada Angosta",
+   "loc_nombre": "Cañada Angosta",
    "loc_cpostal": 4119,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada De Alzogaray",
+   "loc_nombre": "Cañada De Alzogaray",
    "loc_cpostal": 4117,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada De La Cruz",
+   "loc_nombre": "Cañada De La Cruz",
    "loc_cpostal": 4119,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada De Los Negros",
+   "loc_nombre": "Cañada De Los Negros",
    "loc_cpostal": 4119,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada De Viclos",
+   "loc_nombre": "Cañada De Viclos",
    "loc_cpostal": 4168,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada De Viclos",
+   "loc_nombre": "Cañada De Viclos",
    "loc_cpostal": 4178,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Arenal",
+   "loc_nombre": "Cañada Del Arenal",
    "loc_cpostal": 4124,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada El Arenal",
+   "loc_nombre": "Cañada El Arenal",
    "loc_cpostal": 4168,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 4101,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada Larga",
+   "loc_nombre": "Cañada Larga",
    "loc_cpostal": 4101,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ada Yerba Buena",
+   "loc_nombre": "Cañada Yerba Buena",
    "loc_cpostal": 4129,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±adas",
+   "loc_nombre": "Cañadas",
    "loc_cpostal": 4176,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "CaÃ±ete",
+   "loc_nombre": "Cañete",
    "loc_cpostal": 4186,
    "prv_nombre": "Tucuman"
  },
@@ -81306,7 +81306,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Campo De Los ChaÃ±ares",
+   "loc_nombre": "Campo De Los Chañares",
    "loc_cpostal": 4137,
    "prv_nombre": "Tucuman"
  },
@@ -81521,7 +81521,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Cejas De BeÃ±achillos",
+   "loc_nombre": "Cejas De Beñachillos",
    "loc_cpostal": 4178,
    "prv_nombre": "Tucuman"
  },
@@ -81566,52 +81566,52 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar",
+   "loc_nombre": "Chañar",
    "loc_cpostal": 4176,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar Muya",
+   "loc_nombre": "Chañar Muya",
    "loc_cpostal": 4168,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pago",
+   "loc_nombre": "Chañar Pago",
    "loc_cpostal": 4111,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar Pozo",
+   "loc_nombre": "Chañar Pozo",
    "loc_cpostal": 4168,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar TaqueÃ±o",
+   "loc_nombre": "Chañar Taqueño",
    "loc_cpostal": 4117,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar Via",
+   "loc_nombre": "Chañar Via",
    "loc_cpostal": 4117,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±ar Viejo",
+   "loc_nombre": "Chañar Viejo",
    "loc_cpostal": 4117,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±arito",
+   "loc_nombre": "Chañarito",
    "loc_cpostal": 4168,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±arito",
+   "loc_nombre": "Chañarito",
    "loc_cpostal": 4168,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "ChaÃ±aritos",
+   "loc_nombre": "Chañaritos",
    "loc_cpostal": 4242,
    "prv_nombre": "Tucuman"
  },
@@ -82216,12 +82216,12 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 4176,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 4141,
    "prv_nombre": "Tucuman"
  },
@@ -82411,7 +82411,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "El ChaÃ±ar",
+   "loc_nombre": "El Chañar",
    "loc_cpostal": 4117,
    "prv_nombre": "Tucuman"
  },
@@ -85131,7 +85131,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Escuela Diego De VillafaÃ±e",
+   "loc_nombre": "Escuela Diego De Villafañe",
    "loc_cpostal": 4187,
    "prv_nombre": "Tucuman"
  },
@@ -85316,7 +85316,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Escuela Lopez MaÃ±ar",
+   "loc_nombre": "Escuela Lopez Mañar",
    "loc_cpostal": 4172,
    "prv_nombre": "Tucuman"
  },
@@ -85906,7 +85906,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Ingeniero Ã‘uÃ±orco",
+   "loc_nombre": "Ingeniero Ñuñorco",
    "loc_cpostal": 4142,
    "prv_nombre": "Tucuman"
  },
@@ -86441,27 +86441,27 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4119,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4242,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4159,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 4124,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "La CaÃ±ada Parada",
+   "loc_nombre": "La Cañada Parada",
    "loc_cpostal": 4107,
    "prv_nombre": "Tucuman"
  },
@@ -87051,7 +87051,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "La ViÃ±ita",
+   "loc_nombre": "La Viñita",
    "loc_cpostal": 4137,
    "prv_nombre": "Tucuman"
  },
@@ -87181,27 +87181,27 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Las CaÃ±adas",
+   "loc_nombre": "Las Cañadas",
    "loc_cpostal": 4113,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 4141,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 4103,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 4103,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 4124,
    "prv_nombre": "Tucuman"
  },
@@ -87721,17 +87721,17 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 4141,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Los ChaÃ±aritos",
+   "loc_nombre": "Los Chañaritos",
    "loc_cpostal": 4115,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Los ChaÃ±aritos",
+   "loc_nombre": "Los Chañaritos",
    "loc_cpostal": 4111,
    "prv_nombre": "Tucuman"
  },
@@ -88191,7 +88191,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Macho HuaÃ±usca",
+   "loc_nombre": "Macho Huañusca",
    "loc_cpostal": 4137,
    "prv_nombre": "Tucuman"
  },
@@ -88276,7 +88276,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "MariÃ±o",
+   "loc_nombre": "Mariño",
    "loc_cpostal": 4117,
    "prv_nombre": "Tucuman"
  },
@@ -88601,7 +88601,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Nueva EspaÃ±a",
+   "loc_nombre": "Nueva España",
    "loc_cpostal": 4113,
    "prv_nombre": "Tucuman"
  },
@@ -88846,12 +88846,12 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "PeÃ±a Overa",
+   "loc_nombre": "Peña Overa",
    "loc_cpostal": 4137,
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "PeÃ±a Picaza",
+   "loc_nombre": "Peña Picaza",
    "loc_cpostal": 4137,
    "prv_nombre": "Tucuman"
  },
@@ -91086,7 +91086,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Villa MuÃ±ecas",
+   "loc_nombre": "Villa Muñecas",
    "loc_cpostal": 4000,
    "prv_nombre": "Tucuman"
  },
@@ -91336,7 +91336,7 @@
    "prv_nombre": "Tucuman"
  },
  {
-   "loc_nombre": "Ã‘orquinco Sud",
+   "loc_nombre": "Ñorquinco Sud",
    "loc_cpostal": 8415,
    "prv_nombre": "Chubut"
  },
@@ -91531,77 +91531,77 @@
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±ada Bagual",
+   "loc_nombre": "Cañada Bagual",
    "loc_cpostal": 9207,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Bagual",
+   "loc_nombre": "Cañadon Bagual",
    "loc_cpostal": 9121,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Blanco",
+   "loc_nombre": "Cañadon Blanco",
    "loc_cpostal": 9121,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Caliente",
+   "loc_nombre": "Cañadon Caliente",
    "loc_cpostal": 9217,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Carril",
+   "loc_nombre": "Cañadon Carril",
    "loc_cpostal": 9020,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Chacay",
+   "loc_nombre": "Cañadon Chacay",
    "loc_cpostal": 9223,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Chileno",
+   "loc_nombre": "Cañadon Chileno",
    "loc_cpostal": 9121,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Ferrais",
+   "loc_nombre": "Cañadon Ferrais",
    "loc_cpostal": 9001,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Grande",
+   "loc_nombre": "Cañadon Grande",
    "loc_cpostal": 9217,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon La Madera",
+   "loc_nombre": "Cañadon La Madera",
    "loc_cpostal": 9220,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Lagarto",
+   "loc_nombre": "Cañadon Lagarto",
    "loc_cpostal": 9009,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Lopez",
+   "loc_nombre": "Cañadon Lopez",
    "loc_cpostal": 9009,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Pedro Ex Valle Hermoso",
+   "loc_nombre": "Cañadon Pedro Ex Valle Hermoso",
    "loc_cpostal": 9009,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CaÃ±adon Tacho",
+   "loc_nombre": "Cañadon Tacho",
    "loc_cpostal": 9020,
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "CabaÃ±a Del Valle",
+   "loc_nombre": "Cabaña Del Valle",
    "loc_cpostal": 9105,
    "prv_nombre": "Chubut"
  },
@@ -91911,7 +91911,7 @@
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "El DesempeÃ±o",
+   "loc_nombre": "El Desempeño",
    "loc_cpostal": 9120,
    "prv_nombre": "Chubut"
  },
@@ -92356,7 +92356,7 @@
    "prv_nombre": "Chubut"
  },
  {
-   "loc_nombre": "LanguiÃ±eo",
+   "loc_nombre": "Languiñeo",
    "loc_cpostal": 9201,
    "prv_nombre": "Chubut"
  },
@@ -92996,7 +92996,7 @@
    "prv_nombre": "Tierra Del Fuego"
  },
  {
-   "loc_nombre": "CabaÃ±a Ruby",
+   "loc_nombre": "Cabaña Ruby",
    "loc_cpostal": 9420,
    "prv_nombre": "Tierra Del Fuego"
  },
@@ -93141,7 +93141,7 @@
    "prv_nombre": "Tierra Del Fuego"
  },
  {
-   "loc_nombre": "Estancia La PorteÃ±a",
+   "loc_nombre": "Estancia La Porteña",
    "loc_cpostal": 9420,
    "prv_nombre": "Tierra Del Fuego"
  },
@@ -93341,7 +93341,7 @@
    "prv_nombre": "Tierra Del Fuego"
  },
  {
-   "loc_nombre": "Mision Salesiana MÃ±or Fagnano",
+   "loc_nombre": "Mision Salesiana Mñor Fagnano",
    "loc_cpostal": 9410,
    "prv_nombre": "Tierra Del Fuego"
  },
@@ -93396,17 +93396,17 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Ã‘aembe",
+   "loc_nombre": "Ñaembe",
    "loc_cpostal": 3453,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Ã‘atiu",
+   "loc_nombre": "Ñatiu",
    "loc_cpostal": 3230,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Ã‘uruguay",
+   "loc_nombre": "Ñuruguay",
    "loc_cpostal": 3483,
    "prv_nombre": "Corrientes"
  },
@@ -93441,12 +93441,12 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "AcuÃ±a",
+   "loc_nombre": "Acuña",
    "loc_cpostal": 3466,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "AcuÃ±a Cue",
+   "loc_nombre": "Acuña Cue",
    "loc_cpostal": 3420,
    "prv_nombre": "Corrientes"
  },
@@ -93586,7 +93586,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "AraÃ±ita",
+   "loc_nombre": "Arañita",
    "loc_cpostal": 3423,
    "prv_nombre": "Corrientes"
  },
@@ -93746,17 +93746,17 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "BaÃ±ado Norte",
+   "loc_nombre": "Bañado Norte",
    "loc_cpostal": 3400,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "BaÃ±ado San Antonio",
+   "loc_nombre": "Bañado San Antonio",
    "loc_cpostal": 3454,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "BaÃ±ado Sur",
+   "loc_nombre": "Bañado Sur",
    "loc_cpostal": 3400,
    "prv_nombre": "Corrientes"
  },
@@ -93986,32 +93986,32 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CaÃ±ada Burgos",
+   "loc_nombre": "Cañada Burgos",
    "loc_cpostal": 3418,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CaÃ±ada Grande",
+   "loc_nombre": "Cañada Grande",
    "loc_cpostal": 3405,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CaÃ±ada Grande",
+   "loc_nombre": "Cañada Grande",
    "loc_cpostal": 3403,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CaÃ±ada Mala",
+   "loc_nombre": "Cañada Mala",
    "loc_cpostal": 3448,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CaÃ±ada Quiroz",
+   "loc_nombre": "Cañada Quiroz",
    "loc_cpostal": 3401,
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CaÃ±aditas",
+   "loc_nombre": "Cañaditas",
    "loc_cpostal": 3463,
    "prv_nombre": "Corrientes"
  },
@@ -94056,7 +94056,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CabaÃ±a",
+   "loc_nombre": "Cabaña",
    "loc_cpostal": 3445,
    "prv_nombre": "Corrientes"
  },
@@ -94071,7 +94071,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CafarreÃ±o",
+   "loc_nombre": "Cafarreño",
    "loc_cpostal": 3445,
    "prv_nombre": "Corrientes"
  },
@@ -94461,7 +94461,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Colonia AcuÃ±a",
+   "loc_nombre": "Colonia Acuña",
    "loc_cpostal": 3460,
    "prv_nombre": "Corrientes"
  },
@@ -94901,7 +94901,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "CuÃ±a Suegra",
+   "loc_nombre": "Cuña Suegra",
    "loc_cpostal": 3197,
    "prv_nombre": "Corrientes"
  },
@@ -94991,7 +94991,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "El Ã‘andubay",
+   "loc_nombre": "El Ñandubay",
    "loc_cpostal": 3460,
    "prv_nombre": "Corrientes"
  },
@@ -95331,7 +95331,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Estancia El ChaÃ±ar",
+   "loc_nombre": "Estancia El Chañar",
    "loc_cpostal": 3460,
    "prv_nombre": "Corrientes"
  },
@@ -95396,7 +95396,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Estancia Las MagÃ±olas",
+   "loc_nombre": "Estancia Las Magñolas",
    "loc_cpostal": 3344,
    "prv_nombre": "Corrientes"
  },
@@ -96226,7 +96226,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 3460,
    "prv_nombre": "Corrientes"
  },
@@ -96526,7 +96526,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 3463,
    "prv_nombre": "Corrientes"
  },
@@ -97216,7 +97216,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "MontaÃ±a",
+   "loc_nombre": "Montaña",
    "loc_cpostal": 3485,
    "prv_nombre": "Corrientes"
  },
@@ -97591,7 +97591,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Paso ChaÃ±al",
+   "loc_nombre": "Paso Chañal",
    "loc_cpostal": 3474,
    "prv_nombre": "Corrientes"
  },
@@ -97706,7 +97706,7 @@
    "prv_nombre": "Corrientes"
  },
  {
-   "loc_nombre": "Paso SaldaÃ±a",
+   "loc_nombre": "Paso Saldaña",
    "loc_cpostal": 3407,
    "prv_nombre": "Corrientes"
  },
@@ -99776,7 +99776,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Ã‘u Pora",
+   "loc_nombre": "Ñu Pora",
    "loc_cpostal": 5111,
    "prv_nombre": "Cordoba"
  },
@@ -100171,17 +100171,17 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "BaÃ±ado De Paja",
+   "loc_nombre": "Bañado De Paja",
    "loc_cpostal": 5871,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "BaÃ±ado De Soto",
+   "loc_nombre": "Bañado De Soto",
    "loc_cpostal": 5285,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "BaÃ±ado Del Fuerte",
+   "loc_nombre": "Bañado Del Fuerte",
    "loc_cpostal": 5248,
    "prv_nombre": "Cordoba"
  },
@@ -100501,157 +100501,157 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±a Cruz",
+   "loc_nombre": "Caña Cruz",
    "loc_cpostal": 5248,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Ancha Santa Rosa",
+   "loc_nombre": "Cañada Ancha Santa Rosa",
    "loc_cpostal": 5135,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Alvarez",
+   "loc_nombre": "Cañada De Alvarez",
    "loc_cpostal": 5819,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Coria",
+   "loc_nombre": "Cañada De Coria",
    "loc_cpostal": 5248,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Cuevas",
+   "loc_nombre": "Cañada De Cuevas",
    "loc_cpostal": 5101,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Jume",
+   "loc_nombre": "Cañada De Jume",
    "loc_cpostal": 5221,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Las Chacras",
+   "loc_nombre": "Cañada De Las Chacras",
    "loc_cpostal": 5199,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Las Gatiadas",
+   "loc_nombre": "Cañada De Las Gatiadas",
    "loc_cpostal": 5291,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Luque",
+   "loc_nombre": "Cañada De Luque",
    "loc_cpostal": 5229,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Machado",
+   "loc_nombre": "Cañada De Machado",
    "loc_cpostal": 5961,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Machado Sud",
+   "loc_nombre": "Cañada De Machado Sud",
    "loc_cpostal": 5963,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Mateo",
+   "loc_nombre": "Cañada De Mateo",
    "loc_cpostal": 5221,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Mayo",
+   "loc_nombre": "Cañada De Mayo",
    "loc_cpostal": 5218,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Pocho",
+   "loc_nombre": "Cañada De Pocho",
    "loc_cpostal": 5299,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Rio Pinto",
+   "loc_nombre": "Cañada De Rio Pinto",
    "loc_cpostal": 5221,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada De Salas",
+   "loc_nombre": "Cañada De Salas",
    "loc_cpostal": 5299,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Durazno",
+   "loc_nombre": "Cañada Del Durazno",
    "loc_cpostal": 5196,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Puerto",
+   "loc_nombre": "Cañada Del Puerto",
    "loc_cpostal": 5297,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Sauce",
+   "loc_nombre": "Cañada Del Sauce",
    "loc_cpostal": 5817,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Simbol",
+   "loc_nombre": "Cañada Del Simbol",
    "loc_cpostal": 5200,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Tala",
+   "loc_nombre": "Cañada Del Tala",
    "loc_cpostal": 5859,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Del Tala",
+   "loc_nombre": "Cañada Del Tala",
    "loc_cpostal": 5244,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Grande",
+   "loc_nombre": "Cañada Grande",
    "loc_cpostal": 5891,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Grande",
+   "loc_nombre": "Cañada Grande",
    "loc_cpostal": 5873,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 5280,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Honda",
+   "loc_nombre": "Cañada Honda",
    "loc_cpostal": 5227,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Larga",
+   "loc_nombre": "Cañada Larga",
    "loc_cpostal": 5889,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada San Antonio",
+   "loc_nombre": "Cañada San Antonio",
    "loc_cpostal": 5131,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±ada Verde",
+   "loc_nombre": "Cañada Verde",
    "loc_cpostal": 6275,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±adas Hondas",
+   "loc_nombre": "Cañadas Hondas",
    "loc_cpostal": 5221,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "CaÃ±adon De Los Mogotes",
+   "loc_nombre": "Cañadon De Los Mogotes",
    "loc_cpostal": 5184,
    "prv_nombre": "Cordoba"
  },
@@ -101196,17 +101196,17 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "ChaÃ±ar Viejo",
+   "loc_nombre": "Chañar Viejo",
    "loc_cpostal": 5246,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "ChaÃ±ariaco",
+   "loc_nombre": "Chañariaco",
    "loc_cpostal": 5291,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "ChaÃ±aritos",
+   "loc_nombre": "Chañaritos",
    "loc_cpostal": 5829,
    "prv_nombre": "Cordoba"
  },
@@ -101301,12 +101301,12 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "ChuÃ±a",
+   "loc_nombre": "Chuña",
    "loc_cpostal": 5218,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "ChuÃ±a Huasi",
+   "loc_nombre": "Chuña Huasi",
    "loc_cpostal": 5201,
    "prv_nombre": "Cordoba"
  },
@@ -101326,7 +101326,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Churqui CaÃ±ada",
+   "loc_nombre": "Churqui Cañada",
    "loc_cpostal": 5246,
    "prv_nombre": "Cordoba"
  },
@@ -101436,7 +101436,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Colonia CaÃ±adon",
+   "loc_nombre": "Colonia Cañadon",
    "loc_cpostal": 5137,
    "prv_nombre": "Cordoba"
  },
@@ -102021,7 +102021,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Costa Del CastaÃ±o",
+   "loc_nombre": "Costa Del Castaño",
    "loc_cpostal": 5137,
    "prv_nombre": "Cordoba"
  },
@@ -102061,7 +102061,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Cruz De CaÃ±a",
+   "loc_nombre": "Cruz De Caña",
    "loc_cpostal": 5875,
    "prv_nombre": "Cordoba"
  },
@@ -102141,7 +102141,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "DespeÃ±aderos",
+   "loc_nombre": "Despeñaderos",
    "loc_cpostal": 5121,
    "prv_nombre": "Cordoba"
  },
@@ -102171,7 +102171,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Dique La ViÃ±a",
+   "loc_nombre": "Dique La Viña",
    "loc_cpostal": 5885,
    "prv_nombre": "Cordoba"
  },
@@ -102191,12 +102191,12 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Doctor Nicasio Salas OroÃ±o",
+   "loc_nombre": "Doctor Nicasio Salas Oroño",
    "loc_cpostal": 5221,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Dolores NuÃ±ez Del Prado",
+   "loc_nombre": "Dolores Nuñez Del Prado",
    "loc_cpostal": 5131,
    "prv_nombre": "Cordoba"
  },
@@ -102296,7 +102296,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El AraÃ±ado",
+   "loc_nombre": "El Arañado",
    "loc_cpostal": 5947,
    "prv_nombre": "Cordoba"
  },
@@ -102306,17 +102306,17 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 5214,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 5801,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El BaÃ±ado",
+   "loc_nombre": "El Bañado",
    "loc_cpostal": 5248,
    "prv_nombre": "Cordoba"
  },
@@ -102396,7 +102396,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El Carmen GuiÃ±azu",
+   "loc_nombre": "El Carmen Guiñazu",
    "loc_cpostal": 5145,
    "prv_nombre": "Cordoba"
  },
@@ -102426,7 +102426,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El Carrizal ChuÃ±aguasi",
+   "loc_nombre": "El Carrizal Chuñaguasi",
    "loc_cpostal": 5201,
    "prv_nombre": "Cordoba"
  },
@@ -102726,7 +102726,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El Parador De La MontaÃ±a",
+   "loc_nombre": "El Parador De La Montaña",
    "loc_cpostal": 5196,
    "prv_nombre": "Cordoba"
  },
@@ -102801,7 +102801,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "El PorteÃ±o",
+   "loc_nombre": "El Porteño",
    "loc_cpostal": 5933,
    "prv_nombre": "Cordoba"
  },
@@ -103211,7 +103211,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Espinillo NuÃ±ez Del Prado",
+   "loc_nombre": "Espinillo Nuñez Del Prado",
    "loc_cpostal": 5131,
    "prv_nombre": "Cordoba"
  },
@@ -103286,7 +103286,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Estancia El ChaÃ±ar",
+   "loc_nombre": "Estancia El Chañar",
    "loc_cpostal": 2428,
    "prv_nombre": "Cordoba"
  },
@@ -103321,7 +103321,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Estancia Las CaÃ±as",
+   "loc_nombre": "Estancia Las Cañas",
    "loc_cpostal": 5131,
    "prv_nombre": "Cordoba"
  },
@@ -103346,7 +103346,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Estancia PatiÃ±o",
+   "loc_nombre": "Estancia Patiño",
    "loc_cpostal": 5249,
    "prv_nombre": "Cordoba"
  },
@@ -104086,37 +104086,37 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5155,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5101,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5231,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada",
+   "loc_nombre": "La Cañada",
    "loc_cpostal": 5870,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada Angosta",
+   "loc_nombre": "La Cañada Angosta",
    "loc_cpostal": 5218,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada Grande",
+   "loc_nombre": "La Cañada Grande",
    "loc_cpostal": 5803,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La CaÃ±ada Santa Cruz",
+   "loc_nombre": "La Cañada Santa Cruz",
    "loc_cpostal": 5201,
    "prv_nombre": "Cordoba"
  },
@@ -104696,7 +104696,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 5221,
    "prv_nombre": "Cordoba"
  },
@@ -104706,7 +104706,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "La Posta ChuÃ±aguas",
+   "loc_nombre": "La Posta Chuñaguas",
    "loc_cpostal": 5201,
    "prv_nombre": "Cordoba"
  },
@@ -105101,42 +105101,42 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±adas",
+   "loc_nombre": "Las Cañadas",
    "loc_cpostal": 5284,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±adas",
+   "loc_nombre": "Las Cañadas",
    "loc_cpostal": 5870,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5101,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5201,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5246,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±as",
+   "loc_nombre": "Las Cañas",
    "loc_cpostal": 5216,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 5801,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las CaÃ±itas",
+   "loc_nombre": "Las Cañitas",
    "loc_cpostal": 2428,
    "prv_nombre": "Cordoba"
  },
@@ -105481,22 +105481,22 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5817,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las PeÃ±as",
+   "loc_nombre": "Las Peñas",
    "loc_cpostal": 5238,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las PeÃ±as Norte",
+   "loc_nombre": "Las Peñas Norte",
    "loc_cpostal": 5823,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Las PeÃ±as Sud",
+   "loc_nombre": "Las Peñas Sud",
    "loc_cpostal": 5819,
    "prv_nombre": "Cordoba"
  },
@@ -105806,7 +105806,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los CastaÃ±os",
+   "loc_nombre": "Los Castaños",
    "loc_cpostal": 5137,
    "prv_nombre": "Cordoba"
  },
@@ -105851,37 +105851,37 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5220,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5212,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5133,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±ares",
+   "loc_nombre": "Los Chañares",
    "loc_cpostal": 5873,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±aritos",
+   "loc_nombre": "Los Chañaritos",
    "loc_cpostal": 5281,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±aritos",
+   "loc_nombre": "Los Chañaritos",
    "loc_cpostal": 5125,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Los ChaÃ±aritos",
+   "loc_nombre": "Los Chañaritos",
    "loc_cpostal": 5873,
    "prv_nombre": "Cordoba"
  },
@@ -106311,7 +106311,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "MalagueÃ±o",
+   "loc_nombre": "Malagueño",
    "loc_cpostal": 5101,
    "prv_nombre": "Cordoba"
  },
@@ -106511,7 +106511,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Modesto AcuÃ±a",
+   "loc_nombre": "Modesto Acuña",
    "loc_cpostal": 5823,
    "prv_nombre": "Cordoba"
  },
@@ -106591,7 +106591,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Monte LeÃ±a",
+   "loc_nombre": "Monte Leña",
    "loc_cpostal": 2564,
    "prv_nombre": "Cordoba"
  },
@@ -106661,7 +106661,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "NiÃ±a Paula",
+   "loc_nombre": "Niña Paula",
    "loc_cpostal": 5889,
    "prv_nombre": "Cordoba"
  },
@@ -106701,7 +106701,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "NuÃ±ez Del Prado",
+   "loc_nombre": "Nuñez Del Prado",
    "loc_cpostal": 5131,
    "prv_nombre": "Cordoba"
  },
@@ -106781,7 +106781,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "OrdoÃ±ez",
+   "loc_nombre": "Ordoñez",
    "loc_cpostal": 2555,
    "prv_nombre": "Cordoba"
  },
@@ -107126,7 +107126,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "PorteÃ±a",
+   "loc_nombre": "Porteña",
    "loc_cpostal": 2415,
    "prv_nombre": "Cordoba"
  },
@@ -107221,12 +107221,12 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Pozo Del ChaÃ±ar",
+   "loc_nombre": "Pozo Del Chañar",
    "loc_cpostal": 5873,
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Pozo Del ChaÃ±ar",
+   "loc_nombre": "Pozo Del Chañar",
    "loc_cpostal": 2435,
    "prv_nombre": "Cordoba"
  },
@@ -108016,7 +108016,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "San Francisco Del ChaÃ±ar",
+   "loc_nombre": "San Francisco Del Chañar",
    "loc_cpostal": 5209,
    "prv_nombre": "Cordoba"
  },
@@ -108126,7 +108126,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "San Jose Del SalteÃ±o",
+   "loc_nombre": "San Jose Del Salteño",
    "loc_cpostal": 2563,
    "prv_nombre": "Cordoba"
  },
@@ -108726,7 +108726,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Tala CaÃ±ada",
+   "loc_nombre": "Tala Cañada",
    "loc_cpostal": 5297,
    "prv_nombre": "Cordoba"
  },
@@ -108921,7 +108921,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "Tres ChaÃ±ares",
+   "loc_nombre": "Tres Chañares",
    "loc_cpostal": 5295,
    "prv_nombre": "Cordoba"
  },
@@ -109031,7 +109031,7 @@
    "prv_nombre": "Cordoba"
  },
  {
-   "loc_nombre": "VicuÃ±a Mackenna",
+   "loc_nombre": "Vicuña Mackenna",
    "loc_cpostal": 6140,
    "prv_nombre": "Cordoba"
  },
@@ -109611,7 +109611,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "Abra De PeÃ±as",
+   "loc_nombre": "Abra De Peñas",
    "loc_cpostal": 4650,
    "prv_nombre": "Jujuy"
  },
@@ -109921,12 +109921,12 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "Barrio Alto La ViÃ±a",
+   "loc_nombre": "Barrio Alto La Viña",
    "loc_cpostal": 4600,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "Barrio Bajo La ViÃ±a",
+   "loc_nombre": "Barrio Bajo La Viña",
    "loc_cpostal": 4600,
    "prv_nombre": "Jujuy"
  },
@@ -110011,7 +110011,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "CaÃ±as",
+   "loc_nombre": "Cañas",
    "loc_cpostal": 4624,
    "prv_nombre": "Jujuy"
  },
@@ -110206,7 +110206,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "CatamontaÃ±a",
+   "loc_nombre": "Catamontaña",
    "loc_cpostal": 4603,
    "prv_nombre": "Jujuy"
  },
@@ -110281,27 +110281,27 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "ChaÃ±ar Solo",
+   "loc_nombre": "Chañar Solo",
    "loc_cpostal": 4516,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "ChaÃ±aral",
+   "loc_nombre": "Chañaral",
    "loc_cpostal": 4516,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "ChaÃ±arcito",
+   "loc_nombre": "Chañarcito",
    "loc_cpostal": 4618,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "ChaÃ±i",
+   "loc_nombre": "Chañi",
    "loc_cpostal": 4616,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "ChaÃ±i Chico",
+   "loc_nombre": "Chañi Chico",
    "loc_cpostal": 4618,
    "prv_nombre": "Jujuy"
  },
@@ -111221,7 +111221,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "La CabaÃ±a",
+   "loc_nombre": "La Cabaña",
    "loc_cpostal": 4605,
    "prv_nombre": "Jujuy"
  },
@@ -111431,7 +111431,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "Las CaÃ±adas",
+   "loc_nombre": "Las Cañadas",
    "loc_cpostal": 4606,
    "prv_nombre": "Jujuy"
  },
@@ -111581,7 +111581,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "Los BaÃ±os Termales",
+   "loc_nombre": "Los Baños Termales",
    "loc_cpostal": 4516,
    "prv_nombre": "Jujuy"
  },
@@ -111891,7 +111891,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "MuÃ±ayoc",
+   "loc_nombre": "Muñayoc",
    "loc_cpostal": 4641,
    "prv_nombre": "Jujuy"
  },
@@ -111996,7 +111996,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "PaÃ±o",
+   "loc_nombre": "Paño",
    "loc_cpostal": 4605,
    "prv_nombre": "Jujuy"
  },
@@ -112106,17 +112106,17 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "PeÃ±a Colorada",
+   "loc_nombre": "Peña Colorada",
    "loc_cpostal": 4655,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "PeÃ±as Blancas",
+   "loc_nombre": "Peñas Blancas",
    "loc_cpostal": 4632,
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "PeÃ±as Blancas",
+   "loc_nombre": "Peñas Blancas",
    "loc_cpostal": 4632,
    "prv_nombre": "Jujuy"
  },
@@ -112416,7 +112416,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "QueÃ±oal",
+   "loc_nombre": "Queñoal",
    "loc_cpostal": 4513,
    "prv_nombre": "Jujuy"
  },
@@ -112426,7 +112426,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "QuebraleÃ±a",
+   "loc_nombre": "Quebraleña",
    "loc_cpostal": 4640,
    "prv_nombre": "Jujuy"
  },
@@ -112696,7 +112696,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "San Jose Del ChaÃ±i",
+   "loc_nombre": "San Jose Del Chañi",
    "loc_cpostal": 4618,
    "prv_nombre": "Jujuy"
  },
@@ -113196,7 +113196,7 @@
    "prv_nombre": "Jujuy"
  },
  {
-   "loc_nombre": "VicuÃ±ayoc",
+   "loc_nombre": "Vicuñayoc",
    "loc_cpostal": 4634,
    "prv_nombre": "Jujuy"
  },
@@ -113366,57 +113366,57 @@
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±ada De Las Vacas",
+   "loc_nombre": "Cañada De Las Vacas",
    "loc_cpostal": 9300,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon 11 De Setiembre",
+   "loc_nombre": "Cañadon 11 De Setiembre",
    "loc_cpostal": 9310,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Botello",
+   "loc_nombre": "Cañadon Botello",
    "loc_cpostal": 9040,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon De Las Vacas",
+   "loc_nombre": "Cañadon De Las Vacas",
    "loc_cpostal": 9300,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Del Rancho",
+   "loc_nombre": "Cañadon Del Rancho",
    "loc_cpostal": 9300,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Del Toro",
+   "loc_nombre": "Cañadon Del Toro",
    "loc_cpostal": 9303,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Fabre",
+   "loc_nombre": "Cañadon Fabre",
    "loc_cpostal": 9400,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Leon",
+   "loc_nombre": "Cañadon Leon",
    "loc_cpostal": 9311,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Molinari",
+   "loc_nombre": "Cañadon Molinari",
    "loc_cpostal": 9311,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Pluma",
+   "loc_nombre": "Cañadon Pluma",
    "loc_cpostal": 9017,
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "CaÃ±adon Seco",
+   "loc_nombre": "Cañadon Seco",
    "loc_cpostal": 9013,
    "prv_nombre": "Santa Cruz"
  },
@@ -113896,7 +113896,7 @@
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "La PorteÃ±a",
+   "loc_nombre": "La Porteña",
    "loc_cpostal": 9303,
    "prv_nombre": "Santa Cruz"
  },
@@ -114121,7 +114121,7 @@
    "prv_nombre": "Santa Cruz"
  },
  {
-   "loc_nombre": "Paso IbaÃ±ez",
+   "loc_nombre": "Paso Ibañez",
    "loc_cpostal": 9303,
    "prv_nombre": "Santa Cruz"
  },
