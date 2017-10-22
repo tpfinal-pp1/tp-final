@@ -39,6 +39,7 @@ public class ImageVisualizer extends Window {
         imageViewer.addListener((ImageSelectionListener) e -> {
             selectedImage.setValue(e.getSelectedImageIndex() >= 0 ? String.valueOf(e.getSelectedImageIndex()) : "-");
         });
+
         HorizontalLayout hl = new HorizontalLayout();
         hl.setSizeUndefined();
         hl.setMargin(false);
@@ -174,10 +175,10 @@ public class ImageVisualizer extends Window {
        // hl.addComponent(s);
        // hl.setComponentAlignment(s, Alignment.BOTTOM_CENTER);
 
-      //  selectedImage.setWidth("50px");
-       // hl.addComponent(selectedImage);
-     //   hl.setComponentAlignment(selectedImage, Alignment.BOTTOM_CENTER);
-
+      /*  selectedImage.setWidth("50px");
+        hl.addComponent(selectedImage);
+        hl.setComponentAlignment(selectedImage, Alignment.BOTTOM_CENTER);
+*/
         return hl;
     }
 
@@ -201,7 +202,10 @@ public class ImageVisualizer extends Window {
 
             img.add(sr);
         imageViewer.setImages(img);
-       imageViewer.setCenterImageIndex(0);
+        imageViewer.setCenterImageRelativeWidth(0.5f);
+     //   imageViewer.setCenterImageIndex(0);
+
+
 
     }
 
