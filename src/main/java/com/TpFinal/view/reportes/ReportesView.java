@@ -138,7 +138,7 @@ public class ReportesView extends DefaultLayout implements View {
 					
 				});*/
 				
-			//	objects = objects2; 
+			
 				break;
 				
 			case AlquileresPorRango:
