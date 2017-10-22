@@ -1,17 +1,13 @@
 package com.TpFinal.dto.inmueble;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public enum TipoInmueble {Vivienda,Comercial;
 
 public static List<TipoInmueble> toList() {
-    TipoInmueble[] tipos = TipoInmueble.values();
-    List<TipoInmueble> ret = new ArrayList<>();
-    for (TipoInmueble t : tipos) {
-	ret.add(t);
-    }
-    return ret;
+    return Arrays.asList(TipoInmueble.Comercial, TipoInmueble.Vivienda);
 }
 
 }

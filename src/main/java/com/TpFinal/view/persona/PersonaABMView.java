@@ -41,6 +41,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     PersonaForm personaForm = new PersonaForm(this);
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
+    FiltroInteresados filtroBase = new FiltroInteresados();
     
 
     // Para identificar los layout de acciones
@@ -51,6 +52,13 @@ public class PersonaABMView extends DefaultLayout implements View {
 	buildLayout();
 	configureComponents();
     }
+    
+    public PersonaABMView(FiltroInteresados filtroBase) {
+   	super();
+   	this.filtroBase = filtroBase;
+   	buildLayout();
+   	configureComponents();
+       }
 
     private void configureComponents() {
 	Responsive.makeResponsive(this);
@@ -73,6 +81,14 @@ public class PersonaABMView extends DefaultLayout implements View {
 	grid.getColumn("DNI").setCaption("DNI");
 	grid.getColumn("nombre").setCaption("Nombre");
 	grid.getColumn("apellido").setCaption("Apellido ");
+	grid.addColumn(persona -> {
+	    String ret = "";
+	    if (persona.getPrefBusqueda() != null)
+		ret = "Interesado, ";
+	    for (Rol rol : persona.giveMeYourRoles())
+		ret += rol + ", ";
+	    return ret.length() >= 2 ? ret.substring(0, ret.length() - 2) : "Sin Rol";
+	}).setCaption("Rol");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	grid.getColumns().forEach(col -> col.setResizable(false));
     }
@@ -113,9 +129,11 @@ public class PersonaABMView extends DefaultLayout implements View {
 			persona.setPrefBusqueda(getCriterio());
 			if (personaService.saveOrUpdate(persona)) {
 			    showSuccessNotification("Preferencias Guardadas");
+			    updateList();
 			    return true;
 			} else {
 			    showErrorNotification("No se han realizado modificaciones");
+			    updateList();
 			    return false;
 			}
 
@@ -233,7 +251,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	List<Persona> customers = personaService.findAll(filter.getValue());
+	List<Persona> customers = personaService.findAll(filtroBase);
 	grid.setItems(customers);
     }
 
