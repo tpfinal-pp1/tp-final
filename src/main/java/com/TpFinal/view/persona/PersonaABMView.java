@@ -41,6 +41,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     PersonaForm personaForm = new PersonaForm(this);
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
+    FiltroInteresados filtroBase = new FiltroInteresados();
     
 
     // Para identificar los layout de acciones
@@ -51,6 +52,13 @@ public class PersonaABMView extends DefaultLayout implements View {
 	buildLayout();
 	configureComponents();
     }
+    
+    public PersonaABMView(FiltroInteresados filtroBase) {
+   	super();
+   	this.filtroBase = filtroBase;
+   	buildLayout();
+   	configureComponents();
+       }
 
     private void configureComponents() {
 	Responsive.makeResponsive(this);
@@ -243,7 +251,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	List<Persona> customers = personaService.findAll(filter.getValue());
+	List<Persona> customers = personaService.findAll(filtroBase);
 	grid.setItems(customers);
     }
 
