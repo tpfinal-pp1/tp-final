@@ -55,8 +55,15 @@ public class ReportesView extends DefaultLayout implements View {
 	String reportName="";
 	Button newReport = new Button("Generar");
 	Notification error ;
+	
+	DateField fDesde=null;
+	DateField fHasta=null;
+	
+	List<Object> objects=null;
+	
 	public enum TipoReporte {
-		Propietario("ReportePropietarios.jasper"),AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper");
+		Propietario("ReportePropietarios.jasper"),AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper"),
+		AlquileresPorRango("ReporteAlquileresPorCobrar.jasper");
 
 		private final String archivoReporte;
 
@@ -69,55 +76,14 @@ public class ReportesView extends DefaultLayout implements View {
 		 	switch (this){
 				case Propietario:return "Propietario";
 				case AlquileresPorCobrar:return  "Alquileres a Cobrar  ";
+				case AlquileresPorRango: return "Alquileres a Cobrar por Rango";
 				default:return super.toString();
 
 			}
 		}
 
 
-		public List<Object> getObjetos(){
-		 	List<Object> objects=null;
-		 	switch (this){
-				case Propietario:
-					PersonaService servicePersona = new PersonaService();
-					objects=new ArrayList<Object>(servicePersona.findForRole(
-							Rol.Propietario.toString()));break;
-					
-				case AlquileresPorCobrar:
-					List<Object> objects2 = new ArrayList<Object>();
-					List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
-					objects=new ArrayList<Object>();
-					ContratoService service = new ContratoService();
-					
-					items = service.getCobrosOrdenadosPorAño();
-					
-					items.forEach(e -> {
-						objects2.add(e);
-						
-					});
-					
-					
-				
-					
-					/*daoContratoAlquiler.readAllActives().forEach(e -> {
-						e.getCobros().forEach(z -> {
-							if (z.getEstadoCobro() == EstadoCobro.NOCOBRADO) {
-							objects2.add(new ItemRepAlquileresACobrar(e.getInquilinoContrato(), z, e.getMoneda()));
-							}
-							
-							
-						});
-						
-						
-						
-					});*/
-					
-					objects = objects2; break;
-					
-
-			}
-		 	return  objects;
-		}
+		
 
 		public static List<TipoReporte> toList() {
 			TipoReporte[] clases = TipoReporte.values();
@@ -135,7 +101,66 @@ public class ReportesView extends DefaultLayout implements View {
 	}
 
 
+	public List<Object> getObjetos(TipoReporte tipo){
+	 	//List<Object> objects=null;
+	 	ContratoService service = new ContratoService();
+		List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
+	 	switch (tipo){
+			case Propietario:
+				PersonaService servicePersona = new PersonaService();
+				objects=new ArrayList<Object>(servicePersona.findForRole(
+						Rol.Propietario.toString()));break;
+				
+			case AlquileresPorCobrar:
+				
+				//List<Object> objects2 = new ArrayList<Object>();
+			
+				//objects=new ArrayList<Object>();
+				
+				
+				items = service.getCobrosOrdenadosPorAño();
+				
+				items.forEach(e -> {
+					objects.add(e);
+					
+				});
+								
+				/*daoContratoAlquiler.readAllActives().forEach(e -> {
+					e.getCobros().forEach(z -> {
+						if (z.getEstadoCobro() == EstadoCobro.NOCOBRADO) {
+						objects2.add(new ItemRepAlquileresACobrar(e.getInquilinoContrato(), z, e.getMoneda()));
+						}
+						
+						
+					});
+					
+					
+					
+				});*/
+				
+			//	objects = objects2; 
+				break;
+				
+			case AlquileresPorRango:
+				
+				//List<Object> objects3 = new ArrayList<Object>();
+				//List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
+				//objects=new ArrayList<Object>();
+			
+				
+				items = service.getListadoAlquileresACobrar(fDesde.getValue(), fHasta.getValue() );
+				
+				items.forEach(e -> {
+					objects.add(e);
+					
+				});
+				
+			//	objects = objects3; 
+				break;
 
+		}
+	 	return  objects;
+	}
 
 
     public ReportesView() {
@@ -150,7 +175,10 @@ public class ReportesView extends DefaultLayout implements View {
     public void buildLayout() {
     	CssLayout filtering = new CssLayout();
 
-        filtering.addComponents(tipoReporteCB,newReport);
+    	fDesde = filtroFDesde();
+		fHasta = filtroFHasta();
+    	
+        filtering.addComponents(fDesde, fHasta, tipoReporteCB,newReport);
         tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
        // tipoReporteCB.setWidth("100%");
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
@@ -171,6 +199,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 
     private void configureComponents() {
+    	objects=new ArrayList<Object>();
     	tipoReporteCB.setEmptySelectionAllowed(false);
     	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
 		setComponentsVisible(true);
@@ -181,6 +210,8 @@ public class ReportesView extends DefaultLayout implements View {
 			try {
 				boolean success = generarReporte();
 				pdfComponent.setPDF(reportName);
+				//limpiamos la lista
+				objects.clear();
 			}
 			catch (Exception f){
 				showErrorNotification("Error al generar el reporte");}
@@ -191,6 +222,22 @@ public class ReportesView extends DefaultLayout implements View {
 
 
     }
+    
+	private DateField filtroFDesde() {
+		DateField fDesde = new DateField();
+		fDesde.setPlaceholder("Desde");
+		fDesde.setParseErrorMessage("Formato de fecha no reconocido");
+	
+		return fDesde;
+	}
+
+	private DateField filtroFHasta() {
+		DateField fHasta = new DateField();
+		fHasta.setPlaceholder("Hasta");
+		fHasta.setParseErrorMessage("Formato de fecha no reconocido");
+	
+		return fHasta;
+	}
 
 
 
@@ -198,8 +245,17 @@ public class ReportesView extends DefaultLayout implements View {
 	public  boolean generarReporte(){
     	TipoReporte tipoReporte=tipoReporteCB.getValue();
     	String ubicacionReporte=new Utils().resourcesPath()+ tipoReporte.getArchivoReporte();
-    	List<Object> objetos=tipoReporte.getObjetos();
-
+    	List<Object> objetos= null;
+    	
+    	if (tipoReporte.toString().equals("Alquileres a Cobrar por Rango")) {
+    		if (elRangoDeFechasElegidoEsValido()) {
+    			objetos= getObjetos(tipoReporte);
+    			}
+    	}
+    	
+    	else { 
+    		objetos= getObjetos(tipoReporte);
+    	}
 		//Te trae el nombre del archivo en base a seleccion del combo
 		File root=new File(File.separator+tipoReporte.getArchivoReporte());
 		File root2=new File(tipoReporte.getArchivoReporte());
@@ -223,11 +279,14 @@ public class ReportesView extends DefaultLayout implements View {
 		try {
 			this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 					new JRBeanCollectionDataSource(objetos));
+			
 			return crearArchivo();
 		} catch (Exception e) {
 
 			return false;
 		}
+		
+		
 	}
 
 
@@ -266,5 +325,12 @@ public class ReportesView extends DefaultLayout implements View {
 	}
 
 
+	public boolean elRangoDeFechasElegidoEsValido() {
+		if (fDesde.isEmpty() || fHasta.isEmpty() ||
+		fDesde.getParseErrorMessage().equals("Formato de fecha no reconocido") || 
+		fHasta.getParseErrorMessage().equals("Formato de fecha no reconocido"))
+			return false;
+		return true;
+	}
 
 }

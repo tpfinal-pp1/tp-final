@@ -10,6 +10,7 @@ import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.*;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -43,7 +44,7 @@ public class AddPublicacionVentaIT extends TestBenchTestCase {
         publicacionView = mainView.getPublicacionView();
     }
 
-    @Test
+    @Ignore
     public void addPublicacionTest(){
         getDriver().get(TBUtils.getUrl("publicaciones"));
         TBUtils.sleep(3000);
