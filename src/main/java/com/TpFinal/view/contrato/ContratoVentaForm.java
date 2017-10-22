@@ -7,6 +7,7 @@ import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
@@ -108,6 +109,14 @@ public class ContratoVentaForm extends FormLayout {
 			lblNombreVendedor.setValue(vendedor.getNombre() + " " + vendedor.getApellido());
 			contratoVenta.setInmueble(inmueble);
 			contratoVenta.setVendedor(vendedor);
+			PublicacionVenta asociado=service.getPublicacionVentaActiva(inmueble);
+			if(asociado!=null) {
+//				contratoVenta.setPrecioVenta(asociado.getPrecio());
+//				contratoVenta.setMoneda(asociado.getMoneda());
+				System.out.println(asociado.getPrecio().toString());
+				tfPrecioDeVenta.setValue(asociado.getPrecio().toString());
+				rbgTipoMoneda.setSelectedItem(asociado.getMoneda());
+			}
 		    }
 		}
 	    }

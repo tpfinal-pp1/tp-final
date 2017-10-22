@@ -21,6 +21,9 @@ import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
+import com.TpFinal.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.view.contrato.FiltroContrato;
 import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
@@ -33,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class ContratoService {
@@ -244,6 +248,33 @@ public class ContratoService {
 		.collect(Collectors.toList());
 	contratos.sort(Comparator.comparing(Contrato::getId));
 	return contratos;
+    }
+    
+    public PublicacionVenta getPublicacionVentaActiva(Inmueble i) {
+    	PublicacionVenta ret = null;
+    	Set<Publicacion>publicaciones= i.getPublicaciones();
+    	if(publicaciones!=null && publicaciones.size()>0) {
+    		
+    		List<Publicacion>ventas= i.getPublicaciones().stream()
+        			.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO) && p instanceof PublicacionVenta)
+        			.collect(Collectors.toList());
+    		if(ventas!=null && ventas.size()>0)
+    			ret=(PublicacionVenta) ventas.get(0);
+    	}
+    	return ret;
+    }
+    
+    public PublicacionAlquiler getPublicacionAlquilerActiva(Inmueble i) {
+    	PublicacionAlquiler ret = null;
+    	Set<Publicacion>publicaciones= i.getPublicaciones();
+    	if(publicaciones!=null && publicaciones.size()>0) {
+    		List<Publicacion>alquileres= i.getPublicaciones().stream()
+        			.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO) && p instanceof PublicacionAlquiler)
+        			.collect(Collectors.toList());
+    		if(alquileres!=null && alquileres.size()>0)
+    			ret=(PublicacionAlquiler) alquileres.get(0);
+    	}
+    	return ret;
     }
 
     public static LocalDate getFechaVencimiento(ContratoAlquiler c) {

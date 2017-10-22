@@ -7,6 +7,7 @@ import com.TpFinal.dto.inmueble.TipoMoneda;
 import javax.persistence.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class PublicacionVenta extends Publicacion {
 		this.fechaPublicacion =b.fechaPublicacion;
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
-		this.precio = b.precio;
+		this.precio = b.precio.setScale(2, RoundingMode.CEILING);;
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -49,6 +50,7 @@ public class PublicacionVenta extends Publicacion {
 
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
+		this.precio=this.precio.setScale(2, RoundingMode.CEILING);
 	}
 
 	public TipoMoneda getMoneda() {

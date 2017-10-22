@@ -11,6 +11,7 @@ import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.Rol;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
@@ -142,7 +143,16 @@ public class ContratoAlquilerForm extends FormLayout {
 			tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
 			contratoAlquiler.setInmueble(inmueble);
 			contratoAlquiler.setPropietario(propietario);
-			;
+			PublicacionAlquiler asociado=service.getPublicacionAlquilerActiva(inmueble);
+			if(asociado!=null) {
+//				contratoAlquiler.setValorInicial(asociado.getValorCuota());
+//				contratoAlquiler.setMoneda(asociado.getMoneda());
+				System.out.println(asociado.getValorCuota().toString());
+				tfValorInicial.setValue(asociado.getValorCuota().toString());
+				rbgTipoMoneda.setSelectedItem(asociado.getMoneda());
+			}
+				
+			
 		    }
 		}
 	    }
