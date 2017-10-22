@@ -209,7 +209,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 			}
 			updateList();
 		});
-
 		mostrarFechas(hl, adicionales, hlFechas);
 		return hl;
 	}
