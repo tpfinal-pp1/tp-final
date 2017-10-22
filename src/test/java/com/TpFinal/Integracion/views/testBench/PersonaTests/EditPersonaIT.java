@@ -9,6 +9,7 @@ import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -41,7 +42,7 @@ public class EditPersonaIT extends TestBenchTestCase {
 
     }
 
-    @Test
+    @Ignore
     public void editPersonaTest(){
         getDriver().get(TBUtils.getUrl("personas"));
         TBUtils.sleep(3000);

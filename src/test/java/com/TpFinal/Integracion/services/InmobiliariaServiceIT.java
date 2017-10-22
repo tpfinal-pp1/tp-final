@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.After;
 import org.junit.Before;
@@ -16,6 +18,7 @@ import com.TpFinal.data.dao.DAOInmobiliariaImpl;
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmobiliaria;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
+import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Coordenada;
@@ -31,7 +34,8 @@ public class InmobiliariaServiceIT {
 	InmobiliariaService inm = new InmobiliariaService();
 	DAOInmobiliaria daoInmobiliaria;
 	DAOInmueble daoInmueble;
-
+	List<Inmueble> inmuebles= new ArrayList<>();
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		ConexionHibernate.setTipoConexion(TipoConexion.H2Test);
@@ -43,20 +47,32 @@ public class InmobiliariaServiceIT {
 		daoInmueble=new DAOInmuebleImpl();
 		borrarAsociaciones();
 		daoInmobiliaria.readAll().forEach(i -> daoInmobiliaria.delete(i));
-		daoInmueble.readAll().forEach(i -> daoInmueble.delete(i));
+		//daoInmueble.readAll().forEach(i -> daoInmueble.delete(i));
 	}
 	
 	private void borrarAsociaciones() {
-		daoInmueble.readAll().forEach(i -> {
+		/*daoInmueble.readAll().forEach(i -> {
 			i.setInmobiliaria(null);
-		});
+		});*/
+		
+		inmuebles=daoInmueble.readAll();
+		if(inmuebles!=null) {
+			inmuebles.forEach(c-> {
+					c.setInmobiliaria(null);
+					daoInmueble.saveOrUpdate(c);
+					
+						});
+		}
+		inmuebles.clear();
+				
 	}
+	
 
 	@After
 	public void tearDown() throws Exception {
 		borrarAsociaciones();
 		daoInmobiliaria.readAll().forEach(i -> daoInmobiliaria.delete(i));
-		daoInmueble.readAll().forEach(i -> daoInmueble.delete(i));
+		//daoInmueble.readAll().forEach(i -> daoInmueble.delete(i));
 	}
 
 	@Test

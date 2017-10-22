@@ -20,6 +20,7 @@ import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.vaadin.annotations.Theme;
@@ -42,6 +43,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ReportesView extends DefaultLayout implements View {
 	
 	private static DAOContratoAlquiler daoContratoAlquiler;
+	//ContratoService service;
 
 	private JasperReport reporte;
 	private JasperPrint reporteLleno;
@@ -83,8 +85,21 @@ public class ReportesView extends DefaultLayout implements View {
 					
 				case AlquileresPorCobrar:
 					List<Object> objects2 = new ArrayList<Object>();
+					List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
 					objects=new ArrayList<Object>();
-					daoContratoAlquiler.readAllActives().forEach(e -> {
+					ContratoService service = new ContratoService();
+					
+					items = service.getCobrosOrdenadosPorAño();
+					
+					items.forEach(e -> {
+						objects2.add(e);
+						
+					});
+					
+					
+				
+					
+					/*daoContratoAlquiler.readAllActives().forEach(e -> {
 						e.getCobros().forEach(z -> {
 							if (z.getEstadoCobro() == EstadoCobro.NOCOBRADO) {
 							objects2.add(new ItemRepAlquileresACobrar(e.getInquilinoContrato(), z, e.getMoneda()));
@@ -95,9 +110,9 @@ public class ReportesView extends DefaultLayout implements View {
 						
 						
 						
-					});
+					});*/
 					
-					objects = objects2;break;
+					objects = objects2; break;
 					
 
 			}
