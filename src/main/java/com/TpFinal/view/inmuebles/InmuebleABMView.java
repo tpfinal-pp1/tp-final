@@ -9,6 +9,8 @@ import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.TpFinal.view.component.ImageVisualizer;
 import com.TpFinal.view.component.PreferenciasBusqueda;
+import com.TpFinal.view.persona.FiltroInteresados;
+import com.TpFinal.view.persona.PersonaABMViewWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -43,7 +45,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     private Controller controller = new Controller();
     private Supplier<List<Inmueble>> inmuebleSupplier;
-    private Button btnSearch=new Button(VaadinIcons.SEARCH_MINUS);
+    private Button btnSearch = new Button(VaadinIcons.SEARCH_MINUS);
 
     // acciones segun numero de fila
     int acciones = 0;
@@ -69,10 +71,10 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
 
-	filtering.addComponents(btnSearch,filter, clearFilterTextBtn, newItem);
+	filtering.addComponents(btnSearch, filter, clearFilterTextBtn, newItem);
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	HorizontalLayout hlf= new HorizontalLayout( filtering);
+	HorizontalLayout hlf = new HorizontalLayout(filtering);
 
 	buildToolbar("Inmuebles", hlf);
 	grid.setSizeFull();
@@ -187,45 +189,46 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	}
-	
+
 	@SuppressWarnings("serial")
 	private void configureSearch() {
-		btnSearch.addClickListener(click ->{
-			CriterioBusqInmueble criterio= new CriterioBusqInmueble();
-			new PreferenciasBusqueda(criterio) {
-				
-				@Override
-				public boolean onSave() {
-					inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
-					updateList();
-					return false;
-				}
+	    btnSearch.addClickListener(click -> {
+		CriterioBusqInmueble criterio = new CriterioBusqInmueble();
+		new PreferenciasBusqueda(criterio) {
 
-				@Override
-				public boolean onClean() {
-					boolean success=true;
-					try {
-						 inmuebleSupplier = () -> inmuebleService.readAll();
-						 updateList();
-					} catch (Exception e) {
-						success=false;
-						e.printStackTrace();
-					}
-					return success;
-				}
+		    @Override
+		    public boolean onSave() {
+			inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
+			updateList();
+			return false;
+		    }
 
-				@Override
-				public boolean searchVisible() {
-					return false;
-				}
-			};
-		});
+		    @Override
+		    public boolean onClean() {
+			boolean success = true;
+			try {
+			    inmuebleSupplier = () -> inmuebleService.readAll();
+			    updateList();
+			} catch (Exception e) {
+			    success = false;
+			    e.printStackTrace();
+			}
+			return success;
+		    }
+
+		    @Override
+		    public boolean searchVisible() {
+			return false;
+		    }
+		};
+	    });
 	}
 
 	private void configureFilter() {
 	    filter.addValueChangeListener(e -> filtrarPorCalle(filter.getValue()));
 	    filter.setValueChangeMode(ValueChangeMode.LAZY);
-	    filter.setPlaceholder("Filtrar"); clearFilterTextBtn.setDescription("Limpiar filtro");
+	    filter.setPlaceholder("Filtrar");
+	    clearFilterTextBtn.setDescription("Limpiar filtro");
 	    clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	}
 
@@ -238,7 +241,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		    inmuebleForm.clearFields();
 		}
 	    });
-
 
 	    grid.addColumn(inmueble -> {
 		String ret = "";
@@ -290,13 +292,21 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 		verFotos.addClickListener(click -> {
-			ImageVisualizer imgv=new ImageVisualizer();
-			imgv.singleImage(inmuebleService.getPortada(inmueble));
+		    ImageVisualizer imgv = new ImageVisualizer();
+		    imgv.singleImage(inmuebleService.getPortada(inmueble));
 
 		});
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
-		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos);
+
+		Button verIntesados = new Button(VaadinIcons.SEARCH);
+		verIntesados.addClickListener(click -> {
+		    new PersonaABMViewWindow("Posibles interesados en este inmueble", new FiltroInteresados(inmueble));
+		});
+		verIntesados.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+		verIntesados.setDescription("Buscar interesados.");
+
+		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos, verIntesados);
 		hl.setCaption("Accion " + acciones);
 		hl.setSpacing(false);
 		acciones++;

@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.view.persona.FiltroInteresados;
 
 public class PersonaService {
 	DAOPersona dao;
@@ -96,6 +98,12 @@ public class PersonaService {
 	    Inquilino i = new Inquilino.Builder().setPersona(p).build();
 	    p.getRoles().add(i);
 	    return i;
+	}
+
+	public List<Persona> findAll(FiltroInteresados filtro) {
+	    List<Persona> personas = dao.readAllActives().stream().filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
+	    personas.sort(Comparator.comparing(Persona::getId));
+	    return personas;
 	}
 	
 	

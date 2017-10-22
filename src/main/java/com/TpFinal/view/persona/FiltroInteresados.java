@@ -41,7 +41,7 @@ public class FiltroInteresados {
     public FiltroInteresados() {
 	filtroCompuesto = p -> true;
     }
-    
+
     public FiltroInteresados(Inmueble i) {
 	aEstrenar = filtroAEstrenar(i);
 	clasesDeInmueble = filtroClaseInmueble(i);
@@ -64,26 +64,27 @@ public class FiltroInteresados {
 	tipoInmueble = filtroTipoInm(i);
 	publicaciones = filtroPublicaciones(i);
 
-	filtros.addAll(Arrays.asList(this.aEstrenar,
-		this.clasesDeInmueble,
-		this.conAireAcondicionado,
-		this.conJardin,
-		this.conPileta,
-		this.estadoInmueble,
-		this.localidad,
-		this.maxAmbientes,
-		this.minAmbientes,
-		this.minCocheras,
-		this.maxCocheras,
-		this.minDormitorios,
-		this.maxDormitorios,
-		this.minSupCubierta,
-		this.maxSupCubierta,
-		this.minSupTotal,
-		this.maxSupTotal,
-		this.publicaciones,
-		this.provincia,
-		this.tipoInmueble));
+	filtros.addAll(Arrays.asList(this.aEstrenar
+		,this.clasesDeInmueble
+//		,this.conAireAcondicionado
+//		,this.conJardin
+//		,this.conPileta
+//		,this.estadoInmueble
+//		,this.localidad
+//		,this.maxAmbientes
+//		,this.minAmbientes
+//		,this.minCocheras
+//		,this.maxCocheras
+//		,this.minDormitorios
+//		,this.maxDormitorios
+//		,this.minSupCubierta
+//		,this.maxSupCubierta
+//		,this.minSupTotal
+//		,this.maxSupTotal
+//		,this.publicaciones
+//		,this.provincia
+//		,this.tipoInmueble
+		));
 
 	filtroCompuesto = filtros.stream().reduce(persona -> true, Predicate::and);
     }
@@ -383,16 +384,29 @@ public class FiltroInteresados {
 	    CriterioBusqInmueble prefs = p.getPrefBusqueda();
 	    if (pub instanceof PublicacionAlquiler) {
 		PublicacionAlquiler pubA = (PublicacionAlquiler) pub;
-		return pubA.getMoneda().equals(prefs.getTipoMoneda())
-			&& pubA.getTipoPublicacion().equals(prefs.getTipoPublicacion())
-			&& pubA.getPrecio().compareTo(prefs.getMinPrecio()) >= 0
-			&& pubA.getPrecio().compareTo(prefs.getMaxPrecio()) <= 0;
+		return (prefs.getTipoMoneda() != null ? pubA.getMoneda().equals(prefs.getTipoMoneda())
+			: true)
+			&& (prefs.getTipoPublicacion() != null ? pubA.getTipoPublicacion().equals(prefs
+				.getTipoPublicacion())
+				: true)
+			&& (prefs.getMinPrecio() != null ? pubA.getPrecio().compareTo(prefs
+				.getMinPrecio()) >= 0
+				: true)
+			&& (prefs.getMaxPrecio() != null ? pubA.getPrecio()
+				.compareTo(prefs.getMaxPrecio()) <= 0
+				: true);
 	    } else {
 		PublicacionVenta pubV = (PublicacionVenta) pub;
-		return pubV.getMoneda().equals(prefs.getTipoMoneda())
-			&& pubV.getTipoPublicacion().equals(prefs.getTipoPublicacion())
-			&& pubV.getPrecio().compareTo(prefs.getMinPrecio()) >= 0
-			&& pubV.getPrecio().compareTo(prefs.getMaxPrecio()) <= 0;
+		return (prefs.getTipoMoneda() != null ? pubV.getMoneda().equals(prefs.getTipoMoneda())
+			: true)
+			&& (prefs.getTipoPublicacion() != null ? pubV.getTipoPublicacion().equals(prefs
+				.getTipoPublicacion())
+				: true)
+			&& (prefs.getMinPrecio() != null ? pubV.getPrecio().compareTo(prefs
+				.getMinPrecio()) >= 0
+				: true)
+			&& (prefs.getMaxPrecio() != null ? pubV.getPrecio()
+				.compareTo(prefs.getMaxPrecio()) <= 0 : true);
 	    }
 	};
     }
