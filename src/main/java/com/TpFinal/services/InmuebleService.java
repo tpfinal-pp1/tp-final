@@ -16,6 +16,7 @@ import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
+import com.TpFinal.view.inmuebles.FiltroInmueble;
 import com.google.gwt.user.server.rpc.UnexpectedException;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Resource;
@@ -211,6 +212,15 @@ public class InmuebleService {
 		.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO))
 		.filter(p -> p.getEstadoPublicacion().equals(EstadoPublicacion.Activa))
 		.collect(Collectors.toList());
+    }
+    
+    public List<Inmueble> findAll(FiltroInmueble filtro) {
+    	List<Inmueble> inmuebles = dao.readAllActives()
+				.stream()
+				.filter(filtro.getFiltroCompuesto())
+				.collect(Collectors.toList());
+		inmuebles.sort(Comparator.comparing(Inmueble::getId));
+		return inmuebles;
     }
 
 

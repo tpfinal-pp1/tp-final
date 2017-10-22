@@ -1,8 +1,11 @@
 package com.TpFinal.view.inmuebles;
 
+import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -23,6 +26,7 @@ import com.vaadin.server.*;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
@@ -46,6 +50,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private Controller controller = new Controller();
     private Supplier<List<Inmueble>> inmuebleSupplier;
     private Button btnSearch = new Button(VaadinIcons.SEARCH_MINUS);
+    private FiltroInmueble filtro = new FiltroInmueble();
 
     // acciones segun numero de fila
     int acciones = 0;
@@ -250,14 +255,100 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 		}
 		return ret;
-	    }).setCaption("Dirección");
+	    }).setCaption("Dirección").setId("direccion");
 
-	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario");
-	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble");
-	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble");
+	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario").setId("propietario");
+	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble").setId("tipo inmueble");
+	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble").setId("estado inmueble");
 	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
-
 	    grid.getColumns().forEach(c -> c.setResizable(false));
+	    
+	    HeaderRow filterRow = grid.appendHeaderRow();
+		filterRow.getCell("direccion").setComponent(filtroDireccion());
+		filterRow.getCell("propietario").setComponent(filtroPropietario());
+		filterRow.getCell("tipo inmueble").setComponent(filtroTipo());
+		filterRow.getCell("estado inmueble").setComponent(filtroEstado());
+	}
+	
+	private Component filtroDireccion() {
+		TextField filtroDireccion = new TextField();
+		filtroDireccion.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+		filtroDireccion.setPlaceholder("Sin Filtro");
+		filtroDireccion.addValueChangeListener(e -> {
+			if (e.getValue() != null) {
+				if(!filtroDireccion.isEmpty()) {
+					filtro.setDireccion(inmueble -> inmueble.getDireccion()
+							.toString().toLowerCase()
+							.contains(filtroDireccion.getValue().toLowerCase()));
+				}else
+					filtro.setDireccion(inmueble -> true);
+				
+			} else {
+				filtro.setDireccion(inmueble -> true);
+			}
+			updateList();
+		});
+		return filtroDireccion;
+	}
+	
+	private Component filtroPropietario() {
+		TextField filtroPropietario = new TextField();
+		filtroPropietario.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+		filtroPropietario.setPlaceholder("Sin Filtro");
+		filtroPropietario.addValueChangeListener(e -> {
+			if (e.getValue() != null) {
+				if(!filtroPropietario.isEmpty()) {
+					filtro.setPropietario(inmueble -> inmueble.getPropietario()
+							.toString().toLowerCase()
+							.contains(filtroPropietario.getValue().toLowerCase()));
+				}else
+					filtro.setPropietario(inmueble -> true);
+			} else {
+				filtro.setPropietario(inmueble -> true);
+			}
+			updateList();
+		});
+		return filtroPropietario;
+	}
+	
+	private Component filtroTipo() {
+		ComboBox<TipoInmueble> filtroTipo = new ComboBox<>();
+		filtroTipo.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+		filtroTipo.setPlaceholder("Sin Filtro");
+		filtroTipo.setItems(TipoInmueble.toList());
+		filtroTipo.addValueChangeListener(e -> {
+			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroTipo.getValue());
+			if (e.getValue() != null) {
+				if (!filtroTipo.isEmpty())
+					filtro.setTipo(contrato -> contrato.getTipoInmueble().equals(e.getValue()));
+				else
+					filtro.setTipo(contrato -> true);
+			} else {
+				filtro.setTipo(contrato -> true);
+			}
+			updateList();
+		});
+		return filtroTipo;
+	}
+	
+	private Component filtroEstado() {
+		ComboBox<EstadoInmueble> filtroEstado = new ComboBox<>();
+		filtroEstado.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+		filtroEstado.setPlaceholder("Sin Filtro");
+		filtroEstado.setItems(EstadoInmueble.toList());
+		filtroEstado.addValueChangeListener(e -> {
+			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
+			if (e.getValue() != null) {
+				if (!filtroEstado.isEmpty())
+					filtro.setEstado(contrato -> contrato.getEstadoInmueble().equals(e.getValue()));
+				else
+					filtro.setEstado(contrato -> true);
+			} else {
+				filtro.setEstado(contrato -> true);
+			}
+			updateList();
+		});
+		return filtroEstado;
 	}
 
 	private ValueProvider<Inmueble, HorizontalLayout> configurarAcciones() {
@@ -315,6 +406,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	public void updateList() {
+		inmuebleSupplier = () -> inmuebleService.findAll(filtro);
 	    List<Inmueble> inmuebles = inmuebleSupplier.get();
 	    grid.setItems(inmuebles);
 	}

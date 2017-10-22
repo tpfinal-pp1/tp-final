@@ -35,21 +35,21 @@ public class FiltroInmueble {
 		filtro = contrato -> true;
 	}
 
-	public Predicate<Inmueble> getTipo() {
+	public Predicate<Inmueble> getPropietario() {
 		return propietario;
 	}
 
-	public void setTipo(Predicate<Inmueble> tipo) {
-		this.propietario = tipo;
+	public void setPropietario(Predicate<Inmueble> propietario) {
+		this.propietario = propietario;
 		actualizarComposicion();
 	}    
 
-	public Predicate<Inmueble> getFechaDesde() {
+	public Predicate<Inmueble> getTipo() {
 		return tipoInmueble;
 	}
 
-	public void setFechaDesde(Predicate<Inmueble> fechaDesde) {
-		this.tipoInmueble = fechaDesde;
+	public void setTipo(Predicate<Inmueble> tipo) {
+		this.tipoInmueble = tipo;
 		actualizarComposicion();
 	}
 
@@ -62,12 +62,12 @@ public class FiltroInmueble {
 		actualizarComposicion();
 	}
 
-	public Predicate<Inmueble> getIntervinientes() {
+	public Predicate<Inmueble> getEstado() {
 		return estadoInmueble;
 	}
 
-	public void setIntervinientes(Predicate<Inmueble> intervinientes) {
-		this.estadoInmueble = intervinientes;
+	public void setEstado(Predicate<Inmueble> estado) {
+		this.estadoInmueble = estado;
 		actualizarComposicion();
 	}
 
