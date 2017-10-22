@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
+import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.Publicacion;
@@ -34,6 +36,7 @@ public class FiltroInteresados {
     private Predicate<Persona> estadoInmueble;
     private Predicate<Persona> conPileta;
     private Predicate<Persona> conJardin;
+    private Predicate<Persona> conParrilla;
     private Predicate<Persona> conAireAcondicionado;
     private Predicate<Persona> clasesDeInmueble;
     private Predicate<Persona> aEstrenar;
@@ -48,6 +51,7 @@ public class FiltroInteresados {
 	conAireAcondicionado = filtroAireAcondicionado(i);
 	conJardin = filtroConJardin(i);
 	conPileta = filtroConPileta(i);
+	conParrilla = filtroConParrila(i);
 	estadoInmueble = filtroEstadoInmueble(i);
 	localidad = filtroLocalidad(i);
 	minAmbientes = filtroMinAmbientes(i);
@@ -64,29 +68,102 @@ public class FiltroInteresados {
 	tipoInmueble = filtroTipoInm(i);
 	publicaciones = filtroPublicaciones(i);
 
-	filtros.addAll(Arrays.asList(this.aEstrenar
-		,this.clasesDeInmueble
-//		,this.conAireAcondicionado
-//		,this.conJardin
-//		,this.conPileta
-//		,this.estadoInmueble
-//		,this.localidad
-//		,this.maxAmbientes
-//		,this.minAmbientes
-//		,this.minCocheras
-//		,this.maxCocheras
-//		,this.minDormitorios
-//		,this.maxDormitorios
-//		,this.minSupCubierta
-//		,this.maxSupCubierta
-//		,this.minSupTotal
-//		,this.maxSupTotal
-//		,this.publicaciones
-//		,this.provincia
-//		,this.tipoInmueble
-		));
+	filtros.addAll(Arrays.asList(
+		this.aEstrenar, this.clasesDeInmueble, this.conAireAcondicionado, this.conJardin, this.conPileta,
+		this.conParrilla, this.estadoInmueble, this.localidad, this.maxAmbientes, this.minAmbientes,
+		this.minCocheras, this.maxCocheras, this.minDormitorios, this.maxDormitorios, this.minSupCubierta,
+		this.maxSupCubierta, this.minSupTotal, this.maxSupTotal, this.publicaciones, this.provincia,
+		this.tipoInmueble));
 
 	filtroCompuesto = filtros.stream().reduce(persona -> true, Predicate::and);
+    }
+
+    public List<Predicate<Persona>> getFiltros() {
+	return filtros;
+    }
+
+    public Predicate<Persona> getPublicaciones() {
+	return publicaciones;
+    }
+
+    public Predicate<Persona> getTipoInmueble() {
+	return tipoInmueble;
+    }
+
+    public Predicate<Persona> getProvincia() {
+	return provincia;
+    }
+
+    public Predicate<Persona> getMaxSupTotal() {
+	return maxSupTotal;
+    }
+
+    public Predicate<Persona> getMinSupTotal() {
+	return minSupTotal;
+    }
+
+    public Predicate<Persona> getMaxSupCubierta() {
+	return maxSupCubierta;
+    }
+
+    public Predicate<Persona> getMinSupCubierta() {
+	return minSupCubierta;
+    }
+
+    public Predicate<Persona> getMaxDormitorios() {
+	return maxDormitorios;
+    }
+
+    public Predicate<Persona> getMinDormitorios() {
+	return minDormitorios;
+    }
+
+    public Predicate<Persona> getMaxCocheras() {
+	return maxCocheras;
+    }
+
+    public Predicate<Persona> getMinCocheras() {
+	return minCocheras;
+    }
+
+    public Predicate<Persona> getMaxAmbientes() {
+	return maxAmbientes;
+    }
+
+    public Predicate<Persona> getMinAmbientes() {
+	return minAmbientes;
+    }
+
+    public Predicate<Persona> getLocalidad() {
+	return localidad;
+    }
+
+    public Predicate<Persona> getEstadoInmueble() {
+	return estadoInmueble;
+    }
+
+    public Predicate<Persona> getConPileta() {
+	return conPileta;
+    }
+
+    public Predicate<Persona> getConJardin() {
+	return conJardin;
+    }
+
+    public Predicate<Persona> getConParrilla() {
+	return conParrilla;
+    }
+
+    public Predicate<Persona> getConAireAcondicionado() {
+	return conAireAcondicionado;
+    }
+
+    public Predicate<Persona> getClasesDeInmueble() {
+	return clasesDeInmueble;
+    }
+
+    public Predicate<Persona> getaEstrenar() {
+	return aEstrenar;
     }
 
     private Predicate<Persona> filtroAEstrenar(Inmueble i) {
@@ -158,10 +235,28 @@ public class FiltroInteresados {
 	};
     }
 
+    private Predicate<Persona> filtroConParrila(Inmueble i) {
+	return p -> {
+	    if (p.getPrefBusqueda() != null) {
+		if (p.getPrefBusqueda().getConParrilla() != null) {
+		    return p.getPrefBusqueda().getConParrilla().equals(i.getConParilla());
+		} else {
+		    return true;
+		}
+	    } else {
+		return false;
+	    }
+	};
+    }
+
     private Predicate<Persona> filtroEstadoInmueble(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
 		if (p.getPrefBusqueda().getEstadoInmueble() != null) {
+		    if (p.getPrefBusqueda().getEstadoInmueble().equals(EstadoInmueble.EnAlquilerYVenta))
+			return i.getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta ||
+				i.getEstadoInmueble() == EstadoInmueble.EnAlquiler ||
+				i.getEstadoInmueble() == EstadoInmueble.EnVenta;
 		    return p.getPrefBusqueda().getEstadoInmueble().equals(i.getEstadoInmueble());
 		} else {
 		    return true;
@@ -176,7 +271,8 @@ public class FiltroInteresados {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
 		if (p.getPrefBusqueda().getLocalidad() != null) {
-		    return p.getPrefBusqueda().getLocalidad().equals(i.getDireccion().getLocalidad());
+		    return p.getPrefBusqueda().getLocalidad().toLowerCase().equals(i.getDireccion().getLocalidad()
+			    .toLowerCase());
 		} else {
 		    return true;
 		}
@@ -190,7 +286,6 @@ public class FiltroInteresados {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
 		if (p.getPrefBusqueda().getMaxCantAmbientes() != null) {
-
 		    return p.getPrefBusqueda().getMaxCantAmbientes().compareTo(i.getCantidadAmbientes()) >= 0;
 		} else {
 		    return true;
@@ -345,12 +440,22 @@ public class FiltroInteresados {
     private Predicate<Persona> filtroPublicaciones(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
-		if (p.getPrefBusqueda().getTipoMoneda() != null) {
-		    return InmuebleService.getPublicacionesActivas(i).stream()
-			    .anyMatch(matchPublicacion(p));
-		} else {
-		    return true;
-		}
+		CriterioBusqInmueble prefs = p.getPrefBusqueda();
+
+		List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
+		List<PublicacionAlquiler> publicacionesAlquiler = publicaciones.stream()
+			.filter(pub -> pub instanceof PublicacionAlquiler)
+			.map(pub -> (PublicacionAlquiler) pub)
+			.filter(pubA -> {
+			    if (prefs.getTipoMoneda() != null)
+				return pubA.getMoneda().equals(prefs.getTipoMoneda()) ;
+				else
+			    return true;
+			})
+			.collect(Collectors.toList());
+
+		return true;
+
 	    } else {
 		return false;
 	    }

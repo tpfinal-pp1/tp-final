@@ -40,7 +40,9 @@ public class InmuebleService {
     }
 
     public List<Inmueble> readAll() {
-	return dao.readAllActives();
+	List<Inmueble> ret = dao.readAllActives();
+	ret.sort(Comparator.comparing(Inmueble::getId));
+	return ret;
     }
 
     public boolean merge(Inmueble entidad) {
@@ -57,7 +59,9 @@ public class InmuebleService {
     }
 
     public List<Inmueble> findByCaracteristicas(CriterioBusqInmueble criterio) {
-	return dao.findInmueblesbyCaracteristicas(criterio);
+	List<Inmueble> ret = dao.findInmueblesbyCaracteristicas(criterio);
+	ret.sort(Comparator.comparing(Inmueble::getId).reversed());
+	return ret;
     }
 
     public static Inmueble getInstancia() {
