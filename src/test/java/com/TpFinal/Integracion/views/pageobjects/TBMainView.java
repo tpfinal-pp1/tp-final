@@ -21,6 +21,7 @@ public class TBMainView extends TestBenchTestCase {
     private TBContratoView contratoView;
     private TBInmuebleView inmuebleView;
     private TBPublicacionView publicacionView;
+    private TBCobroView cobroView;
 
 
     public TBMainView(WebDriver driver) {
@@ -139,4 +140,6 @@ public class TBMainView extends TestBenchTestCase {
     public TBInmuebleView getInmuebleView() { return inmuebleView = new TBInmuebleView(getDriver()); }
 
     public TBPublicacionView getPublicacionView() { return publicacionView = new TBPublicacionView(getDriver()); }
+
+    public TBCobroView getCobroView() { return cobroView = new TBCobroView(getDriver()); }
 }
