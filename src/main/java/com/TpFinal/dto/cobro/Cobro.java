@@ -27,12 +27,12 @@ import com.TpFinal.dto.contrato.ContratoAlquiler;
 @Entity
 @Table(name="cobros")
 public class Cobro implements Identificable, BorradoLogico {
-	
-	 public static final String pEstadoCobro = "estadoCobro";
-	
+
+	public static final String pEstadoCobro = "estadoCobro";
+
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name = "id")
 	private Long id;
 	@Column(name="numeroCuota")
 	private Integer numeroCuota;
@@ -60,9 +60,9 @@ public class Cobro implements Identificable, BorradoLogico {
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@JoinColumn(name="idContrato")
 	private ContratoAlquiler contrato;
-	
+
 	public Cobro() {}
-	
+
 	private Cobro(Builder b) {
 		this.numeroCuota=b.numeroCuota;
 		this.montoOriginal=b.montoOriginal;
@@ -75,16 +75,16 @@ public class Cobro implements Identificable, BorradoLogico {
 		this.estadoCobro=EstadoCobro.NOCOBRADO;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
-	
+
 	@Override
 	public Long getId() {
 		return this.id;
 	}
-	
+
 	public void SetId(Long id) {
 		this.id=id;
 	}
-	
+
 	public Integer getNumeroCuota() {
 		return numeroCuota;
 	}
@@ -153,7 +153,7 @@ public class Cobro implements Identificable, BorradoLogico {
 	public void setFechaDeVencimiento(LocalDate fechaDeVencimiento) {
 		this.fechaDeVencimiento = fechaDeVencimiento;
 	}
-	
+
 	public EstadoCobro getEstadoCobro() {
 		return estadoCobro;
 	}
@@ -169,7 +169,7 @@ public class Cobro implements Identificable, BorradoLogico {
 	public void setEstadoRegistro(EstadoRegistro estadoRegistro) {
 		this.estadoRegistro = estadoRegistro;
 	}
-	
+
 	public ContratoAlquiler getContrato() {
 		return contrato;
 	}
@@ -181,7 +181,7 @@ public class Cobro implements Identificable, BorradoLogico {
 		if(contrato!=null && !this.contrato.getCobros().contains(this))
 			this.contrato.addCobro(this);
 	}
-	
+
 	public String getEstadoCobroString() {
 		return this.estadoCobro.toString();
 	}
@@ -250,21 +250,26 @@ public class Cobro implements Identificable, BorradoLogico {
 			return false;
 		return true;
 	}
-	
-	 @Override
-	   public boolean equals(Object o) {
+
+	@Override
+	public boolean equals(Object o) {
 		if (this == o)
-		    return true;
+			return true;
 		if (!(o instanceof Cobro))
-		    return false;
+			return false;
 		Cobro cobro = (Cobro) o;
 		return getId() != null && Objects.equals(getId(), cobro.getId());
-	    }
+	}
 
-	    @Override
-	    public int hashCode() {
-	    	return 37;
-	    }
+	@Override
+	public int hashCode() {
+		return 37;
+	}
+
+	@Override
+	public String toString() {
+		return this.contrato.getInmueble().getDireccion().toString();
+	}
 
 	public static class Builder{
 		Integer numeroCuota;
@@ -275,7 +280,7 @@ public class Cobro implements Identificable, BorradoLogico {
 		BigDecimal montoPropietario;
 		LocalDate fechaDePago;
 		LocalDate fechaDeVencimiento;
-		
+
 		public Builder setNumeroCuota(Integer dato) {
 			this.numeroCuota=dato;
 			return this;
@@ -316,7 +321,7 @@ public class Cobro implements Identificable, BorradoLogico {
 		public Cobro build() {
 			return new Cobro(this);
 		}
-		
+
 	}
 
 

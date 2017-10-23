@@ -113,7 +113,6 @@ public class PublicacionABMView extends DefaultLayout implements View {
 		filtroOperacion.setPlaceholder("Sin Filtro");
 		filtroOperacion.setItems(TipoPublicacion.toList());
 		filtroOperacion.addValueChangeListener(e -> {
-			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroOperacion.getValue());
 			if (e.getValue() != null) {
 				if (!filtroOperacion.isEmpty())
 					filtro.setOperacion(contrato -> contrato.getTipoPublicacion().equals(e.getValue()));
@@ -153,7 +152,6 @@ public class PublicacionABMView extends DefaultLayout implements View {
 		filtroEstado.setPlaceholder("Sin Filtro");
 		filtroEstado.setItems(EstadoPublicacion.toList());
 		filtroEstado.addValueChangeListener(e -> {
-			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
 			if (e.getValue() != null) {
 				if (!filtroEstado.isEmpty())
 					filtro.setEstado(publicacion -> publicacion.getEstadoPublicacion().equals(e.getValue()));
