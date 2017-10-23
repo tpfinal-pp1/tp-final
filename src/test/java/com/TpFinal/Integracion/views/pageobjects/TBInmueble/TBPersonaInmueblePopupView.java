@@ -1,4 +1,4 @@
-package com.TpFinal.Integracion.views.pageobjects;
+package com.TpFinal.Integracion.views.pageobjects.TBInmueble;
 
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.TestBenchTestCase;

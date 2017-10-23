@@ -1,19 +1,16 @@
 package com.TpFinal.Integracion.views.testBench.PersonaTests;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.TpFinal.Integracion.views.pageobjects.TBBusquedaInteresadoView;
+import com.TpFinal.Integracion.views.pageobjects.TBPersonaView.TBBusquedaInteresadoView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
-import com.TpFinal.Integracion.views.pageobjects.TBPersonaView;
+import com.TpFinal.Integracion.views.pageobjects.TBPersonaView.TBPersonaView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;

@@ -2,14 +2,13 @@ package com.TpFinal.Integracion.views.testBench.PersonaTests;
 
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
-import com.TpFinal.Integracion.views.pageobjects.TBPersonaView;
+import com.TpFinal.Integracion.views.pageobjects.TBPersonaView.TBPersonaView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -42,7 +41,7 @@ public class EditPersonaIT extends TestBenchTestCase {
 
     }
 
-    @Ignore
+    @Test
     public void editPersonaTest(){
         getDriver().get(TBUtils.getUrl("personas"));
         TBUtils.sleep(3000);

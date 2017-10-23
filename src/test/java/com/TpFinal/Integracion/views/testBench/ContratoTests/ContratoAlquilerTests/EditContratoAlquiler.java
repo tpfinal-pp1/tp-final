@@ -1,7 +1,7 @@
 package com.TpFinal.Integracion.views.testBench.ContratoTests.ContratoAlquilerTests;
 
-import com.TpFinal.Integracion.views.pageobjects.TBContratoAlquilerForm;
-import com.TpFinal.Integracion.views.pageobjects.TBContratoView;
+import com.TpFinal.Integracion.views.pageobjects.TBContratosView.TBContratoAlquilerForm;
+import com.TpFinal.Integracion.views.pageobjects.TBContratosView.TBContratoView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;

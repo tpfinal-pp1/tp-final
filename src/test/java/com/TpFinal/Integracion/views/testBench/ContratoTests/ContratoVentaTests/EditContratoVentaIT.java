@@ -1,21 +1,16 @@
 package com.TpFinal.Integracion.views.testBench.ContratoTests.ContratoVentaTests;
 
-import static org.junit.Assert.*;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Rule;
-import org.junit.Test;
-
-import com.TpFinal.Integracion.views.pageobjects.TBContratoView;
-import com.TpFinal.Integracion.views.pageobjects.TBInmuebleView;
+import com.TpFinal.Integracion.views.pageobjects.TBContratosView.TBContratoView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
 
 public class EditContratoVentaIT extends TestBenchTestCase{
 	
@@ -41,10 +36,10 @@ public class EditContratoVentaIT extends TestBenchTestCase{
         contratoView = mainView.getContratoView();
     }
 
-	@Ignore
+	@Test
 	public void test() {
 		 getDriver().get(TBUtils.getUrl("contratos"));
-	     // TBUtils.sleep(3000);
+         TBUtils.sleep(3000);
 	     Assert.assertTrue(contratoView.isDisplayed());
 	        
 	      //Edit contrato
