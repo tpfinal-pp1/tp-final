@@ -34,7 +34,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
      * 
      */
     private static final long serialVersionUID = 8290150520198357534L;
-    TextField filter = new TextField();
+ //   TextField filter = new TextField();
     private Grid<Publicacion> grid = new Grid<>(Publicacion.class);
     Button nuevo = new Button("Nueva");
 
@@ -376,21 +376,22 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     private void configureFilter() {
-	filter.addValueChangeListener(e -> updateList());
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
-	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
+		clearFilterTextBtn.setVisible(false);
+	//filter.addValueChangeListener(e -> updateList());
+	//filter.setValueChangeMode(ValueChangeMode.LAZY);
+	//filter.setPlaceholder("Filtrar");
+//	filter.addValueChangeListener(e -> updateList());
 
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
-	filter.setIcon(VaadinIcons.SEARCH);
-	filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+	//filter.setIcon(VaadinIcons.SEARCH);
+	//filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
     }
 
     public void setComponentsVisible(boolean b) {
 	nuevo.setVisible(b);
-	filter.setVisible(b);
-	if (checkIfOnMobile())
-	    clearFilterTextBtn.setVisible(!b);
+	//filter.setVisible(b);
+
+		clearFilterTextBtn.setVisible(!b);
 	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
@@ -402,7 +403,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	HorizontalLayout layout = new HorizontalLayout(nuevo);
-	filtering.addComponents(filter, clearFilterTextBtn, layout);
+	filtering.addComponents( clearFilterTextBtn, layout);
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	buildToolbar("Publicaciones", filtering/* , layout */);
@@ -459,7 +460,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	}
 
-	filter.clear();
+
     }
 
     public boolean checkIfOnMobile() {
