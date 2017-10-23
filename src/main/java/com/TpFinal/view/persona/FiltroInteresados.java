@@ -18,31 +18,33 @@ import com.TpFinal.services.InmuebleService;
 public class FiltroInteresados {
 
     private List<Predicate<Persona>> filtros = new ArrayList<>();
-    private Predicate<Persona> filtroCompuesto;
-    private Predicate<Persona> publicaciones;
-    private Predicate<Persona> tipoInmueble;
-    private Predicate<Persona> provincia;
-    private Predicate<Persona> maxSupTotal;
-    private Predicate<Persona> minSupTotal;
-    private Predicate<Persona> maxSupCubierta;
-    private Predicate<Persona> minSupCubierta;
-    private Predicate<Persona> maxDormitorios;
-    private Predicate<Persona> minDormitorios;
-    private Predicate<Persona> maxCocheras;
-    private Predicate<Persona> minCocheras;
-    private Predicate<Persona> maxAmbientes;
-    private Predicate<Persona> minAmbientes;
-    private Predicate<Persona> localidad;
-    private Predicate<Persona> estadoInmueble;
-    private Predicate<Persona> conPileta;
-    private Predicate<Persona> conJardin;
-    private Predicate<Persona> conParrilla;
-    private Predicate<Persona> conAireAcondicionado;
-    private Predicate<Persona> clasesDeInmueble;
-    private Predicate<Persona> aEstrenar;
+    private Predicate<Persona> filtroCompuesto = p -> true;
+    private Predicate<Persona> publicaciones = p -> true;
+    private Predicate<Persona> tipoInmueble = p -> true;
+    private Predicate<Persona> provincia = p -> true;
+    private Predicate<Persona> maxSupTotal = p -> true;
+    private Predicate<Persona> minSupTotal = p -> true;
+    private Predicate<Persona> maxSupCubierta = p -> true;
+    private Predicate<Persona> minSupCubierta = p -> true;
+    private Predicate<Persona> maxDormitorios = p -> true;
+    private Predicate<Persona> minDormitorios = p -> true;
+    private Predicate<Persona> maxCocheras = p -> true;
+    private Predicate<Persona> minCocheras = p -> true;
+    private Predicate<Persona> maxAmbientes = p -> true;
+    private Predicate<Persona> minAmbientes = p -> true;
+    private Predicate<Persona> localidad = p -> true;
+    private Predicate<Persona> estadoInmueble = p -> true;
+    private Predicate<Persona> conPileta = p -> true;
+    private Predicate<Persona> conJardin = p -> true;
+    private Predicate<Persona> conParrilla = p -> true;
+    private Predicate<Persona> conAireAcondicionado = p -> true;
+    private Predicate<Persona> clasesDeInmueble = p -> true;
+    private Predicate<Persona> aEstrenar = p -> true;
+    private Predicate<Persona> filtroCustom = p -> true;
 
     public FiltroInteresados() {
 	filtroCompuesto = p -> true;
+	filtroCustom = p -> true;
     }
 
     public FiltroInteresados(Inmueble i) {
@@ -67,7 +69,7 @@ public class FiltroInteresados {
 	provincia = filtroProvincia(i);
 	tipoInmueble = filtroTipoInm(i);
 	publicaciones = filtroPublicaciones(i);
-
+	filtroCustom = p -> true;
 	filtros.addAll(Arrays.asList(
 	// this.aEstrenar,
 	// this.clasesDeInmueble, //XXX ok
@@ -89,13 +91,43 @@ public class FiltroInteresados {
 	// this.maxSupCubierta,
 	// this.minSupTotal,
 	// this.maxSupTotal,
-	 this.publicaciones
-
+	 this.publicaciones,
+	 filtroCustom
 	));
 
 	filtroCompuesto = filtros.stream().reduce(persona -> true, Predicate::and);
     }
+    
+    private void actualizarComposicion() {
+	filtros.clear();
+	filtros.addAll(Arrays.asList(
+		 this.aEstrenar,
+		 this.clasesDeInmueble, //XXX ok
+		 this.conAireAcondicionado,
+		 this.conJardin,
+		 this.conPileta,
+		 this.conParrilla,
+		 this.estadoInmueble ,//XXX ok
+		 this.localidad, //XXX ok
+		 this.provincia,
+		 this.tipoInmueble,
+		 this.maxAmbientes,
+		 this.minAmbientes, //XXX ok
+		 this.minCocheras,
+		 this.maxCocheras,
+		 this.minDormitorios,
+		 this.maxDormitorios,
+		 this.minSupCubierta,
+		 this.maxSupCubierta,
+		 this.minSupTotal,
+		 this.maxSupTotal,
+		 this.publicaciones,
+		 this.filtroCustom
+		));
+	filtroCompuesto = filtros.stream().reduce(contrato -> true, Predicate::and);
+}
 
+    
     public List<Predicate<Persona>> getFiltros() {
 	return filtros;
     }
@@ -182,6 +214,16 @@ public class FiltroInteresados {
 
     public Predicate<Persona> getaEstrenar() {
 	return aEstrenar;
+    }
+    
+
+    public Predicate<Persona> getFiltroCustom() {
+        return filtroCustom;
+    }
+
+    public void setFiltroCustom(Predicate<Persona> filtroCustom) {
+        this.filtroCustom = filtroCustom;
+        actualizarComposicion();
     }
 
     private Predicate<Persona> filtroAEstrenar(Inmueble i) {

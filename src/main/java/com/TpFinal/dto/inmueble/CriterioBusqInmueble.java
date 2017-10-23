@@ -98,16 +98,16 @@ public class CriterioBusqInmueble implements Identificable {
 
     @Override
     public String toString() {
-	return "CriterioBusqInmueble [id=" + id + ", aEstrenar=" + aEstrenar + ", minCantAmbientes=" + minCantAmbientes
-		+ ", maxCantAmbientes=" + maxCantAmbientes + ", minCantCocheras=" + minCantCocheras
-		+ ", maxCantCocheras=" + maxCantCocheras + ", minCantDormitorios=" + minCantDormitorios
-		+ ", maxCantDormitorios=" + maxCantDormitorios + ", clasesDeInmueble=" + clasesDeInmueble
-		+ ", conAireAcondicionado=" + conAireAcondicionado + ", conParrilla=" + conParrilla + ", conPileta="
-		+ conPileta + ", conJardin=" + conJardin + ", localidad=" + localidad + ", provincia=" + provincia
-		+ ", estadoInmueble=" + estadoInmueble + ", minSupCubierta=" + minSupCubierta + ", maxSupCubierta="
-		+ maxSupCubierta + ", minSupTotal=" + minSupTotal + ", maxSupTotal=" + maxSupTotal + ", tipoInmueble="
-		+ tipoInmueble + ", minPrecio=" + minPrecio + ", maxPrecio=" + maxPrecio + ", tipoMoneda=" + tipoMoneda
-		+ ", tipoPublicacion=" + tipoPublicacion + "]";
+	return "CriterioBusqInmueble [id=" + id + "\naEstrenar=" + aEstrenar + "\nminCantAmbientes=" + minCantAmbientes
+		+ "\nmaxCantAmbientes=" + maxCantAmbientes + "\nminCantCocheras=" + minCantCocheras
+		+ "\nmaxCantCocheras=" + maxCantCocheras + "\nminCantDormitorios=" + minCantDormitorios
+		+ "\nmaxCantDormitorios=" + maxCantDormitorios + "\nclasesDeInmueble=" + clasesDeInmueble
+		+ "\nconAireAcondicionado=" + conAireAcondicionado + "\nconParrilla=" + conParrilla + "\nconPileta="
+		+ conPileta + "\nconJardin=" + conJardin + "\nlocalidad=" + localidad + "\nprovincia=" + provincia
+		+ "\nestadoInmueble=" + estadoInmueble + "\nminSupCubierta=" + minSupCubierta + "\nmaxSupCubierta="
+		+ maxSupCubierta + "\nminSupTotal=" + minSupTotal + "\nmaxSupTotal=" + maxSupTotal + "\ntipoInmueble="
+		+ tipoInmueble + "\nminPrecio=" + minPrecio + "\nmaxPrecio=" + maxPrecio + "\ntipoMoneda=" + tipoMoneda
+		+ "\ntipoPublicacion=" + tipoPublicacion + "]";
     }
 
     public Boolean getaEstrenar() {
