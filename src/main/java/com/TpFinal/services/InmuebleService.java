@@ -17,6 +17,7 @@ import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.view.inmuebles.FiltroInmueble;
+
 import com.google.gwt.user.server.rpc.UnexpectedException;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Resource;
@@ -31,17 +32,31 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class InmuebleService {
     private DAOInmueble dao;
+    private Supplier<List<Inmueble>> supplier;
 
     public InmuebleService() {
 	dao = new DAOInmuebleImpl();
+	supplier = () -> this.readAll();
+    }
+    
+    public InmuebleService(Supplier<List<Inmueble>> supplier) {
+	dao = new DAOInmuebleImpl();
+	this.supplier = supplier;
+    }
+    
+    public void setSupplier(Supplier<List<Inmueble>> supplier) {
+	this.supplier = supplier;
     }
 
     public List<Inmueble> readAll() {
-	return dao.readAllActives();
+	List<Inmueble> ret = dao.readAllActives();
+	ret.sort(Comparator.comparing(Inmueble::getId));
+	return ret;
     }
 
     public boolean merge(Inmueble entidad) {
@@ -58,7 +73,9 @@ public class InmuebleService {
     }
 
     public List<Inmueble> findByCaracteristicas(CriterioBusqInmueble criterio) {
-	return dao.findInmueblesbyCaracteristicas(criterio);
+	List<Inmueble> ret = dao.findInmueblesbyCaracteristicas(criterio);
+	ret.sort(Comparator.comparing(Inmueble::getId).reversed());
+	return ret;
     }
 
     public static Inmueble getInstancia() {
@@ -215,7 +232,7 @@ public class InmuebleService {
     }
     
     public List<Inmueble> findAll(FiltroInmueble filtro) {
-    	List<Inmueble> inmuebles = dao.readAllActives()
+    	List<Inmueble> inmuebles = supplier.get()
 				.stream()
 				.filter(filtro.getFiltroCompuesto())
 				.collect(Collectors.toList());
