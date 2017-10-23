@@ -131,7 +131,7 @@ public class InmuebleForm extends FormLayout {
 		if (provincia != null) {
 		    localidades.setEnabled(true);
 		    localidades.setItems(provincia.getLocalidades());
-		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
+		    
 		} else {
 		    localidades.setEnabled(false);
 		    localidades.setSelectedItem(null);
