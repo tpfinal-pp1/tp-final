@@ -15,16 +15,9 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.utils.Utils;
-
-import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
-import com.TpFinal.view.component.TinyButton;
-import com.TpFinal.view.component.UploadButton;
-import com.TpFinal.view.component.UploadReceiver;
+import com.TpFinal.view.component.*;
 import com.TpFinal.view.inmobiliaria.InmobiliariaWindow;
-
 import com.TpFinal.view.persona.PersonaFormWindow;
-import com.google.gwt.dom.client.Style;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
@@ -38,16 +31,13 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import org.easymock.internal.matchers.Not;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("serial")
 public class InmuebleForm extends FormLayout {
@@ -111,10 +101,6 @@ public class InmuebleForm extends FormLayout {
 
     TabSheet tabSheet;
 
-    // TODO Boton test solo para testing (completado de comboboxes) comentar antes
-    // de cada reunion formal
-    Button test = new Button("llenar combo");
-
     public InmuebleForm(InmuebleABMView abmView) {
 	this.abmView = abmView;
 	configureComponents();
@@ -172,20 +158,6 @@ public class InmuebleForm extends FormLayout {
 
 	});
 
-	// TODO funcion del boton test
-	test.addClickListener(event -> {
-	    Persona p;
-	    List<Persona> people = personaService.readAll();
-	    p = people.get(0);
-	    comboPropietario.setSelectedItem(p);
-
-	    Provincia provincia;
-	    List<Provincia> provincess = provinciaService.getProvincias();
-	    provincia = provincess.get(0);
-	    provincias.setSelectedItem(provincia);
-	    // TODO comment
-
-	});
 
 	comboPropietario.setTextInputAllowed(true);
 	comboInmobiliaria.setTextInputAllowed(true);
@@ -464,7 +436,7 @@ public class InmuebleForm extends FormLayout {
 
 	// pic.setSpacing(true);
 
-	HorizontalLayout actions = new HorizontalLayout(save, delete, test);
+	HorizontalLayout actions = new HorizontalLayout(save, delete);
 	addComponents(inmuebleFromTabSheet, actions);
 	actions.setSpacing(true);
 
