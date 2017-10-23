@@ -12,6 +12,7 @@ public class FiltroInmueble {
 	private Predicate<Inmueble> propietario = contrato -> true;
 	private Predicate<Inmueble> tipoInmueble = contrato -> true;
 	private Predicate<Inmueble> estadoInmueble = contrato -> true;
+	private Predicate <Inmueble> filtroCustom = inmueble -> true;
 	private List<Predicate<Inmueble>> filtros = new ArrayList<>();
 	private Predicate<Inmueble> filtroCompuesto;
 
@@ -26,13 +27,24 @@ public class FiltroInmueble {
 
 	private void actualizarComposicion() {
 		filtros.clear();
-		filtros.addAll(Arrays.asList(propietario, tipoInmueble, direccion, estadoInmueble));
+		filtros.addAll(Arrays.asList(propietario, tipoInmueble, direccion, estadoInmueble, filtroCustom));
 		filtroCompuesto = filtros.stream().reduce(contrato -> true, Predicate::and);
 	}
 
 	@Deprecated
 	public void clearFiltro(Predicate<Inmueble> filtro) {
 		filtro = contrato -> true;
+	}
+
+	
+	
+	public Predicate<Inmueble> getFiltroCustom() {
+	    return filtroCustom;
+	}
+
+	public void setFiltroCustom(Predicate<Inmueble> filtroCustom) {
+	    this.filtroCustom = filtroCustom;
+	    actualizarComposicion();
 	}
 
 	public Predicate<Inmueble> getPropietario() {

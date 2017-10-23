@@ -209,7 +209,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 	newItem.setVisible(b);
 	filter.setVisible(b);
 	seleccionFiltro.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
 

@@ -52,7 +52,7 @@ public class PublicacionForm extends FormLayout {
         });
         TabSheet tabSheet;
 
-        Button test = new Button("llenar combo");
+
 
 
 
@@ -97,16 +97,6 @@ public class PublicacionForm extends FormLayout {
                         publicacion.setInmueble(new Inmueble());
                     }
                 }
-            });
-        //TODO boton test para prueba unicamente
-            test.addClickListener(event -> {
-                Inmueble i;
-                InmuebleService inmuebleService = new InmuebleService();
-                List<Inmueble> inmuebles = inmuebleService.readAll();
-                i = inmuebles.get(0);
-                comboInmueble.setSelectedItem(i);
-                moneda.setSelectedItem(TipoMoneda.Pesos);
-
             });
         }
 
@@ -243,7 +233,7 @@ public class PublicacionForm extends FormLayout {
             tabSheet.addTab(principal,"Publicacion");
 
             addComponent(tabSheet);
-            HorizontalLayout actions = new HorizontalLayout(save,delete,test);
+            HorizontalLayout actions = new HorizontalLayout(save,delete);
             addComponent(actions);
             actions.setSpacing(true);
 
