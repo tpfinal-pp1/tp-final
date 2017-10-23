@@ -281,7 +281,7 @@ public abstract class PreferenciasBusqueda extends Window {
 
 		}, "Ingrese un número mayor o igual al mínimo!")
 		.withValidator(n -> n == null || n >= 0, "Ingrese un número no negativo!")
-		.bind(getterMax, setterMin);
+		.bind(getterMax, setterMax);
     }
 
     private void bindearMinMaxParaPrecio() {
@@ -296,7 +296,8 @@ public abstract class PreferenciasBusqueda extends Window {
 			String val = minMaxPrecio.getMaxTextField().getValue();
 			if (val != null) {
 			    try {
-				BigDecimal v = BigDecimal.valueOf(Double.parseDouble(val));
+				
+				BigDecimal v = Utils.StringToBigDecimal(val);
 				if (n.compareTo(v) <= 0) {
 				    ret = true;
 				}
@@ -326,7 +327,7 @@ public abstract class PreferenciasBusqueda extends Window {
 			String val = minMaxPrecio.getMinTextField().getValue();
 			if (val != null) {
 			    try {
-				BigDecimal v = BigDecimal.valueOf(Double.parseDouble(val));
+				BigDecimal v =  Utils.StringToBigDecimal(val);
 				if (n.compareTo(v) >= 0) {
 				    ret = true;
 				}

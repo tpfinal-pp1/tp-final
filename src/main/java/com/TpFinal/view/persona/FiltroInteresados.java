@@ -69,11 +69,29 @@ public class FiltroInteresados {
 	publicaciones = filtroPublicaciones(i);
 
 	filtros.addAll(Arrays.asList(
-		this.aEstrenar, this.clasesDeInmueble, this.conAireAcondicionado, this.conJardin, this.conPileta,
-		this.conParrilla, this.estadoInmueble, this.localidad, this.maxAmbientes, this.minAmbientes,
-		this.minCocheras, this.maxCocheras, this.minDormitorios, this.maxDormitorios, this.minSupCubierta,
-		this.maxSupCubierta, this.minSupTotal, this.maxSupTotal, this.publicaciones, this.provincia,
-		this.tipoInmueble));
+	// this.aEstrenar,
+	// this.clasesDeInmueble, //XXX ok
+	// this.conAireAcondicionado,
+	// this.conJardin,
+	// this.conPileta,
+	// this.conParrilla,
+	// this.estadoInmueble ,//XXX ok
+	// this.localidad //XXX ok
+	// this.provincia,
+	// this.tipoInmueble,
+	// this.maxAmbientes
+	// this.minAmbientes, //XXX ok
+	// this.minCocheras,
+	// this.maxCocheras,
+	// this.minDormitorios,
+	// this.maxDormitorios,
+	// this.minSupCubierta,
+	// this.maxSupCubierta,
+	// this.minSupTotal,
+	// this.maxSupTotal,
+	 this.publicaciones
+
+	));
 
 	filtroCompuesto = filtros.stream().reduce(persona -> true, Predicate::and);
     }
@@ -257,7 +275,8 @@ public class FiltroInteresados {
 			return i.getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta ||
 				i.getEstadoInmueble() == EstadoInmueble.EnAlquiler ||
 				i.getEstadoInmueble() == EstadoInmueble.EnVenta;
-		    return p.getPrefBusqueda().getEstadoInmueble().equals(i.getEstadoInmueble());
+		    else
+			return p.getPrefBusqueda().getEstadoInmueble().equals(i.getEstadoInmueble());
 		} else {
 		    return true;
 		}
@@ -441,25 +460,74 @@ public class FiltroInteresados {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
 		CriterioBusqInmueble prefs = p.getPrefBusqueda();
-
 		List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
-		List<PublicacionAlquiler> publicacionesAlquiler = publicaciones.stream()
-			.filter(pub -> pub instanceof PublicacionAlquiler)
-			.map(pub -> (PublicacionAlquiler) pub)
-			.filter(pubA -> {
-			    if (prefs.getTipoMoneda() != null)
-				return pubA.getMoneda().equals(prefs.getTipoMoneda()) ;
-				else
-			    return true;
-			})
-			.collect(Collectors.toList());
+		List<PublicacionAlquiler> publicacionesAlquiler = matchAlquiler(prefs, publicaciones);
+		List<PublicacionVenta> publicacionesVenta = matchVentas(prefs, publicaciones);
 
-		return true;
-
+		if (prefs.getEstadoInmueble() != null) {
+		    if (prefs.getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta) {
+			return publicacionesAlquiler.size() > 0 || publicacionesVenta.size() > 0;
+		    } else if (prefs.getEstadoInmueble() == EstadoInmueble.EnAlquiler) {
+			return publicacionesAlquiler.size() > 0;
+		    } else {
+			return publicacionesVenta.size() > 0;
+		    }
+		} else
+		    return true;
 	    } else {
 		return false;
 	    }
 	};
+    }
+
+    private List<PublicacionVenta> matchVentas(CriterioBusqInmueble prefs, List<Publicacion> publicaciones) {
+	return publicaciones.stream()
+		.filter(pub -> pub instanceof PublicacionVenta)
+		.map(pub -> (PublicacionVenta) pub)
+		.filter(pubA -> {
+		    if (prefs.getTipoMoneda() != null)
+			return pubA.getMoneda().equals(prefs.getTipoMoneda());
+		    else
+			return true;
+		})
+		.filter(pubA -> {
+		    if (prefs.getMinPrecio() != null)
+			return pubA.getPrecio().compareTo(prefs.getMinPrecio()) >= 0;
+		    else
+			return true;
+		})
+		.filter(pubA -> {
+		    if (prefs.getMaxPrecio() != null)
+			return pubA.getPrecio().compareTo(prefs.getMaxPrecio()) <= 0;
+		    else
+			return true;
+		})
+		.collect(Collectors.toList());
+    }
+
+    private List<PublicacionAlquiler> matchAlquiler(CriterioBusqInmueble prefs, List<Publicacion> publicaciones) {
+	return publicaciones.stream()
+		.filter(pub -> pub instanceof PublicacionAlquiler)
+		.map(pub -> (PublicacionAlquiler) pub)
+		.filter(pubA -> {
+		    if (prefs.getTipoMoneda() != null)
+			return pubA.getMoneda().equals(prefs.getTipoMoneda());
+		    else
+			return true;
+		})
+		.filter(pubA -> {
+		    if (prefs.getMinPrecio() != null)
+			return pubA.getPrecio().compareTo(prefs.getMinPrecio()) >= 0;
+		    else
+			return true;
+		})
+		.filter(pubA -> {
+		    if (prefs.getMaxPrecio() != null)
+			return pubA.getPrecio().compareTo(prefs.getMaxPrecio()) <= 0;
+		    else
+			return true;
+		})
+		.collect(Collectors.toList());
     }
 
     private Predicate<Persona> filtroTipoInm(Inmueble i) {
@@ -482,38 +550,6 @@ public class FiltroInteresados {
 
     public List<Predicate<Persona>> getTodosLosFiltros() {
 	return filtros;
-    }
-
-    private Predicate<? super Publicacion> matchPublicacion(Persona p) {
-	return pub -> {
-	    CriterioBusqInmueble prefs = p.getPrefBusqueda();
-	    if (pub instanceof PublicacionAlquiler) {
-		PublicacionAlquiler pubA = (PublicacionAlquiler) pub;
-		return (prefs.getTipoMoneda() != null ? pubA.getMoneda().equals(prefs.getTipoMoneda())
-			: true)
-			&& (prefs.getTipoPublicacion() != null ? pubA.getTipoPublicacion().equals(prefs
-				.getTipoPublicacion())
-				: true)
-			&& (prefs.getMinPrecio() != null ? pubA.getPrecio().compareTo(prefs
-				.getMinPrecio()) >= 0
-				: true)
-			&& (prefs.getMaxPrecio() != null ? pubA.getPrecio()
-				.compareTo(prefs.getMaxPrecio()) <= 0
-				: true);
-	    } else {
-		PublicacionVenta pubV = (PublicacionVenta) pub;
-		return (prefs.getTipoMoneda() != null ? pubV.getMoneda().equals(prefs.getTipoMoneda())
-			: true)
-			&& (prefs.getTipoPublicacion() != null ? pubV.getTipoPublicacion().equals(prefs
-				.getTipoPublicacion())
-				: true)
-			&& (prefs.getMinPrecio() != null ? pubV.getPrecio().compareTo(prefs
-				.getMinPrecio()) >= 0
-				: true)
-			&& (prefs.getMaxPrecio() != null ? pubV.getPrecio()
-				.compareTo(prefs.getMaxPrecio()) <= 0 : true);
-	    }
-	};
     }
 
 }
