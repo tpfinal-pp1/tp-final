@@ -228,9 +228,10 @@ public class ReportesView extends DefaultLayout implements View {
 		fHasta.setParseErrorMessage("Formato de fecha no reconocido");
 
 
-		tipoReporteCB.setSelectedItem(TipoReporte.AlquileresPorCobrar);
-    	//fDesde.setVisible(false);
-    	//fHasta.setVisible(false);
+		tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
+		clearFilterTextBtn.setVisible(false);
+    	fDesde.setVisible(false);
+    	fHasta.setVisible(false);
     	fDesde.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
     	fHasta.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 		clearFilterTextBtn.addClickListener(new Button.ClickListener() {
@@ -248,10 +249,12 @@ public class ReportesView extends DefaultLayout implements View {
 			@Override
 			public void valueChange(HasValue.ValueChangeEvent<TipoReporte> valueChangeEvent) {
 				if (valueChangeEvent.getValue()==TipoReporte.AlquileresPorCobrar){
+					clearFilterTextBtn.setVisible(true);
 					fDesde.setVisible(true);
 					fHasta.setVisible(true);
 				}
 				else{
+					clearFilterTextBtn.setVisible(false);
 					fDesde.setVisible(false);
 					fHasta.setVisible(false);
 				}
