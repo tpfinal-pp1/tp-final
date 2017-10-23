@@ -222,7 +222,7 @@ public abstract class PreferenciasBusqueda extends Window {
 		if (provincia != null) {
 		    cbLocalidad.setEnabled(true);
 		    cbLocalidad.setItems(provincia.getLocalidades());
-		    cbLocalidad.setSelectedItem(provincia.getLocalidades().get(0));
+		    //cbLocalidad.setSelectedItem(provincia.getLocalidades().get(0));
 		} else {
 		    cbLocalidad.setEnabled(false);
 		    cbLocalidad.setSelectedItem(null);
