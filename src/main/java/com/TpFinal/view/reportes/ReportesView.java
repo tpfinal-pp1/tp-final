@@ -230,6 +230,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 		tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
 		clearFilterTextBtn.setVisible(false);
+		clearFilterTextBtn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
     	fDesde.setVisible(false);
     	fHasta.setVisible(false);
     	fDesde.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);

@@ -12,7 +12,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
-    INICIO("dashboard", DashboardView.class, VaadinIcons.HOME, true),
+    INICIO("inicio", DashboardView.class, VaadinIcons.HOME, true),
     PERSONAS("personas",PersonaABMView.class, VaadinIcons.USER, false),
     INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
     OPERACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
