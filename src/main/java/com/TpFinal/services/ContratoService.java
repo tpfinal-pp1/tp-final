@@ -179,6 +179,7 @@ public class ContratoService {
 
 
 	public List<ItemRepAlquileresACobrar> getListadoAlquileresACobrar(LocalDate fechaDesde, LocalDate fechaHasta) {
+
 		CobroService cobroService = new CobroService();
 
 		List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
