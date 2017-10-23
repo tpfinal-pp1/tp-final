@@ -402,7 +402,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	HorizontalLayout layout = new HorizontalLayout(nuevo);
-	filtering.addComponents(filter, clearFilterTextBtn, layout);
+	filtering.addComponents( clearFilterTextBtn, layout);
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	buildToolbar("Publicaciones", filtering/* , layout */);
