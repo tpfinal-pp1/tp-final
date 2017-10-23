@@ -102,17 +102,17 @@ public class FiltroInteresados {
 	filtros.clear();
 	filtros.addAll(Arrays.asList(
 		 this.aEstrenar,
-		 this.clasesDeInmueble, //XXX ok
+		 this.clasesDeInmueble,
 		 this.conAireAcondicionado,
 		 this.conJardin,
 		 this.conPileta,
 		 this.conParrilla,
-		 this.estadoInmueble ,//XXX ok
-		 this.localidad, //XXX ok
+		 this.estadoInmueble ,
+		 this.localidad, 
 		 this.provincia,
 		 this.tipoInmueble,
 		 this.maxAmbientes,
-		 this.minAmbientes, //XXX ok
+		 this.minAmbientes,
 		 this.minCocheras,
 		 this.maxCocheras,
 		 this.minDormitorios,

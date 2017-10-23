@@ -49,11 +49,14 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		    .getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta)) {
 		query.add(Restrictions.eq(Publicacion.pTipoPublicacion, to));
 		query.add(Restrictions.eq("estadoRegistro", EstadoRegistro.ACTIVO));
-		if (to.equals(TipoPublicacion.Alquiler)) {
-		    addRestriccionesDeAlquiler(query, criterio);
 
-		} else if (to.equals(TipoPublicacion.Venta)) {
-		    addRestriccionesDeVenta(query, criterio);
+		if (to != null) {
+		    if (to.equals(TipoPublicacion.Alquiler)) {
+			addRestriccionesDeAlquiler(query, criterio);
+
+		    } else if (to.equals(TipoPublicacion.Venta)) {
+			addRestriccionesDeVenta(query, criterio);
+		    }
 		} else {
 		    addRestriccionesDeVentaOAlquiler(query, criterio);
 		}
@@ -106,11 +109,11 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	    String aliasDir = "d";
 	    query.createAlias(Inmueble.pDireccion, aliasDir);
 	    if (criterio.getLocalidad() != null) {
-		query.add(Restrictions.eq(aliasDir+"." + Direccion.pLocalidad, criterio.getLocalidad()));
+		query.add(Restrictions.eq(aliasDir + "." + Direccion.pLocalidad, criterio.getLocalidad()));
 	    }
 
 	    if (criterio.getProvincia() != null) {
-		query.add(Restrictions.eq(aliasDir+"." + Direccion.pProvincia, criterio.getProvincia()));
+		query.add(Restrictions.eq(aliasDir + "." + Direccion.pProvincia, criterio.getProvincia()));
 	    }
 	}
 
