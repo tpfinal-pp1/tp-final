@@ -299,11 +299,10 @@ public class CobrosABMView extends DefaultLayout implements View {
             }).setCaption("Acciones");
 
             grid.getColumns().forEach(c -> c.setResizable(false));
-            
         }
 
         public void updateList() {
-            List<Cobro> cobros = cobroService.readAll();
+            List<Cobro> cobros = cobroService.findAll(filter.getValue());
             cobros.sort((c1, c2)-> {return c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento());});
             grid.setItems(cobros);
         }
