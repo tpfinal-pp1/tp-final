@@ -320,7 +320,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    filtroTipo.setPlaceholder("Sin Filtro");
 	    filtroTipo.setItems(TipoInmueble.toList());
 	    filtroTipo.addValueChangeListener(e -> {
-		Notification.show("Valor evento: " + e.getValue() + "\nValor Combo: " + filtroTipo.getValue());
 		if (e.getValue() != null) {
 		    if (!filtroTipo.isEmpty())
 			filtro.setTipo(contrato -> contrato.getTipoInmueble().equals(e.getValue()));
@@ -340,7 +339,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    filtroEstado.setPlaceholder("Sin Filtro");
 	    filtroEstado.setItems(EstadoInmueble.toList());
 	    filtroEstado.addValueChangeListener(e -> {
-		Notification.show("Valor evento: " + e.getValue() + "\nValor Combo: " + filtroEstado.getValue());
 		if (e.getValue() != null) {
 		    if (!filtroEstado.isEmpty())
 			filtro.setEstado(contrato -> contrato.getEstadoInmueble().equals(e.getValue()));
