@@ -45,7 +45,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	private Grid<Contrato> grid = new Grid<>();
 	private Button nuevoAlquiler = new Button("Nuevo Alquiler");
 	private Button nuevaVenta = new Button("Nueva Venta");
-	private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
+
 	private HorizontalLayout mainLayout;
 
 	// Forms
@@ -69,7 +69,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 	}
 
 	private void configureComponents() {
-		configureFilter();
 		configureNuevaVenta();
 		configureNuevoAlquiler();
 		configureGrid();
@@ -94,10 +93,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		nuevaVenta.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	}
 
-	private void configureFilter() {
 
-		clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
-	}
 
 	private void configureGrid() {
 
@@ -477,9 +473,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		nuevaVenta.setVisible(b);
 		nuevoAlquiler.setVisible(b);
 
-		if (checkIfOnMobile()) {
-			clearFilterTextBtn.setVisible(!b);
-		}
+
 		// clearFilterTextBtn.setVisible(b);
 		if (isonMobile)
 			grid.setVisible(b);
@@ -506,12 +500,12 @@ public class ContratoABMView extends DefaultLayout implements View {
 
 			// layout.setMargin(false);
 			// layout.setSizeUndefined();
-			filtering.addComponents(clearFilterTextBtn, nuevaVenta, nuevoAlquiler);
-			clearFilterTextBtn.setVisible(false);
+			filtering.addComponents( nuevaVenta, nuevoAlquiler);
+
 
 		} else {
 			HorizontalLayout layout = new HorizontalLayout(nuevaVenta, nuevoAlquiler);
-			filtering.addComponents(clearFilterTextBtn, layout);
+			filtering.addComponents( layout);
 
 		}
 
