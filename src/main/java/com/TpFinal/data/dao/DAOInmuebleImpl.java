@@ -41,44 +41,44 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	DetachedCriteria query = null;
 	List<Inmueble> resultadoQuery = new ArrayList<>();
 
-	if (criterio.getTipoPublicacion() != null || criterio.getTipoMoneda() != null) {
-	    TipoPublicacion to = criterio.getTipoPublicacion();
-	    query = DetachedCriteria.forClass(Publicacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-
-	    if (to != null || (criterio.getEstadoInmueble() != null && criterio
-		    .getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta)) {
-		query.add(Restrictions.eq(Publicacion.pTipoPublicacion, to));
-		query.add(Restrictions.eq("estadoRegistro", EstadoRegistro.ACTIVO));
-
-		if (to != null) {
-		    if (to.equals(TipoPublicacion.Alquiler)) {
-			addRestriccionesDeAlquiler(query, criterio);
-
-		    } else if (to.equals(TipoPublicacion.Venta)) {
-			addRestriccionesDeVenta(query, criterio);
-		    }
-		} else {
-		    addRestriccionesDeVentaOAlquiler(query, criterio);
-		}
-	    }
-
-	    if (criterio.getTipoMoneda() != null) {
-		query.add(Restrictions.eq("moneda", criterio.getTipoMoneda()));
-	    }
-
-	    DAOImpl<Publicacion> dao = new DAOImpl<>(Publicacion.class);
-	    query.createAlias("inmueble", "i");
-	    addRestriccionesDeInmueble(query, criterio, "i.");
-	    List<Publicacion> publicaciones = dao.findByCriteria(query);
-	    for (Publicacion o : publicaciones) {
-		resultadoQuery.add(o.getInmueble());
-	    }
-
-	} else {
+//	if (criterio.getTipoPublicacion() != null || criterio.getTipoMoneda() != null) {
+//	    TipoPublicacion to = criterio.getTipoPublicacion();
+//	    query = DetachedCriteria.forClass(Publicacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+//
+//	    if (to != null || (criterio.getEstadoInmueble() != null && criterio
+//		    .getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta)) {
+//		query.add(Restrictions.eq(Publicacion.pTipoPublicacion, to));
+//		query.add(Restrictions.eq("estadoRegistro", EstadoRegistro.ACTIVO));
+//
+//		if (to != null) {
+//		    if (to.equals(TipoPublicacion.Alquiler)) {
+//			addRestriccionesDeAlquiler(query, criterio);
+//
+//		    } else if (to.equals(TipoPublicacion.Venta)) {
+//			addRestriccionesDeVenta(query, criterio);
+//		    }
+//		} else {
+//		    addRestriccionesDeVentaOAlquiler(query, criterio);
+//		}
+//	    }
+//
+//	    if (criterio.getTipoMoneda() != null) {
+//		query.add(Restrictions.eq("moneda", criterio.getTipoMoneda()));
+//	    }
+//
+//	    DAOImpl<Publicacion> dao = new DAOImpl<>(Publicacion.class);
+//	    query.createAlias("inmueble", "i");
+//	    addRestriccionesDeInmueble(query, criterio, "i.");
+//	    List<Publicacion> publicaciones = dao.findByCriteria(query);
+//	    for (Publicacion o : publicaciones) {
+//		resultadoQuery.add(o.getInmueble());
+//	    }
+//
+//	} else {
 	    query = DetachedCriteria.forClass(Inmueble.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 	    addRestriccionesDeInmueble(query, criterio, "");
 	    resultadoQuery = findByCriteria(query);
-	}
+	//}
 	return resultadoQuery;
     }
 
