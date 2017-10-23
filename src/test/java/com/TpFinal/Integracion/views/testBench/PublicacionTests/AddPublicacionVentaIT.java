@@ -8,7 +8,7 @@ import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.elements.*;
-
+import org.junit.*;
 
 import java.util.List;
 

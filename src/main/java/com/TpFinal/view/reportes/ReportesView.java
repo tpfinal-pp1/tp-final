@@ -240,7 +240,7 @@ public class ReportesView extends DefaultLayout implements View {
 				fHasta.setValue(null);
 			}
 		});
-		
+
 		generarReporte();
         filtering.addComponents(fDesde, fHasta,clearFilterTextBtn, tipoReporteCB,newReport);
         tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
