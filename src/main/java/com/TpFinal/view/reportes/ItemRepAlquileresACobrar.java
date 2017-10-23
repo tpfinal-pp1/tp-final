@@ -63,9 +63,11 @@ public class ItemRepAlquileresACobrar {
     }
 
     public LocalDate getFechaVencimientoEnDate() {
-	return LocalDate.parse(fechaVencimiento, DateTimeFormatter.ofPattern("dd/MM/YYYY").withLocale(Locale
-		.forLanguageTag("es-AR")));
+
+
+	return LocalDate.parse(fechaVencimiento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
+
 
     public void setFechaVencimiento(String fechaVencimiento) {
 	this.fechaVencimiento = fechaVencimiento;
