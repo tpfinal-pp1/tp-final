@@ -421,8 +421,8 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	public void filtrarPorCalle(String filtro) {
-	    List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
-	    grid.setItems(inmuebles);
+		List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
+		grid.setItems(inmuebles);
 	}
 
     }
