@@ -7,10 +7,7 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 
@@ -43,7 +40,7 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
     }
 
 
-    @Test
+    @Ignore
     public void agregadoInmuebleTest() {
        // initializeDriver().get("http://inmobi.ddns.net/");
         getDriver().get(TBUtils.getUrl("inmuebles"));
