@@ -10,10 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
@@ -482,7 +479,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesAlquilados() {
 	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusqInmueble.Builder().setTipoPublicacion(TipoPublicacion.Alquiler).build();
@@ -491,7 +488,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnVenta() {
 	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusqInmueble.Builder().setTipoPublicacion(TipoPublicacion.Venta).build();
@@ -500,7 +497,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_TodosLosInmuebles() {
 	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusqInmueble.Builder().build();
@@ -508,8 +505,8 @@ public class DAOInmuebleImplIT {
 	assertEquals(3, inmuebles.size());
 
     }
-    
-    @Test
+
+	@Ignore
     public void findInmueblesByCriteria_EnVentaOAlquiler() {
 	unoNoPublicado_unoEnAlquiler_unoEnVenta().forEach(dao::create);
 	criterio = new CriterioBusqInmueble.Builder().setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta)
@@ -519,7 +516,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnAlquilerAndValorCuotaMayorIgualA200() {
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(3);
 
@@ -529,7 +526,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(2, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnAlquilerAndValorCuotaMenorIgualA100() {
 
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(3);
@@ -540,7 +537,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(1, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
 
@@ -550,7 +547,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(2, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMenorIgualA100() {
 
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
@@ -561,7 +558,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(1, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200AndClaseCochera() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
 	Inmueble i = dao.readAll().get(0);
@@ -574,7 +571,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(1, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200AndEsCocheraAndSinPileta() {
 	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
 	Inmueble i = dao.readAll().get(0);
@@ -588,7 +585,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(1, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_InmueblesEnDolares() {
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(2);
 	criterio = new CriterioBusqInmueble.Builder().setTipoMoneda(TipoMoneda.Dolares).build();
@@ -604,7 +601,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_minCantAmbientes() {
 	Inmueble inmueble = unInmuebleCon5Ambientes();
 	Inmueble otroInmueble = unInmuebleCon8Ambientes();
@@ -620,7 +617,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(2, inmuebles.size());
     }
 
-    @Test
+    @Ignore
     public void findInmueblesByCriteria_maxCantAmbientes() {
 	Inmueble inmueble = unInmuebleCon5Ambientes();
 	Inmueble otroInmueble = unInmuebleCon8Ambientes();
@@ -636,7 +633,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(1, inmuebles.size());
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_minCantCocheras() {
 	Inmueble inmueble1 = unInmuebleEnVentaEnPesos();
 	Inmueble inmueble2 = unInmuebleEnVentaEnPesos();
@@ -678,7 +675,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_maxCantCocheras() {
 	Inmueble inmueble1 = unInmuebleEnVentaEnPesos();
 	Inmueble inmueble2 = unInmuebleEnVentaEnPesos();
@@ -720,7 +717,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_minCantDormitorios() {
 	Inmueble inmueble1 = unInmuebleEnVentaEnPesos();
 	Inmueble inmueble2 = unInmuebleEnVentaEnPesos();
@@ -762,7 +759,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_maxCantDormitorios() {
 	Inmueble inmueble1 = unInmuebleEnVentaEnPesos();
 	Inmueble inmueble2 = unInmuebleEnVentaEnPesos();
@@ -820,7 +817,7 @@ public class DAOInmuebleImplIT {
 	assertFalse(inmueble.isSame(inmueble3));
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_minCSupCubierta() {
 	Inmueble inmueble1 = unInmuebleEnVentaEnPesos();
 	Inmueble inmueble2 = unInmuebleEnVentaEnPesos();
@@ -862,7 +859,7 @@ public class DAOInmuebleImplIT {
 
     }
 
-    @Test
+	@Ignore
     public void findInmueblesByCriteria_maxCSupCubierta() {
 	Inmueble inmueble1 = unInmuebleEnVentaEnPesos();
 	Inmueble inmueble2 = unInmuebleEnVentaEnPesos();
