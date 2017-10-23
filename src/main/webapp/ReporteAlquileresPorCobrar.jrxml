@@ -19,7 +19,6 @@
 	<field name="anio" class="java.lang.Integer">
 		<fieldDescription><![CDATA[anio]]></fieldDescription>
 	</field>
-	<sortField name="mes"/>
 	<sortField name="anio" order="Descending"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{anio}]]></groupExpression>
