@@ -17,8 +17,8 @@ public class UtilsTest {
 
 	
 	List<Persona> personas = new ArrayList<>();
-	Persona p = new Persona.Builder().setNombre("Agustin")
-		.setApellido("Alexander").build();
+	Persona p = new Persona.Builder().setNombre("Pepe")
+		.setApellido("Peposo").build();
 	personas.add(p);
 	ArrayList<Object> objetos = new ArrayList<Object>();
 	for (Persona persona : personas) {
@@ -27,7 +27,7 @@ public class UtilsTest {
 
 	}
 
-	List<Object> resultados = Utils.Search(objetos, "Agkkl;ustkjlkisadn Alexthughjandasder", 62);
+	List<Object> resultados = Utils.Search(objetos, "Pephe Pepozientoohh", 70);
 	assertTrue(resultados.size() == 1);
 
     }
