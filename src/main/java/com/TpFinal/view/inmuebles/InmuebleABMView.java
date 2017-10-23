@@ -30,6 +30,7 @@ import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 @Title("Inmuebles")
@@ -51,6 +52,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private Supplier<List<Inmueble>> inmuebleSupplier;
     private Button btnSearch = new Button(VaadinIcons.SEARCH_MINUS);
     private FiltroInmueble filtro = new FiltroInmueble();
+    private Predicate<Inmueble> filtroCustom = i -> true;
 
     // acciones segun numero de fila
     int acciones = 0;
@@ -65,6 +67,17 @@ public class InmuebleABMView extends DefaultLayout implements View {
     public InmuebleABMView(Supplier<List<Inmueble>> supplier) {
 	super();
 	inmuebleSupplier = supplier;
+	buildLayout();
+	controller.configureComponents();
+    }
+
+    public InmuebleABMView(Supplier<List<Inmueble>> supplier, Predicate<Inmueble> filtroCustom) {
+	super();
+	inmuebleSupplier = supplier;
+	if (filtroCustom != null) {
+	    this.filtroCustom = filtroCustom;
+	    filtro.setFiltroCustom(filtroCustom);
+	}
 	buildLayout();
 	controller.configureComponents();
     }

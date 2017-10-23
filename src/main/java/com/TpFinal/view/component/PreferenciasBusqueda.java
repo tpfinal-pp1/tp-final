@@ -1,6 +1,10 @@
 package com.TpFinal.view.component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
@@ -8,9 +12,14 @@ import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
+import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
@@ -84,9 +93,11 @@ public abstract class PreferenciasBusqueda extends Window {
 	UI.getCurrent().addWindow(this);
 	this.focus();
     }
-    
+
     public abstract boolean onSave();
+
     public abstract boolean onClean();
+
     public abstract boolean searchVisible();
 
     private void buildLayout() {
@@ -127,9 +138,65 @@ public abstract class PreferenciasBusqueda extends Window {
 
     private void search() {
 	try {
-	    binderBusqueda.writeBean(criterio);	   
+	    binderBusqueda.writeBean(criterio);
+	    if (criterio.getEstadoInmueble() != null) {
+		if (criterio.getEstadoInmueble() == EstadoInmueble.EnAlquiler) {
+		    criterio.setTipoPublicacion(TipoPublicacion.Alquiler);
+		} else if (criterio.getEstadoInmueble() == EstadoInmueble.EnVenta) {
+		    criterio.setTipoPublicacion(TipoPublicacion.Venta);
+		}
+	    }
 	    InmuebleService inmuebleService = new InmuebleService();
-	    new InmuebleABMViewWindow("Resultado Búsqueda", () -> inmuebleService.findByCaracteristicas(criterio));
+
+	    Predicate<Inmueble> filtro = i -> {
+		if (criterio.getTipoPublicacion() != null) {
+		    List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
+		    if (publicaciones != null && publicaciones.size() > 0) {
+			if (criterio.getTipoPublicacion() == TipoPublicacion.Alquiler) {
+			    List<PublicacionAlquiler> pubAlquiler = publicaciones.stream()
+				    .filter(p -> p instanceof PublicacionAlquiler)
+				    .map(p -> (PublicacionAlquiler) p)
+				    .collect(Collectors.toList());
+			    if (pubAlquiler != null && pubAlquiler.size() > 0) {
+				Predicate<PublicacionAlquiler> minPrecio = p -> true;
+				if (criterio.getMinPrecio() != null)
+				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMinPrecio()) >= 0;
+				Predicate<PublicacionAlquiler> maxPrecio = p -> true;
+				if (criterio.getMaxPrecio() != null)
+				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMaxPrecio()) <= 0;
+				Predicate<PublicacionAlquiler> moneda = p -> true;
+				if (criterio.getTipoMoneda() != null)
+				    moneda = p -> p.getMoneda().equals(criterio.getTipoMoneda());
+				return pubAlquiler.stream().filter(minPrecio).filter(maxPrecio).filter(moneda).collect(
+					Collectors
+						.toList()).isEmpty() == false;
+			    }
+			} else if (criterio.getTipoPublicacion() == TipoPublicacion.Venta) {
+			    List<PublicacionVenta> pubAlquiler = publicaciones.stream()
+				    .filter(p -> p instanceof PublicacionVenta)
+				    .map(p -> (PublicacionVenta) p)
+				    .collect(Collectors.toList());
+			    if (pubAlquiler != null && pubAlquiler.size() > 0) {
+				Predicate<PublicacionVenta> minPrecio = p -> true;
+				if (criterio.getMinPrecio() != null)
+				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMinPrecio()) >= 0;
+				Predicate<PublicacionVenta> maxPrecio = p -> true;
+				if (criterio.getMaxPrecio() != null)
+				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMaxPrecio()) <= 0;
+				Predicate<PublicacionVenta> moneda = p -> true;
+				if (criterio.getTipoMoneda() != null)
+				    moneda = p -> p.getMoneda().equals(criterio.getTipoMoneda());
+				return pubAlquiler.stream().filter(minPrecio).filter(maxPrecio).filter(moneda).collect(
+					Collectors
+						.toList()).isEmpty() == false;
+			    }
+			}
+		    }
+		}
+		return true;
+	    };
+	    new InmuebleABMViewWindow("Resultado Búsqueda", () -> inmuebleService.findByCaracteristicas(criterio),
+		    filtro);
 
 	} catch (ValidationException e) {
 	    Notification.show("Errores de Validación, por favor revise los campos e intente de nuevo",
@@ -296,7 +363,7 @@ public abstract class PreferenciasBusqueda extends Window {
 			String val = minMaxPrecio.getMaxTextField().getValue();
 			if (val != null) {
 			    try {
-				
+
 				BigDecimal v = Utils.StringToBigDecimal(val);
 				if (n.compareTo(v) <= 0) {
 				    ret = true;
@@ -327,7 +394,7 @@ public abstract class PreferenciasBusqueda extends Window {
 			String val = minMaxPrecio.getMinTextField().getValue();
 			if (val != null) {
 			    try {
-				BigDecimal v =  Utils.StringToBigDecimal(val);
+				BigDecimal v = Utils.StringToBigDecimal(val);
 				if (n.compareTo(v) >= 0) {
 				    ret = true;
 				}
@@ -360,6 +427,14 @@ public abstract class PreferenciasBusqueda extends Window {
 	boolean success = false;
 	try {
 	    binderBusqueda.writeBean(criterio);
+
+	    if (criterio.getEstadoInmueble() != null) {
+		if (criterio.getEstadoInmueble() == EstadoInmueble.EnAlquiler) {
+		    criterio.setTipoPublicacion(TipoPublicacion.Alquiler);
+		} else if (criterio.getEstadoInmueble() == EstadoInmueble.EnVenta) {
+		    criterio.setTipoPublicacion(TipoPublicacion.Venta);
+		}
+	    }
 	    System.err.println(criterio);
 	    success = onSave();
 	} catch (ValidationException e) {

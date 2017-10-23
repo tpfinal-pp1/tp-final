@@ -1,6 +1,7 @@
 package com.TpFinal.view.inmuebles;
 
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -13,9 +14,9 @@ import com.vaadin.ui.Window;
 public class InmuebleABMViewWindow extends Window {
     private InmuebleABMView abmView;
 
-    public InmuebleABMViewWindow(String caption, Supplier<List<Inmueble>> supplier) {
+    public InmuebleABMViewWindow(String caption, Supplier<List<Inmueble>> supplier, Predicate<Inmueble> filtroCustom) {
 	super(caption);
-	abmView = new InmuebleABMView(supplier);
+	abmView = new InmuebleABMView(supplier, filtroCustom);
 	setModal(true);
 	setResizable(false);
 	setClosable(true);

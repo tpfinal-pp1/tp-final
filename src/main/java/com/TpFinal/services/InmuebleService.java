@@ -223,12 +223,14 @@ public class InmuebleService {
     }
 
     public static List<Publicacion> getPublicacionesActivas(Inmueble i) {
-	List<Publicacion> publicaciones = i.getPublicaciones().stream().collect(Collectors.toList());
 	
-	return publicaciones.stream()
+	List<Publicacion> publicaciones = i.getPublicaciones().stream().collect(Collectors.toList());
+	List<Publicacion> publicacionesActivas =publicaciones.stream()
 		.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO))
 		.filter(p -> p.getEstadoPublicacion().equals(EstadoPublicacion.Activa))
 		.collect(Collectors.toList());
+	
+	return publicacionesActivas;
     }
     
     public List<Inmueble> findAll(FiltroInmueble filtro) {

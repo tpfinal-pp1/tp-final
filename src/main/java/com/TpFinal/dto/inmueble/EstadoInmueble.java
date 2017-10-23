@@ -33,6 +33,6 @@ public enum EstadoInmueble {
         }
 
     public static List<EstadoInmueble> toListPublicado() {
-	return Arrays.asList(EstadoInmueble.EnAlquiler,EstadoInmueble.EnVenta,EstadoInmueble.EnAlquilerYVenta);
+	return Arrays.asList(EstadoInmueble.EnAlquiler,EstadoInmueble.EnVenta);
     }
 }
