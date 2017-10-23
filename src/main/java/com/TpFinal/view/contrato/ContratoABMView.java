@@ -160,7 +160,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 		filtroEstado.setPlaceholder("Sin Filtro");
 		filtroEstado.setItems(EstadoContrato.toList());
 		filtroEstado.addValueChangeListener(e -> {
-			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
 			if (e.getValue() != null) {
 				if (!filtroEstado.isEmpty())
 					filtro.setEstado(contrato -> contrato.getEstadoContrato().equals(e.getValue()));
@@ -180,7 +179,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 		DateField fHasta = filtroFHasta();
 		TextField anio = filtroAnio();
 		TextField mes = filtroMes();
-
 		HorizontalLayout hlFechas = hlFechas(fDesde, fHasta);
 		HorizontalLayout hlAnioMes = hlAnioMes(anio, mes);
 
