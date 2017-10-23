@@ -160,7 +160,6 @@ public class ContratoABMView extends DefaultLayout implements View {
 		filtroEstado.setPlaceholder("Sin Filtro");
 		filtroEstado.setItems(EstadoContrato.toList());
 		filtroEstado.addValueChangeListener(e -> {
-			Notification.show("Valor evento: "+e.getValue() + "\nValor Combo: "+filtroEstado.getValue());
 			if (e.getValue() != null) {
 				if (!filtroEstado.isEmpty())
 					filtro.setEstado(contrato -> contrato.getEstadoContrato().equals(e.getValue()));
