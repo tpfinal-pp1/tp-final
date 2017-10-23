@@ -1,5 +1,10 @@
 package com.TpFinal.Integracion.views.pageobjects;
 
+import com.TpFinal.Integracion.views.pageobjects.TBCobrosView.TBCobroView;
+import com.TpFinal.Integracion.views.pageobjects.TBContratosView.TBContratoView;
+import com.TpFinal.Integracion.views.pageobjects.TBInmueble.TBInmuebleView;
+import com.TpFinal.Integracion.views.pageobjects.TBPersonaView.TBPersonaView;
+import com.TpFinal.Integracion.views.pageobjects.TBPublicacionView.TBPublicacionView;
 import com.TpFinal.view.DashboardMenu;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;

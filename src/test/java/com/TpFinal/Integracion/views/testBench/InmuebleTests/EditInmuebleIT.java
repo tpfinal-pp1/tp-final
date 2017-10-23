@@ -1,6 +1,6 @@
 package com.TpFinal.Integracion.views.testBench.InmuebleTests;
 
-import com.TpFinal.Integracion.views.pageobjects.TBInmuebleView;
+import com.TpFinal.Integracion.views.pageobjects.TBInmueble.TBInmuebleView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;

@@ -1,6 +1,6 @@
 package com.TpFinal.Integracion.views.testBench.InmuebleTests;
 
-import com.TpFinal.Integracion.views.pageobjects.TBInmuebleView;
+import com.TpFinal.Integracion.views.pageobjects.TBInmueble.TBInmuebleView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;
@@ -9,7 +9,6 @@ import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -44,11 +43,11 @@ public class AgregadoInmuebleIT extends TestBenchTestCase {
     }
 
 
-    @Ignore
+    @Test
     public void agregadoInmuebleTest() {
        // initializeDriver().get("http://inmobi.ddns.net/");
         getDriver().get(TBUtils.getUrl("inmuebles"));
-        //TBUtils.sleep(3000);
+        TBUtils.sleep(3000);
 
 
         //Agregar inmueble

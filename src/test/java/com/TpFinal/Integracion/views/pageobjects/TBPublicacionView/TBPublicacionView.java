@@ -1,4 +1,4 @@
-package com.TpFinal.Integracion.views.pageobjects;
+package com.TpFinal.Integracion.views.pageobjects.TBPublicacionView;
 
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.TestBenchTestCase;
@@ -30,6 +30,18 @@ public class TBPublicacionView extends TestBenchTestCase {
     private ElementQuery<ButtonElement> siButton ;
     private ElementQuery<ButtonElement> noButton ;
 
+    private ElementQuery<TextFieldElement> inmuebleFilter ;
+    private ElementQuery<ComboBoxElement> comboOperacionFilter ;
+    private ElementQuery<ButtonElement> botondesdeButton ;
+    private ElementQuery<DateFieldElement> desdeFechaFilter;
+    private ElementQuery<DateFieldElement> hastaFechaFilter ;
+    private ElementQuery<ComboBoxElement> estadoPubliFilter ;
+    private ElementQuery<TextFieldElement> propietarioFilter ;
+    private ElementQuery<TextFieldElement> anioTextFilter ;
+    private ElementQuery<TextFieldElement> mesTextFilter;
+
+
+
     public TBPublicacionView(WebDriver driver){
         setDriver(driver);
         grid1 = $(GridElement.class);
@@ -49,6 +61,17 @@ public class TBPublicacionView extends TestBenchTestCase {
         eliminarWindow = $$(WindowElement.class).caption("Eliminar");
         siButton = $(ButtonElement.class).caption("Si");
         noButton = $(ButtonElement.class).caption("No");
+
+        inmuebleFilter = $(GridElement.class).$$(TextFieldElement.class);
+        comboOperacionFilter = $(ComboBoxElement.class);
+        botondesdeButton = $(ButtonElement.class).caption("Boton desde");
+        desdeFechaFilter = $(DateFieldElement.class);
+        hastaFechaFilter = $(DateFieldElement.class);
+        estadoPubliFilter = $(ComboBoxElement.class);
+        propietarioFilter = $(GridElement.class).$$(TextFieldElement.class);
+        anioTextFilter = $(HorizontalLayoutElement.class).$$(TextFieldElement.class);
+        mesTextFilter = $(HorizontalLayoutElement.class).$$(TextFieldElement.class);
+
     }
 
     public ElementQuery<GridElement> getGrid1() { return grid1; }
@@ -96,4 +119,25 @@ public class TBPublicacionView extends TestBenchTestCase {
     public ElementQuery<ButtonElement> getNoButton() { return noButton; }
 
     public boolean isEliminarWindowDisplayed(){return this.eliminarWindow.exists();}
+
+    public TextFieldElement getInmuebleFilter(){ return  inmuebleFilter.first();}
+
+    public ComboBoxElement getOperacionFilter(){ return  comboOperacionFilter.first();}
+
+    public DateFieldElement getDesdeFilter(){ return  desdeFechaFilter.first();}
+
+    public DateFieldElement getHastaFilter(){ return  hastaFechaFilter.get(1);}
+
+    public ButtonElement getAnioMesButton(){ return  botondesdeButton.first();}
+
+    public TextFieldElement getPropietarioFilter(){ return  propietarioFilter.get(1);}
+
+    public ComboBoxElement getEstadoPubliFilter(){ return  estadoPubliFilter.get(1);}
+
+    public TextFieldElement getAnioFilter(){ return  anioTextFilter.first();}
+
+    public TextFieldElement getMesFilter(){ return  mesTextFilter.get(1);}
+
+
+
 }
