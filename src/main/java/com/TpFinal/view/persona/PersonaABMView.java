@@ -25,6 +25,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
 import java.util.function.Supplier;
+
 @Title("Personas")
 @Theme("valo")
 public class PersonaABMView extends DefaultLayout implements View {
@@ -42,7 +43,6 @@ public class PersonaABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
     FiltroInteresados filtroBase = new FiltroInteresados();
-    
 
     // Para identificar los layout de acciones
     private int acciones = 0;
@@ -52,13 +52,13 @@ public class PersonaABMView extends DefaultLayout implements View {
 	buildLayout();
 	configureComponents();
     }
-    
+
     public PersonaABMView(FiltroInteresados filtroBase) {
-   	super();
-   	this.filtroBase = filtroBase;
-   	buildLayout();
-   	configureComponents();
-       }
+	super();
+	this.filtroBase = filtroBase;
+	buildLayout();
+	configureComponents();
+    }
 
     private void configureComponents() {
 	Responsive.makeResponsive(this);
@@ -139,15 +139,15 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 		    }
 
-			@Override
-			public boolean onClean() {
-				return true;
-			}
+		    @Override
+		    public boolean onClean() {
+			return true;
+		    }
 
-			@Override
-			public boolean searchVisible() {
-				return true;
-			}
+		    @Override
+		    public boolean searchVisible() {
+			return true;
+		    }
 
 		};
 	    });
@@ -183,10 +183,19 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     private void configureFilter() {
-	filter.addValueChangeListener(e -> updateList());
 	filter.setValueChangeMode(ValueChangeMode.LAZY);
 	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
+
+	filter.addValueChangeListener(e -> {
+	    if (filter.getValue() != null) {
+		String filtro = filter.getValue();
+		filtroBase.setFiltroCustom(p -> {
+		    String PersonaString = p.getNombre() + " " + p.getApellido() + " " + p.getDNI();
+		    return PersonaString.toLowerCase().contains(filtro);
+		});
+	    }
+	    updateList();
+	});
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	if (isonMobile) {
 	    filter.setWidth("100%");

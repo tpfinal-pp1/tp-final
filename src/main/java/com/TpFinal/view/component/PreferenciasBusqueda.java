@@ -360,6 +360,7 @@ public abstract class PreferenciasBusqueda extends Window {
 	boolean success = false;
 	try {
 	    binderBusqueda.writeBean(criterio);
+	    System.err.println(criterio);
 	    success = onSave();
 	} catch (ValidationException e) {
 	    Notification.show("Errores de Validación, por favor revise los campos e intente de nuevo",
