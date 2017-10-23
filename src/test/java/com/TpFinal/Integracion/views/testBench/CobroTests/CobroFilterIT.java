@@ -1,6 +1,6 @@
 package com.TpFinal.Integracion.views.testBench.CobroTests;
 
-import com.TpFinal.Integracion.views.pageobjects.TBCobroView;
+import com.TpFinal.Integracion.views.pageobjects.TBCobrosView.TBCobroView;
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;

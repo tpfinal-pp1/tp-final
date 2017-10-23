@@ -1,4 +1,4 @@
-package com.TpFinal.Integracion.views.pageobjects;
+package com.TpFinal.Integracion.views.pageobjects.TBInmueble;
 
 import com.vaadin.testbench.ElementQuery;
 import com.vaadin.testbench.TestBenchTestCase;
@@ -50,6 +50,14 @@ public class TBInmuebleView extends TestBenchTestCase{
 
     private TBPersonaInmueblePopupView personaInmueblePopupView;
 
+    private ElementQuery<TextFieldElement> direccionFilter ;
+    private ElementQuery<TextFieldElement> PropietarioFilter ;
+    private ElementQuery<ComboBoxElement> tipoInmuebleComboFilter;
+    private ElementQuery<ComboBoxElement> estadoInmuebleComboFilter;
+
+    private ElementQuery<VerticalLayoutElement> portadaVerticalLayout ;
+    private ElementQuery<UploadElement> uploadImage;
+
 
     public TBInmuebleView(WebDriver driver){
         setDriver(driver);
@@ -86,6 +94,14 @@ public class TBInmuebleView extends TestBenchTestCase{
         eliminarWindow = $$(WindowElement.class).caption("Eliminar");
         siButton = $(ButtonElement.class).caption("Si");
         noButton = $(ButtonElement.class).caption("No");
+
+        direccionFilter = $(GridElement.class).$$(TextFieldElement.class);
+        PropietarioFilter = $(GridElement.class).$$(TextFieldElement.class);
+        tipoInmuebleComboFilter = $(ComboBoxElement.class);
+        estadoInmuebleComboFilter = $(ComboBoxElement.class);
+
+        portadaVerticalLayout = $(VerticalLayoutElement.class).caption("Portada");
+        uploadImage = $(UploadElement.class);
     }
 
 
@@ -172,6 +188,19 @@ public class TBInmuebleView extends TestBenchTestCase{
     public ElementQuery<ButtonElement> getNoButton() { return noButton; }
 
     public boolean isEliminarWindowDisplayed(){return this.eliminarWindow.exists();}
+
+
+    public TextFieldElement getDireccionFilter(){ return  direccionFilter.first();}
+
+    public TextFieldElement getPropietarioFilter(){ return  PropietarioFilter.get(1);}
+
+    public ComboBoxElement getInmuebleComboFilter(){ return  tipoInmuebleComboFilter.first();}
+
+    public ComboBoxElement getEstadoComboFilter(){ return estadoInmuebleComboFilter.get(1);}
+
+    public ElementQuery<VerticalLayoutElement> getPortadaVerticalLayout() { return portadaVerticalLayout; }
+
+    public ElementQuery<UploadElement> getUploadImage() { return uploadImage; }
 
 
 }

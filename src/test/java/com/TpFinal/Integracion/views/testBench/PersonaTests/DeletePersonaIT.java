@@ -1,7 +1,5 @@
 package com.TpFinal.Integracion.views.testBench.PersonaTests;
 
-import static org.junit.Assert.*;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,7 +7,7 @@ import org.junit.Test;
 
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
-import com.TpFinal.Integracion.views.pageobjects.TBPersonaView;
+import com.TpFinal.Integracion.views.pageobjects.TBPersonaView.TBPersonaView;
 import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
