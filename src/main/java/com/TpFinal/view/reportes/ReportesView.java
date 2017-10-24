@@ -143,55 +143,11 @@ public class ReportesView extends DefaultLayout implements View {
 	}
 
 
-		if(fDesde.getValue()==null){
-			for (ItemRepAlquileresACobrar item:
-					service.getCobrosOrdenadosPorAño()) {
-
-
-				if(item.getFechaVencimientoEnDate().isBefore(fHasta.getValue())){
-					System.out.println("agregado"+item);
-					ret.add(item);
-				}
-
-			}
-			if(ret.size()==0){
-				System.out.println("No hay Pagos en el rango de fecha seleccionado");
-				showErrorNotification("No hay Pagos en el rango de fecha seleccionado");
-				return new ArrayList<>();
-			}
-			return ret;
-		}
-
-
-		if(fHasta.getValue()==null){
-			for (ItemRepAlquileresACobrar item:
-					service.getCobrosOrdenadosPorAño()) {
-
-
-				if(item.getFechaVencimientoEnDate().isAfter(fDesde.getValue()))
-						{
-					System.out.println("agregado"+item);
-					ret.add(item);
-				}
-
-			}
-			if(ret.size()==0){
-				System.out.println("No hay Pagos en el rango de fecha seleccionado");
-				showErrorNotification("No hay Pagos en el rango de fecha seleccionado");
-				return new ArrayList<>();
-			}
-			return ret;
-		}
-
 		for (ItemRepAlquileresACobrar item:
-		service.getCobrosOrdenadosPorAño()) {
+		service.getListadoAlquileresACobrar(fDesde.getValue(),fHasta.getValue())) {
 
-
-			if((item.getFechaVencimientoEnDate().isAfter(fDesde.getValue()))
-					&&(item.getFechaVencimientoEnDate().isBefore(fHasta.getValue()))){
-				System.out.println("agregado"+item);
 				ret.add(item);
-			}
+
 
 		}
 

@@ -88,7 +88,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
     // Condiciones
     TextField tfDiaDePago = new TextField("Día de Pago");
-    TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio(%)");
+    TextField tfPagoFueraDeTermino = new TextField("Recargo Punitorio( % )");
     ComboBox<TipoInteres> cbInteresFueraDeTermino = new ComboBox<>("Tipo Interes");
     ComboBox<ContratoDuracion> cbDuracionContrato = new ComboBox<>("Duración");
     TextField stIncremento = new TextField("Frecuencia de Incremento");
@@ -339,7 +339,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	if (!this.contratoABMView.checkIfOnMobile()) {
 	    rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_HORIZONTAL);
 	    stIncremento.setCaption("Frecuencia de Incremento(meses)");
-	    tfPActualizacion.setCaption("Aumento por Actualización");
+	    tfPActualizacion.setCaption("Aumento por Actualización( % )");
 	} else {
 	    fechaCelebracion.setCaption("Fecha");
 	    stIncremento.setCaption("Frecuencia");

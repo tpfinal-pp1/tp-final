@@ -46,10 +46,10 @@ public class TBContratoAlquilerForm extends TestBenchTestCase {
          downlooadButton = $(FormLayoutElement.class).$(ButtonElement.class);
          duracinComboBox = $(ComboBoxElement.class).caption("Duración");
          dadePagoTextField = $(TextFieldElement.class).caption("Día de Pago");
-         recargoPunitorioTextField = $(TextFieldElement.class).caption("Recargo Punitorio(%)");
+         recargoPunitorioTextField = $(TextFieldElement.class).caption("Recargo Punitorio( % )");
          tipoInteresComboBox = $(ComboBoxElement.class).caption("Tipo Interes");
          frecuenciadeIncrementomesesTextField = $(TextFieldElement.class).caption("Frecuencia de Incremento(meses)");
-         aumentoporActualizacinTextField = $(TextFieldElement.class).caption("Aumento por Actualización");
+         aumentoporActualizacinTextField = $(TextFieldElement.class).caption("Aumento por Actualización( % )");
          tipoInteresComboboxMonto = $(ComboBoxElement.class).caption("Tipo Interes");
          valorInicialTextField = $(TextFieldElement.class).caption("Valor Inicial $");
          tipoMonedaRadioButtonGroup = $(RadioButtonGroupElement.class).caption("Tipo Moneda");
