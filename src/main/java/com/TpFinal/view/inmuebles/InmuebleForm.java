@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,6 +99,7 @@ public class InmuebleForm extends FormLayout {
     private ProvinciaService provinciaService = new ProvinciaService();
 
     private Image imagen;
+	boolean edicion=false;
 
     TabSheet tabSheet;
 
@@ -131,16 +133,20 @@ public class InmuebleForm extends FormLayout {
 		if (provincia != null) {
 		    localidades.setEnabled(true);
 		    localidades.setItems(provincia.getLocalidades());
-		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
-		    localidades.setSelectedItem(null);
+			if (!edicion) {
+				localidades.setSelectedItem(provincia.getLocalidades().get(0));
+				localidades.setSelectedItem(null);
+			}
 		}
 
 		else {
 		    localidades.setEnabled(false);
 		    localidades.setSelectedItem(null);
 		}
+		edicion=false;
 
-	    }
+		}
+
 
 	});
 
@@ -149,6 +155,7 @@ public class InmuebleForm extends FormLayout {
 	    public void valueChange(HasValue.ValueChangeEvent<Localidad> valueChangeEvent) {
 
 		if (valueChangeEvent.getValue() != null) {
+
 		    String CP = valueChangeEvent.getValue().getCodigoPostal();
 		    if (!CP.equals("0"))
 			codPostal.setValue(CP);
@@ -452,6 +459,7 @@ public class InmuebleForm extends FormLayout {
 
 	if (inmueble != null) {
 	    this.inmueble = inmueble;
+	    this.edicion=true;
 	    binderInmueble.readBean(this.inmueble);
 	    Resource res = inmbService.getPortada(this.inmueble);
 	    if (res == null) {
@@ -461,10 +469,22 @@ public class InmuebleForm extends FormLayout {
 	    	imagen.setIcon(null);
 		imagen.setSource(res);
 	    }
-
+		comboInmobiliaria.setEnabled(false);
+	    btnNuevaInmobiliaria.setEnabled(false);
 	    Notification.show(this.inmueble.getNombreArchivoPortada());
 	    delete.setVisible(true);
 	} else {
+		btnNuevaInmobiliaria.setEnabled(true);
+		comboInmobiliaria.setEnabled(true);
+		//FIXME fix ultra trucho/
+		List<Localidad> lista=new ArrayList<>();
+		lista.add(new Localidad());
+		this.localidades.setItems(lista);
+		Localidad loc=new Localidad();
+		loc.setCodigoPostal("");
+		localidades.setSelectedItem(loc);
+		//FIXME /fix ultra trucho
+		this.edicion=false;
 	    imagen.setSource(null);
 	    imagen.setIcon(new ThemeResource("sinPortada.png"));
 	    this.inmueble = InmuebleService.getInstancia();

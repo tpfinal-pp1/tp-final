@@ -199,6 +199,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    newItem.addClickListener(e -> {
 		grid.asSingleSelect().clear();
 		inmuebleForm.clearFields();
+		inmuebleForm.edicion=false;
 		inmuebleForm.setInmueble(null);
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -427,12 +428,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	public void updateList() {
 	    List<Inmueble> inmuebles = inmuebleService.findAll(filtro);
 	    inmuebles.forEach(i ->{
-		System.out.println("---------------------------------------------------------");
-		System.out.println("---------------------------------------------------------");
-		System.out.println(i);
-		System.out.println("Cantidad de publicaciones: " + i.getPublicaciones()!= null? i.getPublicaciones().size() : "0");
+		//System.out.println("---------------------------------------------------------");
+		//System.out.println("---------------------------------------------------------");
+		//System.out.println(i);
+		//System.out.println("Cantidad de publicaciones: " + i.getPublicaciones()!= null? i.getPublicaciones().size() : "0");
 		if (i.getPublicaciones()!= null) {
-		    i.getPublicaciones().forEach(p -> System.out.println("Publicacion:" + p));
+		   // i.getPublicaciones().forEach(p ->// System.out.println("Publicacion:" + p));
 		}
 	    });
 	    grid.setItems(inmuebles);
