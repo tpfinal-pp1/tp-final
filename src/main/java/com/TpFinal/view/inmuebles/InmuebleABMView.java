@@ -1,11 +1,6 @@
 package com.TpFinal.view.inmuebles;
 
-import com.TpFinal.dto.contrato.EstadoContrato;
-import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
-import com.TpFinal.dto.inmueble.Direccion;
-import com.TpFinal.dto.inmueble.EstadoInmueble;
-import com.TpFinal.dto.inmueble.Inmueble;
-import com.TpFinal.dto.inmueble.TipoInmueble;
+import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.component.DefaultLayout;
@@ -17,12 +12,12 @@ import com.TpFinal.view.persona.PersonaABMViewWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
-import com.vaadin.server.*;
+import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
@@ -293,9 +288,10 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    filtroDireccion.addValueChangeListener(e -> {
 		if (e.getValue() != null) {
 		    if (!filtroDireccion.isEmpty()) {
-			filtro.setDireccion(inmueble -> inmueble.getDireccion()
-				.toString().toLowerCase()
-				.contains(filtroDireccion.getValue().toLowerCase()));
+			filtro.setDireccion(inmueble -> inmueble.getDireccion() != null &&
+					inmueble.getDireccion()
+					.toString().toLowerCase()
+					.contains(filtroDireccion.getValue().toLowerCase()));
 		    } else
 			filtro.setDireccion(inmueble -> true);
 

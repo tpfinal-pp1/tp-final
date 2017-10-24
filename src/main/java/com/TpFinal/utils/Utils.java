@@ -1,6 +1,14 @@
 package com.TpFinal.utils;
 
-import java.io.*;
+import com.vaadin.data.ValidationException;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.VaadinRequest;
+import com.vaadin.util.CurrentInstance;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -8,14 +16,6 @@ import java.text.ParsePosition;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import com.vaadin.data.ValidationException;
-import com.vaadin.server.StreamResource;
-import com.vaadin.server.VaadinRequest;
-import com.vaadin.util.CurrentInstance;
 
 public class Utils {
 
@@ -131,7 +131,7 @@ public class Utils {
 
     public static void mostarErroresValidator(ValidationException e) {
 	System.out.println(e.getMessage());
-	e.getFieldValidationErrors().forEach(err -> System.out.println(err.getField()));
+	e.getFieldValidationErrors().forEach(err -> System.out.println("Campo invalido "+err.getField()));
 	e.getValidationErrors().forEach(err -> System.out.println(err.getErrorMessage()));
     }
 

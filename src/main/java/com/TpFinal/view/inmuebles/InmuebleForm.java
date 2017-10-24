@@ -131,8 +131,11 @@ public class InmuebleForm extends FormLayout {
 		if (provincia != null) {
 		    localidades.setEnabled(true);
 		    localidades.setItems(provincia.getLocalidades());
-		    
-		} else {
+		    localidades.setSelectedItem(provincia.getLocalidades().get(0));
+		    localidades.setSelectedItem(null);
+		}
+
+		else {
 		    localidades.setEnabled(false);
 		    localidades.setSelectedItem(null);
 		}
@@ -299,7 +302,7 @@ public class InmuebleForm extends FormLayout {
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
 
 	binderInmueble.forField(this.comboInmobiliaria)
-		.bind(inmueble -> inmueble.getInmobiliaria(), setInmobiliaria());
+		.bind(Inmueble::getInmobiliaria, setInmobiliaria());
 
 	binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
