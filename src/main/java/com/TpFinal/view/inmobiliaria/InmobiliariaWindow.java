@@ -4,37 +4,20 @@ import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
 import com.TpFinal.dto.inmueble.Direccion;
-import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.InmobiliariaService;
-import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
@@ -101,11 +84,13 @@ public abstract class InmobiliariaWindow extends Window {
 	    		@Override
 	    		public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
 	    			Provincia provincia = valueChangeEvent.getValue();
-	    			if (provincia != null) {
-	    				localidades.setEnabled(true);
-	    				localidades.setItems(provincia.getLocalidades());
-	    				localidades.setSelectedItem(provincia.getLocalidades().get(0));
-	    			} else {
+					if (provincia != null) {
+						localidades.setEnabled(true);
+						localidades.setItems(provincia.getLocalidades());
+						localidades.setSelectedItem(provincia.getLocalidades().get(0));
+						localidades.setSelectedItem(null);
+					}
+					else {
 	    				localidades.setEnabled(false);
 	    				localidades.setSelectedItem(null);
 	    			}
