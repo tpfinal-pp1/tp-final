@@ -33,7 +33,7 @@ public class Contrato implements Identificable, BorradoLogico {
     @Column(name = Contrato.estadoRegistroS)
     private EstadoRegistro estadoRegistro;
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @Cascade({ CascadeType.SAVE_UPDATE})//, CascadeType.MERGE })
     @JoinColumn(name = "id_inmueble")
     @NotNull
     protected Inmueble inmueble;
