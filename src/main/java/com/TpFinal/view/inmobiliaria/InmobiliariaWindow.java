@@ -79,6 +79,7 @@ public abstract class InmobiliariaWindow extends Window {
 	        
 	        localidades.setItems(provinciaService.getLocalidades());
 	    	provincias.setItems(provinciaService.getProvincias());
+
 	    	
 	    	provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
 	    		@Override
