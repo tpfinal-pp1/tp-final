@@ -110,7 +110,12 @@ public class InmuebleForm extends FormLayout {
 		delete.setStyleName(ValoTheme.BUTTON_DANGER);
 		save.addClickListener(e -> this.save());
 
-		btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
+		btnNuevoPropietario.addClickListener(e -> {
+			if(this.cbEsInmobiliaria.getValue()==false)
+				this.setNewPropietario();
+			else if(this.cbEsInmobiliaria.getValue()==true)
+				this.setNewInmobiliaria();
+		});
 		save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 		setVisible(false);
@@ -183,6 +188,24 @@ public class InmuebleForm extends FormLayout {
 		propietario.addInmueble(this.inmueble);
 
 		new PersonaFormWindow(this.persona) {
+			@Override
+			public void onSave() {
+				personaService.saveOrUpdate(persona);
+				updateComboPersonas();
+				comboPropietario.setSelectedItem(persona);
+			}
+		};
+
+	}
+	
+	private void setNewInmobiliaria() {
+		this.persona = new Persona();
+		this.persona.setEsInmobiliaria(true);
+		persona.addRol(new Propietario());
+		Propietario propietario = (Propietario) persona.getRol(Rol.Propietario);
+		propietario.addInmueble(this.inmueble);
+
+		new InmobiliariaWindow(this.persona) {
 			@Override
 			public void onSave() {
 				personaService.saveOrUpdate(persona);

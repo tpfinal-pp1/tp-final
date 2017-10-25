@@ -30,16 +30,17 @@ public abstract class PersonaFormWindow extends Window {
      * explicitly set, calling fieldGroup.setItemDataSource(user) synchronizes
      * the fields with the user object.
      */
-    private Persona persona;
-    private Binder<Persona> binderPersona = new Binder<>(Persona.class);
-    PersonaService service = new PersonaService();
-    TextField nombre = new TextField("Nombre");
-    TextField apellido = new TextField("Apellido");
-    TextField DNI = new TextField("DNI");
-    TextField telefono = new TextField("Telefono");
-    TextField telefono2 = new TextField("Celular");
-    TextField mail = new TextField("Mail");
-    TextArea infoAdicional = new TextArea("Info");
+    protected HorizontalLayout root = new HorizontalLayout();
+    protected  Persona persona;
+    protected  Binder<Persona> binderPersona = new Binder<>(Persona.class);
+    protected PersonaService service = new PersonaService();
+    protected TextField nombre = new TextField("Nombre");
+    protected TextField apellido = new TextField("Apellido");
+    protected TextField DNI = new TextField("DNI");
+    protected TextField telefono = new TextField("Telefono");
+    protected TextField telefono2 = new TextField("Celular");
+    protected TextField mail = new TextField("Mail");
+    protected TextArea infoAdicional = new TextArea("Info");
 
     public PersonaFormWindow(Persona p) {
         this.persona=p;
@@ -158,7 +159,7 @@ public abstract class PersonaFormWindow extends Window {
         footer.setWidth(100.0f, Unit.PERCENTAGE);
         footer.setSpacing(false);
 
-        Button ok = new Button("Guardar Persona");
+        Button ok = new Button("Guardar");
         ok.addStyleName(ValoTheme.BUTTON_PRIMARY);
         ok.addClickListener(new ClickListener() {
             @Override
@@ -175,7 +176,7 @@ public abstract class PersonaFormWindow extends Window {
 
 
     private Component buildProfileTab() {
-        HorizontalLayout root = new HorizontalLayout();
+        
         root.setCaption("Persona");
         root.setIcon(VaadinIcons.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
