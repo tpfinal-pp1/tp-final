@@ -127,7 +127,6 @@ public class InmuebleService {
 
 
 		}
-		System.out.println("Portada Nula");
 		return null;
 
 	}
