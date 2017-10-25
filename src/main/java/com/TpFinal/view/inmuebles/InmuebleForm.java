@@ -22,6 +22,8 @@ import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.event.selection.SingleSelectionEvent;
+import com.vaadin.event.selection.SingleSelectionListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Resource;
 import com.vaadin.server.Setter;
@@ -118,30 +120,29 @@ public class InmuebleForm extends FormLayout {
 		provincias.setItems(provinciaService.getProvincias());
 
 		// provincias.setTextInputAllowed(false);
-		provincias.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
-			@Override
-			public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
-				Provincia provincia = valueChangeEvent.getValue();
+		provincias.setEmptySelectionAllowed(false);
 
-				if (provincia != null) {
-					localidades.setEnabled(true);
-					localidades.setItems(provincia.getLocalidades());
-					if (!edicion) {
+		provincias.addSelectionListener(new SingleSelectionListener<Provincia>() {
+			@Override
+			public void selectionChange(SingleSelectionEvent<Provincia> singleSelectionEvent) {
+				if(singleSelectionEvent.isUserOriginated()){
+					Provincia provincia = singleSelectionEvent.getValue();
+					if(provincia!=null) {
+						localidades.setEnabled(true);
+						localidades.setItems(provincia.getLocalidades());
 						localidades.setSelectedItem(provincia.getLocalidades().get(0));
 						localidades.setSelectedItem(null);
 					}
-				}
 
-				else {
-					localidades.setEnabled(false);
-					localidades.setSelectedItem(null);
-				}
-				edicion=false;
+					}
+
+
+
+
 
 			}
-
-
 		});
+
 
 		localidades.addValueChangeListener(new HasValue.ValueChangeListener<Localidad>() {
 			@Override
@@ -150,11 +151,15 @@ public class InmuebleForm extends FormLayout {
 				if (valueChangeEvent.getValue() != null) {
 
 					String CP = valueChangeEvent.getValue().getCodigoPostal();
+
 					if (!CP.equals("0"))
 						codPostal.setValue(CP);
 
 					else
 						codPostal.setValue("");
+				}
+				else{
+					codPostal.setValue("");
 				}
 
 			}
@@ -421,9 +426,10 @@ public class InmuebleForm extends FormLayout {
 	public void setInmueble(Inmueble inmueble) {
 
 		if (inmueble != null) {
+
 			this.inmueble = inmueble;
-			this.edicion=true;
 			binderInmueble.readBean(this.inmueble);
+			localidades.setEnabled(true);
 			Resource res = inmbService.getPortada(this.inmueble);
 			if (res == null) {
 				imagen.setIcon(new ThemeResource("sinPortada.png"));
@@ -432,18 +438,8 @@ public class InmuebleForm extends FormLayout {
 				imagen.setIcon(null);
 				imagen.setSource(res);
 			}
-			Notification.show(this.inmueble.getNombreArchivoPortada());
 			delete.setVisible(true);
 		} else {
-			//FIXME fix ultra trucho/
-			List<Localidad> lista=new ArrayList<>();
-			lista.add(new Localidad());
-			this.localidades.setItems(lista);
-			Localidad loc=new Localidad();
-			loc.setCodigoPostal("");
-			localidades.setSelectedItem(loc);
-			//FIXME /fix ultra trucho
-			this.edicion=false;
 			imagen.setSource(null);
 			imagen.setIcon(new ThemeResource("sinPortada.png"));
 			this.inmueble = InmuebleService.getInstancia();
@@ -479,7 +475,6 @@ public class InmuebleForm extends FormLayout {
 
 		boolean success = false;
 		try {
-
 			binderInmueble.writeBean(inmueble);
 			Notification.show(inmueble.nombreArchivoPortada);
 			if (inmueble.getPropietario().getPersona() != null)
