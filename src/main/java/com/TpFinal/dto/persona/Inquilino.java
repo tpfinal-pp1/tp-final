@@ -22,7 +22,7 @@ public class Inquilino extends RolPersona {
     @Column(name = "calificacion")
     private Calificacion calificacion;
     @OneToMany(mappedBy = "inquilinoContrato", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE })
+//    @Cascade({ CascadeType.SAVE_UPDATE })
     private Set<ContratoAlquiler> contratos = new HashSet<>();
 
     public Inquilino() {

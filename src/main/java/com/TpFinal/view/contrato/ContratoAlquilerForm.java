@@ -29,6 +29,7 @@ import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.risto.stepper.IntStepper;
 
@@ -112,7 +113,6 @@ public class ContratoAlquilerForm extends FormLayout {
     TabSheet tabSheet;
 
     public ContratoAlquilerForm(ContratoABMView addressbook) {
-	// setSizeUndefined();
 	contratoABMView = addressbook;
 	configureComponents();
 	binding();
@@ -188,23 +188,29 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.save();
 	    binderContratoAlquiler.validate();
 	});
-	finalizarCarga.addClickListener(e -> {
-	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
-	    if (binderContratoAlquiler.isValid()) {
-		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
-		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
-		service.addCobros(contratoAlquiler);
-	    } else {
-		tfDocumento.setValue("Cargue un documento.");
-	    }
-	    this.save();
-	    binderContratoAlquiler.validate();
-	});
+	finalizarCarga.addClickListener(renovarContrato());
 	renovarContrato.addClickListener(e -> {
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    this.setContratoAlquiler(contratoAlquiler.clone());
 
 	});
+    }
+
+    private ClickListener renovarContrato() {
+	return e -> {
+	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
+	    if (binderContratoAlquiler.isValid()) {
+		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
+		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
+		service.addCobros(contratoAlquiler);
+		this.save();
+		
+	    } else {
+		tfDocumento.setValue("Cargue un documento.");
+		binderContratoAlquiler.validate();
+	    }
+
+	};
     }
 
     private void binding() {
