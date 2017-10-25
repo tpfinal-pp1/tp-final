@@ -2,7 +2,6 @@ package com.TpFinal.view.inmuebles;
 
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
-import com.TpFinal.dto.inmobiliaria.Inmobiliaria;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.Inmueble;
@@ -10,7 +9,6 @@ import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.Rol;
-import com.TpFinal.services.InmobiliariaService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.ProvinciaService;
@@ -44,9 +42,7 @@ import java.util.List;
 public class InmuebleForm extends FormLayout {
     private InmuebleService inmbService = new InmuebleService();
     private PersonaService personaService = new PersonaService();
-    private InmobiliariaService inmobiliariaService = new InmobiliariaService();
     private Inmueble inmueble;
-    private Inmobiliaria inmobiliaria = new Inmobiliaria();
 
     // Acciones
     private Button save = new Button("Guardar");
@@ -65,7 +61,6 @@ public class InmuebleForm extends FormLayout {
 
     // TabPrincipal
     private final ComboBox<Persona> comboPropietario = new ComboBox<>();
-    private final ComboBox<Inmobiliaria> comboInmobiliaria = new ComboBox<>();
     private Persona persona = new Persona();
     private Button btnNuevoPropietario = new Button(VaadinIcons.PLUS);
     private Button btnNuevaInmobiliaria = new Button(VaadinIcons.PLUS);
@@ -109,7 +104,6 @@ public class InmuebleForm extends FormLayout {
 	binding();
 	buildLayout();
 	updateComboPersonas();
-	updateComboInmobiliaria();
     }
 
     private void configureComponents() {
@@ -117,7 +111,6 @@ public class InmuebleForm extends FormLayout {
 	save.addClickListener(e -> this.save());
 
 	btnNuevoPropietario.addClickListener(e -> this.setNewPropietario());
-	btnNuevaInmobiliaria.addClickListener(e -> this.setNewInmobiliaria());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
 	setVisible(false);
@@ -170,7 +163,6 @@ public class InmuebleForm extends FormLayout {
 
 
 	comboPropietario.setTextInputAllowed(true);
-	comboInmobiliaria.setTextInputAllowed(true);
 	clasesInmueble.setTextInputAllowed(true);
 	localidades.setTextInputAllowed(true);
 	provincias.setTextInputAllowed(true);
@@ -194,28 +186,6 @@ public class InmuebleForm extends FormLayout {
 
     }
 
-    private void setNewInmobiliaria() {
-	this.inmobiliaria = new Inmobiliaria();
-	this.inmobiliaria.addInmueble(this.inmueble);
-	inmobiliaria.setDireccion(new Direccion.Builder().build());
-
-	new InmobiliariaWindow(this.inmobiliaria) {
-
-	    @Override
-	    public void onSave() {
-		inmobiliariaService.saveOrUpdate(inmobiliaria);
-		updateComboInmobiliaria();
-		comboInmobiliaria.setSelectedItem(inmobiliaria);
-		System.out.println("Cantidad de personas despues de guardar " + inmobiliariaService.readAll().size());
-	    }
-	};
-    }
-
-    private void updateComboInmobiliaria() {
-	List<Inmobiliaria> inms = this.inmobiliariaService.readAll();
-	comboInmobiliaria.setItems(inms);
-	System.out.println(inms.size());
-    }
 
     private void binding() {
 
@@ -308,9 +278,6 @@ public class InmuebleForm extends FormLayout {
 		.withNullRepresentation(new Persona())
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
 
-	binderInmueble.forField(this.comboInmobiliaria)
-		.bind(Inmueble::getInmobiliaria, setInmobiliaria());
-
 	binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
@@ -344,17 +311,6 @@ public class InmuebleForm extends FormLayout {
 
     }
 
-    private Setter<Inmueble, Inmobiliaria> setInmobiliaria() {
-	return (inmueble, inmobiliaria) -> {
-	    if (inmobiliaria != null) {
-		if (!inmobiliaria.getInmuebles().contains(inmueble)) {
-		    inmobiliaria.addInmueble(inmueble);
-		}
-	    }
-	};
-
-    }
-
     private void buildLayout() {
 	// addStyleName("v-scrollable");
 	buscarUbicacion.setEnabled(false);
@@ -362,7 +318,6 @@ public class InmuebleForm extends FormLayout {
 	comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-	comboInmobiliaria.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	btnNuevaInmobiliaria.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btnNuevaInmobiliaria.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
@@ -386,10 +341,8 @@ public class InmuebleForm extends FormLayout {
 	propietarioCombo.setExpandRatio(comboPropietario, 1f);
 
 	HorizontalLayout inmobiliariaCombo = new HorizontalLayout();
-	inmobiliariaCombo.addComponents(comboInmobiliaria, btnNuevaInmobiliaria);
 	inmobiliariaCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	inmobiliariaCombo.setCaption("inmobiliaria");
-	inmobiliariaCombo.setExpandRatio(comboInmobiliaria, 1f);
 
 	imagen = new Image(null, null);
 	imagen.setWidth(100.0f, Unit.PIXELS);
@@ -469,13 +422,11 @@ public class InmuebleForm extends FormLayout {
 	    	imagen.setIcon(null);
 		imagen.setSource(res);
 	    }
-		comboInmobiliaria.setEnabled(false);
 	    btnNuevaInmobiliaria.setEnabled(false);
 	    Notification.show(this.inmueble.getNombreArchivoPortada());
 	    delete.setVisible(true);
 	} else {
 		btnNuevaInmobiliaria.setEnabled(true);
-		comboInmobiliaria.setEnabled(true);
 		//FIXME fix ultra trucho/
 		List<Localidad> lista=new ArrayList<>();
 		lista.add(new Localidad());
@@ -564,7 +515,6 @@ public class InmuebleForm extends FormLayout {
 	this.cocheras.clear();
 	this.codPostal.clear();
 	this.comboPropietario.clear();
-	this.comboInmobiliaria.clear();
 	this.cParrilla.clear();
 	this.cPpileta.clear();
 	this.dormitorios.clear();
@@ -582,7 +532,6 @@ public class InmuebleForm extends FormLayout {
 	// TabElements for tab principal
 	List<Component> tabPrincipalComponents = new ArrayList<Component>();
 	tabPrincipalComponents.add(comboPropietario);
-	tabPrincipalComponents.add(comboInmobiliaria);
 	tabPrincipalComponents.add(clasesInmueble);
 	tabPrincipalComponents.add(tiposInmueble);
 	tabPrincipalComponents.add(new BlueLabel("Direccion"));
