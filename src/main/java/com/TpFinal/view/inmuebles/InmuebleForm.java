@@ -64,7 +64,6 @@ public class InmuebleForm extends FormLayout {
 	private CheckBox cbEsInmobiliaria= new CheckBox("Inmboliaria");
 	private Persona persona = new Persona();
 	private Button btnNuevoPropietario = new Button(VaadinIcons.PLUS);
-	private Button btnNuevaInmobiliaria = new Button(VaadinIcons.PLUS);
 	private ComboBox<ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
 	private RadioButtonGroup<TipoInmueble> tiposInmueble = new RadioButtonGroup<>("Tipo", TipoInmueble.toList());
 
@@ -163,8 +162,10 @@ public class InmuebleForm extends FormLayout {
 		});
 		
 		cbEsInmobiliaria.addValueChangeListener(event -> {
-			comboPropietario.setValue(new Persona());
-			updateComboPersonas();
+			if(event.isUserOriginated()) {
+				comboPropietario.setValue(new Persona());
+				updateComboPersonas();
+			}
 		});
 
 
@@ -285,7 +286,12 @@ public class InmuebleForm extends FormLayout {
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
 
 		binderInmueble.forField(this.cbEsInmobiliaria)
-		.bind(i->persona.getEsInmobiliaria() ,(i, es)->{});
+		.bind(i->{
+			Persona p=persona;
+			if(i.getPropietario().getPersona()!=null)
+				p=i.getPropietario().getPersona();
+			return p.getEsInmobiliaria(); },(i, es)->{});
+		
 
 		binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
@@ -327,8 +333,6 @@ public class InmuebleForm extends FormLayout {
 		comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 		btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
 		btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-		btnNuevaInmobiliaria.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-		btnNuevaInmobiliaria.addStyleName(ValoTheme.BUTTON_FRIENDLY);
 
 		if (this.abmView.isIsonMobile()) {
 
@@ -349,9 +353,6 @@ public class InmuebleForm extends FormLayout {
 		propietarioCombo.setCaption("Propietario");
 		propietarioCombo.setExpandRatio(comboPropietario, 1f);
 
-		HorizontalLayout inmobiliariaCombo = new HorizontalLayout();
-		inmobiliariaCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		inmobiliariaCombo.setCaption("inmobiliaria");
 
 		imagen = new Image(null, null);
 		imagen.setWidth(100.0f, Unit.PIXELS);
@@ -390,7 +391,7 @@ public class InmuebleForm extends FormLayout {
 		portada.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		buscarUbicacion.setCaption("Ubicación");
 
-		principal = new FormLayout(propietarioCombo, inmobiliariaCombo, clasesInmueble, tiposInmueble,
+		principal = new FormLayout(propietarioCombo, clasesInmueble, tiposInmueble,
 				new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal,new BlueLabel("Adicional"), portada,buscarUbicacion);
 
 		caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
@@ -431,11 +432,9 @@ public class InmuebleForm extends FormLayout {
 				imagen.setIcon(null);
 				imagen.setSource(res);
 			}
-			btnNuevaInmobiliaria.setEnabled(false);
 			Notification.show(this.inmueble.getNombreArchivoPortada());
 			delete.setVisible(true);
 		} else {
-			btnNuevaInmobiliaria.setEnabled(true);
 			//FIXME fix ultra trucho/
 			List<Localidad> lista=new ArrayList<>();
 			lista.add(new Localidad());

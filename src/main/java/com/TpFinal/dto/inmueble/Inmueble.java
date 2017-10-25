@@ -94,7 +94,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     @JoinColumn(name = "id_direccion")
     private Direccion direccion;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
     @JoinColumn(name = "id_proppietario")
     private Propietario propietario;
