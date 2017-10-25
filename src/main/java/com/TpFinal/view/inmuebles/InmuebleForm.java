@@ -285,14 +285,7 @@ public class InmuebleForm extends FormLayout {
 		.bind(inmueble -> inmueble.getPropietario().getPersona(), setPropietario());
 
 		binderInmueble.forField(this.cbEsInmobiliaria)
-		.bind(i->{
-			System.out.println(i.getPropietario().getPersona().getNombre());
-			return i.getPropietario().getPersona().getEsInmobiliaria(); 
-		},
-				(i, es)->{
-					System.out.println(cbEsInmobiliaria.getValue());
-					i.getPropietario().getPersona().setEsInmobiliaria(es);
-				});
+		.bind(i->persona.getEsInmobiliaria() ,(i, es)->{});
 
 		binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
