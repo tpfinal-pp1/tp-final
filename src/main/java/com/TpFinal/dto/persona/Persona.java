@@ -57,7 +57,7 @@ public class Persona implements Identificable, BorradoLogico {
 	@NotNull
 	private EstadoRegistro estadoRegistro;
 	@Column(name = inmobiliaria)
-	private boolean esInmobiliaria;
+	private Boolean esInmobiliaria;
 
 	@OneToOne(orphanRemoval = true)
 	@Cascade({ CascadeType.ALL })
@@ -232,11 +232,11 @@ public class Persona implements Identificable, BorradoLogico {
 		this.estadoRegistro = estado;
 	}
 
-	public boolean getEsInmobiliaria() {
+	public Boolean getEsInmobiliaria() {
 		return esInmobiliaria;
 	}
 
-	public void setEsInmobiliaria(boolean esInmobiliaria) {
+	public void setEsInmobiliaria(Boolean esInmobiliaria) {
 		this.esInmobiliaria = esInmobiliaria;
 	}
 
@@ -343,7 +343,7 @@ public class Persona implements Identificable, BorradoLogico {
 		private String DNI;
 		private String infoAdicional;
 		protected Set<RolPersona> roles = new HashSet<>();
-		private boolean esInmobiliaria;
+		private Boolean esInmobiliaria;
 		
 		public Builder setId(Long dato) {
 			this.id = dato;
@@ -395,7 +395,7 @@ public class Persona implements Identificable, BorradoLogico {
 			return this;
 		}
 		
-		public Builder setEsInmobiliaria(boolean dato) {
+		public Builder setEsInmobiliaria(Boolean dato) {
 			this.esInmobiliaria = dato;
 			return this;
 		}
