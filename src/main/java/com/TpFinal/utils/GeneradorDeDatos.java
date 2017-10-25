@@ -86,6 +86,9 @@ public class GeneradorDeDatos {
 		    Persona p = personaRandom();
 		    daoPer.create(p);
 		    Propietario prop = asignarRolPropietarioA(p);
+		    prop.getPersona().setEsInmobiliaria(Math.random() < 0.5);
+		    if(prop.getPersona().getEsInmobiliaria())
+		    	prop.getPersona().setNombre("inm: "+prop.getPersona().getNombre());
 
 		    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);
 		    pubVenta.setEstadoPublicacion(EstadoPublicacion.Activa);
@@ -93,6 +96,9 @@ public class GeneradorDeDatos {
 		    pubAlquiler.setEstadoPublicacion(EstadoPublicacion.Terminada);
 		    Persona comprador = personaRandom();
 		    Persona inquilino = personaRandom();
+		    //hardcodeado Refactorizar
+		    inquilino.setEsInmobiliaria(false);
+		    comprador.setEsInmobiliaria(false);
 		    daoPer.saveOrUpdate(comprador);
 
 		    Inquilino inq = asignarRolInquilinoA(inquilino);

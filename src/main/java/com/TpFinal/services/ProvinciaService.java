@@ -71,7 +71,6 @@ public class ProvinciaService {
     public Localidad getLocalidadFromNombreAndProvincia(String nombreLocalidad, String nombreProvincia) {
 	for (Localidad l : localidades) {
 	    if (l.getNombre().equalsIgnoreCase(nombreLocalidad) && l.getProvincia().getNombre().equalsIgnoreCase(nombreProvincia)) {
-		System.out.println("Localidad Encontrada!");
 		return l;
 	    }
 	}
@@ -84,7 +83,6 @@ public class ProvinciaService {
     public Provincia getProvinciaFromString(String provincia) {
 	for (Provincia p : provincias) {
 	    if (p.getNombre().equalsIgnoreCase(provincia)) {
-		System.out.println("Provincia Encontrada!");
 		return p;
 	    }
 	}

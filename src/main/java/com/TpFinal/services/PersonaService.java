@@ -31,6 +31,18 @@ public class PersonaService {
 		return dao.readAllActives();
 	}
 	
+	public List<Persona>getInmobiliarias(){
+		return dao.readAllActives().stream()
+				.filter(p -> p.getEsInmobiliaria())
+				.collect(Collectors.toList());
+	}
+	
+	public List<Persona>getPersonas(){
+		return dao.readAllActives().stream()
+				.filter(p -> !p.getEsInmobiliaria())
+				.collect(Collectors.toList());
+	}
+	
 	 public synchronized List<Persona> findAll(String stringFilter) {
 	        ArrayList arrayList = new ArrayList();
 	        List<Persona> personas=dao.readAllActives();

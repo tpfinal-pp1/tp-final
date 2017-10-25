@@ -85,7 +85,21 @@ public class PersonaServiceNuevoIT {
     		estaD=estaD||i.getCalificacion().equals(Calificacion.D);
     	}
 	}
-	
+	 
+	@Test
+	public void inmoPersona() {
+		service.saveOrUpdate(instancia("1"));
+		service.saveOrUpdate(instancia("2"));
+		service.saveOrUpdate(instancia("3"));
+		service.saveOrUpdate(instanciaInmo("4"));
+		service.saveOrUpdate(instanciaInmo("5"));
+		service.saveOrUpdate(instanciaInmo("6"));
+		service.saveOrUpdate(instanciaInmo("7"));
+		
+		assertEquals(7, service.readAll().size());
+		assertEquals(3, service.getPersonas().size());
+		assertEquals(4, service.getInmobiliarias().size());
+	}
 	
 	public static Persona instancia(String numero) {
         return new Persona.Builder()
@@ -97,6 +111,21 @@ public class PersonaServiceNuevoIT {
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
+                .setEsInmobiliaria(false)
+                .build();
+    }
+	
+	public static Persona instanciaInmo(String numero) {
+        return new Persona.Builder()
+                .setNombre("nombre "+numero)
+                .setApellido("apellido "+numero)
+                .setMail("mail "+numero)
+                .setTelefono("telefono "+numero)
+                .setTelefono("telefono "+numero)
+                .setTelefono2("telefono2 "+numero)
+                .setDNI("Dni"+numero)
+                .setinfoAdicional("Info Adicional"+ numero)
+                .setEsInmobiliaria(true)
                 .build();
     }
     
