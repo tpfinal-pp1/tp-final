@@ -232,7 +232,7 @@ public class Persona implements Identificable, BorradoLogico {
 		this.estadoRegistro = estado;
 	}
 
-	public boolean isEsInmobiliaria() {
+	public boolean getEsInmobiliaria() {
 		return esInmobiliaria;
 	}
 
