@@ -4,6 +4,7 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
@@ -151,18 +152,11 @@ public class Persona implements Identificable, BorradoLogico {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Persona other = (Persona) obj;
-		if (DNI == null) {
-			if (other.DNI != null)
-				return false;
-		} else if (!DNI.equals(other.DNI))
-			return false;
-		return true;
+		    return true;
+		if (!(obj instanceof Persona))
+		    return false;
+		Persona inmueble = (Persona) obj;
+		return getId() != null && Objects.equals(getId(), inmueble.getId());
 	}
 
 	public String getNombre() {
