@@ -63,7 +63,7 @@ public class InmuebleForm extends FormLayout {
 
 	// TabPrincipal
 	private final ComboBox<Persona> comboPropietario = new ComboBox<>();
-	private CheckBox cbEsInmobiliaria= new CheckBox("Inmboliaria");
+	private CheckBox cbEsInmobiliaria= new CheckBox(null);
 	private Persona persona = new Persona();
 	private Button btnNuevoPropietario = new Button(VaadinIcons.PLUS);
 	private ComboBox<ClaseInmueble> clasesInmueble = new ComboBox<>("Clase", ClaseInmueble.toList());
@@ -207,8 +207,6 @@ public class InmuebleForm extends FormLayout {
 	private void setNewInmobiliaria() {
 		this.persona = new Persona();
 		this.persona.setEsInmobiliaria(true);
-		this.persona.setApellido("  ");
-		this.persona.setDNI("  ");
 		persona.addRol(new Propietario());
 		Propietario propietario = (Propietario) persona.getRol(Rol.Propietario);
 		propietario.addInmueble(this.inmueble);
@@ -378,8 +376,9 @@ public class InmuebleForm extends FormLayout {
 
 		}
 
+
 		HorizontalLayout propietarioCombo = new HorizontalLayout();
-		propietarioCombo.addComponents(comboPropietario, cbEsInmobiliaria, btnNuevoPropietario);
+		propietarioCombo.addComponents(comboPropietario,  btnNuevoPropietario);
 		propietarioCombo.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		propietarioCombo.setCaption("Propietario");
 		propietarioCombo.setExpandRatio(comboPropietario, 1f);
@@ -421,8 +420,9 @@ public class InmuebleForm extends FormLayout {
 		buscarUbicacion.setCaption("Ubicación");
 		portada.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		buscarUbicacion.setCaption("Ubicación");
-
-		principal = new FormLayout(propietarioCombo, clasesInmueble, tiposInmueble,
+		HorizontalLayout layoutCbBoxInmov=new HorizontalLayout(cbEsInmobiliaria);
+		layoutCbBoxInmov.setCaption("Inmobiliaria");
+		principal = new FormLayout(layoutCbBoxInmov,propietarioCombo, clasesInmueble, tiposInmueble,
 				new BlueLabel("Direccion"), calle, nro, provincias, localidades, codPostal,new BlueLabel("Adicional"), portada,buscarUbicacion);
 
 		caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
@@ -455,6 +455,7 @@ public class InmuebleForm extends FormLayout {
 
 			this.inmueble = inmueble;
 			binderInmueble.readBean(this.inmueble);
+			updateComboPersonas();
 			localidades.setEnabled(true);
 			Resource res = inmbService.getPortada(this.inmueble);
 			if (res == null) {
@@ -481,7 +482,7 @@ public class InmuebleForm extends FormLayout {
 
 	private void updateComboPersonas() {
 		PersonaService ps = new PersonaService();
-		if(cbEsInmobiliaria.getValue())
+		if(cbEsInmobiliaria.getValue()==true)
 			comboPropietario.setItems(ps.getInmobiliarias());
 		else
 			comboPropietario.setItems(ps.getPersonas());
