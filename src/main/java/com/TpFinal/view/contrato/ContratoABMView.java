@@ -290,6 +290,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 					anioInt = Integer.parseInt(anio.getValue());
 					filtro.setAnio(contrato -> contrato.getFechaCelebracion().getYear() == anioInt);
 				} catch (Exception ex) {
+				    System.err.println(ex.getMessage());
 					filtro.setAnio(contrato -> true);
 				}
 			} else {

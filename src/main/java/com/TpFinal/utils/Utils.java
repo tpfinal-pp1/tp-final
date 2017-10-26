@@ -68,6 +68,7 @@ public class Utils {
 		    is = new FileInputStream("Files" + File.separator + filename);
 		} catch (FileNotFoundException e) {
 		    System.err.println("No se ha encontrado el archivo a descargar Files/" + filename);
+		    e.printStackTrace();
 		}
 		return is;
 	    }

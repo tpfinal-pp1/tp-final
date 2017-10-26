@@ -106,12 +106,14 @@ public class PublicacionServiceIT {
 	try {
 	    servicePub.save(pa);
 	} catch (PublicacionServiceException e) {
-
+	    System.err.println("Error al guardar publicacion Alquiler: \n"+ pa);
+	    e.printStackTrace();
 	}
 
 	try {
 	    servicePub.save(pv);
 	} catch (PublicacionServiceException e) {
+	    System.err.println("Error al guardar publicacion venta:  \n" + pv);
 
 	}
 

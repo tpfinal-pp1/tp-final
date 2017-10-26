@@ -116,6 +116,7 @@ public class InmuebleService {
 
 							return new FileInputStream("Files" + File.separator + inmueble.getNombreArchivoPortada());
 						} catch (FileNotFoundException e) {
+						    System.out.println("Error al Buscar Portada de inmueble: " + inmueble);
 
 						}
 						return null;

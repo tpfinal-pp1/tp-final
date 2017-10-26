@@ -283,6 +283,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 					anioInt = Integer.parseInt(anio.getValue());
 					filtro.setAnio(contrato -> contrato.getFechaPublicacion().getYear() == anioInt);
 				} catch (Exception ex) {
+				    System.err.println(ex.getMessage());
 					filtro.setAnio(contrato -> true);
 				}
 			} else {
