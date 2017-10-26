@@ -59,7 +59,6 @@ public class Persona implements Identificable, BorradoLogico {
 	private EstadoRegistro estadoRegistro;
 	@Column(name = inmobiliaria)
 	private Boolean esInmobiliaria;
-
 	@OneToOne(orphanRemoval = true)
 	@Cascade({ CascadeType.ALL })
 	private CriterioBusqInmueble prefBusqueda;
