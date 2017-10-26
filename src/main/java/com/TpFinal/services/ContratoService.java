@@ -278,11 +278,11 @@ public class ContratoService {
 
     public List<Contrato> readAll() {
 	List<Contrato> ret = daoContrato.readAllActives();
-	actualizarEstadoContratosAlquilerVencidos(ret);
 	return ret;
     }
 
-    private void actualizarEstadoContratosAlquilerVencidos(List<Contrato> contratos) {
+    public void actualizarEstadoContratosAlquilerVencidos() {
+	List<Contrato> contratos = readAll();
 	contratos.stream().filter(c -> c instanceof ContratoAlquiler)
 		.map(c -> (ContratoAlquiler) c)
 		.forEach(actualizarContratosVencidos());
@@ -302,7 +302,6 @@ public class ContratoService {
 		.stream()
 		.filter(filtro.getFiltroCompuesto())
 		.collect(Collectors.toList());
-	actualizarEstadoContratosAlquilerVencidos(contratos);
 	contratos.sort(Comparator.comparing(Contrato::getId));
 	return contratos;
     }
