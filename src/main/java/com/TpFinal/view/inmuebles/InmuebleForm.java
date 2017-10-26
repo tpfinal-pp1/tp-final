@@ -455,6 +455,7 @@ public class InmuebleForm extends FormLayout {
 
 			this.inmueble = inmueble;
 			binderInmueble.readBean(this.inmueble);
+			updateComboPersonas();
 			localidades.setEnabled(true);
 			Resource res = inmbService.getPortada(this.inmueble);
 			if (res == null) {
