@@ -13,6 +13,7 @@ import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
@@ -525,7 +526,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	    Utils.mostarErroresValidator(e);
 	    checkFieldsPerTab(e.getFieldValidationErrors());
 
-	} catch (Exception e) {
+	} catch (ContratoServiceException e) {
+	    System.err.println("Error al guardar: "+ contratoAlquiler + "\n"+ e.getCause());
+	    e.printStackTrace();
+	}catch(Exception e) {
 	    e.printStackTrace();
 	}
 
