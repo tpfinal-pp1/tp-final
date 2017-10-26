@@ -16,7 +16,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.*;
 
 @Entity
-@Table(name = "personas", uniqueConstraints = @UniqueConstraint(columnNames = { "DNI" }))
+@Table(name = "personas")
 public class Persona implements Identificable, BorradoLogico {
 
 	public static final String idPersona = "idPersona";
@@ -42,7 +42,6 @@ public class Persona implements Identificable, BorradoLogico {
 	@Column(name = mailPersona)
 	private String mail = "";
 	@Column(name = DNIPersona)
-	@NotNull
 	private String DNI = "";
 	@Column(name = telefonoPersona)
 	private String telefono = "";

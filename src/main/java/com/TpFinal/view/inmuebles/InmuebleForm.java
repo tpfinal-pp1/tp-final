@@ -207,8 +207,6 @@ public class InmuebleForm extends FormLayout {
 	private void setNewInmobiliaria() {
 		this.persona = new Persona();
 		this.persona.setEsInmobiliaria(true);
-		this.persona.setApellido("  ");
-		this.persona.setDNI("  ");
 		persona.addRol(new Propietario());
 		Propietario propietario = (Propietario) persona.getRol(Rol.Propietario);
 		propietario.addInmueble(this.inmueble);
@@ -483,7 +481,7 @@ public class InmuebleForm extends FormLayout {
 
 	private void updateComboPersonas() {
 		PersonaService ps = new PersonaService();
-		if(cbEsInmobiliaria.getValue())
+		if(cbEsInmobiliaria.getValue()==true)
 			comboPropietario.setItems(ps.getInmobiliarias());
 		else
 			comboPropietario.setItems(ps.getPersonas());
