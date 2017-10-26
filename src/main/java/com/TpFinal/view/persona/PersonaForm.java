@@ -94,21 +94,20 @@ public class PersonaForm extends FormLayout {
 
                    if (valueChangeEvent.getValue()) {
                        nombre.setValue("Inmobiliaria");
-                       nombre.setCaption("");
+                       nombre.setVisible(false);
                        nombre.setRequiredIndicatorVisible(false);
-                       nombre.setEnabled(false);
                        apellido.setCaption("Nombre");
-                       DNI.setCaption("CUIT");
+                       DNI.setVisible(false);
+                       DNI.setValue("");
                    }
 
                    else {
                        if(valueChangeEvent.isUserOriginated())
                            nombre.setValue("");
-                       nombre.setCaption("Nombre");
+                       nombre.setVisible(true);
                        nombre.setRequiredIndicatorVisible(true);
-                       nombre.setEnabled(true);
                        apellido.setCaption("Apellido");
-                       DNI.setCaption("DNI");
+                       DNI.setVisible(true);
 
 
                    }
@@ -177,7 +176,7 @@ public class PersonaForm extends FormLayout {
         HorizontalLayout checkboxInm=new HorizontalLayout(cbEsInmobiliaria);
         checkboxInm.setCaption("Inmobiliaria");
 
-        principal=new FormLayout(nombre, apellido,DNI,checkboxInm,contacto,mail,telefono,telefono2);
+        principal=new FormLayout(checkboxInm,nombre, apellido,DNI,contacto,mail,telefono,telefono2);
         adicional=new FormLayout(
                 Publicaciones, Roles
                 );
