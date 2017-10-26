@@ -11,6 +11,7 @@ import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
+import com.vaadin.data.HasValue;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
@@ -25,9 +26,9 @@ import java.util.List;
 
 public class PersonaForm extends FormLayout {
     private Persona persona;
-    Button save = new Button("Guardar");
+    private Button save = new Button("Guardar");
     //Button test = new Button("Test");
-    DeleteButton delete = new DeleteButton("Eliminar",
+    private DeleteButton delete = new DeleteButton("Eliminar",
             VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
         @Override
         public void buttonClick(Button.ClickEvent clickEvent) {
@@ -35,15 +36,15 @@ public class PersonaForm extends FormLayout {
         }
     });
 
-
-    TextField nombre = new TextField("Nombre");
-    TextField apellido = new TextField("Apellido");
-    TextField DNI = new TextField("DNI");
-    TextField telefono = new TextField("Telefono");
-    TextField telefono2 = new TextField("Celular");
-    TextField mail = new TextField("Mail");
-    TextArea infoAdicional = new TextArea("Info");
-    ContratoVenta aSeleccionar;
+    private CheckBox cbEsInmobiliaria= new CheckBox(null);
+    private TextField nombre = new TextField("Nombre");
+    private TextField apellido = new TextField("Apellido");
+    private TextField DNI = new TextField("DNI");
+    private TextField telefono = new TextField("Telefono");
+    private TextField telefono2 = new TextField("Celular");
+    private TextField mail = new TextField("Mail");
+    private TextArea infoAdicional = new TextArea("Info");
+    private ContratoVenta aSeleccionar;
     private NativeSelect<Calificacion> calificacion =
             new NativeSelect<>("Calificacion Inquilino");
 
@@ -54,9 +55,9 @@ public class PersonaForm extends FormLayout {
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
 
     //TabSheet
-    FormLayout principal;
-    FormLayout adicional;
-    TabSheet personaFormTabSheet;
+    private FormLayout principal;
+    private FormLayout adicional;
+    private TabSheet personaFormTabSheet;
 
     // Easily binding forms to beans and manage validation and buffering
 
@@ -85,10 +86,36 @@ public class PersonaForm extends FormLayout {
         calificacion.setSelectedItem(Calificacion.A);
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
-        //test.addClickListener(e -> this.test());
-
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+        cbEsInmobiliaria.addValueChangeListener(new HasValue.ValueChangeListener<Boolean>() {
+            @Override
+            public void valueChange(HasValue.ValueChangeEvent<Boolean> valueChangeEvent) {
+
+                   if (valueChangeEvent.getValue()) {
+                       nombre.setValue("Inmobiliaria");
+                       nombre.setVisible(false);
+                       nombre.setRequiredIndicatorVisible(false);
+                       apellido.setCaption("Nombre");
+                       DNI.setVisible(false);
+                       DNI.setValue("");
+                   }
+
+                   else {
+                       if(valueChangeEvent.isUserOriginated())
+                           nombre.setValue("");
+                       nombre.setVisible(true);
+                       nombre.setRequiredIndicatorVisible(true);
+                       apellido.setCaption("Apellido");
+                       DNI.setVisible(true);
+
+
+                   }
+
+
+
+            }
+        });
         setVisible(false);
     }
 
@@ -117,6 +144,8 @@ public class PersonaForm extends FormLayout {
         
         binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
 
+        binderPersona.forField(cbEsInmobiliaria).bind(Persona::getEsInmobiliaria,Persona::setEsInmobiliaria);
+
     }
 
     private void buildLayout() {
@@ -144,8 +173,10 @@ public class PersonaForm extends FormLayout {
                 );
 
 
+        HorizontalLayout checkboxInm=new HorizontalLayout(cbEsInmobiliaria);
+        checkboxInm.setCaption("Inmobiliaria");
 
-        principal=new FormLayout(nombre, apellido,DNI,contacto,mail,telefono,telefono2);
+        principal=new FormLayout(checkboxInm,nombre, apellido,DNI,contacto,mail,telefono,telefono2);
         adicional=new FormLayout(
                 Publicaciones, Roles
                 );
