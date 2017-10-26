@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
@@ -34,6 +36,8 @@ import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatos {
 
+    final static Logger logger = Logger.getLogger(GeneradorDeDatos.class);
+    
     private static String[] nombres = { "Elliott", "Albertha", "Wilburn", "Marquita", "Merrilee", "Rosy", "Williemae",
 	    "Loma", "Raymond", "Ardis", "Patrice", "Julie", "Maryjane", "Giselle", "Irena", "Hang", "Margarita",
 	    "Raymundo", "Zachariah", "Stephenie", "Freddy", "Natividad", "Tequila", "Ron", "Sunni", "Verlie", "Dennis",
@@ -129,7 +133,7 @@ public class GeneradorDeDatos {
 		    }
 
 		}
-		System.out.println("Agregados\n"
+		logger.info("Agregados\n"
 			+ daoInm.readAll().size() + " inmuebles.\n"
 			+ daoope.readAll().size() + " publicaciones.\n"
 			+ daoContratos.readAll().size() + " contratos.\n"
