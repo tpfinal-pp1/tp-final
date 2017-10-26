@@ -97,7 +97,7 @@ public abstract class InmobiliariaWindow extends Window {
         mail.setRequiredIndicatorVisible(true);
        // telefono.setRequiredIndicatorVisible(true);
         
-        binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre,Persona::setNombre);
+        binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getApellido,Persona::setApellido);
         
         binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,Persona::setTelefono);
 
@@ -125,6 +125,7 @@ public abstract class InmobiliariaWindow extends Window {
     private void save(){
         boolean success=false;
         try {
+            persona.setNombre("Inmobiliaria");
             binderPersona.writeBean(persona);
             service.saveOrUpdate(persona);
             onSave();

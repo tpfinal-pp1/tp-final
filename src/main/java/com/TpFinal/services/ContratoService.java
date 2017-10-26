@@ -238,26 +238,26 @@ public class ContratoService {
 	if (contrato instanceof ContratoVenta) {
 	    ContratoVenta c = (ContratoVenta) contrato;
 	    if (doc != null) {
-		ret = daoVenta.mergeContrato(c, doc);
+		ret = daoVenta.saveOrUpdateContrato(c, doc);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoVenta.mergeContrato(c,doc) ");
+		    throw new ContratoServiceException("Fallo daoVenta.saveOrUpdateContrato(c,doc) ");
 
 	    } else {
-		ret = daoVenta.merge(c);
+		ret = daoVenta.saveOrUpdate(c);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoVenta.merge(c)");
+		    throw new ContratoServiceException("Fallo daoVenta.saveOrUpdate(c)");
 	    }
 	} else {
 	    ContratoAlquiler c = (ContratoAlquiler) contrato;
 
 	    if (doc != null) {
-		ret = daoAlquiler.mergeContrato(c, doc);
+		ret = daoAlquiler.saveOrUpdateContrato(c, doc);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daAlquiler.mergeContrato(c, doc)");
+		    throw new ContratoServiceException("Fallo daAlquiler.saveOrUpdateContrato(c, doc)");
 	    } else {
-		ret = daoAlquiler.merge(c);
+		ret = daoAlquiler.saveOrUpdate(c);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoAlquiler.merge(c)");
+		    throw new ContratoServiceException("Fallo daoAlquiler.saveOrUpdate(c)");
 	    }
 	}
 
@@ -278,7 +278,7 @@ public class ContratoService {
 
     public List<Contrato> readAll() {
 	List<Contrato> ret = daoContrato.readAllActives();
-	actualizarEstadoContratosAlquilerVencidos(ret);
+	//actualizarEstadoContratosAlquilerVencidos(ret);
 	return ret;
     }
 
@@ -292,7 +292,7 @@ public class ContratoService {
 	return contratoAlquiler -> {
 	    if (getFechaVencimiento(contratoAlquiler).compareTo(LocalDate.now()) <= 0) {
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vencido);
-		daoAlquiler.merge(contratoAlquiler);
+		daoAlquiler.saveOrUpdate(contratoAlquiler);
 	    }
 	};
     }

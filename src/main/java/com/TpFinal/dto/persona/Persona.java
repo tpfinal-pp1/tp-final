@@ -4,6 +4,7 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
@@ -15,7 +16,7 @@ import org.hibernate.annotations.CascadeType;
 import java.util.*;
 
 @Entity
-@Table(name = "personas", uniqueConstraints = @UniqueConstraint(columnNames = { "DNI" }))
+@Table(name = "personas")
 public class Persona implements Identificable, BorradoLogico {
 
 	public static final String idPersona = "idPersona";
@@ -41,7 +42,6 @@ public class Persona implements Identificable, BorradoLogico {
 	@Column(name = mailPersona)
 	private String mail = "";
 	@Column(name = DNIPersona)
-	@NotNull
 	private String DNI = "";
 	@Column(name = telefonoPersona)
 	private String telefono = "";
@@ -58,7 +58,6 @@ public class Persona implements Identificable, BorradoLogico {
 	private EstadoRegistro estadoRegistro;
 	@Column(name = inmobiliaria)
 	private Boolean esInmobiliaria;
-
 	@OneToOne(orphanRemoval = true)
 	@Cascade({ CascadeType.ALL })
 	private CriterioBusqInmueble prefBusqueda;
@@ -151,18 +150,11 @@ public class Persona implements Identificable, BorradoLogico {
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Persona other = (Persona) obj;
-		if (DNI == null) {
-			if (other.DNI != null)
-				return false;
-		} else if (!DNI.equals(other.DNI))
-			return false;
-		return true;
+		    return true;
+		if (!(obj instanceof Persona))
+		    return false;
+		Persona inmueble = (Persona) obj;
+		return getId() != null && Objects.equals(getId(), inmueble.getId());
 	}
 
 	public String getNombre() {

@@ -8,6 +8,7 @@ import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.Direccion;
@@ -69,6 +70,7 @@ public class DAOContratoAlquilerIT {
 	desvincularPersonasYContrato();
 
 	contratos.forEach(dao::delete);
+	daoInmuebles.readAll().forEach(i -> daoInmuebles.delete(i));
 
 	deleteDirectory(new File("Files"));
     }
@@ -217,6 +219,28 @@ public class DAOContratoAlquilerIT {
 	assertEquals(1, daoI.readAll().get(0).getContratos().size());
 	assertEquals(i, dao.readAll().get(0).getInmueble());
 
+    }
+    
+    @Test
+    public void renovacion() {
+    	//Creo un contrato vencido y lo guardo
+    	ContratoAlquiler ca = instancia("1");
+    	ca.setInmueble(unInmuebleNoPublicado());
+    	ca.setEstadoContrato(EstadoContrato.Vencido);
+    	dao.saveOrUpdate(ca);
+    	//Lo traigo y verifico que este vencido
+    	ca=dao.readAll().get(0);
+    	assertEquals(EstadoContrato.Vencido, ca.getEstadoContrato());
+    	//creo uno nuevo clonando el anterior
+    	ContratoAlquiler caRenovado = ca.clone();
+    	dao.saveOrUpdate(caRenovado);
+    	//verifico que esten los 2
+    	List<ContratoAlquiler>contratos=dao.readAll();
+    	assertEquals(2, contratos.size());
+    	
+    	assertEquals(contratos.get(0).getDiaDePago(), contratos.get(1).getDiaDePago());
+    	assertEquals(contratos.get(0).getDuracionContrato(), contratos.get(1).getDuracionContrato());
+    	
     }
 
     public byte[] blobToBytes(Blob c) throws SQLException, IOException {
