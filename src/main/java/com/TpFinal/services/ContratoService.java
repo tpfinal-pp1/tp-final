@@ -238,26 +238,26 @@ public class ContratoService {
 	if (contrato instanceof ContratoVenta) {
 	    ContratoVenta c = (ContratoVenta) contrato;
 	    if (doc != null) {
-		ret = daoVenta.saveOrUpdateContrato(c, doc);
+		ret = daoVenta.mergeContrato(c, doc);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoVenta.saveOrUpdateContrato(c,doc) ");
+		    throw new ContratoServiceException("Fallo daoVenta.mergeContrato(c,doc) ");
 
 	    } else {
-		ret = daoVenta.saveOrUpdate(c);
+		ret = daoVenta.merge(c);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoVenta.saveOrUpdate(c)");
+		    throw new ContratoServiceException("Fallo daoVenta.merge(c)");
 	    }
 	} else {
 	    ContratoAlquiler c = (ContratoAlquiler) contrato;
 
 	    if (doc != null) {
-		ret = daoAlquiler.saveOrUpdateContrato(c, doc);
+		ret = daoAlquiler.mergeContrato(c, doc);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daAlquiler.saveOrUpdateContrato(c, doc)");
+		    throw new ContratoServiceException("Fallo daAlquiler.mergeContrato(c, doc)");
 	    } else {
-		ret = daoAlquiler.saveOrUpdate(c);
+		ret = daoAlquiler.merge(c);
 		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoAlquiler.saveOrUpdate(c)");
+		    throw new ContratoServiceException("Fallo daoAlquiler.merge(c)");
 	    }
 	}
 
@@ -278,11 +278,11 @@ public class ContratoService {
 
     public List<Contrato> readAll() {
 	List<Contrato> ret = daoContrato.readAllActives();
-	//actualizarEstadoContratosAlquilerVencidos(ret);
 	return ret;
     }
 
-    private void actualizarEstadoContratosAlquilerVencidos(List<Contrato> contratos) {
+    public void actualizarEstadoContratosAlquilerVencidos() {
+	List<Contrato> contratos = readAll();
 	contratos.stream().filter(c -> c instanceof ContratoAlquiler)
 		.map(c -> (ContratoAlquiler) c)
 		.forEach(actualizarContratosVencidos());
@@ -292,7 +292,7 @@ public class ContratoService {
 	return contratoAlquiler -> {
 	    if (getFechaVencimiento(contratoAlquiler).compareTo(LocalDate.now()) <= 0) {
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vencido);
-		daoAlquiler.saveOrUpdate(contratoAlquiler);
+		daoAlquiler.merge(contratoAlquiler);
 	    }
 	};
     }
@@ -302,7 +302,6 @@ public class ContratoService {
 		.stream()
 		.filter(filtro.getFiltroCompuesto())
 		.collect(Collectors.toList());
-	actualizarEstadoContratosAlquilerVencidos(contratos);
 	contratos.sort(Comparator.comparing(Contrato::getId));
 	return contratos;
     }

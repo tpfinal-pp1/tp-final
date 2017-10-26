@@ -41,16 +41,17 @@ public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implement
             tx.commit();
             ret = true;
         } catch (HibernateException | FileNotFoundException e) {
-            System.err.println("Error al leer");
+            System.err.println("Error realizar saveOrUpdate entidad: " + entidad);
             e.printStackTrace();
-            tx.rollback();
+           if(tx!=null) tx.rollback();
         } finally {
             session.close();
             if (docInputStream != null)
                 try {
                     docInputStream.close();
                 } catch (IOException e) {
-
+                    System.err.println("Error cerrar el archivo: " + docInputStream);
+                    e.printStackTrace();
                 }
         }
         return ret;
@@ -76,16 +77,17 @@ public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implement
             tx.commit();
             ret = true;
         } catch (HibernateException | FileNotFoundException e) {
-            System.err.println("Error al leer");
+            System.err.println("Error al realizar Merge: "+entidad);
             e.printStackTrace();
-            tx.rollback();
+           if(tx!=null) tx.rollback();
         } finally {
             session.close();
             if (docInputStream != null)
                 try {
                     docInputStream.close();
                 } catch (IOException e) {
-
+                    System.err.println("Error cerrar el archivo: " + docInputStream);
+                    e.printStackTrace();
                 }
         }
         return ret;

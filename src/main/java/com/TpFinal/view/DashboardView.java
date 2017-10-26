@@ -208,6 +208,7 @@ public final class DashboardView extends Panel implements View{
         try{
             meetings.switchToMonth(LocalDate.now().getMonth());}
         catch (Exception e){
+           System.err.println("Error al cambiar de mes");
             e.printStackTrace();
         }
 

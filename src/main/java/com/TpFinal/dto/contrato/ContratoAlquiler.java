@@ -59,7 +59,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     private ContratoDuracion duracionContrato;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE }) // ,CascadeType.MERGE})
+    @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
 

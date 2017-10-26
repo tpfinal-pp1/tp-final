@@ -51,7 +51,7 @@ public class ConexionHibernate {
 				System.out.println("Conexion exitosa a url: "+tipoConexion.properties().getProperty(Environment.URL));
 				System.out.println("----------------");
 			} catch (Exception e) {
-				System.err.println("Error!!");
+				System.err.println("Error al establecer la conexión.");
 				e.printStackTrace();
 			}
 		}

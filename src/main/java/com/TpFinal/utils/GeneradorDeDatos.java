@@ -141,7 +141,8 @@ public class GeneradorDeDatos {
 
 	    }
 	} catch (Exception e) {
-
+	    System.out.println("Error al generar datos: ");
+	    e.printStackTrace();
 	}
 
     }

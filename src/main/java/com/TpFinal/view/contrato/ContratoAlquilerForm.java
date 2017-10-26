@@ -526,6 +526,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    checkFieldsPerTab(e.getFieldValidationErrors());
 
 	} catch (Exception e) {
+	    e.printStackTrace();
 	}
 
 	if (success)

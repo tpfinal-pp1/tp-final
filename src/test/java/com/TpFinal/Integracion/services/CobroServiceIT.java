@@ -129,6 +129,7 @@ public class CobroServiceIT {
 		try {
 		contratoService.saveOrUpdate(ca, null);
 		}catch(ContratoServiceException e) {
+		    System.err.println("Error al guardar cobros en contrato " + ca);
 		    e.printStackTrace();
 		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
@@ -163,7 +164,7 @@ public class CobroServiceIT {
 		try {
 		    contratoService.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
-		   
+		   System.err.println("Error al guardar cobros en contratos" + ca);
 		    e.printStackTrace();
 		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
@@ -200,7 +201,7 @@ public class CobroServiceIT {
 		try {
 		    contratoService.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
-		  
+		  System.err.println("Error al guardar cobros en contrato " + ca);
 		    e.printStackTrace();
 		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);

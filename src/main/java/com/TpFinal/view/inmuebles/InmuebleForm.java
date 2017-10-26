@@ -404,7 +404,8 @@ public class InmuebleForm extends FormLayout {
 
 									return new FileInputStream("Files" + File.separator + filename);
 								} catch (FileNotFoundException e) {
-
+								    System.err.println("Archivo no encontrado");
+								    e.printStackTrace();
 								}
 								return null;
 							}

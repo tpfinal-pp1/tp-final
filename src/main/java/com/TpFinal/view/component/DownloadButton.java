@@ -78,6 +78,7 @@ public class DownloadButton extends Button {
                     is = new FileInputStream("Files"+ File.separator+filename);
                 } catch (FileNotFoundException e) {
                     System.err.println("No se ha encontrado el archivo a descargar");
+                    e.printStackTrace();
                 }
                 return is;
             }
@@ -96,6 +97,7 @@ public class DownloadButton extends Button {
 					is = new ByteArrayInputStream(docBlobBytes);
                 } catch (Exception e) {
                     System.err.println("No se ha encontrado el archivo a descargar");
+                    e.printStackTrace();
                 }
                 return is;
             }
@@ -136,6 +138,7 @@ public class DownloadButton extends Button {
 					byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
 					is = new ByteArrayInputStream(docBlobBytes);
 				} catch (Exception e) {
+				    System.err.println("Error al crear blob");
 					e.printStackTrace();
 				}
 				return is;

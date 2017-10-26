@@ -29,6 +29,7 @@ public class JsonUtil {
 			 ret=gson.fromJson(br, tipo);
 		 }
 		 catch (Exception e){
+		     System.out.println("Error al leer Archivo de localidades:" + path);
 			 e.printStackTrace();
 		 }
 		 return ret;
@@ -45,6 +46,7 @@ public class JsonUtil {
 			 ret=gson.fromJson(br, tipo);
 		 }
 		 catch (Exception e){
+		     System.out.println("Error al leer provincias: " + path);
 			 e.printStackTrace();
 		 }
 		 return ret;
@@ -64,6 +66,7 @@ public class JsonUtil {
 		}
 		catch(Exception e)
 		{
+		    System.out.println("error al crear listado de Provincias" + path);
 			ret=false;
 			e.printStackTrace();
 		}

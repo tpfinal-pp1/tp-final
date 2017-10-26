@@ -310,6 +310,7 @@ public abstract class PreferenciasBusqueda extends Window {
 				    ret = true;
 				}
 			    } catch (Exception e) {
+				System.err.println(e.getMessage());
 				ret = true;
 			    }
 			} else {
@@ -338,6 +339,7 @@ public abstract class PreferenciasBusqueda extends Window {
 				    ret = true;
 				}
 			    } catch (Exception e) {
+				System.err.println(e.getMessage());
 				ret = true;
 			    }
 			} else {
@@ -399,6 +401,7 @@ public abstract class PreferenciasBusqueda extends Window {
 				    ret = true;
 				}
 			    } catch (Exception e) {
+				System.err.println(e.getMessage());
 				ret = true;
 			    }
 			} else {
