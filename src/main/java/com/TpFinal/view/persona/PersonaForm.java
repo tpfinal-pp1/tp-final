@@ -120,18 +120,19 @@ public class PersonaForm extends FormLayout {
     }
 
 
+
     private void binding(){
         //binder.bindInstanceFields(this); //Binding automatico
         nombre.setRequiredIndicatorVisible(true);
         apellido.setRequiredIndicatorVisible(true);
         mail.setRequiredIndicatorVisible(true);
         telefono.setRequiredIndicatorVisible(true);
+        DNI.setRequiredIndicatorVisible(false);
         binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre,Persona::setNombre);
 
         binderPersona.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getApellido,Persona::setApellido);
 
-        binderPersona.forField(DNI).asRequired("Ingrese un dni").withValidator(new RegexpValidator("No se pueden ingresar letras","[0-9]+")
-        ).bind(Persona::getDNI,Persona::setDNI);
+        binderPersona.forField(DNI).bind(Persona::getDNI,Persona::setDNI);
 
 
         binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,Persona::setTelefono);
