@@ -40,9 +40,21 @@ public class PublicacionService {
     public boolean save(Publicacion publicacion) throws PublicacionServiceException {
 	boolean ret = true;
 	if (publicacion.getInmueble() != null) {
-	ret = daoPublicacion.saveOrUpdate(publicacion);
-	inmuebleService.actualizarEstadoInmuebleSegunPublicacion(publicacion.getInmueble());
-	}else {
+
+	    if (publicacion.getEstadoPublicacion() == EstadoPublicacion.Activa) {
+		if (!inmuebleService.inmueblePoseePubActivaDeTipo(publicacion.getInmueble(), publicacion
+			.getTipoPublicacion()))
+		    ret = daoPublicacion.saveOrUpdate(publicacion);
+		else {
+		    ret = false;
+		    throw new PublicacionServiceException("El inmueble ya posee una plublicación activa del tipo "
+			    + publicacion.getTipoPublicacion() + "!");
+		}
+	    } else {
+		ret = daoPublicacion.saveOrUpdate(publicacion);
+	    }
+	    inmuebleService.actualizarEstadoInmuebleSegunPublicacion(publicacion.getInmueble());
+	} else {
 	    throw new PublicacionServiceException("La publicación debe tener un inmueble asociado!");
 	}
 	return ret;
@@ -89,14 +101,14 @@ public class PublicacionService {
 	return arrayList;
 
     }
-    
+
     public List<Publicacion> findAll(FiltroPublicacion filtro) {
-    	List<Publicacion> publicaciones = daoPublicacion.readAllActives()
-				.stream()
-				.filter(filtro.getFiltroCompuesto())
-				.collect(Collectors.toList());
-		publicaciones.sort(Comparator.comparing(Publicacion::getId));
-		return publicaciones;
+	List<Publicacion> publicaciones = daoPublicacion.readAllActives()
+		.stream()
+		.filter(filtro.getFiltroCompuesto())
+		.collect(Collectors.toList());
+	publicaciones.sort(Comparator.comparing(Publicacion::getId));
+	return publicaciones;
     }
 
     static PublicacionAlquiler InstanciaPublicacionAlquiler() {
