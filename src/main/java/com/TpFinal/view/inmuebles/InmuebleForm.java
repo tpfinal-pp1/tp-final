@@ -453,10 +453,13 @@ public class InmuebleForm extends FormLayout {
 
 	if (inmueble != null) {
 
-	    updateComboPersonas();
+
 	    this.inmueble = inmueble;
 	    binderInmueble.readBean(this.inmueble);
-
+		//Fix #213
+		updateComboPersonas();
+		comboPropietario.setSelectedItem(inmueble.getPropietario().getPersona());
+		//Fix #213
 	    localidades.setEnabled(true);
 	    Resource res = inmbService.getPortada(this.inmueble);
 	    if (res == null) {
