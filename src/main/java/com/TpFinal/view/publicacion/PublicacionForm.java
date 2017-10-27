@@ -78,6 +78,7 @@ public class PublicacionForm extends FormLayout {
 	    public void valueChange(HasValue.ValueChangeEvent<Inmueble> valueChangeEvent) {
 		if (valueChangeEvent.getValue() != null) {
 		    nombrePropietario.setValue(valueChangeEvent.getValue().getPropietario().toString());
+		    binderPublicacion.validate();
 		} else
 		    nombrePropietario.setValue("");
 	    }
