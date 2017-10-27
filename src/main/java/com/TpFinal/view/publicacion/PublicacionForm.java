@@ -107,7 +107,9 @@ public class PublicacionForm extends FormLayout {
 
             binderPublicacion.forField(estadoPublicacion).bind(Publicacion::getEstadoPublicacion,Publicacion::setEstadoPublicacion);
 
-            binderPublicacion.forField(fechaPublicacion).withValidator(new DateRangeValidator(
+            binderPublicacion.forField(fechaPublicacion)
+            .asRequired("Debe introducirse una fecha")
+            .withValidator(new DateRangeValidator(
                     "Debe celebrarse desde mañana en adelante", LocalDate.now(),LocalDate.now().plusDays(365))
             ).bind(Publicacion::getFechaPublicacion,Publicacion::setFechaPublicacion);
 
