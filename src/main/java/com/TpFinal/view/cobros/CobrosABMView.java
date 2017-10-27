@@ -51,6 +51,7 @@ public class CobrosABMView extends DefaultLayout implements View {
         super();
         buildLayout();
         controller.configureComponents();
+        UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}");
 
     }
 
@@ -211,6 +212,17 @@ public class CobrosABMView extends DefaultLayout implements View {
 
         @SuppressWarnings("unchecked")
 		private void configureGrid() {
+            grid.setStyleGenerator(cobro -> {
+                String ret = null;
+                if(cobro.getFechaDeVencimiento()!=null) {
+                    if (cobro.getFechaDeVencimiento().isBefore(LocalDate.now())) {
+                        ret = "vencido";
+                    }
+                }
+                return ret;
+            });
+
+
             grid.asSingleSelect().addValueChangeListener(event -> {
                 if (event.getValue() == null) {
                     if (cobrosForm.isVisible())
