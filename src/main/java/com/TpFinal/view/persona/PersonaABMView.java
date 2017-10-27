@@ -191,7 +191,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 		String filtro = filter.getValue();
 		filtroBase.setFiltroCustom(p -> {
 		    String PersonaString = p.getNombre() + " " + p.getApellido() + " " + p.getDNI();
-		    return PersonaString.toLowerCase().contains(filtro);
+		    return PersonaString.toLowerCase().contains(filtro.toLowerCase());
 		});
 	    }
 	    updateList();
