@@ -65,6 +65,7 @@ public class Persona implements Identificable, BorradoLogico {
 	public Persona() {
 		super();
 		setEstadoRegistro(EstadoRegistro.ACTIVO);
+		setEsInmobiliaria(false);
 	}
 
 	private Persona(Builder b) {
@@ -78,7 +79,7 @@ public class Persona implements Identificable, BorradoLogico {
 		this.infoAdicional = b.infoAdicional;
 		this.roles = b.roles;
 		this.prefBusqueda = b.prefBusqueda;
-		this.esInmobiliaria=b.esInmobiliaria;
+		this.esInmobiliaria=b.esInmobiliaria == null? false : b.esInmobiliaria ;
 		this.estadoRegistro = EstadoRegistro.ACTIVO;
 	}
 
