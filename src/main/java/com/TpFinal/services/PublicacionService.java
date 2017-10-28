@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 public class PublicacionService {
     private DAOPublicacion daoPublicacion;
     private InmuebleService inmuebleService;
-    public final static PublicacionVenta INSTANCIA_VENTA = InstanciaPublicacionVenta();
-    public final static PublicacionAlquiler INSTANCIA_ALQUILER = InstanciaPublicacionAlquiler();
 
     public PublicacionService() {
 	daoPublicacion = new DAOPublicacionImpl();
@@ -111,7 +109,7 @@ public class PublicacionService {
 	return publicaciones;
     }
 
-    static PublicacionAlquiler InstanciaPublicacionAlquiler() {
+    public static PublicacionAlquiler InstanciaPublicacionAlquiler() {
 	Persona p = new Persona();
 	p.addRol(Rol.Propietario);
 
@@ -147,7 +145,7 @@ public class PublicacionService {
 		.build();
     }
 
-    static PublicacionVenta InstanciaPublicacionVenta() {
+    public static PublicacionVenta InstanciaPublicacionVenta() {
 	Persona p = new Persona();
 	p.addRol(Rol.Propietario);
 	PublicacionVenta PV = new PublicacionVenta.Builder()
