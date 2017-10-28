@@ -3,6 +3,7 @@ package com.TpFinal.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import org.quartz.CronScheduleBuilder;
@@ -13,6 +14,8 @@ import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
+
+import com.itextpdf.text.log.SysoCounter;
 
 public class Planificador {
 	

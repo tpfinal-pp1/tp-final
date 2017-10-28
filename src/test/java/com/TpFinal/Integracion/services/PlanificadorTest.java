@@ -41,7 +41,7 @@ public class PlanificadorTest {
 			LocalDate fInicio = LocalDate.now();
 			LocalDate fFin = fInicio.plusDays(1);
 			
-			sc.agregarAccion("Mensaje numero "+i, fInicio, fFin, "12", String.valueOf(33+i), "1", Long.valueOf(i));
+			sc.agregarAccion("Mensaje numero "+i, fInicio, fFin, "15", String.valueOf(31+i), "1", Long.valueOf(i));
 		}
 		
 		try {
