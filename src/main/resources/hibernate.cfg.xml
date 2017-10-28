@@ -37,9 +37,12 @@
 		<mapping class="com.TpFinal.dto.persona.RolPersona" />
 		<mapping class="com.TpFinal.dto.persona.Inquilino" />
 		<mapping class="com.TpFinal.dto.persona.Propietario" />
+		<mapping class="com.TpFinal.dto.persona.Empleado" />
+		<mapping class="com.TpFinal.dto.persona.Credencial" />
 		<mapping class="com.TpFinal.dto.contrato.ContratoDuracion" />
 		<mapping class="com.TpFinal.dto.cobro.Cobro" />
 		<mapping class="com.TpFinal.dto.inmueble.CriterioBusqInmueble" />
+		<mapping class="com.TpFinal.dto.inmueble.Imagen" />
 		<mapping class="com.TpFinal.dto.inmueble.Imagen" />
 
 
