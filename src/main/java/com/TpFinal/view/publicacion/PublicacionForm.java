@@ -88,11 +88,11 @@ public class PublicacionForm extends FormLayout {
 	    public void valueChange(HasValue.ValueChangeEvent<TipoPublicacion> valueChangeEvent) {
 		TipoPublicacion tipo = valueChangeEvent.getValue();
 		if (tipo.equals(TipoPublicacion.Venta)) {
-		    publicacion = PublicacionService.INSTANCIA_VENTA;
+		    publicacion = PublicacionService.InstanciaPublicacionVenta();
 		    publicacion.setInmueble(new Inmueble());
 
 		} else if (tipo.equals(TipoPublicacion.Alquiler)) {
-		    publicacion = PublicacionService.INSTANCIA_ALQUILER;
+		    publicacion = PublicacionService.InstanciaPublicacionAlquiler();
 		    publicacion.setInmueble(new Inmueble());
 		}
 	    }
@@ -256,7 +256,7 @@ public class PublicacionForm extends FormLayout {
 	    delete.setVisible(false);
 	    tipoPublicacion.setRequiredIndicatorVisible(true);
 	    tipoPublicacion.setValue(TipoPublicacion.Alquiler);
-	    publicacion = PublicacionService.INSTANCIA_ALQUILER;
+	    publicacion = PublicacionService.InstanciaPublicacionAlquiler();
 	    binderPublicacion.getFields().forEach(field -> field.clear());
 	    // Por defecto en alquiler para evitar problemas
 	}
