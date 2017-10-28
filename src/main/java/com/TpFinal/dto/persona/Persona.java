@@ -4,7 +4,6 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
-import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
