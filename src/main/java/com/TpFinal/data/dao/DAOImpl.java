@@ -69,8 +69,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    entidades = session.createQuery("from " + getClaseEntidad().getSimpleName()).list();
 	    tx.commit();
 	} catch (HibernateException e) {
-	    System.err.println("Error al leer");
-	    // e.printStackTrace();
+	    System.err.println("Error al leer " + getClaseEntidad().getSimpleName());
+	     e.printStackTrace();
+	     if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}
@@ -88,9 +89,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    tx.commit();
 	    ret = true;
 	} catch (HibernateException e) {
-	    System.err.println("Error al leer");
+	    System.err.println("Error al realizar update: " + entidad);
 	    e.printStackTrace();
-	    tx.rollback();
+	   if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}
@@ -99,10 +100,6 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 
     @Override
     public boolean saveOrUpdate(T entidad) {
-//	if (exists(entidad)) {
-//	    return merge(entidad);
-//	}
-//	return create(entidad);
     	boolean ret = false;
 		Session session = ConexionHibernate.openSession();
 		Transaction tx = null;
@@ -112,9 +109,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 			tx.commit();
 			ret = true;
 		} catch (HibernateException e) {
-			System.err.println("Error al guardar");
+			System.err.println("Error al guardar: " + entidad);
 			e.printStackTrace();
-			tx.rollback();
+			if(tx!=null) tx.rollback();
 		} finally {
 			session.close();
 		}
@@ -133,9 +130,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    tx.commit();
 	    ret = true;
 	} catch (HibernateException e) {
-	    System.err.println("Error al guardar");
+	    System.err.println("Error al realizar Merge: " + entidad);
 	    e.printStackTrace();
-	    tx.rollback();
+	   if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}
@@ -176,9 +173,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    tx.commit();
 	    ret = true;
 	} catch (HibernateException e) {
-	    System.err.println("Error al leer");
+	    System.err.println("Error al delete: " + entidad);
 	    e.printStackTrace();
-	    tx.rollback();
+	   if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}
@@ -199,9 +196,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    entidad = session.get(clase, id);
 	    tx.commit();
 	} catch (HibernateException e) {
-	    System.err.println("Error al leer");
+	    System.err.println("Error al buscar por Id: " + id);
 	    e.printStackTrace();
-	    tx.rollback();
+	   if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}
@@ -226,7 +223,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    System.err.println("---------------------------------");
 	    System.err.println("---------------------------------");
 	    e.printStackTrace();
-	    tx.rollback();
+	   if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}
@@ -245,9 +242,9 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	    tx.commit();
 	    ret = true;
 	} catch (HibernateException e) {
-	    System.err.println("Error al leer");
+	    System.err.println("Error al ejecutar LogicalDelte: " + entidad);
 	    e.printStackTrace();
-	    tx.rollback();
+	   if(tx!=null) tx.rollback();
 	} finally {
 	    session.close();
 	}

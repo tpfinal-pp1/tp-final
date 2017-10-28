@@ -120,6 +120,7 @@ public class ContratoServiceIT {
 	    service.saveOrUpdate(instanciaVenta("2"), null);
 	    service.saveOrUpdate(instanciaVenta("3"), null);
 	} catch (ContratoServiceException e) {
+	    System.err.println("Error al crear instancias de contratos de prueba");
 	    e.printStackTrace();
 	}
 
@@ -136,6 +137,7 @@ public class ContratoServiceIT {
 	    service.saveOrUpdate(instanciaVenta("2"), null);
 	    service.saveOrUpdate(instanciaVenta("3"), null);
 	} catch (ContratoServiceException e) {
+	    System.err.println("Error al borrar logicamente instancias de prueba");
 	    e.printStackTrace();
 	}
 
@@ -155,6 +157,7 @@ public class ContratoServiceIT {
 	    service.saveOrUpdate(instanciaVenta("2"), null);
 	    service.saveOrUpdate(instanciaVenta("3"), null);
 	} catch (ContratoServiceException e) {
+	    System.err.println("Error al borar logicamente instancias de prueba");
 	    e.printStackTrace();
 	}
 
@@ -165,6 +168,7 @@ public class ContratoServiceIT {
 		try {
 		    service.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
+		    System.err.println("Error al guardar contratro " + ca);
 		    e.printStackTrace();
 		}
 	    } else {
@@ -173,6 +177,7 @@ public class ContratoServiceIT {
 		try {
 		    service.saveOrUpdate(cv, null);
 		} catch (ContratoServiceException e) {
+		    System.err.println("Error al guardar contrato" + cv);
 		    e.printStackTrace();
 		}
 	    }

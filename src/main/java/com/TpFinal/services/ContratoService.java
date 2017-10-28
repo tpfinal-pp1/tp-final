@@ -35,8 +35,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 public class ContratoService {
@@ -73,13 +75,11 @@ public class ContratoService {
 
 	contratosVigentes.forEach(contrato -> {
 	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
+		cobros.addAll(contrato.getCobros().stream().filter(c -> {
 
-			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
-			})
+		    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+		})
 			.filter(c -> {
-
 			    return c.getFechaDeVencimiento().getMonth().compareTo(fechaActual.getMonth()) <= 0 &&
 				    Integer.valueOf(c.getFechaDeVencimiento().getYear()).compareTo(Integer.valueOf(
 					    fechaActual.getYear())) <= 0;
@@ -88,7 +88,6 @@ public class ContratoService {
 
 		cobroService.calcularDatosFaltantes(cobros);
 		cobros.forEach(cobro -> {
-
 		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
 			    cobro, contrato.getMoneda()));
 		});
@@ -149,22 +148,18 @@ public class ContratoService {
 	    if (contrato.getCobros() != null) {
 		cobros.addAll(contrato.getCobros().stream()
 			.filter(c -> {
-
 			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
 			})
 			.filter(c -> {
-
 			    return c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0;
 			})
 			.filter(c -> {
-
 			    return c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0;
 			})
 			.collect(Collectors.toList()));
 
 		cobroService.calcularDatosFaltantes(cobros);
 		cobros.forEach(cobro -> {
-
 		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
 			    cobro, contrato.getMoneda()));
 		});
@@ -282,38 +277,24 @@ public class ContratoService {
     }
 
     public List<Contrato> readAll() {
-	return daoContrato.readAllActives();
+	List<Contrato> ret = daoContrato.readAllActives();
+	return ret;
     }
 
-    public synchronized List<Contrato> findAll(String stringFilter) {
-	ArrayList<Contrato> arrayList = new ArrayList<>();
-	List<Contrato> contratos = daoContrato.readAllActives();
+    public void actualizarEstadoContratosAlquilerVencidos() {
+	List<Contrato> contratos = readAll();
+	contratos.stream().filter(c -> c instanceof ContratoAlquiler)
+		.map(c -> (ContratoAlquiler) c)
+		.forEach(actualizarContratosVencidos());
+    }
 
-	if (stringFilter != "") {
-
-	    for (Contrato contrato : contratos) {
-
-		boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-			|| contrato.toString().toLowerCase()
-				.contains(stringFilter.toLowerCase());
-		if (passesFilter) {
-
-		    arrayList.add(contrato);
-		}
-
+    private Consumer<? super ContratoAlquiler> actualizarContratosVencidos() {
+	return contratoAlquiler -> {
+	    if (getFechaVencimiento(contratoAlquiler).compareTo(LocalDate.now()) <= 0) {
+		contratoAlquiler.setEstadoContrato(EstadoContrato.Vencido);
+		daoAlquiler.merge(contratoAlquiler);
 	    }
-	} else {
-	    arrayList.addAll(contratos);
-	}
-
-	Collections.sort(arrayList, new Comparator<Contrato>() {
-
-	    @Override
-	    public int compare(Contrato o1, Contrato o2) {
-		return (int) (o2.getId() - o1.getId());
-	    }
-	});
-	return arrayList;
+	};
     }
 
     public List<Contrato> findAll(FiltroContrato filtro) {
@@ -411,7 +392,8 @@ public class ContratoService {
     public void addCobros(ContratoAlquiler contrato) {
 	if (contrato.getDuracionContrato() != null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente)
 		&& (contrato.getCobros() == null || contrato.getCobros().size() == 0)) {
-
+	    if (contrato.getCobros() == null)
+		contrato.setCobros(new HashSet<>());
 	    BigDecimal valorAnterior = contrato.getValorInicial();
 	    for (int i = 0; i < contrato.getDuracionContrato().getDuracion(); i++) {
 		// si el dia de celebracion es mayor o igual al dia de pago entonces las coutas

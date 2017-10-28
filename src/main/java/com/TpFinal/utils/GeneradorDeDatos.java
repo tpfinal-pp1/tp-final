@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
 import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.DAOPublicacionImpl;
@@ -34,6 +36,8 @@ import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatos {
 
+    final static Logger logger = Logger.getLogger(GeneradorDeDatos.class);
+    
     private static String[] nombres = { "Elliott", "Albertha", "Wilburn", "Marquita", "Merrilee", "Rosy", "Williemae",
 	    "Loma", "Raymond", "Ardis", "Patrice", "Julie", "Maryjane", "Giselle", "Irena", "Hang", "Margarita",
 	    "Raymundo", "Zachariah", "Stephenie", "Freddy", "Natividad", "Tequila", "Ron", "Sunni", "Verlie", "Dennis",
@@ -86,6 +90,9 @@ public class GeneradorDeDatos {
 		    Persona p = personaRandom();
 		    daoPer.create(p);
 		    Propietario prop = asignarRolPropietarioA(p);
+		    prop.getPersona().setEsInmobiliaria(Math.random() < 0.5);
+		    if(prop.getPersona().getEsInmobiliaria())
+		    	prop.getPersona().setNombre("inm: "+prop.getPersona().getNombre());
 
 		    PublicacionVenta pubVenta = publicacionVentaRandom(inmueble);
 		    pubVenta.setEstadoPublicacion(EstadoPublicacion.Activa);
@@ -93,6 +100,9 @@ public class GeneradorDeDatos {
 		    pubAlquiler.setEstadoPublicacion(EstadoPublicacion.Terminada);
 		    Persona comprador = personaRandom();
 		    Persona inquilino = personaRandom();
+		    //hardcodeado Refactorizar
+		    inquilino.setEsInmobiliaria(false);
+		    comprador.setEsInmobiliaria(false);
 		    daoPer.saveOrUpdate(comprador);
 
 		    Inquilino inq = asignarRolInquilinoA(inquilino);
@@ -123,19 +133,20 @@ public class GeneradorDeDatos {
 		    }
 
 		}
-		System.out.println("Agregados\n"
+		logger.info("Agregados\n"
 			+ daoInm.readAll().size() + " inmuebles.\n"
 			+ daoope.readAll().size() + " publicaciones.\n"
 			+ daoContratos.readAll().size() + " contratos.\n"
 			+ daoPer.readAll().size() + " personas.\n"
 			+ "a la base de datos.");
 
-		System.out.println("Items reporte: ");
-		contratoService.getListadoAlquileresACobrar(1, 1900, 12, 2100).forEach(System.out::println);
+//		System.out.println("Items reporte: ");
+//		contratoService.getListadoAlquileresACobrar(1, 1900, 12, 2100).forEach(System.out::println);
 
 	    }
 	} catch (Exception e) {
-
+	    System.out.println("Error al generar datos: ");
+	    e.printStackTrace();
 	}
 
     }

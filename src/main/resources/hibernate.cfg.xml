@@ -16,6 +16,7 @@
 		<property name="hibernate.c3p0.max_statements">50</property>
 		<property name="hibernate.c3p0.acquire_increment">1</property>
 		<property name="hibernate.c3p0.idle_test_period">3000</property>
+		<property name="hibernate.event.merge.entity_copy_observer">allow</property>
 
 
 
@@ -40,7 +41,6 @@
 		<mapping class="com.TpFinal.dto.cobro.Cobro" />
 		<mapping class="com.TpFinal.dto.inmueble.CriterioBusqInmueble" />
 		<mapping class="com.TpFinal.dto.inmueble.Imagen" />
-		<mapping class="com.TpFinal.dto.inmobiliaria.Inmobiliaria" />
 
 
 

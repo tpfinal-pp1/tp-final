@@ -52,25 +52,25 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     private Integer intervaloActualizacion;
     @Column(name = "diaDePago")
     private Integer diaDePago;
-    
+
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE ,CascadeType.MERGE})
-    @JoinColumn(name = "duracionContrato")
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @JoinColumn(name = "duracionContratoId")
     private ContratoDuracion duracionContrato;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE ,CascadeType.MERGE})
+    @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE})
     @JoinColumn(name = "idRol")
     private Inquilino inquilinoContrato;
 
     @ManyToOne
-    @Cascade({ CascadeType.SAVE_UPDATE,CascadeType.MERGE })
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
     @JoinColumn(name = "id_propietario")
     private Persona propietario;
-    
-    @OneToMany(mappedBy="contrato", fetch=FetchType.EAGER)
-    @Cascade({CascadeType.ALL})
-    private Set<Cobro>cobros;
+
+    @OneToMany(mappedBy = "contrato", fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.ALL })
+    private Set<Cobro> cobros;
 
     public ContratoAlquiler() {
 	super();
@@ -86,8 +86,8 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.tipoInteresPunitorio = b.tipoInteresPunitorio;
 	this.duracionContrato = b.duracionContrato;
-	this.porcentajeIncrementoCuota=b.porcentajeIncrementoCuota;
-	cobros=new HashSet<>();
+	this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
+	cobros = new HashSet<>();
 
 	if (b.inmueble != null) {
 	    this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
@@ -108,7 +108,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 
     public void setValorInicial(BigDecimal valorInicial) {
 	this.valorInicial = valorInicial;
-	this.valorInicial=this.valorInicial.setScale(2, RoundingMode.CEILING);
+	this.valorInicial = this.valorInicial.setScale(2, RoundingMode.CEILING);
     }
 
     public Integer getDiaDePago() {
@@ -128,7 +128,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	    this.inquilinoContrato.removeContrato(this);
 	}
 	this.inquilinoContrato = inquilinoContrato;
-	if(inquilinoContrato !=  null && !inquilinoContrato.getContratos().contains(this))
+	if (inquilinoContrato != null && !inquilinoContrato.getContratos().contains(this))
 	    inquilinoContrato.addContrato(this);
     }
 
@@ -168,7 +168,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	return propietario;
     }
 
-    public void setPropietario(Persona propietario) {	
+    public void setPropietario(Persona propietario) {
 	this.propietario = propietario;
     }
 
@@ -179,35 +179,36 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     public void setIntervaloActualizacion(Integer intervaloActualizacion) {
 	this.intervaloActualizacion = intervaloActualizacion;
     }
-    
+
     public Set<Cobro> getCobros() {
-		return cobros;
-	}
+	return cobros;
+    }
 
-	public void setCobros(Set<Cobro> cobros) {
-		this.cobros = cobros;
-	}
-	
-	public void addCobro(Cobro c) {
-		if(!this.cobros.contains(c)) {
-			this.cobros.add(c);
-			c.setContrato(this);
-		}
-	}
-	
-	public void removeCobro(Cobro c) {
-		if(this.cobros.contains(c)) {
-			this.cobros.remove(c);
-			c.setContrato(null);
-		}
-	}
-	@Override
-	public String toString() {
-		return  inmueble.toString()+", "
-				+this.propietario.toString()+", "+this.inquilinoContrato ;
-	}
+    public void setCobros(Set<Cobro> cobros) {
+	this.cobros = cobros;
+    }
 
-	@Override
+    public void addCobro(Cobro c) {
+	if (!this.cobros.contains(c)) {
+	    this.cobros.add(c);
+	    c.setContrato(this);
+	}
+    }
+
+    public void removeCobro(Cobro c) {
+	if (this.cobros.contains(c)) {
+	    this.cobros.remove(c);
+	    c.setContrato(null);
+	}
+    }
+
+    @Override
+    public String toString() {
+	return inmueble.toString() + ", "
+		+ this.propietario.toString() + ", " + this.inquilinoContrato;
+    }
+
+    @Override
     public boolean equals(Object o) {
 	if (this == o)
 	    return true;
@@ -221,38 +222,40 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
     public int hashCode() {
 	return 3;
     }
-    
+
     private void agregarCobros() {
-    	if(this.duracionContrato!=null) {
-    		BigDecimal valorAnterior = this.valorInicial;
-    		for(int i=0; i<this.duracionContrato.getDuracion(); i++) {
-    			//si el dia de celebracion es mayor o igual al dia de pago entonces las coutas empiezan el proximo mes
-    			LocalDate fechaCobro=LocalDate.of(fechaCelebracion.getDayOfMonth(), fechaCelebracion.getMonthValue(), this.diaDePago);
-    			if(fechaCelebracion.getDayOfMonth()>=(int)this.diaDePago) {
-        			fechaCobro=fechaCobro.plusMonths(i+1);
-    			}else {
-    				fechaCobro=fechaCobro.plusMonths(i);
-    			}
-    			
-    			Cobro c =new Cobro.Builder()
-    					.setNumeroCuota(i)
-    					.setFechaDePago(fechaCobro)
-    					.setMontoOriginal(valorAnterior)
-    					.build();
-    			if(i+1%this.intervaloActualizacion==0) {
-    				if(this.tipoIncrementoCuota.equals(TipoInteres.Acumulativo)) {
-    					BigDecimal incremento= new BigDecimal(this.porcentajeIncrementoCuota.toString());
-    					BigDecimal aux = valorAnterior.multiply(incremento);
-    					valorAnterior=valorAnterior.add(aux);
-    				}else if(this.tipoIncrementoCuota.equals(TipoInteres.Simple)) {
-    					BigDecimal incremento= new BigDecimal(this.porcentajeIncrementoCuota.toString());
-    					BigDecimal aux = this.valorInicial.multiply(incremento);
-    					valorAnterior=valorAnterior.add(aux);
-    				}
-    			}
-    			this.cobros.add(c);
-    		}
-    	}
+	if (this.duracionContrato != null) {
+	    BigDecimal valorAnterior = this.valorInicial;
+	    for (int i = 0; i < this.duracionContrato.getDuracion(); i++) {
+		// si el dia de celebracion es mayor o igual al dia de pago entonces las coutas
+		// empiezan el proximo mes
+		LocalDate fechaCobro = LocalDate.of(fechaCelebracion.getDayOfMonth(), fechaCelebracion.getMonthValue(),
+			this.diaDePago);
+		if (fechaCelebracion.getDayOfMonth() >= (int) this.diaDePago) {
+		    fechaCobro = fechaCobro.plusMonths(i + 1);
+		} else {
+		    fechaCobro = fechaCobro.plusMonths(i);
+		}
+
+		Cobro c = new Cobro.Builder()
+			.setNumeroCuota(i)
+			.setFechaDePago(fechaCobro)
+			.setMontoOriginal(valorAnterior)
+			.build();
+		if (i + 1 % this.intervaloActualizacion == 0) {
+		    if (this.tipoIncrementoCuota.equals(TipoInteres.Acumulativo)) {
+			BigDecimal incremento = new BigDecimal(this.porcentajeIncrementoCuota.toString());
+			BigDecimal aux = valorAnterior.multiply(incremento);
+			valorAnterior = valorAnterior.add(aux);
+		    } else if (this.tipoIncrementoCuota.equals(TipoInteres.Simple)) {
+			BigDecimal incremento = new BigDecimal(this.porcentajeIncrementoCuota.toString());
+			BigDecimal aux = this.valorInicial.multiply(incremento);
+			valorAnterior = valorAnterior.add(aux);
+		    }
+		}
+		this.cobros.add(c);
+	    }
+	}
     }
 
     @Override
@@ -273,9 +276,10 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	clon.setPropietario(propietario);
 	clon.setTipoIncrementoCuota(tipoIncrementoCuota);
 	clon.setTipoInteresPunitorio(tipoInteresPunitorio);
-	clon.setValorInicial(valorInicial);	
+	clon.setValorInicial(valorInicial);
 	return clon;
     }
+
     public static class Builder {
 
 	private ContratoDuracion duracionContrato;
@@ -332,10 +336,10 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	    this.interesPunitorio = interesPunitorio;
 	    return this;
 	}
-	
+
 	public Builder setPorcentajeIncremento(Double porcentaje) {
-		this.porcentajeIncrementoCuota=porcentaje;
-		return this;
+	    this.porcentajeIncrementoCuota = porcentaje;
+	    return this;
 	}
 
 	public Builder setInmueble(Inmueble inmueble) {

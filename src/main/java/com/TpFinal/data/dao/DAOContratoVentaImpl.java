@@ -17,78 +17,81 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 
 public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOContratoVenta {
 
-	public DAOContratoVentaImpl() {
-		super(ContratoVenta.class);
-	}
+    public DAOContratoVentaImpl() {
+	super(ContratoVenta.class);
+    }
 
-	@Override
-	public boolean saveOrUpdateContrato(ContratoVenta entidad, File doc) {
-		boolean ret = false;
-		FileInputStream docInputStream = null;
-		Session session = ConexionHibernate.openSession();
-		Transaction tx = null;
+    @Override
+    public boolean saveOrUpdateContrato(ContratoVenta entidad, File doc) {
+	boolean ret = false;
+	FileInputStream docInputStream = null;
+	Session session = ConexionHibernate.openSession();
+	Transaction tx = null;
+	try {
+	    tx = session.beginTransaction();
+
+	    Blob archivo = null;
+
+	    docInputStream = new FileInputStream(doc);
+	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
+
+	    entidad.setDocumento(archivo);
+
+	    session.saveOrUpdate(entidad);
+	    tx.commit();
+	    ret = true;
+	} catch (HibernateException | FileNotFoundException e) {
+	    System.err.println("Error al hacer SaveOrUpdate de contrato: " + entidad + "\nArchivo: " + doc);
+	    e.printStackTrace();
+	    if (tx != null)
+		tx.rollback();
+	} finally {
+	    session.close();
+	    if (docInputStream != null)
 		try {
-			tx = session.beginTransaction();
-
-			Blob archivo = null;
-
-			docInputStream = new FileInputStream(doc);
-			archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
-
-			entidad.setDocumento(archivo);
-
-			session.saveOrUpdate(entidad);
-			tx.commit();
-			ret = true;
-		} catch (HibernateException | FileNotFoundException e) {
-			System.err.println("Error al leer");
-			e.printStackTrace();
-			tx.rollback();
-		} finally {
-			session.close();
-			if (docInputStream != null)
-				try {
-					docInputStream.close();
-				} catch (IOException e) {
-
-				}
+		    docInputStream.close();
+		} catch (IOException e) {
+		    System.err.println("Error cerrar el archivo: " + docInputStream);
+                    e.printStackTrace();
 		}
-		return ret;
 	}
-	
-	@Override
-	public boolean mergeContrato(ContratoVenta entidad, File doc) {
-		boolean ret = false;
-		FileInputStream docInputStream = null;
-		Session session = ConexionHibernate.openSession();
-		Transaction tx = null;
+	return ret;
+    }
+
+    @Override
+    public boolean mergeContrato(ContratoVenta entidad, File doc) {
+	boolean ret = false;
+	FileInputStream docInputStream = null;
+	Session session = ConexionHibernate.openSession();
+	Transaction tx = null;
+	try {
+	    tx = session.beginTransaction();
+
+	    Blob archivo = null;
+
+	    docInputStream = new FileInputStream(doc);
+	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
+
+	    entidad.setDocumento(archivo);
+
+	    session.merge(entidad);
+	    tx.commit();
+	    ret = true;
+	} catch (HibernateException | FileNotFoundException e) {
+	    System.err.println("Error al realizar Merge: " + entidad);
+	    e.printStackTrace();
+	    if (tx!=null)tx.rollback();
+	} finally {
+	    session.close();
+	    if (docInputStream != null)
 		try {
-			tx = session.beginTransaction();
-
-			Blob archivo = null;
-
-			docInputStream = new FileInputStream(doc);
-			archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
-
-			entidad.setDocumento(archivo);
-
-			session.merge(entidad);
-			tx.commit();
-			ret = true;
-		} catch (HibernateException | FileNotFoundException e) {
-			System.err.println("Error al leer");
-			e.printStackTrace();
-			tx.rollback();
-		} finally {
-			session.close();
-			if (docInputStream != null)
-				try {
-					docInputStream.close();
-				} catch (IOException e) {
-
-				}
+		    docInputStream.close();
+		} catch (IOException e) {
+		    System.err.println("Error cerrar el archivo: " + docInputStream);
+                    e.printStackTrace();
 		}
-		return ret;
 	}
+	return ret;
+    }
 
 }

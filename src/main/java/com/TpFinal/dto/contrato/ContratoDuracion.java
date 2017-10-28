@@ -36,7 +36,7 @@ public class ContratoDuracion implements Identificable, BorradoLogico {
     protected Long id;
     
     
-    @OneToMany(mappedBy = "duracionContrato", orphanRemoval=true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "duracionContrato",fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL})
     private Set<ContratoAlquiler> contratosAlquiler;
     

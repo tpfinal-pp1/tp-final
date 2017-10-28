@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.log4j.Logger;
+
 public class Utils {
+    final static Logger logger = Logger.getLogger(Utils.class);
 
     public String resourcesPath() {
 
@@ -68,6 +71,7 @@ public class Utils {
 		    is = new FileInputStream("Files" + File.separator + filename);
 		} catch (FileNotFoundException e) {
 		    System.err.println("No se ha encontrado el archivo a descargar Files/" + filename);
+		    e.printStackTrace();
 		}
 		return is;
 	    }
@@ -130,9 +134,9 @@ public class Utils {
     }
 
     public static void mostarErroresValidator(ValidationException e) {
-	System.out.println(e.getMessage());
-	e.getFieldValidationErrors().forEach(err -> System.out.println("Campo invalido "+err.getField()));
-	e.getValidationErrors().forEach(err -> System.out.println(err.getErrorMessage()));
+	logger.debug(e.getMessage());
+	e.getFieldValidationErrors().forEach(err -> logger.debug("Campo invalido "+err.getField()));
+	e.getValidationErrors().forEach(err -> logger.debug(err.getErrorMessage()));
     }
 
     public static BigDecimal StringToBigDecimal(String val) {

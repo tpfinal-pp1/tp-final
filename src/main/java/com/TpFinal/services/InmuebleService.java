@@ -15,6 +15,8 @@ import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.view.inmuebles.FiltroInmueble;
 
@@ -35,20 +37,23 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 public class InmuebleService {
     private DAOInmueble dao;
     private Supplier<List<Inmueble>> supplier;
+    private static final Logger logger = Logger.getLogger(InmuebleService.class);
 
     public InmuebleService() {
 	dao = new DAOInmuebleImpl();
 	supplier = () -> this.readAll();
     }
-    
+
     public InmuebleService(Supplier<List<Inmueble>> supplier) {
 	dao = new DAOInmuebleImpl();
 	this.supplier = supplier;
     }
-    
+
     public void setSupplier(Supplier<List<Inmueble>> supplier) {
 	this.supplier = supplier;
     }
@@ -60,7 +65,7 @@ public class InmuebleService {
     }
 
     public boolean merge(Inmueble entidad) {
-		System.out.println(entidad.nombreArchivoPortada);
+	System.out.println(entidad.nombreArchivoPortada);
 	return dao.merge(entidad);
     }
 
@@ -106,35 +111,30 @@ public class InmuebleService {
 		.build();
     }
 
-    public Resource getPortada(Inmueble inmueble){
-    	if(inmueble!=null&&inmueble.getId()!=null) {
-			if (new File("Files" + File.separator + inmueble.getNombreArchivoPortada()).exists()) {
-				StreamResource str = new StreamResource(new StreamResource.StreamSource() {
-					@Override
-					public InputStream getStream() {
-						try {
+    public Resource getPortada(Inmueble inmueble) {
+	if (inmueble != null && inmueble.getId() != null) {
+	    if (new File("Files" + File.separator + inmueble.getNombreArchivoPortada()).exists()) {
+		StreamResource str = new StreamResource(new StreamResource.StreamSource() {
+		    @Override
+		    public InputStream getStream() {
+			try {
 
-							return new FileInputStream("Files" + File.separator + inmueble.getNombreArchivoPortada());
-						} catch (FileNotFoundException e) {
+			    return new FileInputStream("Files" + File.separator + inmueble.getNombreArchivoPortada());
+			} catch (FileNotFoundException e) {
+			    System.out.println("Error al Buscar Portada de inmueble: " + inmueble);
 
-						}
-						return null;
-					}
-				}, "Files" + File.separator + inmueble.getNombreArchivoPortada());
-
-				return str;
 			}
+			return null;
+		    }
+		}, "Files" + File.separator + inmueble.getNombreArchivoPortada());
 
-
-		}
-		System.out.println("Portada Nula");
-		return null;
+		return str;
+	    }
 
 	}
+	return null;
 
-
-
-
+    }
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
 	List<Inmueble> inmuebles = dao.readAllActives().stream()
@@ -162,16 +162,15 @@ public class InmuebleService {
      * @param inmueble
      */
     public boolean actualizarEstadoInmuebleSegunPublicacion(Inmueble inmueble) {
-	System.out.println("Actualizando Estado Inmueble");
 	boolean ret = true;
 	List<Publicacion> publicaciones = getListadoDePublicaciones(inmueble);
 	List<Publicacion> pubsActivas = publicaciones.stream().filter(this::estaActivoYNoFueBorrado)
-		.limit(2).collect(Collectors.toList());
+		.collect(Collectors.toList());
 
-	if (!pubsActivas.isEmpty()) {
-	    setEstadoInmuebleSegunPublicaciones(inmueble, pubsActivas);
-	    ret = ret && dao.merge(inmueble);
-	}
+	setEstadoInmuebleSegunPublicaciones(inmueble, pubsActivas);
+	logger.debug("Actualizado estado inmueble a: " + inmueble.getEstadoInmueble());
+	ret = ret && dao.merge(inmueble);
+
 	return ret;
 
     }
@@ -184,15 +183,18 @@ public class InmuebleService {
     private void setEstadoInmuebleSegunPublicaciones(Inmueble inmueble, List<Publicacion> publicaciones) {
 	if (!(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado
 		|| (inmueble.getEstadoInmueble() == EstadoInmueble.Vendido))) {
-	    if (publicaciones.size() == 2) {
+	    boolean algunaVenta = publicaciones.stream()
+		    .anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Venta);
+	    boolean algunAlquiler = publicaciones.stream()
+		    .anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Alquiler);
+	    if (algunaVenta && algunAlquiler) {
 		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
+	    } else if (algunaVenta) {
+		inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
+	    } else if (algunAlquiler) {
+		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
 	    } else {
-		Publicacion publicacion = publicaciones.get(0);
-		if (publicacion.getTipoPublicacion() == TipoPublicacion.Alquiler) {
-		    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
-		} else {
-		    inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
-		}
+		inmueble.setEstadoInmueble(EstadoInmueble.NoPublicado);
 	    }
 	}
 
@@ -223,24 +225,43 @@ public class InmuebleService {
     }
 
     public static List<Publicacion> getPublicacionesActivas(Inmueble i) {
-	
+
 	List<Publicacion> publicaciones = i.getPublicaciones().stream().collect(Collectors.toList());
-	List<Publicacion> publicacionesActivas =publicaciones.stream()
+	List<Publicacion> publicacionesActivas = publicaciones.stream()
 		.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO))
 		.filter(p -> p.getEstadoPublicacion().equals(EstadoPublicacion.Activa))
 		.collect(Collectors.toList());
-	
+
 	return publicacionesActivas;
     }
-    
+
     public List<Inmueble> findAll(FiltroInmueble filtro) {
-    	List<Inmueble> inmuebles = supplier.get()
-				.stream()
-				.filter(filtro.getFiltroCompuesto())
-				.collect(Collectors.toList());
-		inmuebles.sort(Comparator.comparing(Inmueble::getId));
-		return inmuebles;
+	List<Inmueble> inmuebles = supplier.get()
+		.stream()
+		.filter(filtro.getFiltroCompuesto())
+		.collect(Collectors.toList());
+	inmuebles.sort(Comparator.comparing(Inmueble::getId));
+	return inmuebles;
     }
 
+    public boolean inmueblePoseePubActivaDeTipo(Inmueble inmueble, TipoPublicacion tipoPublicacion) {
+	boolean ret = false;
+	logger.debug("Inmueble: " + inmueble);
+	logger.debug("TipoPublicacion: " + tipoPublicacion);
+	if (inmueble != null) {
+	    Inmueble i = findById(inmueble.getId());
+	    i.getPublicaciones().forEach(p -> logger.debug("Publicacion: " + p));
+	    ret = i.getPublicaciones() == null || i.getPublicaciones().isEmpty() ? false
+		    : i.getPublicaciones().stream()
+			    .filter(p -> p.getEstadoRegistro() == EstadoRegistro.ACTIVO)
+			    .filter(p -> {
+				if (tipoPublicacion == TipoPublicacion.Alquiler)
+				    return p instanceof PublicacionAlquiler;
+				else
+				    return p instanceof PublicacionVenta;
+			    }).anyMatch(p -> p.getEstadoPublicacion() == EstadoPublicacion.Activa);
+	}
+	return ret;
+    }
 
 }
