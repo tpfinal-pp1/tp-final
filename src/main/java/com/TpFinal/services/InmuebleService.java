@@ -249,7 +249,7 @@ public class InmuebleService {
 	if (inmueble != null) {
 	    Inmueble i = findById(inmueble.getId());
 	    i.getPublicaciones().forEach(p -> logger.debug("Publicacion: " + p));
-	    ret = i.getPublicaciones().isEmpty()? true : i.getPublicaciones().stream()
+	    ret = i.getPublicaciones() == null || i.getPublicaciones().isEmpty()? false : i.getPublicaciones().stream()
 		    .filter(p -> p.getEstadoRegistro() == EstadoRegistro.ACTIVO)
 		    .filter(p -> {
 		if (tipoPublicacion == TipoPublicacion.Alquiler)
