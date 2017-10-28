@@ -162,16 +162,15 @@ public class InmuebleService {
      * @param inmueble
      */
     public boolean actualizarEstadoInmuebleSegunPublicacion(Inmueble inmueble) {
-	System.out.println("Actualizando Estado Inmueble");
 	boolean ret = true;
 	List<Publicacion> publicaciones = getListadoDePublicaciones(inmueble);
 	List<Publicacion> pubsActivas = publicaciones.stream().filter(this::estaActivoYNoFueBorrado)
-		.limit(2).collect(Collectors.toList());
+		.collect(Collectors.toList());
 
-	if (!pubsActivas.isEmpty()) {
-	    setEstadoInmuebleSegunPublicaciones(inmueble, pubsActivas);
-	    ret = ret && dao.merge(inmueble);
-	}
+	setEstadoInmuebleSegunPublicaciones(inmueble, pubsActivas);
+	logger.debug("Actualizado estado inmueble a: " + inmueble.getEstadoInmueble());
+	ret = ret && dao.merge(inmueble);
+
 	return ret;
 
     }
@@ -184,15 +183,18 @@ public class InmuebleService {
     private void setEstadoInmuebleSegunPublicaciones(Inmueble inmueble, List<Publicacion> publicaciones) {
 	if (!(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado
 		|| (inmueble.getEstadoInmueble() == EstadoInmueble.Vendido))) {
-	    if (publicaciones.size() == 2) {
+	    boolean algunaVenta = publicaciones.stream()
+		    .anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Venta);
+	    boolean algunAlquiler = publicaciones.stream()
+		    .anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Alquiler);
+	    if (algunaVenta && algunAlquiler) {
 		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
+	    } else if (algunaVenta) {
+		inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
+	    } else if (algunAlquiler) {
+		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
 	    } else {
-		Publicacion publicacion = publicaciones.get(0);
-		if (publicacion.getTipoPublicacion() == TipoPublicacion.Alquiler) {
-		    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
-		} else {
-		    inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
-		}
+		inmueble.setEstadoInmueble(EstadoInmueble.NoPublicado);
 	    }
 	}
 
@@ -249,14 +251,15 @@ public class InmuebleService {
 	if (inmueble != null) {
 	    Inmueble i = findById(inmueble.getId());
 	    i.getPublicaciones().forEach(p -> logger.debug("Publicacion: " + p));
-	    ret = i.getPublicaciones() == null || i.getPublicaciones().isEmpty()? false : i.getPublicaciones().stream()
-		    .filter(p -> p.getEstadoRegistro() == EstadoRegistro.ACTIVO)
-		    .filter(p -> {
-		if (tipoPublicacion == TipoPublicacion.Alquiler)
-		    return p instanceof PublicacionAlquiler;
-		else
-		    return p instanceof PublicacionVenta;
-	    }).anyMatch(p -> p.getEstadoPublicacion() == EstadoPublicacion.Activa);
+	    ret = i.getPublicaciones() == null || i.getPublicaciones().isEmpty() ? false
+		    : i.getPublicaciones().stream()
+			    .filter(p -> p.getEstadoRegistro() == EstadoRegistro.ACTIVO)
+			    .filter(p -> {
+				if (tipoPublicacion == TipoPublicacion.Alquiler)
+				    return p instanceof PublicacionAlquiler;
+				else
+				    return p instanceof PublicacionVenta;
+			    }).anyMatch(p -> p.getEstadoPublicacion() == EstadoPublicacion.Activa);
 	}
 	return ret;
     }
