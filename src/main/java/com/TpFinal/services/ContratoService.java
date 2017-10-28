@@ -60,7 +60,7 @@ public class ContratoService {
 	inmuebleService = new InmuebleService();
 	contratoDuracionService = new ContratoDuracionService();
     }
-
+ 
     public List<ItemRepAlquileresACobrar> getCobrosOrdenadosPorAño() {
 
 	LocalDate fechaActual = LocalDate.now();
