@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.RolPersona;
@@ -173,6 +175,15 @@ public class DAOPersonaImplIT {
 	assertEquals(p, dao.readAll().get(0));
 	assertEquals(p.getPrefBusqueda(),dao.findById(p.getId()).getPrefBusqueda());
     }
+    
+    @Test 
+    public void guardarEmpleado() {
+    	Empleado slave = instanciaEmpleado("1");
+    	dao.saveOrUpdate(slave);
+    	Persona p=dao.readAllActives().get(0);
+    	slave = (Empleado)p;
+    	assertEquals(LocalDate.now(), slave.getFechaDeAlta());
+    }
 
 
     public static Persona instancia(String numero) {
@@ -185,6 +196,20 @@ public class DAOPersonaImplIT {
                 .setTelefono2("telefono2 "+numero)
                 .setDNI("Dni"+numero)
                 .setinfoAdicional("Info Adicional"+ numero)
+                .build();
+    }
+    
+    public static Empleado instanciaEmpleado(String numero) {
+        return new Empleado.Builder()
+                .setNombre("nombre "+numero)
+                .setApellido("apellido "+numero)
+                .setMail("mail "+numero)
+                .setTelefono("telefono "+numero)
+                .setTelefono("telefono "+numero)
+                .setTelefono2("telefono2 "+numero)
+                .setDNI("Dni"+numero)
+                .setinfoAdicional("Info Adicional"+ numero)
+                .setFechaDeAlta(LocalDate.now())
                 .build();
     }
     
