@@ -1,5 +1,6 @@
 package com.TpFinal.view;
 
+import com.TpFinal.view.empleados.*;
 import com.TpFinal.view.reportes.*;
 import com.TpFinal.view.cobros.CobrosABMView;
 import com.TpFinal.view.contrato.ContratoABMView;
@@ -19,7 +20,8 @@ public enum DashboardViewType {
     CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
     DURACIONCONTRATOS("duracion Contratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false),
     COBROS("cobros", CobrosABMView.class,VaadinIcons.CASH,false),
-    REPORTES("reportes", ReportesView.class, VaadinIcons.FILE, false);
+    REPORTES("reportes", ReportesView.class, VaadinIcons.FILE, false),
+	EMPLEADOS("empleados", EmpleadoABMView.class, VaadinIcons.GROUP, false);
    //SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
 
     private final String viewName;
