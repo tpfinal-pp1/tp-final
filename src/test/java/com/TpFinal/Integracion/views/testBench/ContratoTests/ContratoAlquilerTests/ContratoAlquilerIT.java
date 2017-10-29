@@ -39,7 +39,7 @@ public class ContratoAlquilerIT extends TestBenchTestCase{
         contratoView = mainView.getContratoView();
     }
 
-    @Test
+    @Ignore
     public void addContratoAlquilerTest(){
         int indexCombo = 1;
         getDriver().get(TBUtils.getUrl("contratos"));

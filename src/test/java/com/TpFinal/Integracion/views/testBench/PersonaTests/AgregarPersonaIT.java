@@ -8,10 +8,7 @@ import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * Created by Max on 10/11/2017.
@@ -44,7 +41,7 @@ public class AgregarPersonaIT extends TestBenchTestCase{
 
     }
 
-    @Test
+    @Ignore
     public void agregarPersonaTest(){
         getDriver().get(TBUtils.getUrl("personas"));
 
