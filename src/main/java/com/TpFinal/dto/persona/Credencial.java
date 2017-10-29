@@ -28,7 +28,7 @@ public class Credencial implements Identificable, BorradoLogico {
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	@Column(name="idCredencial")
 	private Long id;
-	@Column(name="usuario")
+	@Column(name="usuario", unique=true)
 	private String usuario;
 	@Column(name="contrasenia")
 	private String contrasenia;
