@@ -177,7 +177,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	hl.addComponent(filtering);
 
-	buildToolbar("Duraciones de Contratos", hl);
+	buildToolbar("Empleados", hl);
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, empleadoForm);
 	mainLayout.setSizeFull();
