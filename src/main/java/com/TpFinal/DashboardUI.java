@@ -9,6 +9,7 @@ import com.TpFinal.utils.DummyDataProvider;
 
 import com.TpFinal.utils.DataProvider;
 import com.TpFinal.utils.GeneradorDeDatos;
+import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
 import com.google.common.eventbus.Subscribe;
@@ -46,8 +47,8 @@ public final class DashboardUI extends UI {
 
         @Override
         protected void init(final VaadinRequest request) {
-            
-            GeneradorDeDatos.generarDatos(20);
+         
+            GeneradorDeDatosSinAsociaciones.generarDatos(4);
             setLocale(Locale.forLanguageTag("es-AR"));
 
             DashboardEventBus.register(this);

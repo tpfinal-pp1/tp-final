@@ -7,14 +7,12 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.Publicacion;
 
-import java.sql.Blob;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.*;
 
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -98,7 +96,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Cascade({ CascadeType.ALL })
     @JoinColumn(name = "id_proppietario")
     private Propietario propietario;
-    
+
     @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
     @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     protected Set<Publicacion> publicaciones = new HashSet<>();
@@ -108,23 +106,17 @@ public class Inmueble implements Identificable, BorradoLogico {
     protected Set<Contrato> contratos = new HashSet<>();
 
     @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
-	protected Set<Imagen> imagenes = new HashSet<>();
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    protected Set<Imagen> imagenes = new HashSet<>();
 
-	@OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
-	protected Imagen portada;
+    @OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    protected Imagen portada;
 
-	@Column(name = "archivoPortada")
-	public String nombreArchivoPortada;
+    @Column(name = "archivoPortada")
+    public String nombreArchivoPortada;
 
-
-
-
-
-
-
-	public Inmueble() {
+    public Inmueble() {
 	super();
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
@@ -151,33 +143,35 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
     }
 
-
     @Override
     public Long getId() {
 	return idInmueble;
     }
-	public Set<Imagen> getImagenes() {
-		return imagenes;
-	}
 
-	public void setImagenes(Set<Imagen> imagenes) {
-		this.imagenes = imagenes;
-	}
-	public String getNombreArchivoPortada() {
-		return nombreArchivoPortada;
-	}
+    public Set<Imagen> getImagenes() {
+	return imagenes;
+    }
 
-	public void setNombreArchivoPortada(String nombreArchivoPortada) {
-		this.nombreArchivoPortada = nombreArchivoPortada;
-	}
+    public void setImagenes(Set<Imagen> imagenes) {
+	this.imagenes = imagenes;
+    }
 
-	public Imagen getPortada() {
-		return portada;
-	}
+    public String getNombreArchivoPortada() {
+	return nombreArchivoPortada;
+    }
 
-	public void setPortada(Imagen portada) {
-		this.portada = portada;
-	}
+    public void setNombreArchivoPortada(String nombreArchivoPortada) {
+	this.nombreArchivoPortada = nombreArchivoPortada;
+    }
+
+    public Imagen getPortada() {
+	return portada;
+    }
+
+    public void setPortada(Imagen portada) {
+	this.portada = portada;
+    }
+
     @SuppressWarnings("unused")
     private void setIdInmueble(Long idInmueble) {
 	this.idInmueble = idInmueble;
@@ -339,8 +333,8 @@ public class Inmueble implements Identificable, BorradoLogico {
 	if (propietario != null)
 	    propietario.addInmueble(this);
     }
-    
-	@Override
+
+    @Override
     public void setEstadoRegistro(EstadoRegistro estado) {
 	this.estadoRegistro = estado;
     }
@@ -563,7 +557,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	    contratos.add(contrato);
 	    return this;
 	}
-	
+
 	public Inmueble build() {
 	    return new Inmueble(this);
 	}

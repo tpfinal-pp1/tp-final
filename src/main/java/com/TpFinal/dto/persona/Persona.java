@@ -4,7 +4,6 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
-import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
@@ -65,6 +64,7 @@ public class Persona implements Identificable, BorradoLogico {
 	public Persona() {
 		super();
 		setEstadoRegistro(EstadoRegistro.ACTIVO);
+		setEsInmobiliaria(false);
 	}
 
 	private Persona(Builder b) {
@@ -78,7 +78,7 @@ public class Persona implements Identificable, BorradoLogico {
 		this.infoAdicional = b.infoAdicional;
 		this.roles = b.roles;
 		this.prefBusqueda = b.prefBusqueda;
-		this.esInmobiliaria=b.esInmobiliaria;
+		this.esInmobiliaria=b.esInmobiliaria == null? false : b.esInmobiliaria ;
 		this.estadoRegistro = EstadoRegistro.ACTIVO;
 	}
 

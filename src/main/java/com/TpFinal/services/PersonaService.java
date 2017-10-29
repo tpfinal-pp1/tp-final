@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.view.persona.FiltroInteresados;
@@ -111,9 +112,24 @@ public class PersonaService {
 	    p.getRoles().add(i);
 	    return i;
 	}
+	
+	public static Empleado getEmpleadoInstancia() {
+		Empleado empleado = new Empleado.Builder().setNombre("").setApellido("").setDNI("").build();
+		return empleado;
+	}
 
-	public List<Persona> findAll(FiltroInteresados filtro) {
-	    List<Persona> personas = dao.readAllActives().stream().filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
+	public List<Persona> findAllClientes(FiltroInteresados filtro) {
+	    List<Persona> personas = dao.readAllActives().stream()
+		    .filter(p -> !(p instanceof Empleado))
+		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
+	    personas.sort(Comparator.comparing(Persona::getId));
+	    return personas;
+	}
+	
+	public List<Persona> findAllEmpleados(FiltroInteresados filtro) {
+	    List<Persona> personas = dao.readAllActives().stream()
+		    .filter(p -> p instanceof Empleado)
+		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
 	    personas.sort(Comparator.comparing(Persona::getId));
 	    return personas;
 	}

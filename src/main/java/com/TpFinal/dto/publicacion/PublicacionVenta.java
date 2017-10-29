@@ -61,11 +61,15 @@ public class PublicacionVenta extends Publicacion {
 		this.moneda = moneda;
 	}
 	
+	
+	
 	@Override
 	public String toString() {
-		return super.toString();
+	    return "PublicacionVenta [precio=" + precio + ", moneda=" + moneda + ", idPublicacion=" + idPublicacion
+		    + ", fechaPublicacion=" + fechaPublicacion + ", tipoPublicacion=" + tipoPublicacion
+		    + ", estadoPublicacion=" + estadoPublicacion + ", estadoRegistro=" + estadoRegistro + "]";
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(this.getId());
