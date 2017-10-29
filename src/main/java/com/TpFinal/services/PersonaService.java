@@ -11,6 +11,7 @@ import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.view.persona.FiltroEmpleados;
 import com.TpFinal.view.persona.FiltroInteresados;
 
 public class PersonaService {
@@ -126,12 +127,14 @@ public class PersonaService {
 	    return personas;
 	}
 	
-	public List<Persona> findAllEmpleados(FiltroInteresados filtro) {
-	    List<Persona> personas = dao.readAllActives().stream()
+	public List<Empleado> findAllEmpleados(FiltroEmpleados filtro) {
+	    List<Empleado> empleados = dao.readAllActives().stream()
 		    .filter(p -> p instanceof Empleado)
-		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
-	    personas.sort(Comparator.comparing(Persona::getId));
-	    return personas;
+		   //.filter(filtro.getFiltroCompuesto())
+		    .map(p -> (Empleado) p)
+		   .collect(Collectors.toList());
+	    empleados.sort(Comparator.comparing(Persona::getId));
+	    return empleados;
 	}
 	
 	
