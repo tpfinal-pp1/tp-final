@@ -68,7 +68,7 @@ public class Persona implements Identificable, BorradoLogico {
 		setEsInmobiliaria(false);
 	}
 
-	private Persona(Builder b) {
+	protected Persona(Builder b) {
 		this.id = b.id;
 		this.nombre = b.nombre;
 		this.apellido = b.apellido;
@@ -326,17 +326,17 @@ public class Persona implements Identificable, BorradoLogico {
 	}
 
 	public static class Builder {
-		private CriterioBusqInmueble prefBusqueda;
-		private Long id;
-		private String nombre;
-		private String apellido;
-		private String mail;
-		private String telefono;
-		private String telefono2;
-		private String DNI;
-		private String infoAdicional;
+		protected CriterioBusqInmueble prefBusqueda;
+		protected Long id;
+		protected String nombre;
+		protected String apellido;
+		protected String mail;
+		protected String telefono;
+		protected String telefono2;
+		protected String DNI;
+		protected String infoAdicional;
 		protected Set<RolPersona> roles = new HashSet<>();
-		private Boolean esInmobiliaria;
+		protected Boolean esInmobiliaria;
 		
 		public Builder setId(Long dato) {
 			this.id = dato;
