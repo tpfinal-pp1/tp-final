@@ -13,7 +13,7 @@ public class CredencialService {
 		dao=new DAOCredencialImpl();
 	}
 	
-	public boolean save(Credencial c) {
+	public boolean saveOrUpdate(Credencial c) {
 		return dao.saveOrUpdate(c);
 	}
 	
