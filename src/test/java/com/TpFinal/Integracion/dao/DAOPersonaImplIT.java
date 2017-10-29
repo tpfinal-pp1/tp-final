@@ -16,7 +16,10 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
+import com.TpFinal.dto.persona.Administrador;
+import com.TpFinal.dto.persona.AgenteInmobiliario;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
@@ -184,6 +187,26 @@ public class DAOPersonaImplIT {
     	slave = (Empleado)p;
     	assertEquals(LocalDate.now(), slave.getFechaDeAlta());
     }
+    
+    @Test 
+    public void guardarAgenteImb() {
+    	AgenteInmobiliario slave = instanciaAgenteInmobiliario("1");
+    	dao.saveOrUpdate(slave);
+    	Persona p=dao.readAllActives().get(0);
+    	slave = (AgenteInmobiliario)p;
+    	assertEquals(LocalDate.now(), slave.getFechaDeAlta());
+    	assertTrue(slave.getCalendarioPersonal().stream().anyMatch(cita -> cita.getCitado().equals("citado 1")));
+    }
+    
+    @Test 
+    public void guardarAdmin() {
+    	Administrador admin = instanciaAdmin("1");
+    	dao.saveOrUpdate(admin);
+    	Persona p=dao.readAllActives().get(0);
+    	admin = (Administrador)p;
+    	assertEquals(LocalDate.now(), admin.getFechaDeAlta());
+    	assertTrue(admin.getCalendarioPersonal().stream().anyMatch(cita -> cita.getCitado().equals("citado 1")));
+    }
 
 
     public static Persona instancia(String numero) {
@@ -212,6 +235,38 @@ public class DAOPersonaImplIT {
                 .setFechaDeAlta(LocalDate.now())
                 .build();
     }
+    
+    public static AgenteInmobiliario instanciaAgenteInmobiliario(String numero) {
+	AgenteInmobiliario ai = new AgenteInmobiliario.Builder()
+		.setNombre("nombre "+numero)
+                .setApellido("apellido "+numero)
+                .setMail("mail "+numero)
+                .setTelefono("telefono "+numero)
+                .setTelefono("telefono "+numero)
+                .setTelefono2("telefono2 "+numero)
+                .setDNI("Dni"+numero)
+                .setinfoAdicional("Info Adicional"+ numero)
+                .setFechaDeAlta(LocalDate.now())
+                .build();
+	ai.addCita(new Cita.Builder().setCitado("citado " + numero).setDireccionLugar("direccion " + numero).build());
+	return ai;
+    }
+    
+    public static Administrador instanciaAdmin(String numero) {
+   	Administrador admin = new Administrador.Builder()
+   		.setNombre("nombre "+numero)
+                   .setApellido("apellido "+numero)
+                   .setMail("mail "+numero)
+                   .setTelefono("telefono "+numero)
+                   .setTelefono("telefono "+numero)
+                   .setTelefono2("telefono2 "+numero)
+                   .setDNI("Dni"+numero)
+                   .setinfoAdicional("Info Adicional"+ numero)
+                   .setFechaDeAlta(LocalDate.now())
+                   .build();
+   	admin.addCita(new Cita.Builder().setCitado("citado " + numero).setDireccionLugar("direccion " + numero).build());
+   	return admin;
+       }
     
     
     @SuppressWarnings("unused")

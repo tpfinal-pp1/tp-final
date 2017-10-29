@@ -29,12 +29,11 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.ContratoVenta;
-import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.ContratoService;
-import com.TpFinal.services.PersonaService;
+
 import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
 
 public class ContratoServiceIT {

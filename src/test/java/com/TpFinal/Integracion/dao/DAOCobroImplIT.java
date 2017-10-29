@@ -23,7 +23,6 @@ import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
-import com.TpFinal.dto.contrato.DuracionContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 
 public class DAOCobroImplIT {

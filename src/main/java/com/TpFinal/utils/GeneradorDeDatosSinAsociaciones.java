@@ -4,6 +4,7 @@ package com.TpFinal.utils;
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Random;
 
@@ -22,6 +23,8 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
+import com.TpFinal.dto.persona.AgenteInmobiliario;
+import com.TpFinal.dto.persona.EstadoEmpleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
@@ -102,6 +105,9 @@ public class GeneradorDeDatosSinAsociaciones {
 		    Persona comprador = personaRandom();		   
 		    comprador.setEsInmobiliaria(false);
 		    daoPer.saveOrUpdate(comprador);  
+		    AgenteInmobiliario ai = agenteRandom();
+		    daoPer.save(ai);
+		    
 
 		    daoPer.saveOrUpdate(p);
 		    daoInm.create(inmueble);
@@ -126,6 +132,22 @@ public class GeneradorDeDatosSinAsociaciones {
 	    e.printStackTrace();
 	}
 
+    }
+
+    private static AgenteInmobiliario agenteRandom() {
+	return new AgenteInmobiliario.Builder()
+		.setApellido(nombres[random.nextInt(nombres.length)])
+		.setDNI(dniRandom())
+		.setinfoAdicional("Bla bla bla")
+		.setMail(nombres[random.nextInt(nombres.length)] + "@" + nombres[random.nextInt(nombres.length)]
+			+ ".mail.com")
+		.setNombre(nombres[random.nextInt(nombres.length)])
+		.setTelefono(getTelefeno())
+		.setTelefono2(getTelefeno())
+		.setEstadoEmpeado(EstadoEmpleado.ACTIVO)
+		.setFechaDeAlta(LocalDate.now().minus(Period.ofMonths(1)))
+		.setFechaDeBaja(null)
+		.build();
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {

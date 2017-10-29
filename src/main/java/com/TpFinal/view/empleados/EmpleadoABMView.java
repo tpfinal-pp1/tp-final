@@ -7,6 +7,7 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.persona.FiltroEmpleados;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -31,7 +32,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @Title("Addressbook")
 @Theme("valo")
-@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class EmpleadoABMView extends DefaultLayout implements View {
 
     // Para identificar los layout de acciones
@@ -41,7 +41,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     private Grid<Empleado> grid = new Grid<>(Empleado.class);
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
+    
     // Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
 
@@ -62,14 +62,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	/*
-	 * Synchronous event handling.
-	 *
-	 * Receive user interaction events on the server-side. This allows you to
-	 * synchronously handle those events. Vaadin automatically sends only the needed
-	 * changes to the web page without loading a new page.
-	 */
-
+	
 	filter.addValueChangeListener(e -> updateList());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.setStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
@@ -148,17 +141,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    return hl;
 	};
     }
-    /*
-     * Robust layouts.
-     *
-     * Layouts are components that contain other components. HorizontalLayout
-     * contains TextField and Button. It is wrapped with a Grid into VerticalLayout
-     * for the left side of the screen. Allow user to resize the components with a
-     * SplitPanel.
-     *
-     * In addition to programmatically building layout in Java, you may also choose
-     * to setup layout declaratively with Vaadin Designer, CSS and HTML.
-     */
+  
 
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
@@ -187,15 +170,6 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
     }
 
-    /*
-     * Choose the design patterns you like.
-     *
-     * It is good practice to have separate data access methods that handle the
-     * back-end access and/or the user interface updates. You can further split your
-     * code into classes to easier maintenance. With Vaadin you can follow MVC, MVP
-     * or any other design pattern you choose.
-     */
-
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(
 		notification);
@@ -216,9 +190,9 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
    
     public void updateList() {
-    //TODO REPLACE
-	//List<Empleado> customers = service.findAll(filter.getValue());
-	//grid.setItems(customers);
+   
+	List<Empleado> customers = service.findAllEmpleados(new FiltroEmpleados());
+	grid.setItems(customers);
     } 
 
     public boolean isIsonMobile() {

@@ -13,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.persona.AgenteInmobiliario;
 
 @Entity
 @Table(name = "citas")
@@ -49,7 +52,11 @@ public class Cita implements Identificable, BorradoLogico {
     @OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
     protected Set<Recordatorio> recordatorios = new HashSet<>();
-    // private AgenteInmobiliario ai;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @JoinColumn(name = "id_agenteInmb")
+    private AgenteInmobiliario agenteInmb;
 
     public Cita() {
     }
@@ -78,6 +85,23 @@ public class Cita implements Identificable, BorradoLogico {
 	if (this.recordatorios.contains(recordatorio)) {
 	    this.recordatorios.remove(recordatorio);
 	    recordatorio.setCita(null);
+	}
+    }
+    
+    public AgenteInmobiliario getAgenteInmobiliario() {
+	return agenteInmb;
+    }
+
+    public void setAgenteInmboliliario(AgenteInmobiliario agenteInmb) {
+
+	if (agenteInmb != null) {
+	    this.agenteInmb = agenteInmb;
+	    this.agenteInmb.addCita(this);
+	} else {
+	    if (this.agenteInmb != null) {
+		this.agenteInmb.removeCita(this);
+		this.agenteInmb = null;
+	    }
 	}
     }
 
