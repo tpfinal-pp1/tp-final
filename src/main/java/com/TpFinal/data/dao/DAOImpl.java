@@ -259,7 +259,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	return borrarRepetidos(findByCriteria(criteria));
     }
 
-    private List<T> borrarRepetidos(List<T> lista) {
+    protected List<T> borrarRepetidos(List<T> lista) {
 	Set<T> conjunto = new HashSet<>();
 	List<T> ret = new ArrayList<>();
 	lista.forEach(elemento -> conjunto.add(elemento));
