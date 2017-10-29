@@ -56,6 +56,18 @@ public class DAOCredencialImplIT {
 	    	assertEquals("asd2", credenciales.get(2).getContrasenia());
 	    }
 	    
+	    @Test
+	    public void existe() {
+	    	for(int i=0; i<3; i++) {dao.saveOrUpdate(instanciaCredencial(String.valueOf(i)));}
+	    	
+	    	assertTrue(dao.existe(new Credencial.Builder().setUsuario("dsa0").setContrasenia("asd0").build()));
+	    	assertTrue(dao.existe(new Credencial.Builder().setUsuario("dsa1").setContrasenia("asd1").build()));
+	    	assertTrue(dao.existe(new Credencial.Builder().setUsuario("dsa2").setContrasenia("asd2").build()));
+	    	
+	    	assertFalse(dao.existe(new Credencial.Builder().setUsuario("dsa1").setContrasenia("asd0").build()));
+	    	
+	    }
+	    
 	    public static Empleado instanciaEmpleado(String numero) {
 	        return new Empleado.Builder()
 	                .setNombre("nombre "+numero)

@@ -118,8 +118,18 @@ public class PersonaService {
 		return empleado;
 	}
 
-	public List<Persona> findAll(FiltroInteresados filtro) {
-	    List<Persona> personas = dao.readAllActives().stream().filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
+	public List<Persona> findAllClientes(FiltroInteresados filtro) {
+	    List<Persona> personas = dao.readAllActives().stream()
+		    .filter(p -> !(p instanceof Empleado))
+		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
+	    personas.sort(Comparator.comparing(Persona::getId));
+	    return personas;
+	}
+	
+	public List<Persona> findAllEmpleados(FiltroInteresados filtro) {
+	    List<Persona> personas = dao.readAllActives().stream()
+		    .filter(p -> p instanceof Empleado)
+		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
 	    personas.sort(Comparator.comparing(Persona::getId));
 	    return personas;
 	}

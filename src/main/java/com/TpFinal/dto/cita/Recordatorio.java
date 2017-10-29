@@ -44,8 +44,10 @@ public class Recordatorio implements Identificable, BorradoLogico {
     private String minuto;
     @Column(name = "periodicidad")
     private String periodicidad;
+    @Column(name = "mensaje")
+    private String mensaje;
     @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL })
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
     @JoinColumn(name = "id_cita")
     private Cita cita;
 
@@ -58,6 +60,7 @@ public class Recordatorio implements Identificable, BorradoLogico {
 	this.minuto = b.minuto;
 	this.hora = b.hora;
 	this.cita = b.cita;
+	this.mensaje = b.mensaje;
     }
 
     @Override
@@ -67,10 +70,7 @@ public class Recordatorio implements Identificable, BorradoLogico {
 
     @Override
     public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((id == null) ? 0 : id.hashCode());
-	return result;
+	return 57;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class Recordatorio implements Identificable, BorradoLogico {
     }
 
     public void setCita(Cita cita) {
-	
+
 	if (cita != null) {
 	    this.cita = cita;
 	    this.cita.addRecordatorio(this);
@@ -143,6 +143,14 @@ public class Recordatorio implements Identificable, BorradoLogico {
     public void setId(Long id) {
 	this.id = id;
     }
+        
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
+    }
 
     @Override
     public void setEstadoRegistro(EstadoRegistro estado) {
@@ -154,31 +162,24 @@ public class Recordatorio implements Identificable, BorradoLogico {
 	return this.estadoRegistro;
     }
 
-    public class Builder {
+    @Override
+    public String toString() {
+	return "Recordatorio [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaInicio=" + fechaInicio
+		+ "\nfechaFin=" + fechaFin + "\nhora=" + hora + "\nminuto=" + minuto + "\nperiodicidad=" + periodicidad
+		+ "\n]";
+    }
 
+    public static class Builder {
+
+	private String mensaje;
 	private Cita cita;
 	private LocalDateTime fechaFin;
 	private String hora;
 	private String minuto;
 	private LocalDateTime fechaInicio;
 
-	public Builder setDireccionLugar(String direccionLugar) {
-	    this.hora = direccionLugar;
-	    return this;
-	}
-	
 	public Builder setCita(Cita cita) {
 	    this.cita = cita;
-	    return this;
-	}
-
-	public Builder setCitado(String citado) {
-	    this.minuto = citado;
-	    return this;
-	}
-
-	public Builder setFechaInicio(LocalDateTime fechaInicio) {
-	    this.fechaInicio = fechaInicio;
 	    return this;
 	}
 
@@ -186,6 +187,27 @@ public class Recordatorio implements Identificable, BorradoLogico {
 	    this.fechaFin = fechaFin;
 	    return this;
 	}
+
+	public Builder setHora(String hora) {
+	    this.hora = hora;
+	    return this;
+	}
+
+	public Builder setMinuto(String minuto) {
+	    this.minuto = minuto;
+	    return this;
+	}
+
+	public Builder setFechaInicio(LocalDateTime fechaInicio) {
+	    this.fechaInicio = fechaInicio;
+	    return this;
+	}
+	
+	public Builder setMensaje(String mensaje) {
+	    this.mensaje = mensaje;
+	    return this;
+	}
+	
 
 	public Recordatorio build() {
 	    return new Recordatorio(this);
