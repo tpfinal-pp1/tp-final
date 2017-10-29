@@ -112,6 +112,11 @@ public class PersonaService {
 	    p.getRoles().add(i);
 	    return i;
 	}
+	
+	public static Empleado getEmpleadoInstancia() {
+		Empleado empleado = new Empleado.Builder().setNombre("").setApellido("").setDNI("").build();
+		return empleado;
+	}
 
 	public List<Persona> findAllClientes(FiltroInteresados filtro) {
 	    List<Persona> personas = dao.readAllActives().stream()
