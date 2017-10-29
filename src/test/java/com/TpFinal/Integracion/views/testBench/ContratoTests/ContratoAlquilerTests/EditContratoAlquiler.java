@@ -8,10 +8,7 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.List;
 
@@ -39,7 +36,7 @@ public class EditContratoAlquiler extends TestBenchTestCase{
         contratoView = mainView.getContratoView();
     }
 
-    @Test
+    @Ignore
     public void addContratoAlquilerTest(){
         int indexCombo = 1;
         getDriver().get(TBUtils.getUrl("contratos"));

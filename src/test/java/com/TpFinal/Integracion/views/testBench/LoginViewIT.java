@@ -26,7 +26,7 @@ public class LoginViewIT extends TestBenchTestCase {
         loginView = TBUtils.loginView(TBUtils.initializeDriver());
     }
 
-    @Test
+    @Ignore
     public void testLoginLogout() {
         Assert.assertTrue(loginView.isDisplayed());
 
