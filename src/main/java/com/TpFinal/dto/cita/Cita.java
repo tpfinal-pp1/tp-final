@@ -47,14 +47,14 @@ public class Cita implements Identificable, BorradoLogico {
     @Column(name = "tipo_cita")
     TipoCita tipoDeCita;
     @OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    @Cascade({ CascadeType.ALL })
     protected Set<Recordatorio> recordatorios = new HashSet<>();
     // private AgenteInmobiliario ai;
 
     public Cita() {
     }
 
-    public Cita(Builder b) {
+    private Cita(Builder b) {
 	this.fechaHora = b.fechahora;
 	this.citado = b.citado;
 	this.direccionLugar = b.direccionLugar;
@@ -63,29 +63,6 @@ public class Cita implements Identificable, BorradoLogico {
 
     }
 
-    @Override
-    public Long getId() {
-	return id;
-    }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((id == null) ? 0 : id.hashCode());
-	return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (!(obj instanceof Cita))
-	    return false;
-	Cita other = (Cita) obj;
-	return getId() != null && Objects.equals(getId(), other.getId());
-    }
-    
     public Set<Recordatorio> getRecordatorios() {
 	return recordatorios;
     }
@@ -158,7 +135,34 @@ public class Cita implements Identificable, BorradoLogico {
 	return this.estadoRegistro;
     }
 
-    public class Builder {
+    @Override
+    public Long getId() {
+	return id;
+    }
+
+    @Override
+    public int hashCode() {
+	return 31;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (!(obj instanceof Cita))
+	    return false;
+	Cita other = (Cita) obj;
+	return getId() != null && Objects.equals(getId(), other.getId());
+    }
+
+    @Override
+    public String toString() {
+	return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaHora
+		+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
+		+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
+    }
+
+    public static class Builder {
 
 	private TipoCita tipoDeCita;
 	private String observaciones;
