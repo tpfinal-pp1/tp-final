@@ -259,7 +259,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	List<Persona> customers = personaService.findAll(filtroBase);
+	List<Persona> customers = personaService.findAllClientes(filtroBase);
 	grid.setItems(customers);
     }
 
