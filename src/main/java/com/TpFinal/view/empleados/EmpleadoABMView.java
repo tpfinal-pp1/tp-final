@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -48,8 +50,8 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     EmpleadoForm empleadoForm = new EmpleadoForm(this);
     private boolean isonMobile = false;
 
-    //TODO REPLACE
-    //EmpleadoService service = new EmpleadoService();
+    //XXX
+    PersonaService service = new PersonaService();
 
     public EmpleadoABMView() {
 
@@ -81,7 +83,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	    empleadoForm.clearFields();
 	    grid.asSingleSelect().clear();
-	    empleadoForm.setContratoDuracion(null);
+	    empleadoForm.setEmpleado(null);
 	});
 
 	grid.setColumns("nombre", "apellido", "DNI");
@@ -112,7 +114,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
     private ValueProvider<Empleado, HorizontalLayout> configurarAcciones() {
 
-	return contratoduracion -> {
+	return empleado -> {
 
 	    // Button edit = new Button(VaadinIcons.EDIT);
 	    // edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
@@ -124,18 +126,17 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    Button del = new Button(VaadinIcons.TRASH);
 	    
 	    //TODO REPLACE
-	    /*del.addClickListener(click -> {
+	    del.addClickListener(click -> {
 		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
 			VaadinIcons.WARNING,
 			"¿Esta seguro que desea Eliminar?",
 			"100px",
 			confirmacion -> {
-			    service.delete(contratoduracion);
-			    showSuccessNotification("Duración de contrato borrada: " + contratoduracion
-				    .getDescripcion());
+			    service.delete(empleado);
+			    showSuccessNotification("Empleado: " + empleado.getNombre() + " " + empleado.getApellido());
 			    updateList();
 			});
-	    }); */
+	    }); 
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Borrar");
@@ -216,7 +217,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
    
     public void updateList() {
     //TODO REPLACE
-	//List<ContratoDuracion> customers = service.findAll(filter.getValue());
+	//List<Empleado> customers = service.findAll(filter.getValue());
 	//grid.setItems(customers);
     } 
 

@@ -2,6 +2,7 @@ package com.TpFinal.view.empleados;
 
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -40,8 +41,8 @@ public class EmpleadoForm extends FormLayout {
 	    private TextField mail = new TextField("Mail");
 	    private TextArea infoAdicional = new TextArea("Info");
 	    
-	    //TODO REPLACE
-	    //ContratoDuracionService service = new ContratoDuracionService();
+	    //XXX
+	    PersonaService service = new PersonaService();
 	    
 	    private EmpleadoABMView addressbookView;
 	    private Binder<Empleado> binderEmpleado= new Binder<>(Empleado.class);
@@ -132,29 +133,29 @@ public class EmpleadoForm extends FormLayout {
 	    }
 
 
-	    public void setContratoDuracion(Empleado empleado) {
+	    public void setEmpleado(Empleado empleado) {
 	   
-	    //TODO REPLACE
+	    //XXX
 	    	
-	    	/*	if(duracionContrato != null) {
-	    		this.duracionContrato = duracionContrato;
-	    		binderContratoDuracion.readBean(this.duracionContrato);
+	    		if(empleado != null) {
+	    		this.empleado = empleado;
+	    		binderEmpleado.readBean(this.empleado);
 	    		delete.setVisible(true);
 	    		}else {
-	    		    this.duracionContrato = ContratoDuracionService.getInstancia();
+	    		    this.empleado = PersonaService.getEmpleadoInstancia();
 	    			delete.setVisible(false);
 	    		}
 	    		setVisible(true);
 	    		getAddressbookView().setComponentsVisible(false);
 	    		if (getAddressbookView().isIsonMobile())
-	    		    this.focus();	*/
+	    		    this.focus();	
 	  
 	    }
 
 	    private void delete() {
 	        
-	    	//TODO REPLACE
-	    	//service.delete(empleado);
+	    	//XXX
+	    	service.delete(empleado);
 	        addressbookView.updateList();
 	        setVisible(false);
 	        getAddressbookView().setComponentsVisible(true);
@@ -169,8 +170,8 @@ public class EmpleadoForm extends FormLayout {
 	        try {
 	        	binderEmpleado.writeBean(empleado);
 	            
-	        	//TODO
-	        	//service.saveOrUpdate(empleado);
+	        	//XXX
+	        	service.saveOrUpdate(empleado);
 	            success=true;
 
 
