@@ -1,59 +1,30 @@
 package com.TpFinal.dto.persona;
 
 import java.time.LocalDate;
-import java.util.HashSet;
+
 import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 
-@Entity
-@Table(name = "AgentesInmobiliarios")
-@PrimaryKeyJoinColumn(name = "idPersona")
-public class AgenteInmobiliario extends Empleado {
-    @OneToMany(mappedBy = "agenteInmb", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL })
-    private Set<Cita> calendarioPersonal = new HashSet<>();
 
-    public AgenteInmobiliario() {
+@Entity
+@Table(name = "Administradores")
+@PrimaryKeyJoinColumn(name = "idPersona")
+public class Administrador extends AgenteInmobiliario {
+    public Administrador() {
 	super();
     }
 
-    protected AgenteInmobiliario(Builder b) {
+    protected Administrador(Builder b) {
 	super(b);
-	this.calendarioPersonal = b.calendarioPersonal;
-    }
-
-    public Set<Cita> getCalendarioPersonal() {
-	return calendarioPersonal;
-    }
-
-    public void setCalendarioPersonal(Set<Cita> calendarioPersonal) {
-	this.calendarioPersonal = calendarioPersonal;
-    }
-
-    public void addCita(Cita cita) {
-	if (!this.calendarioPersonal.contains(cita)) {
-	    this.calendarioPersonal.add(cita);
-	    cita.setAgenteInmboliliario(this);
-	}
-    }
-
-    public void removeCita(Cita cita) {
-	if (this.calendarioPersonal.contains(cita)) {
-	    this.calendarioPersonal.remove(cita);
-	    cita.setAgenteInmboliliario(null);
-	}
     }
 
     @Override
@@ -65,19 +36,19 @@ public class AgenteInmobiliario extends Empleado {
     public boolean equals(Object obj) {
 	if (this == obj)
 	    return true;
-	if (!(obj instanceof AgenteInmobiliario))
+	if (!(obj instanceof Administrador))
 	    return false;
-	AgenteInmobiliario other = (AgenteInmobiliario) obj;
+	Administrador other = (Administrador) obj;
 	return getId() != null && Objects.equals(getId(), other.getId());
     }
 
-    public static class Builder extends Empleado.Builder {
-	protected Set<Cita> calendarioPersonal = new HashSet<>();
+    public static class Builder extends AgenteInmobiliario.Builder {
+
+	@Override
 	public Builder setCalendarioPersonal(Set<Cita> calendarioPersonal) {
-	    this.calendarioPersonal = calendarioPersonal;
+	    super.setCalendarioPersonal(calendarioPersonal);
 	    return this;
 	}
-	
 
 	@Override
 	public Builder setEstadoEmpeado(EstadoEmpleado dato) {
@@ -169,11 +140,9 @@ public class AgenteInmobiliario extends Empleado {
 	    return this;
 	}
 
-	@Override
-	public AgenteInmobiliario build() {
-	    return new AgenteInmobiliario(this);
+	public Administrador build() {
+	    return new Administrador(this);
 	}
-
     }
 
 }
