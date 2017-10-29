@@ -21,17 +21,23 @@ public class ItemRepAlquileresACobrar {
     private String apellido;
     private Integer numeroMes;
     private String nombreYApellido;
+    private String estadoCobro;
+    private String montoConIntereses;
+    private String gananciaImboliaria;
 
     public ItemRepAlquileresACobrar(Inquilino i, Cobro c, TipoMoneda tipoMoneda) {
 	LocalDate fecha = c.getFechaDeVencimiento();
 	anio = fecha.getYear();
-	mes = fecha.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"));
+	mes = formatearMes(fecha.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR")));
 	numeroMes = fecha.getMonthValue();
 	fechaVencimiento = fecha.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter());
 	monto = TipoMoneda.getSimbolo(tipoMoneda) + " " + c.getMontoRecibido().toString();
 	nombre = i.getPersona().getNombre();
 	apellido = i.getPersona().getApellido();
 	nombreYApellido = nombre + " " + apellido;
+	gananciaImboliaria = TipoMoneda.getSimbolo(tipoMoneda) + " " + String.valueOf(c.getComision());
+	montoConIntereses = TipoMoneda.getSimbolo(tipoMoneda) + " " + String.valueOf(c.getMontoOriginal().add(c.getInteres()));
+	estadoCobro = c.getEstadoCobroString();
     }
 
     public Integer getAnio() {
@@ -103,6 +109,38 @@ public class ItemRepAlquileresACobrar {
 
 	public void setNombreYApellido(String nombreYApellido) {
 		this.nombreYApellido = nombreYApellido;
+	}
+
+	public String getEstadoCobro() {
+		return estadoCobro;
+	}
+
+	public void setEstadoCobro(String estadoCobro) {
+		this.estadoCobro = estadoCobro;
+	}
+
+	public String getMontoConIntereses() {
+		return montoConIntereses;
+	}
+
+	public void setMontoConIntereses(String montoConIntereses) {
+		this.montoConIntereses = montoConIntereses;
+	}
+
+	public String getGananciaImboliaria() {
+		return gananciaImboliaria;
+	}
+
+	public void setGananciaImboliaria(String gananciaImboliaria) {
+		this.gananciaImboliaria = gananciaImboliaria;
+	}
+	public String formatearMes (String mes) {
+		
+		String mesFormateado = ""; 
+		
+		mesFormateado = mes.toUpperCase().substring(0, 1) + mes.toLowerCase().substring(1);
+		
+		return mesFormateado;
 	}
 
 	@Override
