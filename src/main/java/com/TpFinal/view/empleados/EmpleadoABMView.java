@@ -49,7 +49,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     private boolean isonMobile = false;
 
     //TODO REPLACE
-    //ContratoDuracionService service = new ContratoDuracionService();
+    //EmpleadoService service = new EmpleadoService();
 
     public EmpleadoABMView() {
 
