@@ -24,7 +24,7 @@ public abstract class RolPersona implements Identificable, BorradoLogico{
 
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade({CascadeType.SAVE_UPDATE})
-    @JoinColumn(name = "idp")
+    @JoinColumn(name = "id_persona")
     private Persona persona;
 
     @Id

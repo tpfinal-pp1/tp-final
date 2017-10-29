@@ -16,6 +16,7 @@ import java.util.*;
 
 @Entity
 @Table(name = "personas")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Persona implements Identificable, BorradoLogico {
 
 	public static final String idPersona = "idPersona";
