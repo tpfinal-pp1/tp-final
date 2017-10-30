@@ -24,6 +24,7 @@ import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
+import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.EstadoEmpleado;
 import com.TpFinal.dto.persona.Inquilino;
@@ -84,7 +85,7 @@ public class GeneradorDeDatosSinAsociaciones {
 	DAOImpl<ContratoDuracion> daoDuracion = new DAOImpl<>(ContratoDuracion.class);
 	daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("24 Meses").setDuracion(24).build());
 	daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("36 Meses").setDuracion(36).build());
-	
+
 	serviceProvincia = new ProvinciaService(modoLectura);
 	cobroService = new CobroService();
 
@@ -103,12 +104,11 @@ public class GeneradorDeDatosSinAsociaciones {
 		    if (prop.getPersona().getEsInmobiliaria())
 			prop.getPersona().setNombre("inm: " + prop.getPersona().getNombre());
 
-		    Persona comprador = personaRandom();		   
+		    Persona comprador = personaRandom();
 		    comprador.setEsInmobiliaria(false);
-		    daoPer.saveOrUpdate(comprador);  
+		    daoPer.saveOrUpdate(comprador);
 		    Persona emp = empleadoRandom();
 		    daoPer.save(emp);
-		    
 
 		    daoPer.saveOrUpdate(p);
 		    daoInm.create(inmueble);
@@ -135,9 +135,9 @@ public class GeneradorDeDatosSinAsociaciones {
 
     }
 
-    private static Persona empleadoRandom() {	
-	
-	Persona p =new Persona.Builder()
+    private static Persona empleadoRandom() {
+
+	Persona p = new Persona.Builder()
 		.setApellido(nombres[random.nextInt(nombres.length)])
 		.setDNI(dniRandom())
 		.setinfoAdicional("Bla bla bla")
@@ -151,10 +151,22 @@ public class GeneradorDeDatosSinAsociaciones {
 		.setCategoriaEmpleado(CategoriaEmpleado.values()[random.nextInt(CategoriaEmpleado.values().length)])
 		.setFechaDeAlta(LocalDate.now().minus(Period.ofMonths(1)))
 		.setPersona(p)
-		.build()
-		;
+		.build();
+	String usuario = p.getNombre().toLowerCase();
+
+	Credencial c = new Credencial.Builder()
+		.setContrasenia(usuario)
+		.setEmpleado(e)
+		.setUsuario(usuario)
+		.build();
+	if (e.getCategoriaEmpleado() != CategoriaEmpleado.sinCategoria)
+	    e.setCredencial(c);
+	if (e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
+	    c.setContrasenia("admin");
+	    c.setUsuario("admin");
+	}
 	return p;
-	
+
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {
