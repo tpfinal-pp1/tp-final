@@ -41,6 +41,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatosSinAsociaciones {
+    
+    private static boolean adminCreado = false;
 
     final static Logger logger = Logger.getLogger(GeneradorDeDatosSinAsociaciones.class);
 
@@ -153,7 +155,6 @@ public class GeneradorDeDatosSinAsociaciones {
 		.setPersona(p)
 		.build();
 	String usuario = p.getNombre().toLowerCase();
-
 	Credencial c = new Credencial.Builder()
 		.setContrasenia(usuario)
 		.setEmpleado(e)
@@ -161,9 +162,11 @@ public class GeneradorDeDatosSinAsociaciones {
 		.build();
 	if (e.getCategoriaEmpleado() != CategoriaEmpleado.sinCategoria)
 	    e.setCredencial(c);
-	if (e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
+	if (!adminCreado  && e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
 	    c.setContrasenia("admin");
 	    c.setUsuario("admin");
+	    adminCreado = true;
+	    
 	}
 	return p;
 
