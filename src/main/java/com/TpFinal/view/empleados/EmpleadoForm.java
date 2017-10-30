@@ -2,11 +2,15 @@ package com.TpFinal.view.empleados;
 
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
+
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
@@ -29,6 +33,7 @@ public class EmpleadoForm extends FormLayout {
 
     private Empleado empleado;
     private Credencial credencial;
+    private final static Logger logger = Logger.getLogger(EmpleadoForm.class);
 
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
@@ -56,6 +61,7 @@ public class EmpleadoForm extends FormLayout {
     private PasswordField pfPassConfirmacion = new PasswordField("Confirmacion Password");
     // XXX
     PersonaService service = new PersonaService();
+    CredencialService credencialService = new CredencialService();
 
     private EmpleadoABMView addressbookView;
     private Binder<Empleado> binderEmpleado = new Binder<>(Empleado.class);
@@ -86,10 +92,39 @@ public class EmpleadoForm extends FormLayout {
 	 * and give it a keyoard shortcut for a better UX.
 	 */
 
-//	tfNombreUsuario.addValueChangeListener( e -> {
-//	    
-//	})
+	// tfNombreUsuario.addValueChangeListener( e -> {
+	//
+	// })
+	cbCategoria.setEmptySelectionAllowed(false);
 	
+	cbCategoria.addValueChangeListener(e ->{
+	    if (e.getValue() == CategoriaEmpleado.sinCategoria) {
+		pfPassConfirmacion.setEnabled(false);
+		pfPassIngreso.setEnabled(false);
+		tfNombreUsuario.setEnabled(false);
+		pfPassConfirmacion.clear();
+		pfPassIngreso.clear();
+		tfNombreUsuario.clear();
+	    }
+	    else {
+		pfPassConfirmacion.setEnabled(true);
+		pfPassIngreso.setEnabled(true);
+		tfNombreUsuario.setEnabled(true);
+		if (empleado.getCredencial() != null)
+		    binderCredencial.readBean(empleado.getCredencial());
+	    }
+	});
+
+	pfPassConfirmacion.addValueChangeListener(e -> {
+	    binderCredencial.validate();
+	});
+	pfPassIngreso.addValueChangeListener(e -> {
+	    binderCredencial.validate();
+	});
+	tfNombreUsuario.addValueChangeListener(e -> {
+	    binderCredencial.validate();
+	});
+
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
 
@@ -100,7 +135,6 @@ public class EmpleadoForm extends FormLayout {
 
     private void binding() {
 	bindearDatosPersonales();
-
 	binderEmpleado.forField(cbCategoria)
 		.asRequired("Seleccione una categoría")
 		.bind(Empleado::getCategoriaEmpleado, Empleado::setCategoriaEmpleado);
@@ -120,6 +154,27 @@ public class EmpleadoForm extends FormLayout {
 			ret = true;
 		    return ret;
 		}, "Debe Ingresar un password")
+		.withValidator(texto -> {
+		    boolean ret = false;
+		    if (!credencialService.existeUsuario(texto))
+			ret = true;
+		    // si la credencial existe pero es la de este empleado, devolver true
+		    if (empleado.getCredencial() != null &&
+			    empleado.getCredencial().getUsuario() != null &&
+			    empleado.getCredencial().getUsuario().equals(texto))
+			ret = true;
+		    if (tfNombreUsuario.isEmpty() && pfPassConfirmacion.isEmpty() && pfPassIngreso.isEmpty())
+			ret = true;
+		    return ret;
+		}, "El nombre de usuario ya esta registrado en el sistema")
+		.withValidator(texto -> {
+		    boolean ret = true;
+		    if (tfNombreUsuario.isEmpty() && (!pfPassConfirmacion.isEmpty() || !pfPassIngreso.isEmpty()))
+			ret = false;
+		    if (tfNombreUsuario.isEmpty() && pfPassConfirmacion.isEmpty() && pfPassIngreso.isEmpty())
+			ret = true;
+		    return ret;
+		}, "Debe Ingresar un nombre de usuario")
 		.bind(credencial -> {
 		    return credencial != null ? credencial.getUsuario() : null;
 		}, (credencial, input) -> {
@@ -250,8 +305,7 @@ public class EmpleadoForm extends FormLayout {
 	    if (empleado.getCredencial() != null) {
 		this.credencial = empleado.getCredencial();
 		binderCredencial.readBean(credencial);
-	    }
-	    else {
+	    } else {
 		credencial = new Credencial.Builder()
 			.setEmpleado(empleado)
 			.build();
@@ -286,14 +340,20 @@ public class EmpleadoForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderEmpleado.writeBean(empleado);
+	    binderCredencial.writeBean(credencial);
+	    if(binderCredencial.getFields().allMatch(p -> p.isEmpty())) {
+		if (empleado.getCredencial() !=  null)
+		credencialService.deepDelete(empleado.getCredencial());
+		empleado.setCredencial(null);
+	    }
 
 	    // XXX
-	    service.saveOrUpdate(empleado.getPersona());
-	    success = true;
-
+	    success = service.saveOrUpdate(empleado.getPersona());
+	    
 	} catch (ValidationException e) {
-	    e.printStackTrace();
-	    Notification.show("Error al guardar, por favor revise los campos e intente de nuevo");
+	    Utils.mostarErroresValidator(e);
+	    Notification.show("Errores de validación, por favor revise los campos e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
 
 	    return;
 	} catch (Exception e) {
@@ -319,7 +379,7 @@ public class EmpleadoForm extends FormLayout {
 
     public void clearFields() {
 	binderCredencial.getFields().forEach(field -> field.clear());
-	binderEmpleado.getFields().forEach(field ->field.clear());
+	binderEmpleado.getFields().forEach(field -> field.clear());
     }
 
     public EmpleadoABMView getAddressbookView() {

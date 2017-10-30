@@ -19,6 +19,7 @@ import com.TpFinal.view.persona.FiltroInteresados;
 
 public class PersonaService {
 	DAOPersona dao;
+	CredencialService credencialService = new CredencialService();
 	
 	public PersonaService() {
 		dao = new DAOPersonaImpl();
@@ -29,6 +30,12 @@ public class PersonaService {
 	}
 	
 	public boolean delete(Persona p) {
+	    if(p.giveMeYourRoles().contains(Rol.Empleado)) {
+		Credencial c = ((Empleado)p.getRol(Rol.Empleado)).getCredencial();
+		if(c != null) {
+		    credencialService.deepDelete(c);
+		}
+	    }
 		return dao.logicalDelete(p);
 	}
 	
