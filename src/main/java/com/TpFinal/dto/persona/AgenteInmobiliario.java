@@ -16,6 +16,7 @@ import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
+import com.TpFinal.dto.persona.Empleado.Builder;
 
 @Entity
 @Table(name = "AgentesInmobiliarios")
@@ -27,11 +28,13 @@ public class AgenteInmobiliario extends Empleado {
 
     public AgenteInmobiliario() {
 	super();
+	this.categoriaEmpleado = CategoriaEmpleado.agenteInmobilario;
     }
 
     protected AgenteInmobiliario(Builder b) {
 	super(b);
 	this.calendarioPersonal = b.calendarioPersonal;
+	this.categoriaEmpleado =CategoriaEmpleado.agenteInmobilario;
     }
 
     public Set<Cita> getCalendarioPersonal() {
@@ -77,7 +80,12 @@ public class AgenteInmobiliario extends Empleado {
 	    this.calendarioPersonal = calendarioPersonal;
 	    return this;
 	}
-	
+
+	@Override
+	public Builder setCategoriaEmpleado(CategoriaEmpleado dato) {
+	    super.setCategoriaEmpleado(dato);
+	    return this;
+	}
 
 	@Override
 	public Builder setEstadoEmpeado(EstadoEmpleado dato) {
