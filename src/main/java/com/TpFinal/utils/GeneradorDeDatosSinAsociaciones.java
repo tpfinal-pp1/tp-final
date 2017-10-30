@@ -8,6 +8,7 @@ import java.time.Period;
 import java.util.List;
 import java.util.Random;
 
+import com.TpFinal.dto.persona.*;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOContratoImpl;
@@ -23,13 +24,6 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
-import com.TpFinal.dto.persona.CategoriaEmpleado;
-import com.TpFinal.dto.persona.Credencial;
-import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.EstadoEmpleado;
-import com.TpFinal.dto.persona.Inquilino;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
@@ -159,8 +153,12 @@ public class GeneradorDeDatosSinAsociaciones {
 		.setEmpleado(e)
 		.setUsuario(usuario)
 		.build();
-	if (e.getCategoriaEmpleado() != CategoriaEmpleado.sinCategoria)
-	    e.setCredencial(c);
+		//Setea access a las views
+		c.setViewAccess(ViewAccess.valueOf(e.getCategoriaEmpleado()));
+
+	if (e.getCategoriaEmpleado() != CategoriaEmpleado.sinCategoria) {
+		e.setCredencial(c);
+	}
 	if (e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
 	    c.setContrasenia("admin");
 	    c.setUsuario("admin");

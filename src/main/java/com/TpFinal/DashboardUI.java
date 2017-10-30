@@ -89,23 +89,16 @@ public final class DashboardUI extends UI {
             Notification.show("Usuario o Contraseña Incorrectos");
         }
         else if(empleado.getCredencial().getViewAccess()==null){
-            setContent(new LoginView());
-            Notification.show("Credenciales sin acceso al sistema");
-        }
+                setContent(new LoginView());
+                Notification.show("Credenciales sin acceso al sistema");
+            }
         else{
-
-        if (empleado.getCredencial().getViewAccess().equals(ViewAccess.Admin)) {
-            // Authenticated user
             setContent(new MainView());
             removeStyleName("loginview");
             getNavigator().navigateTo(getNavigator().getState());
         }
-        else {
-            setContent(new LoginView());
-            addStyleName("loginview");
-           
-        }}
-    }
+      }
+
 
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
