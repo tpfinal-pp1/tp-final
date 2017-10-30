@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -141,6 +142,8 @@ public class PersonaService {
 		    .setFechaDeAlta(LocalDate.now())
 		    .setPersona(p)
 		    .build();
+	    Credencial c = new Credencial.Builder().setEmpleado(e).build();
+	    e.setCredencial(c);
 	    return e;
 	}
 	
