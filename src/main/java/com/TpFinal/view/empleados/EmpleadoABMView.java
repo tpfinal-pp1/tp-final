@@ -2,8 +2,6 @@ package com.TpFinal.view.empleados;
 
 import java.util.List;
 
-import com.TpFinal.dto.persona.Administrador;
-import com.TpFinal.dto.persona.AgenteInmobiliario;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
@@ -40,7 +38,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     private int acciones = 0;
 
     TextField filter = new TextField();
-    private Grid<Empleado> grid = new Grid<>(Empleado.class);
+    private Grid<Empleado> grid = new Grid<>();
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     
@@ -81,19 +79,11 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    empleadoForm.setEmpleado(null);
 	});
 
-	grid.setColumns("nombre", "apellido","mail", "telefono");
-	grid.getColumn("mail").setCaption("E-Mail");
-	grid.getColumn("telefono").setCaption("Teléfono");
-	grid.getColumn("nombre").setCaption("Nombre");
-	grid.getColumn("apellido").setCaption("Apellido ");
-	grid.addColumn(empleado -> {
-	    String ret ="Sin Categoría";
-	    if (empleado instanceof AgenteInmobiliario)
-		ret = "Agente Inmobiliario";
-	    if (empleado instanceof Administrador)
-		ret = "Administrador";
-	    return ret;
-	}).setCaption("Categoría").setId("categoria");
+	grid.addColumn(empleado -> {return empleado.getPersona().getNombre();}).setCaption("Nombre").setId("nombre");
+	grid.addColumn(empleado ->{return empleado.getPersona().getApellido();}).setCaption("Apellido").setId("apellido");
+	grid.addColumn(empleado -> {return empleado.getPersona().getMail();}).setCaption("E-Mail").setId("mail");
+	grid.addColumn(empleado -> {return empleado.getPersona().getTelefono();}).setCaption("Teléfono").setId("telefono");
+	grid.addColumn(empleado -> {return empleado.getCategoriaEmpleado();}).setCaption("Categoría").setId("categoria");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria");
 	grid.getColumns().forEach(col -> col.setResizable(false));
@@ -136,8 +126,8 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 			"¿Esta seguro que desea Eliminar?",
 			"100px",
 			confirmacion -> {
-			    service.delete(empleado);
-			    showSuccessNotification("Borrado: " + empleado.getNombre() + " " + empleado.getApellido());
+			    service.delete(empleado.getPersona());
+			    showSuccessNotification("Borrado: " + empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
 			    updateList();
 			});
 	    }); 
