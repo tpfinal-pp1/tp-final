@@ -45,7 +45,7 @@ public class LoginView extends VerticalLayout {
 
         loginPanel.addComponent(buildLabels());
         loginPanel.addComponent(buildFields());
-        loginPanel.addComponent(new CheckBox("Recuerdame", true));
+        // loginPanel.addComponent(new CheckBox("Recuerdame", true));
         return loginPanel;
     }
 

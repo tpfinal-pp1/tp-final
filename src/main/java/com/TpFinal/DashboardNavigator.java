@@ -1,5 +1,8 @@
 package com.TpFinal;
 
+import com.TpFinal.dto.persona.Credencial;
+import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.DashboardEvent.BrowserResizeEvent;
 import com.TpFinal.services.DashboardEvent.CloseOpenWindowsEvent;
@@ -9,9 +12,12 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
+
+import java.util.ArrayList;
 
 @SuppressWarnings("serial")
 public class
@@ -28,7 +34,7 @@ DashboardNavigator extends Navigator {
         super(UI.getCurrent(), container);
 
         String host = getUI().getPage().getLocation().getHost();
-        if (TRACKER_ID != null && host.endsWith("demo.vaadin.com")) {
+        if (TRACKER_ID != null && host.endsWith("inmobi.ddns.net")) {
             initGATracker(TRACKER_ID);
         }
         initViewChangeListener();
@@ -49,9 +55,16 @@ DashboardNavigator extends Navigator {
 
             @Override
             public boolean beforeViewChange(final ViewChangeEvent event) {
-                // Since there's no conditions in switching between the views
-                // we can always return true.
-                    return true;
+
+                CredencialService credServ=new CredencialService();
+                Credencial userCred=getCurrentUser().getCredencial();
+
+                   if(credServ.hasViewAccess(userCred,event.getNewView().getClass())) {
+                       System.out.println("Acceso Permitido a view:"+event.getNewView().getClass().toString());
+                       return true;
+                   }
+                System.out.println("Acceso Denegado a view:"+event.getNewView().getClass().toString());
+                    return false;
                 }
 
                 @Override
@@ -69,6 +82,11 @@ DashboardNavigator extends Navigator {
                 }
             }
         });
+    }
+
+    private Empleado getCurrentUser() {
+        return (Empleado) VaadinSession.getCurrent()
+                .getAttribute(Empleado.class.getName());
     }
 
     private void initViewProviders() {
