@@ -2,6 +2,8 @@ package com.TpFinal.view.empleados;
 
 import java.util.Arrays;
 
+import com.TpFinal.dto.persona.CategoriaEmpleado;
+import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.PersonaService;
@@ -26,6 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class EmpleadoForm extends FormLayout {
 
     private Empleado empleado;
+    private Credencial credencial;
 
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
@@ -45,8 +48,8 @@ public class EmpleadoForm extends FormLayout {
     private TextArea infoAdicional = new TextArea("Info Adicional");
 
     // DatosAdministrativos
-    private ComboBox<String> cbCategoria = new ComboBox<>("Categoría", Arrays.asList("Administrador",
-	    "Agente Inmobiliario", "Sin Categoría"));
+    private ComboBox<CategoriaEmpleado> cbCategoria = new ComboBox<>("Categoría", Arrays.asList(CategoriaEmpleado
+	    .values()));
     private BlueLabel blCredenciales = new BlueLabel("Credenciales");
     private TextField tfNombreUsuario = new TextField("Nombre Usuario");
     private PasswordField pfPassIngreso = new PasswordField("Password");
@@ -56,6 +59,7 @@ public class EmpleadoForm extends FormLayout {
 
     private EmpleadoABMView addressbookView;
     private Binder<Empleado> binderEmpleado = new Binder<>(Empleado.class);
+    private Binder<Credencial> binderCredencial = new Binder<>(Credencial.class);
     TabSheet tabSheet;
     // TabSheet
     private FormLayout datosPersonales;
@@ -82,6 +86,10 @@ public class EmpleadoForm extends FormLayout {
 	 * and give it a keyoard shortcut for a better UX.
 	 */
 
+//	tfNombreUsuario.addValueChangeListener( e -> {
+//	    
+//	})
+	
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
 
@@ -91,13 +99,75 @@ public class EmpleadoForm extends FormLayout {
     }
 
     private void binding() {
+	bindearDatosPersonales();
 
-	nombre.setRequiredIndicatorVisible(true);
-	apellido.setRequiredIndicatorVisible(true);
-	mail.setRequiredIndicatorVisible(true);
-	telefono.setRequiredIndicatorVisible(true);
-	DNI.setRequiredIndicatorVisible(false);
+	binderEmpleado.forField(cbCategoria)
+		.asRequired("Seleccione una categoría")
+		.bind(Empleado::getCategoriaEmpleado, Empleado::setCategoriaEmpleado);
+	bindearCredencial();
+    }
 
+    private void bindearCredencial() {
+	binderCredencial.forField(tfNombreUsuario)
+		.withValidator(texto -> {
+		    boolean ret = false;
+		    // Devolver True solo si hay un password ingresado
+		    if (!this.pfPassIngreso.isEmpty())
+			ret = true;
+		    // Tambien devolver true si todos los campos son empty(no se ingreso una
+		    // credencial)
+		    if (tfNombreUsuario.isEmpty() && pfPassConfirmacion.isEmpty() && pfPassIngreso.isEmpty())
+			ret = true;
+		    return ret;
+		}, "Debe Ingresar un password")
+		.bind(credencial -> {
+		    return credencial != null ? credencial.getUsuario() : null;
+		}, (credencial, input) -> {
+		    if (credencial != null)
+			credencial.setUsuario(input);
+		});
+
+	binderCredencial.forField(pfPassIngreso)
+		.withValidator(texto -> {
+		    boolean ret = false;
+		    // Devolver True solo si la confirmación coincide
+		    if (!this.pfPassIngreso.isEmpty() && pfPassIngreso.getValue().equals(pfPassConfirmacion.getValue()))
+			ret = true;
+		    // Tambien devolver true si todos los campos son empty(no se ingreso una
+		    // credencial)
+		    if (tfNombreUsuario.isEmpty() && pfPassConfirmacion.isEmpty() && pfPassIngreso.isEmpty())
+			ret = true;
+		    return ret;
+		}, "Los passwords ingresados no coinciden")
+		.bind(credencial -> {
+		    return credencial != null ? credencial.getContrasenia() : null;
+		}, (credencial, input) -> {
+		    if (credencial != null)
+			credencial.setContrasenia(input);
+		});
+
+	binderCredencial.forField(pfPassConfirmacion)
+		.withValidator(texto -> {
+		    boolean ret = false;
+		    // Devolver True solo si la confirmación coincide
+		    if (!this.pfPassConfirmacion.isEmpty() && pfPassConfirmacion.getValue().equals(pfPassIngreso
+			    .getValue()))
+			ret = true;
+		    // Tambien devolver true si todos los campos son empty(no se ingreso una
+		    // credencial)
+		    if (tfNombreUsuario.isEmpty() && pfPassConfirmacion.isEmpty() && pfPassIngreso.isEmpty())
+			ret = true;
+		    return ret;
+		}, "Los passwords ingresados no coinciden")
+		.bind(credencial -> {
+		    return credencial != null ? credencial.getContrasenia() : null;
+		}, (credencial, input) -> {
+		    if (credencial != null)
+			credencial.setContrasenia(input);
+		});
+    }
+
+    private void bindearDatosPersonales() {
 	binderEmpleado.forField(nombre).asRequired("Ingrese un nombre")
 		.bind(empleado -> {
 		    return empleado.getPersona().getNombre();
@@ -123,29 +193,28 @@ public class EmpleadoForm extends FormLayout {
 		}, (empleado, tel) -> {
 		    empleado.getPersona().setTelefono(tel);
 		});
-	
+
 	binderEmpleado.forField(telefono2)
-	.bind(empleado -> {
-	    return empleado.getPersona().getTelefono2();
-	}, (empleado, tel) -> {
-	    empleado.getPersona().setTelefono2(tel);
-	});
+		.bind(empleado -> {
+		    return empleado.getPersona().getTelefono2();
+		}, (empleado, tel) -> {
+		    empleado.getPersona().setTelefono2(tel);
+		});
 
 	binderEmpleado.forField(mail)
-	.withValidator(new EmailValidator("Introduzca un email valido!"))
-	.bind(empleado -> {
-	    return empleado.getPersona().getMail();
-	}, (empleado, mail) -> {
-	    empleado.getPersona().setMail(mail);
-	});
+		.withValidator(new EmailValidator("Introduzca un email valido!"))
+		.bind(empleado -> {
+		    return empleado.getPersona().getMail();
+		}, (empleado, mail) -> {
+		    empleado.getPersona().setMail(mail);
+		});
 
 	binderEmpleado.forField(infoAdicional)
-	.bind(empleado -> {
-	    return empleado.getPersona().getInfoAdicional();
-	}, (empleado, info) -> {
-	    empleado.getPersona().setInfoAdicional(info);
-	});
-
+		.bind(empleado -> {
+		    return empleado.getPersona().getInfoAdicional();
+		}, (empleado, info) -> {
+		    empleado.getPersona().setInfoAdicional(info);
+		});
     }
 
     private void buildLayout() {
@@ -174,15 +243,24 @@ public class EmpleadoForm extends FormLayout {
     }
 
     public void setEmpleado(Empleado empleado) {
-
-	// XXX
-
+	clearFields();
 	if (empleado != null) {
 	    this.empleado = empleado;
 	    binderEmpleado.readBean(this.empleado);
+	    if (empleado.getCredencial() != null) {
+		this.credencial = empleado.getCredencial();
+		binderCredencial.readBean(credencial);
+	    }
+	    else {
+		credencial = new Credencial.Builder()
+			.setEmpleado(empleado)
+			.build();
+		empleado.setCredencial(credencial);
+	    }
 	    delete.setVisible(true);
 	} else {
 	    this.empleado = PersonaService.getEmpleadoInstancia();
+	    this.credencial = this.empleado.getCredencial();
 	    delete.setVisible(false);
 	}
 	setVisible(true);
@@ -240,13 +318,8 @@ public class EmpleadoForm extends FormLayout {
     }
 
     public void clearFields() {
-	nombre.clear();
-	apellido.clear();
-	mail.clear();
-	DNI.clear();
-	telefono.clear();
-	telefono2.clear();
-	infoAdicional.clear();
+	binderCredencial.getFields().forEach(field -> field.clear());
+	binderEmpleado.getFields().forEach(field ->field.clear());
     }
 
     public EmpleadoABMView getAddressbookView() {
