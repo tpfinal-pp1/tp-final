@@ -97,22 +97,54 @@ public class EmpleadoForm extends FormLayout {
 	mail.setRequiredIndicatorVisible(true);
 	telefono.setRequiredIndicatorVisible(true);
 	DNI.setRequiredIndicatorVisible(false);
-	binderEmpleado.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre, Persona::setNombre);
 
-	binderEmpleado.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getApellido,
-		Persona::setApellido);
+	binderEmpleado.forField(nombre).asRequired("Ingrese un nombre")
+		.bind(empleado -> {
+		    return empleado.getPersona().getNombre();
+		}, (empleado, nombre) -> {
+		    empleado.getPersona().setNombre(nombre);
+		});
 
-	binderEmpleado.forField(DNI).bind(Persona::getDNI, Persona::setDNI);
+	binderEmpleado.forField(apellido).asRequired("Ingrese un apellido").bind(empleado -> {
+	    return empleado.getPersona().getApellido();
+	}, (empleado, apellido) -> {
+	    empleado.getPersona().setApellido(apellido);
+	});
 
-	binderEmpleado.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,
-		Persona::setTelefono);
+	binderEmpleado.forField(DNI).bind(empleado -> {
+	    return empleado.getPersona().getDNI();
+	}, (empleado, dni) -> {
+	    empleado.getPersona().setDNI(dni);
+	});
 
-	binderEmpleado.forField(telefono2).bind(Persona::getTelefono2, Persona::setTelefono2);
+	binderEmpleado.forField(telefono).asRequired("Ingrese un teléfono")
+		.bind(empleado -> {
+		    return empleado.getPersona().getTelefono();
+		}, (empleado, tel) -> {
+		    empleado.getPersona().setTelefono(tel);
+		});
+	
+	binderEmpleado.forField(telefono2)
+	.bind(empleado -> {
+	    return empleado.getPersona().getTelefono2();
+	}, (empleado, tel) -> {
+	    empleado.getPersona().setTelefono2(tel);
+	});
 
-	binderEmpleado.forField(mail).withValidator(new EmailValidator(
-		"Introduzca un email valido!")).bind(Persona::getMail, Persona::setMail);
+	binderEmpleado.forField(mail)
+	.withValidator(new EmailValidator("Introduzca un email valido!"))
+	.bind(empleado -> {
+	    return empleado.getPersona().getMail();
+	}, (empleado, mail) -> {
+	    empleado.getPersona().setMail(mail);
+	});
 
-	binderEmpleado.forField(infoAdicional).bind(Persona::getInfoAdicional, Persona::setInfoAdicional);
+	binderEmpleado.forField(infoAdicional)
+	.bind(empleado -> {
+	    return empleado.getPersona().getInfoAdicional();
+	}, (empleado, info) -> {
+	    empleado.getPersona().setInfoAdicional(info);
+	});
 
     }
 
@@ -163,7 +195,7 @@ public class EmpleadoForm extends FormLayout {
     private void delete() {
 
 	// XXX
-	service.delete(empleado);
+	service.delete(empleado.getPersona());
 	addressbookView.updateList();
 	setVisible(false);
 	getAddressbookView().setComponentsVisible(true);
@@ -178,7 +210,7 @@ public class EmpleadoForm extends FormLayout {
 	    binderEmpleado.writeBean(empleado);
 
 	    // XXX
-	    service.saveOrUpdate(empleado);
+	    service.saveOrUpdate(empleado.getPersona());
 	    success = true;
 
 	} catch (ValidationException e) {

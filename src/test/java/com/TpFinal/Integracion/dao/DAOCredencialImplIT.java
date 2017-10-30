@@ -67,21 +67,7 @@ public class DAOCredencialImplIT {
 	    	assertFalse(dao.existe(new Credencial.Builder().setUsuario("dsa1").setContrasenia("asd0").build()));
 	    	
 	    }
-	    
-	    public static Empleado instanciaEmpleado(String numero) {
-	        return new Empleado.Builder()
-	                .setNombre("nombre "+numero)
-	                .setApellido("apellido "+numero)
-	                .setMail("mail "+numero)
-	                .setTelefono("telefono "+numero)
-	                .setTelefono("telefono "+numero)
-	                .setTelefono2("telefono2 "+numero)
-	                .setDNI("Dni"+numero)
-	                .setinfoAdicional("Info Adicional"+ numero)
-	                .setFechaDeAlta(LocalDate.now())
-	                .build();
-	    }
-	    
+	 
 	    public static Credencial instanciaCredencial(String numero) {
 	    	return new Credencial.Builder()
 	    			.setContrasenia("asd"+numero)

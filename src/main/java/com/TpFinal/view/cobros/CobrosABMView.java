@@ -3,7 +3,7 @@ package com.TpFinal.view.cobros;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.view.component.DefaultLayout;

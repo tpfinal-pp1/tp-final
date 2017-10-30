@@ -4,7 +4,6 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
-import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +12,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "personas")
@@ -279,25 +279,16 @@ public class Persona implements Identificable, BorradoLogico {
 	}
 
 	public RolPersona getRol(Rol rol) {
-		List<RolPersona> ret = new ArrayList<>();
-		this.roles.forEach(r -> {
-			if (rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
-				ret.add(r);
-			} else if (rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
-				ret.add(r);
-			}
-		});
-		return ret.size() != 0 ? ret.get(0) : null;
+		return this.getRoles().stream()
+			.filter(r -> r.getRol().equals(rol))			
+			.findFirst().orElse(null);
+			
 	}
 
 	public List<Rol> giveMeYourRoles() {
-		List<Rol> roles = new ArrayList<>();
-		this.roles.forEach(r -> {
-			if (r.getClass().equals(Inquilino.class))
-				roles.add(Rol.Inquilino);
-			else if (r.getClass().equals(Propietario.class))
-				roles.add(Rol.Propietario);
-		});
+		List<Rol> roles = getRoles().stream()
+			.map(rolPersona -> rolPersona.getRol())
+			.collect(Collectors.toList());
 		return roles;
 	}
 

@@ -27,8 +27,8 @@ import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.dto.persona.RolPersona;
-import com.TpFinal.dto.publicacion.Rol;
 
 public class DAORecordatorioImplIT {
 

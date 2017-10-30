@@ -26,6 +26,7 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.persona.AgenteInmobiliario;
+import com.TpFinal.dto.persona.Empleado;
 
 @Entity
 @Table(name = "citas")
@@ -55,8 +56,8 @@ public class Cita implements Identificable, BorradoLogico {
     
     @ManyToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
-    @JoinColumn(name = "id_agenteInmb")
-    private AgenteInmobiliario agenteInmb;
+    @JoinColumn(name = "id_empleado")
+    private Empleado empleado;
 
     public Cita() {
     }
@@ -88,19 +89,19 @@ public class Cita implements Identificable, BorradoLogico {
 	}
     }
     
-    public AgenteInmobiliario getAgenteInmobiliario() {
-	return agenteInmb;
+    public Empleado getEmpleado() {
+	return empleado;
     }
 
-    public void setAgenteInmboliliario(AgenteInmobiliario agenteInmb) {
+    public void setEmpleado(Empleado emp) {
 
-	if (agenteInmb != null) {
-	    this.agenteInmb = agenteInmb;
-	    this.agenteInmb.addCita(this);
+	if (emp != null) {
+	    this.empleado = emp;
+	    this.empleado.addCita(this);
 	} else {
-	    if (this.agenteInmb != null) {
-		this.agenteInmb.removeCita(this);
-		this.agenteInmb = null;
+	    if (this.empleado != null) {
+		this.empleado.removeCita(this);
+		this.empleado = null;
 	    }
 	}
     }

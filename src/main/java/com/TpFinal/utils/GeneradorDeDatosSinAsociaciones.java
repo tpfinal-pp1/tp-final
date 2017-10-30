@@ -23,7 +23,8 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
-import com.TpFinal.dto.persona.AgenteInmobiliario;
+import com.TpFinal.dto.persona.CategoriaEmpleado;
+import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.EstadoEmpleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -105,8 +106,8 @@ public class GeneradorDeDatosSinAsociaciones {
 		    Persona comprador = personaRandom();		   
 		    comprador.setEsInmobiliaria(false);
 		    daoPer.saveOrUpdate(comprador);  
-		    AgenteInmobiliario ai = agenteRandom();
-		    daoPer.save(ai);
+		    Persona emp = empleadoRandom();
+		    daoPer.save(emp);
 		    
 
 		    daoPer.saveOrUpdate(p);
@@ -134,8 +135,9 @@ public class GeneradorDeDatosSinAsociaciones {
 
     }
 
-    private static AgenteInmobiliario agenteRandom() {
-	return new AgenteInmobiliario.Builder()
+    private static Persona empleadoRandom() {	
+	
+	Persona p =new Persona.Builder()
 		.setApellido(nombres[random.nextInt(nombres.length)])
 		.setDNI(dniRandom())
 		.setinfoAdicional("Bla bla bla")
@@ -144,10 +146,15 @@ public class GeneradorDeDatosSinAsociaciones {
 		.setNombre(nombres[random.nextInt(nombres.length)])
 		.setTelefono(getTelefeno())
 		.setTelefono2(getTelefeno())
-		.setEstadoEmpeado(EstadoEmpleado.ACTIVO)
-		.setFechaDeAlta(LocalDate.now().minus(Period.ofMonths(1)))
-		.setFechaDeBaja(null)
 		.build();
+	Empleado e = new Empleado.Builder()
+		.setCategoriaEmpleado(CategoriaEmpleado.values()[random.nextInt(CategoriaEmpleado.values().length)])
+		.setFechaDeAlta(LocalDate.now().minus(Period.ofMonths(1)))
+		.setPersona(p)
+		.build()
+		;
+	return p;
+	
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {

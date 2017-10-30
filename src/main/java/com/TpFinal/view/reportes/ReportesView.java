@@ -21,7 +21,7 @@ import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
 import com.TpFinal.dto.cobro.EstadoCobro;
-import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;

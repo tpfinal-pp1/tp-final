@@ -29,7 +29,7 @@ public class Propietario extends RolPersona implements Apropiable {
 	public Propietario() {super();}
 	
 	private Propietario(Builder b) {
-	 	super(b.persona, EstadoRegistro.ACTIVO);
+	 	super(b.persona);
 		this.inmuebles=b.inmuebles;
 	
 	}

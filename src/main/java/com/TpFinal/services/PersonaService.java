@@ -1,5 +1,6 @@
 package com.TpFinal.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -11,6 +12,7 @@ import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.view.persona.FiltroEmpleados;
 import com.TpFinal.view.persona.FiltroInteresados;
 
@@ -114,14 +116,10 @@ public class PersonaService {
 	    return i;
 	}
 	
-	public static Empleado getEmpleadoInstancia() {
-		Empleado empleado = new Empleado.Builder().setNombre("").setApellido("").setDNI("").build();
-		return empleado;
-	}
 
 	public List<Persona> findAllClientes(FiltroInteresados filtro) {
 	    List<Persona> personas = dao.readAllActives().stream()
-		    .filter(p -> !(p instanceof Empleado))
+		    .filter(p -> !p.giveMeYourRoles().contains(Rol.Empleado))
 		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
 	    personas.sort(Comparator.comparing(Persona::getId));
 	    return personas;
@@ -129,12 +127,21 @@ public class PersonaService {
 	
 	public List<Empleado> findAllEmpleados(FiltroEmpleados filtro) {
 	    List<Empleado> empleados = dao.readAllActives().stream()
-		    .filter(p -> p instanceof Empleado)
+		    .filter(p -> p.giveMeYourRoles().contains(Rol.Empleado))
 		   //.filter(filtro.getFiltroCompuesto())
-		    .map(p -> (Empleado) p)
+		    .map(p -> (Empleado)p.getRol(Rol.Empleado))
 		   .collect(Collectors.toList());
-	    empleados.sort(Comparator.comparing(Persona::getId));
+	    empleados.sort(Comparator.comparing(Empleado::getId));
 	    return empleados;
+	}
+
+	public static Empleado getEmpleadoInstancia() {
+	    Persona p = new Persona();
+	    Empleado e = new Empleado.Builder()
+		    .setFechaDeAlta(LocalDate.now())
+		    .setPersona(p)
+		    .build();
+	    return e;
 	}
 	
 	
