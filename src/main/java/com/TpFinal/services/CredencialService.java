@@ -59,7 +59,7 @@ public class CredencialService {
 			}
 		}
 
-		//todo PARA QUE PASEN LOS TESTS BORRAR EN PRODUCCION
+		/*//todo PARA QUE PASEN LOS TESTS BORRAR EN PRODUCCION
 		if(user.equals("")){
 
 			Persona p=new Persona.Builder().setNombre("Test").setApellido("User").build();
@@ -72,7 +72,7 @@ public class CredencialService {
 			return emp;
 
 		}
-
+*/
 
 		return ret;
 	}
