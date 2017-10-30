@@ -2,7 +2,7 @@ package com.TpFinal.view.component;
 
 import java.util.Arrays;
 
-import com.TpFinal.dto.persona.User;
+import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.vaadin.annotations.PropertyId;
@@ -43,7 +43,7 @@ public class ProfilePreferencesWindow extends Window {
 
     public static final String ID = "profilepreferenceswindow";
 
-    private final BeanFieldGroup<User> fieldGroup;
+    private final BeanFieldGroup<Empleado> fieldGroup;
     /*
      * Fields for editing the User object are defined here as class members.
      * They are later bound to a FieldGroup by calling
@@ -51,26 +51,18 @@ public class ProfilePreferencesWindow extends Window {
      * explicitly set, calling fieldGroup.setItemDataSource(user) synchronizes
      * the fields with the user object.
      */
-    @PropertyId("firstName")
+    @PropertyId("nombre")
     private TextField firstNameField;
-    @PropertyId("lastName")
+    @PropertyId("apellido")
     private TextField lastNameField;
-    @PropertyId("title")
-    private ComboBox<String> titleField;
-    @PropertyId("male")
-    private RadioButtonGroup<Boolean> sexField;
-    @PropertyId("email")
+    @PropertyId("mail")
     private TextField emailField;
-    @PropertyId("location")
-    private TextField locationField;
-    @PropertyId("phone")
+    @PropertyId("telefono")
     private TextField phoneField;
-    @PropertyId("website")
-    private TextField websiteField;
-    @PropertyId("bio")
+    @PropertyId("infoAdicional")
     private TextArea bioField;
 
-    private ProfilePreferencesWindow(final User user,
+    private ProfilePreferencesWindow(final Empleado user,
             final boolean preferencesTabOpen) {
         addStyleName("profile-window");
         setId(ID);
@@ -105,7 +97,7 @@ public class ProfilePreferencesWindow extends Window {
 
         content.addComponent(buildFooter());
 
-        fieldGroup = new BeanFieldGroup<User>(User.class);
+        fieldGroup = new BeanFieldGroup<Empleado>(Empleado.class);
         fieldGroup.bindMemberFields(this);
         fieldGroup.setItemDataSource(user);
     }
@@ -164,15 +156,6 @@ public class ProfilePreferencesWindow extends Window {
         lastNameField = new TextField("Last Name");
         details.addComponent(lastNameField);
 
-        titleField = new ComboBox<>("Title",
-                Arrays.asList("Mr.", "Mrs.", "Ms."));
-        titleField.setPlaceholder("Please specify");
-        details.addComponent(titleField);
-
-        sexField = new RadioButtonGroup<>("Sexo", Arrays.asList(true, false));
-        sexField.setItemCaptionGenerator(item -> item ? "Male" : "Female");
-        sexField.addStyleName("horizontal");
-        details.addComponent(sexField);
 
         Label section = new Label("persona Info");
         section.addStyleName(ValoTheme.LABEL_H4);
@@ -185,13 +168,7 @@ public class ProfilePreferencesWindow extends Window {
         // TODO add validation that not empty, use binder
         details.addComponent(emailField);
 
-        locationField = new TextField("Location");
-        locationField.setWidth("100%");
-        locationField
-                .setComponentError(new UserError("This address doesn't exist"));
-        details.addComponent(locationField);
-
-        phoneField = new TextField("Phone");
+        phoneField = new TextField("Telefono");
         phoneField.setWidth("100%");
         details.addComponent(phoneField);
 
@@ -201,12 +178,7 @@ public class ProfilePreferencesWindow extends Window {
         section.addStyleName(ValoTheme.LABEL_COLORED);
         details.addComponent(section);
 
-        websiteField = new TextField("Website");
-        websiteField.setPlaceholder("http://");
-        websiteField.setWidth("100%");
-        details.addComponent(websiteField);
-
-        bioField = new TextArea("Bio");
+        bioField = new TextArea("Info");
         bioField.setWidth("100%");
         bioField.setRows(4);
         details.addComponent(bioField);
@@ -225,25 +197,7 @@ public class ProfilePreferencesWindow extends Window {
         ok.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent event) {
-                try {
-                    fieldGroup.commit();
-                    // Updated user should also be persisted to database. But
-                    // not in this demo.
-
-                    Notification success = new Notification(
-                            "Profile updated successfully");
-                    success.setDelayMsec(2000);
-                    success.setStyleName("bar success small");
-                    success.setPosition(Position.BOTTOM_CENTER);
-                    success.show(Page.getCurrent());
-
-                    DashboardEventBus.post(new DashboardEvent.ProfileUpdatedEvent());
-                    close();
-                } catch (CommitException e) {
-                    Notification.show("Error while updating profile",
-                            Type.ERROR_MESSAGE);
-                }
-
+                close();
             }
         });
         ok.focus();
@@ -252,7 +206,7 @@ public class ProfilePreferencesWindow extends Window {
         return footer;
     }
 
-    public static void open(final User user,
+    public static void open(final Empleado user,
             final boolean preferencesTabActive) {
         DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
         Window w = new ProfilePreferencesWindow(user, preferencesTabActive);

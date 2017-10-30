@@ -28,7 +28,7 @@ DashboardNavigator extends Navigator {
         super(UI.getCurrent(), container);
 
         String host = getUI().getPage().getLocation().getHost();
-        if (TRACKER_ID != null && host.endsWith("demo.vaadin.com")) {
+        if (TRACKER_ID != null && host.endsWith("inmobi.ddns.net")) {
             initGATracker(TRACKER_ID);
         }
         initViewChangeListener();

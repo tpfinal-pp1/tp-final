@@ -129,6 +129,7 @@ public class Empleado extends RolPersona {
 	return getId() != null && Objects.equals(getId(), other.getId());
     }
 
+
     public static class Builder {
 	protected Set<Cita> calendarioPersonal= new HashSet<>();
 	protected Persona persona;
