@@ -25,7 +25,6 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
-import com.TpFinal.dto.persona.AgenteInmobiliario;
 import com.TpFinal.dto.persona.Empleado;
 
 @Entity
