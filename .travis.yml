@@ -6,7 +6,7 @@ cache:
   - $HOME/travis/.sonar/cache
   - $HOME/travis/.sonarscanner/
   - $HOME/.sonarscanner/sonar-scanner-2.8
-sudo: true
+sudo: false
 install: true
 addons:
       sonarcloud:

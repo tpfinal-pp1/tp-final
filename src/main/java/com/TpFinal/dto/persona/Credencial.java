@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.swing.text.View;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -35,6 +36,9 @@ public class Credencial implements Identificable, BorradoLogico {
 	@Enumerated(EnumType.STRING)
 	@Column(name="estadoRegistro")
 	private EstadoRegistro estadoRegistro;
+	@Enumerated(EnumType.STRING)
+	@Column(name="viewAccess")
+	private ViewAccess viewAccess;
 	@OneToOne(fetch=FetchType.EAGER)
 	@Cascade({CascadeType.SAVE_UPDATE})
 	private Empleado empleado;
@@ -91,12 +95,21 @@ public class Credencial implements Identificable, BorradoLogico {
 		this.empleado = empleado;
 	}
 
+	public ViewAccess getViewAccess() {
+		return viewAccess;
+	}
+
+	public void setViewAccess(ViewAccess viewAccess) {
+		this.viewAccess = viewAccess;
+	}
+
 
 
 	public static class Builder{
 		private String usuario;
 		private String contrasenia;
 		private Empleado empleado;
+		private ViewAccess viewacc;
 		
 		public Builder setUsuario(String dato) {
 			this.usuario=dato;
@@ -110,6 +123,8 @@ public class Credencial implements Identificable, BorradoLogico {
 			this.empleado=dato;
 			return this;
 		}
+
+
 		public Credencial build() {
 			return new Credencial(this);
 		}
