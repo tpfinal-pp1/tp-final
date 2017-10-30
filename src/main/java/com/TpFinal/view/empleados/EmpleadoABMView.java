@@ -2,6 +2,8 @@ package com.TpFinal.view.empleados;
 
 import java.util.List;
 
+import com.TpFinal.dto.persona.Administrador;
+import com.TpFinal.dto.persona.AgenteInmobiliario;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
@@ -79,12 +81,21 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    empleadoForm.setEmpleado(null);
 	});
 
-	grid.setColumns("nombre", "apellido", "DNI");
-	grid.getColumn("DNI").setCaption("DNI");
+	grid.setColumns("nombre", "apellido","mail", "telefono");
+	grid.getColumn("mail").setCaption("E-Mail");
+	grid.getColumn("telefono").setCaption("Teléfono");
 	grid.getColumn("nombre").setCaption("Nombre");
 	grid.getColumn("apellido").setCaption("Apellido ");
-	
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	grid.addColumn(empleado -> {
+	    String ret ="Sin Categoría";
+	    if (empleado instanceof AgenteInmobiliario)
+		ret = "Agente Inmobiliario";
+	    if (empleado instanceof Administrador)
+		ret = "Administrador";
+	    return ret;
+	}).setCaption("Categoría").setId("categoria");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria");
 	grid.getColumns().forEach(col -> col.setResizable(false));
 
 	Responsive.makeResponsive(this);
@@ -109,12 +120,12 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	return empleado -> {
 
-	    // Button edit = new Button(VaadinIcons.EDIT);
-	    // edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	    // edit.addClickListener(e -> {
-	    // DuracionContratosForm.setContratoDuracion(contratoduracion);
-	    // });
-	    // edit.setDescription("Editar");
+	     Button edit = new Button(VaadinIcons.EDIT);
+	     edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	     edit.addClickListener(e -> {
+	     empleadoForm.setEmpleado(empleado);
+	     });
+	     edit.setDescription("Editar");
 
 	    Button del = new Button(VaadinIcons.TRASH);
 	    
@@ -126,7 +137,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 			"100px",
 			confirmacion -> {
 			    service.delete(empleado);
-			    showSuccessNotification("Empleado: " + empleado.getNombre() + " " + empleado.getApellido());
+			    showSuccessNotification("Borrado: " + empleado.getNombre() + " " + empleado.getApellido());
 			    updateList();
 			});
 	    }); 
@@ -134,7 +145,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Borrar");
 
-	    HorizontalLayout hl = new HorizontalLayout(del);
+	    HorizontalLayout hl = new HorizontalLayout(edit,del);
 	    hl.setSpacing(false);
 	    hl.setCaption("Accion " + acciones);
 	    acciones++;
