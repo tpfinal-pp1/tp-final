@@ -1,7 +1,7 @@
 package com.TpFinal.view.reportes;
 
 import java.io.File;
-
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -54,6 +54,7 @@ public class ReportesView extends DefaultLayout implements View {
     PDFComponent pdfComponent = new PDFComponent();
     ComboBox<TipoReporte> tipoReporteCB = new ComboBox<TipoReporte>(
 	    null, TipoReporte.toList());
+    CheckBox checkbox = new CheckBox("Incluir Cobros Pendientes");
     String reportName = "";
     Button newReport = new Button("Generar");
     Notification error;
@@ -62,9 +63,11 @@ public class ReportesView extends DefaultLayout implements View {
     DateField fHasta = null;
 
     List<Object> objects = null;
+    boolean conCobrosPendientes = false;
 
     public enum TipoReporte {
-	Propietario("ReportePropietarios.jasper"), AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper");
+	Propietario("ReportePropietarios.jasper"), AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper"), 
+	AlquileresPorMes("ReporteAlquileresPorMess.jasper");
 
 	private final String archivoReporte;
 
@@ -79,6 +82,8 @@ public class ReportesView extends DefaultLayout implements View {
 		return "Propietario";
 	    case AlquileresPorCobrar:
 		return "Alquileres a Cobrar";
+	    case AlquileresPorMes:
+	    return "Alquileres por Mes";
 	    default:
 		return super.toString();
 
@@ -114,16 +119,26 @@ public class ReportesView extends DefaultLayout implements View {
 	    break;
 
 	case AlquileresPorCobrar:
-	    objects.addAll(filtrarPorMes());
+	    objects.addAll(filtrarPorRangos());
 	    break;
+	    
+	case AlquileresPorMes:
+		//objects.addAll(filtrarPorMes());
+		break;
 
 	}
 
 	return objects;
 
     }
-
-    public ArrayList<Object> filtrarPorMes() {
+    
+   /* public ItemRepAlquileresPorMes item() {
+    	ContratoService service = new ContratoService();
+    	return service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue());
+    }
+    */
+  
+    public ArrayList<Object> filtrarPorRangos() {
 	ContratoService service = new ContratoService();
 	ArrayList<Object> ret = new ArrayList<>();
 	System.out.println(fDesde.toString().length() + "" + fHasta.toString().length());
@@ -153,6 +168,48 @@ public class ReportesView extends DefaultLayout implements View {
 	return ret;
 
     }
+    
+    /*
+    public ArrayList<Object> filtrarPorMes(){
+    	ContratoService service = new ContratoService();
+    	ArrayList<Object> ret = new ArrayList<>();
+    	ItemRepAlquileresPorMes item;
+    	System.out.println(fDesde.toString().length() + "" + fHasta.toString().length());
+    
+    	if (fDesde.getValue() == null) {
+    		showErrorNotification("Debes seleccionar una fecha");
+   	   
+    	}
+    	
+    	if (fDesde.getValue() != null && conCobrosPendientes==false) {
+    		
+    		for (ItemRepAlquileresACobrar item2 : service.getListadoAlquileresCobradosPorMes(fDesde.getValue())) {
+
+    			    ret.add(item2);
+    	
+    		}
+    		
+    		item = service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue()); 
+    		
+    		ret.add(item);
+    		return ret;
+    	}
+    	
+    	else {
+    		
+    		for (ItemRepAlquileresACobrar item2 : service.getListadoTodosLosAlquileresDeUnMes(fDesde.getValue())) {
+    			ret.add(item2);
+    		}
+    		
+    		item = service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue()); 
+    		
+    		ret.add(item);
+    		return ret;
+    		
+    	}
+
+
+    } */
 
     public ReportesView() {
 	super();
@@ -165,6 +222,7 @@ public class ReportesView extends DefaultLayout implements View {
 
     public void buildLayout() {
 	CssLayout filtering = new CssLayout();
+	CssLayout filtering2 = new CssLayout();
 
 	fDesde = new DateField();
 	fDesde.setPlaceholder("Desde");
@@ -179,6 +237,7 @@ public class ReportesView extends DefaultLayout implements View {
 	clearFilterTextBtn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	fDesde.setVisible(false);
 	fHasta.setVisible(false);
+	checkbox.setVisible(false);
 	fDesde.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fHasta.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	clearFilterTextBtn.addClickListener(new Button.ClickListener() {
@@ -191,6 +250,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 	generarReporte();
 	filtering.addComponents(fDesde, fHasta, clearFilterTextBtn, tipoReporteCB, newReport);
+	filtering2.addComponents(checkbox);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
@@ -198,18 +258,47 @@ public class ReportesView extends DefaultLayout implements View {
 		if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorCobrar) {
 		    clearFilterTextBtn.setVisible(true);
 		    fDesde.setVisible(true);
+		    fDesde.setPlaceholder("Desde");
 		    fHasta.setVisible(true);
-		} else {
+		    checkbox.setVisible(false);
+		}
+		
+		if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorMes) {
+			checkbox.setVisible(true);
+			clearFilterTextBtn.setVisible(false);
+			fDesde.setPlaceholder("Fecha Mes");
+		    fDesde.setVisible(true);
+		    fHasta.setVisible(false);
+		}
+		
+		
+		else {
 		    clearFilterTextBtn.setVisible(false);
+		    fDesde.setPlaceholder("Desde");
 		    fDesde.setVisible(false);
 		    fHasta.setVisible(false);
+		    checkbox.setVisible(false);
 		}
 	    }
 	});
+	
+	checkbox.addValueChangeListener(event -> {
+	    if (event.isUserOriginated()) {
+	    	conCobrosPendientes=false;
+		}
+	    
+	    else {
+	    	 conCobrosPendientes=true;
+	    }
+	});
+	
 	// tipoReporteCB.setWidth("100%");
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	filtering2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
 	buildToolbar("Reportes", filtering);
+	buildToolbar("", filtering2);
+	
 	pdfComponent.setSizeFull();
 	addComponent(pdfComponent);
 	this.setExpandRatio(pdfComponent, 1);
@@ -282,7 +371,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 	try {
 	    this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
-		    new JRBeanCollectionDataSource(objetos));
+		    new JRBeanCollectionDataSource(objetos, false));
 
 	    return crearArchivo();
 	} catch (Exception e) {
