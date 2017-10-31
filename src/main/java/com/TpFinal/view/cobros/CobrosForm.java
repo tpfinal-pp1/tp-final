@@ -91,6 +91,8 @@ public class CobrosForm extends FormLayout {
         			l= new Long(0);
     		}else if(cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
     			l=ChronoUnit.DAYS.between(cobro.getFechaDeVencimiento(), cobro.getFechaDePago());
+    			if(l.compareTo(new Long(0))==-1)
+        			l= new Long(0);
     		}
     		return l.toString();
     	}, (cobro, dias)->{});
