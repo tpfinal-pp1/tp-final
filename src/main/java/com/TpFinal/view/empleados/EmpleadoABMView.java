@@ -119,21 +119,20 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	    Button del = new Button(VaadinIcons.TRASH);
 	    
-	    //TODO REPLACE
 	    del.addClickListener(click -> {
-		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+		DialogConfirmacion dialog = new DialogConfirmacion("Dar de Baja",
 			VaadinIcons.WARNING,
-			"¿Esta seguro que desea Eliminar?",
+			"¿Esta seguro que desea dar de baja al empleado?",
 			"100px",
 			confirmacion -> {
-			    service.delete(empleado.getPersona());
-			    showSuccessNotification("Borrado: " + empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
+			    service.darDeBajaEmpleado(empleado);
+			    showSuccessNotification("Dado de Baja: " + empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
 			    updateList();
 			});
 	    }); 
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	    del.setDescription("Borrar");
+	    del.setDescription("Dar de baja");
 
 	    HorizontalLayout hl = new HorizontalLayout(edit,del);
 	    hl.setSpacing(false);

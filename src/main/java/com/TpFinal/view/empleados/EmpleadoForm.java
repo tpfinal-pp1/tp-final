@@ -1,5 +1,6 @@
 package com.TpFinal.view.empleados;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
@@ -36,8 +37,8 @@ public class EmpleadoForm extends FormLayout {
     private final static Logger logger = Logger.getLogger(EmpleadoForm.class);
 
     Button save = new Button("Guardar");
-    DeleteButton delete = new DeleteButton("Eliminar",
-	    VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
+    DeleteButton delete = new DeleteButton("Dar de Baja",
+	    VaadinIcons.WARNING, "Dar de Baja", "20%", new Button.ClickListener() {
 		@Override
 		public void buttonClick(Button.ClickEvent clickEvent) {
 		    delete();
@@ -96,8 +97,8 @@ public class EmpleadoForm extends FormLayout {
 	//
 	// })
 	cbCategoria.setEmptySelectionAllowed(false);
-	
-	cbCategoria.addValueChangeListener(e ->{
+
+	cbCategoria.addValueChangeListener(e -> {
 	    if (e.getValue() == CategoriaEmpleado.sinCategoria) {
 		pfPassConfirmacion.setEnabled(false);
 		pfPassIngreso.setEnabled(false);
@@ -105,8 +106,7 @@ public class EmpleadoForm extends FormLayout {
 		pfPassConfirmacion.clear();
 		pfPassIngreso.clear();
 		tfNombreUsuario.clear();
-	    }
-	    else {
+	    } else {
 		pfPassConfirmacion.setEnabled(true);
 		pfPassIngreso.setEnabled(true);
 		tfNombreUsuario.setEnabled(true);
@@ -327,11 +327,20 @@ public class EmpleadoForm extends FormLayout {
     private void delete() {
 
 	// XXX
-	service.delete(empleado.getPersona());
-	addressbookView.updateList();
-	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
-	getAddressbookView().showSuccessNotification("Borrado: " + empleado.toString());
+	boolean success = false;
+	success = service.darDeBajaEmpleado(empleado);
+	
+	if (success) {
+	    addressbookView.updateList();
+	    setVisible(false);
+	    getAddressbookView().setComponentsVisible(true);
+	    getAddressbookView().showSuccessNotification("Borrado: " + empleado.getPersona());
+	} else {
+	    addressbookView.updateList();
+	    setVisible(false);
+	    getAddressbookView().setComponentsVisible(true);
+	    getAddressbookView().showErrorNotification("No pudo darse de baja al empleado: " + empleado.getPersona());	    
+	}
 
     }
 
@@ -341,15 +350,15 @@ public class EmpleadoForm extends FormLayout {
 	try {
 	    binderEmpleado.writeBean(empleado);
 	    binderCredencial.writeBean(credencial);
-	    if(binderCredencial.getFields().allMatch(p -> p.isEmpty())) {
-		if (empleado.getCredencial() !=  null)
-		credencialService.deepDelete(empleado.getCredencial());
+	    if (binderCredencial.getFields().allMatch(p -> p.isEmpty())) {
+		if (empleado.getCredencial() != null)
+		    credencialService.deepDelete(empleado.getCredencial());
 		empleado.setCredencial(null);
 	    }
 
 	    // XXX
 	    success = service.saveOrUpdate(empleado.getPersona());
-	    
+
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
 	    Notification.show("Errores de validación, por favor revise los campos e intente de nuevo",

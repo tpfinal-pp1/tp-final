@@ -15,6 +15,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -26,6 +27,7 @@ import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 @Table(name = "empleados")
 @PrimaryKeyJoinColumn(name = "id")
 public class Empleado extends RolPersona {
+    private static final Logger logger = Logger.getLogger(Empleado.class);
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estadoEmpleado")
@@ -84,6 +86,12 @@ public class Empleado extends RolPersona {
 
     public void setCategoriaEmpleado(CategoriaEmpleado categoriaEmpleado) {
 	this.categoriaEmpleado = categoriaEmpleado;
+	if (this.getCredencial()!= null) {
+	    logger.debug("Empleado: " + this.getPersona());
+		logger.debug("Categoria: "+ this.getCategoriaEmpleado());
+		if (getCategoriaEmpleado() != null)
+		    this.getCredencial().setViewAccess(ViewAccess.valueOf(this.getCategoriaEmpleado()));
+	}
     }
 
     public void setEstadoEmpleado(EstadoEmpleado estadoEmpleado) {

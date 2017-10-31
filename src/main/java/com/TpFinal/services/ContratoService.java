@@ -302,6 +302,7 @@ public class ContratoService {
 		.stream()
 		.filter(filtro.getFiltroCompuesto())
 		.collect(Collectors.toList());
+	actualizarEstadoContratosAlquilerVencidos();
 	contratos.sort(Comparator.comparing(Contrato::getId));
 	return contratos;
     }
