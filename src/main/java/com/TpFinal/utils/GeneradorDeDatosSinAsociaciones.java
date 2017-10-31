@@ -8,6 +8,7 @@ import java.time.Period;
 import java.util.List;
 import java.util.Random;
 
+import com.TpFinal.dto.persona.*;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOContratoImpl;
@@ -23,11 +24,6 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
-import com.TpFinal.dto.persona.AgenteInmobiliario;
-import com.TpFinal.dto.persona.EstadoEmpleado;
-import com.TpFinal.dto.persona.Inquilino;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.persona.Propietario;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
@@ -39,6 +35,8 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatosSinAsociaciones {
+    
+    private static boolean adminCreado = false;
 
     final static Logger logger = Logger.getLogger(GeneradorDeDatosSinAsociaciones.class);
 
@@ -83,7 +81,7 @@ public class GeneradorDeDatosSinAsociaciones {
 	DAOImpl<ContratoDuracion> daoDuracion = new DAOImpl<>(ContratoDuracion.class);
 	daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("24 Meses").setDuracion(24).build());
 	daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("36 Meses").setDuracion(36).build());
-	
+
 	serviceProvincia = new ProvinciaService(modoLectura);
 	cobroService = new CobroService();
 
@@ -102,12 +100,11 @@ public class GeneradorDeDatosSinAsociaciones {
 		    if (prop.getPersona().getEsInmobiliaria())
 			prop.getPersona().setNombre("inm: " + prop.getPersona().getNombre());
 
-		    Persona comprador = personaRandom();		   
+		    Persona comprador = personaRandom();
 		    comprador.setEsInmobiliaria(false);
-		    daoPer.saveOrUpdate(comprador);  
-		    AgenteInmobiliario ai = agenteRandom();
-		    daoPer.save(ai);
-		    
+		    daoPer.saveOrUpdate(comprador);
+		    Persona emp = empleadoRandom();
+		    daoPer.save(emp);
 
 		    daoPer.saveOrUpdate(p);
 		    daoInm.create(inmueble);
@@ -134,8 +131,9 @@ public class GeneradorDeDatosSinAsociaciones {
 
     }
 
-    private static AgenteInmobiliario agenteRandom() {
-	return new AgenteInmobiliario.Builder()
+    private static Persona empleadoRandom() {
+
+	Persona p = new Persona.Builder()
 		.setApellido(nombres[random.nextInt(nombres.length)])
 		.setDNI(dniRandom())
 		.setinfoAdicional("Bla bla bla")
@@ -144,10 +142,34 @@ public class GeneradorDeDatosSinAsociaciones {
 		.setNombre(nombres[random.nextInt(nombres.length)])
 		.setTelefono(getTelefeno())
 		.setTelefono2(getTelefeno())
-		.setEstadoEmpeado(EstadoEmpleado.ACTIVO)
-		.setFechaDeAlta(LocalDate.now().minus(Period.ofMonths(1)))
-		.setFechaDeBaja(null)
 		.build();
+	Empleado e = new Empleado.Builder()
+		.setCategoriaEmpleado(CategoriaEmpleado.values()[random.nextInt(CategoriaEmpleado.values().length)])
+		.setFechaDeAlta(LocalDate.now().minus(Period.ofMonths(1)))
+		.setPersona(p)
+		.build();
+	String usuario = p.getNombre().toLowerCase();
+	Credencial c = new Credencial.Builder()
+		.setContrasenia(usuario)
+		.setEmpleado(e)
+		.setUsuario(usuario)
+		.build();
+
+		//Setea access a las views
+		c.setViewAccess(ViewAccess.valueOf(e.getCategoriaEmpleado()));
+
+	if (e.getCategoriaEmpleado() != CategoriaEmpleado.sinCategoria) {
+		e.setCredencial(c);
+	}
+	if (!adminCreado  && e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
+
+	    c.setContrasenia("admin");
+	    c.setUsuario("admin");
+	    adminCreado = true;
+	    
+	}
+	return p;
+
     }
 
     private static ContratoAlquiler contratoAlquilerDe(Inmueble inmueble, Inquilino inquilino) {

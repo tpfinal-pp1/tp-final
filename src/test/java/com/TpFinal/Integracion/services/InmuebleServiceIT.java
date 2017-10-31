@@ -25,7 +25,7 @@ import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
-import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.view.persona.FiltroInteresados;
 

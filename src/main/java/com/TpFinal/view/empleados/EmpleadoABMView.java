@@ -38,7 +38,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     private int acciones = 0;
 
     TextField filter = new TextField();
-    private Grid<Empleado> grid = new Grid<>(Empleado.class);
+    private Grid<Empleado> grid = new Grid<>();
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     
@@ -79,12 +79,13 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    empleadoForm.setEmpleado(null);
 	});
 
-	grid.setColumns("nombre", "apellido", "DNI");
-	grid.getColumn("DNI").setCaption("DNI");
-	grid.getColumn("nombre").setCaption("Nombre");
-	grid.getColumn("apellido").setCaption("Apellido ");
-	
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	grid.addColumn(empleado -> {return empleado.getPersona().getNombre();}).setCaption("Nombre").setId("nombre");
+	grid.addColumn(empleado ->{return empleado.getPersona().getApellido();}).setCaption("Apellido").setId("apellido");
+	grid.addColumn(empleado -> {return empleado.getPersona().getMail();}).setCaption("E-Mail").setId("mail");
+	grid.addColumn(empleado -> {return empleado.getPersona().getTelefono();}).setCaption("Teléfono").setId("telefono");
+	grid.addColumn(empleado -> {return empleado.getCategoriaEmpleado();}).setCaption("Categoría").setId("categoria");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria");
 	grid.getColumns().forEach(col -> col.setResizable(false));
 
 	Responsive.makeResponsive(this);
@@ -109,32 +110,31 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	return empleado -> {
 
-	    // Button edit = new Button(VaadinIcons.EDIT);
-	    // edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	    // edit.addClickListener(e -> {
-	    // DuracionContratosForm.setContratoDuracion(contratoduracion);
-	    // });
-	    // edit.setDescription("Editar");
+	     Button edit = new Button(VaadinIcons.EDIT);
+	     edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	     edit.addClickListener(e -> {
+	     empleadoForm.setEmpleado(empleado);
+	     });
+	     edit.setDescription("Editar");
 
 	    Button del = new Button(VaadinIcons.TRASH);
 	    
-	    //TODO REPLACE
 	    del.addClickListener(click -> {
-		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+		DialogConfirmacion dialog = new DialogConfirmacion("Dar de Baja",
 			VaadinIcons.WARNING,
-			"¿Esta seguro que desea Eliminar?",
+			"¿Esta seguro que desea dar de baja al empleado?",
 			"100px",
 			confirmacion -> {
-			    service.delete(empleado);
-			    showSuccessNotification("Empleado: " + empleado.getNombre() + " " + empleado.getApellido());
+			    service.darDeBajaEmpleado(empleado);
+			    showSuccessNotification("Dado de Baja: " + empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
 			    updateList();
 			});
 	    }); 
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	    del.setDescription("Borrar");
+	    del.setDescription("Dar de baja");
 
-	    HorizontalLayout hl = new HorizontalLayout(del);
+	    HorizontalLayout hl = new HorizontalLayout(edit,del);
 	    hl.setSpacing(false);
 	    hl.setCaption("Accion " + acciones);
 	    acciones++;

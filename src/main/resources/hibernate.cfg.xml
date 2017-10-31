@@ -39,8 +39,6 @@
 		<mapping class="com.TpFinal.dto.persona.Propietario" />
 		<mapping class="com.TpFinal.dto.persona.Empleado" />
 		<mapping class="com.TpFinal.dto.persona.Credencial" />
-		<mapping class="com.TpFinal.dto.persona.AgenteInmobiliario" />
-		<mapping class="com.TpFinal.dto.persona.Administrador" />
 		<mapping class="com.TpFinal.dto.contrato.ContratoDuracion" />
 		<mapping class="com.TpFinal.dto.cobro.Cobro" />
 		<mapping class="com.TpFinal.dto.inmueble.CriterioBusqInmueble" />

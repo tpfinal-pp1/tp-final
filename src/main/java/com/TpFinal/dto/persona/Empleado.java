@@ -1,7 +1,7 @@
 package com.TpFinal.dto.persona;
 
 import java.time.LocalDate;
-
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -10,26 +10,31 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.apache.log4j.Logger;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.dto.EstadoRegistro;
-
+import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 
 @Entity
 @Table(name = "empleados")
-@PrimaryKeyJoinColumn(name = "idPersona")
-public class Empleado extends Persona {
+@PrimaryKeyJoinColumn(name = "id")
+public class Empleado extends RolPersona {
+    private static final Logger logger = Logger.getLogger(Empleado.class);
 
     @Enumerated(EnumType.STRING)
     @Column(name = "estadoEmpleado")
     protected EstadoEmpleado estadoEmpleado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "categoria")
+    protected CategoriaEmpleado categoriaEmpleado = CategoriaEmpleado.sinCategoria;
     @Column(name = "fechaAlta")
     protected LocalDate fechaDeAlta;
     @Column(name = "fechaBaja")
@@ -37,6 +42,9 @@ public class Empleado extends Persona {
     @OneToOne(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
     protected Credencial credencial;
+    @OneToMany(mappedBy = "empleado", fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.ALL })
+    private Set<Cita> calendarioPersonal = new HashSet<>();
 
     public Empleado() {
 	super();
@@ -45,15 +53,45 @@ public class Empleado extends Persona {
     }
 
     protected Empleado(Builder b) {
-	super(b);
+	super(b.persona);
 	this.estadoEmpleado = b.estadoEmpleado;
 	this.fechaDeAlta = b.fechaDeAlta;
 	this.fechaDeBaja = b.fechaDeBaja;
 	this.setEstadoRegistro(EstadoRegistro.ACTIVO);
+	this.categoriaEmpleado = b.categoriaEmpleado;
+	this.calendarioPersonal = b.calendarioPersonal;
     }
+    
+    public void addCita(Cita cita) {
+   	if (!this.calendarioPersonal.contains(cita)) {
+   	    this.calendarioPersonal.add(cita);
+   	    cita.setEmpleado(this);
+   	}
+       }
+
+       public void removeCita(Cita cita) {
+   	if (this.calendarioPersonal.contains(cita)) {
+   	    this.calendarioPersonal.remove(cita);
+   	    cita.setEmpleado(null);
+   	}
+       }
 
     public EstadoEmpleado getEstadoEmpleado() {
 	return estadoEmpleado;
+    }
+
+    public CategoriaEmpleado getCategoriaEmpleado() {
+	return categoriaEmpleado;
+    }
+
+    public void setCategoriaEmpleado(CategoriaEmpleado categoriaEmpleado) {
+	this.categoriaEmpleado = categoriaEmpleado;
+	if (this.getCredencial()!= null) {
+	    logger.debug("Empleado: " + this.getPersona());
+		logger.debug("Categoria: "+ this.getCategoriaEmpleado());
+		if (getCategoriaEmpleado() != null)
+		    this.getCredencial().setViewAccess(ViewAccess.valueOf(this.getCategoriaEmpleado()));
+	}
     }
 
     public void setEstadoEmpleado(EstadoEmpleado estadoEmpleado) {
@@ -99,11 +137,30 @@ public class Empleado extends Persona {
 	return getId() != null && Objects.equals(getId(), other.getId());
     }
 
-    public static class Builder extends Persona.Builder {
+
+    public static class Builder {
+	protected Set<Cita> calendarioPersonal= new HashSet<>();
+	protected Persona persona;
+	protected CategoriaEmpleado categoriaEmpleado;
 	protected EstadoEmpleado estadoEmpleado;
 	protected LocalDate fechaDeAlta;
 	protected LocalDate fechaDeBaja;
 	protected Credencial credencial;
+
+	public Builder setCalendarioPersonal(Set<Cita> calendario)
+	{
+	    this.calendarioPersonal = calendario;
+	    return this;
+	}
+	public Builder setPersona(Persona persona) {
+	    this.persona = persona;
+	    return this;
+	}
+
+	public Builder setCategoriaEmpleado(CategoriaEmpleado dato) {
+	    this.categoriaEmpleado = dato;
+	    return this;
+	}
 
 	public Builder setEstadoEmpeado(EstadoEmpleado dato) {
 	    this.estadoEmpleado = dato;
@@ -125,73 +182,6 @@ public class Empleado extends Persona {
 	    return this;
 	}
 
-	@Override
-	public Builder setId(Long dato) {
-	    super.setId(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setNombre(String dato) {
-	    super.setNombre(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setApellido(String dato) {
-	    super.setApellido(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setMail(String dato) {
-	    super.setMail(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setTelefono(String dato) {
-	    super.setTelefono(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setTelefono2(String dato) {
-	    super.setTelefono2(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setDNI(String dato) {
-	    super.setDNI(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setinfoAdicional(String dato) {
-	    super.setinfoAdicional(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setRoles(Set<RolPersona> dato) {
-	    super.setRoles(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setPrefBusqueda(CriterioBusqInmueble dato) {
-	    super.setPrefBusqueda(dato);
-	    return this;
-	}
-
-	@Override
-	public Builder setEsInmobiliaria(Boolean dato) {
-	    super.setEsInmobiliaria(dato);
-	    return this;
-	}
-
-	@Override
 	public Empleado build() {
 	    return new Empleado(this);
 	}

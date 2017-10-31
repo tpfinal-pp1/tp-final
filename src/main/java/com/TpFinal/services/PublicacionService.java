@@ -4,6 +4,7 @@ import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
 import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.dto.publicacion.*;
 import com.TpFinal.exceptions.services.PublicacionServiceException;
 import com.TpFinal.view.publicacion.FiltroPublicacion;

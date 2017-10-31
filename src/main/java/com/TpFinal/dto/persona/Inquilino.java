@@ -11,10 +11,9 @@ import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
-import com.TpFinal.dto.publicacion.Rol;
 
 @Entity
-@Table(name = "inquilino")
+@Table(name = "inquilinos")
 @PrimaryKeyJoinColumn(name = "id")
 public class Inquilino extends RolPersona {
 
@@ -30,7 +29,7 @@ public class Inquilino extends RolPersona {
     }
 
     private Inquilino(Builder b) {
-	super(b.persona, EstadoRegistro.ACTIVO);
+	super(b.persona);
 	this.contratos = b.contratos;
 	this.calificacion = b.calificacion;
     }

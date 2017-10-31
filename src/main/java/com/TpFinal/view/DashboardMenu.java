@@ -1,7 +1,8 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.dto.persona.User;
+import com.TpFinal.dto.persona.Empleado;
+
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.component.ProfilePreferencesWindow;
@@ -72,15 +73,15 @@ public final class DashboardMenu extends CustomComponent {
         return logoWrapper;
     }
 
-    private User getCurrentUser() {
-        return (User) VaadinSession.getCurrent()
-                .getAttribute(User.class.getName());
+    private Empleado getCurrentUser() {
+        return (Empleado) VaadinSession.getCurrent()
+                .getAttribute(Empleado.class.getName());
     }
 
     private Component buildUserMenu() {
         final MenuBar settings = new MenuBar();
         settings.addStyleName("user-menu");
-        final User user = getCurrentUser();
+        final Empleado user = getCurrentUser();
         settingsItem = settings.addItem("",
                 new ThemeResource("img/profile-pic-300px.jpg"), null);
         updateUserName(null);
@@ -128,8 +129,8 @@ public final class DashboardMenu extends CustomComponent {
     private Component buildMenuItems() {
         CssLayout menuItemsLayout = new CssLayout();
         menuItemsLayout.addStyleName("valo-menuitems");
-
-        for (final DashboardViewType view : DashboardViewType.values()) {
+       
+        for (final DashboardViewType view : getCurrentUser().getCredencial().getViewAccess().views) {
             Component menuItemComponent = new ValoMenuItemButton(view);
 
 
@@ -189,8 +190,8 @@ public final class DashboardMenu extends CustomComponent {
 
     @Subscribe
     public void updateUserName(final DashboardEvent.ProfileUpdatedEvent event) {
-        User user = getCurrentUser();
-        settingsItem.setText(user.getFirstName() + " " + user.getLastName());
+        Empleado user = getCurrentUser();
+        settingsItem.setText(user.getPersona().getNombre() + " " + user.getPersona().getApellido());
     }
 
     public final class ValoMenuItemButton extends Button {
