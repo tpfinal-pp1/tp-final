@@ -171,9 +171,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    isonMobile = true;
 	} else {
 	    isonMobile = false;
-
 	}
-
     }
 
     @Override

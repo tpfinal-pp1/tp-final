@@ -142,7 +142,7 @@ public class Empleado extends RolPersona {
 	protected Set<Cita> calendarioPersonal= new HashSet<>();
 	protected Persona persona;
 	protected CategoriaEmpleado categoriaEmpleado;
-	protected EstadoEmpleado estadoEmpleado;
+	protected EstadoEmpleado estadoEmpleado = EstadoEmpleado.ACTIVO;
 	protected LocalDate fechaDeAlta;
 	protected LocalDate fechaDeBaja;
 	protected Credencial credencial;
