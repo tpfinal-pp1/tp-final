@@ -1,7 +1,7 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.dto.DashboardNotification;
+import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
@@ -12,7 +12,8 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-
+import org.ocpsoft.prettytime.PrettyTime;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
@@ -26,15 +27,19 @@ import com.vaadin.util.CurrentInstance;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
 
-    public static final String EDIT_ID = "dashboard-edit";
     public static final String TITLE_ID = "dashboard-title";
 
     private Label titleLabel;
@@ -312,25 +317,30 @@ public final class DashboardView extends Panel implements View{
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        Collection<DashboardNotification> notifications = DashboardUI
+        Collection<Notificacion> notifications = DashboardUI
                 .getDataProvider().getNotifications();
+
+
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
 
-        for (DashboardNotification notification : notifications) {
+        for (Notificacion notification : notifications) {
             VerticalLayout notificationLayout = new VerticalLayout();
             notificationLayout.setMargin(false);
             notificationLayout.setSpacing(false);
             notificationLayout.addStyleName("notification-item");
 
-            Label titleLabel = new Label(notification.getFirstName() + " "
-                    + notification.getLastName() + " "
-                    + notification.getAction());
+            Label titleLabel = new Label(notification.getTitulo());
             titleLabel.addStyleName("notification-title");
+            PrettyTime p = new PrettyTime(Locale.getDefault());
 
-            Label timeLabel = new Label(notification.getPrettyTime());
+            Date in = new Date();
+            LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
+            Date out = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+            p.setLocale(new Locale("es", "AR"));
+            Label timeLabel = new Label(p.format(out));
             timeLabel.addStyleName("notification-time");
 
-            Label contentLabel = new Label(notification.getContent());
+            Label contentLabel = new Label(notification.getMensaje());
             contentLabel.addStyleName("notification-content");
 
             notificationLayout.addComponents(titleLabel, timeLabel,
@@ -402,11 +412,11 @@ public final class DashboardView extends Panel implements View{
     }
 
     public static final class NotificationsButton extends Button {
-        private static final String STYLE_UNREAD = "sin leer";
+        private static final String STYLE_UNREAD = "unread";
         public static final String ID = "dashboard-notifications";
 
         public NotificationsButton() {
-            setIcon(VaadinIcons.BELL);
+            setIcon(FontAwesome.BELL);
             setId(ID);
             addStyleName("notifications");
             addStyleName(ValoTheme.BUTTON_ICON_ONLY);
@@ -423,15 +433,14 @@ public final class DashboardView extends Panel implements View{
         public void setUnreadCount(final int count) {
             setCaption(String.valueOf(count));
 
-            String description = "Notificaciones";
+            String description = "Notifications";
             if (count > 0) {
                 addStyleName(STYLE_UNREAD);
-                description += " (" + count + " sin leer)";
+                description += " (" + count + " unread)";
             } else {
                 removeStyleName(STYLE_UNREAD);
             }
             setDescription(description);
         }
     }
-
 }

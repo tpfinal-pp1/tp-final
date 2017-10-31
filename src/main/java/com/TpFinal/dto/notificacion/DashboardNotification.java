@@ -1,5 +1,4 @@
-package com.TpFinal.dto;
-
+package com.TpFinal.dto.notificacion;
 
 public final class DashboardNotification {
     private long id;

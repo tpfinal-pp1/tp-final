@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
-import com.TpFinal.dto.DashboardNotification;
+import com.TpFinal.dto.notificacion.Notificacion;
 
 
 public abstract class DummyDataGenerator {
@@ -164,24 +164,12 @@ public abstract class DummyDataGenerator {
         return sb.toString();
     }
 
-    static Collection<DashboardNotification> randomNotifications() {
-        DashboardNotification n1 = new DashboardNotification();
-        n1.setId(1);
-        n1.setFirstName(randomFirstName());
-        n1.setLastName(randomLastName());
-        n1.setAction("created a new report");
-        n1.setPrettyTime("25 minutes ago");
-        n1.setContent(randomText(18));
+    public static Collection<Notificacion> randomNotifications() {
+        Notificacion n1 = new Notificacion();
+        n1.setTitulo("Cita con "+randomFirstName()+" "+randomLastName()+" a las "+"5PM");
+        n1.setMensaje(randomText(18));
 
-        DashboardNotification n2 = new DashboardNotification();
-        n2.setId(2);
-        n2.setFirstName(randomFirstName());
-        n2.setLastName(randomLastName());
-        n2.setAction("changed the schedule");
-        n2.setPrettyTime("2 days ago");
-        n2.setContent(randomText(10));
-
-        return Arrays.asList(n1, n2);
+        return Arrays.asList(n1);
     }
 
     public static int[] randomSparklineValues(int howMany, int min, int max) {

@@ -1,8 +1,9 @@
-package com.TpFinal.utils;
+package com.TpFinal.services;
 
-import com.TpFinal.dto.*;
+
+import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.services.CredencialService;
+import com.TpFinal.utils.DummyDataGenerator;
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import java.util.*;
@@ -12,7 +13,7 @@ public class DataProviderImpl implements DataProvider {
 
 
 
-    private final Collection<DashboardNotification> notifications = DummyDataGenerator
+    private final Collection<Notificacion> notifications = DummyDataGenerator
             .randomNotifications();
 
 
@@ -24,20 +25,22 @@ public class DataProviderImpl implements DataProvider {
 
     @Override
     public int getUnreadNotificationsCount() {
-        Predicate<DashboardNotification> unreadPredicate = new Predicate<DashboardNotification>() {
+
+        Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
             @Override
-            public boolean apply(DashboardNotification input) {
-                return !input.isRead();
+            public boolean apply(Notificacion input) {
+                return !input.isVisto();
             }
         };
         return Collections2.filter(notifications, unreadPredicate).size();
     }
 
     @Override
-    public Collection<DashboardNotification> getNotifications() {
-        for (DashboardNotification notification : notifications) {
-            notification.setRead(true);
+    public Collection<Notificacion> getNotifications() {
+        for (Notificacion notification : notifications) {
+            notification.setVisto(true);
         }
+
         return Collections.unmodifiableCollection(notifications);
     }
 

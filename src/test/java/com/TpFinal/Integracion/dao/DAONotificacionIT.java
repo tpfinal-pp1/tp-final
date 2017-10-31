@@ -73,7 +73,7 @@ public class DAONotificacionIT {
     	}
     	Boolean ningunaVista=true;
     	dao.readAll().forEach(n -> {
-    		assertFalse(n.getVisto());
+    		assertFalse(n.isVisto());
     	});
     	
     	Notificacion n =dao.readAll().get(0);
@@ -84,8 +84,8 @@ public class DAONotificacionIT {
     	Boolean todasVistas=true;
     	
     	dao.readAll().forEach(not -> {
-    		unaVista.valueOf(unaVista||not.getVisto());
-    		todasVistas.valueOf(todasVistas&&not.getVisto());
+    		unaVista.valueOf(unaVista||not.isVisto());
+    		todasVistas.valueOf(todasVistas&&not.isVisto());
     	});
     }
 

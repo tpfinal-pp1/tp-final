@@ -74,7 +74,7 @@ public class Notificacion implements Identificable, BorradoLogico {
 		this.mensaje = mensaje;
 	}
 
-	public Boolean getVisto() {
+	public Boolean isVisto() {
 		return visto;
 	}
 
@@ -116,6 +116,5 @@ public class Notificacion implements Identificable, BorradoLogico {
 	public int hashCode() {
 		return 31;
 	}
-
 
 }
