@@ -411,7 +411,7 @@ public class EmpleadoForm extends FormLayout {
 	    Notification.show("Error: " + e.toString());
 	}
 	if (success)
-	    getAddressbookView().showSuccessNotification("Guardado: " + empleado.toString());
+	    getAddressbookView().showSuccessNotification("Guardado: " + empleado.getPersona());
 	cerrarForm();
 
     }
