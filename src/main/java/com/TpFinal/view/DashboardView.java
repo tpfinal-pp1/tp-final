@@ -1,9 +1,12 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
+import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.services.DataProviderImpl;
+import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
@@ -92,7 +95,18 @@ public final class DashboardView extends Panel implements View{
         header.addComponent(titleLabel);
 
         notificationsButton = buildNotificationsButton();
-        HorizontalLayout tools = new HorizontalLayout(notificationsButton);
+        Button test=new Button("Generar Notis");
+        test.addClickListener(new ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent clickEvent) {
+                DataProviderImpl dt=new DataProviderImpl();
+                for (Notificacion noti: DummyDataGenerator.randomNotifications(5)
+                        ) {
+                    dt.addNotificacion(noti);
+                }
+
+            }});
+        HorizontalLayout tools = new HorizontalLayout(test,notificationsButton);
         tools.addStyleName("toolbar");
         header.addComponent(tools);
 
@@ -104,6 +118,7 @@ public final class DashboardView extends Panel implements View{
         result.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(final ClickEvent event) {
+
                 openNotificationsPopup(event);
             }
         });
@@ -332,7 +347,6 @@ public final class DashboardView extends Panel implements View{
             Label titleLabel = new Label(notification.getTitulo());
             titleLabel.addStyleName("notification-title");
             PrettyTime p = new PrettyTime(Locale.getDefault());
-
             Date in = new Date();
             LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
             Date out = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());

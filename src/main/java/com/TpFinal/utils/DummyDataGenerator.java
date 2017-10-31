@@ -1,10 +1,14 @@
 package com.TpFinal.utils;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Random;
 
+import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.notificacion.Notificacion;
+import org.ocpsoft.prettytime.PrettyTime;
 
 
 public abstract class DummyDataGenerator {
@@ -164,12 +168,19 @@ public abstract class DummyDataGenerator {
         return sb.toString();
     }
 
-    public static Collection<Notificacion> randomNotifications() {
-        Notificacion n1 = new Notificacion();
-        n1.setTitulo("Cita con "+randomFirstName()+" "+randomLastName()+" a las "+"5PM");
-        n1.setMensaje(randomText(18));
+    public static Collection<Notificacion> randomNotifications(int cant) {
+        ArrayList<Notificacion> notis=new ArrayList<>();
+        for (int i = 0; i < cant; i++) {
+            Notificacion n1 = new Notificacion();
+            n1.setTitulo("Cita con " + randomFirstName() + " " + randomLastName());
+            n1.setMensaje(randomText(18));
+            n1.setEstadoRegistro(EstadoRegistro.ACTIVO);
+            n1.setFechaCreacion(LocalDateTime.of(2017,10,31,5,16,30));
+            notis.add(n1);
 
-        return Arrays.asList(n1);
+        }
+
+        return notis;
     }
 
     public static int[] randomSparklineValues(int howMany, int min, int max) {
