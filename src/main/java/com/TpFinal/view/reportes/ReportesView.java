@@ -169,6 +169,7 @@ public class ReportesView extends DefaultLayout implements View {
 
     }
     
+    //TODO
     /*
     public ArrayList<Object> filtrarPorMes(){
     	ContratoService service = new ContratoService();
