@@ -25,6 +25,15 @@ public class ItemRepAlquileresPorMes {
 		this.cantidadPagosCobrados = cantidadPagosCobrados;
 		this.cantidadPagosPendientes = cantidadPagosPendientes;
 	}
+	
+	public ItemRepAlquileresPorMes() {
+		this.gananciaInmobiliariaPagosCobrados = BigDecimal.ZERO;
+		this.gananciaInmobiliariaTodosLosCobros = BigDecimal.ZERO;
+		this.ingresosTotalesPagosCobrados = BigDecimal.ZERO;
+		this.ingresosTotalesPagosPendientes  = BigDecimal.ZERO;
+		this.cantidadPagosCobrados = 0;
+		this.cantidadPagosPendientes = 0;
+	}
 
 	public BigDecimal getGananciaInmobiliariaPagosCobrados() {
 		return gananciaInmobiliariaPagosCobrados;

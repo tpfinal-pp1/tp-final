@@ -46,7 +46,11 @@ public class ReportesView extends DefaultLayout implements View {
 
     private static DAOContratoAlquiler daoContratoAlquiler;
     // ContratoService service;
-
+    
+    private JasperReport subReporte;
+    private JasperPrint subReporteLleno;
+    List<Object> objectsSubReporte = null;
+    
     private JasperReport reporte;
     private JasperPrint reporteLleno;
     Map<String, Object> parametersMap = new HashMap<String, Object>();
@@ -107,6 +111,7 @@ public class ReportesView extends DefaultLayout implements View {
 
     public List<Object> getObjetos(TipoReporte tipo) {
 	ArrayList<Object> objects = new ArrayList<>();
+	ArrayList<Object> objectsSubReporte = new ArrayList<>();	
 	ContratoService service = new ContratoService();
 	List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
 
@@ -124,6 +129,8 @@ public class ReportesView extends DefaultLayout implements View {
 	    
 	case AlquileresPorMes:
 		//objects.addAll(filtrarPorMes());
+		this.reporteLleno = JasperFillManager.fillReport(this.subReporte, parametersMap,
+			    new JRBeanCollectionDataSource(objetos, false));
 		break;
 
 	}
@@ -170,11 +177,37 @@ public class ReportesView extends DefaultLayout implements View {
     }
     
     //TODO
-    /*
+    
+    public ArrayList<Object> obtenerItemsAlquileresPorMes(){
+    	ContratoService service = new ContratoService();
+    	ArrayList<Object> item = new ArrayList<>();
+    	    
+    	if (fDesde.getValue() == null) {
+    		showErrorNotification("Debes seleccionar una fecha");
+    	}
+    	
+    	else {
+    
+    		
+    		
+    		for (ItemRepAlquileresPorMes item2 :  service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue())) {
+
+			    item.add(item2);
+	
+		}
+    		
+    }
+    		return item;
+    		
+    	
+
+    }
+    
     public ArrayList<Object> filtrarPorMes(){
     	ContratoService service = new ContratoService();
     	ArrayList<Object> ret = new ArrayList<>();
-    	ItemRepAlquileresPorMes item;
+    	
+    	//ItemRepAlquileresPorMes item;
     	System.out.println(fDesde.toString().length() + "" + fHasta.toString().length());
     
     	if (fDesde.getValue() == null) {
@@ -190,9 +223,7 @@ public class ReportesView extends DefaultLayout implements View {
     	
     		}
     		
-    		item = service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue()); 
     		
-    		ret.add(item);
     		return ret;
     	}
     	
@@ -202,15 +233,13 @@ public class ReportesView extends DefaultLayout implements View {
     			ret.add(item2);
     		}
     		
-    		item = service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue()); 
     		
-    		ret.add(item);
     		return ret;
     		
     	}
 
 
-    } */
+    } 
 
     public ReportesView() {
 	super();
