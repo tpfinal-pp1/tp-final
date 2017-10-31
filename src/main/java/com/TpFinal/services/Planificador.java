@@ -84,10 +84,8 @@ public class Planificador {
 					.build();
 			
 			
-			Date startDate = Date.from(fechaInicio.atZone(ZoneId.systemDefault()).toInstant());
-			Date endDate = Date.from(fechaFin.atZone(ZoneId.systemDefault()).toInstant());
-			System.out.println(startDate.toString());
-			System.out.println(endDate.toString());
+			Date startDate = Date.from(fechaInicio.minusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
+			Date endDate = Date.from(fechaFin.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
 			
 			Trigger t = TriggerBuilder.newTrigger().withIdentity(id.toString())
 					.startAt(startDate)
