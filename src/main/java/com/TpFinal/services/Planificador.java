@@ -3,6 +3,8 @@ package com.TpFinal.services;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -68,6 +70,32 @@ public class Planificador {
 					.build();
 			sc.scheduleJob(j1, t);
 		} catch (SchedulerException | ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void agregarJob(String mensaje, LocalDateTime fechaInicio, LocalDateTime fechaFin, String perioricidad, Long id) {
+		try {
+			String horan="0 "+fechaInicio.getMinute()+" "+fechaInicio.getHour();
+			horan=horan+" 1/"+perioricidad;
+			horan=horan+" * ? *";
+			JobDetail j1=JobBuilder.newJob(notificacion.getClass())
+					.usingJobData("mensaje", mensaje)
+					.build();
+			
+			
+			Date startDate = Date.from(fechaInicio.atZone(ZoneId.systemDefault()).toInstant());
+			Date endDate = Date.from(fechaFin.atZone(ZoneId.systemDefault()).toInstant());
+			System.out.println(startDate.toString());
+			System.out.println(endDate.toString());
+			
+			Trigger t = TriggerBuilder.newTrigger().withIdentity(id.toString())
+					.startAt(startDate)
+					.withSchedule(CronScheduleBuilder.cronSchedule(horan))
+					.endAt(endDate)
+					.build();
+			sc.scheduleJob(j1, t);
+		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
 	}
