@@ -4,7 +4,6 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
-import com.TpFinal.dto.publicacion.Rol;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,9 +12,11 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "personas")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Persona implements Identificable, BorradoLogico {
 
 	public static final String idPersona = "idPersona";
@@ -67,7 +68,7 @@ public class Persona implements Identificable, BorradoLogico {
 		setEsInmobiliaria(false);
 	}
 
-	private Persona(Builder b) {
+	protected Persona(Builder b) {
 		this.id = b.id;
 		this.nombre = b.nombre;
 		this.apellido = b.apellido;
@@ -278,25 +279,16 @@ public class Persona implements Identificable, BorradoLogico {
 	}
 
 	public RolPersona getRol(Rol rol) {
-		List<RolPersona> ret = new ArrayList<>();
-		this.roles.forEach(r -> {
-			if (rol.equals(Rol.Inquilino) && r.getClass().equals(Inquilino.class)) {
-				ret.add(r);
-			} else if (rol.equals(Rol.Propietario) && r.getClass().equals(Propietario.class)) {
-				ret.add(r);
-			}
-		});
-		return ret.size() != 0 ? ret.get(0) : null;
+		return this.getRoles().stream()
+			.filter(r -> r.getRol().equals(rol))			
+			.findFirst().orElse(null);
+			
 	}
 
 	public List<Rol> giveMeYourRoles() {
-		List<Rol> roles = new ArrayList<>();
-		this.roles.forEach(r -> {
-			if (r.getClass().equals(Inquilino.class))
-				roles.add(Rol.Inquilino);
-			else if (r.getClass().equals(Propietario.class))
-				roles.add(Rol.Propietario);
-		});
+		List<Rol> roles = getRoles().stream()
+			.map(rolPersona -> rolPersona.getRol())
+			.collect(Collectors.toList());
 		return roles;
 	}
 
@@ -325,17 +317,17 @@ public class Persona implements Identificable, BorradoLogico {
 	}
 
 	public static class Builder {
-		private CriterioBusqInmueble prefBusqueda;
-		private Long id;
-		private String nombre;
-		private String apellido;
-		private String mail;
-		private String telefono;
-		private String telefono2;
-		private String DNI;
-		private String infoAdicional;
+		protected CriterioBusqInmueble prefBusqueda;
+		protected Long id;
+		protected String nombre;
+		protected String apellido;
+		protected String mail;
+		protected String telefono;
+		protected String telefono2;
+		protected String DNI;
+		protected String infoAdicional;
 		protected Set<RolPersona> roles = new HashSet<>();
-		private Boolean esInmobiliaria;
+		protected Boolean esInmobiliaria;
 		
 		public Builder setId(Long dato) {
 			this.id = dato;

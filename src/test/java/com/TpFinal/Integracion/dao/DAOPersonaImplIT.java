@@ -1,6 +1,7 @@
 package com.TpFinal.Integracion.dao;
 
 
+import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -16,19 +17,22 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.dto.persona.RolPersona;
-import com.TpFinal.dto.publicacion.Rol;
 
 
 public class DAOPersonaImplIT {
 
     DAOPersonaImpl dao;
     List<Persona>Personas= new ArrayList<>();
+    private static final Logger logger = Logger.getLogger(DAOPersonaImplIT.class);
 
 
     @BeforeClass
@@ -126,7 +130,7 @@ public class DAOPersonaImplIT {
     	assertEquals(3, dao.readAllActives().get(0).getRoles().size());
     	
     	Rol r = Rol.Propietario;
-    	for(RolPersona rp : dao.readAllActives().get(0).getRoles()) {r=rp.giveMeYourRole();}
+    	for(RolPersona rp : dao.readAllActives().get(0).getRoles()) {r=rp.getRol();}
     	assertEquals(Rol.Inquilino, r);
         
     }
@@ -178,13 +182,28 @@ public class DAOPersonaImplIT {
     
     @Test 
     public void guardarEmpleado() {
-    	Empleado slave = instanciaEmpleado("1");
-    	dao.saveOrUpdate(slave);
-    	Persona p=dao.readAllActives().get(0);
-    	slave = (Empleado)p;
-    	assertEquals(LocalDate.now(), slave.getFechaDeAlta());
+	Persona empleado = instancia("1");
+	empleado.addRol(rolEmpleadoSinCategoria());    	
+    	dao.saveOrUpdate(empleado);
+    	Persona p=dao.readAllActives().get(0);  
+    	assertEquals(1,dao.readAllActives().size());    	
+       	assertEquals(LocalDate.now(), ((Empleado)p.getRol(Rol.Empleado)).getFechaDeAlta());
     }
-
+    
+    @Test 
+    public void promoverEmpleado() {
+	Persona empleado = instancia("1");
+	empleado.addRol(rolEmpleadoSinCategoria());    	
+    	dao.saveOrUpdate(empleado);
+    	Persona p = dao.readAllActives().get(0);  
+    	assertEquals(1,dao.readAllActives().size());    
+    	assertEquals(CategoriaEmpleado.sinCategoria, ((Empleado)p.getRol(Rol.Empleado)).getCategoriaEmpleado());
+    	((Empleado)p.getRol(Rol.Empleado)).setCategoriaEmpleado(CategoriaEmpleado.agenteInmobilario);
+    	dao.saveOrUpdate(p);
+    	p = dao.readAll().get(0);
+	assertEquals(CategoriaEmpleado.agenteInmobilario, ((Empleado)p.getRol(Rol.Empleado)).getCategoriaEmpleado());   	
+       
+    }
 
     public static Persona instancia(String numero) {
         return new Persona.Builder()
@@ -199,20 +218,15 @@ public class DAOPersonaImplIT {
                 .build();
     }
     
-    public static Empleado instanciaEmpleado(String numero) {
-        return new Empleado.Builder()
-                .setNombre("nombre "+numero)
-                .setApellido("apellido "+numero)
-                .setMail("mail "+numero)
-                .setTelefono("telefono "+numero)
-                .setTelefono("telefono "+numero)
-                .setTelefono2("telefono2 "+numero)
-                .setDNI("Dni"+numero)
-                .setinfoAdicional("Info Adicional"+ numero)
-                .setFechaDeAlta(LocalDate.now())
-                .build();
+    private Empleado rolEmpleadoSinCategoria() {
+	return new Empleado.Builder()
+		.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria)
+		.setFechaDeAlta(LocalDate.now())
+		.build();
+		
     }
-    
+   
+       
     
     @SuppressWarnings("unused")
     private Inquilino instanciaInquilino(String numero) {

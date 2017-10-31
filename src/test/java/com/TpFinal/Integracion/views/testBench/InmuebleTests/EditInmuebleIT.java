@@ -7,13 +7,12 @@ import com.TpFinal.Integracion.views.testBench.TBUtils;
 import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
-
-import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.Test;
+
+import java.util.List;
 
 /**
  * Created by Max on 10/18/2017.
@@ -44,7 +43,7 @@ public class EditInmuebleIT  extends TestBenchTestCase{
 
     }
 
-    @Test
+    @Ignore
     public void editPersonaTest(){
         getDriver().get(TBUtils.getUrl("inmuebles"));
         TBUtils.sleep(8000);

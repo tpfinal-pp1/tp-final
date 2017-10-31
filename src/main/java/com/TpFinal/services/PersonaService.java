@@ -1,5 +1,6 @@
 package com.TpFinal.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -8,13 +9,18 @@ import java.util.stream.Collectors;
 
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Rol;
+import com.TpFinal.view.persona.FiltroEmpleados;
 import com.TpFinal.view.persona.FiltroInteresados;
 
 public class PersonaService {
 	DAOPersona dao;
+	CredencialService credencialService = new CredencialService();
 	
 	public PersonaService() {
 		dao = new DAOPersonaImpl();
@@ -25,6 +31,12 @@ public class PersonaService {
 	}
 	
 	public boolean delete(Persona p) {
+	    if(p.giveMeYourRoles().contains(Rol.Empleado)) {
+		Credencial c = ((Empleado)p.getRol(Rol.Empleado)).getCredencial();
+		if(c != null) {
+		    credencialService.deepDelete(c);
+		}
+	    }
 		return dao.logicalDelete(p);
 	}
 	
@@ -113,15 +125,50 @@ public class PersonaService {
 	    return i;
 	}
 	
-	public static Empleado getEmpleadoInstancia() {
-		Empleado empleado = new Empleado.Builder().setNombre("").setApellido("").setDNI("").build();
-		return empleado;
-	}
 
-	public List<Persona> findAll(FiltroInteresados filtro) {
-	    List<Persona> personas = dao.readAllActives().stream().filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
+	public List<Persona> findAllClientes(FiltroInteresados filtro) {
+	    List<Persona> personas = dao.readAllActives().stream()
+		    .filter(p -> !p.giveMeYourRoles().contains(Rol.Empleado))
+		    .filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
 	    personas.sort(Comparator.comparing(Persona::getId));
 	    return personas;
+	}
+	
+	public List<Empleado> findAllEmpleados(FiltroEmpleados filtro) {
+	    List<Empleado> empleados = dao.readAllActives().stream()
+		    .filter(p -> p.giveMeYourRoles().contains(Rol.Empleado))
+		   //.filter(filtro.getFiltroCompuesto())
+		    .map(p -> (Empleado)p.getRol(Rol.Empleado))
+		   .collect(Collectors.toList());
+	    empleados.sort(Comparator.comparing(Empleado::getId));
+	    return empleados;
+	}
+
+	public static Empleado getEmpleadoInstancia() {
+	    Persona p = new Persona();
+	    Empleado e = new Empleado.Builder()
+		    .setFechaDeAlta(LocalDate.now())
+		    .setPersona(p)
+		    .build();
+	    Credencial c = new Credencial.Builder().setEmpleado(e).build();
+	    e.setCredencial(c);
+	    return e;
+	}
+
+	public boolean darDeBajaEmpleado(Empleado empleado) {
+	    boolean ret = true;
+	    empleado.setFechaDeBaja(LocalDate.now());
+	    ret = ret && dao.saveOrUpdate(empleado.getPersona());
+	    ret = ret && this.delete(empleado.getPersona());
+	    if (!ret) {
+		//Rollback.
+		empleado.setFechaDeBaja(null);
+		empleado.getPersona().setEstadoRegistro(EstadoRegistro.ACTIVO);
+		dao.saveOrUpdate(empleado.getPersona());
+	    }
+	    
+	    return ret;
+	    
 	}
 	
 	

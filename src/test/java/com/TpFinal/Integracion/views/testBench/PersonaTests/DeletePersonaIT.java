@@ -1,9 +1,6 @@
 package com.TpFinal.Integracion.views.testBench.PersonaTests;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 
 import com.TpFinal.Integracion.views.pageobjects.TBLoginView;
 import com.TpFinal.Integracion.views.pageobjects.TBMainView;
@@ -39,7 +36,7 @@ public class DeletePersonaIT extends TestBenchTestCase{
     }
     
     //TODO
-	@Test
+	@Ignore
 	public void test() {
 		getDriver().get(TBUtils.getUrl("personas"));
         TBUtils.sleep(3000);

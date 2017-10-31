@@ -18,7 +18,7 @@ import com.TpFinal.services.NotificadorConcreto;
 import com.TpFinal.services.Planificador;
 
 
-public class PlanificadorTest {
+public class PlanificadorIT {
 	Planificador sc;
 
 	@Before

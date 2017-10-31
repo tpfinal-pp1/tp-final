@@ -9,8 +9,8 @@ import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBenchTestCase;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
-import org.junit.Test;
 
 /**
  * Created by Max on 10/21/2017.
@@ -40,7 +40,7 @@ public class CobroFilterIT extends TestBenchTestCase {
         cobroView = mainView.getCobroView();
     }
 
-    @Test
+    @Ignore
     public void filterTest(){
         getDriver().get(TBUtils.getUrl("cobros"));
         TBUtils.sleep(2000);

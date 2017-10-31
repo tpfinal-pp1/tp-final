@@ -3,7 +3,8 @@ package com.TpFinal.utils;
 import java.util.Collection;
 
 import com.TpFinal.dto.*;
-import com.TpFinal.dto.persona.User;
+import com.TpFinal.dto.persona.Empleado;
+
 
 /**
  * QuickTickets Dashboard backend API.
@@ -19,7 +20,7 @@ public interface DataProvider {
     /**
 
      */
-    User authenticate(String userName, String password);
+    Empleado authenticate(String userName, String password);
 
     /**
      * @return The number of unread notifications for the current user.

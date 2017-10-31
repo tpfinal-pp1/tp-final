@@ -7,6 +7,7 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.persona.FiltroEmpleados;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -31,17 +32,16 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @Title("Addressbook")
 @Theme("valo")
-@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class EmpleadoABMView extends DefaultLayout implements View {
 
     // Para identificar los layout de acciones
     private int acciones = 0;
 
     TextField filter = new TextField();
-    private Grid<Empleado> grid = new Grid<>(Empleado.class);
+    private Grid<Empleado> grid = new Grid<>();
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
+    
     // Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
 
@@ -62,14 +62,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	/*
-	 * Synchronous event handling.
-	 *
-	 * Receive user interaction events on the server-side. This allows you to
-	 * synchronously handle those events. Vaadin automatically sends only the needed
-	 * changes to the web page without loading a new page.
-	 */
-
+	
 	filter.addValueChangeListener(e -> updateList());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.setStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
@@ -86,12 +79,13 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    empleadoForm.setEmpleado(null);
 	});
 
-	grid.setColumns("nombre", "apellido", "DNI");
-	grid.getColumn("DNI").setCaption("DNI");
-	grid.getColumn("nombre").setCaption("Nombre");
-	grid.getColumn("apellido").setCaption("Apellido ");
-	
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	grid.addColumn(empleado -> {return empleado.getPersona().getNombre();}).setCaption("Nombre").setId("nombre");
+	grid.addColumn(empleado ->{return empleado.getPersona().getApellido();}).setCaption("Apellido").setId("apellido");
+	grid.addColumn(empleado -> {return empleado.getPersona().getMail();}).setCaption("E-Mail").setId("mail");
+	grid.addColumn(empleado -> {return empleado.getPersona().getTelefono();}).setCaption("Teléfono").setId("telefono");
+	grid.addColumn(empleado -> {return empleado.getCategoriaEmpleado();}).setCaption("Categoría").setId("categoria");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria");
 	grid.getColumns().forEach(col -> col.setResizable(false));
 
 	Responsive.makeResponsive(this);
@@ -116,49 +110,38 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	return empleado -> {
 
-	    // Button edit = new Button(VaadinIcons.EDIT);
-	    // edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	    // edit.addClickListener(e -> {
-	    // DuracionContratosForm.setContratoDuracion(contratoduracion);
-	    // });
-	    // edit.setDescription("Editar");
+	     Button edit = new Button(VaadinIcons.EDIT);
+	     edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	     edit.addClickListener(e -> {
+	     empleadoForm.setEmpleado(empleado);
+	     });
+	     edit.setDescription("Editar");
 
 	    Button del = new Button(VaadinIcons.TRASH);
 	    
-	    //TODO REPLACE
 	    del.addClickListener(click -> {
-		DialogConfirmacion dialog = new DialogConfirmacion("Eliminar",
+		DialogConfirmacion dialog = new DialogConfirmacion("Dar de Baja",
 			VaadinIcons.WARNING,
-			"¿Esta seguro que desea Eliminar?",
+			"¿Esta seguro que desea dar de baja al empleado?",
 			"100px",
 			confirmacion -> {
-			    service.delete(empleado);
-			    showSuccessNotification("Empleado: " + empleado.getNombre() + " " + empleado.getApellido());
+			    service.darDeBajaEmpleado(empleado);
+			    showSuccessNotification("Dado de Baja: " + empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
 			    updateList();
 			});
 	    }); 
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	    del.setDescription("Borrar");
+	    del.setDescription("Dar de baja");
 
-	    HorizontalLayout hl = new HorizontalLayout(del);
+	    HorizontalLayout hl = new HorizontalLayout(edit,del);
 	    hl.setSpacing(false);
 	    hl.setCaption("Accion " + acciones);
 	    acciones++;
 	    return hl;
 	};
     }
-    /*
-     * Robust layouts.
-     *
-     * Layouts are components that contain other components. HorizontalLayout
-     * contains TextField and Button. It is wrapped with a Grid into VerticalLayout
-     * for the left side of the screen. Allow user to resize the components with a
-     * SplitPanel.
-     *
-     * In addition to programmatically building layout in Java, you may also choose
-     * to setup layout declaratively with Vaadin Designer, CSS and HTML.
-     */
+  
 
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
@@ -187,15 +170,6 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
     }
 
-    /*
-     * Choose the design patterns you like.
-     *
-     * It is good practice to have separate data access methods that handle the
-     * back-end access and/or the user interface updates. You can further split your
-     * code into classes to easier maintenance. With Vaadin you can follow MVC, MVP
-     * or any other design pattern you choose.
-     */
-
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(
 		notification);
@@ -216,9 +190,9 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
    
     public void updateList() {
-    //TODO REPLACE
-	//List<Empleado> customers = service.findAll(filter.getValue());
-	//grid.setItems(customers);
+   
+	List<Empleado> customers = service.findAllEmpleados(new FiltroEmpleados());
+	grid.setItems(customers);
     } 
 
     public boolean isIsonMobile() {

@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Propietario;
-import com.TpFinal.dto.publicacion.Rol;
+import com.TpFinal.dto.persona.Rol;
 
 public class PersonaTest {
 
@@ -38,14 +38,14 @@ public class PersonaTest {
 		Persona p = instancia("1");
 		p.addRol(Rol.Inquilino);
 		p.addRol(Rol.Propietario);
-		assertEquals(2, p.giveMeYourRoles().size());
+		assertEquals(2, p.getRoles().size());
 		
 		p=instancia("1");
 		p.addRol(Rol.Inquilino);
-		assertEquals(1, p.giveMeYourRoles().size());
+		assertEquals(1, p.getRoles().size());
 		
 		p=instancia("1");
-		assertEquals(0, p.giveMeYourRoles().size());
+		assertEquals(0, p.getRoles().size());
 		
 		
 		

@@ -2,13 +2,13 @@ package com.TpFinal;
 
 
 
-import com.TpFinal.dto.persona.User;
+import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.dto.persona.ViewAccess;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.utils.DummyDataProvider;
+import com.TpFinal.utils.DataProviderImpl;
 
 import com.TpFinal.utils.DataProvider;
-import com.TpFinal.utils.GeneradorDeDatos;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
@@ -22,6 +22,7 @@ import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -40,7 +41,7 @@ public final class DashboardUI extends UI {
      * injection; and not in the UI but somewhere closer to where they're
      * actually accessed.
      */
-    private final DummyDataProvider dataProvider = new DummyDataProvider();
+    private final DataProviderImpl dataProvider = new DataProviderImpl();
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
 
 
@@ -77,25 +78,33 @@ public final class DashboardUI extends UI {
      * Otherwise login view is shown.
      */
     private void updateContent() {
-        User user = (User) VaadinSession.getCurrent()
-                .getAttribute(User.class.getName());
-        if (user != null && "admin".equals(user.getRole())) {
-            // Authenticated user
+        Empleado empleado = (Empleado) VaadinSession.getCurrent()
+                .getAttribute(Empleado.class.getName());
+        if(empleado==null){
+            setContent(new LoginView());
+            //Cuando recien inicia entra con empleado=null
+        }
+        else if(empleado.getCredencial()==null){
+            setContent(new LoginView());
+            Notification.show("Usuario o Contraseña Incorrectos");
+        }
+        else if(empleado.getCredencial().getViewAccess()==null){
+                setContent(new LoginView());
+                Notification.show("Credenciales sin acceso al sistema");
+            }
+        else{
             setContent(new MainView());
             removeStyleName("loginview");
             getNavigator().navigateTo(getNavigator().getState());
-        } else {
-            setContent(new LoginView());
-            addStyleName("loginview");
-           
         }
-    }
+      }
+
 
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
-        User user = getDataProvider().authenticate(event.getUserName(),
+        Empleado empleado = getDataProvider().authenticate(event.getUserName(),
                 event.getPassword());
-        VaadinSession.getCurrent().setAttribute(User.class.getName(), user);
+        VaadinSession.getCurrent().setAttribute(Empleado.class.getName(), empleado);
         updateContent();
     }
 

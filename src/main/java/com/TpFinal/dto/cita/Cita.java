@@ -13,6 +13,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -23,6 +25,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.persona.Empleado;
 
 @Entity
 @Table(name = "citas")
@@ -47,14 +50,18 @@ public class Cita implements Identificable, BorradoLogico {
     @Column(name = "tipo_cita")
     TipoCita tipoDeCita;
     @OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    @Cascade({ CascadeType.ALL })
     protected Set<Recordatorio> recordatorios = new HashSet<>();
-    // private AgenteInmobiliario ai;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @JoinColumn(name = "id_empleado")
+    private Empleado empleado;
 
     public Cita() {
     }
 
-    public Cita(Builder b) {
+    private Cita(Builder b) {
 	this.fechaHora = b.fechahora;
 	this.citado = b.citado;
 	this.direccionLugar = b.direccionLugar;
@@ -63,29 +70,6 @@ public class Cita implements Identificable, BorradoLogico {
 
     }
 
-    @Override
-    public Long getId() {
-	return id;
-    }
-
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((id == null) ? 0 : id.hashCode());
-	return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (!(obj instanceof Cita))
-	    return false;
-	Cita other = (Cita) obj;
-	return getId() != null && Objects.equals(getId(), other.getId());
-    }
-    
     public Set<Recordatorio> getRecordatorios() {
 	return recordatorios;
     }
@@ -101,6 +85,23 @@ public class Cita implements Identificable, BorradoLogico {
 	if (this.recordatorios.contains(recordatorio)) {
 	    this.recordatorios.remove(recordatorio);
 	    recordatorio.setCita(null);
+	}
+    }
+    
+    public Empleado getEmpleado() {
+	return empleado;
+    }
+
+    public void setEmpleado(Empleado emp) {
+
+	if (emp != null) {
+	    this.empleado = emp;
+	    this.empleado.addCita(this);
+	} else {
+	    if (this.empleado != null) {
+		this.empleado.removeCita(this);
+		this.empleado = null;
+	    }
 	}
     }
 
@@ -158,7 +159,34 @@ public class Cita implements Identificable, BorradoLogico {
 	return this.estadoRegistro;
     }
 
-    public class Builder {
+    @Override
+    public Long getId() {
+	return id;
+    }
+
+    @Override
+    public int hashCode() {
+	return 31;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+	if (this == obj)
+	    return true;
+	if (!(obj instanceof Cita))
+	    return false;
+	Cita other = (Cita) obj;
+	return getId() != null && Objects.equals(getId(), other.getId());
+    }
+
+    @Override
+    public String toString() {
+	return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaHora
+		+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
+		+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
+    }
+
+    public static class Builder {
 
 	private TipoCita tipoDeCita;
 	private String observaciones;

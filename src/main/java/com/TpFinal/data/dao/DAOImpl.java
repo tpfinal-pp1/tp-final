@@ -3,10 +3,8 @@ package com.TpFinal.data.dao;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAO;
 import com.TpFinal.dto.BorradoLogico;
-import com.TpFinal.dto.DashboardNotification;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
-import com.TpFinal.dto.persona.User;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -16,7 +14,7 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -259,7 +257,7 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	return borrarRepetidos(findByCriteria(criteria));
     }
 
-    private List<T> borrarRepetidos(List<T> lista) {
+    protected List<T> borrarRepetidos(List<T> lista) {
 	Set<T> conjunto = new HashSet<>();
 	List<T> ret = new ArrayList<>();
 	lista.forEach(elemento -> conjunto.add(elemento));
@@ -267,16 +265,6 @@ public class DAOImpl<T extends Identificable & BorradoLogico> implements DAO<T> 
 	return ret;
     }
 
-    public User authenticate(String userName, String password) {
-	return null;
-    }
 
-    public int getUnreadNotificationsCount() {
-	return 0;
-    }
-
-    public Collection<DashboardNotification> getNotifications() {
-	return null;
-    }
 
 }
