@@ -1,6 +1,7 @@
 package com.TpFinal.view.empleados;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
@@ -56,10 +57,13 @@ public class EmpleadoForm extends FormLayout {
     // DatosAdministrativos
     private ComboBox<CategoriaEmpleado> cbCategoria = new ComboBox<>("Categoría", Arrays.asList(CategoriaEmpleado
 	    .values()));
+    private TextField tfFechaAlta = new TextField("Fecha de Alta");
+    private TextField tfFechaBaja = new TextField("Fecha de Baja");
     private BlueLabel blCredenciales = new BlueLabel("Credenciales");
     private TextField tfNombreUsuario = new TextField("Nombre Usuario");
     private PasswordField pfPassIngreso = new PasswordField("Password");
     private PasswordField pfPassConfirmacion = new PasswordField("Confirmacion Password");
+
     // XXX
     PersonaService service = new PersonaService();
     CredencialService credencialService = new CredencialService();
@@ -85,17 +89,8 @@ public class EmpleadoForm extends FormLayout {
     }
 
     private void configureComponents() {
-	/*
-	 * Highlight primary actions.
-	 *
-	 * With Vaadin built-in styles you can highlight the primary save button
-	 *
-	 * and give it a keyoard shortcut for a better UX.
-	 */
-
-	// tfNombreUsuario.addValueChangeListener( e -> {
-	//
-	// })
+	tfFechaAlta.setEnabled(false);
+	tfFechaBaja.setEnabled(false);
 	cbCategoria.setEmptySelectionAllowed(false);
 
 	cbCategoria.addValueChangeListener(e -> {
@@ -138,6 +133,16 @@ public class EmpleadoForm extends FormLayout {
 	binderEmpleado.forField(cbCategoria)
 		.asRequired("Seleccione una categoría")
 		.bind(Empleado::getCategoriaEmpleado, Empleado::setCategoriaEmpleado);
+	binderEmpleado.forField(tfFechaAlta).bind(empleado -> {
+	    return empleado.getFechaDeAlta() != null ? empleado.getFechaDeAlta().format(DateTimeFormatter.ofPattern(
+		    "dd/MM/yyyy")) : "";
+	}, (empleado, text) -> {
+	});
+	binderEmpleado.forField(tfFechaBaja).bind(empleado -> {
+	    return empleado.getFechaDeBaja() != null ? empleado.getFechaDeBaja().format(DateTimeFormatter.ofPattern(
+		    "dd/MM/yyyy")) : "";
+	}, (empleado, text) -> {
+	});
 	bindearCredencial();
     }
 
@@ -280,7 +285,8 @@ public class EmpleadoForm extends FormLayout {
 
 	datosPersonales = new FormLayout(nombre, apellido, DNI, mail, telefono, telefono2);
 	datosPersonales.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-	datosAdministativos = new FormLayout(cbCategoria, blCredenciales, tfNombreUsuario, pfPassIngreso,
+	datosAdministativos = new FormLayout(cbCategoria, tfFechaAlta, tfFechaBaja, blCredenciales, tfNombreUsuario,
+		pfPassIngreso,
 		pfPassConfirmacion, infoAdicional);
 	datosAdministativos.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
@@ -329,7 +335,7 @@ public class EmpleadoForm extends FormLayout {
 	// XXX
 	boolean success = false;
 	success = service.darDeBajaEmpleado(empleado);
-	
+
 	if (success) {
 	    addressbookView.updateList();
 	    setVisible(false);
@@ -339,7 +345,7 @@ public class EmpleadoForm extends FormLayout {
 	    addressbookView.updateList();
 	    setVisible(false);
 	    getAddressbookView().setComponentsVisible(true);
-	    getAddressbookView().showErrorNotification("No pudo darse de baja al empleado: " + empleado.getPersona());	    
+	    getAddressbookView().showErrorNotification("No pudo darse de baja al empleado: " + empleado.getPersona());
 	}
 
     }

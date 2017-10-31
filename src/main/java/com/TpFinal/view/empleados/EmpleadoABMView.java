@@ -2,6 +2,7 @@ package com.TpFinal.view.empleados;
 
 import java.util.List;
 
+import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
@@ -84,8 +85,16 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	grid.addColumn(empleado -> {return empleado.getPersona().getMail();}).setCaption("E-Mail").setId("mail");
 	grid.addColumn(empleado -> {return empleado.getPersona().getTelefono();}).setCaption("Teléfono").setId("telefono");
 	grid.addColumn(empleado -> {return empleado.getCategoriaEmpleado();}).setCaption("Categoría").setId("categoria");
+	grid.addColumn(empleado -> {String ret = "No";
+	if (empleado.getCredencial() != null) {
+	    Credencial c = empleado.getCredencial();
+	    if (c.getContrasenia()!= null && c.getUsuario() != null && c.getViewAccess()!= null) 
+		ret = "Sí";
+	}
+	return ret;
+	}).setCaption("Posee Acceso").setId("acceso");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria");
+	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria","acceso");
 	grid.getColumns().forEach(col -> col.setResizable(false));
 
 	Responsive.makeResponsive(this);
