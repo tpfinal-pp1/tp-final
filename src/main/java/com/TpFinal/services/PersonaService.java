@@ -12,6 +12,7 @@ import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.dto.persona.EstadoEmpleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -135,7 +136,7 @@ public class PersonaService {
 	}
 	
 	public List<Empleado> findAllEmpleados(FiltroEmpleados filtro) {
-	    List<Empleado> empleados = dao.readAllActives().stream()
+	    List<Empleado> empleados = dao.readAll().stream()
 		    .filter(p -> p.giveMeYourRoles().contains(Rol.Empleado))
 		   //.filter(filtro.getFiltroCompuesto())
 		    .map(p -> (Empleado)p.getRol(Rol.Empleado))
@@ -158,11 +159,13 @@ public class PersonaService {
 	public boolean darDeBajaEmpleado(Empleado empleado) {
 	    boolean ret = true;
 	    empleado.setFechaDeBaja(LocalDate.now());
+	    empleado.setEstadoEmpleado(EstadoEmpleado.NOACTIVO);
 	    ret = ret && dao.saveOrUpdate(empleado.getPersona());
 	    ret = ret && this.delete(empleado.getPersona());
 	    if (!ret) {
 		//Rollback.
 		empleado.setFechaDeBaja(null);
+		empleado.setEstadoEmpleado(EstadoEmpleado.ACTIVO);
 		empleado.getPersona().setEstadoRegistro(EstadoRegistro.ACTIVO);
 		dao.saveOrUpdate(empleado.getPersona());
 	    }

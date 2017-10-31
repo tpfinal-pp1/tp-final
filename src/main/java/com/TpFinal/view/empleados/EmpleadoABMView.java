@@ -2,6 +2,8 @@ package com.TpFinal.view.empleados;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.DashboardEvent;
@@ -12,7 +14,6 @@ import com.TpFinal.view.persona.FiltroEmpleados;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.data.ValueProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -26,7 +27,6 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.RadioButtonGroup;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -35,6 +35,8 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 public class EmpleadoABMView extends DefaultLayout implements View {
 
+    private static final Logger logger = Logger.getLogger(EmpleadoABMView.class);
+
     // Para identificar los layout de acciones
     private int acciones = 0;
 
@@ -42,7 +44,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     private Grid<Empleado> grid = new Grid<>();
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    
+
     // Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
     Window sw = new Window("Filtrar");
 
@@ -51,7 +53,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     EmpleadoForm empleadoForm = new EmpleadoForm(this);
     private boolean isonMobile = false;
 
-    //XXX
+    // XXX
     PersonaService service = new PersonaService();
 
     public EmpleadoABMView() {
@@ -63,7 +65,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	
+
 	filter.addValueChangeListener(e -> updateList());
 	filter.setIcon(VaadinIcons.SEARCH);
 	filter.setStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
@@ -80,38 +82,50 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    empleadoForm.setEmpleado(null);
 	});
 
-	grid.addColumn(empleado -> {return empleado.getPersona().getNombre();}).setCaption("Nombre").setId("nombre");
-	grid.addColumn(empleado ->{return empleado.getPersona().getApellido();}).setCaption("Apellido").setId("apellido");
-	grid.addColumn(empleado -> {return empleado.getPersona().getMail();}).setCaption("E-Mail").setId("mail");
-	grid.addColumn(empleado -> {return empleado.getPersona().getTelefono();}).setCaption("Teléfono").setId("telefono");
-	grid.addColumn(empleado -> {return empleado.getCategoriaEmpleado();}).setCaption("Categoría").setId("categoria");
-	grid.addColumn(empleado -> {String ret = "No";
-	if (empleado.getCredencial() != null) {
-	    Credencial c = empleado.getCredencial();
-	    if (c.getContrasenia()!= null && c.getUsuario() != null && c.getViewAccess()!= null) 
-		ret = "Sí";
-	}
-	return ret;
+	grid.addColumn(empleado -> {
+	    return empleado.getPersona().getNombre();
+	}).setCaption("Nombre").setId("nombre");
+	grid.addColumn(empleado -> {
+	    return empleado.getPersona().getApellido();
+	}).setCaption("Apellido").setId("apellido");
+	grid.addColumn(empleado -> {
+	    return empleado.getPersona().getMail();
+	}).setCaption("E-Mail").setId("mail");
+	grid.addColumn(empleado -> {
+	    return empleado.getPersona().getTelefono();
+	}).setCaption("Teléfono").setId("telefono");
+	grid.addColumn(empleado -> {
+	    return empleado.getCategoriaEmpleado();
+	}).setCaption("Categoría").setId("categoria");
+	grid.addColumn(empleado -> {
+	    String ret = "No";
+	    if (empleado.getCredencial() != null) {
+		Credencial c = empleado.getCredencial();
+		if (c.getContrasenia() != null && c.getUsuario() != null && c.getViewAccess() != null)
+		    ret = "Sí";
+	    }
+	    return ret;
 	}).setCaption("Posee Acceso").setId("acceso");
+	grid.addColumn(empleado -> {
+	    String ret = "";
+	    logger.debug("Empleado : " + empleado);
+	    logger.debug("Estado: " + empleado.getEstadoEmpleado());
+	    if (empleado.getEstadoEmpleado() != null) {
+		ret = empleado.getEstadoEmpleado().toString();
+	    }
+	    return ret;
+	}).setCaption("Estado Empleado").setId("estadoEmp");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-	grid.setColumnOrder("acciones","nombre","apellido","mail","telefono","categoria","acceso");
+	grid.setColumnOrder("acciones", "nombre", "apellido", "mail", "telefono", "categoria", "acceso", "estadoEmp");
 	grid.getColumns().forEach(col -> col.setResizable(false));
 
 	Responsive.makeResponsive(this);
-
-	// grid.setSelectionMode(Grid.SelectionMod
-	//
-	// e.SINGLE);
 
 	if (isonMobile) {
 	    filter.setWidth("100%");
 	}
 	newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
-	// filter.setIcon(VaadinIcons.SEARCH);
-	// filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-
-	
 	updateList();
     }
 
@@ -119,44 +133,44 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	return empleado -> {
 
-	     Button edit = new Button(VaadinIcons.EDIT);
-	     edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
-	     edit.addClickListener(e -> {
-	     empleadoForm.setEmpleado(empleado);
-	     });
-	     edit.setDescription("Editar");
+	    Button edit = new Button(VaadinIcons.EDIT);
+	    edit.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+	    edit.addClickListener(e -> {
+		empleadoForm.setEmpleado(empleado);
+	    });
+	    edit.setDescription("Editar");
 
 	    Button del = new Button(VaadinIcons.TRASH);
-	    
+
 	    del.addClickListener(click -> {
+		@SuppressWarnings("unused")
 		DialogConfirmacion dialog = new DialogConfirmacion("Dar de Baja",
 			VaadinIcons.WARNING,
 			"¿Esta seguro que desea dar de baja al empleado?",
 			"100px",
 			confirmacion -> {
 			    service.darDeBajaEmpleado(empleado);
-			    showSuccessNotification("Dado de Baja: " + empleado.getPersona().getNombre() + " " + empleado.getPersona().getApellido());
+			    showSuccessNotification("Dado de Baja: " + empleado.getPersona().getNombre() + " "
+				    + empleado.getPersona().getApellido());
 			    updateList();
 			});
-	    }); 
+	    });
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Dar de baja");
 
-	    HorizontalLayout hl = new HorizontalLayout(edit,del);
+	    HorizontalLayout hl = new HorizontalLayout(edit, del);
 	    hl.setSpacing(false);
 	    hl.setCaption("Accion " + acciones);
 	    acciones++;
 	    return hl;
 	};
     }
-  
 
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
 	filter.setVisible(b);
-	// seleccionFiltro.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
+
 	if (isonMobile)
 	    grid.setVisible(b);
 
@@ -197,12 +211,11 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	success.show(Page.getCurrent());
     }
 
-   
     public void updateList() {
-   
+
 	List<Empleado> customers = service.findAllEmpleados(new FiltroEmpleados());
 	grid.setItems(customers);
-    } 
+    }
 
     public boolean isIsonMobile() {
 	return isonMobile;
@@ -250,4 +263,3 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
 }
-
