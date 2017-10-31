@@ -30,11 +30,8 @@ import com.vaadin.util.CurrentInstance;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.time.LocalDateTime;
+import java.time.*;
 import java.util.Date;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
 import java.util.Iterator;
@@ -347,9 +344,10 @@ public final class DashboardView extends Panel implements View{
             Label titleLabel = new Label(notification.getTitulo());
             titleLabel.addStyleName("notification-title");
             PrettyTime p = new PrettyTime(Locale.getDefault());
-            Date in = new Date();
-            LocalDateTime ldt = LocalDateTime.ofInstant(in.toInstant(), ZoneId.systemDefault());
-            Date out = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());
+
+            Date out =  Date.from(notification.getFechaCreacion()
+                    .atZone(ZoneId.systemDefault()).toInstant());
+
             p.setLocale(new Locale("es", "AR"));
             Label timeLabel = new Label(p.format(out));
             timeLabel.addStyleName("notification-time");

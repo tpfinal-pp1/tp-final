@@ -175,7 +175,7 @@ public abstract class DummyDataGenerator {
             n1.setTitulo("Cita con " + randomFirstName() + " " + randomLastName());
             n1.setMensaje(randomText(18));
             n1.setEstadoRegistro(EstadoRegistro.ACTIVO);
-            n1.setFechaCreacion(LocalDateTime.of(2017,10,31,5,16,30));
+            n1.setFechaCreacion(LocalDateTime.now());
             notis.add(n1);
 
         }
