@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
@@ -152,6 +153,22 @@ public class PersonaService {
 	    Credencial c = new Credencial.Builder().setEmpleado(e).build();
 	    e.setCredencial(c);
 	    return e;
+	}
+
+	public boolean darDeBajaEmpleado(Empleado empleado) {
+	    boolean ret = true;
+	    empleado.setFechaDeBaja(LocalDate.now());
+	    ret = ret && dao.saveOrUpdate(empleado.getPersona());
+	    ret = ret && this.delete(empleado.getPersona());
+	    if (!ret) {
+		//Rollback.
+		empleado.setFechaDeBaja(null);
+		empleado.getPersona().setEstadoRegistro(EstadoRegistro.ACTIVO);
+		dao.saveOrUpdate(empleado.getPersona());
+	    }
+	    
+	    return ret;
+	    
 	}
 	
 	
