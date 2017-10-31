@@ -76,8 +76,6 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
 	newItem.addClickListener(e -> {
-
-	    empleadoForm.clearFields();
 	    grid.asSingleSelect().clear();
 	    empleadoForm.setEmpleado(null);
 	});
