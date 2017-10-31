@@ -3,12 +3,11 @@ package com.TpFinal;
 
 
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.ViewAccess;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.utils.DataProviderImpl;
+import com.TpFinal.services.DataProviderImpl;
 
-import com.TpFinal.utils.DataProvider;
+import com.TpFinal.services.DataProvider;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;

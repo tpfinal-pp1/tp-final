@@ -46,6 +46,7 @@
 		<mapping class="com.TpFinal.dto.cita.Cita" />
 		<mapping class="com.TpFinal.dto.cita.Recordatorio" />
 		<mapping class="com.TpFinal.dto.cita.TipoCita" />
+		<mapping class="com.TpFinal.dto.notificacion.Notificacion" />
 	</session-factory>
 
 </hibernate-configuration>
