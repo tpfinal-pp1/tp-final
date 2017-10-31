@@ -69,6 +69,7 @@ public class ContratoAlquilerForm extends FormLayout {
     TextField tfPropietario = new TextField("Propietario");
     ComboBox<Persona> cbInquilino = new ComboBox<>("Inquilino");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
+    DateField fechaVencimiento = new DateField("Fecha de Vencimiento");
 
     public String nombreArchivo = "";
     File archivo;
@@ -174,6 +175,22 @@ public class ContratoAlquilerForm extends FormLayout {
 		}
 	    }
 	});
+	
+	fechaCelebracion.addValueChangeListener(event ->{
+		if(event.isUserOriginated()) {
+			if(fechaCelebracion.getValue()!=null && cbDuracionContrato.getValue() !=null) {
+				fechaVencimiento.setValue(fechaCelebracion.getValue().plusMonths(cbDuracionContrato.getValue().getDuracion()));
+			}
+		}
+	});
+	
+	cbDuracionContrato.addValueChangeListener(event ->{
+		if(event.isUserOriginated()) {
+			if(fechaCelebracion.getValue()!=null && cbDuracionContrato.getValue() !=null) {
+				fechaVencimiento.setValue(fechaCelebracion.getValue().plusMonths(cbDuracionContrato.getValue().getDuracion()));
+			}
+		}
+	});
 
 	setVisible(false);
     }
@@ -222,6 +239,11 @@ public class ContratoAlquilerForm extends FormLayout {
 	Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
 	binderContratoAlquiler.forField(this.fechaCelebracion).asRequired("Seleccione una fecha de celebración")
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
+	
+	binderContratoAlquiler.forField(this.fechaVencimiento)
+		.bind(c -> {
+			return c.getFechaCelebracion().plusMonths(c.getDuracionContrato().getDuracion());
+		}, (c,ca) -> {});
 
 	binderContratoAlquiler.forField(this.cbDuracionContrato).asRequired("Seleccione una Duración")
 		.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
@@ -349,6 +371,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    tfPActualizacion.setCaption("Aumento por Actualización( % )");
 	} else {
 	    fechaCelebracion.setCaption("Fecha");
+	    fechaVencimiento.setCaption("Vencimiento");
 	    stIncremento.setCaption("Frecuencia");
 	    tfPActualizacion.setCaption("Monto");
 	    rbgTipoMoneda.addStyleName(ValoTheme.OPTIONGROUP_SMALL);
@@ -364,7 +387,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    btDescargar.descargar(contratoAlquiler, "Contrato.doc");
 	});
 
-	principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, seccionDoc,
+	principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion,fechaVencimiento, seccionDoc,
 		tfDocumento,
 		documentoButtonsRow);
 
@@ -436,6 +459,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.cbInteresFueraDeTermino.setEnabled(true);
 	    this.cbtipointeres.setEnabled(true);
 	    this.fechaCelebracion.setEnabled(true);
+	    this.fechaVencimiento.setEnabled(false);
 	    this.rbgTipoMoneda.setEnabled(true);
 	    this.stIncremento.setEnabled(true);
 	    this.tfDiaDePago.setEnabled(true);
@@ -588,6 +612,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.cbInteresFueraDeTermino.clear();
 	this.cbtipointeres.clear();
 	this.fechaCelebracion.clear();
+	this.fechaVencimiento.clear();
 	this.rbgTipoMoneda.clear();
 	this.stIncremento.clear();
 	this.tfDiaDePago.clear();
@@ -607,6 +632,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	tabPrincipalComponents.add(tfPropietario);
 	tabPrincipalComponents.add(cbInquilino);
 	tabPrincipalComponents.add(fechaCelebracion);
+	tabPrincipalComponents.add(fechaVencimiento);
 	tabPrincipalComponents.add(tfDocumento);
 	for (BindingValidationStatus invalidField : invalidComponents) {
 	    tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
