@@ -1,6 +1,8 @@
 package com.TpFinal.view.empleados;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 
@@ -329,6 +331,7 @@ public class EmpleadoForm extends FormLayout {
 
 	} else {
 	    habilitarEdicionYDeshabilitarAlta();
+	    delete.setVisible(false);
 	    this.empleado = PersonaService.getEmpleadoInstancia();
 	    this.credencial = this.empleado.getCredencial();
 	}

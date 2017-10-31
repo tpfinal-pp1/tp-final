@@ -134,9 +134,9 @@ public class PersonaService {
 
     public List<Empleado> findAllEmpleados(FiltroEmpleados filtro) {
 	List<Empleado> empleados = dao.readAll().stream()
-		.filter(p -> p.giveMeYourRoles().contains(Rol.Empleado))
-		// .filter(filtro.getFiltroCompuesto())
+		.filter(p -> p.giveMeYourRoles().contains(Rol.Empleado))		
 		.map(p -> (Empleado) p.getRol(Rol.Empleado))
+		.filter(filtro.getFiltroCompuesto())
 		.collect(Collectors.toList());
 	empleados.sort(Comparator.comparing(Empleado::getId));
 	return empleados;
