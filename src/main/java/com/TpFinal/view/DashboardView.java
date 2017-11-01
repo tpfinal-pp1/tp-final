@@ -31,11 +31,8 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.*;
-import java.util.Date;
+import java.util.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Locale;
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
@@ -44,6 +41,7 @@ public final class DashboardView extends Panel implements View{
 
     private Label titleLabel;
     private NotificationsButton notificationsButton;
+    private VerticalLayout notificationsLayout;
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
@@ -97,7 +95,7 @@ public final class DashboardView extends Panel implements View{
             @Override
             public void buttonClick(ClickEvent clickEvent) {
                 DataProviderImpl dt=new DataProviderImpl();
-                for (Notificacion noti: DummyDataGenerator.randomNotifications(5)
+                for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
                         ) {
                     dt.addNotificacion(noti);
                 }
@@ -322,20 +320,30 @@ public final class DashboardView extends Panel implements View{
 }
 
     private void openNotificationsPopup(final ClickEvent event) {
-        VerticalLayout notificationsLayout = new VerticalLayout();
+        if (notificationsWindow != null) {
+            if(notificationsWindow.isAttached()){
+                return;
+            }
+        }
+
+       notificationsLayout = new VerticalLayout();
 
         Label title = new Label("Notifications");
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        Collection<Notificacion> notifications = DashboardUI
+        ArrayList<Notificacion> notifications = (ArrayList<Notificacion>) DashboardUI
                 .getDataProvider().getNotifications();
 
+        System.out.println(notifications);
 
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
-
-        for (Notificacion notification : notifications) {
+        int size=notifications.size();
+        if(size>12)
+            size=12;
+        for (int i=0 ; i<size;i++) {
+            Notificacion notification=notifications.get(i);
             VerticalLayout notificationLayout = new VerticalLayout();
             notificationLayout.setMargin(false);
             notificationLayout.setSpacing(false);
@@ -352,12 +360,18 @@ public final class DashboardView extends Panel implements View{
             Label timeLabel = new Label(p.format(out));
             timeLabel.addStyleName("notification-time");
 
-            Label contentLabel = new Label(notification.getMensaje());
+            String content=notification.getMensaje();
+            if(content.length()>45) {
+                content = notification.getMensaje().substring(0, 42) + "...";
+            }
+
+            Label contentLabel = new Label(content);
             contentLabel.addStyleName("notification-content");
 
             notificationLayout.addComponents(titleLabel, timeLabel,
                     contentLabel);
             notificationsLayout.addComponent(notificationLayout);
+
         }
 
         HorizontalLayout footer = new HorizontalLayout();
@@ -377,16 +391,16 @@ public final class DashboardView extends Panel implements View{
         footer.setComponentAlignment(showAll, Alignment.TOP_CENTER);
         notificationsLayout.addComponent(footer);
 
-        if (notificationsWindow == null) {
-            notificationsWindow = new Window();
-            notificationsWindow.setWidth(300.0f, Unit.PIXELS);
-            notificationsWindow.addStyleName("notifications");
-            notificationsWindow.setClosable(false);
-            notificationsWindow.setResizable(false);
-            notificationsWindow.setDraggable(false);
-            notificationsWindow.setCloseShortcut(KeyCode.ESCAPE, null);
-            notificationsWindow.setContent(notificationsLayout);
-        }
+
+        notificationsWindow = new Window();
+        notificationsWindow.setWidth(300.0f, Unit.PIXELS);
+        notificationsWindow.addStyleName("notifications");
+        notificationsWindow.setClosable(false);
+        notificationsWindow.setResizable(false);
+        notificationsWindow.setDraggable(false);
+        notificationsWindow.setCloseShortcut(KeyCode.ESCAPE, null);
+        notificationsWindow.setContent(notificationsLayout);
+
 
         if (!notificationsWindow.isAttached()) {
             notificationsWindow.setPositionY(event.getClientY()
@@ -396,6 +410,8 @@ public final class DashboardView extends Panel implements View{
         } else {
             notificationsWindow.close();
         }
+
+
     }
 
     @Override

@@ -47,6 +47,18 @@ public class DataProviderImpl implements DataProvider {
     public Collection<Notificacion> getNotifications() {
         ArrayList<Notificacion> notificaciones=new ArrayList<>(dao.readAllActives());
         setRead(notificaciones);
+        Collections.sort(notificaciones, new Comparator<Notificacion>() {
+            @Override
+            public int compare(Notificacion o1, Notificacion o2) {
+               if(o1.getId()>o2.getId()){
+                   return -1;
+               }
+               else{
+                   return 1;
+               }
+
+            }
+        });
         return notificaciones;
     }
 
