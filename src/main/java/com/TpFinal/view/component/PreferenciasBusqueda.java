@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
+
 import com.TpFinal.dto.Localidad;
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
@@ -49,7 +51,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public abstract class PreferenciasBusqueda extends Window {
-
+    private static final Logger logger = Logger.getLogger(PreferenciasBusqueda.class);
+    
     public static final String ID = "profilepreferenceswindow";
 
     private CriterioBusqInmueble criterio;
@@ -132,7 +135,10 @@ public abstract class PreferenciasBusqueda extends Window {
     }
 
     private void cleanPreferences() {
+	logger.debug("Criterio antes de limpiar: " + criterio);
 	binderBusqueda.getFields().forEach(field -> field.clear());
+	binderBusqueda.writeBeanIfValid(criterio);
+	logger.debug("Criterio luego de limpiar: " + criterio);
 	onClean();
     }
 
@@ -145,56 +151,43 @@ public abstract class PreferenciasBusqueda extends Window {
 		} else if (criterio.getEstadoInmueble() == EstadoInmueble.EnVenta) {
 		    criterio.setTipoPublicacion(TipoPublicacion.Venta);
 		}
+	    } else {
+		criterio.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
+		criterio.setTipoPublicacion(null);
 	    }
+	    
 	    InmuebleService inmuebleService = new InmuebleService();
-
+	    
 	    Predicate<Inmueble> filtro = i -> {
 		if (criterio.getTipoPublicacion() != null) {
 		    List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
 		    if (publicaciones != null && publicaciones.size() > 0) {
 			if (criterio.getTipoPublicacion() == TipoPublicacion.Alquiler) {
-			    List<PublicacionAlquiler> pubAlquiler = publicaciones.stream()
-				    .filter(p -> p instanceof PublicacionAlquiler)
-				    .map(p -> (PublicacionAlquiler) p)
-				    .collect(Collectors.toList());
+			    List<PublicacionAlquiler> pubAlquiler = getListadoDeAlquileres(publicaciones);
 			    if (pubAlquiler != null && pubAlquiler.size() > 0) {
-				Predicate<PublicacionAlquiler> minPrecio = p -> true;
-				if (criterio.getMinPrecio() != null)
-				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMinPrecio()) >= 0;
-				Predicate<PublicacionAlquiler> maxPrecio = p -> true;
-				if (criterio.getMaxPrecio() != null)
-				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMaxPrecio()) <= 0;
-				Predicate<PublicacionAlquiler> moneda = p -> true;
-				if (criterio.getTipoMoneda() != null)
-				    moneda = p -> p.getMoneda().equals(criterio.getTipoMoneda());
-				return pubAlquiler.stream().filter(minPrecio).filter(maxPrecio).filter(moneda).collect(
-					Collectors
-						.toList()).isEmpty() == false;
+				return filtrarAlquileres(pubAlquiler);
 			    }
 			} else if (criterio.getTipoPublicacion() == TipoPublicacion.Venta) {
-			    List<PublicacionVenta> pubAlquiler = publicaciones.stream()
-				    .filter(p -> p instanceof PublicacionVenta)
-				    .map(p -> (PublicacionVenta) p)
-				    .collect(Collectors.toList());
-			    if (pubAlquiler != null && pubAlquiler.size() > 0) {
-				Predicate<PublicacionVenta> minPrecio = p -> true;
-				if (criterio.getMinPrecio() != null)
-				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMinPrecio()) >= 0;
-				Predicate<PublicacionVenta> maxPrecio = p -> true;
-				if (criterio.getMaxPrecio() != null)
-				    minPrecio = p -> p.getPrecio().compareTo(criterio.getMaxPrecio()) <= 0;
-				Predicate<PublicacionVenta> moneda = p -> true;
-				if (criterio.getTipoMoneda() != null)
-				    moneda = p -> p.getMoneda().equals(criterio.getTipoMoneda());
-				return pubAlquiler.stream().filter(minPrecio).filter(maxPrecio).filter(moneda).collect(
-					Collectors
-						.toList()).isEmpty() == false;
+			    List<PublicacionVenta> pubVenta = getListadoDeVentas(publicaciones);
+			    if (pubVenta != null && pubVenta.size() > 0) {
+				return filtrarVentas(pubVenta);
 			    }
 			}
 		    }
+		} else { //traer todos los que estan en venta o alquiler que matchean.
+		    List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
+		    if (publicaciones != null && publicaciones.size() > 0) {
+			List<PublicacionAlquiler> pubAlquiler = getListadoDeAlquileres(publicaciones);
+			List<PublicacionVenta> pubVenta = getListadoDeVentas(publicaciones);
+			return filtrarAlquileres(pubAlquiler) || filtrarVentas(pubVenta); 
+
+		    } else
+			return false;
+
 		}
 		return true;
 	    };
+	    logger.debug("Criterio para buscar: " + criterio);
 	    new InmuebleABMViewWindow("Resultado Búsqueda", () -> inmuebleService.findByCaracteristicas(criterio),
 		    filtro);
 
@@ -204,6 +197,75 @@ public abstract class PreferenciasBusqueda extends Window {
 	    Utils.mostarErroresValidator(e);
 	    return;
 	}
+    }
+
+    private boolean filtrarVentas(List<PublicacionVenta> pubVenta) {
+	return pubVenta.stream().filter(precioMinVenta()).filter(precioMaxVenta()).filter(tipoMonedaVenta()).collect(
+		Collectors
+			.toList()).isEmpty() == false;
+    }
+
+    private Predicate<PublicacionVenta> tipoMonedaVenta() {
+	Predicate<PublicacionVenta> moneda = p -> true;
+	if (criterio.getTipoMoneda() != null)
+	    moneda = p -> p.getMoneda().equals(criterio.getTipoMoneda());
+	return moneda;
+    }
+
+    private Predicate<PublicacionVenta> precioMaxVenta() {
+	Predicate<PublicacionVenta> maxPrecio = p -> true;
+	if (criterio.getMaxPrecio() != null)
+	    maxPrecio = p -> p.getPrecio().compareTo(criterio.getMaxPrecio()) <= 0;
+	return maxPrecio;
+    }
+
+    private Predicate<PublicacionVenta> precioMinVenta() {
+	Predicate<PublicacionVenta> minPrecio = p -> true;
+	if (criterio.getMinPrecio() != null)
+	    minPrecio = p -> p.getPrecio().compareTo(criterio.getMinPrecio()) >= 0;
+	return minPrecio;
+    }
+
+    private List<PublicacionVenta> getListadoDeVentas(List<Publicacion> publicaciones) {
+	return publicaciones.stream()
+		.filter(p -> p instanceof PublicacionVenta)
+		.map(p -> (PublicacionVenta) p)
+		.collect(Collectors.toList());
+    }
+
+    private List<PublicacionAlquiler> getListadoDeAlquileres(List<Publicacion> publicaciones) {
+	return publicaciones.stream()
+		.filter(p -> p instanceof PublicacionAlquiler)
+		.map(p -> (PublicacionAlquiler) p)
+		.collect(Collectors.toList());
+    }
+
+    private boolean filtrarAlquileres(List<PublicacionAlquiler> pubAlquiler) {
+	return pubAlquiler.stream().filter(precioMinAlquiler()).filter(precioMaxAlquiler()).filter(tipoMonedaAlquiler())
+		.collect(
+			Collectors
+				.toList()).isEmpty() == false;
+    }
+
+    private Predicate<PublicacionAlquiler> tipoMonedaAlquiler() {
+	Predicate<PublicacionAlquiler> moneda = p -> true;
+	if (criterio.getTipoMoneda() != null)
+	    moneda = p -> p.getMoneda().equals(criterio.getTipoMoneda());
+	return moneda;
+    }
+
+    private Predicate<PublicacionAlquiler> precioMaxAlquiler() {
+	Predicate<PublicacionAlquiler> maxPrecio = p -> true;
+	if (criterio.getMaxPrecio() != null)
+	    maxPrecio = p -> p.getPrecio().compareTo(criterio.getMaxPrecio()) <= 0;
+	return maxPrecio;
+    }
+
+    private Predicate<PublicacionAlquiler> precioMinAlquiler() {
+	Predicate<PublicacionAlquiler> minPrecio = p -> true;
+	if (criterio.getMinPrecio() != null)
+	    minPrecio = p -> p.getPrecio().compareTo(criterio.getMinPrecio()) >= 0;
+	return minPrecio;
     }
 
     private void configureComponents() {
@@ -222,7 +284,7 @@ public abstract class PreferenciasBusqueda extends Window {
 		if (provincia != null) {
 		    cbLocalidad.setEnabled(true);
 		    cbLocalidad.setItems(provincia.getLocalidades());
-		    //cbLocalidad.setSelectedItem(provincia.getLocalidades().get(0));
+		    // cbLocalidad.setSelectedItem(provincia.getLocalidades().get(0));
 		} else {
 		    cbLocalidad.setEnabled(false);
 		    cbLocalidad.setSelectedItem(null);

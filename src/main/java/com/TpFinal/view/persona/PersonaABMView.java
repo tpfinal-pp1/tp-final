@@ -306,11 +306,9 @@ public class PersonaABMView extends DefaultLayout implements View {
     @Subscribe
     public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
 	if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-
 	    isonMobile = true;
 	} else {
 	    isonMobile = false;
-
 	}
 
     }
