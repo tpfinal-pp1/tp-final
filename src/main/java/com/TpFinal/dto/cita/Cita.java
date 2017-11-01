@@ -186,17 +186,23 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 				+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
 				+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
 	}
-	
+
 	@Override
 	public String getMessage() {
-		return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaHora
-				+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
-				+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
+		return "Hora: "+dejarLindo(this.fechaHora.getHour())+":"+dejarLindo(this.fechaHora.getMinute())
+		+"\n"+"Direccion: "+this.direccionLugar+"\n"+"Tipo de cita: "+this.tipoDeCita;
 	}
-	
+
 	@Override
 	public String getTitulo() {
-		return "Titulo hardcodeado";
+		return "Cita con "+this.citado;
+	}
+
+	private String dejarLindo(int horaMinuto) {
+		String ret=String.valueOf(horaMinuto);
+		if(horaMinuto<10)
+			ret="0"+String.valueOf(horaMinuto);
+		return ret;
 	}
 
 	public static class Builder {
