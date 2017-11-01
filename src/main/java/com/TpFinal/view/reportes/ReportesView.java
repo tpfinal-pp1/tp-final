@@ -331,21 +331,7 @@ public class ReportesView extends DefaultLayout implements View {
 	
 	);
 
-	/*Notification.show("Value changed:",
-	                String.valueOf(event.getValue()),
-	                Type.TRAY_NOTIFICATION*/
-			
-
-	/*checkbox.addValueChangeListener(event -> {
-	    if (event.isUserOriginated()) {
-	    	conCobrosPendientes=false;
-		}
-	    
-	    else {
-	    	 conCobrosPendientes=true;
-	    }
-	});*/
-	
+		
 	// tipoReporteCB.setWidth("100%");
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
