@@ -38,7 +38,7 @@ public final class DashboardUI extends UI {
      * injection; and not in the UI but somewhere closer to where they're
      * actually accessed.
      */
-    private final DataProviderImpl dataProvider = new DataProviderImpl();
+    private final NotificacionService dataProvider = new NotificacionService();
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
 
 
@@ -107,7 +107,8 @@ public final class DashboardUI extends UI {
 
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
-        Empleado empleado = getDataProvider().authenticate(event.getUserName(),
+        CredencialService credServ=new CredencialService();
+        Empleado empleado = credServ.logIn(event.getUserName(),
                 event.getPassword());
         VaadinSession.getCurrent().setAttribute(Empleado.class.getName(), empleado);
         updateContent();
@@ -132,9 +133,6 @@ public final class DashboardUI extends UI {
     /**
      * @return An instance for accessing the (dummy) services layer.
      */
-    public static DataProvider getDataProvider() {
-        return ((DashboardUI) getCurrent()).dataProvider;
-    }
 
     public static DashboardEventBus getDashboardEventbus() {
         return ((DashboardUI) getCurrent()).dashboardEventbus;

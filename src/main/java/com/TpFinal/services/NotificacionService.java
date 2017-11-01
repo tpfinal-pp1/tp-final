@@ -2,25 +2,22 @@ package com.TpFinal.services;
 
 
 import com.TpFinal.data.dao.DAONotificacionImpl;
-import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAONotificacion;
-import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.utils.DummyDataGenerator;
+
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
 import java.util.*;
 
 
-public class DataProviderImpl implements DataProvider {
+public class NotificacionService {
 
     DAONotificacion dao;
 
 
 
-   public DataProviderImpl (){
+   public NotificacionService(){
        this.dao=new DAONotificacionImpl();
    }
 
@@ -31,7 +28,7 @@ public class DataProviderImpl implements DataProvider {
     }
 
 
-    @Override
+
     public int getUnreadNotificationsCount() {
 
         Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
@@ -43,7 +40,7 @@ public class DataProviderImpl implements DataProvider {
         return Collections2.filter(dao.readAllActives(), unreadPredicate).size();
     }
 
-  @Override
+
     public Collection<Notificacion> getNotifications() {
         ArrayList<Notificacion> notificaciones=new ArrayList<>(dao.readAllActives());
         setRead(notificaciones);
@@ -74,12 +71,6 @@ public class DataProviderImpl implements DataProvider {
         return dao.saveOrUpdate(p);
     }
 
-
-    @Override
-    public Empleado authenticate(String userName, String password) {
-        CredencialService credServ=new CredencialService();
-        return credServ.logIn(userName,password);
-    }
 
 
 }
