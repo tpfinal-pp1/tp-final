@@ -6,7 +6,6 @@ import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.*;
-
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
@@ -24,13 +23,11 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.quartz.SchedulerException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 @Theme("dashboard")
 @Widgetset("com.TpFinal.DashboardWidgetSet")
@@ -45,53 +42,57 @@ public final class DashboardUI extends UI {
      * actually accessed.
      */
 
+    private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
+    private CredencialService credServ=new CredencialService();
 
 
 
-        @Override
-        protected void init(final VaadinRequest request) {
-            GeneradorDeDatosSinAsociaciones.generarDatos(4);
-            try {
-                Planificador planificador=new Planificador();
-                planificador.encender();
-                planificador.setNotificacion(new NotificadorBus());
-                List<Cita>citas= new ArrayList<>();
-                
-                for(int i=0; i< 10 ; i++) {
-                	LocalDateTime fInicio = LocalDateTime.now();
-    				fInicio=fInicio.plusMinutes(i+2);
-    				fInicio=fInicio.plusHours(24);
-    				
-    				Cita c = new Cita.Builder()
-    						.setCitado("Señor "+String.valueOf(i))
-    						.setDireccionLugar("sarasa: "+String.valueOf(i))
-    						.setFechahora(fInicio)
-    						.setObservaciones("obs"+String.valueOf(i))
-    						.setTipoDeCita(TipoCita.Otros)
-    						.build();
-    				c.setId(Long.valueOf(i));
+    @Override
+    protected void init(final VaadinRequest request) {
 
-    				citas.add(c);
-                }
-                planificador.agregarNotificaciones(citas);
-                
+        GeneradorDeDatosSinAsociaciones.generarDatos(4);
+        try {
+            Planificador planificador=new Planificador();
+            planificador.encender();
+            planificador.setNotificacion(new NotificadorBus());
+            List<Cita> citas= new ArrayList<>();
 
-            } catch (SchedulerException e) {
-                e.printStackTrace();
+            for(int i=0; i< 10 ; i++) {
+                LocalDateTime fInicio = LocalDateTime.now();
+                fInicio=fInicio.plusMinutes(i+2);
+                fInicio=fInicio.plusHours(24);
+
+                Cita c = new Cita.Builder()
+                        .setCitado("Señor "+String.valueOf(i))
+                        .setDireccionLugar("sarasa: "+String.valueOf(i))
+                        .setFechahora(fInicio)
+                        .setObservaciones("obs"+String.valueOf(i))
+                        .setTipoDeCita(TipoCita.Otros)
+                        .build();
+                c.setId(Long.valueOf(i));
+
+                citas.add(c);
+            }
+            planificador.agregarNotificaciones(citas);}
+            catch (Exception e){
+            e.printStackTrace();
             }
 
-            setLocale(Locale.forLanguageTag("es-AR"));
-
-            DashboardEventBus.register(this);
-            Responsive.makeResponsive(this);
-            addStyleName(ValoTheme.UI_WITH_MENU);
-            
-            updateContent();
-            
 
 
-            // Some views need to be aware of browser resize events so a
-            // BrowserResizeEvent gets fired to the event bus on every occasion.
+
+        setLocale(Locale.forLanguageTag("es-AR"));
+
+        DashboardEventBus.register(this);
+        Responsive.makeResponsive(this);
+        addStyleName(ValoTheme.UI_WITH_MENU);
+
+        updateContent();
+
+
+
+        // Some views need to be aware of browser resize events so a
+        // BrowserResizeEvent gets fired to the event bus on every occasion.
         Page.getCurrent().addBrowserWindowResizeListener(
                 new BrowserWindowResizeListener() {
                     @Override
@@ -119,20 +120,19 @@ public final class DashboardUI extends UI {
             Notification.show("Usuario o Contraseña Incorrectos");
         }
         else if(empleado.getCredencial().getViewAccess()==null){
-                setContent(new LoginView());
-                Notification.show("Credenciales sin acceso al sistema");
-            }
+            setContent(new LoginView());
+            Notification.show("Credenciales sin acceso al sistema");
+        }
         else{
             setContent(new MainView());
             removeStyleName("loginview");
             getNavigator().navigateTo(getNavigator().getState());
         }
-      }
+    }
 
 
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
-        CredencialService credServ=new CredencialService();
         Empleado empleado = credServ.logIn(event.getUserName(),
                 event.getPassword());
         VaadinSession.getCurrent().setAttribute(Empleado.class.getName(), empleado);
@@ -155,9 +155,12 @@ public final class DashboardUI extends UI {
         }
     }
 
+    /**
+     * @return An instance for accessing the (dummy) services layer.
+     */
 
-/*
+
     public static DashboardEventBus getDashboardEventbus() {
         return ((DashboardUI) getCurrent()).dashboardEventbus;
-    }*/
+    }
 }

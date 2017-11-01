@@ -11,34 +11,23 @@ import com.TpFinal.DashboardUI;
  */
 public class DashboardEventBus implements SubscriberExceptionHandler {
 
-    static DashboardEventBus instancia;
     private final EventBus eventBus = new EventBus(this);
-private DashboardEventBus(){
-
-}
 
     public static void post(final Object event) {
-
-        get().eventBus.post(event);
+        DashboardUI.getDashboardEventbus().eventBus.post(event);
     }
 
     public static void register(final Object object) {
-        get().eventBus.register(object);
+        DashboardUI.getDashboardEventbus().eventBus.register(object);
     }
 
     public static void unregister(final Object object) {
-        get().eventBus.unregister(object);
-    }
-
-    public static DashboardEventBus get(){
-        if (instancia==null)
-            instancia=new DashboardEventBus();
-        return instancia;
+        DashboardUI.getDashboardEventbus().eventBus.unregister(object);
     }
 
     @Override
     public final void handleException(final Throwable exception,
-            final SubscriberExceptionContext context) {
+                                      final SubscriberExceptionContext context) {
         exception.printStackTrace();
     }
 }
