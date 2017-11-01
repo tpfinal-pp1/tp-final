@@ -1,39 +1,28 @@
 package com.TpFinal.view.empleados;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-
-import org.apache.log4j.Logger;
-
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.EstadoEmpleado;
-import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.log4j.Logger;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmpleadoForm extends FormLayout {
 
@@ -403,6 +392,7 @@ public class EmpleadoForm extends FormLayout {
 	    success = service.saveOrUpdate(empleado.getPersona());
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
+		checkFieldsPerTab(e.getFieldValidationErrors());
 	    Notification.show("Errores de validación, por favor revise los campos e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
 	    return;
@@ -445,5 +435,53 @@ public class EmpleadoForm extends FormLayout {
     public EmpleadoABMView getAddressbookView() {
 	return addressbookView;
     }
+
+	private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
+		boolean tabPrincipalInvalidFields = false;
+		boolean tabConditionsInvalidFields = false;
+		// TabElements for tab principal
+		List<Component> tabPrincipalComponents = new ArrayList<Component>();
+		tabPrincipalComponents.add(nombre);
+		tabPrincipalComponents.add(apellido);
+		tabPrincipalComponents.add(DNI);
+		tabPrincipalComponents.add(mail);
+		tabPrincipalComponents.add(telefono);
+		tabPrincipalComponents.add(telefono2);
+		for (BindingValidationStatus invalidField : invalidComponents) {
+			tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+			if (tabPrincipalInvalidFields)
+				break;
+		}
+		System.out.println(tabPrincipalInvalidFields);
+
+		// Tab elements for tab caracteristicas
+		List<Component> tabConditionsComponents = new ArrayList<Component>();
+		tabConditionsComponents.add(cbCategoria);
+		tabConditionsComponents.add(tfFechaAlta);
+		tabConditionsComponents.add(tfFechaBaja);
+		tabConditionsComponents.add(tfNombreUsuario);
+		tabConditionsComponents.add(pfPassConfirmacion);
+		tabConditionsComponents.add(pfPassIngreso);
+		for (BindingValidationStatus invalidField : invalidComponents) {
+			tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+			if (tabConditionsInvalidFields)
+				break;
+		}
+		System.out.println(tabConditionsInvalidFields);
+
+		// Take user to the invalid components tag (in case there's only one)
+		if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+			Notification.show("Error al guardar, porfavor revise los campos principales",
+					Notification.Type.WARNING_MESSAGE);
+			tabSheet.setSelectedTab(datosPersonales);
+		} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+			Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
+					Notification.Type.WARNING_MESSAGE);
+			tabSheet.setSelectedTab(datosAdministativos);
+		} else {
+			Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+					Notification.Type.WARNING_MESSAGE);
+		}
+	}
 
 }
