@@ -21,11 +21,9 @@ public class NotificadorBus implements Job{
 				noti.setMensaje(mensaje);
 				noti.setTitulo(titulo);
 				
-//				DataProvider dtp=new DataProviderImpl();
-//				dtp.
-
+				DataProviderImpl dtp=new DataProviderImpl();
+				dtp.addNotificacion(noti);
 				
-
 			}else{
 				System.out.println("algo salio mal");
 			}
