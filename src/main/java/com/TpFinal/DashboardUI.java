@@ -2,6 +2,8 @@ package com.TpFinal;
 
 
 
+import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.*;
 
@@ -24,7 +26,11 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 import org.quartz.SchedulerException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
 @Theme("dashboard")
 @Widgetset("com.TpFinal.DashboardWidgetSet")
@@ -50,6 +56,27 @@ public final class DashboardUI extends UI {
             try {
                 Planificador planificador=new Planificador();
                 planificador.encender();
+                planificador.setNotificacion(new NotificadorBus());
+                List<Cita>citas= new ArrayList<>();
+                
+                for(int i=0; i< 10 ; i++) {
+                	LocalDateTime fInicio = LocalDateTime.now();
+    				fInicio=fInicio.plusMinutes(i+1);
+    				fInicio=fInicio.plusHours(1);
+    				
+    				Cita c = new Cita.Builder()
+    						.setCitado("Señor "+String.valueOf(i))
+    						.setDireccionLugar("sarasa: "+String.valueOf(i))
+    						.setFechahora(fInicio)
+    						.setObservaciones("obs"+String.valueOf(i))
+    						.setTipoDeCita(TipoCita.Otros)
+    						.build();
+    				c.setId(Long.valueOf(i));
+
+    				citas.add(c);
+                }
+                planificador.agregarNotificaciones(citas);
+                
 
             } catch (SchedulerException e) {
                 e.printStackTrace();
