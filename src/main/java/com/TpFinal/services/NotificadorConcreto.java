@@ -1,8 +1,13 @@
 package com.TpFinal.services;
 
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.notificacion.Notificacion;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class NotificadorConcreto implements Notificable{
 

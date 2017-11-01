@@ -1,8 +1,8 @@
-package com.TpFinal.utils;
+package com.TpFinal.services;
 
 import java.util.Collection;
 
-import com.TpFinal.dto.*;
+import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.dto.persona.Empleado;
 
 
@@ -30,7 +30,7 @@ public interface DataProvider {
     /**
      * @return Notifications for the current user.
      */
-    Collection<DashboardNotification> getNotifications();
+    Collection<Notificacion> getNotifications();
 }
 
 
