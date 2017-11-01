@@ -27,7 +27,6 @@ import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.view.contrato.FiltroContrato;
 import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
-import com.TpFinal.view.reportes.ItemRepAlquileresPorMes;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -562,97 +561,6 @@ public class ContratoService {
 
 		return itemsReporte;
 	}
-
-	public List<ItemRepAlquileresPorMes> itemParaAlquileresPorMesPagosCobrados(LocalDate fechaMes) {
-		
-		BigDecimal gananciaInmobiliariaPagosCobradosLOCAL;
-		BigDecimal gananciaInmobiliariaTodosLosCobrosLOCAL;
-		BigDecimal ingresosTotalesPagosCobradosLOCAL;
-		BigDecimal ingresosTotalesPagosPendientesLOCAL;
-		int cantidadPagosCobradosLOCAL;
-		int cantidadPagosPendientesLOCAL;
-		
-		LocalDate fechaDesde;
-		LocalDate fechaHasta;
-		
-		
-		if(fechaMes.getMonthValue() == 12) {
-			fechaDesde = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue(), 1);
-			fechaHasta = LocalDate.of(fechaMes.getYear()+1, 1, 1);
-		}
-		
-		else {
-			fechaDesde = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue(), 1);
-			fechaHasta = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue()+1, 1);
-		}
-						
-		CobroService cobroService = new CobroService();
-
-		List<ItemRepAlquileresPorMes> itemsReporte = new ArrayList<>();
-		
-		ItemRepAlquileresPorMes item = new ItemRepAlquileresPorMes();
-
-		List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-		List<Cobro> cobros = new ArrayList<>();
-
-		contratosVigentes.forEach(contrato -> {
-		    if (contrato.getCobros() != null) {
-			cobros.addAll(contrato.getCobros().stream()
-				.filter(c -> {
-
-				    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
-				})
-				.filter(c -> {
-
-				    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) < 0 : true;
-				})
-				.collect(Collectors.toList()));
-
-			cobroService.calcularDatosFaltantes(cobros);
-			cobros.forEach(cobro -> {
-				
-				gananciaInmobiliariaTodosLosCobros = gananciaInmobiliariaTodosLosCobros.add(cobro.getComision()); 
-				
-				if (cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
-					gananciaInmobiliariaPagosCobrados = gananciaInmobiliariaPagosCobrados.add(cobro.getComision());
-					ingresosTotalesPagosCobrados = ingresosTotalesPagosCobrados.add(cobro.getMontoRecibido());
-					cantidadPagosCobrados = cantidadPagosCobrados +1;
-				}
-				
-				if (cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
-					//XXX
-					ingresosTotalesPagosPendientes = ingresosTotalesPagosPendientes.add(cobro.getMontoRecibido());
-					cantidadPagosPendientes = cantidadPagosPendientes +1;
-				}
-			    
-			});
-		    }
-		});
-
-		gananciaInmobiliariaPagosCobradosLOCAL = gananciaInmobiliariaPagosCobrados;
-		gananciaInmobiliariaPagosCobrados = BigDecimal.ZERO;
-		gananciaInmobiliariaTodosLosCobrosLOCAL = gananciaInmobiliariaTodosLosCobros; 
-		gananciaInmobiliariaTodosLosCobros = BigDecimal.ZERO;
-		ingresosTotalesPagosCobradosLOCAL = ingresosTotalesPagosCobrados;
-		ingresosTotalesPagosCobrados = BigDecimal.ZERO;
-		ingresosTotalesPagosPendientesLOCAL = ingresosTotalesPagosPendientes;
-		ingresosTotalesPagosPendientes = BigDecimal.ZERO;
-		cantidadPagosCobradosLOCAL = cantidadPagosCobrados;
-		cantidadPagosCobrados=0;
-		cantidadPagosPendientesLOCAL = cantidadPagosPendientes;
-		cantidadPagosPendientes=0;
-	
-		item.setGananciaInmobiliariaPagosCobrados(gananciaInmobiliariaPagosCobradosLOCAL);
-		item.setGananciaInmobiliariaTodosLosCobros(gananciaInmobiliariaTodosLosCobrosLOCAL);
-		item.setCantidadPagosCobrados(cantidadPagosCobradosLOCAL);
-		item.setCantidadPagosPendientes(cantidadPagosPendientesLOCAL);
-		item.setIngresosTotalesPagosCobrados(ingresosTotalesPagosCobradosLOCAL);
-		item.setIngresosTotalesPagosPendientes(ingresosTotalesPagosPendientesLOCAL);
-		
-		itemsReporte.add(item);
-		return itemsReporte;
-	}
-	}
+}
 
 

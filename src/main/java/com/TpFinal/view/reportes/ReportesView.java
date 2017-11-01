@@ -45,12 +45,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ReportesView extends DefaultLayout implements View {
 
     private static DAOContratoAlquiler daoContratoAlquiler;
-    // ContratoService service;
-    
-    private JasperReport subReporte;
-    private JasperPrint subReporteLleno;
-    List<Object> objectsSubReporte = null;
-    
+       
     private JasperReport reporte;
     private JasperPrint reporteLleno;
     Map<String, Object> parametersMap = new HashMap<String, Object>();
@@ -63,8 +58,8 @@ public class ReportesView extends DefaultLayout implements View {
     Button newReport = new Button("Generar");
     Notification error;
 
-    DateField fDesde = null;
-    DateField fHasta = null;
+    DateField fDesdeNuevo = null;
+    DateField fHastaNuevo = null;
     
     DateField fDesde2 = null;
 
@@ -73,7 +68,7 @@ public class ReportesView extends DefaultLayout implements View {
 
     public enum TipoReporte {
 	Propietario("ReportePropietarios.jasper"), AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper"), 
-	AlquileresPorMes("ReporteAlquileresPorMes.jasper");
+	AlquileresPorMes("ReporteAlquileresPorMesNuevo.jasper");
 
 	private final String archivoReporte;
 
@@ -114,7 +109,6 @@ public class ReportesView extends DefaultLayout implements View {
     public List<Object> getObjetos(TipoReporte tipo) {
 	ArrayList<Object> objects = new ArrayList<>();
 	ArrayList<Object> objectsSubReporte = new ArrayList<>();	
-	ContratoService service = new ContratoService();
 	List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
 
 	System.out.println("Tipo" + tipo);
@@ -139,28 +133,22 @@ public class ReportesView extends DefaultLayout implements View {
 
     }
     
-   /* public ItemRepAlquileresPorMes item() {
-    	ContratoService service = new ContratoService();
-    	return service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue());
-    }
-    */
-  
     public ArrayList<Object> filtrarPorRangos() {
 	ContratoService service = new ContratoService();
 	ArrayList<Object> ret = new ArrayList<>();
-	System.out.println(fDesde.toString().length() + "" + fHasta.toString().length());
-	if (fHasta == null || fDesde == null) {
+	System.out.println(fDesdeNuevo.toString().length() + "" + fHastaNuevo.toString().length());
+	if (fHastaNuevo == null || fDesdeNuevo == null) {
 	    showErrorNotification("No hay Pagos en el rango de fecha seleccionado");
 	    return new ArrayList<>(service.getCobrosOrdenadosPorAño());
 
 	}
 
-	if (fDesde.getValue() == null && fHasta.getValue() == null) {
+	if (fDesdeNuevo.getValue() == null && fHastaNuevo.getValue() == null) {
 
 	    return new ArrayList<>(service.getCobrosOrdenadosPorAño());
 	}
 
-	for (ItemRepAlquileresACobrar item : service.getListadoAlquileresACobrar(fDesde.getValue(), fHasta
+	for (ItemRepAlquileresACobrar item : service.getListadoAlquileresACobrar(fDesdeNuevo.getValue(), fHastaNuevo
 		.getValue())) {
 
 	    ret.add(item);
@@ -176,38 +164,12 @@ public class ReportesView extends DefaultLayout implements View {
 
     }
     
-    
-    /*
-    public ArrayList<Object> obtenerItemsAlquileresPorMes(){
-    	ContratoService service = new ContratoService();
-    	ArrayList<Object> item = new ArrayList<>();
-    	    
-    	if (fDesde2.getValue() == null) {
-    		showErrorNotification("Debes seleccionar una fecha");
-    	}
-    	
-    	    		
-    		
-    		for (ItemRepAlquileresPorMes item2 :  service.itemParaAlquileresPorMesPagosCobrados(fDesde.getValue())) {
-
-			    item.add(item2);
-	
-		}
-    		
-    }
-    		return item;
-    		
-    	
-
-    }*/
-    
+     
     public ArrayList<Object> filtrarPorMes(){
     	ContratoService service = new ContratoService();
     	ArrayList<Object> ret = new ArrayList<>();
     	
-    	//ItemRepAlquileresPorMes item;
-    	//System.out.println(fDesde2.toString().length() + "" + fHasta.toString().length());
-    
+        
     	if (fDesde2.getValue() == null) {
     		showErrorNotification("Debes seleccionar una fecha");
    	   
@@ -249,20 +211,20 @@ public class ReportesView extends DefaultLayout implements View {
     }
 
     public void buildLayout() {
-	CssLayout filtering = new CssLayout();
+	//CssLayout filtering = new CssLayout();
 	CssLayout filtering2 = new CssLayout();
 	CssLayout filtering3 = new CssLayout();
 	
 	conCobrosPendientes = false;
 	checkbox = new CheckBox("Incluir Cobros Pendientes",false);
 
-	fDesde = new DateField();
-	fDesde.setPlaceholder("Desde");
-	fDesde.setParseErrorMessage("Formato de fecha no reconocido");
+	fDesdeNuevo = new DateField();
+	fDesdeNuevo.setPlaceholder("Desde");
+	fDesdeNuevo.setParseErrorMessage("Formato de fecha no reconocido");
 
-	fHasta = new DateField();
-	fHasta.setPlaceholder("Hasta");
-	fHasta.setParseErrorMessage("Formato de fecha no reconocido");
+	fHastaNuevo = new DateField();
+	fHastaNuevo.setPlaceholder("Hasta");
+	fHastaNuevo.setParseErrorMessage("Formato de fecha no reconocido");
 	
 	fDesde2 = new DateField();
 	fDesde2.setPlaceholder("Fecha Mes");
@@ -271,33 +233,34 @@ public class ReportesView extends DefaultLayout implements View {
 	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
 	clearFilterTextBtn.setVisible(false);
 	clearFilterTextBtn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
-	fDesde.setVisible(false);
-	fHasta.setVisible(false);
+	fDesdeNuevo.setVisible(false);
+	fHastaNuevo.setVisible(false);
 	fDesde2.setVisible(false);
 	checkbox.setVisible(false);
-	fDesde.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
-	fHasta.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
+	fDesdeNuevo.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
+	fHastaNuevo.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fDesde2.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	clearFilterTextBtn.addClickListener(new Button.ClickListener() {
 	    @Override
 	    public void buttonClick(Button.ClickEvent clickEvent) {
-		fDesde.setValue(null);
-		fHasta.setValue(null);
+		fDesdeNuevo.setValue(null);
+		fHastaNuevo.setValue(null);
 	    }
 	});
 
 	generarReporte();
-	filtering.addComponents(fDesde, fHasta, clearFilterTextBtn, tipoReporteCB, newReport);
-	filtering2.addComponents(fDesde2, checkbox);
-	filtering3.addComponents(fDesde, fHasta, clearFilterTextBtn, tipoReporteCB, newReport);
+	//filtering.addComponents(fDesde, fHasta, clearFilterTextBtn, tipoReporteCB, newReport);
+	filtering2.addComponents(fDesdeNuevo, fHastaNuevo, clearFilterTextBtn,fDesde2, checkbox);
+	filtering3.addComponents(tipoReporteCB, newReport);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<TipoReporte> valueChangeEvent) {
-	    	if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorCobrar) {
-			    clearFilterTextBtn.setVisible(true);
-			    fDesde.setVisible(true);
-			    fHasta.setVisible(true);
+	    
+	    	if (valueChangeEvent.getValue() == TipoReporte.Propietario) {
+			    clearFilterTextBtn.setVisible(false);
+			    fDesdeNuevo.setVisible(false);
+			    fHastaNuevo.setVisible(false);
 			    fDesde2.setVisible(false);
 			    checkbox.setVisible(false);
 			    
@@ -307,20 +270,18 @@ public class ReportesView extends DefaultLayout implements View {
 				checkbox.setVisible(true);
 				fDesde2.setVisible(true);
 				clearFilterTextBtn.setVisible(false);
-			    fDesde.setVisible(false);
-			    fHasta.setVisible(false);
+			    fDesdeNuevo.setVisible(false);
+			    fHastaNuevo.setVisible(false);
 			}
 	    	
-	    	else {
-			    clearFilterTextBtn.setVisible(false);
-			    fDesde.setVisible(false);
-			    fHasta.setVisible(false);
+	    	if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorCobrar) {
+			    clearFilterTextBtn.setVisible(true);
+			    fDesdeNuevo.setVisible(true);
+			    fHastaNuevo.setVisible(true);
 			    fDesde2.setVisible(false);
 			    checkbox.setVisible(false);
 			}
-				
-	
-		
+			
 		
 	    }
 	});
@@ -333,7 +294,6 @@ public class ReportesView extends DefaultLayout implements View {
 
 		
 	// tipoReporteCB.setWidth("100%");
-	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering3.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	
@@ -372,19 +332,6 @@ public class ReportesView extends DefaultLayout implements View {
 	});
 
     }
-    /*
-     * private DateField filtroFDesde() { DateField fDesde = new DateField();
-     * fDesde.setPlaceholder("Desde");
-     * fDesde.setParseErrorMessage("Formato de fecha no reconocido");
-     * 
-     * return fDesde; }
-     * 
-     * private DateField filtroFHasta() { DateField fHasta = new DateField();
-     * fHasta.setPlaceholder("Hasta");
-     * fHasta.setParseErrorMessage("Formato de fecha no reconocido");
-     * 
-     * return fHasta; }
-     */
 
     public boolean generarReporte() {
 	TipoReporte tipoReporte = tipoReporteCB.getValue();
@@ -460,11 +407,11 @@ public class ReportesView extends DefaultLayout implements View {
     }
 
     public boolean elRangoDeFechasElegidoEsValido() {
-	if (fDesde.isEmpty() || fHasta.isEmpty() ||
-		fDesde.getParseErrorMessage().equals("Formato de fecha no reconocido") ||
-		fHasta.getParseErrorMessage().equals("Formato de fecha no reconocido") || (fHasta.getValue().isAfter(
-			fDesde.getValue())) ||
-		(fDesde.getValue().isBefore(fHasta.getValue())))
+	if (fDesdeNuevo.isEmpty() || fHastaNuevo.isEmpty() ||
+		fDesdeNuevo.getParseErrorMessage().equals("Formato de fecha no reconocido") ||
+		fHastaNuevo.getParseErrorMessage().equals("Formato de fecha no reconocido") || (fHastaNuevo.getValue().isAfter(
+			fDesdeNuevo.getValue())) ||
+		(fDesdeNuevo.getValue().isBefore(fHastaNuevo.getValue())))
 	    return false;
 	return true;
     }
