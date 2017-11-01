@@ -13,6 +13,7 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.event.UIEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
@@ -44,20 +45,22 @@ public final class DashboardUI extends UI {
 
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
     private CredencialService credServ=new CredencialService();
-    private static UI ui;
-    private static VaadinSession session;
+
+
 
 
 
     @Override
     protected void init(final VaadinRequest request) {
+        setPollInterval(3000);
+        addPollListener(new UIEvents.PollListener() {
+            @Override
+            public void poll(UIEvents.PollEvent event) {
 
+            }
+        });
         GeneradorDeDatosSinAsociaciones.generarDatos(4);
-        ui=this.getCurrent();
-        session=VaadinSession.getCurrent();
 
-       /* Refresher refresher=new Refresher(getCurrent(),VaadinSession.getCurrent());
-        refresher.run();*/
 
         try {
             Planificador planificador= Planificador.get();
