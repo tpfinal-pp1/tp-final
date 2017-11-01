@@ -67,7 +67,7 @@ public class NotificacionService {
         }
 
     }
-    public boolean saveOrUpdate(Notificacion p) {
+    private boolean saveOrUpdate(Notificacion p) {
         return dao.saveOrUpdate(p);
     }
 

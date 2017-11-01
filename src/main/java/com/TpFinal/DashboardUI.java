@@ -44,14 +44,12 @@ public final class DashboardUI extends UI {
      * injection; and not in the UI but somewhere closer to where they're
      * actually accessed.
      */
-    private final NotificacionService dataProvider = new NotificacionService();
-    private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
+
 
 
 
         @Override
         protected void init(final VaadinRequest request) {
-         
             GeneradorDeDatosSinAsociaciones.generarDatos(4);
             try {
                 Planificador planificador=new Planificador();
@@ -157,11 +155,9 @@ public final class DashboardUI extends UI {
         }
     }
 
-    /**
-     * @return An instance for accessing the (dummy) services layer.
-     */
 
+/*
     public static DashboardEventBus getDashboardEventbus() {
         return ((DashboardUI) getCurrent()).dashboardEventbus;
-    }
+    }*/
 }
