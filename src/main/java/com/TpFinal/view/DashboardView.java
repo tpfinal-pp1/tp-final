@@ -341,8 +341,8 @@ public final class DashboardView extends Panel implements View{
 
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
-        if(size>12)
-            size=12;
+        if(size>11)
+            size=11;
         for (int i=0 ; i<size;i++) {
             Notificacion notification=notifications.get(i);
             VerticalLayout notificationLayout = new VerticalLayout();
