@@ -32,6 +32,7 @@ import java.nio.file.Paths;
 import java.time.*;
 import java.util.*;
 
+
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
 
@@ -94,7 +95,10 @@ public final class DashboardView extends Panel implements View{
         test.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent clickEvent) {
+
                 NotificacionService dt=new NotificacionService();
+
+
                 for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
                         ) {
                     dt.addNotificacion(noti);
@@ -333,6 +337,7 @@ public final class DashboardView extends Panel implements View{
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
+
 
         ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
                 notiSrv.getNotifications();
