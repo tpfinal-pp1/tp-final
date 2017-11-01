@@ -61,7 +61,7 @@ public final class DashboardUI extends UI {
                 
                 for(int i=0; i< 10 ; i++) {
                 	LocalDateTime fInicio = LocalDateTime.now();
-    				fInicio=fInicio.plusMinutes(i+1);
+    				fInicio=fInicio.plusMinutes(i+2);
     				fInicio=fInicio.plusHours(24);
     				
     				Cita c = new Cita.Builder()
