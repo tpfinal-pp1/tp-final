@@ -150,6 +150,7 @@ public class ContratoAlquilerForm extends FormLayout {
 			    contratoAlquiler.setValorInicial(asociado.getValorCuota());
 			    contratoAlquiler.setMoneda(asociado.getMoneda());
 			    binderContratoAlquiler.readBean(contratoAlquiler);
+			    cbInquilino.clear();
 			}
 		    }
 		}
