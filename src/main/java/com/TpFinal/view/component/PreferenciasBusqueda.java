@@ -37,6 +37,8 @@ import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.data.validator.RegexpValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.selection.SingleSelectionEvent;
+import com.vaadin.event.selection.SingleSelectionListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
@@ -52,7 +54,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public abstract class PreferenciasBusqueda extends Window {
     private static final Logger logger = Logger.getLogger(PreferenciasBusqueda.class);
-    
+
     public static final String ID = "profilepreferenceswindow";
 
     private CriterioBusqInmueble criterio;
@@ -155,9 +157,9 @@ public abstract class PreferenciasBusqueda extends Window {
 		criterio.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
 		criterio.setTipoPublicacion(null);
 	    }
-	    
+
 	    InmuebleService inmuebleService = new InmuebleService();
-	    
+
 	    Predicate<Inmueble> filtro = i -> {
 		if (criterio.getTipoPublicacion() != null) {
 		    List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
@@ -174,12 +176,12 @@ public abstract class PreferenciasBusqueda extends Window {
 			    }
 			}
 		    }
-		} else { //traer todos los que estan en venta o alquiler que matchean.
+		} else { // traer todos los que estan en venta o alquiler que matchean.
 		    List<Publicacion> publicaciones = InmuebleService.getPublicacionesActivas(i);
 		    if (publicaciones != null && publicaciones.size() > 0) {
 			List<PublicacionAlquiler> pubAlquiler = getListadoDeAlquileres(publicaciones);
 			List<PublicacionVenta> pubVenta = getListadoDeVentas(publicaciones);
-			return filtrarAlquileres(pubAlquiler) || filtrarVentas(pubVenta); 
+			return filtrarAlquileres(pubAlquiler) || filtrarVentas(pubVenta);
 
 		    } else
 			return false;
@@ -276,22 +278,42 @@ public abstract class PreferenciasBusqueda extends Window {
     private void configureCombosProvinciaYLocalidad() {
 	cbLocalidad.setItems(provinciaService.getLocalidades());
 	cbProvincia.setItems(provinciaService.getProvincias());
-	cbProvincia.addValueChangeListener(new HasValue.ValueChangeListener<Provincia>() {
+	cbLocalidad.setEnabled(false);
+	cbProvincia.addSelectionListener(new SingleSelectionListener<Provincia>() {
 	    @Override
-	    public void valueChange(HasValue.ValueChangeEvent<Provincia> valueChangeEvent) {
-		Provincia provincia = valueChangeEvent.getValue();
+	    public void selectionChange(SingleSelectionEvent<Provincia> singleSelectionEvent) {
+		if (singleSelectionEvent.isUserOriginated()) {
+		    Provincia provincia = singleSelectionEvent.getValue();
+		    if (provincia != null) {
+			cbLocalidad.setEnabled(true);
+			cbLocalidad.setItems(provincia.getLocalidades());
+			cbLocalidad.setSelectedItem(provincia.getLocalidades().get(0));
+			cbLocalidad.setSelectedItem(null);
+		    } else {
+			cbLocalidad.setEnabled(false);
+			cbLocalidad.setSelectedItem(null);
+		    }
 
-		if (provincia != null) {
-		    cbLocalidad.setEnabled(true);
-		    cbLocalidad.setItems(provincia.getLocalidades());
-		    // cbLocalidad.setSelectedItem(provincia.getLocalidades().get(0));
-		} else {
-		    cbLocalidad.setEnabled(false);
-		    cbLocalidad.setSelectedItem(null);
 		}
 
 	    }
+	});
 
+	cbLocalidad.addSelectionListener(new SingleSelectionListener<Localidad>() {
+	    @Override
+	    public void selectionChange(SingleSelectionEvent<Localidad> singleSelectionEvent) {
+		if (!singleSelectionEvent.isUserOriginated()) {
+		    logger.debug("Evento no originado por usuario.");
+		    if (cbProvincia.getSelectedItem().isPresent()) {
+			logger.debug("cbLocalidad habilitado");
+			cbLocalidad.setEnabled(true);
+		    } else {
+			logger.debug("cbLocalidad deshabilitado");			
+			cbLocalidad.setEnabled(false);
+		    }
+		}
+
+	    }
 	});
     }
 
@@ -482,6 +504,7 @@ public abstract class PreferenciasBusqueda extends Window {
     private void setCriterio() {
 	if (criterio != null) {
 	    binderBusqueda.readBean(criterio);
+	    if (!cbProvincia.isEmpty()) {cbLocalidad.setEnabled(true);}
 	} else {
 	    criterio = new CriterioBusqInmueble.Builder().build();
 	}
