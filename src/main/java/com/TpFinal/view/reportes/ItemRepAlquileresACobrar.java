@@ -1,5 +1,6 @@
 package com.TpFinal.view.reportes;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
@@ -16,14 +17,17 @@ public class ItemRepAlquileresACobrar {
     private Integer anio;
     private String mes;
     private String fechaVencimiento;
-    private String monto;
+    private BigDecimal monto;
     private String nombre;
     private String apellido;
     private Integer numeroMes;
     private String nombreYApellido;
     private String estadoCobro;
-    private String montoConIntereses;
-    private String gananciaImboliaria;
+    private BigDecimal montoConIntereses;
+    private BigDecimal gananciaImboliaria;
+    private String tipoMonedaString;
+    
+    private BigDecimal gananciaDolares;
 
     public ItemRepAlquileresACobrar(Inquilino i, Cobro c, TipoMoneda tipoMoneda) {
 	LocalDate fecha = c.getFechaDeVencimiento();
@@ -31,13 +35,16 @@ public class ItemRepAlquileresACobrar {
 	mes = formatearMes(fecha.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR")));
 	numeroMes = fecha.getMonthValue();
 	fechaVencimiento = fecha.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter());
-	monto = TipoMoneda.getSimbolo(tipoMoneda) + " " + c.getMontoRecibido().toString();
+	monto = c.getMontoRecibido();
 	nombre = i.getPersona().getNombre();
 	apellido = i.getPersona().getApellido();
 	nombreYApellido = nombre + " " + apellido;
-	gananciaImboliaria = TipoMoneda.getSimbolo(tipoMoneda) + " " + String.valueOf(c.getComision());
-	montoConIntereses = TipoMoneda.getSimbolo(tipoMoneda) + " " + String.valueOf(c.getMontoOriginal().add(c.getInteres()));
+	gananciaImboliaria = c.getComision();
+	montoConIntereses = c.getMontoOriginal().add(c.getInteres());
 	estadoCobro = c.getEstadoCobroString();
+	tipoMonedaString = TipoMoneda.getSimbolo(tipoMoneda);
+	
+	gananciaDolares = c.getMontoRecibido();
     }
 
     public Integer getAnio() {
@@ -79,11 +86,11 @@ public class ItemRepAlquileresACobrar {
 	this.fechaVencimiento = fechaVencimiento;
     }
 
-    public String getMonto() {
+    public BigDecimal getMonto() {
 	return monto;
     }
 
-    public void setMonto(String monto) {
+    public void setMonto(BigDecimal monto) {
 	this.monto = monto;
     }
 
@@ -119,21 +126,39 @@ public class ItemRepAlquileresACobrar {
 		this.estadoCobro = estadoCobro;
 	}
 
-	public String getMontoConIntereses() {
+	public BigDecimal getMontoConIntereses() {
 		return montoConIntereses;
 	}
 
-	public void setMontoConIntereses(String montoConIntereses) {
+	public void setMontoConIntereses(BigDecimal montoConIntereses) {
 		this.montoConIntereses = montoConIntereses;
 	}
 
-	public String getGananciaImboliaria() {
+	public BigDecimal getGananciaImboliaria() {
 		return gananciaImboliaria;
 	}
 
-	public void setGananciaImboliaria(String gananciaImboliaria) {
+	public void setGananciaImboliaria(BigDecimal gananciaImboliaria) {
 		this.gananciaImboliaria = gananciaImboliaria;
 	}
+	
+	public String getTipoMonedaString() {
+		return tipoMonedaString;
+	}
+
+	public void setTipoMonedaString(String tipoMonedaString) {
+		this.tipoMonedaString = tipoMonedaString;
+	}
+
+
+	public BigDecimal getGananciaDolares() {
+		return gananciaDolares;
+	}
+
+	public void setGananciaDolares(BigDecimal gananciaDolares) {
+		this.gananciaDolares = gananciaDolares;
+	}
+
 	public String formatearMes (String mes) {
 		
 		String mesFormateado = ""; 
