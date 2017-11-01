@@ -43,7 +43,7 @@ public class DataProviderImpl implements DataProvider {
         return Collections2.filter(dao.readAllActives(), unreadPredicate).size();
     }
 
-    @Override
+  @Override
     public Collection<Notificacion> getNotifications() {
         ArrayList<Notificacion> notificaciones=new ArrayList<>(dao.readAllActives());
         setRead(notificaciones);

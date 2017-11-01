@@ -323,6 +323,7 @@ public class EmpleadoForm extends FormLayout {
 	    delete.setVisible(false);
 	    this.empleado = PersonaService.getEmpleadoInstancia();
 	    this.credencial = this.empleado.getCredencial();
+	   
 	}
 	setVisible(true);
 	getAddressbookView().setComponentsVisible(false);
@@ -401,7 +402,7 @@ public class EmpleadoForm extends FormLayout {
 	    Notification.show("Error: " + e.toString());
 	}
 	if (success)
-	    getAddressbookView().showSuccessNotification("Guardado: " + empleado.toString());
+	    getAddressbookView().showSuccessNotification("Guardado: " + empleado.getPersona());
 	cerrarForm();
 
     }
@@ -428,8 +429,19 @@ public class EmpleadoForm extends FormLayout {
     }
 
     public void clearFields() {
-	binderCredencial.getFields().forEach(field -> field.clear());
-	binderEmpleado.getFields().forEach(field -> field.clear());
+	this.apellido.clear();
+	this.cbCategoria.clear();
+	this.DNI.clear();
+	this.infoAdicional.clear();
+	this.mail.clear();
+	this.nombre.clear();
+	this.pfPassConfirmacion.clear();
+	this.pfPassIngreso.clear();
+	this.telefono.clear();
+	this.telefono2.clear();
+	this.tfFechaAlta.clear();
+	this.tfFechaBaja.clear();
+	this.tfNombreUsuario.clear();
     }
 
     public EmpleadoABMView getAddressbookView() {
