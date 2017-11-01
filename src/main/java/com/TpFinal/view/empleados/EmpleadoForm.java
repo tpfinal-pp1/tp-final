@@ -1,34 +1,28 @@
 package com.TpFinal.view.empleados;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-
-import org.apache.log4j.Logger;
-
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.EstadoEmpleado;
 import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.vaadin.data.Binder;
+import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.log4j.Logger;
+
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class EmpleadoForm extends FormLayout {
 
@@ -37,13 +31,8 @@ public class EmpleadoForm extends FormLayout {
     private final static Logger logger = Logger.getLogger(EmpleadoForm.class);
 
     Button save = new Button("Guardar");
-    DeleteButton delete = new DeleteButton("Dar de Baja",
-	    VaadinIcons.WARNING, "Dar de Baja", "20%", new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
-		    delete();
-		}
-	    });
+    Button delete = new Button("Dar de Baja", VaadinIcons.WARNING);
+    Button reincorporar = new Button("Reincorporar");
 
     private TextField nombre = new TextField("Nombre");
     private TextField apellido = new TextField("Apellido");
@@ -56,10 +45,13 @@ public class EmpleadoForm extends FormLayout {
     // DatosAdministrativos
     private ComboBox<CategoriaEmpleado> cbCategoria = new ComboBox<>("Categoría", Arrays.asList(CategoriaEmpleado
 	    .values()));
+    private TextField tfFechaAlta = new TextField("Fecha de Alta");
+    private TextField tfFechaBaja = new TextField("Fecha de Baja");
     private BlueLabel blCredenciales = new BlueLabel("Credenciales");
     private TextField tfNombreUsuario = new TextField("Nombre Usuario");
     private PasswordField pfPassIngreso = new PasswordField("Password");
     private PasswordField pfPassConfirmacion = new PasswordField("Confirmacion Password");
+
     // XXX
     PersonaService service = new PersonaService();
     CredencialService credencialService = new CredencialService();
@@ -85,17 +77,8 @@ public class EmpleadoForm extends FormLayout {
     }
 
     private void configureComponents() {
-	/*
-	 * Highlight primary actions.
-	 *
-	 * With Vaadin built-in styles you can highlight the primary save button
-	 *
-	 * and give it a keyoard shortcut for a better UX.
-	 */
-
-	// tfNombreUsuario.addValueChangeListener( e -> {
-	//
-	// })
+	tfFechaAlta.setEnabled(false);
+	tfFechaBaja.setEnabled(false);
 	cbCategoria.setEmptySelectionAllowed(false);
 
 	cbCategoria.addValueChangeListener(e -> {
@@ -126,10 +109,21 @@ public class EmpleadoForm extends FormLayout {
 	});
 
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
+	delete.addClickListener(e -> {
+	    new DialogConfirmacion("Dar de baja",
+		    VaadinIcons.WARNING,
+		    "¿Esta seguro que desea dar de baja el empleado?",
+		    "200px",
+		    confirmacion -> {
+			delete();
+		    });
+	});
 	save.addClickListener(e -> this.save());
-
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	reincorporar.setStyleName(ValoTheme.BUTTON_FRIENDLY);
+	reincorporar.setIcon(VaadinIcons.REFRESH);
+	reincorporar.addClickListener(e -> reincoporarEmpleado());
 	setVisible(false);
     }
 
@@ -138,6 +132,16 @@ public class EmpleadoForm extends FormLayout {
 	binderEmpleado.forField(cbCategoria)
 		.asRequired("Seleccione una categoría")
 		.bind(Empleado::getCategoriaEmpleado, Empleado::setCategoriaEmpleado);
+	binderEmpleado.forField(tfFechaAlta).bind(empleado -> {
+	    return empleado.getFechaDeAlta() != null ? empleado.getFechaDeAlta().format(DateTimeFormatter.ofPattern(
+		    "dd/MM/yyyy")) : "";
+	}, (empleado, text) -> {
+	});
+	binderEmpleado.forField(tfFechaBaja).bind(empleado -> {
+	    return empleado.getFechaDeBaja() != null ? empleado.getFechaDeBaja().format(DateTimeFormatter.ofPattern(
+		    "dd/MM/yyyy")) : "";
+	}, (empleado, text) -> {
+	});
 	bindearCredencial();
     }
 
@@ -256,7 +260,7 @@ public class EmpleadoForm extends FormLayout {
 		    empleado.getPersona().setTelefono2(tel);
 		});
 
-	binderEmpleado.forField(mail)
+	binderEmpleado.forField(mail).asRequired("Debe Ingresar un mail Válido")
 		.withValidator(new EmailValidator("Introduzca un email valido!"))
 		.bind(empleado -> {
 		    return empleado.getPersona().getMail();
@@ -280,7 +284,8 @@ public class EmpleadoForm extends FormLayout {
 
 	datosPersonales = new FormLayout(nombre, apellido, DNI, mail, telefono, telefono2);
 	datosPersonales.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-	datosAdministativos = new FormLayout(cbCategoria, blCredenciales, tfNombreUsuario, pfPassIngreso,
+	datosAdministativos = new FormLayout(cbCategoria, tfFechaAlta, tfFechaBaja, blCredenciales, tfNombreUsuario,
+		pfPassIngreso,
 		pfPassConfirmacion, infoAdicional);
 	datosAdministativos.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
@@ -288,7 +293,7 @@ public class EmpleadoForm extends FormLayout {
 	tabSheet.addTab(datosAdministativos, "Datos Administrativos");
 
 	addComponent(tabSheet);
-	HorizontalLayout actions = new HorizontalLayout(save, delete);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, reincorporar);
 	addComponent(actions);
 	this.setSpacing(false);
 	actions.setSpacing(true);
@@ -300,6 +305,7 @@ public class EmpleadoForm extends FormLayout {
     public void setEmpleado(Empleado empleado) {
 	clearFields();
 	if (empleado != null) {
+	    configurarAccionesDisponibles(empleado);
 	    this.empleado = empleado;
 	    binderEmpleado.readBean(this.empleado);
 	    if (empleado.getCredencial() != null) {
@@ -311,17 +317,43 @@ public class EmpleadoForm extends FormLayout {
 			.build();
 		empleado.setCredencial(credencial);
 	    }
-	    delete.setVisible(true);
+
 	} else {
+	    habilitarEdicionYDeshabilitarAlta();
+	    delete.setVisible(false);
 	    this.empleado = PersonaService.getEmpleadoInstancia();
 	    this.credencial = this.empleado.getCredencial();
-	    delete.setVisible(false);
+	   
 	}
 	setVisible(true);
 	getAddressbookView().setComponentsVisible(false);
 	if (getAddressbookView().isIsonMobile())
 	    this.focus();
+    }
 
+    private void configurarAccionesDisponibles(Empleado empleado) {
+	if (empleado.getEstadoEmpleado() == EstadoEmpleado.NOACTIVO)
+	    deshabilitarEdicionYHabilitarAlta();
+	else
+	    habilitarEdicionYDeshabilitarAlta();
+    }
+
+    private void habilitarEdicionYDeshabilitarAlta() {
+	delete.setVisible(true);
+	save.setVisible(true);
+	reincorporar.setVisible(false);
+	datosPersonales.forEach(c -> c.setEnabled(true));
+	datosAdministativos.forEach(c -> c.setEnabled(true));
+	tfFechaAlta.setEnabled(false);
+	tfFechaBaja.setEnabled(false);
+    }
+
+    private void deshabilitarEdicionYHabilitarAlta() {
+	delete.setVisible(false);
+	save.setVisible(false);
+	reincorporar.setVisible(true);
+	datosPersonales.forEach(c -> c.setEnabled(false));
+	datosAdministativos.forEach(c -> c.setEnabled(false));
     }
 
     private void delete() {
@@ -329,19 +361,20 @@ public class EmpleadoForm extends FormLayout {
 	// XXX
 	boolean success = false;
 	success = service.darDeBajaEmpleado(empleado);
-	
-	if (success) {
-	    addressbookView.updateList();
-	    setVisible(false);
-	    getAddressbookView().setComponentsVisible(true);
-	    getAddressbookView().showSuccessNotification("Borrado: " + empleado.getPersona());
-	} else {
-	    addressbookView.updateList();
-	    setVisible(false);
-	    getAddressbookView().setComponentsVisible(true);
-	    getAddressbookView().showErrorNotification("No pudo darse de baja al empleado: " + empleado.getPersona());	    
-	}
 
+	if (success) {
+	    getAddressbookView().showSuccessNotification("Dado de baja: " + empleado.getPersona());
+	} else {
+	    getAddressbookView().showErrorNotification("No pudo darse de baja al empleado: " + empleado.getPersona());
+	}
+	cerrarForm();
+
+    }
+
+    private void cerrarForm() {
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
     }
 
     private void save() {
@@ -358,41 +391,109 @@ public class EmpleadoForm extends FormLayout {
 
 	    // XXX
 	    success = service.saveOrUpdate(empleado.getPersona());
-
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
+		checkFieldsPerTab(e.getFieldValidationErrors());
 	    Notification.show("Errores de validación, por favor revise los campos e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
-
 	    return;
 	} catch (Exception e) {
 	    e.printStackTrace();
 	    Notification.show("Error: " + e.toString());
 	}
-
-	addressbookView.updateList();
-
-	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
-
 	if (success)
-	    getAddressbookView().showSuccessNotification("Guardado: " + empleado.toString());
+	    getAddressbookView().showSuccessNotification("Guardado: " + empleado.getPersona());
+	cerrarForm();
 
+    }
+
+    private void reincoporarEmpleado() {
+	boolean success = false;
+	try {
+	    success = service.reincorporarEmpleado(empleado);
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    Notification.show("Error: " + e.toString());
+	}
+
+	if (success) {
+	    getAddressbookView().showSuccessNotification("Reincorporado: " + empleado.getPersona());
+	    setEmpleado(empleado);
+	} else {
+	    getAddressbookView().showErrorNotification("No Pudo reincorporarse al empleado: " + empleado.getPersona());
+	}
     }
 
     public void cancel() {
-	addressbookView.updateList();
-	setVisible(false);
-	getAddressbookView().setComponentsVisible(true);
+	cerrarForm();
     }
 
     public void clearFields() {
-	binderCredencial.getFields().forEach(field -> field.clear());
-	binderEmpleado.getFields().forEach(field -> field.clear());
+	this.apellido.clear();
+	this.cbCategoria.clear();
+	this.DNI.clear();
+	this.infoAdicional.clear();
+	this.mail.clear();
+	this.nombre.clear();
+	this.pfPassConfirmacion.clear();
+	this.pfPassIngreso.clear();
+	this.telefono.clear();
+	this.telefono2.clear();
+	this.tfFechaAlta.clear();
+	this.tfFechaBaja.clear();
+	this.tfNombreUsuario.clear();
     }
 
     public EmpleadoABMView getAddressbookView() {
 	return addressbookView;
     }
+
+	private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
+		boolean tabPrincipalInvalidFields = false;
+		boolean tabConditionsInvalidFields = false;
+		// TabElements for tab principal
+		List<Component> tabPrincipalComponents = new ArrayList<Component>();
+		tabPrincipalComponents.add(nombre);
+		tabPrincipalComponents.add(apellido);
+		tabPrincipalComponents.add(DNI);
+		tabPrincipalComponents.add(mail);
+		tabPrincipalComponents.add(telefono);
+		tabPrincipalComponents.add(telefono2);
+		for (BindingValidationStatus invalidField : invalidComponents) {
+			tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+			if (tabPrincipalInvalidFields)
+				break;
+		}
+		System.out.println(tabPrincipalInvalidFields);
+
+		// Tab elements for tab caracteristicas
+		List<Component> tabConditionsComponents = new ArrayList<Component>();
+		tabConditionsComponents.add(cbCategoria);
+		tabConditionsComponents.add(tfFechaAlta);
+		tabConditionsComponents.add(tfFechaBaja);
+		tabConditionsComponents.add(tfNombreUsuario);
+		tabConditionsComponents.add(pfPassConfirmacion);
+		tabConditionsComponents.add(pfPassIngreso);
+		for (BindingValidationStatus invalidField : invalidComponents) {
+			tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+			if (tabConditionsInvalidFields)
+				break;
+		}
+		System.out.println(tabConditionsInvalidFields);
+
+		// Take user to the invalid components tag (in case there's only one)
+		if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+			Notification.show("Error al guardar, porfavor revise los campos principales",
+					Notification.Type.WARNING_MESSAGE);
+			tabSheet.setSelectedTab(datosPersonales);
+		} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+			Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
+					Notification.Type.WARNING_MESSAGE);
+			tabSheet.setSelectedTab(datosAdministativos);
+		} else {
+			Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+					Notification.Type.WARNING_MESSAGE);
+		}
+	}
 
 }

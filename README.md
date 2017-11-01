@@ -8,7 +8,6 @@ Registrar los bugs acá:
 
 
 
-
 NO REGISTRAS: HAY TABLA
 (No olvidar vaciar completamente el readme para el siguiente instalador/entrega)
 
