@@ -322,6 +322,7 @@ public final class DashboardView extends Panel implements View{
     private void openNotificationsPopup(final ClickEvent event) {
         if (notificationsWindow != null) {
             if(notificationsWindow.isAttached()){
+                notificationsWindow.close();
                 return;
             }
         }
