@@ -44,6 +44,8 @@ public final class DashboardUI extends UI {
 
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
     private CredencialService credServ=new CredencialService();
+    private static UI ui;
+    private static VaadinSession session;
 
 
 
@@ -51,8 +53,14 @@ public final class DashboardUI extends UI {
     protected void init(final VaadinRequest request) {
 
         GeneradorDeDatosSinAsociaciones.generarDatos(4);
+        ui=this.getCurrent();
+        session=VaadinSession.getCurrent();
+
+       /* Refresher refresher=new Refresher(getCurrent(),VaadinSession.getCurrent());
+        refresher.run();*/
+
         try {
-            Planificador planificador=new Planificador();
+            Planificador planificador= Planificador.get();
             planificador.encender();
             planificador.setNotificacion(new NotificadorBus());
             List<Cita> citas= new ArrayList<>();
@@ -161,6 +169,10 @@ public final class DashboardUI extends UI {
 
 
     public static DashboardEventBus getDashboardEventbus() {
+        if(getCurrent()==null){
+            DashboardUI dashboardUI=new DashboardUI();
+            setCurrent(dashboardUI);
+        }
         return ((DashboardUI) getCurrent()).dashboardEventbus;
     }
 }
