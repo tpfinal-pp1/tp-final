@@ -78,7 +78,7 @@
 					<textField>
 						<reportElement mode="Opaque" x="0" y="0" width="554" height="30" forecolor="#FFFFFF" backcolor="#84BAE0" uuid="8f697147-abe7-49d3-a72b-5a74b600ef1a"/>
 						<textElement>
-							<font fontName="Calibri Light" size="16" isBold="true"/>
+							<font fontName="SansSerif" size="16" isBold="true"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Año: "+ $F{anio}]]></textFieldExpression>
 					</textField>
@@ -98,7 +98,7 @@
 					<textField>
 						<reportElement mode="Opaque" x="0" y="0" width="553" height="30" forecolor="#FFFFFF" backcolor="#84BAE0" uuid="6d37bfb5-f14a-4922-872e-781815f6667c"/>
 						<textElement>
-							<font fontName="Calibri Light" size="16" isBold="true"/>
+							<font fontName="SansSerif" size="16" isBold="true"/>
 						</textElement>
 						<textFieldExpression><![CDATA["Mes: "+$F{mes}]]></textFieldExpression>
 					</textField>
@@ -116,7 +116,7 @@
 				<textField>
 					<reportElement mode="Opaque" x="0" y="0" width="553" height="30" forecolor="#FFFFFF" backcolor="#84BAE0" uuid="d27bbcb6-2c44-4473-a0c0-624518cff085"/>
 					<textElement>
-						<font fontName="Calibri Light" size="16" isBold="true"/>
+						<font fontName="SansSerif" size="16" isBold="true"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Estado Cobro: " + $F{estadoCobro}]]></textFieldExpression>
 				</textField>
@@ -142,21 +142,21 @@
 						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="24" isBold="true" isUnderline="false"/>
+						<font fontName="SansSerif" size="24" isBold="true" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[      Datos de Alquileres en un Mes Determinado]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="110" y="70" width="171" height="30" uuid="c634e1ad-47e1-4ddb-96cc-9ee6ec2a7b04"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<text><![CDATA[Reporte generado el día:]]></text>
 				</staticText>
 				<textField pattern="d/M/yyyy">
 					<reportElement key="" x="281" y="70" width="150" height="30" uuid="f4305b6e-1759-4c96-a585-57943d4438c9"/>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
 					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
@@ -179,7 +179,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[ Inquilino]]></text>
 				</staticText>
@@ -192,7 +192,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[ Fecha Venc.]]></text>
 				</staticText>
@@ -205,7 +205,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[ Simb.]]></text>
 				</staticText>
@@ -218,7 +218,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[ Monto Orig.]]></text>
 				</staticText>
@@ -231,7 +231,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[ Monto C/Interes]]></text>
 				</staticText>
@@ -244,7 +244,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14" isBold="true" isItalic="false" isUnderline="false"/>
+						<font fontName="SansSerif" size="14" isBold="true" isItalic="false" isUnderline="false"/>
 					</textElement>
 					<text><![CDATA[ Fec. Cob]]></text>
 				</staticText>
@@ -264,7 +264,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14"/>
+						<font fontName="SansSerif" size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{nombreYApellido}]]></textFieldExpression>
 				</textField>
@@ -277,7 +277,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14"/>
+						<font fontName="SansSerif" size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{fechaVencimiento}]]></textFieldExpression>
 				</textField>
@@ -290,7 +290,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14"/>
+						<font fontName="SansSerif" size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{tipoMonedaString}]]></textFieldExpression>
 				</textField>
@@ -303,7 +303,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14"/>
+						<font fontName="SansSerif" size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{monto}]]></textFieldExpression>
 				</textField>
@@ -316,7 +316,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement>
-						<font fontName="Calibri Light" size="14"/>
+						<font fontName="SansSerif" size="14"/>
 					</textElement>
 					<textFieldExpression><![CDATA[$F{montoConIntereses}]]></textFieldExpression>
 				</textField>
@@ -345,14 +345,14 @@
 				<textField evaluationTime="Report">
 					<reportElement key="" x="480" y="10" width="63" height="30" uuid="b3107f3e-6b29-4327-8048-2c67d8a8eedf"/>
 					<textElement textAlignment="Left">
-						<font fontName="Calibri Light"/>
+						<font fontName="SansSerif"/>
 					</textElement>
 					<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement key="" x="410" y="10" width="70" height="30" uuid="1154db5c-cc08-4aa0-912b-67090b54ea72"/>
 					<textElement textAlignment="Right">
-						<font fontName="Calibri Light"/>
+						<font fontName="SansSerif"/>
 					</textElement>
 					<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
 				</textField>
@@ -372,7 +372,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Importe Total de Cobros Pagados en Dolares:]]></text>
 				</staticText>
@@ -385,7 +385,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Importe Total de Cobros Pendientes en Dolares:]]></text>
 				</staticText>
@@ -398,7 +398,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Ganancia Inmobiliaria con Cobros Pagados en Pesos:]]></text>
 				</staticText>
@@ -411,7 +411,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Cantidad de Cobros Pagados:]]></text>
 				</staticText>
@@ -424,7 +424,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Cantidad de Cobros Pendientes:]]></text>
 				</staticText>
@@ -437,7 +437,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Ganancia Inmobiliaria Total Cobros (Pendientes y Pagados) en Dolares:]]></text>
 				</staticText>
@@ -450,9 +450,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{PagosCobradosDolares}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{PagosCobradosDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="140" y="70" width="120" height="50" uuid="3af4df65-734b-4b11-83e9-bfd2cff5340e"/>
@@ -463,9 +463,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{PagosPendientesDolares}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{PagosPendientesDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="420" y="10" width="120" height="49" uuid="5adf6899-034e-4ced-95e5-4d98b1288c38"/>
@@ -476,9 +476,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{GananciaInmobiliariaPagosCobradosPesos}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GananciaInmobiliariaPagosCobradosPesos}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="140" y="250" width="120" height="40" uuid="57df9ae5-d684-4396-9641-9dfc41087a97"/>
@@ -489,9 +489,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{CantCobrosRealizados}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{CantCobrosRealizados}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="420" y="250" width="120" height="40" uuid="fd2083b0-6e26-4b7e-aec1-9440567f49b4"/>
@@ -502,9 +502,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{CantCobrosPendientes}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{CantCobrosPendientes}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="420" y="70" width="120" height="50" uuid="c34c28e3-5845-4ed3-b0d2-447ab6fca0d5"/>
@@ -515,9 +515,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{GananciaInmobiliariaPagosCobradosDolares}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GananciaInmobiliariaPagosCobradosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="0" y="130" width="140" height="50" forecolor="#FFFFFF" backcolor="#9BCAE0" uuid="9473ac2b-8c3c-4649-b194-26ab260e6207"/>
@@ -528,7 +528,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Importe Total de Cobros Pagados en Pesos:]]></text>
 				</staticText>
@@ -541,9 +541,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{PagosCobradosPesos}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{PagosCobradosPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="0" y="190" width="140" height="50" forecolor="#FFFFFF" backcolor="#9BCAE0" uuid="1045fff3-746e-4eda-9e9a-efbb441358bc"/>
@@ -554,7 +554,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Importe Total de Cobros Pendientes en Pesos:]]></text>
 				</staticText>
@@ -567,9 +567,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{PagosPendientesPesos}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{PagosPendientesPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="280" y="70" width="140" height="50" forecolor="#FFFFFF" backcolor="#9BCAE0" uuid="1e02f2bf-5163-4425-b1cb-85cb4b82e9d4"/>
@@ -580,7 +580,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Ganancia Inmobiliaria con Cobros Pagados en Dolares:]]></text>
 				</staticText>
@@ -593,9 +593,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{GananciaInmobiliariaTotalDolares}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GananciaInmobiliariaTotalDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement mode="Opaque" x="280" y="190" width="140" height="50" forecolor="#FFFFFF" backcolor="#9BCAE0" uuid="74707932-6088-4aa5-9122-8f77abf55553"/>
@@ -606,7 +606,7 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12" isBold="true"/>
+						<font fontName="SansSerif" size="11" isBold="true"/>
 					</textElement>
 					<text><![CDATA[Ganancia Inmobiliaria Total Cobros (Pendientes y Pagados) en Pesos:]]></text>
 				</staticText>
@@ -619,9 +619,9 @@
 						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font fontName="Calibri Light" size="12"/>
+						<font fontName="SansSerif" size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA[ $V{GananciaInmobiliariaTotalPesos}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$V{GananciaInmobiliariaTotalPesos}]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
