@@ -1,11 +1,10 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.services.DataProviderImpl;
+import com.TpFinal.services.NotificacionService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
@@ -32,7 +31,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.*;
 import java.util.*;
-import java.time.format.DateTimeFormatter;
+
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
@@ -45,6 +44,7 @@ public final class DashboardView extends Panel implements View{
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
+    private NotificacionService notiSrv= new NotificacionService();
 
     public DashboardView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -74,6 +74,7 @@ public final class DashboardView extends Panel implements View{
                 DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
             }
         });
+
     }
 
 
@@ -94,7 +95,9 @@ public final class DashboardView extends Panel implements View{
         test.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent clickEvent) {
-                DataProviderImpl dt=new DataProviderImpl();
+
+                NotificacionService dt=new NotificacionService();
+
                 for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
                         ) {
                     dt.addNotificacion(noti);
@@ -334,8 +337,10 @@ public final class DashboardView extends Panel implements View{
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        ArrayList<Notificacion> notifications = (ArrayList<Notificacion>) DashboardUI
-                .getDataProvider().getNotifications();
+
+        ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
+                notiSrv.getNotifications();
+
 
         System.out.println(notifications);
 
@@ -443,6 +448,7 @@ public final class DashboardView extends Panel implements View{
     public static final class NotificationsButton extends Button {
         private static final String STYLE_UNREAD = "unread";
         public static final String ID = "dashboard-notifications";
+        private NotificacionService notiSrv=new NotificacionService();
 
         public NotificationsButton() {
             setIcon(FontAwesome.BELL);
@@ -455,7 +461,7 @@ public final class DashboardView extends Panel implements View{
         @Subscribe
         public void updateNotificationsCount(
                 final DashboardEvent.NotificationsCountUpdatedEvent event) {
-            setUnreadCount(DashboardUI.getDataProvider()
+            setUnreadCount(notiSrv
                     .getUnreadNotificationsCount());
         }
 
