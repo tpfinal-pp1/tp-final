@@ -3,11 +3,8 @@ package com.TpFinal;
 
 
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.services.DataProviderImpl;
+import com.TpFinal.services.*;
 
-import com.TpFinal.services.DataProvider;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
@@ -25,6 +22,7 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import org.quartz.SchedulerException;
 
 import java.util.Locale;
 
@@ -49,6 +47,14 @@ public final class DashboardUI extends UI {
         protected void init(final VaadinRequest request) {
          
             GeneradorDeDatosSinAsociaciones.generarDatos(4);
+            try {
+                Planificador planificador=new Planificador();
+                planificador.encender();
+
+            } catch (SchedulerException e) {
+                e.printStackTrace();
+            }
+
             setLocale(Locale.forLanguageTag("es-AR"));
 
             DashboardEventBus.register(this);

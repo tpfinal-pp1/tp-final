@@ -150,6 +150,7 @@ public class ContratoAlquilerForm extends FormLayout {
 			    contratoAlquiler.setValorInicial(asociado.getValorCuota());
 			    contratoAlquiler.setMoneda(asociado.getMoneda());
 			    binderContratoAlquiler.readBean(contratoAlquiler);
+			    cbInquilino.clear();
 			}
 		    }
 		}
@@ -164,7 +165,8 @@ public class ContratoAlquilerForm extends FormLayout {
 		    if (inquilino != null) {
 			if (inquilino.getRol(Rol.Inquilino) != null) {
 			    contratoAlquiler.setInquilinoContrato((Inquilino) inquilino.getRol(Rol.Inquilino));
-			} else {
+			}
+			else {
 			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
 				    .setPersona(inquilino).build();
 			    i.getContratos().add(contratoAlquiler);
