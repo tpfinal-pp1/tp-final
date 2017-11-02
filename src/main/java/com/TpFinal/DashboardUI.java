@@ -52,13 +52,15 @@ public final class DashboardUI extends UI {
 
     @Override
     protected void init(final VaadinRequest request) {
-        setPollInterval(3000);
-        addPollListener(new UIEvents.PollListener() {
+
+        getUI().getCurrent().setPollInterval(3000);
+        getUI().getCurrent().addPollListener(new UIEvents.PollListener() {
             @Override
             public void poll(UIEvents.PollEvent event) {
+                DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
 
-            }
-        });
+            }});
+
         GeneradorDeDatosSinAsociaciones.generarDatos(4);
         Planificador.initDemo();
         setLocale(Locale.forLanguageTag("es-AR"));

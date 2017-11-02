@@ -76,15 +76,7 @@ public final class DashboardView extends Panel implements View{
             }
         });
 
-        getUI().getCurrent().setPollInterval(3000);
-        getUI().getCurrent().addPollListener(new UIEvents.PollListener() {
-            @Override
-            public void poll(UIEvents.PollEvent event) {
 
-                notificationsButton.setUnreadCount(NotificacionService
-                        .getUnreadNotificationsCount());
-            }
-        });
     }
 
     @Subscribe
@@ -357,8 +349,6 @@ public final class DashboardView extends Panel implements View{
 
         ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
                 NotificacionService.getNotifications();
-
-
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
         if(size>11)
