@@ -35,7 +35,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 
     private void iniciarScheduller() {
 	logger.info("======================");
-	logger.info("Iniciando Scheduller..");
+	logger.info("Iniciando Scheduler..");
 	logger.info("======================");
 	Planificador planificador = Planificador.get();
 	planificador.encender();
@@ -61,7 +61,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("=================");
 	GeneradorDeDatosSinAsociaciones.generarDatos(4);
 	logger.info("===========================");
-	logger.info("Iniciando Demo Scheduller..");
+	logger.info("Iniciando Demo Scheduler..");
 	logger.info("===========================");
 	Planificador.initDemo();
 	
@@ -80,7 +80,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 
     private void apagarScheduller() {
 	logger.info("=======================");
-	logger.info("Deteniendo Scheduller..");
+	logger.info("Deteniendo Scheduler..");
 	logger.info("=======================");
 	Planificador planificador = Planificador.get();
 	planificador.apagar();
