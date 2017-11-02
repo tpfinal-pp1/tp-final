@@ -1,7 +1,8 @@
 package com.TpFinal.view.dummy;
 
-import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 
+
+import com.TpFinal.view.calendario.MeetingCalendar;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.icons.VaadinIcons;

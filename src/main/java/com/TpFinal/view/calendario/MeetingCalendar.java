@@ -1,5 +1,8 @@
-package com.TpFinal.view.dummy.meetings;
+package com.TpFinal.view.calendario;
 
+import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.cita.TipoCita;
+import com.TpFinal.utils.DummyDataGenerator;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
@@ -56,18 +59,13 @@ public class MeetingCalendar extends CustomComponent {
 
     private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
 
-        Meeting meeting = new Meeting(
-                !event.getStart().truncatedTo(DAYS).equals(event.getEnd().truncatedTo(DAYS)));
-
+        Cita meeting = new Cita();
+        meeting.setCitado(DummyDataGenerator.randomFirstName()+" "+DummyDataGenerator.randomLastName());
+        meeting.setTipoDeCita(TipoCita.CelebContrato);
+        meeting.setState(Cita.State.planned);
+        meeting.setLongTimeEvent(!event.getStart().truncatedTo(DAYS).equals(event.getEnd().truncatedTo(DAYS)));
         meeting.setStart(event.getStart());
         meeting.setEnd(event.getEnd());
-
-        meeting.setName("A Name");
-        meeting.setDetails("A Detail<br>with HTML<br> with more lines");
-
-        // Random state
-        meeting.setState(R.nextInt(2) == 1 ? Meeting.State.planned : Meeting.State.confirmed);
-
         eventProvider.addItem(new MeetingItem(meeting));
 	}
 
@@ -75,7 +73,7 @@ public class MeetingCalendar extends CustomComponent {
 
         MeetingItem item = (MeetingItem) event.getCalendarItem();
 
-        final Meeting meeting = item.getMeeting();
+        final Cita meeting = item.getMeeting();
 
         Notification.show(meeting.getName(), meeting.getDetails(), Type.HUMANIZED_MESSAGE);
     }

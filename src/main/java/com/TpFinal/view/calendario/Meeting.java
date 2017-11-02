@@ -1,4 +1,4 @@
-package com.TpFinal.view.dummy.meetings;
+package com.TpFinal.view.calendario;
 
 import java.time.ZonedDateTime;
 

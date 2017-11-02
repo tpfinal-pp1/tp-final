@@ -1,17 +1,15 @@
 package com.TpFinal.view;
 
-import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.NotificacionService;
 import com.TpFinal.utils.DummyDataGenerator;
-import com.TpFinal.view.dummy.meetings.MeetingCalendar;
+import com.TpFinal.view.calendario.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.event.UIEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
