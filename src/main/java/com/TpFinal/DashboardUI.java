@@ -59,10 +59,8 @@ public final class DashboardUI extends UI {
             public void poll(UIEvents.PollEvent event) {
                 DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
 
-            }});
-
-        GeneradorDeDatosSinAsociaciones.generarDatos(4);
-        Planificador.initDemo();
+            }});      
+        
         setLocale(Locale.forLanguageTag("es-AR"));
 
         DashboardEventBus.register(this);
