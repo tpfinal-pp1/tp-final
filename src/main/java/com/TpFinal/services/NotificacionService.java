@@ -8,40 +8,57 @@ import com.TpFinal.dto.persona.Empleado;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
+import org.mockito.internal.matchers.Not;
+
 import java.util.*;
 
 
 public class NotificacionService {
 
-    DAONotificacion dao;
+    static DAONotificacion dao;
+    static NotificacionService instancia;
+    static int  cantNotificacionesNoVistas=-1;
 
 
 
-   public NotificacionService(){
+   private NotificacionService(){
        this.dao=new DAONotificacionImpl();
    }
 
-    public boolean addNotificacion(Notificacion p){
+    public static boolean addNotificacion(Notificacion p){
+        get();
         boolean ret= saveOrUpdate(p);
        DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
+       cantNotificacionesNoVistas++;
        return ret;
     }
 
 
+    public static NotificacionService get(){
+        if(instancia==null)
+            instancia=new NotificacionService();
+        return instancia;
+    }
 
-    public int getUnreadNotificationsCount() {
+    public static int getUnreadNotificationsCount() {
+        get();
+        if(cantNotificacionesNoVistas==-1) {
+            Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
+                @Override
+                public boolean apply(Notificacion input) {
+                    return !input.isVisto();
+                }
+            };
+            cantNotificacionesNoVistas = Collections2.filter(dao.readAllActives(), unreadPredicate).size();
+        }
 
-        Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
-            @Override
-            public boolean apply(Notificacion input) {
-                return !input.isVisto();
-            }
-        };
-        return Collections2.filter(dao.readAllActives(), unreadPredicate).size();
+            return cantNotificacionesNoVistas;
+
     }
 
 
-    public Collection<Notificacion> getNotifications() {
+    public static  Collection<Notificacion> getNotifications() {
+        get();
         ArrayList<Notificacion> notificaciones=new ArrayList<>(dao.readAllActives());
         setRead(notificaciones);
         Collections.sort(notificaciones, new Comparator<Notificacion>() {
@@ -59,7 +76,9 @@ public class NotificacionService {
         return notificaciones;
     }
 
-    private void setRead(ArrayList<Notificacion> notificaciones){
+    private static void setRead(ArrayList<Notificacion> notificaciones){
+        get();
+        cantNotificacionesNoVistas=0;
         for (Notificacion noti:notificaciones
                 ) {
             noti.setVisto(true);
@@ -67,7 +86,8 @@ public class NotificacionService {
         }
 
     }
-    private boolean saveOrUpdate(Notificacion p) {
+    private static boolean saveOrUpdate(Notificacion p) {
+        get();
         return dao.saveOrUpdate(p);
     }
 

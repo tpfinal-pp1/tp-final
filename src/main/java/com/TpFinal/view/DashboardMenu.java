@@ -33,7 +33,7 @@ public final class DashboardMenu extends CustomComponent {
     private static final String STYLE_VISIBLE = "valo-menu-visible";
     private Label notificationsBadge;
     private MenuItem settingsItem;
-    private NotificacionService notiSrv=new NotificacionService();
+
 
     public DashboardMenu() {
         setPrimaryStyleName("valo-menu");
@@ -179,7 +179,7 @@ public final class DashboardMenu extends CustomComponent {
     @Subscribe
     public void updateNotificationsCount(
             final DashboardEvent.NotificationsCountUpdatedEvent event) {
-        int unreadNotificationsCount = notiSrv
+        int unreadNotificationsCount = NotificacionService
                 .getUnreadNotificationsCount();
         notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
         notificationsBadge.setVisible(unreadNotificationsCount > 0);

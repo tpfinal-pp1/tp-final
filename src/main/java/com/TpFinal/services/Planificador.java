@@ -6,10 +6,12 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.TpFinal.dto.cita.TipoCita;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -31,6 +33,7 @@ public class Planificador {
 	static Integer horasAntesRecoradatorio1;
 	static Integer horasAntesRecoradatorio2;
 	private static Planificador instancia;
+	public static boolean demoIniciado=false;
 	public static Planificador get(){
 		if(instancia==null)
 			try {
@@ -42,12 +45,45 @@ public class Planificador {
 	}
 	
 	private Planificador() throws SchedulerException {
-		this.sc=StdSchedulerFactory.getDefaultScheduler();
+		if(sc==null)
+			this.sc=StdSchedulerFactory.getDefaultScheduler();
 		//Luego se remplaza por la info de la bd
 		horasAntesRecoradatorio1=1;
 		horasAntesRecoradatorio2=24;
 	}
-	
+	public static void initDemo(){
+		if(!demoIniciado) {
+			try {
+				demoIniciado = true;
+				Planificador planificador = Planificador.get();
+				planificador.encender();
+				planificador.setNotificacion(new NotificadorBus());
+				List<Cita> citas = new ArrayList<>();
+
+				for (int i = 0; i < 10; i++) {
+					LocalDateTime fInicio = LocalDateTime.now();
+					fInicio = fInicio.plusMinutes(i + 2);
+					fInicio = fInicio.plusHours(24);
+
+					Cita c = new Cita.Builder()
+							.setCitado("Señor " + String.valueOf(i))
+							.setDireccionLugar("sarasa: " + String.valueOf(i))
+							.setFechahora(fInicio)
+							.setObservaciones("obs" + String.valueOf(i))
+							.setTipoDeCita(TipoCita.Otros)
+							.build();
+					c.setId(Long.valueOf(i));
+
+					citas.add(c);
+				}
+				planificador.agregarNotificaciones(citas);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
 	public static void setNotificacion(Job notificacion) {
 		Planificador.notificacion=notificacion;
 	}

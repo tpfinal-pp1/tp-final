@@ -11,6 +11,7 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.UIEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -44,7 +45,7 @@ public final class DashboardView extends Panel implements View{
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
-    private NotificacionService notiSrv= new NotificacionService();
+
 
     public DashboardView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -75,8 +76,24 @@ public final class DashboardView extends Panel implements View{
             }
         });
 
+        getUI().getCurrent().setPollInterval(3000);
+        getUI().getCurrent().addPollListener(new UIEvents.PollListener() {
+            @Override
+            public void poll(UIEvents.PollEvent event) {
+
+                notificationsButton.setUnreadCount(NotificacionService
+                        .getUnreadNotificationsCount());
+            }
+        });
     }
 
+    @Subscribe
+    public void updateNotificationsCount(
+            final DashboardEvent.NotificationsCountUpdatedEvent event) {
+        notificationsButton.setUnreadCount(NotificacionService
+                .getUnreadNotificationsCount());
+
+    }
 
 
     private Component buildHeader() {
@@ -96,11 +113,11 @@ public final class DashboardView extends Panel implements View{
             @Override
             public void buttonClick(ClickEvent clickEvent) {
 
-                NotificacionService dt=new NotificacionService();
+                NotificacionService dt=NotificacionService.get();
 
                 for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
                         ) {
-                    dt.addNotificacion(noti);
+                    NotificacionService.addNotificacion(noti);
                 }
 
             }});
@@ -339,10 +356,8 @@ public final class DashboardView extends Panel implements View{
 
 
         ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
-                notiSrv.getNotifications();
+                NotificacionService.getNotifications();
 
-
-        System.out.println(notifications);
 
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
@@ -422,7 +437,7 @@ public final class DashboardView extends Panel implements View{
 
     @Override
     public void enter(final ViewChangeEvent event) {
-        notificationsButton.updateNotificationsCount(null);
+        updateNotificationsCount(null);
     }
 
 
@@ -448,7 +463,7 @@ public final class DashboardView extends Panel implements View{
     public static final class NotificationsButton extends Button {
         private static final String STYLE_UNREAD = "unread";
         public static final String ID = "dashboard-notifications";
-        private NotificacionService notiSrv=new NotificacionService();
+
 
         public NotificationsButton() {
             setIcon(FontAwesome.BELL);
@@ -458,12 +473,7 @@ public final class DashboardView extends Panel implements View{
             DashboardEventBus.register(this);
         }
 
-        @Subscribe
-        public void updateNotificationsCount(
-                final DashboardEvent.NotificationsCountUpdatedEvent event) {
-            setUnreadCount(notiSrv
-                    .getUnreadNotificationsCount());
-        }
+
 
         public void setUnreadCount(final int count) {
             setCaption(String.valueOf(count));

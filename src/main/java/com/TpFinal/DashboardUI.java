@@ -60,38 +60,7 @@ public final class DashboardUI extends UI {
             }
         });
         GeneradorDeDatosSinAsociaciones.generarDatos(4);
-
-
-        try {
-            Planificador planificador= Planificador.get();
-            planificador.encender();
-            planificador.setNotificacion(new NotificadorBus());
-            List<Cita> citas= new ArrayList<>();
-
-            for(int i=0; i< 10 ; i++) {
-                LocalDateTime fInicio = LocalDateTime.now();
-                fInicio=fInicio.plusMinutes(i+2);
-                fInicio=fInicio.plusHours(24);
-
-                Cita c = new Cita.Builder()
-                        .setCitado("Señor "+String.valueOf(i))
-                        .setDireccionLugar("sarasa: "+String.valueOf(i))
-                        .setFechahora(fInicio)
-                        .setObservaciones("obs"+String.valueOf(i))
-                        .setTipoDeCita(TipoCita.Otros)
-                        .build();
-                c.setId(Long.valueOf(i));
-
-                citas.add(c);
-            }
-            planificador.agregarNotificaciones(citas);}
-            catch (Exception e){
-            e.printStackTrace();
-            }
-
-
-
-
+        Planificador.initDemo();
         setLocale(Locale.forLanguageTag("es-AR"));
 
         DashboardEventBus.register(this);

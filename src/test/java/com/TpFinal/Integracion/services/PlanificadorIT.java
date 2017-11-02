@@ -31,8 +31,8 @@ public class PlanificadorIT {
 
 	@Before
 	public void setUp() throws Exception {
-		sc = new Planificador();
-		sc.encender();
+		sc = Planificador.get();
+		Planificador.encender();
 	}
 
 	@After
