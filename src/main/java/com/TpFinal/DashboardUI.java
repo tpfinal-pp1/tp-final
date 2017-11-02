@@ -2,10 +2,10 @@ package com.TpFinal;
 
 
 
+import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.services.CredencialService;
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.services.*;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
@@ -13,6 +13,7 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.event.UIEvents;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
@@ -24,6 +25,9 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 @Theme("dashboard")
@@ -44,10 +48,19 @@ public final class DashboardUI extends UI {
 
 
 
+
+
     @Override
     protected void init(final VaadinRequest request) {
+        setPollInterval(3000);
+        addPollListener(new UIEvents.PollListener() {
+            @Override
+            public void poll(UIEvents.PollEvent event) {
 
+            }
+        });
         GeneradorDeDatosSinAsociaciones.generarDatos(4);
+        Planificador.initDemo();
         setLocale(Locale.forLanguageTag("es-AR"));
 
         DashboardEventBus.register(this);
@@ -128,6 +141,10 @@ public final class DashboardUI extends UI {
 
 
     public static DashboardEventBus getDashboardEventbus() {
+        if(getCurrent()==null){
+            DashboardUI dashboardUI=new DashboardUI();
+            setCurrent(dashboardUI);
+        }
         return ((DashboardUI) getCurrent()).dashboardEventbus;
     }
 }

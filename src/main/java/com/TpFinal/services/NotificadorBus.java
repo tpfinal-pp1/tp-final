@@ -20,9 +20,7 @@ public class NotificadorBus implements Job{
 				Notificacion noti = new Notificacion();
 				noti.setMensaje(mensaje);
 				noti.setTitulo(titulo);
-				
-				NotificacionService dtp=new NotificacionService();
-				dtp.addNotificacion(noti);
+				NotificacionService.addNotificacion(noti);
 				
 			}else{
 				System.out.println("algo salio mal");
