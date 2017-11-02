@@ -381,11 +381,14 @@ public class EmpleadoForm extends FormLayout {
 
 	boolean success = false;
 	try {
+	    logger.debug("Leyendo Datos Empleado");
 	    binderEmpleado.writeBean(empleado);
+	    logger.debug("Leyendo Datos Credencial");
 	    binderCredencial.writeBean(credencial);
 	    if (binderCredencial.getFields().allMatch(p -> p.isEmpty())) {
 		if (empleado.getCredencial() != null)
 		    credencialService.deepDelete(empleado.getCredencial());
+		logger.debug("Seteando a null credencial");
 		empleado.setCredencial(null);
 	    }
 

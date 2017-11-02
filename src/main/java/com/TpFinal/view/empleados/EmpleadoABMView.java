@@ -337,6 +337,8 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Dar de baja");
+	    if (empleado.getEstadoEmpleado()== EstadoEmpleado.NOACTIVO)
+		del.setEnabled(false);
 
 	    HorizontalLayout hl = new HorizontalLayout(edit, del);
 	    hl.setSpacing(false);
