@@ -93,7 +93,6 @@ public class PlanificadorIT {
 						.setTipoDeCita(randomCita())
 						.build();
 				c.setId(Long.valueOf(i));
-
 				citas.add(c);
 			}
 
