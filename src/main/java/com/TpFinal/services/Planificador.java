@@ -1,5 +1,6 @@
 package com.TpFinal.services;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -31,6 +32,7 @@ public class Planificador {
 	 Job notificacion;
 	 Integer horasAntesRecoradatorio1;
 	Integer horasAntesRecoradatorio2;
+	Integer horasAntesCobrosVencidos;
 	private static Planificador instancia;
 	public static boolean demoIniciado=false;
 	
@@ -50,9 +52,8 @@ public class Planificador {
 		//Luego se remplaza por la info de la bd
 		horasAntesRecoradatorio1=1;
 		horasAntesRecoradatorio2=24;
+		horasAntesCobrosVencidos=24;
 	}
-	
-
 
 	public void setNotificacion(Job notificacion) {
 		this.notificacion=notificacion;
@@ -89,10 +90,11 @@ public class Planificador {
 			citas.forEach(c -> {
 				if(c instanceof Cita) {
 					Cita c1= (Cita)c;
-					agregarNotificacion(c1, horasAntesRecoradatorio1);
-					agregarNotificacion(c1, horasAntesRecoradatorio2);
+					agregarNotificacionCita(c1, horasAntesRecoradatorio1);
+					agregarNotificacionCita(c1, horasAntesRecoradatorio2);
 				}else if(c instanceof Cobro) {
-					//TODO
+					Cobro c1= (Cobro)c;
+					agregarNotificacionCobro(c1, horasAntesCobrosVencidos);
 				}
 				
 			});
@@ -124,12 +126,16 @@ public class Planificador {
 		}
 	}
 	
-	private void agregarNotificacion(Cita c, Integer horas) {
+	private void agregarNotificacionCita(Cita c, Integer horas) {
 		LocalDateTime fechaInicio= c.getFechaHora();
 		fechaInicio=fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin=c.getFechaHora();
 		Integer perioricidad=horas+1;
 		agregarCita(c.getTitulo(), c.getMessage(), fechaInicio, fechaFin, String.valueOf(perioricidad), UUID.randomUUID().toString());
+	}
+	
+	private void agregarNotificacionCobro(Cobro c, Integer horas) {
+		//TODO
 	}
 	
 	public static void initDemo(){
