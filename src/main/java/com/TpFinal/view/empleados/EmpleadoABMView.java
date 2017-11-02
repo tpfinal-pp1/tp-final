@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
@@ -174,7 +175,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	});
 	return filtroApellido;
     }
-    
+
     private Component filtroTelefono() {
 	TextField filtroTel = new TextField();
 	filtroTel.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
@@ -198,7 +199,6 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	});
 	return filtroTel;
     }
-
 
     private Component filtroEmail() {
 	TextField filtroEmail = new TextField();
@@ -246,7 +246,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	});
 	return filtroTipo;
     }
-    
+
     private Component filtroEstadoEmpleado() {
 	ComboBox<EstadoEmpleado> filtroTipo = new ComboBox<>();
 	filtroTipo.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
@@ -337,6 +337,12 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Dar de baja");
+	    if (empleado.getEstadoEmpleado() == EstadoEmpleado.NOACTIVO)
+		del.setEnabled(false);
+	    if (DashboardUI.getEmpleadoLogueado() != null
+		    && empleado.equals(DashboardUI.getEmpleadoLogueado())) {
+		del.setEnabled(false);
+	    }
 
 	    HorizontalLayout hl = new HorizontalLayout(edit, del);
 	    hl.setSpacing(false);
