@@ -11,7 +11,6 @@ public enum ClaseInmueble {
 	Casa,
 	Local,
 	TerrenoOLote,
-	Cochera,
 	Oficina,
 	Consultorio,
 	Ph,
