@@ -211,9 +211,7 @@ public class ReportesView extends DefaultLayout implements View {
     }
 
     public void buildLayout() {
-	//CssLayout filtering = new CssLayout();
-	CssLayout filtering2 = new CssLayout();
-	CssLayout filtering3 = new CssLayout();
+	CssLayout filtering = new CssLayout();
 	
 	conCobrosPendientes = false;
 	checkbox = new CheckBox("Incluir Cobros Pendientes",false);
@@ -249,9 +247,7 @@ public class ReportesView extends DefaultLayout implements View {
 	});
 
 	generarReporte();
-	//filtering.addComponents(fDesde, fHasta, clearFilterTextBtn, tipoReporteCB, newReport);
-	filtering2.addComponents(fDesdeNuevo, fHastaNuevo, clearFilterTextBtn,fDesde2, checkbox);
-	filtering3.addComponents(tipoReporteCB, newReport);
+	filtering.addComponents(fDesdeNuevo, fHastaNuevo, clearFilterTextBtn,fDesde2, checkbox,tipoReporteCB, newReport);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
@@ -294,11 +290,9 @@ public class ReportesView extends DefaultLayout implements View {
 
 		
 	// tipoReporteCB.setWidth("100%");
-	filtering2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	filtering3.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	
-	buildToolbar("Reportes", filtering3);
-	buildToolbar("", filtering2);
+	buildToolbar("Reportes", filtering);
 	
 	pdfComponent.setSizeFull();
 	addComponent(pdfComponent);
