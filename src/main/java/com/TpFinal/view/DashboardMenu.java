@@ -5,6 +5,7 @@ import com.TpFinal.dto.persona.Empleado;
 
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
+import com.TpFinal.services.NotificacionService;
 import com.TpFinal.view.component.ProfilePreferencesWindow;
 import com.google.common.eventbus.Subscribe;
 
@@ -32,6 +33,7 @@ public final class DashboardMenu extends CustomComponent {
     private static final String STYLE_VISIBLE = "valo-menu-visible";
     private Label notificationsBadge;
     private MenuItem settingsItem;
+
 
     public DashboardMenu() {
         setPrimaryStyleName("valo-menu");
@@ -177,7 +179,7 @@ public final class DashboardMenu extends CustomComponent {
     @Subscribe
     public void updateNotificationsCount(
             final DashboardEvent.NotificationsCountUpdatedEvent event) {
-        int unreadNotificationsCount = DashboardUI.getDataProvider()
+        int unreadNotificationsCount = NotificacionService
                 .getUnreadNotificationsCount();
         notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
         notificationsBadge.setVisible(unreadNotificationsCount > 0);

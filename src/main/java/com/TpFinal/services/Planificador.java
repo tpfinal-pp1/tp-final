@@ -6,9 +6,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
+import com.TpFinal.dto.cita.TipoCita;
 import org.quartz.CronScheduleBuilder;
+import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -17,38 +22,143 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.notificacion.Notificacion;
 import com.itextpdf.text.log.SysoCounter;
 
 public class Planificador {
 	
-	Scheduler sc;
-	Notificable notificacion;
-	
-	public Planificador() throws SchedulerException {
-		this.sc=StdSchedulerFactory.getDefaultScheduler();
+	static Scheduler sc;
+	static Job notificacion;
+	static Integer horasAntesRecoradatorio1;
+	static Integer horasAntesRecoradatorio2;
+	private static Planificador instancia;
+	public static boolean demoIniciado=false;
+	public static Planificador get(){
+		if(instancia==null)
+			try {
+				instancia=new Planificador();
+			} catch (SchedulerException e) {
+				e.printStackTrace();
+			}
+		return instancia;
 	}
 	
-	public void setNotificacion(Notificable notificacion) {
-		this.notificacion=notificacion;
+	private Planificador() throws SchedulerException {
+		if(sc==null)
+			this.sc=StdSchedulerFactory.getDefaultScheduler();
+		//Luego se remplaza por la info de la bd
+		horasAntesRecoradatorio1=1;
+		horasAntesRecoradatorio2=24;
+	}
+	public static void initDemo(){
+		if(!demoIniciado) {
+			try {
+				demoIniciado = true;
+				Planificador planificador = Planificador.get();
+				planificador.encender();
+				planificador.setNotificacion(new NotificadorBus());
+				List<Cita> citas = new ArrayList<>();
+
+				for (int i = 0; i < 10; i++) {
+					LocalDateTime fInicio = LocalDateTime.now();
+					fInicio = fInicio.plusMinutes(i + 2);
+					fInicio = fInicio.plusHours(24);
+
+					Cita c = new Cita.Builder()
+							.setCitado("Señor " + String.valueOf(i))
+							.setDireccionLugar("sarasa: " + String.valueOf(i))
+							.setFechahora(fInicio)
+							.setObservaciones("obs" + String.valueOf(i))
+							.setTipoDeCita(TipoCita.Otros)
+							.build();
+					c.setId(Long.valueOf(i));
+
+					citas.add(c);
+				}
+				planificador.agregarNotificaciones(citas);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+
+	public static void setNotificacion(Job notificacion) {
+		Planificador.notificacion=notificacion;
 	}
 	
-	public void encender(){
+	public static void encender(){
 		try {
-			sc.start();
+			if(!sc.isStarted())
+            try {
+                sc.start();
+            } catch (SchedulerException e) {
+                e.printStackTrace();
+            }
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void apagar(){
+	public static void apagar(){
 		try {
-			sc.shutdown();
+			if(sc.isStarted())
+				try {
+					sc.shutdown();
+				} catch (SchedulerException e) {
+					e.printStackTrace();
+				}
 		} catch (SchedulerException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin,String hora, String minuto, String perioricidad, Long id) {
+	public static void agregarNotificaciones(List<Cita>citas) {
+		if(citas!=null && citas.size()>0) {
+			citas.forEach(c -> {
+				agregarNotificacion(c, horasAntesRecoradatorio1);
+				agregarNotificacion(c, horasAntesRecoradatorio2);
+			});
+		}
+	}
+	
+	public static void agregarCita(String titulo, String mensaje, LocalDateTime fechaInicio, LocalDateTime fechaFin, String perioricidad, String id) {
+		try {
+			String horan="0 "+fechaInicio.getMinute()+" "+fechaInicio.getHour();
+			horan=horan+" 1/1";
+			horan=horan+" * ? *";
+			JobDetail j1=JobBuilder.newJob(notificacion.getClass())
+					.usingJobData("mensaje", mensaje)
+					.usingJobData("titulo", titulo)
+					.build();
+			
+			
+			Date startDate = Date.from(fechaInicio.minusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
+			Date endDate = Date.from(fechaFin.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
+			
+			Trigger t = TriggerBuilder.newTrigger().withIdentity(id)
+					.startAt(startDate)
+					.withSchedule(CronScheduleBuilder.cronSchedule(horan))
+					.endAt(endDate)
+					.build();
+			sc.scheduleJob(j1, t);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private static void agregarNotificacion(Cita c, Integer horas) {
+		LocalDateTime fechaInicio= c.getFechaHora();
+		fechaInicio=fechaInicio.minusHours(horas);
+		LocalDateTime fechaFin=c.getFechaHora();
+		Integer perioricidad=horas+1;
+		agregarCita(c.getTitulo(), c.getMessage(), fechaInicio, fechaFin, String.valueOf(perioricidad), UUID.randomUUID().toString());
+	}
+	
+	//TODO Lo dejo porque quizas sirva para otro tipo de notificacion
+	@Deprecated
+	public static void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin,String hora, String minuto, String perioricidad, Long id) {
 		try {
 			String horan="0 "+minuto+" "+hora;
 			horan=horan+" 1/"+perioricidad;
@@ -74,28 +184,5 @@ public class Planificador {
 		}
 	}
 	
-	public void agregarJob(String mensaje, LocalDateTime fechaInicio, LocalDateTime fechaFin, String perioricidad, Long id) {
-		try {
-			String horan="0 "+fechaInicio.getMinute()+" "+fechaInicio.getHour();
-			horan=horan+" 1/"+perioricidad;
-			horan=horan+" * ? *";
-			JobDetail j1=JobBuilder.newJob(notificacion.getClass())
-					.usingJobData("mensaje", mensaje)
-					.build();
-			
-			
-			Date startDate = Date.from(fechaInicio.minusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
-			Date endDate = Date.from(fechaFin.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
-			
-			Trigger t = TriggerBuilder.newTrigger().withIdentity(id.toString())
-					.startAt(startDate)
-					.withSchedule(CronScheduleBuilder.cronSchedule(horan))
-					.endAt(endDate)
-					.build();
-			sc.scheduleJob(j1, t);
-		} catch (SchedulerException e) {
-			e.printStackTrace();
-		}
-	}
 
 }

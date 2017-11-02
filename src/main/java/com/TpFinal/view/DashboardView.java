@@ -1,17 +1,17 @@
 package com.TpFinal.view;
 
 import com.TpFinal.DashboardUI;
-import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.services.DataProviderImpl;
+import com.TpFinal.services.NotificacionService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.event.UIEvents;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -32,7 +32,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.*;
 import java.util.*;
-import java.time.format.DateTimeFormatter;
+
 
 @SuppressWarnings("serial")
 public final class DashboardView extends Panel implements View{
@@ -45,6 +45,7 @@ public final class DashboardView extends Panel implements View{
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
+
 
     public DashboardView() {
         addStyleName(ValoTheme.PANEL_BORDERLESS);
@@ -74,8 +75,17 @@ public final class DashboardView extends Panel implements View{
                 DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
             }
         });
+
+
     }
 
+    @Subscribe
+    public void updateNotificationsCount(
+            final DashboardEvent.NotificationsCountUpdatedEvent event) {
+        notificationsButton.setUnreadCount(NotificacionService
+                .getUnreadNotificationsCount());
+
+    }
 
 
     private Component buildHeader() {
@@ -94,10 +104,12 @@ public final class DashboardView extends Panel implements View{
         test.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent clickEvent) {
-                DataProviderImpl dt=new DataProviderImpl();
+
+                NotificacionService dt=NotificacionService.get();
+
                 for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
                         ) {
-                    dt.addNotificacion(noti);
+                    NotificacionService.addNotificacion(noti);
                 }
 
             }});
@@ -334,11 +346,9 @@ public final class DashboardView extends Panel implements View{
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        ArrayList<Notificacion> notifications = (ArrayList<Notificacion>) DashboardUI
-                .getDataProvider().getNotifications();
 
-        System.out.println(notifications);
-
+        ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
+                NotificacionService.getNotifications();
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
         if(size>11)
@@ -417,7 +427,7 @@ public final class DashboardView extends Panel implements View{
 
     @Override
     public void enter(final ViewChangeEvent event) {
-        notificationsButton.updateNotificationsCount(null);
+        updateNotificationsCount(null);
     }
 
 
@@ -444,6 +454,7 @@ public final class DashboardView extends Panel implements View{
         private static final String STYLE_UNREAD = "unread";
         public static final String ID = "dashboard-notifications";
 
+
         public NotificationsButton() {
             setIcon(FontAwesome.BELL);
             setId(ID);
@@ -452,12 +463,7 @@ public final class DashboardView extends Panel implements View{
             DashboardEventBus.register(this);
         }
 
-        @Subscribe
-        public void updateNotificationsCount(
-                final DashboardEvent.NotificationsCountUpdatedEvent event) {
-            setUnreadCount(DashboardUI.getDataProvider()
-                    .getUnreadNotificationsCount());
-        }
+
 
         public void setUnreadCount(final int count) {
             setCaption(String.valueOf(count));
