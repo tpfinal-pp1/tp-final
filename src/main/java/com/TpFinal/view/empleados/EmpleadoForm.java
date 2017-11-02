@@ -1,5 +1,6 @@
 package com.TpFinal.view.empleados;
 
+import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
@@ -323,7 +324,7 @@ public class EmpleadoForm extends FormLayout {
 	    delete.setVisible(false);
 	    this.empleado = PersonaService.getEmpleadoInstancia();
 	    this.credencial = this.empleado.getCredencial();
-	   
+
 	}
 	setVisible(true);
 	getAddressbookView().setComponentsVisible(false);
@@ -334,8 +335,13 @@ public class EmpleadoForm extends FormLayout {
     private void configurarAccionesDisponibles(Empleado empleado) {
 	if (empleado.getEstadoEmpleado() == EstadoEmpleado.NOACTIVO)
 	    deshabilitarEdicionYHabilitarAlta();
-	else
+	else {
 	    habilitarEdicionYDeshabilitarAlta();
+	    if (DashboardUI.getEmpleadoLogueado() != null
+		    && empleado.equals(DashboardUI.getEmpleadoLogueado())) {
+		delete.setVisible(false);
+	    }
+	}
     }
 
     private void habilitarEdicionYDeshabilitarAlta() {
@@ -396,7 +402,7 @@ public class EmpleadoForm extends FormLayout {
 	    success = service.saveOrUpdate(empleado.getPersona());
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
-		checkFieldsPerTab(e.getFieldValidationErrors());
+	    checkFieldsPerTab(e.getFieldValidationErrors());
 	    Notification.show("Errores de validación, por favor revise los campos e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
 	    return;
@@ -451,52 +457,52 @@ public class EmpleadoForm extends FormLayout {
 	return addressbookView;
     }
 
-	private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
-		boolean tabPrincipalInvalidFields = false;
-		boolean tabConditionsInvalidFields = false;
-		// TabElements for tab principal
-		List<Component> tabPrincipalComponents = new ArrayList<Component>();
-		tabPrincipalComponents.add(nombre);
-		tabPrincipalComponents.add(apellido);
-		tabPrincipalComponents.add(DNI);
-		tabPrincipalComponents.add(mail);
-		tabPrincipalComponents.add(telefono);
-		tabPrincipalComponents.add(telefono2);
-		for (BindingValidationStatus invalidField : invalidComponents) {
-			tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
-			if (tabPrincipalInvalidFields)
-				break;
-		}
-		System.out.println(tabPrincipalInvalidFields);
-
-		// Tab elements for tab caracteristicas
-		List<Component> tabConditionsComponents = new ArrayList<Component>();
-		tabConditionsComponents.add(cbCategoria);
-		tabConditionsComponents.add(tfFechaAlta);
-		tabConditionsComponents.add(tfFechaBaja);
-		tabConditionsComponents.add(tfNombreUsuario);
-		tabConditionsComponents.add(pfPassConfirmacion);
-		tabConditionsComponents.add(pfPassIngreso);
-		for (BindingValidationStatus invalidField : invalidComponents) {
-			tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
-			if (tabConditionsInvalidFields)
-				break;
-		}
-		System.out.println(tabConditionsInvalidFields);
-
-		// Take user to the invalid components tag (in case there's only one)
-		if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
-			Notification.show("Error al guardar, porfavor revise los campos principales",
-					Notification.Type.WARNING_MESSAGE);
-			tabSheet.setSelectedTab(datosPersonales);
-		} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
-			Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
-					Notification.Type.WARNING_MESSAGE);
-			tabSheet.setSelectedTab(datosAdministativos);
-		} else {
-			Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
-					Notification.Type.WARNING_MESSAGE);
-		}
+    private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
+	boolean tabPrincipalInvalidFields = false;
+	boolean tabConditionsInvalidFields = false;
+	// TabElements for tab principal
+	List<Component> tabPrincipalComponents = new ArrayList<Component>();
+	tabPrincipalComponents.add(nombre);
+	tabPrincipalComponents.add(apellido);
+	tabPrincipalComponents.add(DNI);
+	tabPrincipalComponents.add(mail);
+	tabPrincipalComponents.add(telefono);
+	tabPrincipalComponents.add(telefono2);
+	for (BindingValidationStatus invalidField : invalidComponents) {
+	    tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+	    if (tabPrincipalInvalidFields)
+		break;
 	}
+	System.out.println(tabPrincipalInvalidFields);
+
+	// Tab elements for tab caracteristicas
+	List<Component> tabConditionsComponents = new ArrayList<Component>();
+	tabConditionsComponents.add(cbCategoria);
+	tabConditionsComponents.add(tfFechaAlta);
+	tabConditionsComponents.add(tfFechaBaja);
+	tabConditionsComponents.add(tfNombreUsuario);
+	tabConditionsComponents.add(pfPassConfirmacion);
+	tabConditionsComponents.add(pfPassIngreso);
+	for (BindingValidationStatus invalidField : invalidComponents) {
+	    tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+	    if (tabConditionsInvalidFields)
+		break;
+	}
+	System.out.println(tabConditionsInvalidFields);
+
+	// Take user to the invalid components tag (in case there's only one)
+	if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+	    Notification.show("Error al guardar, porfavor revise los campos principales",
+		    Notification.Type.WARNING_MESSAGE);
+	    tabSheet.setSelectedTab(datosPersonales);
+	} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+	    Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	    tabSheet.setSelectedTab(datosAdministativos);
+	} else {
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	}
+    }
 
 }
