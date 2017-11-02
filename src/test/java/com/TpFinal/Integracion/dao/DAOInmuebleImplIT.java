@@ -240,42 +240,6 @@ public class DAOInmuebleImplIT {
     }
 
     @Test
-    public void findInmueblesByCriteria_ClaseInmuebleCochera() {
-	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = dao.readAll().get(0);
-	i.setClaseInmueble(ClaseInmueble.Cochera);
-	dao.save(i);
-
-	criterio = new CriterioBusqInmueble.Builder().setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera).stream().collect(Collectors.toSet()))
-		.build();
-	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	assertEquals(1, inmuebles.size());
-
-	criterio = new CriterioBusqInmueble.Builder().setClasesDeInmueble(Arrays.asList(ClaseInmueble.Ph).stream().collect(Collectors.toSet()))
-		.build();
-	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	assertEquals(2, inmuebles.size());
-    }
-
-    @Test
-    public void findInmueblesByCriteria_ClaseInmuebleCocheraOrPh() {
-	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = dao.readAll().get(0);
-	i.setClaseInmueble(ClaseInmueble.Cochera);
-	dao.save(i);
-
-	criterio = new CriterioBusqInmueble.Builder()
-		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera, ClaseInmueble.Ph).stream().collect(Collectors.toSet())).build();
-	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	assertEquals(3, inmuebles.size());
-
-	criterio = new CriterioBusqInmueble.Builder().setClasesDeInmueble(Arrays.asList(ClaseInmueble.Ph).stream().collect(Collectors.toSet()))
-		.build();
-	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	assertEquals(2, inmuebles.size());
-    }
-
-    @Test
     public void findInmueblesByCriteria_CiudadAndAireAcondicionado() {
 	int cantidadDeInmuebles = 3;
 
@@ -555,33 +519,7 @@ public class DAOInmuebleImplIT {
 	assertEquals(1, inmuebles.size());
     }
 
-	@Ignore
-    public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200AndClaseCochera() {
-	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = dao.readAll().get(0);
-	i.setClaseInmueble(ClaseInmueble.Cochera);
-	dao.save(i);
-
-	criterio = new CriterioBusqInmueble.Builder().setTipoPublicacion(TipoPublicacion.Venta)
-		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera).stream().collect(Collectors.toSet())).build();
-	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	assertEquals(1, inmuebles.size());
-    }
-
-	@Ignore
-    public void findInmueblesByCriteria_InmueblesEnVentaAndValorCuotaMayorIgualA200AndEsCocheraAndSinPileta() {
-	crearInmueblesEnVentaEnPesosConValorCuota100xN(3);
-	Inmueble i = dao.readAll().get(0);
-	i.setClaseInmueble(ClaseInmueble.Cochera);
-	i.setConPileta(false);
-	dao.save(i);
-
-	criterio = new CriterioBusqInmueble.Builder().setTipoPublicacion(TipoPublicacion.Venta)
-		.setClasesDeInmueble(Arrays.asList(ClaseInmueble.Cochera).stream().collect(Collectors.toSet())).setConPileta(false).build();
-	inmuebles = dao.findInmueblesbyCaracteristicas(criterio);
-	assertEquals(1, inmuebles.size());
-    }
-
+	
 	@Ignore
     public void findInmueblesByCriteria_InmueblesEnDolares() {
 	crearInmueblesEnAlquilerEnDolaresConValorCuota100xN(2);
