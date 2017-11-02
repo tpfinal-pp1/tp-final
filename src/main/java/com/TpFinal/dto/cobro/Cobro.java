@@ -23,10 +23,11 @@ import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.interfaces.Messageable;
 
 @Entity
 @Table(name="cobros")
-public class Cobro implements Identificable, BorradoLogico {
+public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	public static final String pEstadoCobro = "estadoCobro";
 
@@ -322,6 +323,17 @@ public class Cobro implements Identificable, BorradoLogico {
 			return new Cobro(this);
 		}
 
+	}
+
+	@Override
+	public String getTitulo() {
+		return this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre()+" "
+				+"No pago en termino";
+	}
+
+	@Override
+	public String getMessage() {
+		return "Fecha de vencimiento: "+this.fechaDeVencimiento+"\n"+"Importe: "+this.montoRecibido;
 	}
 
 

@@ -1,10 +1,7 @@
 package com.TpFinal.Integracion.services;
 
-import static org.junit.Assert.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -15,13 +12,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.impl.StdSchedulerFactory;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
-import com.TpFinal.services.Notificable;
+import com.TpFinal.dto.interfaces.Messageable;
 import com.TpFinal.services.NotificadorConcreto;
 import com.TpFinal.services.Planificador;
 
@@ -32,7 +26,7 @@ public class PlanificadorIT {
 	@Before
 	public void setUp() throws Exception {
 		sc = Planificador.get();
-		Planificador.encender();
+		sc.encender();
 	}
 
 	@After
@@ -83,7 +77,7 @@ public class PlanificadorIT {
 	public void addCitas() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
-			List<Cita>citas = new ArrayList<>();
+			List<Messageable>citas = new ArrayList<>();
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
@@ -99,7 +93,6 @@ public class PlanificadorIT {
 						.setTipoDeCita(randomCita())
 						.build();
 				c.setId(Long.valueOf(i));
-
 				citas.add(c);
 			}
 
