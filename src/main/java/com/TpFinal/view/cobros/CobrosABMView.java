@@ -237,15 +237,16 @@ public class CobrosABMView extends DefaultLayout implements View {
                 String ret = "";
                 ret = cobro.getContrato().getInmueble().toString();
                 return ret ;
-            }).setCaption("Inmueble");
+            }).setCaption("Inmueble").setId("inmuebles");
 
             Grid.Column<Cobro, String> tipoCol = grid.addColumn(cobro -> {
                 String ret = "";
                 ret = "Alquiler";
                 return ret;
-            }).setCaption("Tipo");
+            }).setCaption("Tipo").setId("tipos");
 
-            grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption("Fecha De Vencimiento");
+            grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption("Fecha De Vencimiento")
+            .setId("fechasDeVencimiento");
 
            Grid.Column<Cobro, String> fechaCobroCol= grid.addColumn(cobro -> {
             		String ret="";
@@ -256,19 +257,19 @@ public class CobrosABMView extends DefaultLayout implements View {
             		else
             			ret="No ha sido pagado";
             		return ret;
-        }).setCaption("Fecha de Pago");
+        }).setCaption("Fecha de Pago").setId("fechasDePagos");
 
             Grid.Column<Cobro, String> inquilino = grid.addColumn(cobro -> {
                 String ret = "";
                 ret = cobro.getContrato().getInquilinoContrato().toString();
                 return ret;
-            }).setCaption("Inquilino");
+            }).setCaption("Inquilino").setId("inquilinos");
 
             Grid.Column<Cobro, String> monto = grid.addColumn(cobro -> {
                 String ret = "";
                 ret = cobro.getMontoRecibido().toString();
                 return ret;
-            }).setCaption("Monto");
+            }).setCaption("Monto").setId("montos");
 
 
             grid.addComponentColumn(cobro -> {
@@ -306,10 +307,11 @@ public class CobrosABMView extends DefaultLayout implements View {
                 CssLayout hl = new CssLayout(ver, pagar);
                 hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
                 hl.setCaption("Accion "+acciones);
+                hl.setId("acciones");
                 acciones++;
                 return hl;
-            }).setCaption("Acciones");
-
+            }).setCaption("Acciones").setId("acciones");
+            grid.setColumnOrder("acciones", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos", "inquilinos", "montos");
             grid.getColumns().forEach(c -> c.setResizable(false));
         }
 

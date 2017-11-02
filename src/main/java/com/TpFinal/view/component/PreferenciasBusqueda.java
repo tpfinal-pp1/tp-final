@@ -84,7 +84,7 @@ public abstract class PreferenciasBusqueda extends Window {
     CheckBox conPileta = new CheckBox("Pileta", false);
 
     // Acciones
-    Button guardar = new Button("Guardar", e -> save());
+    Button guardar = new Button("Aceptar", e -> save());
     Button buscar = new Button("Buscar", e -> search());
     Button borrar = new Button("Limpiar", e -> cleanPreferences());
 

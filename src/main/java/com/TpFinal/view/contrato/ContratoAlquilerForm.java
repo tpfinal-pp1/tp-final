@@ -129,7 +129,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	cbInquilino.setItems(personaService.readAll());
 	cbInteresFueraDeTermino.setItems(TipoInteres.toList());
 	cbtipointeres.setItems(TipoInteres.toList());
-
+		
 	configurarAcciones();
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
