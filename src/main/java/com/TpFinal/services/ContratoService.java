@@ -103,10 +103,6 @@ public class ContratoService {
 		    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
 		})
 			.filter(c -> {
-			   /* return c.getFechaDeVencimiento().getMonth().compareTo(fechaActual.getMonth()) <= 0 &&
-				    Integer.valueOf(c.getFechaDeVencimiento().getYear()).compareTo(Integer.valueOf(
-					    fechaActual.getYear())) <= 0;
-			    */
 			    return c.getFechaDeVencimiento().compareTo(fechaMesActual) < 0;
 			})
 			.collect(Collectors.toList()));
