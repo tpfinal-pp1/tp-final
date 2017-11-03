@@ -49,6 +49,11 @@ public class MeetingCalendar extends CustomComponent {
 
     }
 
+    public boolean refreshCitas(){
+        return true;
+    }
+
+
     public void switchToMonth(Month month) {
         calendar.withMonth(month);
     }
