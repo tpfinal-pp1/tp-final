@@ -31,6 +31,9 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Upload.ProgressListener;
+import com.vaadin.ui.Upload.StartedEvent;
+import com.vaadin.ui.Upload.StartedListener;
 import com.vaadin.ui.themes.ValoTheme;
 import org.vaadin.risto.stepper.IntStepper;
 
@@ -58,6 +61,7 @@ public class ContratoAlquilerForm extends FormLayout {
     private ContratoAlquiler contratoAlquiler;
 
     // Actions
+    EstadoCargaDocumento estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
 	    VaadinIcons.WARNING, "Eliminar", "20%", e -> delete());
@@ -81,7 +85,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	@Override
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
-	    tfDocumento.setValue("Documento Cargado");
+	    tfDocumento.setValue("Cargando Documento");
 	    btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 	}
@@ -129,7 +133,23 @@ public class ContratoAlquilerForm extends FormLayout {
 	cbInquilino.setItems(personaService.readAll());
 	cbInteresFueraDeTermino.setItems(TipoInteres.toList());
 	cbtipointeres.setItems(TipoInteres.toList());
-		
+
+	btCargar.addStartedListener(e -> {
+	    tfDocumento.setIcon(VaadinIcons.UPLOAD);
+	    tfDocumento.setValue("Cargando documento...");
+	    estadoCargaDocumento = EstadoCargaDocumento.Cargando;
+	});
+	btCargar.addFailedListener(e -> {
+	    tfDocumento.setIcon(VaadinIcons.WARNING);
+	    tfDocumento.setValue("Error al Cargar el documento");
+	    estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
+	});
+	btCargar.addSucceededListener(e ->{
+	    tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
+	    tfDocumento.setValue("Documento Cargado");
+	    estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+	});
+
 	configurarAcciones();
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
@@ -165,8 +185,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		    if (inquilino != null) {
 			if (inquilino.getRol(Rol.Inquilino) != null) {
 			    contratoAlquiler.setInquilinoContrato((Inquilino) inquilino.getRol(Rol.Inquilino));
-			}
-			else {
+			} else {
 			    Inquilino i = new Inquilino.Builder().setCalificacion(Calificacion.C)
 				    .setPersona(inquilino).build();
 			    i.getContratos().add(contratoAlquiler);
@@ -177,21 +196,23 @@ public class ContratoAlquilerForm extends FormLayout {
 		}
 	    }
 	});
-	
-	fechaCelebracion.addValueChangeListener(event ->{
-		if(event.isUserOriginated()) {
-			if(fechaCelebracion.getValue()!=null && cbDuracionContrato.getValue() !=null) {
-				fechaVencimiento.setValue(fechaCelebracion.getValue().plusMonths(cbDuracionContrato.getValue().getDuracion()));
-			}
+
+	fechaCelebracion.addValueChangeListener(event -> {
+	    if (event.isUserOriginated()) {
+		if (fechaCelebracion.getValue() != null && cbDuracionContrato.getValue() != null) {
+		    fechaVencimiento.setValue(fechaCelebracion.getValue().plusMonths(cbDuracionContrato.getValue()
+			    .getDuracion()));
 		}
+	    }
 	});
-	
-	cbDuracionContrato.addValueChangeListener(event ->{
-		if(event.isUserOriginated()) {
-			if(fechaCelebracion.getValue()!=null && cbDuracionContrato.getValue() !=null) {
-				fechaVencimiento.setValue(fechaCelebracion.getValue().plusMonths(cbDuracionContrato.getValue().getDuracion()));
-			}
+
+	cbDuracionContrato.addValueChangeListener(event -> {
+	    if (event.isUserOriginated()) {
+		if (fechaCelebracion.getValue() != null && cbDuracionContrato.getValue() != null) {
+		    fechaVencimiento.setValue(fechaCelebracion.getValue().plusMonths(cbDuracionContrato.getValue()
+			    .getDuracion()));
 		}
+	    }
 	});
 
 	setVisible(false);
@@ -219,12 +240,13 @@ public class ContratoAlquilerForm extends FormLayout {
     private ClickListener renovarContrato() {
 	return e -> {
 	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
-	    if (binderContratoAlquiler.isValid()) {
+	    
+	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoAlquiler.isValid()) {
 		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
 		service.addCobros(contratoAlquiler);
 		this.save();
-		
+
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate();
@@ -241,11 +263,12 @@ public class ContratoAlquilerForm extends FormLayout {
 	Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
 	binderContratoAlquiler.forField(this.fechaCelebracion).asRequired("Seleccione una fecha de celebración")
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
-	
+
 	binderContratoAlquiler.forField(this.fechaVencimiento)
 		.bind(c -> {
-			return c.getFechaCelebracion().plusMonths(c.getDuracionContrato().getDuracion());
-		}, (c,ca) -> {});
+		    return c.getFechaCelebracion().plusMonths(c.getDuracionContrato().getDuracion());
+		}, (c, ca) -> {
+		});
 
 	binderContratoAlquiler.forField(this.cbDuracionContrato).asRequired("Seleccione una Duración")
 		.bind(ContratoAlquiler::getDuracionContrato, ContratoAlquiler::setDuracionContrato);
@@ -307,10 +330,12 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.tfDocumento).withNullRepresentation("")
 		.bind(contrato -> {
-		    if (contrato.getDocumento() != null)
-			return "Documento Cargado";
-		    else
-			return "Documento No Cargado";
+		    if (contrato.getDocumento() != null) {
+			estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+			return "Documento Cargado";}
+		    else {
+			estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
+			return "Documento No Cargado";}
 		}, (contrato, text) -> {
 		});
 
@@ -389,7 +414,8 @@ public class ContratoAlquilerForm extends FormLayout {
 	    btDescargar.descargar(contratoAlquiler, "Contrato.doc");
 	});
 
-	principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion,fechaVencimiento, seccionDoc,
+	principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, fechaVencimiento,
+		seccionDoc,
 		tfDocumento,
 		documentoButtonsRow);
 
@@ -553,9 +579,9 @@ public class ContratoAlquilerForm extends FormLayout {
 	    checkFieldsPerTab(e.getFieldValidationErrors());
 
 	} catch (ContratoServiceException e) {
-	    System.err.println("Error al guardar: "+ contratoAlquiler + "\n"+ e.getCause());
+	    System.err.println("Error al guardar: " + contratoAlquiler + "\n" + e.getCause());
 	    e.printStackTrace();
-	}catch(Exception e) {
+	} catch (Exception e) {
 	    e.printStackTrace();
 	}
 
@@ -619,6 +645,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.stIncremento.clear();
 	this.tfDiaDePago.clear();
 	this.tfDocumento.clear();
+	this.tfDocumento.setIcon(null);
 	this.tfPActualizacion.clear();
 	this.tfPagoFueraDeTermino.clear();
 	this.tfPropietario.clear();
