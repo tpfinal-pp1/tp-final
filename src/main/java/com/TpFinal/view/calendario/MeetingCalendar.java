@@ -74,8 +74,8 @@ public class MeetingCalendar extends CustomComponent {
         meeting.setTipoDeCita(TipoCita.CelebContrato);
         meeting.setState(Cita.State.planned);
         meeting.setLongTimeEvent(!event.getStart().truncatedTo(DAYS).equals(event.getEnd().truncatedTo(DAYS)));
-        meeting.setFechaFin(event.getStart());
-        meeting.setFechaInicio(event.getEnd());
+        meeting.setFechaFin(event.getStart().toLocalDateTime());
+        meeting.setFechaInicio(event.getEnd().toLocalDateTime());
         eventProvider.addItem(new MeetingItem(meeting));
 	}
 
