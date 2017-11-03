@@ -219,7 +219,7 @@ public class InmuebleService {
 	if (inmueble != null) {
 	    Set<Contrato> contratos = dao.findById(inmueble.getId()).getContratos();
 	    if (contratos != null)
-		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente);
+		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente || contrato.getEstadoContrato() == EstadoContrato.ProximoAVencer);
 	}
 	return ret;
     }
