@@ -77,6 +77,16 @@ public class ContratoService {
     public List<ItemRepAlquileresACobrar> getCobrosOrdenadosPorAño() {
 
 	LocalDate fechaActual = LocalDate.now();
+	
+	LocalDate fechaMesActual;
+	
+	if(fechaActual.getMonthValue() == 12) {
+		fechaMesActual = LocalDate.of(fechaActual.getYear()+1, 1, 1);
+	}
+	
+	else {
+		fechaMesActual = LocalDate.of(fechaActual.getYear(), fechaActual.getMonthValue()+1, 1);
+	}
 
 	CobroService cobroService = new CobroService();
 
@@ -93,9 +103,11 @@ public class ContratoService {
 		    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
 		})
 			.filter(c -> {
-			    return c.getFechaDeVencimiento().getMonth().compareTo(fechaActual.getMonth()) <= 0 &&
+			   /* return c.getFechaDeVencimiento().getMonth().compareTo(fechaActual.getMonth()) <= 0 &&
 				    Integer.valueOf(c.getFechaDeVencimiento().getYear()).compareTo(Integer.valueOf(
 					    fechaActual.getYear())) <= 0;
+			    */
+			    return c.getFechaDeVencimiento().compareTo(fechaMesActual) < 0;
 			})
 			.collect(Collectors.toList()));
 
