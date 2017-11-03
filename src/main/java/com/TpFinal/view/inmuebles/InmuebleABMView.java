@@ -214,6 +214,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
 			inmuebleService.setSupplier(inmuebleSupplier);
 			updateList();
+			close();
 			return false;
 		    }
 
@@ -224,6 +225,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			    inmuebleSupplier = () -> inmuebleService.readAll();
 			    inmuebleService.setSupplier(inmuebleSupplier);
 			    updateList();
+			    close();
 			} catch (Exception e) {
 			    success = false;
 			    e.printStackTrace();

@@ -446,6 +446,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
+	    this.tfDiaDePago.setValue("10");
 	}
 
 	setVisible(true);
@@ -608,7 +609,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.cbInquilino.clear();
 	this.cbInteresFueraDeTermino.clear();
 	this.cbtipointeres.clear();
-	this.fechaCelebracion.clear();
+	this.fechaCelebracion.clear();	
 	this.fechaVencimiento.clear();
 	this.rbgTipoMoneda.clear();
 	this.stIncremento.clear();
