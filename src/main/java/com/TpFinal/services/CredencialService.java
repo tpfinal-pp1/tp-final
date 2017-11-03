@@ -36,7 +36,7 @@ public class CredencialService {
     }
 
     public boolean existeUsuario(String usuario) {
-	return dao.readAllActives().stream().anyMatch(c -> c.getUsuario().equals(usuario));
+	return usuario!=null && usuario!=""? dao.readAllActives().stream().anyMatch(c -> c.getUsuario().equals(usuario)) : false;
     }
 
     public void deepDelete(Credencial credencial) {

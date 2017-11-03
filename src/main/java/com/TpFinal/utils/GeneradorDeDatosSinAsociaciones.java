@@ -35,7 +35,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
 public class GeneradorDeDatosSinAsociaciones {
-    
+
     private static boolean adminCreado = false;
 
     final static Logger logger = Logger.getLogger(GeneradorDeDatosSinAsociaciones.class);
@@ -79,8 +79,6 @@ public class GeneradorDeDatosSinAsociaciones {
     public static void generarDatos(int cantidad, ProvinciaService.modoLecturaJson modoLectura) {
 
 	DAOImpl<ContratoDuracion> daoDuracion = new DAOImpl<>(ContratoDuracion.class);
-	daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("24 Meses").setDuracion(24).build());
-	daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("36 Meses").setDuracion(36).build());
 
 	serviceProvincia = new ProvinciaService(modoLectura);
 	cobroService = new CobroService();
@@ -88,6 +86,8 @@ public class GeneradorDeDatosSinAsociaciones {
 	List<Provincia> provincias = serviceProvincia.getProvincias();
 	try {
 	    if (daoInm.readAll().size() == 0) {
+		daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("24 Meses").setDuracion(24).build());
+		daoDuracion.save(new ContratoDuracion.Builder().setDescripcion("36 Meses").setDuracion(36).build());
 		for (int i = 0; i < cantidad; i++) {
 
 		    Provincia provincia = provinciaRandom(provincias);
@@ -111,18 +111,17 @@ public class GeneradorDeDatosSinAsociaciones {
 		    inmueble.setPropietario(prop);
 		    daoInm.saveOrUpdate(inmueble);
 
-		    logger.info("Agregados\n"
-			    + daoInm.readAll().size() + " inmuebles.\n"
-			    + daoope.readAll().size() + " publicaciones.\n"
-			    + daoContratos.readAll().size() + " contratos.\n"
-			    + daoPer.readAll().size() + " personas.\n"
-			    + "a la base de datos.");
-
 		    // System.out.println("Items reporte: ");
 		    // contratoService.getListadoAlquileresACobrar(1, 1900, 12,
 		    // 2100).forEach(System.out::println);
 
 		}
+		logger.info("Agregados\n"
+			+ daoInm.readAll().size() + " inmuebles.\n"
+			+ daoope.readAll().size() + " publicaciones.\n"
+			+ daoContratos.readAll().size() + " contratos.\n"
+			+ daoPer.readAll().size() + " personas.\n"
+			+ "a la base de datos.");
 	    }
 	} catch (Exception e) {
 	    System.out.println("Error al generar datos: ");
@@ -155,18 +154,18 @@ public class GeneradorDeDatosSinAsociaciones {
 		.setUsuario(usuario)
 		.build();
 
-		//Setea access a las views
-		c.setViewAccess(ViewAccess.valueOf(e.getCategoriaEmpleado()));
+	// Setea access a las views
+	c.setViewAccess(ViewAccess.valueOf(e.getCategoriaEmpleado()));
 
 	if (e.getCategoriaEmpleado() != CategoriaEmpleado.sinCategoria) {
-		e.setCredencial(c);
+	    e.setCredencial(c);
 	}
-	if (!adminCreado  && e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
+	if (!adminCreado && e.getCategoriaEmpleado() == CategoriaEmpleado.admin) {
 
 	    c.setContrasenia("admin");
 	    c.setUsuario("admin");
 	    adminCreado = true;
-	    
+
 	}
 	return p;
 

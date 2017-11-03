@@ -89,7 +89,7 @@ public class CobroService {
 	}
 	
 	private boolean hayQueCalcular(Cobro c) {
-		return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO) && c.getContrato().getEstadoContrato().equals(EstadoContrato.Vigente);
+		return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
 	}
 	
 	//Ver que se necesita "arriba"
