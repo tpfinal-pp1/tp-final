@@ -211,6 +211,7 @@ public final class DashboardView extends Panel implements View{
                 CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
                     @Override
                     public void onSave() {
+
                         refreshCitas();
                     }
                 };
@@ -414,7 +415,7 @@ public final class DashboardView extends Panel implements View{
 
         if (!notificationsWindow.isAttached()) {
             notificationsWindow.setPositionY(event.getClientY()
-                    - event.getRelativeY() + 10);
+                    - event.getRelativeY() + 40);
             getUI().addWindow(notificationsWindow);
             notificationsWindow.focus();
         } else {

@@ -95,15 +95,18 @@ public class Planificador {
 			throw new IllegalArgumentException("La cita debe estar persistida");
 	}
 	
-	public void removeCita(Cita cita) {
+	public boolean removeCita(Cita cita) {
+		boolean ret=false;
 		try {
 			if(cita.getId()!=null) {
-				sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"1"));
+				ret=sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"1"))
+						&&sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"2"));
 			}else
 				throw new IllegalArgumentException("La cita debe estar persistida");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return ret;
 	}
 
 	public void agregarNotificaciones(List<Messageable>citas) {

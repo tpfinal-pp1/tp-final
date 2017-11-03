@@ -5,6 +5,7 @@ import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CitaService;
+import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
 import com.vaadin.data.validator.EmailValidator;
@@ -52,6 +53,8 @@ public abstract class CitaFormWindow extends Window {
     private TextField direccionLugar = new TextField("Dirección");
     private TextArea observaciones = new TextArea("Info");
     private ComboBox<TipoCita> tipocita= new ComboBox<>("Tipo");
+    DeleteButton borrar = new DeleteButton("Eliminar",
+            VaadinIcons.WARNING, "Eliminar", "20%", e -> delete());
 
     public CitaFormWindow(Cita p) {
         this.cita =p;
@@ -122,7 +125,7 @@ public abstract class CitaFormWindow extends Window {
     }
 
     private void setCita(Cita cita) {
-
+        borrar.setVisible(cita.getId()!=null);
         this.cita = cita;
         binderCita.readBean(cita);
         // Show delete button for only Persons already in the database
@@ -132,6 +135,43 @@ public abstract class CitaFormWindow extends Window {
 
 
     }
+    private void delete(){
+        boolean success=false;
+        try {
+            binderCita.writeBean(cita);
+            success=service.delete(cita);
+
+
+
+        } catch (ValidationException e) {
+            Notification.show("Error al Borrar");
+            e.printStackTrace();
+            System.err.println( e.getValidationErrors()+" "+e.getFieldValidationErrors());
+
+            return;
+        }
+
+
+        if(success) {
+            Notification exito = new Notification(
+                    "Borrado: " + cita.getDetails());
+            exito.setDelayMsec(2000);
+            exito.setStyleName("bar success small");
+            exito.setPosition(Position.BOTTOM_CENTER);
+            exito.show(Page.getCurrent());
+            close();
+            onSave();
+
+        }
+        else{
+            close();
+            onSave();
+            Notification.show("Error al borarr la cita");
+        }
+
+    }
+
+
     private void save(){
         boolean success=false;
         try {
@@ -179,6 +219,7 @@ public abstract class CitaFormWindow extends Window {
         });
         ok.focus();
         footer.addComponent(ok);
+
         footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
         return footer;
     }
@@ -189,6 +230,7 @@ public abstract class CitaFormWindow extends Window {
         root.setCaption("Cita");
         root.setIcon(VaadinIcons.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
+        root.setHeight(500.0f, Unit.PERCENTAGE);
         root.setMargin(true);
         root.addStyleName("profile-form");
 
@@ -213,7 +255,8 @@ public abstract class CitaFormWindow extends Window {
         details.addComponent(section);
         observaciones.setWidth("100%");
         observaciones.setRows(4);
-        details.addComponent(observaciones);
+        details.addComponents(observaciones,borrar);
+        details.setComponentAlignment(borrar,Alignment.TOP_CENTER);
 
         return root;
     }

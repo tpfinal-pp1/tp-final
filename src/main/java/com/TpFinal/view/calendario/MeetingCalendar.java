@@ -153,7 +153,10 @@ public abstract class MeetingCalendar extends CustomComponent {
     }
 
     private void onItemMoveHandler(CalendarComponentEvents.ItemMoveEvent itemMoveEvent) {
-        Cita cita=(Cita)itemMoveEvent.getCalendarItem();
+        MeetingItem item = (MeetingItem) itemMoveEvent.getCalendarItem();
+
+        final Cita cita = item.getMeeting();
+        service.editCita(cita);
       
 
     }

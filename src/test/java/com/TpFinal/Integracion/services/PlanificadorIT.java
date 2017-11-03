@@ -8,16 +8,15 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.*;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.interfaces.Messageable;
 import com.TpFinal.services.NotificadorConcreto;
 import com.TpFinal.services.Planificador;
+
+import javax.validation.constraints.AssertTrue;
 
 
 public class PlanificadorIT {
@@ -74,6 +73,45 @@ public class PlanificadorIT {
 	}
 
 	@Test
+	public void eliminarCitas() {
+		try {
+			sc.setNotificacion(new NotificadorConcreto());
+			List<Messageable>citas = new ArrayList<>();
+			for(int i=0; i<3; i++) {
+				LocalDateTime fInicio = LocalDateTime.now();
+				fInicio=fInicio.plusMinutes(i+1);
+				fInicio=fInicio.plusHours(1);
+
+				System.out.println(fInicio.toString());
+
+				Cita c = new Cita.Builder()
+						.setCitado("Señor "+String.valueOf(i))
+						.setDireccionLugar("sarasa: "+String.valueOf(i))
+						.setFechahora(fInicio)
+						.setObservaciones("obs"+String.valueOf(i))
+						.setTipoDeCita(randomCita())
+						.build();
+				c.setId(Long.valueOf(i));
+				citas.add(c);
+			}
+			sc.agregarNotificaciones(citas);
+			boolean eliminar=true;
+
+			for (Messageable mess:citas){
+				Cita citat=(Cita) mess;
+				eliminar=eliminar&&sc.removeCita(citat);
+
+			}
+			Assert.assertTrue(eliminar);
+
+			TimeUnit.SECONDS.sleep(300);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	@Test
 	public void addCitas() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
@@ -95,10 +133,17 @@ public class PlanificadorIT {
 				c.setId(Long.valueOf(i));
 				citas.add(c);
 			}
-
 			sc.agregarNotificaciones(citas);
+			boolean eliminar=true;
 
-			TimeUnit.SECONDS.sleep(300);
+			for (Messageable mess:citas){
+				Cita citat=(Cita) mess;
+				eliminar=eliminar&&sc.removeCita(citat);
+
+			}
+			Assert.assertTrue(eliminar);
+
+			TimeUnit.SECONDS.sleep( 300);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
