@@ -20,6 +20,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
+import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.TpFinal.dto.cita.Cita;
@@ -85,14 +86,33 @@ public class Planificador {
 			e.printStackTrace();
 		}
 	}
+	
+	public void addCita(Cita cita) {
+		if(cita.getId()!=null) {
+			agregarNotificacionCita(cita, horasAntesRecoradatorio1,1);
+			agregarNotificacionCita(cita, horasAntesRecoradatorio2,2);
+		}else
+			throw new IllegalArgumentException("La cita debe estar persistida");
+	}
+	
+	public void removeCita(Cita cita) {
+		try {
+			if(cita.getId()!=null) {
+				sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"1"));
+			}else
+				throw new IllegalArgumentException("La cita debe estar persistida");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void agregarNotificaciones(List<Messageable>citas) {
 		if(citas!=null && citas.size()>0) {
 			citas.forEach(c -> {
 				if(c instanceof Cita) {
 					Cita c1= (Cita)c;
-					agregarNotificacionCita(c1, horasAntesRecoradatorio1);
-					agregarNotificacionCita(c1, horasAntesRecoradatorio2);
+					agregarNotificacionCita(c1, horasAntesRecoradatorio1,1);
+					agregarNotificacionCita(c1, horasAntesRecoradatorio2,2);
 				}else if(c instanceof Cobro) {
 					Cobro c1= (Cobro)c;
 					agregarNotificacionCobro(c1, horasAntesCobrosVencidos);
@@ -127,12 +147,13 @@ public class Planificador {
 		}
 	}
 
-	private void agregarNotificacionCita(Cita c, Integer horas) {
+	private void agregarNotificacionCita(Cita c, Integer horas, Integer key) {
 		LocalDateTime fechaInicio= c.getFechaInicio();
 		fechaInicio=fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin=c.getFechaInicio();
 		Integer perioricidad=horas+1;
-		agregarCita(c.getTitulo(), c.getMessage(), fechaInicio, fechaFin, String.valueOf(perioricidad), UUID.randomUUID().toString());
+		String triggerKey=c.getId().toString()+"-"+key.toString();
+		agregarCita(c.getTitulo(), c.getMessage(), fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
 	}
 
 	private void agregarNotificacionCobro(Cobro c, Integer horas) {
