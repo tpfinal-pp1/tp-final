@@ -21,7 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import com.TpFinal.view.calendario.Meeting;
+
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
@@ -42,6 +42,15 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Column(name = "estado_registro")
 	@NotNull
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
+
+	public LocalDateTime getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(LocalDateTime fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
 	//Mod by agus(calendario)
 	@Column(name = "fecha_hora")
 	private LocalDateTime fechaInicio;

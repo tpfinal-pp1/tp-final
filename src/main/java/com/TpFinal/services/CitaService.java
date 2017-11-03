@@ -5,6 +5,7 @@ import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import org.h2.table.Plan;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CitaService {
@@ -21,8 +22,10 @@ public class CitaService {
 
     public boolean addCita(Cita cita){
        boolean b= saveOrUpdate(cita);
+       ArrayList citas=new ArrayList<>();
+       citas.add(cita);
        if(b)
-           Planificador.get().agregarCita(cita);
+           Planificador.get().agregarNotificaciones(citas);
        return b;
     }
 

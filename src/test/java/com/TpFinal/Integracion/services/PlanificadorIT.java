@@ -37,7 +37,7 @@ public class PlanificadorIT {
 	@Ignore
 	@Test
 	public void test() {
-		sc.setNotificadorJob(new NotificadorConcreto());
+		sc.setNotificacion(new NotificadorConcreto());
 		for(int i=0; i<3; i++) {
 			LocalDate fInicio = LocalDate.now();
 			LocalDate fFin = fInicio.plusDays(1);
@@ -57,11 +57,12 @@ public class PlanificadorIT {
 	@Test
 	public void testJob() {
 		try {
-			sc.setNotificadorJob(new NotificadorConcreto());
+			sc.setNotificacion(new NotificadorConcreto());
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
 				LocalDateTime fFin = fInicio.plusDays(i+1);
+
 				sc.agregarCita("t "+i,"m "+i, fInicio, fFin, "1", UUID.randomUUID().toString());
 			}
 
@@ -75,15 +76,15 @@ public class PlanificadorIT {
 	@Test
 	public void addCitas() {
 		try {
-			sc.setNotificadorJob(new NotificadorConcreto());
+			sc.setNotificacion(new NotificadorConcreto());
 			List<Messageable>citas = new ArrayList<>();
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
 				fInicio=fInicio.plusHours(1);
-				
+
 				System.out.println(fInicio.toString());
-				
+
 				Cita c = new Cita.Builder()
 						.setCitado("Señor "+String.valueOf(i))
 						.setDireccionLugar("sarasa: "+String.valueOf(i))
@@ -95,14 +96,14 @@ public class PlanificadorIT {
 				citas.add(c);
 			}
 
-			sc.agregarCitas(citas);
+			sc.agregarNotificaciones(citas);
 
 			TimeUnit.SECONDS.sleep(300);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public TipoCita randomCita() {
 		Random r = new Random();
 		int res=r.nextInt(4);

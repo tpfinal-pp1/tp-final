@@ -31,6 +31,8 @@ public class Notificacion implements Identificable, BorradoLogico {
 	private String titulo;
 	@Column(name="visto")
 	private Boolean visto;
+	@Column(name="user")
+	private String usuario;
 	@Enumerated(EnumType.STRING)
 	@Column(name="estadoRegistro")
 	private EstadoRegistro estadoRegistro;
@@ -100,6 +102,18 @@ public class Notificacion implements Identificable, BorradoLogico {
 
 	public void setFechaCreacion(LocalDateTime fechaCreacion) {
 		this.fechaCreacion = fechaCreacion;
+	}
+	
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public Boolean getVisto() {
+		return visto;
 	}
 
 	@Override
