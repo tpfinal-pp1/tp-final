@@ -1,9 +1,11 @@
 package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.cita.Cita;
-import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.services.CitaService;
-import com.TpFinal.utils.DummyDataGenerator;
+import com.TpFinal.view.calendario.MeetingItem;
+import com.vaadin.event.dd.DragAndDropEvent;
+import com.vaadin.event.dd.DropHandler;
+import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
@@ -13,12 +15,8 @@ import org.vaadin.addon.calendar.item.BasicItemProvider;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -26,42 +24,37 @@ import static java.time.temporal.ChronoUnit.DAYS;
 
 public abstract class MeetingCalendar extends CustomComponent {
 
-
+    private final Random R = new Random(0);
 
     private MeetingDataProvider eventProvider;
 
     private Calendar<MeetingItem> calendar;
 
+    CitaService service= new CitaService();
+
+
     public Panel panel;
 
-    CitaService service;
     public MeetingCalendar() {
 
         setId("meeting-meetings");
-        setSizeFull();
-
         initCalendar();
+        setCompositionRoot(calendar);
+        calendar.setDropHandler(new DropHandler() {
+            @Override
+            public void drop(DragAndDropEvent dragAndDropEvent) {
+                System.out.println("Drop!");
+            }
 
-        VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(false);
-        layout.setSpacing(false);
-        layout.setSizeFull();
-
-        panel = new Panel(calendar);
-        panel.setHeight(100, Unit.PERCENTAGE);
-        layout.addComponent(panel);
-
-        setCompositionRoot(layout);
-        service=new CitaService();
+            @Override
+            public AcceptCriterion getAcceptCriterion() {
+                return null;
+            }
+        });
 
         refreshCitas();
 
     }
-
-    public void refreshCitas(){
-        service.readAll().forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
-    }
-
 
     public void switchToMonth(Month month) {
         calendar.withMonth(month);
@@ -71,43 +64,46 @@ public abstract class MeetingCalendar extends CustomComponent {
         return calendar;
     }
 
+    public void refreshCitas(){
+        eventProvider.removeAllEvents();
+        service.readAll().forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
+    }
     public abstract void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event);
 
 
 
-    public abstract void onCalendarClick(CalendarComponentEvents.ItemClickEvent event); /*{
-
-        MeetingItem item = (MeetingItem) event.getCalendarItem();
-
-        final Cita meeting = item.getMeeting();
-
-        Notification.show(meeting.getName(), meeting.getDetails(), Type.HUMANIZED_MESSAGE);
-    }*/
-
+    public abstract void onCalendarClick(CalendarComponentEvents.ItemClickEvent event);
     private void initCalendar() {
 
         eventProvider = new MeetingDataProvider();
 
         calendar = new Calendar<>(eventProvider);
+       //calendar.setSizeFull();
 
-        calendar.addStyleName("meetings");
+        calendar.setStyleName("meetings");
+        calendar.setStyleName(".v-calendar-header-week .v-calendar-back:before, .demo .v-calendar-header-month .v-calendar-back:before {\n" +
+                "        font-family: ThemeIcons;\n" +
+                "\n" +
+                "        content: \"\\f053\";\n" +
+                "    }");
         calendar.setWidth(100.0f, Unit.PERCENTAGE);
-        calendar.setHeight(100.0f, Unit.PERCENTAGE);
+        calendar.setHeight(90.0f, Unit.PERCENTAGE);
         calendar.setResponsive(true);
+
 
         calendar.setItemCaptionAsHtml(true);
         calendar.setContentMode(ContentMode.HTML);
-
-        calendar.setLocale(Locale.getDefault());
-        calendar.setZoneId(ZoneId.systemDefault());
-        calendar.setWeeklyCaptionProvider(date ->  "<br>" + DateTimeFormatter.ofPattern("dd.MM.YYYY", getLocale()).format(date));
-        calendar.setWeeklyCaptionProvider(date -> DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale()).format(date));
+        calendar.setResponsive(true);
+//        calendar.setLocale(Locale.JAPAN);
+//        calendar.setZoneId(ZoneId.of("America/Chicago"));
+//        calendar.setWeeklyCaptionProvider(date ->  "<br>" + DateTimeFormatter.ofPattern("dd.MM.YYYY", getLocale()).format(date));
+//        calendar.setWeeklyCaptionProvider(date -> DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale()).format(date));
 
         calendar.withVisibleDays(1, 7);
-      //  calendar.withMonth(ZonedDateTime.now().getMonth());
+//        calendar.withMonth(ZonedDateTime.now().getMonth());
 
-    //   calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0,0,0, 0, calendar.getZoneId()));
-     //  calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0,0,0, 0, calendar.getZoneId()));
+     //   calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0,0,0, 0, calendar.getZoneId()));
+    //    calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0,0,0, 0, calendar.getZoneId()));
 
         addCalendarEventListeners();
 
@@ -147,10 +143,19 @@ public abstract class MeetingCalendar extends CustomComponent {
 
     }
 
+
+
     private void addCalendarEventListeners() {
         calendar.setHandler(new BasicDateClickHandler(true));
         calendar.setHandler(this::onCalendarClick);
         calendar.setHandler(this::onCalendarRangeSelect);
+        calendar.setHandler(this::onItemMoveHandler);
+    }
+
+    private void onItemMoveHandler(CalendarComponentEvents.ItemMoveEvent itemMoveEvent) {
+        Cita cita=(Cita)itemMoveEvent.getCalendarItem();
+      
+
     }
 
     private final class MeetingDataProvider extends BasicItemProvider<MeetingItem> {
@@ -162,4 +167,3 @@ public abstract class MeetingCalendar extends CustomComponent {
     }
 
 }
-

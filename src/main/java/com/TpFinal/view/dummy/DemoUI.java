@@ -63,10 +63,10 @@ public class DemoUI extends VerticalLayout implements View {
         calActionComboBox.addValueChangeListener(e -> e.getValue().act());
         calActionComboBox.setEmptySelectionAllowed(false);
 
-        Button fixedSize = new Button("fixed Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeightUndefined());
-        fixedSize.setIcon(VaadinIcons.LINK);
+       /* Button fixedSize = new Button("fixed Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeightUndefined());
+        fixedSize.setIcon(VaadinIcons.LINK);*/
 
-        Button fullSize = new Button("full Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeight(100, Sizeable.Unit.PERCENTAGE));
+   /*     Button fullSize = new Button("full Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeight(100, Sizeable.Unit.PERCENTAGE));
         fullSize.setIcon(VaadinIcons.UNLINK);
 
         ComboBox<Month> months = new ComboBox<>();
@@ -89,7 +89,7 @@ public class DemoUI extends VerticalLayout implements View {
         layout.setSpacing(true);
         layout.addComponent(nav);
         layout.addComponentsAndExpand(meetings);
-        this.addComponent(layout);
+        this.addComponent(layout);*/
 
 
     }

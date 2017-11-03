@@ -1,6 +1,7 @@
 package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CitaService;
@@ -22,7 +23,10 @@ import javafx.scene.control.DatePicker;
 import org.apache.lucene.document.DateTools;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @SuppressWarnings("serial")
 public abstract class CitaFormWindow extends Window {
@@ -39,14 +43,15 @@ public abstract class CitaFormWindow extends Window {
      */
     protected HorizontalLayout root = new HorizontalLayout();
     protected  Cita cita;
-    protected  Binder<Cita> binderCita = new Binder<>(Cita.class);
+    private  Binder<Cita> binderCita = new Binder<>(Cita.class);
     protected CitaService service = new CitaService();
-    protected DateTimeField fechaInicio= new DateTimeField();
-    protected DateTimeField fechaFin= new DateTimeField();
+    private DateTimeField fechaInicio= new DateTimeField();
+    private DateTimeField fechaFin= new DateTimeField();
 
-    protected TextField citado = new TextField("Citado");
-    protected TextField direccionLugar = new TextField("Dirección");
-    protected TextArea observaciones = new TextArea("Info");
+    private TextField citado = new TextField("Citado");
+    private TextField direccionLugar = new TextField("Dirección");
+    private TextArea observaciones = new TextArea("Info");
+    private ComboBox<TipoCita> tipocita= new ComboBox<>("Tipo");
 
     public CitaFormWindow(Cita p) {
         this.cita =p;
@@ -57,21 +62,21 @@ public abstract class CitaFormWindow extends Window {
     public abstract void onSave();
     private void configureComponents(){
 
-
+        tipocita.setItems(Arrays.asList(TipoCita.values()));
         addStyleName("profile-window");
         setId(ID);
         Responsive.makeResponsive(this);
 
-       // setModal(true);
+        setModal(true);
         setCloseShortcut(KeyCode.ESCAPE, null);
-     //   setResizable(false);
-     //   setClosable(true);
-       // setHeight(90.0f, Unit.PERCENTAGE);
+        setResizable(false);
+        setClosable(true);
+       setHeight(220.0f, Unit.PERCENTAGE);
 
         VerticalLayout content = new VerticalLayout();
-      //  content.setSizeFull();
-      //  content.setMargin(new MarginInfo(true, false, false, false));
-     //   content.setSpacing(false);
+        content.setSizeFull();
+        content.setMargin(new MarginInfo(true, false, false, false));
+        content.setSpacing(false);
         setContent(content);
 
         TabSheet detailsWrapper = new TabSheet();
@@ -86,6 +91,13 @@ public abstract class CitaFormWindow extends Window {
         //  detailsWrapper.addComponent(buildPreferencesTab());
 
         content.addComponent(buildFooter());
+        setWidth(400.0f, Unit.PIXELS);
+        //cita.addStyleName("notifications");
+        //cita.setResizable(false);
+
+        center();
+        getUI().getCurrent().addWindow(this);
+        focus();
 
 
     }
@@ -93,22 +105,19 @@ public abstract class CitaFormWindow extends Window {
     private void binding(){
         //binder.bindInstanceFields(this); //Binding automatico
         citado.setRequiredIndicatorVisible(true);
-
         direccionLugar.setRequiredIndicatorVisible(true);
-
         binderCita.forField(citado).asRequired("Ingrese un citado").
                 bind(Cita::getCitado,Cita::setCitado);
-
         binderCita.forField(direccionLugar).asRequired("Ingrese un Lugar/Direccion").
                 bind(Cita::getDireccionLugar,Cita::setDireccionLugar);
-
-
         binderCita.forField(observaciones).
                 bind(Cita::getObservaciones,Cita::setObservaciones);
-        binderCita.forField(this.fechaInicio).asRequired("Seleccione una fecha de inicio")
+        binderCita.forField(fechaInicio).asRequired("Seleccione una fecha de inicio")
                 .bind(Cita::getFechaInicio,Cita::setFechaInicio);
-        binderCita.forField(this.fechaFin).asRequired("Seleccione una fecha de fin")
+        binderCita.forField(fechaFin).asRequired("Seleccione una fecha de fin")
                 .bind(Cita::getFechaFin,Cita::setFechaFin);
+        binderCita.forField(tipocita).asRequired("Seleccione un tipo de Cita").
+                bind(Cita::getTipoDeCita, Cita::setTipoDeCita);
 
     }
 
@@ -153,6 +162,7 @@ public abstract class CitaFormWindow extends Window {
 
     }
     private Component buildFooter() {
+
         HorizontalLayout footer = new HorizontalLayout();
         footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
         footer.setWidth(100.0f, Unit.PERCENTAGE);
@@ -191,6 +201,7 @@ public abstract class CitaFormWindow extends Window {
         details.addComponent(direccionLugar);
         details.addComponent(fechaInicio);
         details.addComponent(fechaFin);
+        details.addComponent(tipocita);
         fechaInicio.setCaption("Inicio");
         fechaFin.setCaption("Fin");
 

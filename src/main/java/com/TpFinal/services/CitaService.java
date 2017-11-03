@@ -29,6 +29,11 @@ public class CitaService {
        return b;
     }
 
+    /*public boolean editCita(Cita cita){
+
+
+    }
+*/
     public boolean delete(Cita p) {
         return dao.logicalDelete(p);
     }

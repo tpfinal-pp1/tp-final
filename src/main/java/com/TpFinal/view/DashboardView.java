@@ -5,17 +5,19 @@ import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.NotificacionService;
-import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
 import com.TpFinal.view.calendario.MeetingItem;
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.annotations.Title;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.MarginInfo;
+import org.exolab.castor.types.DateTime;
 import org.ocpsoft.prettytime.PrettyTime;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
@@ -37,6 +39,7 @@ import java.util.*;
 
 
 @SuppressWarnings("serial")
+@Title("Calendar Add-on Demo")
 public final class DashboardView extends Panel implements View{
 
     public static final String TITLE_ID = "dashboard-title";
@@ -47,6 +50,8 @@ public final class DashboardView extends Panel implements View{
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
+    CitaFormWindow citaWindow;
+    MeetingCalendar meetings;
 
 
     public DashboardView() {
@@ -62,8 +67,6 @@ public final class DashboardView extends Panel implements View{
         Responsive.makeResponsive(root);
 
         root.addComponent(buildHeader());
-
-
 
         Component content = buildContent();
         root.addComponent(content);
@@ -102,38 +105,23 @@ public final class DashboardView extends Panel implements View{
         header.addComponent(titleLabel);
 
         notificationsButton = buildNotificationsButton();
-        Button test=new Button("Generar Notis");
-        test.addClickListener(new ClickListener() {
+        Button nuevo=new Button("Nueva Cita");
+        nuevo.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent clickEvent) {
-
-                CitaFormWindow cita=  new CitaFormWindow(new Cita()) {
+                Cita cita=new Cita();
+                cita.setFechaInicio(LocalDate.now().atTime(LocalTime.now()));
+                cita.setFechaFin(LocalDate.now().atTime(LocalTime.now().plusHours(1)));
+                CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
                     @Override
                     public void onSave() {
+                        meetings.refreshCitas();
 
-
-                    }
-                };
-                if (!cita.isAttached()) {
-                    cita.setWidth(300.0f, Unit.PIXELS);
-                    cita.addStyleName("notifications");
-                    cita.setResizable(false);
-                    cita.setDraggable(false);
-                    getUI().addWindow(cita);
-                    cita.focus();
-                }
-
-                NotificacionService dt=NotificacionService.get();
-
-                for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
-                        ) {
-                    NotificacionService.addNotificacion(noti);
-                }
-
-            }});
-        HorizontalLayout tools = new HorizontalLayout(test,notificationsButton);
+                        };}; }});
+        HorizontalLayout tools = new HorizontalLayout(nuevo,notificationsButton);
         tools.addStyleName("toolbar");
         header.addComponent(tools);
+        nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
         return header;
     }
@@ -156,11 +144,7 @@ public final class DashboardView extends Panel implements View{
         dashboardPanels = new CssLayout();
         dashboardPanels.addStyleName("dashboard-panels");
         Responsive.makeResponsive(dashboardPanels);
-
-
         dashboardPanels.addComponent(buildCalendar());
-
-
         return dashboardPanels;
     }
 
@@ -194,81 +178,64 @@ public final class DashboardView extends Panel implements View{
 
     private Component buildCalendar(){
         // Initialize our new UI component
-        MeetingCalendar meetings = new MeetingCalendar() {
+            meetings = new MeetingCalendar() {
 
 
             @Override
             public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+                if(citaWindow !=null&& citaWindow.isAttached())
+                    return;
 
-               // this.focus();
+                Cita cita=new Cita();
+                cita.setFechaInicio(event.getStart().
+                        toLocalDateTime().toLocalDate().atTime(LocalTime.now()));
+
+                cita.setFechaFin(event.getStart().
+                        toLocalDateTime().toLocalDate().atTime(LocalTime.now().plusHours(1)));
+                CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
+                    @Override
+                    public void onSave() {
+                        refreshCitas();
+
+                    }
+                };
+
             }
-
             @Override
             public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
 
                 MeetingItem item = (MeetingItem) event.getCalendarItem();
 
-                final Cita meeting = item.getMeeting();
+                final Cita cita = item.getMeeting();
 
-                Notification.show(meeting.getName(), meeting.getDetails(), Notification.Type.HUMANIZED_MESSAGE);
+                CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
+                    @Override
+                    public void onSave() {
+                        refreshCitas();
+                    }
+                };
+
+
             }
         };
 
-            meetings.setSizeFull();
 
-      /*  ComboBox<Locale> localeBox = new ComboBox<>();
-        localeBox.setItems(Locale.getAvailableLocales());
-        localeBox.setEmptySelectionAllowed(false);
-        localeBox.setValue(UI.getCurrent().getLocale());
-        localeBox.addValueChangeListener(e -> meetings.getCalendar().setLocale(e.getValue()));
-*/
+        meetings.setSizeFull();
 
         meetings.getCalendar().setLocale(UI.getCurrent().getLocale());
         meetings.getCalendar().setZoneId(ZoneId.of(meetings.getCalendar().getZoneId().getId()));
-       /*ComboBox<String> zoneBox = new ComboBox<>();
-        zoneBox.setItems(ZoneId.getAvailableZoneIds());
-        zoneBox.setEmptySelectionAllowed(false);
-        zoneBox.setValue(meetings.getCalendar().getZoneId().getId());
-        zoneBox.addValueChangeListener(e -> meetings.getCalendar().setZoneId(ZoneId.of(e.getValue())));
-*/
-       /* ComboBox<CalStyle> calActionComboBox = new ComboBox<>();
-        calActionComboBox.setItems(
-                new CalStyle("Col 1 - 7", () -> meetings.getCalendar().withVisibleDays(1, 7)),
-                new CalStyle("Col 1 - 5", () -> meetings.getCalendar().withVisibleDays(1, 5)),
-                new CalStyle("Col 2 - 5", () -> meetings.getCalendar().withVisibleDays(2, 5)),
-                new CalStyle("Col 6 - 7", () -> meetings.getCalendar().withVisibleDays(6, 7))
-        );
-        calActionComboBox.addValueChangeListener(e -> e.getValue().act());
-        calActionComboBox.setEmptySelectionAllowed(false);*/
 
-    /*    Button fixedSize = new Button("fixed Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeightUndefined());
-        fixedSize.setIcon(VaadinIcons.LINK);
-
-        Button fullSize = new Button("full Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeight(100, Unit.PERCENTAGE));
-        fullSize.setIcon(VaadinIcons.UNLINK);
-*/
-       /* ComboBox<Month> months = new ComboBox<>();
-        months.setItems(Month.values());
-        months.setItemCaptionGenerator(month -> month.getDisplayName(TextStyle.FULL, meetings.getCalendar().getLocale()));
-        months.setEmptySelectionAllowed(false);
-        months.addValueChangeListener(me -> meetings.switchToMonth(me.getValue()));
-
-        Button today = new Button("today", (Button.ClickEvent clickEvent) -> meetings.getCalendar().withDay(ZonedDateTime.now()));
-        Button week = new Button("week", (Button.ClickEvent clickEvent) -> meetings.getCalendar().withWeek(ZonedDateTime.now()));
-
-        HorizontalLayout nav = new HorizontalLayout( months, today, week);
-        //nav.setWidth("100%");
-*/
-        // Show it in the middle of the screen
-        final VerticalLayout layout = new VerticalLayout();
-        meetings.panel.setHeightUndefined();
-        layout.setStyleName("demoContentLayout");
+        final VerticalLayout layout = new VerticalLayout(meetings);
         layout.setSizeFull();
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        meetings.panel.setHeight(100, Unit.PERCENTAGE);
-       // layout.addComponent(nav);
-        layout.addComponentsAndExpand(meetings);
+
+      //  layout.setSizeFull();
+        layout.setStyleName("v-panel");
+        layout.setSpacing(false);
+        layout.setResponsive(true);
+
+        layout.setMargin(new MarginInfo(true, true, false, false));
+        layout.setExpandRatio(meetings,1);
+
         try{
             meetings.switchToMonth(LocalDate.now().getMonth());}
         catch (Exception e){
@@ -280,7 +247,6 @@ public final class DashboardView extends Panel implements View{
 
 
     }
-
 
 
     private Component buildNotes() {
@@ -302,10 +268,6 @@ public final class DashboardView extends Panel implements View{
         panel.addStyleName("notes");
         return panel;
     }
-
-
-
-
 
     private Component createContentWrapper(final Component content) {
         final CssLayout slot = new CssLayout();
@@ -452,7 +414,7 @@ public final class DashboardView extends Panel implements View{
 
         if (!notificationsWindow.isAttached()) {
             notificationsWindow.setPositionY(event.getClientY()
-                    - event.getRelativeY() + 40);
+                    - event.getRelativeY() + 10);
             getUI().addWindow(notificationsWindow);
             notificationsWindow.focus();
         } else {

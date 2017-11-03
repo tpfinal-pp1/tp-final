@@ -23,8 +23,9 @@ public class MeetingItem extends BasicItem {
 
 	public MeetingItem(Cita meeting) {
         super(meeting.getName(), null, meeting.getFechaInicio().atZone(ZoneId.systemDefault())
-				, meeting.getFechaInicio().atZone(ZoneId.systemDefault()));
+				, meeting.getFechaFin().atZone(ZoneId.systemDefault()));
         this.meeting = meeting;
+
 	}
 
 
@@ -73,6 +74,7 @@ public class MeetingItem extends BasicItem {
 //    public boolean isClickable() {
 //        return meeting.isEditable();
 //    }
+
 
     @Override
 	public void setEnd(ZonedDateTime end) {
