@@ -13,16 +13,20 @@ import org.vaadin.addon.calendar.item.BasicItemProvider;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import java.time.Month;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.GregorianCalendar;
+import java.util.Locale;
 import java.util.Random;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
 
-public class MeetingCalendar extends CustomComponent {
+public abstract class MeetingCalendar extends CustomComponent {
 
-    private final Random R = new Random(0);
+
 
     private MeetingDataProvider eventProvider;
 
@@ -34,17 +38,17 @@ public class MeetingCalendar extends CustomComponent {
     public MeetingCalendar() {
 
         setId("meeting-meetings");
-      //  setSizeFull();
+        setSizeFull();
 
         initCalendar();
 
         VerticalLayout layout = new VerticalLayout();
         layout.setMargin(false);
         layout.setSpacing(false);
-      //  layout.setSizeFull();
+        layout.setSizeFull();
 
         panel = new Panel(calendar);
-     //   panel.setHeight(100, Unit.PERCENTAGE);
+        panel.setHeight(100, Unit.PERCENTAGE);
         layout.addComponent(panel);
 
         setCompositionRoot(layout);
@@ -67,26 +71,18 @@ public class MeetingCalendar extends CustomComponent {
         return calendar;
     }
 
-    private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+    public abstract void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event);
 
-        Cita meeting = new Cita();
-        meeting.setCitado(DummyDataGenerator.randomFirstName()+" "+DummyDataGenerator.randomLastName());
-        meeting.setTipoDeCita(TipoCita.CelebContrato);
-        meeting.setState(Cita.State.planned);
-        meeting.setLongTimeEvent(!event.getStart().truncatedTo(DAYS).equals(event.getEnd().truncatedTo(DAYS)));
-        meeting.setFechaFin(event.getStart().toLocalDateTime());
-        meeting.setFechaInicio(event.getEnd().toLocalDateTime());
-        eventProvider.addItem(new MeetingItem(meeting));
-	}
 
-    private void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
+
+    public abstract void onCalendarClick(CalendarComponentEvents.ItemClickEvent event); /*{
 
         MeetingItem item = (MeetingItem) event.getCalendarItem();
 
         final Cita meeting = item.getMeeting();
 
         Notification.show(meeting.getName(), meeting.getDetails(), Type.HUMANIZED_MESSAGE);
-    }
+    }*/
 
     private void initCalendar() {
 
@@ -102,16 +98,16 @@ public class MeetingCalendar extends CustomComponent {
         calendar.setItemCaptionAsHtml(true);
         calendar.setContentMode(ContentMode.HTML);
 
-//        calendar.setLocale(Locale.JAPAN);
-//        calendar.setZoneId(ZoneId.of("America/Chicago"));
-//        calendar.setWeeklyCaptionProvider(date ->  "<br>" + DateTimeFormatter.ofPattern("dd.MM.YYYY", getLocale()).format(date));
-//        calendar.setWeeklyCaptionProvider(date -> DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale()).format(date));
+        calendar.setLocale(Locale.getDefault());
+        calendar.setZoneId(ZoneId.systemDefault());
+        calendar.setWeeklyCaptionProvider(date ->  "<br>" + DateTimeFormatter.ofPattern("dd.MM.YYYY", getLocale()).format(date));
+        calendar.setWeeklyCaptionProvider(date -> DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale()).format(date));
 
         calendar.withVisibleDays(1, 7);
-//        calendar.withMonth(ZonedDateTime.now().getMonth());
+      //  calendar.withMonth(ZonedDateTime.now().getMonth());
 
-        calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0,0,0, 0, calendar.getZoneId()));
-        calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0,0,0, 0, calendar.getZoneId()));
+    //   calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0,0,0, 0, calendar.getZoneId()));
+     //  calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0,0,0, 0, calendar.getZoneId()));
 
         addCalendarEventListeners();
 

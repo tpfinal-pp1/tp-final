@@ -10,6 +10,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
+import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 
 import java.time.Month;
@@ -27,7 +28,17 @@ public class DemoUI extends VerticalLayout implements View {
         super();
 
         // Initialize our new UI component
-        MeetingCalendar meetings = new MeetingCalendar();
+        MeetingCalendar meetings = new MeetingCalendar() {
+            @Override
+            public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+
+            }
+
+            @Override
+            public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
+
+            }
+        };
         meetings.setSizeFull();
 
         ComboBox<Locale> localeBox = new ComboBox<>();

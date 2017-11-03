@@ -98,11 +98,13 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	public String getDetails() {
 		LocalDateTime i=
 				this.getFechaInicio();
-		return "Cita con "
+
+			return "Cita con "
 				+citado+"<br>"+this.tipoDeCita+"<br> el "
 				+i.getDayOfMonth()
 				+"/"+i.getMonthValue()+"/"+i.getYear()+
 				" a las "+i.getHour()+":"+i.getMinute();
+
 	}
 
 	public boolean isLongTimeEvent() {
@@ -118,7 +120,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	}
 
 	public State getState() {
-		return state;
+		return State.planned;
 	}
 
 	public void setState(State state){
@@ -129,6 +131,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	//Mod by agus(calendario)
 
 	public Cita() {
+
 	}
 
 	private Cita(Builder b) {

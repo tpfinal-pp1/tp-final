@@ -129,6 +129,7 @@ public class Planificador {
 
 	private void agregarNotificacionCita(Cita c, Integer horas) {
 		LocalDateTime fechaInicio= c.getFechaInicio();
+		System.out.println(fechaInicio);
 		fechaInicio=fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin=c.getFechaInicio();
 		Integer perioricidad=horas+1;

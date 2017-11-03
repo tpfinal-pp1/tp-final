@@ -1,6 +1,7 @@
 package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CitaService;
 import com.vaadin.data.Binder;
@@ -17,7 +18,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
+import javafx.scene.control.DatePicker;
+import org.apache.lucene.document.DateTools;
 
+import java.time.ZoneId;
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -37,6 +41,9 @@ public abstract class CitaFormWindow extends Window {
     protected  Cita cita;
     protected  Binder<Cita> binderCita = new Binder<>(Cita.class);
     protected CitaService service = new CitaService();
+    protected DateTimeField fechaInicio= new DateTimeField();
+    protected DateTimeField fechaFin= new DateTimeField();
+
     protected TextField citado = new TextField("Citado");
     protected TextField direccionLugar = new TextField("Dirección");
     protected TextArea observaciones = new TextArea("Info");
@@ -46,8 +53,6 @@ public abstract class CitaFormWindow extends Window {
         configureComponents();
         binding();
         setCita(cita);
-        UI.getCurrent().addWindow(this);
-        this.focus();
     }
     public abstract void onSave();
     private void configureComponents(){
@@ -57,16 +62,16 @@ public abstract class CitaFormWindow extends Window {
         setId(ID);
         Responsive.makeResponsive(this);
 
-        setModal(true);
+       // setModal(true);
         setCloseShortcut(KeyCode.ESCAPE, null);
-        setResizable(false);
-        setClosable(true);
-        setHeight(90.0f, Unit.PERCENTAGE);
+     //   setResizable(false);
+     //   setClosable(true);
+       // setHeight(90.0f, Unit.PERCENTAGE);
 
         VerticalLayout content = new VerticalLayout();
-        content.setSizeFull();
-        content.setMargin(new MarginInfo(true, false, false, false));
-        content.setSpacing(false);
+      //  content.setSizeFull();
+      //  content.setMargin(new MarginInfo(true, false, false, false));
+     //   content.setSpacing(false);
         setContent(content);
 
         TabSheet detailsWrapper = new TabSheet();
@@ -81,6 +86,7 @@ public abstract class CitaFormWindow extends Window {
         //  detailsWrapper.addComponent(buildPreferencesTab());
 
         content.addComponent(buildFooter());
+
 
     }
 
@@ -99,6 +105,10 @@ public abstract class CitaFormWindow extends Window {
 
         binderCita.forField(observaciones).
                 bind(Cita::getObservaciones,Cita::setObservaciones);
+        binderCita.forField(this.fechaInicio).asRequired("Seleccione una fecha de inicio")
+                .bind(Cita::getFechaInicio,Cita::setFechaInicio);
+        binderCita.forField(this.fechaFin).asRequired("Seleccione una fecha de fin")
+                .bind(Cita::getFechaFin,Cita::setFechaFin);
 
     }
 
@@ -166,7 +176,7 @@ public abstract class CitaFormWindow extends Window {
 
     private Component buildProfileTab() {
 
-        root.setCaption("Persona");
+        root.setCaption("Cita");
         root.setIcon(VaadinIcons.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
         root.setMargin(true);
@@ -177,22 +187,19 @@ public abstract class CitaFormWindow extends Window {
         root.addComponent(details);
         root.setExpandRatio(details, 1);
 
-        citado = new TextField("Nombre");
         details.addComponent(citado);
-        direccionLugar = new TextField("Apellido");
         details.addComponent(direccionLugar);
+        details.addComponent(fechaInicio);
+        details.addComponent(fechaFin);
+        fechaInicio.setCaption("Inicio");
+        fechaFin.setCaption("Fin");
 
-        Label section = new Label("Contacto");
+
+
+        Label section = new Label("Información Adicional");
         section.addStyleName(ValoTheme.LABEL_H4);
         section.addStyleName(ValoTheme.LABEL_COLORED);
         details.addComponent(section);
-
-        section = new Label("Información Adicional");
-        section.addStyleName(ValoTheme.LABEL_H4);
-        section.addStyleName(ValoTheme.LABEL_COLORED);
-        details.addComponent(section);
-
-        observaciones = new TextArea("Info");
         observaciones.setWidth("100%");
         observaciones.setRows(4);
         details.addComponent(observaciones);

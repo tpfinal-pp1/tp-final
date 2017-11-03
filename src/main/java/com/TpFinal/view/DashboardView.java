@@ -1,11 +1,14 @@
 package com.TpFinal.view;
 
+import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.NotificacionService;
 import com.TpFinal.utils.DummyDataGenerator;
+import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
+import com.TpFinal.view.calendario.MeetingItem;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
@@ -24,6 +27,7 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.util.CurrentInstance;
+import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -103,6 +107,22 @@ public final class DashboardView extends Panel implements View{
             @Override
             public void buttonClick(ClickEvent clickEvent) {
 
+                CitaFormWindow cita=  new CitaFormWindow(new Cita()) {
+                    @Override
+                    public void onSave() {
+
+
+                    }
+                };
+                if (!cita.isAttached()) {
+                    cita.setWidth(300.0f, Unit.PIXELS);
+                    cita.addStyleName("notifications");
+                    cita.setResizable(false);
+                    cita.setDraggable(false);
+                    getUI().addWindow(cita);
+                    cita.focus();
+                }
+
                 NotificacionService dt=NotificacionService.get();
 
                 for (Notificacion noti: DummyDataGenerator.randomNotifications(1)
@@ -174,8 +194,27 @@ public final class DashboardView extends Panel implements View{
 
     private Component buildCalendar(){
         // Initialize our new UI component
-        MeetingCalendar meetings = new MeetingCalendar();
-        meetings.setSizeFull();
+        MeetingCalendar meetings = new MeetingCalendar() {
+
+
+            @Override
+            public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+
+               // this.focus();
+            }
+
+            @Override
+            public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
+
+                MeetingItem item = (MeetingItem) event.getCalendarItem();
+
+                final Cita meeting = item.getMeeting();
+
+                Notification.show(meeting.getName(), meeting.getDetails(), Notification.Type.HUMANIZED_MESSAGE);
+            }
+        };
+
+            meetings.setSizeFull();
 
       /*  ComboBox<Locale> localeBox = new ComboBox<>();
         localeBox.setItems(Locale.getAvailableLocales());
