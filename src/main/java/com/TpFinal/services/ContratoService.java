@@ -599,7 +599,7 @@ public class ContratoService {
 	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
 	    interes = interes.divide(new BigDecimal("100"));
 	    ret = valorOriginal;
-	    for (int i = 0 ; i<ca.getDuracionContrato().getDuracion() / ca
+	    for (int i = 1 ; i<ca.getDuracionContrato().getDuracion() / ca
 		    .getIntervaloActualizacion();i++) {
 		ret = ret.multiply(BigDecimal.ONE.add(interes));
 	    }
