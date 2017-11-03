@@ -39,6 +39,7 @@ public class ContratoVentaForm extends FormLayout {
     private InmuebleService inmuebleService = new InmuebleService();
 
     // Actions
+    EstadoCargaDocumento estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
     Button save = new Button("Guardar");
     DeleteButton delete = new DeleteButton("Eliminar",
 	    VaadinIcons.WARNING, "Eliminar", "20%", e -> delete());
@@ -96,6 +97,22 @@ public class ContratoVentaForm extends FormLayout {
     private void configureComponents() {
 	configurarAcciones();
 
+	btCargar.addStartedListener(e -> {
+	    tfDocumento.setIcon(VaadinIcons.UPLOAD);
+	    tfDocumento.setValue("Cargando documento...");
+	    estadoCargaDocumento = EstadoCargaDocumento.Cargando;
+	});
+	btCargar.addFailedListener(e -> {
+	    tfDocumento.setIcon(VaadinIcons.WARNING);
+	    tfDocumento.setValue("Error al Cargar el documento");
+	    estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
+	});
+	btCargar.addSucceededListener(e -> {
+	    tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
+	    tfDocumento.setValue("Documento Cargado");
+	    estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+	});
+
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Inmueble> valueChangeEvent) {
@@ -109,11 +126,11 @@ public class ContratoVentaForm extends FormLayout {
 			lblNombreVendedor.setValue(vendedor.getNombre() + " " + vendedor.getApellido());
 			contratoVenta.setInmueble(inmueble);
 			contratoVenta.setVendedor(vendedor);
-			PublicacionVenta asociado=service.getPublicacionVentaActiva(inmueble);
-			if(asociado!=null) {
-				contratoVenta.setPrecioVenta(asociado.getPrecio());
-				contratoVenta.setMoneda(asociado.getMoneda());
-				binderContratoVenta.readBean(contratoVenta);
+			PublicacionVenta asociado = service.getPublicacionVentaActiva(inmueble);
+			if (asociado != null) {
+			    contratoVenta.setPrecioVenta(asociado.getPrecio());
+			    contratoVenta.setMoneda(asociado.getMoneda());
+			    binderContratoVenta.readBean(contratoVenta);
 			}
 		    }
 		}
@@ -155,7 +172,7 @@ public class ContratoVentaForm extends FormLayout {
 	});
 	finalizarCarga.addClickListener(e -> {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
-	    if (binderContratoVenta.isValid()) {
+	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoVenta.isValid()) {
 		contratoVenta.setEstadoContrato(EstadoContrato.Vigente);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
@@ -232,9 +249,13 @@ public class ContratoVentaForm extends FormLayout {
 
 	binderContratoVenta.forField(this.tfDocumento).withNullRepresentation("")
 		.bind(contrato -> {
-		    if (contrato.getDocumento() != null)
+		    if (contrato.getDocumento() != null) {
+			estadoCargaDocumento = EstadoCargaDocumento.Cargado;
 			return "Documento Cargado";
-		    return "Documento No Cargado";
+		    } else {
+			estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
+			return "Documento No Cargado";
+		    }
 		}, (contrato, text) -> {
 		});
 	return binderContratoVenta;
