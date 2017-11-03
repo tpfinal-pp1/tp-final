@@ -48,8 +48,9 @@ public class ContratoService {
     public static enum instancia {
 	venta, alquiler
     };
+
     private final static Logger logger = Logger.getLogger(ContratoService.class);
-    
+
     private DAOContratoAlquiler daoAlquiler;
     private DAOContratoVenta daoVenta;
     private DAOContrato daoContrato;
@@ -325,11 +326,13 @@ public class ContratoService {
     }
 
     private boolean faltaMenosDeUnMesParaVencimiento(ContratoAlquiler contratoAlquiler) {
-	boolean ret = true && contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente); 
-		logger.debug("Meses entre fechas: " + ChronoUnit.MONTHS.between(LocalDate.now(),getFechaVencimiento(contratoAlquiler)));
-		ret= ret && ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 1;
-		logger.debug("Años entre fechas: " + ChronoUnit.YEARS.between(LocalDate.now(),getFechaVencimiento(contratoAlquiler)));
-		ret = ret && ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <=0;
+	boolean ret = true && contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente);
+	logger.debug("Meses entre fechas: " + ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(
+		contratoAlquiler)));
+	ret = ret && ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 1;
+	logger.debug("Años entre fechas: " + ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(
+		contratoAlquiler)));
+	ret = ret && ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 0;
 	return ret;
     }
 
@@ -581,5 +584,27 @@ public class ContratoService {
 		.thenComparing(ItemRepAlquileresACobrar::getNombre));
 
 	return itemsReporte;
+    }
+
+    public static void setMontoInicialRenovacio(ContratoAlquiler ca) {
+	BigDecimal valorOriginal = ca.getValorInicial();
+	BigDecimal ret;
+	if (ca.getTipoIncrementoCuota() == TipoInteres.Simple) {
+	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
+	    interes = interes.divide(new BigDecimal("100"));
+	    interes = interes.multiply(new BigDecimal(ca.getDuracionContrato().getDuracion() / ca
+		    .getIntervaloActualizacion()));
+	    ret = valorOriginal.multiply(BigDecimal.ONE.add(interes));
+	} else {
+	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
+	    interes = interes.divide(new BigDecimal("100"));
+	    ret = valorOriginal;
+	    for (int i = 0 ; i<ca.getDuracionContrato().getDuracion() / ca
+		    .getIntervaloActualizacion();i++) {
+		ret = ret.multiply(BigDecimal.ONE.add(interes));
+	    }
+	}
+	ca.setValorInicial(ret);
+
     }
 }
