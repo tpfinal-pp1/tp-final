@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import com.TpFinal.dto.notificacion.NotificadorJob;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -28,19 +29,21 @@ import com.TpFinal.dto.interfaces.Messageable;
 public class Planificador {
 	
 	 Scheduler sc;
-	 Job notificacion;
+	 Job notificadorJob;
 	 Integer horasAntesRecoradatorio1;
 	Integer horasAntesRecoradatorio2;
 	private static Planificador instancia;
 	public static boolean demoIniciado=false;
 	
 	public static Planificador get(){
-		if(instancia==null)
+		if(instancia==null){
 			try {
 				instancia=new Planificador();
+				instancia.encender();
 			} catch (SchedulerException e) {
 				e.printStackTrace();
 			}
+		}
 		return instancia;
 	}
 	
@@ -54,8 +57,8 @@ public class Planificador {
 	
 
 
-	public void setNotificacion(Job notificacion) {
-		this.notificacion=notificacion;
+	public void setNotificadorJob(Job NotificadorJob) {
+		this.notificadorJob =NotificadorJob;
 	}
 	
 	public void encender(){
@@ -83,10 +86,9 @@ public class Planificador {
 			e.printStackTrace();
 		}
 	}
-	
-	public void agregarNotificaciones(List<Messageable>citas) {
-		if(citas!=null && citas.size()>0) {
-			citas.forEach(c -> {
+
+	public void agregarCita(Messageable c) {
+
 				if(c instanceof Cita) {
 					Cita c1= (Cita)c;
 					agregarNotificacion(c1, horasAntesRecoradatorio1);
@@ -94,8 +96,12 @@ public class Planificador {
 				}else if(c instanceof Cobro) {
 					//TODO
 				}
-				
-			});
+
+	}
+
+	public void agregarCitas(List<Messageable>citas) {
+		if(citas!=null && citas.size()>0) {
+			citas.forEach(this::agregarCita);
 		}
 	}
 	
@@ -104,7 +110,7 @@ public class Planificador {
 			String horan="0 "+fechaInicio.getMinute()+" "+fechaInicio.getHour();
 			horan=horan+" 1/1";
 			horan=horan+" * ? *";
-			JobDetail j1=JobBuilder.newJob(notificacion.getClass())
+			JobDetail j1=JobBuilder.newJob(notificadorJob.getClass())
 					.usingJobData("mensaje", mensaje)
 					.usingJobData("titulo", titulo)
 					.build();
@@ -137,8 +143,7 @@ public class Planificador {
 			try {
 				demoIniciado = true;
 				Planificador planificador = Planificador.get();
-				planificador.encender();
-				planificador.setNotificacion(new NotificadorBus());
+				planificador.setNotificadorJob(new NotificadorJob());
 				List<Messageable> citas = new ArrayList<>();
 
 				for (int i = 0; i < 10; i++) {
@@ -157,21 +162,21 @@ public class Planificador {
 
 					citas.add(c);
 				}
-				planificador.agregarNotificaciones(citas);
+				planificador.agregarCitas(citas);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 	
-	//TODO Lo dejo porque quizas sirva para otro tipo de notificacion
+	//TODO Lo dejo porque quizas sirva para otro tipo de notificadorJob
 	@Deprecated
-	public void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin,String hora, String minuto, String perioricidad, Long id) {
+	public void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin, String hora, String minuto, String perioricidad, Long id) {
 		try {
 			String horan="0 "+minuto+" "+hora;
 			horan=horan+" 1/"+perioricidad;
 			horan=horan+" * ? *";
-			JobDetail j1=JobBuilder.newJob(notificacion.getClass())
+			JobDetail j1=JobBuilder.newJob(notificadorJob.getClass())
 					.usingJobData("mensaje", mensaje)
 					.build();
 			

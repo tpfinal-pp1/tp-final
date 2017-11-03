@@ -37,7 +37,7 @@ public class PlanificadorIT {
 	@Ignore
 	@Test
 	public void test() {
-		sc.setNotificacion(new NotificadorConcreto());
+		sc.setNotificadorJob(new NotificadorConcreto());
 		for(int i=0; i<3; i++) {
 			LocalDate fInicio = LocalDate.now();
 			LocalDate fFin = fInicio.plusDays(1);
@@ -57,12 +57,11 @@ public class PlanificadorIT {
 	@Test
 	public void testJob() {
 		try {
-			sc.setNotificacion(new NotificadorConcreto());
+			sc.setNotificadorJob(new NotificadorConcreto());
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
 				LocalDateTime fFin = fInicio.plusDays(i+1);
-
 				sc.agregarCita("t "+i,"m "+i, fInicio, fFin, "1", UUID.randomUUID().toString());
 			}
 
@@ -76,7 +75,7 @@ public class PlanificadorIT {
 	@Test
 	public void addCitas() {
 		try {
-			sc.setNotificacion(new NotificadorConcreto());
+			sc.setNotificadorJob(new NotificadorConcreto());
 			List<Messageable>citas = new ArrayList<>();
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
@@ -96,7 +95,7 @@ public class PlanificadorIT {
 				citas.add(c);
 			}
 
-			sc.agregarNotificaciones(citas);
+			sc.agregarCitas(citas);
 
 			TimeUnit.SECONDS.sleep(300);
 		} catch (Exception e) {

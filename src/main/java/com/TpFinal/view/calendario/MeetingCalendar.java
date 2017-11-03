@@ -2,6 +2,7 @@ package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
+import com.TpFinal.services.CitaService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
@@ -29,6 +30,7 @@ public class MeetingCalendar extends CustomComponent {
 
     public Panel panel;
 
+    CitaService service;
     public MeetingCalendar() {
 
         setId("meeting-meetings");
@@ -46,11 +48,14 @@ public class MeetingCalendar extends CustomComponent {
         layout.addComponent(panel);
 
         setCompositionRoot(layout);
+        service=new CitaService();
+
+        refreshCitas();
 
     }
 
-    public boolean refreshCitas(){
-        return true;
+    public void refreshCitas(){
+        service.readAll().forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
     }
 
 
