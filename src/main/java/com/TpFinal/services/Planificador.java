@@ -115,7 +115,7 @@ public class Planificador {
 					agregarNotificacionCita(c1, horasAntesRecoradatorio2,2);
 				}else if(c instanceof Cobro) {
 					Cobro c1= (Cobro)c;
-					agregarNotificacionCobro(c1, horasAntesCobrosVencidos);
+					agregarNotificacionCobro(c1, horasAntesCobrosVencidos, 1);
 				}
 
 			});
@@ -156,7 +156,7 @@ public class Planificador {
 		agregarCita(c.getTitulo(), c.getMessage(), fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
 	}
 
-	private void agregarNotificacionCobro(Cobro c, Integer horas) {
+	private void agregarNotificacionCobro(Cobro c, Integer horas, Integer key) {
 		//TODO
 	}
 
