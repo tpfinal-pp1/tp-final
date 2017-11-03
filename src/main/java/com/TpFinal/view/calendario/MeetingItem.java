@@ -4,6 +4,7 @@ import com.TpFinal.dto.cita.Cita;
 import com.vaadin.icons.VaadinIcons;
 import org.vaadin.addon.calendar.item.BasicItem;
 
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 /**
@@ -21,7 +22,8 @@ public class MeetingItem extends BasicItem {
 	 */
 
 	public MeetingItem(Cita meeting) {
-        super(meeting.getName(), null, meeting.getStart(), meeting.getEnd());
+        super(meeting.getName(), null, meeting.getFechaInicio().atZone(ZoneId.systemDefault())
+				, meeting.getFechaInicio().atZone(ZoneId.systemDefault()));
         this.meeting = meeting;
 	}
 
@@ -74,13 +76,13 @@ public class MeetingItem extends BasicItem {
 
     @Override
 	public void setEnd(ZonedDateTime end) {
-		meeting.setEnd(end);
+		meeting.setFechaFin(end.toLocalDateTime());
 		super.setEnd(end);
 	}
 
 	@Override
 	public void setStart(ZonedDateTime start) {
-		meeting.setStart(start);
+		meeting.setFechaInicio(start.toLocalDateTime());
 		super.setStart(start);
 	}
 

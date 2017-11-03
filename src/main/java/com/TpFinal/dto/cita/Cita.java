@@ -108,34 +108,13 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	public boolean isLongTimeEvent() {
 		return longTime;
 	}
+
 	public void setLongTimeEvent(boolean b) {
 		 longTime=b;
 	}
 
-	public void setEnd(ZonedDateTime end) {
-
-		this.fechaInicio=end.toLocalDateTime();
-	}
-
-	public void setStart(ZonedDateTime start) {
-		this.fechaFin=start.toLocalDateTime();
-	}
-
-
 	public boolean isEditable() {
 		return true;
-	}
-
-
-
-
-	public ZonedDateTime getStart() {
-		return this.fechaInicio.atZone(ZoneId.systemDefault());
-
-	}
-
-	public ZonedDateTime getEnd() {
-		return this.fechaFin.atZone(ZoneId.systemDefault());
 	}
 
 	public State getState() {
