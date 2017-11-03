@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.EstadoEmpleado;
@@ -56,6 +60,52 @@ public class PersonaService {
 		.filter(p -> !p.getEsInmobiliaria())
 		.collect(Collectors.toList());
     }
+    
+    public Calificacion getCalificacionInquilino(Persona p) {
+    	Calificacion ret = Calificacion.A;
+    	List<ContratoAlquiler> vigentes=getContratosVigentes(p);
+    	
+    	return ret;
+    }
+    
+    private List<ContratoAlquiler> getContratosVigentes(Persona p) {
+    	List<ContratoAlquiler> ret=new ArrayList<>();
+    	if(p.getInquilino()!=null && p.getInquilino().getContratos()!=null && p.getInquilino().getContratos().size()!=0) {
+    		ret=p.getInquilino().getContratos().stream()
+    			.filter(c -> c.getEstadoContrato().equals(EstadoContrato.Vigente))
+    			.collect(Collectors.toList());
+    	}
+    	if(ret.size()!=0)
+    		return ret;
+    	return null;
+    }
+    
+    public Integer cantidadPagosAtrasados(ContratoAlquiler c) {
+    	//TODO
+    	Integer ret=0;
+    	LocalDate fecha = haceSeisMeses();
+    	
+    	List<Cobro>cobros=c.getCobros().stream()
+    	.filter(cob -> cob.getFechaDeVencimiento().compareTo(fecha)==1 || cob.getFechaDeVencimiento().compareTo(fecha)==0)
+    	.filter(cob -> {
+    		boolean r=false;
+    		if(cob.getFechaDePago()==null)
+    			r=true;
+    		else
+    			r=cob.getFechaDePago().compareTo(cob.getFechaDeVencimiento())==1;
+    		return r;
+    	})
+    	.collect(Collectors.toList());
+    	
+    	return ret;
+    }
+
+	private LocalDate haceSeisMeses() {
+		LocalDate fecha = LocalDate.now();
+    	fecha=fecha.withDayOfMonth(1);
+    	fecha=fecha.minusMonths(6);
+		return fecha;
+	}
 
     public synchronized List<Persona> findAll(String stringFilter) {
 	ArrayList arrayList = new ArrayList();
