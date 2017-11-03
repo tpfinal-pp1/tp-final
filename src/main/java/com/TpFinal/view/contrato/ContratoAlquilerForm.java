@@ -31,11 +31,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Upload.ProgressListener;
-import com.vaadin.ui.Upload.StartedEvent;
-import com.vaadin.ui.Upload.StartedListener;
 import com.vaadin.ui.themes.ValoTheme;
-import org.vaadin.risto.stepper.IntStepper;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -144,7 +140,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    tfDocumento.setValue("Error al Cargar el documento");
 	    estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
 	});
-	btCargar.addSucceededListener(e ->{
+	btCargar.addSucceededListener(e -> {
 	    tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
 	    tfDocumento.setValue("Documento Cargado");
 	    estadoCargaDocumento = EstadoCargaDocumento.Cargado;
@@ -229,7 +225,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.save();
 	    binderContratoAlquiler.validate();
 	});
-	finalizarCarga.addClickListener(renovarContrato());
+	finalizarCarga.addClickListener(finalizarContrato());
 	renovarContrato.addClickListener(e -> {
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    this.setContratoAlquiler(contratoAlquiler.clone());
@@ -237,10 +233,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	});
     }
 
-    private ClickListener renovarContrato() {
+    private ClickListener finalizarContrato() {
 	return e -> {
 	    this.binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
-	    
+
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoAlquiler.isValid()) {
 		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
@@ -266,7 +262,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.fechaVencimiento)
 		.bind(c -> {
-		    return c.getFechaCelebracion().plusMonths(c.getDuracionContrato().getDuracion());
+		    return c.getFechaCelebracion()!=null ? c.getFechaCelebracion().plusMonths(c.getDuracionContrato().getDuracion() ): null;
 		}, (c, ca) -> {
 		});
 
@@ -332,10 +328,11 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(contrato -> {
 		    if (contrato.getDocumento() != null) {
 			estadoCargaDocumento = EstadoCargaDocumento.Cargado;
-			return "Documento Cargado";}
-		    else {
+			return "Documento Cargado";
+		    } else {
 			estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
-			return "Documento No Cargado";}
+			return "Documento No Cargado";
+		    }
 		}, (contrato, text) -> {
 		});
 
@@ -585,15 +582,17 @@ public class ContratoAlquilerForm extends FormLayout {
 	    e.printStackTrace();
 	}
 
-	if (success)
+	if (success) {
 	    contratoABMView().showSuccessNotification("Guardado");
-	else {
+	    clearFields();
+	} else {
 	    contratoABMView().showErrorNotification("No se realizaron cambios");
 	}
 
     }
 
     public void cancel() {
+	clearFields();
 	contratoABMView.updateList();
 	setVisible(false);
 	contratoABMView().setComponentsVisible(true);
@@ -601,36 +600,6 @@ public class ContratoAlquilerForm extends FormLayout {
 
     public ContratoABMView contratoABMView() {
 	return contratoABMView;
-    }
-
-    private void getPersonaSelector() {
-	VentanaSelectora<Persona> personaSelector = new VentanaSelectora<Persona>(person) {
-	    @Override
-	    public void updateList() {
-		PersonaService PersonaService = new PersonaService();
-		List<Persona> Personas = PersonaService.readAll();
-		Collections.sort(Personas, new Comparator<Persona>() {
-
-		    @Override
-		    public int compare(Persona o1, Persona o2) {
-			return (int) (o2.getId() - o1.getId());
-		    }
-		});
-		grid.setItems(Personas);
-	    }
-
-	    @Override
-	    public void setGrid() {
-		grid = new Grid<>(Persona.class);
-	    }
-
-	    @Override
-	    public void seleccionado(Persona objeto) {
-		person = objeto;
-	    }
-
-	};
-
     }
 
     public void clearFields() {
@@ -650,6 +619,8 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.tfPagoFueraDeTermino.clear();
 	this.tfPropietario.clear();
 	this.tfValorInicial.clear();
+	estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
+	archivo = null;
     }
 
     private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {

@@ -311,11 +311,11 @@ public class ContratoService {
     }
 
     public List<Contrato> findAll(FiltroContrato filtro) {
+	actualizarEstadoContratosAlquilerVencidos();
 	List<Contrato> contratos = daoContrato.readAllActives()
 		.stream()
 		.filter(filtro.getFiltroCompuesto())
-		.collect(Collectors.toList());
-	actualizarEstadoContratosAlquilerVencidos();
+		.collect(Collectors.toList());	
 	contratos.sort(Comparator.comparing(Contrato::getId));
 	return contratos;
     }
