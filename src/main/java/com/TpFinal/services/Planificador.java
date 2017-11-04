@@ -162,7 +162,7 @@ public class Planificador {
 		LocalDateTime fechaFin=c.getFechaInicio();
 		Integer perioricidad=horas+1;
 		String triggerKey=c.getId().toString()+"-"+key.toString();
-		String username=c.getEmpleado().getCredencial().getUsuario();
+		String username=c.getEmpleado();
 		agregarCita(c.getTitulo(), c.getMessage(),username, fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
 	}
 

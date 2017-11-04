@@ -18,35 +18,31 @@ public class CitaService {
 
     }
 
-    private boolean saveOrUpdate(Cita cita) {
+    public boolean saveOrUpdate(Cita cita) {
         return dao.saveOrUpdate(cita);
     }
 
 
 
     public boolean addCita(Cita cita){
-        System.out.println("AGREGADA "+cita);
        boolean b= saveOrUpdate(cita);
-       Cita citaConId=null;
+        Long id=null;
         if(b){
             List<Cita> citas=readAll();
-            for (Cita citaGuardada:citas)
-                if(citaGuardada.equals(cita))
-                    citaConId=cita;
+            for (Cita citaGuardada:citas) {
+                id=citaGuardada.getId();
+                citaGuardada.setId(null);
+                if (citaGuardada.equals(cita)) {
+                    cita.setId(id);
+                    break;
+                }
+            }
         }
 
 
+      agregarTriggers(cita);
 
-       if(b&&(citaConId!=null)){
-           b=b&&!Planificador.get().removeCita(citaConId);
-            Planificador.get().addCita(citaConId);
-        }
-       else{
-           System.err.println("Error al Agregar la Cita"+cita);
-       }
 
-       if(!b)
-           System.err.println("Error de Planificador");
        return b;
     }
 
@@ -63,22 +59,32 @@ public class CitaService {
 
     }
 
+    public void agregarTriggers(Cita cita){
+        Planificador.get().removeCita(cita);
+        Planificador.get().addCita(cita);
+    }
+
+    public Cita getUltimaAgregada() {
+        List<Cita>citas=dao.readAllActives();
+        citas.sort((c1,c2)-> c2.getId().compareTo(c1.getId()));
+        return citas.get(0);
+    }
+
     public boolean editCita(Cita cita){
         System.out.println("EDITADA "+cita);
-        Cita citaOriginal=null;
-            List<Cita> citas=readAll();
-            for (Cita citaGuardada:citas)
-                if(citaGuardada.getId().equals(cita.getId()))
-                    citaOriginal=cita;
-
-
-        delete(citaOriginal);
-        cita.setId(null);
-        return addCita(cita);
+       agregarTriggers(cita);
+       return saveOrUpdate(cita);
 
     }
 
+
     public boolean delete(Cita p) {
+
+       return dao.logicalDelete(p);
+
+    }
+
+    public boolean deleteCita(Cita p) {
         System.out.println("BORRADA"+p);
         boolean ret1=true;
         boolean ret2=true;
@@ -89,7 +95,8 @@ public class CitaService {
         }
         ret2=Planificador.get().removeCita(p);
         if(!ret2){
-            System.err.println("Error al Borrar los recodatorios de la cita... \nes probable que ya se hayan detonado los triggers");
+            System.err.println("Error al Borrar los recodatorios de la cita... " +
+                    "\nes probable que ya se hayan detonado los triggers");
         }
 
 
@@ -109,7 +116,7 @@ public class CitaService {
         return ret;
     }
 
-    private List<Cita> readAll(){
+    public List<Cita> readAll(){
         return dao.readAllActives();
     }
 

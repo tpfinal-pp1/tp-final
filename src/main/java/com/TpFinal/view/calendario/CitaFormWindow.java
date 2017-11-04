@@ -5,19 +5,10 @@ import com.TpFinal.dto.cita.TipoCita;
 
 
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.contrato.Contrato;
-import com.TpFinal.dto.persona.Persona;
-
 import com.TpFinal.services.CitaService;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
-
-
-
-import com.vaadin.data.validator.EmailValidator;
-import com.vaadin.data.validator.RegexpValidator;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
@@ -29,14 +20,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
-import org.apache.lucene.document.DateTools;
-
-
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
 
 @SuppressWarnings("serial")
 public abstract class CitaFormWindow extends Window {
@@ -146,7 +130,7 @@ public abstract class CitaFormWindow extends Window {
         borrar.setVisible(cita.getId()!=null);
         this.cita = cita;
         binderCita.readBean(cita);
-        // Show delete button for only Persons already in the database
+        // Show deleteCita button for only Persons already in the database
 
         setVisible(true);
         citado.selectAll();
@@ -157,7 +141,7 @@ public abstract class CitaFormWindow extends Window {
         boolean success=false;
         try {
 
-            success=service.delete(cita);
+            success=service.deleteCita(cita);
 
 
 
@@ -196,7 +180,7 @@ public abstract class CitaFormWindow extends Window {
         boolean success=false;
         try {
             binderCita.writeBean(cita);
-            cita.setEmpleado(getCurrentUser());
+            cita.setEmpleado(getCurrentUser().getCredencial().getUsuario());
 
             if(cita.getId()!=null)
                 success=service.editCita(cita);
@@ -222,6 +206,15 @@ public abstract class CitaFormWindow extends Window {
             exito.setStyleName("bar success small");
             exito.setPosition(Position.BOTTOM_CENTER);
             exito.show(Page.getCurrent());
+            close();
+        }
+       else{
+            Notification error = new Notification(
+                    "error al guardar");
+            error.setDelayMsec(2000);
+            error.setStyleName("bar error small");
+            error.setPosition(Position.BOTTOM_CENTER);
+            error.show(Page.getCurrent());
             close();
         }
 
