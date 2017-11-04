@@ -5,13 +5,10 @@ import com.TpFinal.dto.cita.TipoCita;
 
 
 import com.TpFinal.dto.persona.Empleado;
-
 import com.TpFinal.services.CitaService;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
-
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
@@ -23,8 +20,6 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
-
-
 import java.util.Arrays;
 
 @SuppressWarnings("serial")
