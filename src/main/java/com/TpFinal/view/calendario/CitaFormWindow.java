@@ -4,12 +4,12 @@ import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 
 
+import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
 import com.TpFinal.services.CredencialService;
 import com.TpFinal.view.component.DeleteButton;
-import com.vaadin.data.Binder;
-import com.vaadin.data.ValidationException;
+import com.vaadin.data.*;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
@@ -21,6 +21,8 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
+
+import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @SuppressWarnings("serial")
@@ -68,7 +70,7 @@ public abstract class CitaFormWindow extends Window {
         setCloseShortcut(KeyCode.ESCAPE, null);
         setResizable(false);
         setClosable(true);
-       setHeight(220.0f, Unit.PERCENTAGE);
+       setHeight(500f, Unit.PERCENTAGE);
 
         VerticalLayout content = new VerticalLayout();
         content.setSizeFull();
@@ -115,22 +117,61 @@ public abstract class CitaFormWindow extends Window {
                 bind(Cita::getDireccionLugar,Cita::setDireccionLugar);
         binderCita.forField(observaciones).
                 bind(Cita::getObservaciones,Cita::setObservaciones);
-        binderCita.forField(fechaInicio).asRequired("Seleccione una fecha de inicio")
+        binderCita.forField(fechaInicio).withValidator(new Validator<LocalDateTime>() {
+            @Override
+            public ValidationResult apply(LocalDateTime localDateTime, ValueContext valueContext) {
+                if(fechaInicio.getValue().isAfter(fechaFin.getValue())){
+
+                    return ValidationResult.error("La fecha de Inicio no puede ser despues que la de Fin");
+                }
+                else{
+
+                    if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
+                        return ValidationResult.error("La duracion mínima de una cita es de 30 Minutos");
+                    }
+                    return ValidationResult.ok();
+                }
+            }
+        }).asRequired("Seleccione una fecha de inicio")
                 .bind(Cita::getFechaInicio,Cita::setFechaInicio);
-        binderCita.forField(fechaFin).asRequired("Seleccione una fecha de fin")
+        binderCita.forField(fechaFin).withValidator(new Validator<LocalDateTime>() {
+            @Override
+            public ValidationResult apply(LocalDateTime localDateTime, ValueContext valueContext) {
+                if(fechaFin.getValue().isBefore(fechaInicio.getValue())){
+                    return ValidationResult.error("La fecha de Fin no puede ser antes que la de Inicio");
+                }
+                else{
+                    if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
+                        return ValidationResult.error("La duracion mínima de una cita es de 30 Minutos");
+                    }
+                    return ValidationResult.ok();
+                }
+            }
+        }).asRequired("Seleccione una fecha de fin")
                 .bind(Cita::getFechaFin,Cita::setFechaFin);
         binderCita.forField(tipocita).asRequired("Seleccione un tipo de Cita").
                 bind(Cita::getTipoDeCita, Cita::setTipoDeCita);
+        fechaInicio.addValueChangeListener(new HasValue.ValueChangeListener<LocalDateTime>() {
+            @Override
+            public void valueChange(HasValue.ValueChangeEvent<LocalDateTime> valueChangeEvent) {
+               fechaFin.setValue( valueChangeEvent.getValue().plusHours(1));
+            }
+        });
 
     }
 
+
+
     private void setCita(Cita cita) {
-        if(cita.getId()==null){
-            direccionLugar.setValue("En Inmobiliaria");
-        }
+
         borrar.setVisible(cita.getId()!=null);
         this.cita = cita;
         binderCita.readBean(cita);
+        if(cita.getId()==null){
+            direccionLugar.setValue("En Inmobiliaria");
+            tipocita.setValue(TipoCita.Otros);
+            tipocita.setSelectedItem(TipoCita.Otros);
+        }
         // Show deleteCita button for only Persons already in the database
 
         setVisible(true);
@@ -177,6 +218,10 @@ public abstract class CitaFormWindow extends Window {
     private void save(){
         boolean success=false;
         try {
+            if(service.colisionaConCitasUser(CredencialService.getCurrentUser(),cita)){
+                Notification.show("Ya existe una Cita en ese rango horario");
+                return ;
+            }
             binderCita.writeBean(cita);
             cita.setEmpleado(CredencialService.getCurrentUser().getCredencial().getUsuario());
 
@@ -246,7 +291,7 @@ public abstract class CitaFormWindow extends Window {
         root.setCaption("Cita");
         root.setIcon(VaadinIcons.USER);
         root.setWidth(100.0f, Unit.PERCENTAGE);
-        root.setHeight(500.0f, Unit.PERCENTAGE);
+        //root.setHeight(500.0f, Unit.PERCENTAGE);
         root.setMargin(true);
         root.addStyleName("profile-form");
 

@@ -113,7 +113,7 @@ public final class DashboardView extends Panel implements View{
         header.addComponent(titleLabel);
 
         notificationsButton = buildNotificationsButton();
-        Button nuevo=new Button("Nueva Cita");
+        Button nuevo=new Button(VaadinIcons.PLUS);
         nuevo.addClickListener(new ClickListener() {
             @Override
             public void buttonClick(ClickEvent clickEvent) {
@@ -126,10 +126,11 @@ public final class DashboardView extends Panel implements View{
                         meetings.refreshCitas();
 
                         };}; }});
-        HorizontalLayout tools = new HorizontalLayout(nuevo,notificationsButton);
+        //nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        HorizontalLayout tools = new HorizontalLayout(notificationsButton,nuevo);
         tools.addStyleName("toolbar");
         header.addComponent(tools);
-        nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
+
 
         return header;
     }
@@ -349,7 +350,7 @@ public final class DashboardView extends Panel implements View{
 
        notificationsLayout = new VerticalLayout();
 
-        Label title = new Label("Notifications");
+        Label title = new Label("Notificaciones");
         title.addStyleName(ValoTheme.LABEL_H3);
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
@@ -451,8 +452,6 @@ public final class DashboardView extends Panel implements View{
         footer.addComponent(showAll);
         footer.setComponentAlignment(showAll, Alignment.TOP_CENTER);
         notificationsLayout.addComponent(footer);
-
-
         notificationsWindow = new Window();
         notificationsWindow.setWidth(300.0f, Unit.PIXELS);
         notificationsWindow.addStyleName("notifications");
