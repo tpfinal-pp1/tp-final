@@ -309,6 +309,8 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		private String direccionLugar;
 		private String citado;
 		private LocalDateTime fechahora;
+		private Empleado empleado;
+
 
 		public Builder setTipoDeCita(TipoCita tipoDeCita) {
 			this.tipoDeCita = tipoDeCita;
@@ -327,6 +329,10 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 		public Builder setCitado(String citado) {
 			this.citado = citado;
+			return this;
+		}
+		public Builder setEmpleado(Empleado empleado) {
+			this.empleado=empleado;
 			return this;
 		}
 

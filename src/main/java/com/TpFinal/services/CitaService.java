@@ -18,14 +18,13 @@ public class CitaService {
 
     }
 
-    private boolean saveOrUpdate(Cita cita) {
+    public boolean saveOrUpdate(Cita cita) {
         return dao.saveOrUpdate(cita);
     }
 
 
 
     public boolean addCita(Cita cita){
-        System.out.println("AGREGADA "+cita);
        boolean b= saveOrUpdate(cita);
        Cita citaConId=null;
         if(b){
@@ -61,6 +60,11 @@ public class CitaService {
         return null;
 
 
+    }
+    public Cita getUltimaAgregada() {
+        List<Cita>citas=dao.readAllActives();
+        citas.sort((c1,c2)-> c2.getId().compareTo(c1.getId()));
+        return citas.get(0);
     }
 
     public boolean editCita(Cita cita){
@@ -109,7 +113,7 @@ public class CitaService {
         return ret;
     }
 
-    private List<Cita> readAll(){
+    public List<Cita> readAll(){
         return dao.readAllActives();
     }
 
