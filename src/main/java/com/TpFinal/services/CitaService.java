@@ -31,8 +31,6 @@ public class CitaService {
                     citaConId=cita;
         }
 
-
-
        if(b&&(citaConId!=null)){
            b=b&&!Planificador.get().removeCita(citaConId);
             Planificador.get().addCita(citaConId);

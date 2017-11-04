@@ -5,18 +5,23 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.interfaces.Messageable;
+import com.TpFinal.dto.persona.CategoriaEmpleado;
+import com.TpFinal.dto.persona.Credencial;
+import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.NotificadorConcreto;
 import com.TpFinal.services.Planificador;
-
-import javax.validation.constraints.AssertTrue;
+import com.itextpdf.text.log.SysoCounter;
 
 
 public class PlanificadorIT {
@@ -74,66 +79,20 @@ public class PlanificadorIT {
 
 
 
-
+	
 	@Test
 	public void eliminarCita() {
-		Cita c =null;
-		try {
-			sc.setNotificacion(new NotificadorConcreto());
-
-				LocalDateTime fInicio = LocalDateTime.now();
-				fInicio=fInicio.plusMinutes(1);
-				fInicio=fInicio.plusHours(1);
-				c = new Cita.Builder()
-						.setCitado("Señor "+String.valueOf(0))
-						.setDireccionLugar("sarasa: "+String.valueOf(0))
-						.setFechahora(fInicio)
-						.setObservaciones("obs"+String.valueOf(0))
-						.setTipoDeCita(randomCita())
-						.build();
-				c.setId((long)1);
-
-
-			sc.addCita(c);
-
-
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		boolean eliminar=true;
-		eliminar=eliminar&&sc.removeCita(c);
-
-
-		LocalDateTime fInicio = LocalDateTime.now();
-		fInicio=fInicio.plusMinutes(1);
-		fInicio=fInicio.plusHours(1);
-		Cita c1 = new Cita.Builder()
-				.setCitado("Señor "+String.valueOf(0))
-				.setDireccionLugar("sarasa: "+String.valueOf(0))
-				.setFechahora(fInicio)
-				.setObservaciones("obs"+String.valueOf(0))
-				.setTipoDeCita(randomCita())
-				.build();
-		c.setId((long)1);
-
-
-		sc.addCita(c);
-		Assert.assertTrue(eliminar);
-	}
-
-
-	@Test
-	public void addCitas() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
 			List<Messageable>citas = new ArrayList<>();
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
-				fInicio=fInicio.plusHours(1);
+				fInicio=fInicio.plusHours(24);
 
-				System.out.println(fInicio.toString());
+				Empleado e=instanciaEmpleado();
+				e.setIdRol(new Long (i));
+				System.out.println("Valor en add: "+e.getCredencial().getUsuario());
 
 				Cita c = new Cita.Builder()
 						.setCitado("Señor "+String.valueOf(i))
@@ -141,9 +100,11 @@ public class PlanificadorIT {
 						.setFechahora(fInicio)
 						.setObservaciones("obs"+String.valueOf(i))
 						.setTipoDeCita(randomCita())
+						.setEmpleado(e)
 						.build();
 				c.setId(Long.valueOf(i));
 				citas.add(c);
+				System.out.println("empleado de la cita "+c.getEmpleado());
 			}
 			sc.agregarNotificaciones(citas);
 			boolean eliminar=true;
@@ -154,6 +115,41 @@ public class PlanificadorIT {
 
 			}
 			Assert.assertTrue(eliminar);
+
+			TimeUnit.SECONDS.sleep(5);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Ignore
+	@Test
+	public void addCitas() {
+		try {
+			sc.setNotificacion(new NotificadorConcreto());
+			List<Messageable>citas = new ArrayList<>();
+			for(int i=0; i<3; i++) {
+				LocalDateTime fInicio = LocalDateTime.now();
+				fInicio=fInicio.plusMinutes(i+1);
+				fInicio=fInicio.plusHours(24);
+
+				Empleado e=instanciaEmpleado();
+				e.setIdRol(new Long (i));
+				System.out.println("Valor en add: "+e.getCredencial().getUsuario());
+
+				Cita c = new Cita.Builder()
+						.setCitado("Señor "+String.valueOf(i))
+						.setDireccionLugar("sarasa: "+String.valueOf(i))
+						.setFechahora(fInicio)
+						.setObservaciones("obs"+String.valueOf(i))
+						.setTipoDeCita(randomCita())
+						.setEmpleado(e)
+						.build();
+				c.setId(Long.valueOf(i));
+				citas.add(c);
+				System.out.println("empleado de la cita "+c.getEmpleado());
+			}
+			sc.agregarNotificaciones(citas);
 
 			TimeUnit.SECONDS.sleep( 300);
 		} catch (Exception e) {
@@ -174,5 +170,23 @@ public class PlanificadorIT {
 		else
 			ret=TipoCita.Tasacion;
 		return ret;
+	}
+	
+	private Credencial instanciaCredencial() {
+		Credencial c = new Credencial.Builder()
+				.setUsuario("usuario")
+				.setContrasenia("pass")
+				.build();
+		return c;
+	}
+	
+	private Empleado instanciaEmpleado() {
+		Empleado e = new Empleado.Builder()
+				.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria)
+				.setCredencial(instanciaCredencial())
+				.setFechaDeAlta(LocalDate.now())
+				.build();
+		System.out.println("aca "+e.getCredencial().getUsuario());
+		return e;
 	}
 }

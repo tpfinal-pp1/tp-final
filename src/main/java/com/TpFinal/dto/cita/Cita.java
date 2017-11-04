@@ -79,7 +79,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	private Empleado empleado;
 
 	public Cita() {
-
+		this.empleado=new Empleado();
 	}
 
 	private Cita(Builder b) {
@@ -88,7 +88,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		this.direccionLugar = b.direccionLugar;
 		this.observaciones = b.observaciones;
 		this.tipoDeCita = b.tipoDeCita;
-
+//		this.empleado=b.empleado;
 	}
 
 	public LocalDateTime getFechaFin() {
@@ -158,14 +158,12 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 	public void setEmpleado(Empleado emp) {
 
-		if (emp != null) {
-			this.empleado = emp;
-			this.empleado.addCita(this);
-		} else {
-			if (this.empleado != null) {
-				this.empleado.removeCita(this);
-				this.empleado = null;
-			}
+		if (emp != null && !this.empleado.equals(emp)) {
+			this.empleado.removeCita(this);
+		} 
+		this.empleado=emp;
+		if(emp!=null && !this.empleado.getCalendarioPersonal().contains(this)) {
+			emp.addCita(this);
 		}
 	}
 
@@ -277,6 +275,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		private String direccionLugar;
 		private String citado;
 		private LocalDateTime fechahora;
+		private Empleado empleado;
 
 		public Builder setTipoDeCita(TipoCita tipoDeCita) {
 			this.tipoDeCita = tipoDeCita;
@@ -300,6 +299,11 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 		public Builder setFechahora(LocalDateTime fechahora) {
 			this.fechahora = fechahora;
+			return this;
+		}
+		
+		public Builder setEmpleado(Empleado empleado) {
+			this.empleado=empleado;
 			return this;
 		}
 
