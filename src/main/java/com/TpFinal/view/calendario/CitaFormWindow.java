@@ -224,6 +224,15 @@ public abstract class CitaFormWindow extends Window {
             exito.show(Page.getCurrent());
             close();
         }
+       else{
+            Notification error = new Notification(
+                    "error al guardar");
+            error.setDelayMsec(2000);
+            error.setStyleName("bar error small");
+            error.setPosition(Position.BOTTOM_CENTER);
+            error.show(Page.getCurrent());
+            close();
+        }
 
     }
     private Component buildFooter() {

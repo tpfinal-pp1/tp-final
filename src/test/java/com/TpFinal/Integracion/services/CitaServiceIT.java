@@ -178,7 +178,20 @@ public class CitaServiceIT {
 		assertEquals(5, service.readAllFromUser(e2).size());
 		
 	}
-	
+	/*@Test
+	public void errorDeCargaDuplicada(){
+		System.out.println("Total al empezar "+service.readAll().size());
+		Persona p1= instanciaEmpleadoAdministrador("1");
+		Persona p2= instanciaEmpleadoAdministrador("2");
+		p1.addRol(instanciaEmpleado());
+		Empleado e = (Empleado)p1.getRol(Rol.Empleado);
+		e.getCredencial().setUsuario("User nuevo");
+		p2.addRol(instanciaEmpleado());
+
+
+	}*/
+
+
 	@Test
 	public void getCitasDeUsuarioEliminando() {
 		DAOPersona daop = new DAOPersonaImpl();
@@ -284,7 +297,12 @@ public class CitaServiceIT {
 			ret=TipoCita.Tasacion;
 		return ret;
 	}
-	
+
+
+
+
+
+
 	private static Persona instanciaEmpleadoAdministrador(String numero) {
 
 		Persona p = new Persona.Builder()

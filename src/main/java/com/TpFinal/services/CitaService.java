@@ -26,26 +26,24 @@ public class CitaService {
 
     public boolean addCita(Cita cita){
        boolean b= saveOrUpdate(cita);
-       Cita citaConId=null;
+        Long id=null;
         if(b){
             List<Cita> citas=readAll();
-            for (Cita citaGuardada:citas)
-                if(citaGuardada.equals(cita))
-                    citaConId=cita;
+            for (Cita citaGuardada:citas) {
+                id=citaGuardada.getId();
+                citaGuardada.setId(null);
+                if (citaGuardada.equals(cita)) {
+                    cita.setId(id);
+                    break;
+                }
+            }
         }
 
 
+        Planificador.get().removeCita(cita);
+        Planificador.get().addCita(cita);
 
-       if(b&&(citaConId!=null)){
-           b=b&&!Planificador.get().removeCita(citaConId);
-            Planificador.get().addCita(citaConId);
-        }
-       else{
-           System.err.println("Error al Agregar la Cita"+cita);
-       }
 
-       if(!b)
-           System.err.println("Error de Planificador");
        return b;
     }
 
@@ -61,6 +59,12 @@ public class CitaService {
 
 
     }
+
+    public void agregarTriggers(Cita cita){
+        Planificador.get().removeCita(cita);
+        Planificador.get().addCita(cita);
+    }
+
     public Cita getUltimaAgregada() {
         List<Cita>citas=dao.readAllActives();
         citas.sort((c1,c2)-> c2.getId().compareTo(c1.getId()));
@@ -69,16 +73,8 @@ public class CitaService {
 
     public boolean editCita(Cita cita){
         System.out.println("EDITADA "+cita);
-        Cita citaOriginal=null;
-            List<Cita> citas=readAll();
-            for (Cita citaGuardada:citas)
-                if(citaGuardada.getId().equals(cita.getId()))
-                    citaOriginal=cita;
-
-
-        delete(citaOriginal);
-        cita.setId(null);
-        return addCita(cita);
+       agregarTriggers(cita);
+       return saveOrUpdate(cita);
 
     }
 
@@ -93,7 +89,8 @@ public class CitaService {
         }
         ret2=Planificador.get().removeCita(p);
         if(!ret2){
-            System.err.println("Error al Borrar los recodatorios de la cita... \nes probable que ya se hayan detonado los triggers");
+            System.err.println("Error al Borrar los recodatorios de la cita... " +
+                    "\nes probable que ya se hayan detonado los triggers");
         }
 
 
