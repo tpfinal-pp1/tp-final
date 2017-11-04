@@ -127,11 +127,14 @@ public class CitaServiceIT {
 	public void getCitasDeUsuario() {
 		DAOPersona daop = new DAOPersonaImpl();
 
+		System.out.println("Total al empezar "+service.readAll().size());
 		Persona p1= instanciaEmpleadoAdministrador("1");
 		Persona p2= instanciaEmpleadoAdministrador("2");
 		p1.addRol(instanciaEmpleado());
+		Empleado e = (Empleado)p1.getRol(Rol.Empleado);
+		e.getCredencial().setUsuario("User nuevo");
+		
 		p2.addRol(instanciaEmpleado());
-		System.out.println(p1.getRoles().size());
 	
 		
 		daop.saveOrUpdate(p1);
@@ -139,32 +142,40 @@ public class CitaServiceIT {
 		for(int i=0; i<5; i++) {
 			
 			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-			Empleado e2=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
+			Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
 			
 			Cita c1=instanciaCita(i);
 			c1.setEmpleado(e1);
+			
 			Cita c2=instanciaCita(i);
-			c2.setEmpleado(e1);
-			Cita c3=instanciaCita(i);
-			c3.setEmpleado(e2);
+			c2.setEmpleado(e2);
 			
 			service.saveOrUpdate(c1);
 			service.saveOrUpdate(c2);
-			service.saveOrUpdate(c3);
+		}
+	for(int i=0; i<3; i++) {
 			
+			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
+			
+			Cita c1=instanciaCita(i);
+			c1.setEmpleado(e1);
+			
+			
+			service.saveOrUpdate(c1);
 		}
 		
 		daop.saveOrUpdate(p1);
 		daop.saveOrUpdate(p2);
 		
 		Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-		Empleado e2=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
+		Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
 		
+		System.out.println("Total de citas "+service.readAll().size());
+		System.out.println("p1: "+service.readAllFromUser(e1).size());
+		System.out.println("p2: "+service.readAllFromUser(e2).size());
 		
-		System.out.println(service.readAllFromUser(e1).size());
-		System.out.println(service.readAllFromUser(e2).size());
-		
-		
+		assertEquals(8, service.readAllFromUser(e1).size());
+		assertEquals(5, service.readAllFromUser(e2).size());
 		
 	}
 	
@@ -180,7 +191,6 @@ public class CitaServiceIT {
 				.setTipoDeCita(randomCita())
 				.setEmpleado(e)
 				.build();
-		System.out.println("valor empleado creado "+e.getCredencial().getUsuario());
 		return c;
 	}
 	
