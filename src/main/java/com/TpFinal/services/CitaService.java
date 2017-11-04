@@ -78,7 +78,14 @@ public class CitaService {
 
     }
 
+
     public boolean delete(Cita p) {
+
+       return dao.logicalDelete(p);
+
+    }
+
+    public boolean deleteCita(Cita p) {
         System.out.println("BORRADA"+p);
         boolean ret1=true;
         boolean ret2=true;
