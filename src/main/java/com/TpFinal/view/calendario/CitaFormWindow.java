@@ -196,7 +196,7 @@ public abstract class CitaFormWindow extends Window {
         boolean success=false;
         try {
             binderCita.writeBean(cita);
-            cita.setEmpleado(getCurrentUser());
+            cita.setEmpleado(getCurrentUser().getCredencial().getUsuario());
 
             if(cita.getId()!=null)
                 success=service.editCita(cita);

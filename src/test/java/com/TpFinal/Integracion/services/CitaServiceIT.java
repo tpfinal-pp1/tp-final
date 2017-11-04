@@ -31,7 +31,7 @@ import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.CitaService;
 
 public class CitaServiceIT {
-	CitaService service;
+/*	CitaService service;
 	List<Cita>Cita= new ArrayList<>();
 
 	@BeforeClass
@@ -189,7 +189,7 @@ public class CitaServiceIT {
 		p2.addRol(instanciaEmpleado());
 
 
-	}*/
+	}
 
 
 	@Test
@@ -317,5 +317,5 @@ public class CitaServiceIT {
 
 		return p;
 	}
-
+*/
 }

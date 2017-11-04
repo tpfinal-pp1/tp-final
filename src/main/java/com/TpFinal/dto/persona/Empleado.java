@@ -42,9 +42,7 @@ public class Empleado extends RolPersona {
 	@OneToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
 	protected Credencial credencial;
-	@OneToMany(mappedBy = "empleado", fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.ALL })
-	private Set<Cita> calendarioPersonal = new HashSet<>();
+
 
 	public Empleado() {
 		super();
@@ -59,23 +57,11 @@ public class Empleado extends RolPersona {
 		this.fechaDeBaja = b.fechaDeBaja;
 		this.setEstadoRegistro(EstadoRegistro.ACTIVO);
 		this.categoriaEmpleado = b.categoriaEmpleado;
-		this.calendarioPersonal = b.calendarioPersonal;
 		this.credencial=b.credencial;
 	}
 
-	public void addCita(Cita cita) {
-		if (!this.calendarioPersonal.contains(cita)) {
-			this.calendarioPersonal.add(cita);
-			cita.setEmpleado(this);
-		}
-	}
 
-	public void removeCita(Cita cita) {
-		if (this.calendarioPersonal.contains(cita)) {
-			this.calendarioPersonal.remove(cita);
-			cita.setEmpleado(null);
-		}
-	}
+
 
 	public EstadoEmpleado getEstadoEmpleado() {
 		return estadoEmpleado;
@@ -138,13 +124,7 @@ public class Empleado extends RolPersona {
 		return getId() != null && Objects.equals(getId(), other.getId());
 	}
 
-	public Set<Cita> getCalendarioPersonal() {
-		return calendarioPersonal;
-	}
 
-	public void setCalendarioPersonal(Set<Cita> calendarioPersonal) {
-		this.calendarioPersonal = calendarioPersonal;
-	}
 
 	public static class Builder {
 		protected Set<Cita> calendarioPersonal= new HashSet<>();

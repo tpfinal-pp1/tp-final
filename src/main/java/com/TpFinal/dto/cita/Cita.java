@@ -67,6 +67,8 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	private String direccionLugar;
 	@Column(name = "citado")
 	private String citado;
+	@Column(name = "empleado")
+	private String empleado;
 	@Column(name = "observaciones")
 	private String observaciones;
 	@Enumerated(EnumType.STRING)
@@ -79,10 +81,6 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Cascade({ CascadeType.ALL })
 	protected Set<Recordatorio> recordatorios = new HashSet<>();
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
-	@JoinColumn(name = "id_empleado")
-	private Empleado empleado;
 	
 	//Mod by agus(calendario)
 	public enum State {
@@ -180,21 +178,12 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		}
 	}
 
-	public Empleado getEmpleado() {
+	public String getEmpleado() {
 		return empleado;
 	}
 
-	public void setEmpleado(Empleado emp) {
-
-		if (emp != null) {
-			this.empleado = emp;
-			this.empleado.addCita(this);
-		} else {
-			if (this.empleado != null) {
-				this.empleado.removeCita(this);
-				this.empleado = null;
-			}
-		}
+	public void setEmpleado(String empleado) {
+		this.empleado = empleado;
 	}
 
 	public LocalDateTime getFechaInicio() {
