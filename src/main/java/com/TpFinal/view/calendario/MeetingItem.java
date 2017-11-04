@@ -1,7 +1,11 @@
 package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.persona.Credencial;
+import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.services.CredencialService;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.VaadinSession;
 import org.vaadin.addon.calendar.item.BasicItem;
 
 import java.time.ZoneId;
@@ -14,6 +18,7 @@ import java.time.ZonedDateTime;
 public class MeetingItem extends BasicItem {
 
 	private final Cita meeting;
+
 
 	/**
 	 * constructor
@@ -47,7 +52,12 @@ public class MeetingItem extends BasicItem {
 
 	@Override
 	public String getStyleName() {
-		return "state-" + meeting.getState().name().toLowerCase();
+
+		if(meeting.getEmpleado().equals(CredencialService.getCurrentUser().
+				getCredencial().getUsuario()))
+			return	"state-"+Cita.State.planned.name().toLowerCase();
+
+		return "state-"+Cita.State.confirmed.name().toLowerCase();
 	}
 
 	@Override
@@ -62,12 +72,12 @@ public class MeetingItem extends BasicItem {
 
     @Override
     public boolean isMoveable() {
-        return meeting.isEditable();
+        return false;
     }
 
     @Override
     public boolean isResizeable() {
-        return meeting.isEditable();
+        return false;
     }
 
 //    @Override

@@ -6,6 +6,7 @@ import com.TpFinal.dto.cita.TipoCita;
 
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -172,15 +173,12 @@ public abstract class CitaFormWindow extends Window {
 
     }
 
-    private Empleado getCurrentUser() {
-        return (Empleado) VaadinSession.getCurrent()
-                .getAttribute(Empleado.class.getName());
-    }
+
     private void save(){
         boolean success=false;
         try {
             binderCita.writeBean(cita);
-            cita.setEmpleado(getCurrentUser().getCredencial().getUsuario());
+            cita.setEmpleado(CredencialService.getCurrentUser().getCredencial().getUsuario());
 
             if(cita.getId()!=null)
                 success=service.editCita(cita);

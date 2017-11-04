@@ -108,11 +108,18 @@ background: none;
     }
 
     .v-calendar-event.v-calendar-event-state-confirmed {
-        color: #095F3F;
+        color: #222222;
 
         .v-calendar-event-content {
+            border: 1px solid #beefbe;
+
             background-color: rgba(190, 239, 190, 0.65);
+
+            -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
         }
+
     }
 
 }

@@ -10,6 +10,7 @@ import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 
 import com.TpFinal.view.DashboardViewType;
+import com.vaadin.server.VaadinSession;
 
 
 public class CredencialService {
@@ -48,6 +49,12 @@ public class CredencialService {
 	}
 
     }
+	public static Empleado getCurrentUser() {
+		Empleado empleado=(Empleado) VaadinSession.getCurrent()
+				.getAttribute(Empleado.class.getName());
+		System.out.println(empleado.getCredencial().getUsuario());
+		return empleado;
+	}
 
     public boolean hasViewAccess(Credencial credencial, Class view) {
 	ArrayList<DashboardViewType> userViews = credencial.getViewAccess().views;

@@ -3,6 +3,7 @@ package com.TpFinal.view;
 import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.persona.Empleado;
 
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.NotificacionService;
@@ -33,6 +34,7 @@ public final class DashboardMenu extends CustomComponent {
     private static final String STYLE_VISIBLE = "valo-menu-visible";
     private Label notificationsBadge;
     private MenuItem settingsItem;
+    NotificacionService nS;
 
 
     public DashboardMenu() {
@@ -45,6 +47,7 @@ public final class DashboardMenu extends CustomComponent {
         DashboardEventBus.register(this);
 
         setCompositionRoot(buildContent());
+        nS=new NotificacionService();
     }
 
     private Component buildContent() {
@@ -75,15 +78,12 @@ public final class DashboardMenu extends CustomComponent {
         return logoWrapper;
     }
 
-    private Empleado getCurrentUser() {
-        return (Empleado) VaadinSession.getCurrent()
-                .getAttribute(Empleado.class.getName());
-    }
+
 
     private Component buildUserMenu() {
         final MenuBar settings = new MenuBar();
         settings.addStyleName("user-menu");
-        final Empleado user = getCurrentUser();
+        final Empleado user = CredencialService.getCurrentUser();
         settingsItem = settings.addItem("",
                 new ThemeResource("img/profile-pic-300px.jpg"), null);
         updateUserName(null);
@@ -132,7 +132,7 @@ public final class DashboardMenu extends CustomComponent {
         CssLayout menuItemsLayout = new CssLayout();
         menuItemsLayout.addStyleName("valo-menuitems");
        
-        for (final DashboardViewType view : getCurrentUser().getCredencial().getViewAccess().views) {
+        for (final DashboardViewType view : CredencialService.getCurrentUser().getCredencial().getViewAccess().views) {
             Component menuItemComponent = new ValoMenuItemButton(view);
 
 
@@ -179,7 +179,7 @@ public final class DashboardMenu extends CustomComponent {
     @Subscribe
     public void updateNotificationsCount(
             final DashboardEvent.NotificationsCountUpdatedEvent event) {
-        NotificacionService nS=new NotificacionService();
+
         int unreadNotificationsCount = nS
                 .getUnreadNotificationsCount();
         notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
@@ -193,7 +193,7 @@ public final class DashboardMenu extends CustomComponent {
 
     @Subscribe
     public void updateUserName(final DashboardEvent.ProfileUpdatedEvent event) {
-        Empleado user = getCurrentUser();
+        Empleado user = CredencialService.getCurrentUser();
         settingsItem.setText(user.getPersona().getNombre() + " " + user.getPersona().getApellido());
     }
 
