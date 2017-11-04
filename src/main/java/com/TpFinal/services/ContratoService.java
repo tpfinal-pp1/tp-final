@@ -244,6 +244,44 @@ public class ContratoService {
 	return itemsReporte;
     }
 
+    public List<Object> getListadoAlquileresACobrarObject(LocalDate fechaDesde, LocalDate fechaHasta) {
+
+	CobroService cobroService = new CobroService();
+
+	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+
+	List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
+
+	List<Cobro> cobros = new ArrayList<>();
+
+	contratosACobrar.forEach(contrato -> {
+	    if (contrato.getCobros() != null) {
+		cobros.addAll(contrato.getCobros().stream()
+			.filter(c -> {
+			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+			})
+			.filter(c -> {
+			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
+			})
+			.filter(c -> {
+			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
+			})
+			.collect(Collectors.toList()));
+		cobroService.calcularDatosFaltantes(cobros);
+		cobros.forEach(cobro -> {
+		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
+			    cobro, contrato.getMoneda()));
+		});
+	    }
+	});
+	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
+		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
+		.thenComparing(ItemRepAlquileresACobrar::getApellido)
+		.thenComparing(ItemRepAlquileresACobrar::getNombre));
+
+	return itemsReporte.stream().map(i -> (Object) i ).collect(Collectors.toList());
+    }
+
     public List<ContratoAlquiler> getContratosAlquilerVigentes() {
 	List<ContratoAlquiler> contratosVigentes = daoAlquiler.readAllActives().stream()
 		.filter(c -> {
@@ -251,6 +289,15 @@ public class ContratoService {
 		})
 		.collect(Collectors.toList());
 	return contratosVigentes;
+    }
+
+    public List<ContratoAlquiler> getContratosAlquilerCobrables() {
+	List<ContratoAlquiler> contratosCobrables = daoAlquiler.readAllActives().stream()
+		.filter(c -> {
+		    return !c.getEstadoContrato().equals(EstadoContrato.EnProcesoDeCarga);
+		})
+		.collect(Collectors.toList());
+	return contratosCobrables;
     }
 
     public boolean saveOrUpdate(Contrato contrato, File doc) throws ContratoServiceException {
@@ -599,8 +646,8 @@ public class ContratoService {
 	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
 	    interes = interes.divide(new BigDecimal("100"));
 	    ret = valorOriginal;
-	    for (int i = 1 ; i<ca.getDuracionContrato().getDuracion() / ca
-		    .getIntervaloActualizacion();i++) {
+	    for (int i = 1; i < ca.getDuracionContrato().getDuracion() / ca
+		    .getIntervaloActualizacion(); i++) {
 		ret = ret.multiply(BigDecimal.ONE.add(interes));
 	    }
 	}

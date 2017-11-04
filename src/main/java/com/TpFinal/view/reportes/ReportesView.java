@@ -3,7 +3,15 @@ package com.TpFinal.view.reportes;
 import java.io.File;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Month;
+import java.time.Year;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
+import org.apache.xerces.util.ShadowedSymbolTable;
 
 import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.PDFComponent;
@@ -41,11 +49,10 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @Title("Reportes")
 @Theme("valo")
-@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class ReportesView extends DefaultLayout implements View {
 
-    private static DAOContratoAlquiler daoContratoAlquiler;
-       
+    private static final Logger logger = Logger.getLogger(ReportesView.class);
+
     private JasperReport reporte;
     private JasperPrint reporteLleno;
     Map<String, Object> parametersMap = new HashMap<String, Object>();
@@ -58,98 +65,83 @@ public class ReportesView extends DefaultLayout implements View {
     Button newReport = new Button("Generar");
     Notification error;
 
-    DateField fDesdeNuevo = null;
-    DateField fHastaNuevo = null;
-    
+    DateField fDesdeDatePicker = null;
+    DateField fHastaDatePicker = null;
+
     DateField fDesde2 = null;
 
     List<Object> objects = null;
     boolean conCobrosPendientes;
-
-    public enum TipoReporte {
-	Propietario("ReportePropietarios.jasper"), AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper"), 
-	AlquileresPorMes("ReporteAlquileresPorMesNuevo.jasper");
-
-	private final String archivoReporte;
-
-	TipoReporte(String archivoReporte) {
-	    this.archivoReporte = archivoReporte;
-	}
-
-	@Override
-	public String toString() {
-	    switch (this) {
-	    case Propietario:
-		return "Propietario";
-	    case AlquileresPorCobrar:
-		return "Alquileres a Cobrar";
-	    case AlquileresPorMes:
-	    return "Alquileres por Mes";
-	    default:
-		return super.toString();
-
-	    }
-	}
-
-	public static List<TipoReporte> toList() {
-	    TipoReporte[] clases = TipoReporte.values();
-	    List<TipoReporte> ret = new ArrayList<>();
-	    for (TipoReporte c : clases) {
-		ret.add(c);
-	    }
-	    return ret;
-	}
-
-	public String getArchivoReporte() {
-	    return this.archivoReporte;
-	}
-
-    }
+    private ContratoService contratoService = new ContratoService();
 
     public List<Object> getObjetos(TipoReporte tipo) {
-	ArrayList<Object> objects = new ArrayList<>();
-	ArrayList<Object> objectsSubReporte = new ArrayList<>();	
-	List<ItemRepAlquileresACobrar> items = new ArrayList<ItemRepAlquileresACobrar>();
+	List<Object> objects = new ArrayList<>();
 
-	System.out.println("Tipo" + tipo);
+	if (logger.isDebugEnabled()) {
+	    logger.debug("===========================================");
+	    logger.debug("Cargando datos para reporte de tipo: " + tipo);
+	    logger.debug("===========================================");
+	}
 	switch (tipo) {
-	case Propietario:
+	case Propietario: {
 	    PersonaService servicePersona = new PersonaService();
 	    objects.addAll(servicePersona.findForRole(
 		    Rol.Propietario.toString()));
 	    break;
+	}
 
-	case AlquileresPorCobrar:
-	    objects.addAll(filtrarPorRangos());
+	case AlquileresPorCobrar: {
+	    LocalDate fechaDesde = fDesdeDatePicker.getValue();
+	    LocalDate fechaHasta = fHastaDatePicker.getValue();
+
+	    if (logger.isDebugEnabled()) {
+		logger.debug("==========================");
+		logger.debug("fechaDesde: " + fechaDesde);
+		logger.debug("fechaHasta: " + fechaHasta);
+		logger.debug("==========================");
+	    }
+
+	    // Por defecto, si los campos estan vacios el reporte es hasta el mes actual.
+	    if (fechaDesde == null && fechaHasta == null) {
+		// Para obtener el ultimo dia del mes.
+		fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+	    }
+	    objects = contratoService.getListadoAlquileresACobrarObject(fechaDesde, fechaHasta);
 	    break;
-	    
+	}
+
 	case AlquileresPorMes:
-		objects.addAll(filtrarPorMes());
-		break;
+	    objects.addAll(filtrarPorMes());
+	    break;
 
 	}
 
 	return objects;
 
     }
-    
-    public ArrayList<Object> filtrarPorRangos() {
+
+    public List<Object> filtrarPorRangos() {
 	ContratoService service = new ContratoService();
 	ArrayList<Object> ret = new ArrayList<>();
-	System.out.println(fDesdeNuevo.toString().length() + "" + fHastaNuevo.toString().length());
-	if (fHastaNuevo == null || fDesdeNuevo == null) {
-	    showErrorNotification("No hay Pagos en el rango de fecha seleccionado");
-	    return new ArrayList<>(service.getCobrosOrdenadosPorAño());
+	if (logger.isDebugEnabled()) {
+	    logger.debug("===========================================");
+	    logger.debug("Rango de fechas: " + fDesdeDatePicker + " a " + fHastaDatePicker);
+	    logger.debug("===========================================");
+	}
+	if (fHastaDatePicker == null || fDesdeDatePicker == null) {
+	    showErrorNotification("Debe seleccionar un rango Valido");
+	    return service.getCobrosOrdenadosPorAño().stream().map(i -> (Object) i).collect(Collectors.toList());
 
 	}
 
-	if (fDesdeNuevo.getValue() == null && fHastaNuevo.getValue() == null) {
+	if (fDesdeDatePicker.getValue() == null && fHastaDatePicker.getValue() == null) {
 
 	    return new ArrayList<>(service.getCobrosOrdenadosPorAño());
 	}
 
-	for (ItemRepAlquileresACobrar item : service.getListadoAlquileresACobrar(fDesdeNuevo.getValue(), fHastaNuevo
-		.getValue())) {
+	for (ItemRepAlquileresACobrar item : service.getListadoAlquileresACobrar(fDesdeDatePicker.getValue(),
+		fHastaDatePicker
+			.getValue())) {
 
 	    ret.add(item);
 
@@ -163,67 +155,61 @@ public class ReportesView extends DefaultLayout implements View {
 	return ret;
 
     }
-    
-     
-    public ArrayList<Object> filtrarPorMes(){
-    	ContratoService service = new ContratoService();
-    	ArrayList<Object> ret = new ArrayList<>();
-    	
-        
-    	if (fDesde2.getValue() == null) {
-    		showErrorNotification("Debes seleccionar una fecha");
-   	   
-    	}
-    	
-    	if (fDesde2.getValue() != null && conCobrosPendientes==false) {
-    		
-    		for (ItemRepAlquileresACobrar item2 : service.getListadoAlquileresCobradosPorMes(fDesde2.getValue())) {
 
-    			    ret.add(item2);
-    	
-    		}
-    		
-    		
-    		return ret;
-    	}
-    	
-    	else {
-    		
-    		for (ItemRepAlquileresACobrar item2 : service.getListadoTodosLosAlquileresDeUnMes(fDesde2.getValue())) {
-    			ret.add(item2);
-    		}
-    		
-    		
-    		return ret;
-    		
-    	}
+    public ArrayList<Object> filtrarPorMes() {
+	ContratoService service = new ContratoService();
+	ArrayList<Object> ret = new ArrayList<>();
 
+	if (fDesde2.getValue() == null) {
+	    showErrorNotification("Debes seleccionar una fecha");
 
-    } 
+	}
+
+	if (fDesde2.getValue() != null && conCobrosPendientes == false) {
+
+	    for (ItemRepAlquileresACobrar item2 : service.getListadoAlquileresCobradosPorMes(fDesde2.getValue())) {
+
+		ret.add(item2);
+
+	    }
+
+	    return ret;
+	}
+
+	else {
+
+	    for (ItemRepAlquileresACobrar item2 : service.getListadoTodosLosAlquileresDeUnMes(fDesde2.getValue())) {
+		ret.add(item2);
+	    }
+
+	    return ret;
+
+	}
+
+    }
 
     public ReportesView() {
 	super();
 	buildLayout();
 	configureComponents();
-	daoContratoAlquiler = new DAOContratoAlquilerImpl();
 	newReport.click();
 
     }
 
     public void buildLayout() {
 	CssLayout filtering = new CssLayout();
-	
+
 	conCobrosPendientes = false;
-	checkbox = new CheckBox("Incluir Cobros Pendientes",false);
+	checkbox = new CheckBox("Incluir Cobros Pendientes", false);
 
-	fDesdeNuevo = new DateField();
-	fDesdeNuevo.setPlaceholder("Desde");
-	fDesdeNuevo.setParseErrorMessage("Formato de fecha no reconocido");
+	fDesdeDatePicker = new DateField();
+	fDesdeDatePicker.setPlaceholder("Desde");
+	fDesdeDatePicker.setParseErrorMessage("Formato de fecha no reconocido");
 
-	fHastaNuevo = new DateField();
-	fHastaNuevo.setPlaceholder("Hasta");
-	fHastaNuevo.setParseErrorMessage("Formato de fecha no reconocido");
-	
+	fHastaDatePicker = new DateField();
+	fHastaDatePicker.setPlaceholder("Hasta");
+	fHastaDatePicker.setParseErrorMessage("Formato de fecha no reconocido");
+
 	fDesde2 = new DateField();
 	fDesde2.setPlaceholder("Fecha Mes");
 	fDesde2.setParseErrorMessage("Formato de fecha no reconocido");
@@ -231,69 +217,67 @@ public class ReportesView extends DefaultLayout implements View {
 	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
 	clearFilterTextBtn.setVisible(false);
 	clearFilterTextBtn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
-	fDesdeNuevo.setVisible(false);
-	fHastaNuevo.setVisible(false);
+	fDesdeDatePicker.setVisible(false);
+	fHastaDatePicker.setVisible(false);
 	fDesde2.setVisible(false);
 	checkbox.setVisible(false);
-	fDesdeNuevo.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
-	fHastaNuevo.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
+	fDesdeDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
+	fHastaDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fDesde2.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	clearFilterTextBtn.addClickListener(new Button.ClickListener() {
 	    @Override
 	    public void buttonClick(Button.ClickEvent clickEvent) {
-		fDesdeNuevo.setValue(null);
-		fHastaNuevo.setValue(null);
+		fDesdeDatePicker.setValue(null);
+		fHastaDatePicker.setValue(null);
 	    }
 	});
 
 	generarReporte();
-	filtering.addComponents(fDesdeNuevo, fHastaNuevo, clearFilterTextBtn,fDesde2, checkbox,tipoReporteCB, newReport);
+	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkbox,
+		tipoReporteCB,
+		newReport);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<TipoReporte> valueChangeEvent) {
-	    
-	    	if (valueChangeEvent.getValue() == TipoReporte.Propietario) {
-			    clearFilterTextBtn.setVisible(false);
-			    fDesdeNuevo.setVisible(false);
-			    fHastaNuevo.setVisible(false);
-			    fDesde2.setVisible(false);
-			    checkbox.setVisible(false);
-			    
-			} 
-	    	
-	    	if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorMes) {
-				checkbox.setVisible(true);
-				fDesde2.setVisible(true);
-				clearFilterTextBtn.setVisible(false);
-			    fDesdeNuevo.setVisible(false);
-			    fHastaNuevo.setVisible(false);
-			}
-	    	
-	    	if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorCobrar) {
-			    clearFilterTextBtn.setVisible(true);
-			    fDesdeNuevo.setVisible(true);
-			    fHastaNuevo.setVisible(true);
-			    fDesde2.setVisible(false);
-			    checkbox.setVisible(false);
-			}
-			
-		
+
+		if (valueChangeEvent.getValue() == TipoReporte.Propietario) {
+		    clearFilterTextBtn.setVisible(false);
+		    fDesdeDatePicker.setVisible(false);
+		    fHastaDatePicker.setVisible(false);
+		    fDesde2.setVisible(false);
+		    checkbox.setVisible(false);
+
+		}
+
+		if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorMes) {
+		    checkbox.setVisible(true);
+		    fDesde2.setVisible(true);
+		    clearFilterTextBtn.setVisible(false);
+		    fDesdeDatePicker.setVisible(false);
+		    fHastaDatePicker.setVisible(false);
+		}
+
+		if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorCobrar) {
+		    clearFilterTextBtn.setVisible(true);
+		    fDesdeDatePicker.setVisible(true);
+		    fHastaDatePicker.setVisible(true);
+		    fDesde2.setVisible(false);
+		    checkbox.setVisible(false);
+		}
+
 	    }
 	});
-	
 
-	checkbox.addValueChangeListener(event -> 
-	conCobrosPendientes = Boolean.valueOf(event.getValue())
-	
+	checkbox.addValueChangeListener(event -> conCobrosPendientes = Boolean.valueOf(event.getValue())
+
 	);
 
-		
 	// tipoReporteCB.setWidth("100%");
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	
+
 	buildToolbar("Reportes", filtering);
-	
+
 	pdfComponent.setSizeFull();
 	addComponent(pdfComponent);
 	this.setExpandRatio(pdfComponent, 1);
@@ -314,7 +298,10 @@ public class ReportesView extends DefaultLayout implements View {
 
 	    try {
 		boolean success = generarReporte();
-		pdfComponent.setPDF(reportName);
+		if (success) {
+		    pdfComponent.setPDF(reportName);
+		    showSuccessNotification("Reporte Generado");
+		}
 		// limpiamos la lista
 		objects.clear();
 	    } catch (Exception f) {
@@ -329,23 +316,36 @@ public class ReportesView extends DefaultLayout implements View {
 
     public boolean generarReporte() {
 	TipoReporte tipoReporte = tipoReporteCB.getValue();
-	System.out.println(tipoReporte);
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("===========================================");
+	    logger.debug("Generando Reporte de tipo: " + tipoReporte);
+	    logger.debug("===========================================");
+	}
 
 	List<Object> objetos = getObjetos(tipoReporte);
 
-	// Te trae el nombre del archivo en base a seleccion del combo
-	File root = new File(File.separator + tipoReporte.getArchivoReporte());
-	File root2 = new File(tipoReporte.getArchivoReporte());
-	File webapp = new File(new Utils().resourcesPath() + tipoReporte.getArchivoReporte());
+	// Te trae el nombre del archivo que contiene al generador de reportes
+	// en base a seleccion del combo
+	File root = new File(File.separator + tipoReporte.getGeneradorDeReporte());
+	File root2 = new File(tipoReporte.getGeneradorDeReporte());
+	File pathAGeneradorEnWebapp = new File(new Utils().resourcesPath() + tipoReporte.getGeneradorDeReporte());
 
 	try {
-	    this.reporte = (JasperReport) JRLoader.loadObject(webapp);
+
+	    if (logger.isDebugEnabled()) {
+		logger.debug("===========================================");
+		logger.debug("Cargando generador de reportes: " + pathAGeneradorEnWebapp);
+		logger.debug("===========================================");
+	    }
+
+	    this.reporte = (JasperReport) JRLoader.loadObject(pathAGeneradorEnWebapp);
 
 	} catch (JRException e) {
 	    try {
 		this.reporte = (JasperReport) JRLoader.loadObject(root2);
 	    } catch (Exception e1) {
-		System.err.println("Error al cargar reporte");
+		logger.error("Error al cargar el generador de reportes");
 		e1.printStackTrace();
 
 	    }
@@ -354,19 +354,25 @@ public class ReportesView extends DefaultLayout implements View {
 	try {
 	    this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
 		    new JRBeanCollectionDataSource(objetos, false));
-
-	    return crearArchivo();
+	    return crearArchivo(tipoReporte);
 	} catch (Exception e) {
-	    System.err.println("Error al cargar Reporte");
+	    logger.error("==========ERROR============");
+	    logger.error("Error al generar el Reporte");
+	    logger.error("===========================");
 	    e.printStackTrace();
 	    return false;
 	}
 
     }
 
-    private boolean crearArchivo() {
-	reportName = Long.toString(new Date().getTime() / 1000) + ".pdf"; // Tiempo en segundos desde Epoch hasta ahora
-									  // (no se repite)
+    private boolean crearArchivo(TipoReporte tipoReporte) {
+	reportName = tipoReporte.getPrefijoArchivo() + Long.toString(new Date().getTime() / 1000) + ".pdf"; // Tiempo en
+													    // segundos
+													    // desde
+													    // Epoch
+													    // hasta
+													    // ahora
+	// (no se repite)
 
 	File dir = new File("Files");
 	if (!dir.exists())
@@ -376,6 +382,11 @@ public class ReportesView extends DefaultLayout implements View {
 	exporter.setExporterOutput(new SimpleOutputStreamExporterOutput("Files" +
 		File.separator + reportName));
 	try {
+	    if (logger.isDebugEnabled()) {
+		logger.debug("===========================================");
+		logger.debug("Creando Archivo PDF: " + reportName);
+		logger.debug("===========================================");
+	    }
 	    exporter.exportReport();
 	    return true;
 	} catch (JRException e) {
@@ -399,13 +410,23 @@ public class ReportesView extends DefaultLayout implements View {
 	error.setPosition(Position.BOTTOM_CENTER);
 	error.show(Page.getCurrent());
     }
+    public void showSuccessNotification(String notification) {
+	Notification success = new Notification(
+		notification);
+	success.setDelayMsec(2000);
+	success.setStyleName("bar success small");
+	success.setPosition(Position.BOTTOM_CENTER);
+	success.show(Page.getCurrent());
+    }
 
     public boolean elRangoDeFechasElegidoEsValido() {
-	if (fDesdeNuevo.isEmpty() || fHastaNuevo.isEmpty() ||
-		fDesdeNuevo.getParseErrorMessage().equals("Formato de fecha no reconocido") ||
-		fHastaNuevo.getParseErrorMessage().equals("Formato de fecha no reconocido") || (fHastaNuevo.getValue().isAfter(
-			fDesdeNuevo.getValue())) ||
-		(fDesdeNuevo.getValue().isBefore(fHastaNuevo.getValue())))
+	if (fDesdeDatePicker.isEmpty() || fHastaDatePicker.isEmpty() ||
+		fDesdeDatePicker.getParseErrorMessage().equals("Formato de fecha no reconocido") ||
+		fHastaDatePicker.getParseErrorMessage().equals("Formato de fecha no reconocido") || (fHastaDatePicker
+			.getValue()
+			.isAfter(
+				fDesdeDatePicker.getValue())) ||
+		(fDesdeDatePicker.getValue().isBefore(fHastaDatePicker.getValue())))
 	    return false;
 	return true;
     }
