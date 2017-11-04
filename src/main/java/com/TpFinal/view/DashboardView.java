@@ -57,6 +57,7 @@ public final class DashboardView extends Panel implements View{
     private CssLayout dashboardPanels;
     private final VerticalLayout root;
     private Window notificationsWindow;
+    NotificacionService nS;
     CitaFormWindow citaWindow;
     MeetingCalendar meetings;
 
@@ -78,7 +79,7 @@ public final class DashboardView extends Panel implements View{
         Component content = buildContent();
         root.addComponent(content);
         root.setExpandRatio(content, 1);
-
+        nS=new NotificacionService();
         // All the open sub-windows should be closed whenever the root layout
         // gets clicked.
         root.addLayoutClickListener(new LayoutClickListener() {
@@ -94,7 +95,6 @@ public final class DashboardView extends Panel implements View{
     @Subscribe
     public void updateNotificationsCount(
             final DashboardEvent.NotificationsCountUpdatedEvent event) {
-        NotificacionService nS=new NotificacionService();
         notificationsButton.setUnreadCount(nS
                 .getUnreadNotificationsCount());
 
@@ -354,13 +354,13 @@ public final class DashboardView extends Panel implements View{
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-        NotificacionService nS=new NotificacionService();
+
         ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
                 nS.getNotifications();
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
-    /*    if(size>11)
-            size=11;*/
+        if(size>9)
+            size=9;
         boolean first=true;
         for (Notificacion notification: notifications) {
 
@@ -419,10 +419,8 @@ public final class DashboardView extends Panel implements View{
 
             boolean stale=notification.getFechaCreacion().isAfter(notification.getFechaCreacion().plusDays(1))
                     &&notification.isVisto();
-            Credencial userCred=getCurrentUser().getCredencial();
-            HorizontalLayout separator=new HorizontalLayout();
 
-            if((!stale)&&(notification.getUsuario().equals(userCred.getUsuario()))) {
+            if((!stale)) {
                 if(!first) {
                     Label divider = notificationDivider();
                     divider.setSizeFull();
@@ -484,10 +482,7 @@ public final class DashboardView extends Panel implements View{
     }
 
 
-    private Empleado getCurrentUser() {
-        return (Empleado) VaadinSession.getCurrent()
-                .getAttribute(Empleado.class.getName());
-    }
+
 
     @Override
     public void enter(final ViewChangeEvent event) {
@@ -532,10 +527,10 @@ public final class DashboardView extends Panel implements View{
         public void setUnreadCount(final int count) {
             setCaption(String.valueOf(count));
 
-            String description = "Notifications";
+            String description = "Notificaciones";
             if (count > 0) {
                 addStyleName(STYLE_UNREAD);
-                description += " (" + count + " unread)";
+                description += " (" + count + " sin leer)";
             } else {
                 removeStyleName(STYLE_UNREAD);
             }

@@ -3,6 +3,7 @@ package com.TpFinal.view.calendario;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.view.calendario.MeetingItem;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
@@ -58,13 +59,10 @@ public abstract class MeetingCalendar extends CustomComponent {
 
     public void refreshCitas(){
         eventProvider.removeAllEvents();
-        service.readAllFromUser(getCurrentUser()).
+        service.readAllFromUser(CredencialService.getCurrentUser()).
                 forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
     }
-    private Empleado getCurrentUser() {
-        return (Empleado) VaadinSession.getCurrent()
-                .getAttribute(Empleado.class.getName());
-    }
+
     public abstract void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event);
 
 
