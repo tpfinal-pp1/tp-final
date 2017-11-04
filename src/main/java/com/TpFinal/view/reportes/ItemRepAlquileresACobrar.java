@@ -35,7 +35,7 @@ public class ItemRepAlquileresACobrar {
 	mes = formatearMes(fecha.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR")));
 	numeroMes = fecha.getMonthValue();
 	fechaVencimiento = fecha.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter());
-	monto = c.getMontoRecibido();
+	monto = c.getMontoOriginal();
 	nombre = i.getPersona().getNombre();
 	apellido = i.getPersona().getApellido();
 	nombreYApellido = nombre + " " + apellido;
@@ -44,7 +44,7 @@ public class ItemRepAlquileresACobrar {
 	estadoCobro = c.getEstadoCobroString();
 	tipoMonedaString = TipoMoneda.getSimbolo(tipoMoneda);
 	
-	gananciaDolares = c.getMontoRecibido();
+	gananciaDolares = c.getMontoOriginal().add(c.getInteres());
     }
 
     public Integer getAnio() {
