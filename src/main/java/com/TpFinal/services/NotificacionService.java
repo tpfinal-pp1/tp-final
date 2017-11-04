@@ -16,8 +16,8 @@ import java.util.*;
 
 public class NotificacionService {
 
-    static DAONotificacion dao;
-    static int  cantNotificacionesNoVistas=-1;
+     DAONotificacion dao;
+     int  cantNotificacionesNoVistas=-1;
 
 
 
@@ -37,31 +37,32 @@ public class NotificacionService {
 
 
     public int getUnreadNotificationsCount() {
-
-        if(cantNotificacionesNoVistas==-1) {
+        System.out.println("notis no vistas "+cantNotificacionesNoVistas);
+      //  if(cantNotificacionesNoVistas==-1) {
             Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
                 @Override
                 public boolean apply(Notificacion input) {
-                    return !input.isVisto()&&getCurrentUser().getCredencial().getUsuario().equals(input.getUsuario());
+                    return !input.isVisto()&&CredencialService.getCurrentUser().getCredencial().getUsuario().equals(input.getUsuario());
                 }
             };
             cantNotificacionesNoVistas = Collections2.filter(dao.readAllActives(), unreadPredicate).size();
-        }
+    //    }
 
             return cantNotificacionesNoVistas;
 
     }
 
 
-    private Empleado getCurrentUser() {
-        return (Empleado) VaadinSession.getCurrent()
-                .getAttribute(Empleado.class.getName());
-    }
-    public  Collection<Notificacion> getNotifications() {
 
+    public  Collection<Notificacion> getNotifications() {
+        ArrayList<Notificacion> userNotis=new ArrayList<>();
         ArrayList<Notificacion> notificaciones=new ArrayList<>(dao.readAllActives());
-        setRead(notificaciones);
-        Collections.sort(notificaciones, new Comparator<Notificacion>() {
+        for(Notificacion noti:notificaciones)
+            if(noti.getUsuario().equals(CredencialService.getCurrentUser().getCredencial().getUsuario()))
+                userNotis.add(noti);
+
+        setRead(userNotis);
+        Collections.sort(userNotis, new Comparator<Notificacion>() {
             @Override
             public int compare(Notificacion o1, Notificacion o2) {
                if(o1.getId()>o2.getId()){
@@ -73,7 +74,7 @@ public class NotificacionService {
 
             }
         });
-        return notificaciones;
+        return userNotis;
     }
 
     private void setRead(ArrayList<Notificacion> notificaciones){
@@ -81,7 +82,7 @@ public class NotificacionService {
         cantNotificacionesNoVistas=0;
         for (Notificacion noti:notificaciones
                 ) {
-            if(getCurrentUser().getCredencial().getUsuario().equals(noti.getUsuario())) {
+            if(CredencialService.getCurrentUser().getCredencial().getUsuario().equals(noti.getUsuario())) {
                 noti.setVisto(true);
             }
             saveOrUpdate(noti);

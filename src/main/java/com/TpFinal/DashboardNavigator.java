@@ -57,7 +57,7 @@ DashboardNavigator extends Navigator {
             public boolean beforeViewChange(final ViewChangeEvent event) {
 
                 CredencialService credServ=new CredencialService();
-                Credencial userCred=getCurrentUser().getCredencial();
+                Credencial userCred=credServ.getCurrentUser().getCredencial();
 
                    if(credServ.hasViewAccess(userCred,event.getNewView().getClass())) {
                        System.out.println("Acceso Permitido a view:"+event.getNewView().getClass().toString());
@@ -84,10 +84,7 @@ DashboardNavigator extends Navigator {
         });
     }
 
-    private Empleado getCurrentUser() {
-        return (Empleado) VaadinSession.getCurrent()
-                .getAttribute(Empleado.class.getName());
-    }
+
 
     private void initViewProviders() {
         // A dedicated view provider is added for each separate view type
