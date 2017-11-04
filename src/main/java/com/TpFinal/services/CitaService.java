@@ -40,8 +40,7 @@ public class CitaService {
         }
 
 
-        Planificador.get().removeCita(cita);
-        Planificador.get().addCita(cita);
+      agregarTriggers(cita);
 
 
        return b;
