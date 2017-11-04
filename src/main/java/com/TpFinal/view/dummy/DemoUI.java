@@ -1,7 +1,8 @@
 package com.TpFinal.view.dummy;
 
-import com.TpFinal.view.dummy.meetings.MeetingCalendar;
 
+
+import com.TpFinal.view.calendario.MeetingCalendar;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.icons.VaadinIcons;
@@ -9,6 +10,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Sizeable;
 import com.vaadin.ui.*;
+import org.vaadin.addon.calendar.ui.CalendarComponentEvents;
 
 
 import java.time.Month;
@@ -26,7 +28,17 @@ public class DemoUI extends VerticalLayout implements View {
         super();
 
         // Initialize our new UI component
-        MeetingCalendar meetings = new MeetingCalendar();
+        MeetingCalendar meetings = new MeetingCalendar() {
+            @Override
+            public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+
+            }
+
+            @Override
+            public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
+
+            }
+        };
         meetings.setSizeFull();
 
         ComboBox<Locale> localeBox = new ComboBox<>();
@@ -51,10 +63,10 @@ public class DemoUI extends VerticalLayout implements View {
         calActionComboBox.addValueChangeListener(e -> e.getValue().act());
         calActionComboBox.setEmptySelectionAllowed(false);
 
-        Button fixedSize = new Button("fixed Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeightUndefined());
-        fixedSize.setIcon(VaadinIcons.LINK);
+       /* Button fixedSize = new Button("fixed Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeightUndefined());
+        fixedSize.setIcon(VaadinIcons.LINK);*/
 
-        Button fullSize = new Button("full Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeight(100, Sizeable.Unit.PERCENTAGE));
+   /*     Button fullSize = new Button("full Size", (Button.ClickEvent clickEvent) -> meetings.panel.setHeight(100, Sizeable.Unit.PERCENTAGE));
         fullSize.setIcon(VaadinIcons.UNLINK);
 
         ComboBox<Month> months = new ComboBox<>();
@@ -77,7 +89,7 @@ public class DemoUI extends VerticalLayout implements View {
         layout.setSpacing(true);
         layout.addComponent(nav);
         layout.addComponentsAndExpand(meetings);
-        this.addComponent(layout);
+        this.addComponent(layout);*/
 
 
     }

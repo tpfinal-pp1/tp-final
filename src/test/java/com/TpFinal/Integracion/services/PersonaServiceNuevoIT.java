@@ -1,22 +1,31 @@
 package com.TpFinal.Integracion.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOPersona;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
@@ -24,6 +33,8 @@ import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.RolPersona;
+import com.TpFinal.services.CobroService;
+import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.persona.FiltroEmpleados;
 
@@ -136,8 +147,7 @@ public class PersonaServiceNuevoIT {
 		
 
 	}
-
-
+	
 	public static Persona instancia(String numero) {
 		return new Persona.Builder()
 				.setNombre("nombre "+numero)
@@ -227,6 +237,23 @@ public class PersonaServiceNuevoIT {
 	private Inquilino instanciaInquilino(Calificacion c) {
 		return new Inquilino.Builder()
 				.setCalificacion(c)
+				.build();
+	}
+	
+	private ContratoAlquiler instanciaContrato(String n) {
+		return new ContratoAlquiler.Builder()
+				.setDiaDePago(2)
+				.setDuracionContrato(new ContratoDuracion.Builder()
+						.setDescripcion("12")
+						.setDuracion(12)
+						.build())
+				.setFechaCelebracion(LocalDate.now().minusMonths(6))
+				.setInteresPunitorio(new Double(12))
+				.setIntervaloActualizacion(2)
+				.setPorcentajeIncremento(new Double(10))
+				.setTipoIncrementoCuota(TipoInteres.Simple)
+				.setTipoInteresPunitorio(TipoInteres.Simple)
+				.setValorIncial(new BigDecimal("1000"))
 				.build();
 	}
 

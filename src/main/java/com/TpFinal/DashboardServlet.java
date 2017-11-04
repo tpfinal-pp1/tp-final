@@ -1,6 +1,7 @@
 package com.TpFinal;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.dto.notificacion.NotificadorJob;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.vaadin.server.ServiceException;
@@ -61,10 +62,10 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("=================");
 	GeneradorDeDatosSinAsociaciones.generarDatos(4);
 	logger.info("===========================");
-	logger.info("Iniciando Demo Scheduler..");
+	logger.info("Encendiendo Scheduler..");
 	logger.info("===========================");
-	Planificador.initDemo();
-	
+	Planificador.get().encender();
+	Planificador.get().setNotificacion(new NotificadorJob());
 
     }
 

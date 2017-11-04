@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,18 +14,10 @@ import java.util.List;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.data.dao.DAOCitaImpl;
-import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.Recordatorio;
 import com.TpFinal.dto.cita.TipoCita;
-import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
-import com.TpFinal.dto.persona.Calificacion;
-import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.Inquilino;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.persona.Rol;
-import com.TpFinal.dto.persona.RolPersona;
 
 public class DAOCitaImplIT {
 
@@ -130,17 +121,17 @@ public class DAOCitaImplIT {
 	Cita cita1 = instancia("1");
 	Recordatorio recordatorio1 = new Recordatorio.Builder()
 		.setCita(cita1)
-		.setFechaInicio(cita1.getFechaHora())
+		.setFechaInicio(cita1.getFechaInicio())
 		.setFechaFin(LocalDateTime.now())
-		.setHora(Integer.toString(cita1.getFechaHora().getHour()))
-		.setMinuto(Integer.toString(cita1.getFechaHora().getMinute()))
+		.setHora(Integer.toString(cita1.getFechaInicio().getHour()))
+		.setMinuto(Integer.toString(cita1.getFechaInicio().getMinute()))
 		.build();
 	Recordatorio recordatorio2 = new Recordatorio.Builder()
 		.setCita(cita1)
-		.setFechaInicio(cita1.getFechaHora())
+		.setFechaInicio(cita1.getFechaInicio())
 		.setFechaFin(LocalDateTime.now())
-		.setHora(Integer.toString(cita1.getFechaHora().getHour()))
-		.setMinuto(Integer.toString(cita1.getFechaHora().getMinute()))
+		.setHora(Integer.toString(cita1.getFechaInicio().getHour()))
+		.setMinuto(Integer.toString(cita1.getFechaInicio().getMinute()))
 		.build();
 	
 	cita1.addRecordatorio(recordatorio1);

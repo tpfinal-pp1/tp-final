@@ -16,7 +16,7 @@ public enum TipoCita { Tasacion,ExhInmueble,CelebContrato,Otros;
 	    ret = "Celebración de Contrato";
 	    break;
 	case Otros:
-	    ret = "Otros";
+	    ret = "Cita";
 	    break;    
 	default:
 	    ret = super.toString();

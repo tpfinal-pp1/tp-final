@@ -1,7 +1,10 @@
 package com.TpFinal.dto.cita;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,6 +21,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
@@ -39,8 +43,26 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Column(name = "estado_registro")
 	@NotNull
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
+
+	public LocalDateTime getFechaFin() {
+		return fechaFin;
+	}
+
+	public void setFechaFin(LocalDateTime fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+
+	//Mod by agus(calendario)
 	@Column(name = "fecha_hora")
-	private LocalDateTime fechaHora;
+	private LocalDateTime fechaInicio;
+	@Column(name = "fecha_fin")
+	private LocalDateTime fechaFin;
+	@Column(name = "longTime")
+	private boolean longTime;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "state")
+	State state;
+	//Mod by agus (calendario)
 	@Column(name = "direccion_lugar")
 	private String direccionLugar;
 	@Column(name = "citado")
@@ -50,6 +72,9 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_cita")
 	TipoCita tipoDeCita;
+
+
+
 	@OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
 	protected Set<Recordatorio> recordatorios = new HashSet<>();
@@ -58,18 +83,84 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
 	@JoinColumn(name = "id_empleado")
 	private Empleado empleado;
+	
+	//Mod by agus(calendario)
+	public enum State {
+		empty,
+		planned,
+		confirmed
+	}
+
+	public String getName() {
+		return getDetails();
+	}
+	public String getDetails() {
+		LocalDateTime i=
+				this.getFechaInicio();
+
+			return recortarStrings("Cita: "
+				+citado)+"<br>"+this.tipoDeCita+"<br>"+ "Lugar:<br>"+recortarStrings(getDireccionLugar())+"<br>Observaciones:<br>"+
+					recortarStrings(getObservaciones());
+
+	}
+
+	public String recortarStrings(String m){
+		String ret="";
+		for (int i = 0; i < m.length(); i++) {
+			ret=ret+m.charAt(i);
+			if (i ==18){
+				ret=ret+"-<br>";}
+			else if(i==23){
+
+			}
+			else if((i%23==0)&&i!=1&&i!=0){
+				ret=ret+"-<br>";
+			}
+
+
+			}
+		return ret;
+
+	}
+
+	public boolean isLongTimeEvent() {
+		return longTime;
+	}
+
+	public void setLongTimeEvent(boolean b) {
+		 longTime=b;
+	}
+
+	public boolean isEditable() {
+		return true;
+	}
+
+	public State getState() {
+		return State.planned;
+	}
+
+	public void setState(State state){
+		this.state=state;
+	}
+
+
+	//Mod by agus(calendario)
 
 	public Cita() {
+
 	}
 
 	private Cita(Builder b) {
-		this.fechaHora = b.fechahora;
+		this.fechaInicio = b.fechahora;
 		this.citado = b.citado;
 		this.direccionLugar = b.direccionLugar;
 		this.observaciones = b.observaciones;
 		this.tipoDeCita = b.tipoDeCita;
 
 	}
+
+
+
 
 	public Set<Recordatorio> getRecordatorios() {
 		return recordatorios;
@@ -106,12 +197,12 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		}
 	}
 
-	public LocalDateTime getFechaHora() {
-		return fechaHora;
+	public LocalDateTime getFechaInicio() {
+		return fechaInicio;
 	}
 
-	public void setFechaHora(LocalDateTime fechaHora) {
-		this.fechaHora = fechaHora;
+	public void setFechaInicio(LocalDateTime fechaHora) {
+		this.fechaInicio = fechaHora;
 	}
 
 	public String getDireccionLugar() {
@@ -182,15 +273,19 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 	@Override
 	public String toString() {
-		return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaHora
+		return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaInicio
 				+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
 				+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
-	}
+}
 
 	@Override
 	public String getMessage() {
-		return "Hora: "+dejarLindo(this.fechaHora.getHour())+":"+dejarLindo(this.fechaHora.getMinute())
-		+"\n"+"Direccion: "+this.direccionLugar+"\n"+"Tipo de cita: "+this.tipoDeCita;
+
+
+		return this.fechaInicio.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "AR"))+" "+agregarCero(this.fechaInicio.getHour())+":"+
+				agregarCero(this.fechaInicio.getMinute())+": "+this.tipoDeCita;
+		/*return "Hora: "+ agregarCero(this.fechaInicio.getHour())+":"+ agregarCero(this.fechaInicio.getMinute())
+		+"\n"+"Direccion: "+this.direccionLugar+"\n"+"Tipo de cita: "+this.tipoDeCita;*/
 	}
 
 	@Override
@@ -198,12 +293,14 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		return "Cita con "+this.citado;
 	}
 
-	private String dejarLindo(int horaMinuto) {
+	private String agregarCero(int horaMinuto) {
 		String ret=String.valueOf(horaMinuto);
 		if(horaMinuto<10)
 			ret="0"+String.valueOf(horaMinuto);
 		return ret;
 	}
+
+
 
 	public static class Builder {
 

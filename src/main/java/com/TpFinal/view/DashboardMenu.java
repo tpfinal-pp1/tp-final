@@ -179,7 +179,8 @@ public final class DashboardMenu extends CustomComponent {
     @Subscribe
     public void updateNotificationsCount(
             final DashboardEvent.NotificationsCountUpdatedEvent event) {
-        int unreadNotificationsCount = NotificacionService
+        NotificacionService nS=new NotificacionService();
+        int unreadNotificationsCount = nS
                 .getUnreadNotificationsCount();
         notificationsBadge.setValue(String.valueOf(unreadNotificationsCount));
         notificationsBadge.setVisible(unreadNotificationsCount > 0);

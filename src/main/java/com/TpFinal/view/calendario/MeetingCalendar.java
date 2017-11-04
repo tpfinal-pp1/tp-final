@@ -1,5 +1,13 @@
-package com.TpFinal.view.dummy.meetings;
+package com.TpFinal.view.calendario;
 
+import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.services.CitaService;
+import com.TpFinal.view.calendario.MeetingItem;
+import com.vaadin.event.dd.DragAndDropEvent;
+import com.vaadin.event.dd.DropHandler;
+import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
@@ -16,7 +24,7 @@ import java.util.Random;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 
-public class MeetingCalendar extends CustomComponent {
+public abstract class MeetingCalendar extends CustomComponent {
 
     private final Random R = new Random(0);
 
@@ -24,25 +32,19 @@ public class MeetingCalendar extends CustomComponent {
 
     private Calendar<MeetingItem> calendar;
 
+    CitaService service= new CitaService();
+
+
     public Panel panel;
 
     public MeetingCalendar() {
 
         setId("meeting-meetings");
-      //  setSizeFull();
-
         initCalendar();
+        setCompositionRoot(calendar);
 
-        VerticalLayout layout = new VerticalLayout();
-        layout.setMargin(false);
-        layout.setSpacing(false);
-      //  layout.setSizeFull();
 
-        panel = new Panel(calendar);
-     //   panel.setHeight(100, Unit.PERCENTAGE);
-        layout.addComponent(panel);
-
-        setCompositionRoot(layout);
+        refreshCitas();
 
     }
 
@@ -54,46 +56,36 @@ public class MeetingCalendar extends CustomComponent {
         return calendar;
     }
 
-    private void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
-
-        Meeting meeting = new Meeting(
-                !event.getStart().truncatedTo(DAYS).equals(event.getEnd().truncatedTo(DAYS)));
-
-        meeting.setStart(event.getStart());
-        meeting.setEnd(event.getEnd());
-
-        meeting.setName("A Name");
-        meeting.setDetails("A Detail<br>with HTML<br> with more lines");
-
-        // Random state
-        meeting.setState(R.nextInt(2) == 1 ? Meeting.State.planned : Meeting.State.confirmed);
-
-        eventProvider.addItem(new MeetingItem(meeting));
-	}
-
-    private void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
-
-        MeetingItem item = (MeetingItem) event.getCalendarItem();
-
-        final Meeting meeting = item.getMeeting();
-
-        Notification.show(meeting.getName(), meeting.getDetails(), Type.HUMANIZED_MESSAGE);
+    public void refreshCitas(){
+        eventProvider.removeAllEvents();
+        service.readAllFromUser(getCurrentUser()).
+                forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
     }
+    private Empleado getCurrentUser() {
+        return (Empleado) VaadinSession.getCurrent()
+                .getAttribute(Empleado.class.getName());
+    }
+    public abstract void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event);
 
+
+
+    public abstract void onCalendarClick(CalendarComponentEvents.ItemClickEvent event);
     private void initCalendar() {
 
         eventProvider = new MeetingDataProvider();
 
         calendar = new Calendar<>(eventProvider);
+       //calendar.setSizeFull();
 
-        calendar.addStyleName("meetings");
+        calendar.setStyleName("meetings");
         calendar.setWidth(100.0f, Unit.PERCENTAGE);
-        calendar.setHeight(100.0f, Unit.PERCENTAGE);
+        calendar.setHeight(90.0f, Unit.PERCENTAGE);
         calendar.setResponsive(true);
+
 
         calendar.setItemCaptionAsHtml(true);
         calendar.setContentMode(ContentMode.HTML);
-
+        calendar.setResponsive(true);
 //        calendar.setLocale(Locale.JAPAN);
 //        calendar.setZoneId(ZoneId.of("America/Chicago"));
 //        calendar.setWeeklyCaptionProvider(date ->  "<br>" + DateTimeFormatter.ofPattern("dd.MM.YYYY", getLocale()).format(date));
@@ -102,8 +94,8 @@ public class MeetingCalendar extends CustomComponent {
         calendar.withVisibleDays(1, 7);
 //        calendar.withMonth(ZonedDateTime.now().getMonth());
 
-        calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0,0,0, 0, calendar.getZoneId()));
-        calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0,0,0, 0, calendar.getZoneId()));
+     //   calendar.setStartDate(ZonedDateTime.of(2017, 9, 10, 0,0,0, 0, calendar.getZoneId()));
+    //    calendar.setEndDate(ZonedDateTime.of(2017, 9, 16, 0,0,0, 0, calendar.getZoneId()));
 
         addCalendarEventListeners();
 
@@ -143,10 +135,21 @@ public class MeetingCalendar extends CustomComponent {
 
     }
 
+
+
     private void addCalendarEventListeners() {
         calendar.setHandler(new BasicDateClickHandler(true));
         calendar.setHandler(this::onCalendarClick);
         calendar.setHandler(this::onCalendarRangeSelect);
+        calendar.setHandler(this::onItemMoveHandler);
+    }
+
+    private void onItemMoveHandler(CalendarComponentEvents.ItemMoveEvent itemMoveEvent) {
+        MeetingItem item = (MeetingItem) itemMoveEvent.getCalendarItem();
+
+        final Cita cita = item.getMeeting();
+        service.editCita(cita);
+        refreshCitas();
     }
 
     private final class MeetingDataProvider extends BasicItemProvider<MeetingItem> {
@@ -154,8 +157,8 @@ public class MeetingCalendar extends CustomComponent {
         void removeAllEvents() {
             this.itemList.clear();
             fireItemSetChanged();
+
         }
     }
 
 }
-
