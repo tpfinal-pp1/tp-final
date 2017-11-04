@@ -34,6 +34,14 @@ import com.TpFinal.dto.persona.Empleado;
 @Entity
 @Table(name = "citas")
 public class Cita implements Identificable, BorradoLogico, Messageable {
+
+	//Mod by agus(calendario)
+	public enum State {
+		empty,
+		planned,
+		confirmed
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id_cita")
@@ -42,15 +50,6 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Column(name = "estado_registro")
 	@NotNull
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
-
-	public LocalDateTime getFechaFin() {
-		return fechaFin;
-	}
-
-	public void setFechaFin(LocalDateTime fechaFin) {
-		this.fechaFin = fechaFin;
-	}
-
 	//Mod by agus(calendario)
 	@Column(name = "fecha_hora")
 	private LocalDateTime fechaInicio;
@@ -71,62 +70,13 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_cita")
 	TipoCita tipoDeCita;
-
-
-
 	@OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
 	protected Set<Recordatorio> recordatorios = new HashSet<>();
-
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
 	@JoinColumn(name = "id_empleado")
 	private Empleado empleado;
-	
-	//Mod by agus(calendario)
-	public enum State {
-		empty,
-		planned,
-		confirmed
-	}
-
-	public String getName() {
-		return getDetails();
-	}
-	public String getDetails() {
-		LocalDateTime i=
-				this.getFechaInicio();
-
-			return "Cita con "
-				+citado+"<br>"+this.tipoDeCita+"<br> el "
-				+i.getDayOfMonth()
-				+"/"+i.getMonthValue()+"/"+i.getYear()+
-				" a las "+i.getHour()+":"+i.getMinute();
-
-	}
-
-	public boolean isLongTimeEvent() {
-		return longTime;
-	}
-
-	public void setLongTimeEvent(boolean b) {
-		 longTime=b;
-	}
-
-	public boolean isEditable() {
-		return true;
-	}
-
-	public State getState() {
-		return State.planned;
-	}
-
-	public void setState(State state){
-		this.state=state;
-	}
-
-
-	//Mod by agus(calendario)
 
 	public Cita() {
 
@@ -141,8 +91,48 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 	}
 
+	public LocalDateTime getFechaFin() {
+		return fechaFin;
+	}
 
+	public void setFechaFin(LocalDateTime fechaFin) {
+		this.fechaFin = fechaFin;
+	}
 
+	public String getName() {
+		return getDetails();
+	}
+	public String getDetails() {
+		LocalDateTime i=
+				this.getFechaInicio();
+
+		return "Cita con "
+		+citado+"<br>"+this.tipoDeCita+"<br> el "
+		+i.getDayOfMonth()
+		+"/"+i.getMonthValue()+"/"+i.getYear()+
+		" a las "+i.getHour()+":"+i.getMinute();
+
+	}
+
+	public boolean isLongTimeEvent() {
+		return longTime;
+	}
+
+	public void setLongTimeEvent(boolean b) {
+		longTime=b;
+	}
+
+	public boolean isEditable() {
+		return true;
+	}
+
+	public State getState() {
+		return State.planned;
+	}
+
+	public void setState(State state){
+		this.state=state;
+	}
 
 	public Set<Recordatorio> getRecordatorios() {
 		return recordatorios;
@@ -258,7 +248,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaInicio
 				+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
 				+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
-}
+	}
 
 	@Override
 	public String getMessage() {

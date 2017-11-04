@@ -62,7 +62,7 @@ public class PlanificadorIT {
 				fInicio=fInicio.plusMinutes(i+1);
 				LocalDateTime fFin = fInicio.plusDays(i+1);
 
-				sc.agregarCita("t "+i,"m "+i, fInicio, fFin, "1", UUID.randomUUID().toString());
+				//sc.agregarCita("t "+i,"m "+i, fInicio, fFin, "1", UUID.randomUUID().toString());
 			}
 
 
