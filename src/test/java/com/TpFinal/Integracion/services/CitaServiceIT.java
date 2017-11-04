@@ -179,6 +179,65 @@ public class CitaServiceIT {
 		
 	}
 	
+	@Test
+	public void getCitasDeUsuarioEliminando() {
+		DAOPersona daop = new DAOPersonaImpl();
+
+		System.out.println("Total al empezar "+service.readAll().size());
+		Persona p1= instanciaEmpleadoAdministrador("1");
+		Persona p2= instanciaEmpleadoAdministrador("2");
+		p1.addRol(instanciaEmpleado());
+		Empleado e = (Empleado)p1.getRol(Rol.Empleado);
+		e.getCredencial().setUsuario("User nuevo");
+		
+		p2.addRol(instanciaEmpleado());
+	
+		
+		daop.saveOrUpdate(p1);
+		daop.saveOrUpdate(p2);
+		for(int i=0; i<5; i++) {
+			
+			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
+			Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
+			
+			Cita c1=instanciaCita(i);
+			c1.setEmpleado(e1);
+			
+			Cita c2=instanciaCita(i);
+			c2.setEmpleado(e2);
+			
+			service.saveOrUpdate(c1);
+			service.saveOrUpdate(c2);
+		}
+	for(int i=0; i<3; i++) {
+			
+			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
+			
+			Cita c1=instanciaCita(i);
+			c1.setEmpleado(e1);
+			
+			
+			service.saveOrUpdate(c1);
+		}
+		
+		daop.saveOrUpdate(p1);
+		daop.saveOrUpdate(p2);
+		
+		Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
+		Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
+		
+		assertEquals(8, service.readAllFromUser(e1).size());
+		assertEquals(5, service.readAllFromUser(e2).size());
+		
+		service.delete(service.readAllFromUser(e1).get(0));
+		service.delete(service.readAllFromUser(e1).get(0));
+		service.delete(service.readAllFromUser(e1).get(0));
+		
+		assertEquals(5, service.readAllFromUser(e1).size());
+		assertEquals(5, service.readAllFromUser(e2).size());
+		assertEquals(10, service.readAll().size());
+	}
+	
 	private Cita instanciaCita(int i) {
 
 		Empleado e=instanciaEmpleado();
