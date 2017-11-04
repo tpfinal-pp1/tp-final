@@ -109,7 +109,7 @@ public class CitaService {
         }
         List<Cita> ret=new ArrayList<>();
         for (Cita cita:readAll()){
-            if(cita.getEmpleado().equals(user)){
+            if(cita.getEmpleado().equals(user.getCredencial().toString())){
                ret.add(cita);
             }}
 
