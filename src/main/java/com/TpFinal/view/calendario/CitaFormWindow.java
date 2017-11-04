@@ -6,6 +6,7 @@ import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CitaService;
+import com.TpFinal.services.Planificador;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.ValidationException;
@@ -141,6 +142,7 @@ public abstract class CitaFormWindow extends Window {
         boolean success=false;
         try {
 
+        	success=Planificador.get().removeCita(cita);
             success=service.delete(cita);
 
 
@@ -181,7 +183,8 @@ public abstract class CitaFormWindow extends Window {
         try {
             binderCita.writeBean(cita);
             cita.setEmpleado(getCurrentUser());
-            service.addCita(cita);
+            service.saveOrUpdate(cita);
+            Planificador.get().addCita(cita);
             onSave();
             success=true;
 

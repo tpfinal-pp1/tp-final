@@ -158,11 +158,11 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 	public void setEmpleado(Empleado emp) {
 
-		if (emp != null && !this.empleado.equals(emp)) {
+		if (this.empleado != null && !this.empleado.equals(emp)) {
 			this.empleado.removeCita(this);
 		} 
 		this.empleado=emp;
-		if(emp!=null && !this.empleado.getCalendarioPersonal().contains(this)) {
+		if(emp!=null && !emp.getCalendarioPersonal().contains(this)) {
 			emp.addCita(this);
 		}
 	}

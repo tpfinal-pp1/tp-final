@@ -3,6 +3,7 @@ package com.TpFinal.view.calendario;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
+import com.TpFinal.services.Planificador;
 import com.TpFinal.view.calendario.MeetingItem;
 import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
@@ -158,7 +159,10 @@ public abstract class MeetingCalendar extends CustomComponent {
         MeetingItem item = (MeetingItem) itemMoveEvent.getCalendarItem();
 
         final Cita cita = item.getMeeting();
-        service.editCita(cita);
+        //Aca estaba el edit
+        Planificador.get().removeCita(cita);
+        service.saveOrUpdate(cita);
+        Planificador.get().addCita(cita);
       
 
     }
