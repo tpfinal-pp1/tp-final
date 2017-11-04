@@ -21,7 +21,6 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
-
 import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
@@ -382,13 +381,8 @@ public class ReportesView extends DefaultLayout implements View {
     }
 
     private boolean crearArchivo(TipoReporte tipoReporte) {
-	reportName = tipoReporte.getPrefijoArchivo() + Long.toString(new Date().getTime() / 1000) + ".pdf"; // Tiempo en
-													    // segundos
-													    // desde
-													    // Epoch
-													    // hasta
-													    // ahora
-	// (no se repite)
+	// Tiempo en segundos desde Epoch hasta ahora (no se repite)
+	reportName = tipoReporte.getPrefijoArchivo() + Long.toString(new Date().getTime() / 1000) + ".pdf";
 
 	File dir = new File("Files");
 	if (!dir.exists())
@@ -409,7 +403,6 @@ public class ReportesView extends DefaultLayout implements View {
 	    System.err.println("Error al exportar a reporte");
 	    e.printStackTrace();
 	    return false;
-
 	}
 
     }
