@@ -55,8 +55,12 @@ public class CitaService {
             }
         }
         return null;
-
-
+    }
+    
+    public Cita getUltimaAgregada() {
+    	List<Cita>citas=dao.readAllActives();
+    	citas.sort((c1,c2)-> c1.getId().compareTo(c2.getId()));
+    	return citas.get(0);
     }
 
     public boolean editCita(Cita cita){
