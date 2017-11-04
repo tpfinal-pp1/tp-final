@@ -158,103 +158,15 @@ public class ContratoService {
 	return existe;
     }
 
-    public List<ItemRepAlquileresACobrar> getListadoAlquileresACobrar(Integer mesDesde, Integer yearDesde,
-	    Integer mesHasta, Integer yearHasta) {
-	CobroService cobroService = new CobroService();
-	LocalDate fechaDesde = LocalDate.of(yearDesde, mesDesde, 1);
-
-	LocalDate fechaHasta = LocalDate.of(yearHasta, mesHasta, 28);
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-
-	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosVigentes.forEach(contrato -> {
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
-			})
-			.filter(c -> {
-			    return c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0;
-			})
-			.filter(c -> {
-			    return c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0;
-			})
-			.collect(Collectors.toList()));
-
-		cobroService.calcularDatosFaltantes(cobros);
-		cobros.forEach(cobro -> {
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
-		});
-	    }
-	});
-
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-
-	return itemsReporte;
-    }
-
-    public List<ItemRepAlquileresACobrar> getListadoAlquileresACobrar(LocalDate fechaDesde, LocalDate fechaHasta) {
+    public List<Object> getListadoAlquileresACobrar(LocalDate fechaDesde, LocalDate fechaHasta) {
 
 	CobroService cobroService = new CobroService();
-
 	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-
-	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosVigentes.forEach(contrato -> {
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-
-			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
-			})
-			.filter(c -> {
-
-			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
-			})
-			.filter(c -> {
-
-			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
-			})
-			.collect(Collectors.toList()));
-
-		cobroService.calcularDatosFaltantes(cobros);
-		cobros.forEach(cobro -> {
-
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
-		});
-	    }
-	});
-
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-
-	return itemsReporte;
-    }
-
-    public List<Object> getListadoAlquileresACobrarObject(LocalDate fechaDesde, LocalDate fechaHasta) {
-
-	CobroService cobroService = new CobroService();
-
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-
 	List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
-
 	List<Cobro> cobros = new ArrayList<>();
 
 	contratosACobrar.forEach(contrato -> {
+	    cobros.clear();
 	    if (contrato.getCobros() != null) {
 		cobros.addAll(contrato.getCobros().stream()
 			.filter(c -> {
@@ -279,7 +191,69 @@ public class ContratoService {
 		.thenComparing(ItemRepAlquileresACobrar::getApellido)
 		.thenComparing(ItemRepAlquileresACobrar::getNombre));
 
-	return itemsReporte.stream().map(i -> (Object) i ).collect(Collectors.toList());
+	return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
+    }
+
+    public List<Object> getListadoAlquileresDelMes(LocalDate fechaDesde, LocalDate fechaHasta,
+	    boolean incluirCobrosPendientes) {
+
+	CobroService cobroService = new CobroService();
+	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+	List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
+	List<Cobro> cobros = new ArrayList<>();
+	if (logger.isDebugEnabled()) {
+	    logger.debug("=================================================================");
+	    logger.debug("Contratos a procesar: " + contratosACobrar.size());
+	}
+
+	contratosACobrar.forEach(contrato -> {
+	    cobros.clear();
+	    if (contrato.getCobros() != null) {
+		if (logger.isDebugEnabled()) {
+		    logger.debug("=================================================================");
+		    logger.debug("Cantidad de cobros del contrato: " + contrato.getCobros().size());
+		}
+		cobros.addAll(contrato.getCobros().stream()
+			.filter(c -> {
+			    if (!incluirCobrosPendientes)
+				return c.getEstadoCobro().equals(EstadoCobro.COBRADO);
+			    else
+				return true;
+			})
+			.filter(c -> {
+			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
+			})
+			.filter(c -> {
+			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
+			})
+			.collect(Collectors.toList()));
+
+		if (logger.isDebugEnabled())
+		    logger.debug("Cantidad de cobros obtenidos: " + cobros.size());
+
+		cobroService.calcularDatosFaltantes(cobros);
+		if (logger.isDebugEnabled()) {
+		    cobros.forEach(c -> {
+			logger.debug("Cobro " + c.getId() + " Moneda:" + c.getContrato().getMoneda() + " Inquilino:" + c
+				.getContrato().getInquilinoContrato().getPersona());
+		    });
+		}
+		cobros.forEach(cobro -> {
+		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
+			    cobro, contrato.getMoneda()));
+		});
+	    }
+	});
+	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
+		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
+		.thenComparing(ItemRepAlquileresACobrar::getApellido)
+		.thenComparing(ItemRepAlquileresACobrar::getNombre));
+	if (logger.isDebugEnabled()) {
+	    logger.debug("=====================================================");
+	    logger.debug("Cantidad de items obtenidos: " + itemsReporte.size());
+	}
+	itemsReporte.forEach(i -> System.out.println(i + " Moneda: " + i.getTipoMonedaString()));
+	return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
     }
 
     public List<ContratoAlquiler> getContratosAlquilerVigentes() {
@@ -521,116 +495,6 @@ public class ContratoService {
 		contrato.addCobro(c);
 	    }
 	}
-    }
-
-    public List<ItemRepAlquileresACobrar> getListadoAlquileresCobradosPorMes(LocalDate fechaMes) {
-
-	LocalDate fechaDesde;
-	LocalDate fechaHasta;
-
-	if (fechaMes.getMonthValue() == 12) {
-	    fechaDesde = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue(), 1);
-	    fechaHasta = LocalDate.of(fechaMes.getYear() + 1, 1, 1);
-	}
-
-	else {
-	    fechaDesde = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue(), 1);
-	    fechaHasta = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue() + 1, 1);
-	}
-
-	CobroService cobroService = new CobroService();
-
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-
-	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosVigentes.forEach(contrato -> {
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-
-			    return c.getEstadoCobro().equals(EstadoCobro.COBRADO);
-			})
-			.filter(c -> {
-
-			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
-			})
-			.filter(c -> {
-
-			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) < 0 : true;
-			})
-			.collect(Collectors.toList()));
-
-		cobroService.calcularDatosFaltantes(cobros);
-		cobros.forEach(cobro -> {
-
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
-		});
-	    }
-	});
-
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-
-	return itemsReporte;
-    }
-
-    public List<ItemRepAlquileresACobrar> getListadoTodosLosAlquileresDeUnMes(LocalDate fechaMes) {
-
-	LocalDate fechaDesde;
-	LocalDate fechaHasta;
-
-	if (fechaMes.getMonthValue() == 12) {
-	    fechaDesde = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue(), 1);
-	    fechaHasta = LocalDate.of(fechaMes.getYear() + 1, 1, 1);
-	}
-
-	else {
-	    fechaDesde = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue(), 1);
-	    fechaHasta = LocalDate.of(fechaMes.getYear(), fechaMes.getMonthValue() + 1, 1);
-	}
-
-	CobroService cobroService = new CobroService();
-
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-
-	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosVigentes.forEach(contrato -> {
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-
-			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
-			})
-			.filter(c -> {
-
-			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) < 0 : true;
-			})
-			.collect(Collectors.toList()));
-
-		cobroService.calcularDatosFaltantes(cobros);
-		cobros.forEach(cobro -> {
-
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
-		});
-	    }
-	});
-
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-
-	return itemsReporte;
     }
 
     public static void setMontoInicialRenovacio(ContratoAlquiler ca) {

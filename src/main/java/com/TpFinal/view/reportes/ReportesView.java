@@ -52,7 +52,7 @@ public class ReportesView extends DefaultLayout implements View {
     PDFComponent pdfComponent = new PDFComponent();
     ComboBox<TipoReporte> tipoReporteCB = new ComboBox<TipoReporte>(
 	    null, TipoReporte.toList());
-    CheckBox checkbox;
+    CheckBox checkboxIncluirPendientes;
     String reportName = "";
     Button newReport = new Button("Generar");
     Notification error;
@@ -63,7 +63,7 @@ public class ReportesView extends DefaultLayout implements View {
     DateField fDesde2 = null;
 
     List<Object> objects = null;
-    boolean conCobrosPendientes;
+    boolean incluirCobrosPendientes;
     private ContratoService contratoService = new ContratoService();
 
     public List<Object> getObjetos(TipoReporte tipo) {
@@ -98,7 +98,7 @@ public class ReportesView extends DefaultLayout implements View {
 		// Para obtener el ultimo dia del mes.
 		fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 	    }
-	    objects = contratoService.getListadoAlquileresACobrarObject(fechaDesde, fechaHasta);
+	    objects = contratoService.getListadoAlquileresACobrar(fechaDesde, fechaHasta);
 	    break;
 	}
 
@@ -119,84 +119,17 @@ public class ReportesView extends DefaultLayout implements View {
 		logger.debug("==========================");
 		logger.debug("fechaDesde: " + fechaDesde);
 		logger.debug("fechaHasta: " + fechaHasta);
+		logger.debug("Incluir Cobros Pendientes: "+ incluirCobrosPendientes);
 		logger.debug("==========================");
 	    }
 
-	    objects = contratoService.getListadoAlquileresACobrarObject(fechaDesde, fechaHasta);
+	    objects = contratoService.getListadoAlquileresDelMes(fechaDesde, fechaHasta,incluirCobrosPendientes);
 	    break;
 	}
 
 	}
 
 	return objects;
-
-    }
-
-    public List<Object> filtrarPorRangos() {
-	ContratoService service = new ContratoService();
-	ArrayList<Object> ret = new ArrayList<>();
-	if (logger.isDebugEnabled()) {
-	    logger.debug("===========================================");
-	    logger.debug("Rango de fechas: " + fDesdeDatePicker + " a " + fHastaDatePicker);
-	    logger.debug("===========================================");
-	}
-	if (fHastaDatePicker == null || fDesdeDatePicker == null) {
-	    showErrorNotification("Debe seleccionar un rango Valido");
-	    return service.getCobrosOrdenadosPorAño().stream().map(i -> (Object) i).collect(Collectors.toList());
-
-	}
-
-	if (fDesdeDatePicker.getValue() == null && fHastaDatePicker.getValue() == null) {
-
-	    return new ArrayList<>(service.getCobrosOrdenadosPorAño());
-	}
-
-	for (ItemRepAlquileresACobrar item : service.getListadoAlquileresACobrar(fDesdeDatePicker.getValue(),
-		fHastaDatePicker
-			.getValue())) {
-
-	    ret.add(item);
-
-	}
-
-	if (ret.size() == 0) {
-	    showErrorNotification("No hay Pagos en el rango de fecha seleccionado");
-	    return new ArrayList<>();
-	}
-
-	return ret;
-
-    }
-
-    public ArrayList<Object> filtrarPorMes() {
-	ContratoService service = new ContratoService();
-	ArrayList<Object> ret = new ArrayList<>();
-
-	if (fDesde2.getValue() == null) {
-	    showErrorNotification("Debes seleccionar una fecha");
-
-	}
-
-	if (fDesde2.getValue() != null && conCobrosPendientes == false) {
-
-	    for (ItemRepAlquileresACobrar item2 : service.getListadoAlquileresCobradosPorMes(fDesde2.getValue())) {
-
-		ret.add(item2);
-
-	    }
-
-	    return ret;
-	}
-
-	else {
-
-	    for (ItemRepAlquileresACobrar item2 : service.getListadoTodosLosAlquileresDeUnMes(fDesde2.getValue())) {
-		ret.add(item2);
-	    }
-
-	    return ret;
-
-	}
 
     }
 
@@ -211,8 +144,8 @@ public class ReportesView extends DefaultLayout implements View {
     public void buildLayout() {
 	CssLayout filtering = new CssLayout();
 
-	conCobrosPendientes = false;
-	checkbox = new CheckBox("Incluir Cobros Pendientes", false);
+	incluirCobrosPendientes = false;
+	checkboxIncluirPendientes = new CheckBox("Incluir Cobros Pendientes", false);
 
 	fDesdeDatePicker = new DateField();
 	fDesdeDatePicker.setPlaceholder("Desde");
@@ -232,7 +165,7 @@ public class ReportesView extends DefaultLayout implements View {
 	fDesdeDatePicker.setVisible(false);
 	fHastaDatePicker.setVisible(false);
 	fDesde2.setVisible(false);
-	checkbox.setVisible(false);
+	checkboxIncluirPendientes.setVisible(false);
 	fDesdeDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fHastaDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fDesde2.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
@@ -245,7 +178,7 @@ public class ReportesView extends DefaultLayout implements View {
 	});
 
 	generarReporte();
-	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkbox,
+	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
 		tipoReporteCB,
 		newReport);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
@@ -258,12 +191,12 @@ public class ReportesView extends DefaultLayout implements View {
 		    fDesdeDatePicker.setVisible(false);
 		    fHastaDatePicker.setVisible(false);
 		    fDesde2.setVisible(false);
-		    checkbox.setVisible(false);
+		    checkboxIncluirPendientes.setVisible(false);
 
 		}
 
 		if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorMes) {
-		    checkbox.setVisible(true);
+		    checkboxIncluirPendientes.setVisible(true);
 		    fDesde2.setVisible(true);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
@@ -275,15 +208,13 @@ public class ReportesView extends DefaultLayout implements View {
 		    fDesdeDatePicker.setVisible(true);
 		    fHastaDatePicker.setVisible(true);
 		    fDesde2.setVisible(false);
-		    checkbox.setVisible(false);
+		    checkboxIncluirPendientes.setVisible(false);
 		}
 
 	    }
 	});
 
-	checkbox.addValueChangeListener(event -> conCobrosPendientes = Boolean.valueOf(event.getValue())
-
-	);
+	checkboxIncluirPendientes.addValueChangeListener(event -> incluirCobrosPendientes =event.getValue());
 
 	// tipoReporteCB.setWidth("100%");
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
