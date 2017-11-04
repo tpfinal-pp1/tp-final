@@ -1,17 +1,12 @@
 package com.TpFinal.view.reportes;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
-import java.time.Year;
-import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
-import org.apache.xerces.util.ShadowedSymbolTable;
 
 import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.PDFComponent;
@@ -26,16 +21,14 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
-import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
-import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
-import com.TpFinal.dto.cobro.EstadoCobro;
+
 import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.Widgetset;
+
 import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
@@ -110,9 +103,29 @@ public class ReportesView extends DefaultLayout implements View {
 	    break;
 	}
 
-	case AlquileresPorMes:
-	    objects.addAll(filtrarPorMes());
+	case AlquileresPorMes: {
+	    LocalDate fechaDesde = fDesde2.getValue();
+	    LocalDate fechaHasta;
+
+	    // Por defecto traer cobros del mes actual
+	    if (fechaDesde == null) {
+		fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+		fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+	    } else {
+		fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfMonth());
+		fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfMonth());
+	    }
+
+	    if (logger.isDebugEnabled()) {
+		logger.debug("==========================");
+		logger.debug("fechaDesde: " + fechaDesde);
+		logger.debug("fechaHasta: " + fechaHasta);
+		logger.debug("==========================");
+	    }
+
+	    objects = contratoService.getListadoAlquileresACobrarObject(fechaDesde, fechaHasta);
 	    break;
+	}
 
 	}
 
@@ -327,7 +340,6 @@ public class ReportesView extends DefaultLayout implements View {
 
 	// Te trae el nombre del archivo que contiene al generador de reportes
 	// en base a seleccion del combo
-	File root = new File(File.separator + tipoReporte.getGeneradorDeReporte());
 	File root2 = new File(tipoReporte.getGeneradorDeReporte());
 	File pathAGeneradorEnWebapp = new File(new Utils().resourcesPath() + tipoReporte.getGeneradorDeReporte());
 
@@ -347,19 +359,23 @@ public class ReportesView extends DefaultLayout implements View {
 	    } catch (Exception e1) {
 		logger.error("Error al cargar el generador de reportes");
 		e1.printStackTrace();
-
 	    }
 	}
 
-	try {
-	    this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
-		    new JRBeanCollectionDataSource(objetos, false));
-	    return crearArchivo(tipoReporte);
-	} catch (Exception e) {
-	    logger.error("==========ERROR============");
-	    logger.error("Error al generar el Reporte");
-	    logger.error("===========================");
-	    e.printStackTrace();
+	if (objetos.size() != 0) {
+	    try {
+		this.reporteLleno = JasperFillManager.fillReport(this.reporte, parametersMap,
+			new JRBeanCollectionDataSource(objetos, false));
+		return crearArchivo(tipoReporte);
+	    } catch (Exception e) {
+		logger.error("==========ERROR============");
+		logger.error("Error al generar el Reporte");
+		logger.error("===========================");
+		e.printStackTrace();
+		return false;
+	    }
+	} else {
+	    showErrorNotification("No se encontraron datos para generar el reporte");
 	    return false;
 	}
 
@@ -410,6 +426,7 @@ public class ReportesView extends DefaultLayout implements View {
 	error.setPosition(Position.BOTTOM_CENTER);
 	error.show(Page.getCurrent());
     }
+
     public void showSuccessNotification(String notification) {
 	Notification success = new Notification(
 		notification);
