@@ -3,6 +3,7 @@ package com.TpFinal.view.calendario;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CitaService;
 import com.TpFinal.view.component.DeleteButton;
@@ -14,6 +15,7 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
@@ -138,15 +140,14 @@ public abstract class CitaFormWindow extends Window {
     private void delete(){
         boolean success=false;
         try {
-            binderCita.writeBean(cita);
+
             success=service.delete(cita);
 
 
 
-        } catch (ValidationException e) {
+        } catch (Exception e) {
             Notification.show("Error al Borrar");
             e.printStackTrace();
-            System.err.println( e.getValidationErrors()+" "+e.getFieldValidationErrors());
 
             return;
         }
@@ -171,11 +172,15 @@ public abstract class CitaFormWindow extends Window {
 
     }
 
-
+    private Empleado getCurrentUser() {
+        return (Empleado) VaadinSession.getCurrent()
+                .getAttribute(Empleado.class.getName());
+    }
     private void save(){
         boolean success=false;
         try {
             binderCita.writeBean(cita);
+            cita.setEmpleado(getCurrentUser());
             service.addCita(cita);
             onSave();
             success=true;

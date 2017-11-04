@@ -99,8 +99,9 @@ public class Planificador {
 		boolean ret=false;
 		try {
 			if(cita.getId()!=null) {
-				ret=sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"1"))
-						&&sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"2"));
+
+						return sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"-1"))&&
+						sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId())+"-2"));
 			}else
 				throw new IllegalArgumentException("La cita debe estar persistida");
 		} catch (Exception e) {
@@ -125,7 +126,7 @@ public class Planificador {
 		}
 	}
 
-	public void agregarCita(String titulo, String mensaje, LocalDateTime fechaInicio, LocalDateTime fechaFin, String perioricidad, String id) {
+	public void agregarCita(String titulo, String mensaje,String username, LocalDateTime fechaInicio, LocalDateTime fechaFin, String perioricidad, String id) {
 		try {
 			String horan="0 "+fechaInicio.getMinute()+" "+fechaInicio.getHour();
 			horan=horan+" 1/1";
@@ -133,8 +134,10 @@ public class Planificador {
 			JobDetail j1=JobBuilder.newJob(notificacion.getClass())
 					.usingJobData("mensaje", mensaje)
 					.usingJobData("titulo", titulo)
+					.usingJobData("idCita",id)
+					.usingJobData("usuario",username)
 					.build();
-
+			j1.getKey();
 
 			Date startDate = Date.from(fechaInicio.minusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
 			Date endDate = Date.from(fechaFin.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
@@ -157,7 +160,8 @@ public class Planificador {
 		LocalDateTime fechaFin=c.getFechaInicio();
 		Integer perioricidad=horas+1;
 		String triggerKey=c.getId().toString()+"-"+key.toString();
-		agregarCita(c.getTitulo(), c.getMessage(), fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
+		String username=c.getEmpleado().getCredencial().getUsuario();
+		agregarCita(c.getTitulo(), c.getMessage(),username, fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
 	}
 
 	private void agregarNotificacionCobro(Cobro c, Integer horas, Integer key) {

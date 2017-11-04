@@ -2,20 +2,27 @@ package com.TpFinal.view;
 
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.notificacion.Notificacion;
+import com.TpFinal.dto.persona.Credencial;
+import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.services.CitaService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.NotificacionService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
 import com.TpFinal.view.calendario.MeetingItem;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Title;
+import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
 import org.exolab.castor.types.DateTime;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -351,10 +358,12 @@ public final class DashboardView extends Panel implements View{
                 NotificacionService.getNotifications();
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
-        if(size>11)
-            size=11;
-        for (int i=0 ; i<size;i++) {
-            Notificacion notification=notifications.get(i);
+    /*    if(size>11)
+            size=11;*/
+        boolean first=true;
+        for (Notificacion notification: notifications) {
+
+
             VerticalLayout notificationLayout = new VerticalLayout();
             notificationLayout.setMargin(false);
             notificationLayout.setSpacing(false);
@@ -381,7 +390,48 @@ public final class DashboardView extends Panel implements View{
 
             notificationLayout.addComponents(titleLabel, timeLabel,
                     contentLabel);
-            notificationsLayout.addComponent(notificationLayout);
+
+
+            notificationLayout.setDescription(notification.getIdCita());
+
+            notificationLayout.addLayoutClickListener(new LayoutClickListener() {
+                @Override
+                public void layoutClick(LayoutClickEvent layoutClickEvent) {
+                    CitaService citaService = new CitaService();
+                    Cita ret=citaService.getCitaFromTriggerKey(notificationLayout.getDescription());
+                    if(ret!=null){
+                    CitaFormWindow citaWindow = new CitaFormWindow(ret) {
+                        @Override
+                        public void onSave() {
+                            meetings.refreshCitas();
+                        }
+
+                        ;
+                    };
+                }
+
+
+                };});
+
+
+            boolean stale=notification.getFechaCreacion().isAfter(notification.getFechaCreacion().plusDays(1))
+                    &&notification.isVisto();
+            Credencial userCred=getCurrentUser().getCredencial();
+            HorizontalLayout separator=new HorizontalLayout();
+
+            if((!stale)&&(notification.getUsuario().equals(userCred.getUsuario()))) {
+
+                Label divider=notificationDivider();
+                divider.setSizeFull();
+                notificationLayout.addComponent(divider);
+
+            //   notificationLayout.setComponentAlignment(divider,Alignment.MIDDLE_LEFT);
+                
+                notificationsLayout.addComponent(notificationLayout);
+                first=false;
+
+
+            }
 
         }
 
@@ -423,6 +473,18 @@ public final class DashboardView extends Panel implements View{
         }
 
 
+    }
+
+    private Label notificationDivider(){
+      Label label=new Label("<hr color=#DEDEDE size=1>", ContentMode.HTML);
+      label.setWidth(300.0f, Unit.PIXELS);
+        return label;
+    }
+
+
+    private Empleado getCurrentUser() {
+        return (Empleado) VaadinSession.getCurrent()
+                .getAttribute(Empleado.class.getName());
     }
 
     @Override

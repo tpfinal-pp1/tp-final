@@ -4,7 +4,7 @@ import com.vaadin.server.*;
 import org.jsoup.nodes.Element;
 
 @SuppressWarnings("serial")
-public class DashboardSessionInitListener implements SessionInitListener {
+public class  DashboardSessionInitListener implements SessionInitListener {
 
     @Override
     public final void sessionInit(final SessionInitEvent event)

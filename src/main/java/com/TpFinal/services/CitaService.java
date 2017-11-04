@@ -3,6 +3,7 @@ package com.TpFinal.services;
 import com.TpFinal.data.dao.DAOCitaImpl;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.persona.Empleado;
 import org.h2.table.Plan;
 
 import java.util.ArrayList;
@@ -45,6 +46,19 @@ public class CitaService {
        return b;
     }
 
+    public Cita getCitaFromTriggerKey(String triggerKey){
+        int corte=triggerKey.indexOf('-');
+
+        for (Cita cita:readAll()){
+            if(cita.getId().toString().equals(triggerKey.substring(0,corte))){
+                return cita;
+            }
+        }
+        return null;
+
+
+    }
+
     public boolean editCita(Cita cita){
         boolean b= Planificador.get().removeCita(cita);
         if(!b)
@@ -70,14 +84,24 @@ public class CitaService {
         }
         ret2=Planificador.get().removeCita(p);
         if(!ret2){
-            System.err.println("Error al Borrar los recodatorios de la cita..");
+            System.err.println("Error al Borrar los recodatorios de la cita... \nes probable que ya se hayan detonado los triggers");
         }
 
 
         return ret1&&ret2;
     }
 
-    public List<Cita> readAll(){
+    public List<Cita> readAllFromUser(Empleado user){
+        List<Cita> ret=new ArrayList<>();
+        for (Cita cita:readAll()){
+            if(cita.getEmpleado().equals(user)){
+               ret.add(cita);
+            }}
+
+        return ret;
+    }
+
+    private List<Cita> readAll(){
         return dao.readAllActives();
     }
 

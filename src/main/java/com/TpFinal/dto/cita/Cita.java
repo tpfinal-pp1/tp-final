@@ -82,9 +82,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
 	@JoinColumn(name = "id_empleado")
 	private Empleado empleado;
-
-
-
+	
 	//Mod by agus(calendario)
 	public enum State {
 		empty,
@@ -260,7 +258,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaInicio
 				+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
 				+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
-	}
+}
 
 	@Override
 	public String getMessage() {

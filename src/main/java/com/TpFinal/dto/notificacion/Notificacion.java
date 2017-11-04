@@ -33,6 +33,8 @@ public class Notificacion implements Identificable, BorradoLogico {
 	private Boolean visto;
 	@Column(name="user")
 	private String usuario;
+	@Column(name="idCita")
+	private String idCita;
 	@Enumerated(EnumType.STRING)
 	@Column(name="estadoRegistro")
 	private EstadoRegistro estadoRegistro;
@@ -51,6 +53,15 @@ public class Notificacion implements Identificable, BorradoLogico {
 		this.visto=false;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 		this.fechaCreacion=LocalDateTime.now();
+	}
+
+
+	public String getIdCita() {
+		return idCita;
+	}
+
+	public void setIdCita(String idCita) {
+		this.idCita = idCita;
 	}
 
 	@Override

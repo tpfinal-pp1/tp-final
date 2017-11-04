@@ -72,42 +72,54 @@ public class PlanificadorIT {
 		}
 	}
 
+
+
+
 	@Test
-	public void eliminarCitas() {
+	public void eliminarCita() {
+		Cita c =null;
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
-			List<Messageable>citas = new ArrayList<>();
-			for(int i=0; i<3; i++) {
+
 				LocalDateTime fInicio = LocalDateTime.now();
-				fInicio=fInicio.plusMinutes(i+1);
+				fInicio=fInicio.plusMinutes(1);
 				fInicio=fInicio.plusHours(1);
-
-				System.out.println(fInicio.toString());
-
-				Cita c = new Cita.Builder()
-						.setCitado("Señor "+String.valueOf(i))
-						.setDireccionLugar("sarasa: "+String.valueOf(i))
+				c = new Cita.Builder()
+						.setCitado("Señor "+String.valueOf(0))
+						.setDireccionLugar("sarasa: "+String.valueOf(0))
 						.setFechahora(fInicio)
-						.setObservaciones("obs"+String.valueOf(i))
+						.setObservaciones("obs"+String.valueOf(0))
 						.setTipoDeCita(randomCita())
 						.build();
-				c.setId(Long.valueOf(i));
-				citas.add(c);
-			}
-			sc.agregarNotificaciones(citas);
-			boolean eliminar=true;
+				c.setId((long)1);
 
-			for (Messageable mess:citas){
-				Cita citat=(Cita) mess;
-				eliminar=eliminar&&sc.removeCita(citat);
 
-			}
-			Assert.assertTrue(eliminar);
+			sc.addCita(c);
 
-			TimeUnit.SECONDS.sleep(300);
+
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		boolean eliminar=true;
+		eliminar=eliminar&&sc.removeCita(c);
+
+
+		LocalDateTime fInicio = LocalDateTime.now();
+		fInicio=fInicio.plusMinutes(1);
+		fInicio=fInicio.plusHours(1);
+		Cita c1 = new Cita.Builder()
+				.setCitado("Señor "+String.valueOf(0))
+				.setDireccionLugar("sarasa: "+String.valueOf(0))
+				.setFechahora(fInicio)
+				.setObservaciones("obs"+String.valueOf(0))
+				.setTipoDeCita(randomCita())
+				.build();
+		c.setId((long)1);
+
+
+		sc.addCita(c);
+		Assert.assertTrue(eliminar);
 	}
 
 

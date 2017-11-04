@@ -17,8 +17,11 @@ public class NotificadorJob implements Job{
 			if(dataMap.size() != 0){
 				String mensaje = dataMap.getString("mensaje");
 				String titulo = dataMap.getString("titulo");
-				
+				String usaurio=dataMap.getString("usuario");
+				String idCita=dataMap.getString("idCita");
 				Notificacion noti = new Notificacion();
+				noti.setUsuario(usaurio);
+				noti.setIdCita(idCita);
 				noti.setMensaje(mensaje);
 				noti.setTitulo(titulo);
 				NotificacionService.addNotificacion(noti);
