@@ -128,6 +128,8 @@ public class Planificador {
 
 	public void agregarCita(String titulo, String mensaje,String username, LocalDateTime fechaInicio, LocalDateTime fechaFin, String perioricidad, String id) {
 		try {
+
+
 			String horan="0 "+fechaInicio.getMinute()+" "+fechaInicio.getHour();
 			horan=horan+" 1/1";
 			horan=horan+" * ? *";

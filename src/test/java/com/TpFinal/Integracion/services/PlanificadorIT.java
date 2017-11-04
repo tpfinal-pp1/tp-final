@@ -52,7 +52,7 @@ public class PlanificadorIT {
 		}
 	}
 
-	@Ignore
+	/*@Ignore
 	@Test
 	public void testJob() {
 		try {
@@ -70,7 +70,7 @@ public class PlanificadorIT {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 
 

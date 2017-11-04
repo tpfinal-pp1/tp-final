@@ -103,6 +103,12 @@ public abstract class CitaFormWindow extends Window {
         center();
         getUI().getCurrent().addWindow(this);
         focus();
+        this.addCloseListener(new CloseListener() {
+            @Override
+            public void windowClose(CloseEvent closeEvent) {
+                onSave();
+            }
+        });
 
 
     }
@@ -127,6 +133,9 @@ public abstract class CitaFormWindow extends Window {
     }
 
     private void setCita(Cita cita) {
+        if(cita.getId()==null){
+            direccionLugar.setValue("En Inmobiliaria");
+        }
         borrar.setVisible(cita.getId()!=null);
         this.cita = cita;
         binderCita.readBean(cita);
@@ -155,7 +164,7 @@ public abstract class CitaFormWindow extends Window {
 
         if(success) {
             Notification exito = new Notification(
-                    "Borrado: " + cita.getDetails());
+                    "Borrado!" + cita.getMessage());
             exito.setDelayMsec(2000);
             exito.setStyleName("bar success small");
             exito.setPosition(Position.BOTTOM_CENTER);
@@ -181,9 +190,13 @@ public abstract class CitaFormWindow extends Window {
         try {
             binderCita.writeBean(cita);
             cita.setEmpleado(getCurrentUser());
-            service.addCita(cita);
+
+            if(cita.getId()!=null)
+                success=service.editCita(cita);
+            else {
+                success=service.addCita(cita);
+            }
             onSave();
-            success=true;
 
 
         } catch (ValidationException e) {
@@ -197,7 +210,7 @@ public abstract class CitaFormWindow extends Window {
 
         if(success) {
             Notification exito = new Notification(
-                    "Guardado: " + cita.getDetails());
+                    "Guardado: " + cita.getMessage());
             exito.setDelayMsec(2000);
             exito.setStyleName("bar success small");
             exito.setPosition(Position.BOTTOM_CENTER);

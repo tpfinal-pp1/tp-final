@@ -94,7 +94,8 @@ public final class DashboardView extends Panel implements View{
     @Subscribe
     public void updateNotificationsCount(
             final DashboardEvent.NotificationsCountUpdatedEvent event) {
-        notificationsButton.setUnreadCount(NotificacionService
+        NotificacionService nS=new NotificacionService();
+        notificationsButton.setUnreadCount(nS
                 .getUnreadNotificationsCount());
 
     }
@@ -119,7 +120,7 @@ public final class DashboardView extends Panel implements View{
                 Cita cita=new Cita();
                 cita.setFechaInicio(LocalDate.now().atTime(LocalTime.now()));
                 cita.setFechaFin(LocalDate.now().atTime(LocalTime.now().plusHours(1)));
-                CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
+                 citaWindow=  new CitaFormWindow(cita) {
                     @Override
                     public void onSave() {
                         meetings.refreshCitas();
@@ -199,7 +200,7 @@ public final class DashboardView extends Panel implements View{
 
                 cita.setFechaFin(event.getStart().
                         toLocalDateTime().toLocalDate().atTime(LocalTime.now().plusHours(1)));
-                CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
+                  citaWindow=  new CitaFormWindow(cita) {
                     @Override
                     public void onSave() {
                         refreshCitas();
@@ -215,7 +216,7 @@ public final class DashboardView extends Panel implements View{
 
                 final Cita cita = item.getMeeting();
 
-                CitaFormWindow citaWindow=  new CitaFormWindow(cita) {
+                citaWindow=  new CitaFormWindow(cita) {
                     @Override
                     public void onSave() {
 
@@ -353,9 +354,9 @@ public final class DashboardView extends Panel implements View{
         title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
         notificationsLayout.addComponent(title);
 
-
+        NotificacionService nS=new NotificacionService();
         ArrayList<Notificacion> notifications = (ArrayList<Notificacion>)
-                NotificacionService.getNotifications();
+                nS.getNotifications();
         DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
         int size=notifications.size();
     /*    if(size>11)
@@ -381,7 +382,9 @@ public final class DashboardView extends Panel implements View{
             timeLabel.addStyleName("notification-time");
 
             String content=notification.getMensaje();
-            if(content.length()>45) {
+            String ret="";
+
+            if(content.length()>39) {
                 content = notification.getMensaje().substring(0, 42) + "...";
             }
 
@@ -400,7 +403,7 @@ public final class DashboardView extends Panel implements View{
                     CitaService citaService = new CitaService();
                     Cita ret=citaService.getCitaFromTriggerKey(notificationLayout.getDescription());
                     if(ret!=null){
-                    CitaFormWindow citaWindow = new CitaFormWindow(ret) {
+                       citaWindow = new CitaFormWindow(ret) {
                         @Override
                         public void onSave() {
                             meetings.refreshCitas();
@@ -420,18 +423,17 @@ public final class DashboardView extends Panel implements View{
             HorizontalLayout separator=new HorizontalLayout();
 
             if((!stale)&&(notification.getUsuario().equals(userCred.getUsuario()))) {
-
-                Label divider=notificationDivider();
-                divider.setSizeFull();
-                notificationLayout.addComponent(divider);
-
-            //   notificationLayout.setComponentAlignment(divider,Alignment.MIDDLE_LEFT);
-                
+                if(!first) {
+                    Label divider = notificationDivider();
+                    divider.setSizeFull();
+                    notificationsLayout.addComponent(divider);
+                }
                 notificationsLayout.addComponent(notificationLayout);
-                first=false;
-
-
+                first = false;
             }
+
+
+
 
         }
 

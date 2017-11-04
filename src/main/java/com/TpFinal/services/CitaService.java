@@ -3,6 +3,7 @@ package com.TpFinal.services;
 import com.TpFinal.data.dao.DAOCitaImpl;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Empleado;
 import org.h2.table.Plan;
 
@@ -21,7 +22,10 @@ public class CitaService {
         return dao.saveOrUpdate(cita);
     }
 
+
+
     public boolean addCita(Cita cita){
+        System.out.println("AGREGADA "+cita);
        boolean b= saveOrUpdate(cita);
        Cita citaConId=null;
         if(b){
@@ -60,21 +64,22 @@ public class CitaService {
     }
 
     public boolean editCita(Cita cita){
-        boolean b= Planificador.get().removeCita(cita);
-        if(!b)
-            System.err.println("Error al Borrar los recodatorios de la cita..");
-        b=b&&saveOrUpdate(cita);
-        if(b)
-            Planificador.get().addCita(cita);
-        else{
-            System.err.println("Error al editar la cita"+cita);
-        }
+        System.out.println("EDITADA "+cita);
+        Cita citaOriginal=null;
+            List<Cita> citas=readAll();
+            for (Cita citaGuardada:citas)
+                if(citaGuardada.getId().equals(cita.getId()))
+                    citaOriginal=cita;
 
-        return b;
+
+        delete(citaOriginal);
+        cita.setId(null);
+        return addCita(cita);
 
     }
 
     public boolean delete(Cita p) {
+        System.out.println("BORRADA"+p);
         boolean ret1=true;
         boolean ret2=true;
 
@@ -88,10 +93,13 @@ public class CitaService {
         }
 
 
-        return ret1&&ret2;
+        return ret1;
     }
 
     public List<Cita> readAllFromUser(Empleado user){
+        if(user.getCategoriaEmpleado().equals(CategoriaEmpleado.admin)){
+            return readAll();
+        }
         List<Cita> ret=new ArrayList<>();
         for (Cita cita:readAll()){
             if(cita.getEmpleado().equals(user)){

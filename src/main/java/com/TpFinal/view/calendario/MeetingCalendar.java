@@ -42,17 +42,7 @@ public abstract class MeetingCalendar extends CustomComponent {
         setId("meeting-meetings");
         initCalendar();
         setCompositionRoot(calendar);
-        calendar.setDropHandler(new DropHandler() {
-            @Override
-            public void drop(DragAndDropEvent dragAndDropEvent) {
-                System.out.println("Drop!");
-            }
 
-            @Override
-            public AcceptCriterion getAcceptCriterion() {
-                return null;
-            }
-        });
 
         refreshCitas();
 
@@ -159,8 +149,7 @@ public abstract class MeetingCalendar extends CustomComponent {
 
         final Cita cita = item.getMeeting();
         service.editCita(cita);
-      
-
+        refreshCitas();
     }
 
     private final class MeetingDataProvider extends BasicItemProvider<MeetingItem> {
@@ -168,6 +157,7 @@ public abstract class MeetingCalendar extends CustomComponent {
         void removeAllEvents() {
             this.itemList.clear();
             fireItemSetChanged();
+
         }
     }
 

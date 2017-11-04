@@ -15,6 +15,7 @@ public class NotificadorJob implements Job{
 		try {
 			JobDataMap dataMap = context.getJobDetail().getJobDataMap();
 			if(dataMap.size() != 0){
+
 				String mensaje = dataMap.getString("mensaje");
 				String titulo = dataMap.getString("titulo");
 				String usaurio=dataMap.getString("usuario");
@@ -24,7 +25,8 @@ public class NotificadorJob implements Job{
 				noti.setIdCita(idCita);
 				noti.setMensaje(mensaje);
 				noti.setTitulo(titulo);
-				NotificacionService.addNotificacion(noti);
+				NotificacionService nS=new NotificacionService();
+				nS.addNotificacion(noti);
 				
 			}else{
 				System.out.println("algo salio mal");

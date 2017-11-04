@@ -1,9 +1,10 @@
 package com.TpFinal.dto.cita;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.format.TextStyle;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -97,11 +98,28 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		LocalDateTime i=
 				this.getFechaInicio();
 
-			return "Cita con "
-				+citado+"<br>"+this.tipoDeCita+"<br> el "
-				+i.getDayOfMonth()
-				+"/"+i.getMonthValue()+"/"+i.getYear()+
-				" a las "+i.getHour()+":"+i.getMinute();
+			return recortarStrings("Cita: "
+				+citado)+"<br>"+this.tipoDeCita+"<br>"+ "Lugar:<br>"+recortarStrings(getDireccionLugar())+"<br>Observaciones:<br>"+
+					recortarStrings(getObservaciones());
+
+	}
+
+	public String recortarStrings(String m){
+		String ret="";
+		for (int i = 0; i < m.length(); i++) {
+			ret=ret+m.charAt(i);
+			if (i ==18){
+				ret=ret+"-<br>";}
+			else if(i==23){
+
+			}
+			else if((i%23==0)&&i!=1&&i!=0){
+				ret=ret+"-<br>";
+			}
+
+
+			}
+		return ret;
 
 	}
 
@@ -262,8 +280,12 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 
 	@Override
 	public String getMessage() {
-		return "Hora: "+dejarLindo(this.fechaInicio.getHour())+":"+dejarLindo(this.fechaInicio.getMinute())
-		+"\n"+"Direccion: "+this.direccionLugar+"\n"+"Tipo de cita: "+this.tipoDeCita;
+
+
+		return this.fechaInicio.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "AR"))+" "+agregarCero(this.fechaInicio.getHour())+":"+
+				agregarCero(this.fechaInicio.getMinute())+": "+this.tipoDeCita;
+		/*return "Hora: "+ agregarCero(this.fechaInicio.getHour())+":"+ agregarCero(this.fechaInicio.getMinute())
+		+"\n"+"Direccion: "+this.direccionLugar+"\n"+"Tipo de cita: "+this.tipoDeCita;*/
 	}
 
 	@Override
@@ -271,7 +293,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		return "Cita con "+this.citado;
 	}
 
-	private String dejarLindo(int horaMinuto) {
+	private String agregarCero(int horaMinuto) {
 		String ret=String.valueOf(horaMinuto);
 		if(horaMinuto<10)
 			ret="0"+String.valueOf(horaMinuto);
