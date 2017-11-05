@@ -8,6 +8,7 @@ import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.services.Planificador;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
@@ -39,303 +40,308 @@ import org.apache.log4j.Logger;
 // @Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class CobrosABMView extends DefaultLayout implements View {
 
-    private TextField filter = new TextField();
-    private Grid<Cobro> grid = new Grid<>();
-    private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    private HorizontalLayout mainLayout;
-    private CobrosForm cobrosForm = new CobrosForm(this);
-    private boolean isonMobile = false;
-    private Controller controller = new Controller();
-    RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
-    Button seleccionFiltro = new Button(VaadinIcons.SEARCH_MINUS);
-    Window sw = new Window("Filtrar");
+	private TextField filter = new TextField();
+	private Grid<Cobro> grid = new Grid<>();
+	private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
+	private HorizontalLayout mainLayout;
+	private CobrosForm cobrosForm = new CobrosForm(this);
+	private boolean isonMobile = false;
+	private Controller controller = new Controller();
+	RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
+	Button seleccionFiltro = new Button(VaadinIcons.SEARCH_MINUS);
+	Window sw = new Window("Filtrar");
 
-    private int acciones = 0;
+	private int acciones = 0;
 
-    public CobrosABMView() {
-	super();
-	buildLayout();
-	controller.configureComponents();
-	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}");
-
-    }
-
-    public Controller getController() {
-	return controller;
-    }
-
-    private void buildLayout() {
-	CssLayout filtering = new CssLayout();
-	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-
-	filtering.addComponents(seleccionFiltro, filter, clearFilterTextBtn);
-	HorizontalLayout hlf = new HorizontalLayout(filtering);
-	buildToolbar("Cobros", hlf);
-	grid.setSizeFull();
-	mainLayout = new HorizontalLayout(grid, cobrosForm);
-	mainLayout.setSizeFull();
-	addComponent(mainLayout);
-	this.setExpandRatio(mainLayout, 1);
-    }
-
-    /**
-     * Oculta o muestra los componentes de la grilla y su toolbar.
-     *
-     * @param b
-     *            true para mostrar, false para ocultar
-     */
-    public void setComponentsVisible(boolean b) {
-	filter.setVisible(b);
-	seleccionFiltro.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
-	if (isonMobile)
-	    grid.setVisible(b);
-
-    }
-
-    public void showErrorNotification(String notification) {
-	Notification success = new Notification(
-		notification);
-	success.setDelayMsec(4000);
-	success.setStyleName("bar error small");
-	success.setPosition(Position.BOTTOM_CENTER);
-	success.show(Page.getCurrent());
-    }
-
-    public void showSuccessNotification(String notification) {
-	Notification success = new Notification(
-		notification);
-	success.setDelayMsec(2000);
-	success.setStyleName("bar success small");
-	success.setPosition(Position.BOTTOM_CENTER);
-	success.show(Page.getCurrent());
-    }
-
-    public boolean isIsonMobile() {
-	return isonMobile;
-    }
-
-    public void ClearFilterBtnAction() {
-	if (this.cobrosForm.isVisible()) {
-	    cobrosForm.cancel();
-	}
-	filter.clear();
-    }
-
-    /*
-     *
-     * Deployed as a Servlet or Portlet.
-     *
-     * You can specify additional servlet parameters like the URI and UI class name
-     * and turn on production mode when you have finished developing the
-     * application.
-     */
-    @Override
-    public void detach() {
-	super.detach();
-	// A new instance of TransactionsView is created every time it's
-	// navigated to so we'll need to clean up references to it on detach.
-	com.TpFinal.services.DashboardEventBus.unregister(this);
-    }
-
-    @Subscribe
-    public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
-	if (Page.getCurrent().getBrowserWindowWidth() < 800) {
-	    System.out.println("Mobile!");
-	    isonMobile = true;
-	} else {
-	    isonMobile = false;
+	public CobrosABMView() {
+		super();
+		buildLayout();
+		controller.configureComponents();
+		UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}");
 
 	}
 
-    }
+	public Controller getController() {
+		return controller;
+	}
 
-    @Override
-    public void enter(final ViewChangeListener.ViewChangeEvent event) {
-    }
+	private void buildLayout() {
+		CssLayout filtering = new CssLayout();
+		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 
-    public class Controller {
-	private final  Logger logger = Logger.getLogger(CobrosABMView.Controller.class);
+		filtering.addComponents(seleccionFiltro, filter, clearFilterTextBtn);
+		HorizontalLayout hlf = new HorizontalLayout(filtering);
+		buildToolbar("Cobros", hlf);
+		grid.setSizeFull();
+		mainLayout = new HorizontalLayout(grid, cobrosForm);
+		mainLayout.setSizeFull();
+		addComponent(mainLayout);
+		this.setExpandRatio(mainLayout, 1);
+	}
 
-	private CobroService cobroService = new CobroService();
-	private PersonaService personaService = new PersonaService();
-
-	public void configureComponents() {
-	    configureFilter();
-	    configureGrid();
-	    updateList();
-	    cobrosForm.cancel();
+	/**
+	 * Oculta o muestra los componentes de la grilla y su toolbar.
+	 *
+	 * @param b
+	 *            true para mostrar, false para ocultar
+	 */
+	public void setComponentsVisible(boolean b) {
+		filter.setVisible(b);
+		seleccionFiltro.setVisible(b);
+		// clearFilterTextBtn.setVisible(b);
+		if (isonMobile)
+			grid.setVisible(b);
 
 	}
 
-	private void configureFilter() {
-	    filter.addValueChangeListener(e -> updateList());
-	    filter.setValueChangeMode(ValueChangeMode.LAZY);
-	    filter.setPlaceholder("Filtrar");
-
-	    clearFilterTextBtn.setDescription("Limpiar filtro");
-	    clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
-	    seleccionFiltro.addClickListener(e -> abriVentanaSelectoraFiltros());
+	public void showErrorNotification(String notification) {
+		Notification success = new Notification(
+				notification);
+		success.setDelayMsec(4000);
+		success.setStyleName("bar error small");
+		success.setPosition(Position.BOTTOM_CENTER);
+		success.show(Page.getCurrent());
 	}
 
-	private void abriVentanaSelectoraFiltros() {
-	    HorizontalLayout hl = new HorizontalLayout(filtroRoles);
-	    hl.setMargin(true);
-	    hl.setSpacing(true);
-	    sw.setContent(hl);
-	    filtroRoles.setItems("Todos", "Cobrados", "No cobrados");
-	    filtroRoles.addValueChangeListener(l -> {
-		System.out.println(l.getValue());
-		String valor = l.getValue();
-		filter(valor);
-	    });
-	    Responsive.makeResponsive(sw);
-	    sw.setModal(true);
-	    sw.setResizable(false);
-	    sw.setClosable(true);
-	    sw.setVisible(true);
-	    sw.center();
-	    UI.getCurrent().addWindow(sw);
-	    sw.focus();
+	public void showSuccessNotification(String notification) {
+		Notification success = new Notification(
+				notification);
+		success.setDelayMsec(2000);
+		success.setStyleName("bar success small");
+		success.setPosition(Position.BOTTOM_CENTER);
+		success.show(Page.getCurrent());
 	}
 
-	public void filter(String valor) {
-	    List<Cobro> customers = null;
-	    if (valor.equals("Todos")) {
-		customers = cobroService.findAll(filter.getValue());
-	    } else if (valor.equals("Cobrados")) {
-		customers = cobroService.findByEstado(EstadoCobro.COBRADO.toString());
-
-	    } else if (valor.equals("No cobrados")) {
-		customers = cobroService.findByEstado(EstadoCobro.NOCOBRADO.toString());
-
-	    }
-	    grid.setItems(customers);
+	public boolean isIsonMobile() {
+		return isonMobile;
 	}
 
-	@SuppressWarnings("unchecked")
-	private void configureGrid() {
-	    grid.setStyleGenerator(cobro -> {
-		String ret = null;
-		if (cobro.getFechaDeVencimiento() != null) {
-		    if (cobro.getFechaDeVencimiento().isBefore(LocalDate.now())) {
-			ret = "vencido";
-		    }
+	public void ClearFilterBtnAction() {
+		if (this.cobrosForm.isVisible()) {
+			cobrosForm.cancel();
 		}
-		return ret;
-	    });
+		filter.clear();
+	}
 
-	    grid.asSingleSelect().addValueChangeListener(event -> {
-		if (event.getValue() == null) {
-		    if (cobrosForm.isVisible())
-			setComponentsVisible(true);
-		    cobrosForm.setVisible(false);
-		    cobrosForm.clearFields();
-		    cobrosForm.setVisible(false);
+	/*
+	 *
+	 * Deployed as a Servlet or Portlet.
+	 *
+	 * You can specify additional servlet parameters like the URI and UI class name
+	 * and turn on production mode when you have finished developing the
+	 * application.
+	 */
+	@Override
+	public void detach() {
+		super.detach();
+		// A new instance of TransactionsView is created every time it's
+		// navigated to so we'll need to clean up references to it on detach.
+		com.TpFinal.services.DashboardEventBus.unregister(this);
+	}
+
+	@Subscribe
+	public void browserWindowResized(final DashboardEvent.BrowserResizeEvent event) {
+		if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+			System.out.println("Mobile!");
+			isonMobile = true;
+		} else {
+			isonMobile = false;
+
 		}
-	    });
 
-	    Grid.Column<Cobro, String> inmuebleCol = grid.addColumn(cobro -> {
-		String ret = "";
-		ret = cobro.getContrato().getInmueble().toString();
-		return ret;
-	    }).setCaption("Inmueble").setId("inmuebles");
+	}
 
-	    Grid.Column<Cobro, String> tipoCol = grid.addColumn(cobro -> {
-		String ret = "";
-		ret = "Alquiler";
-		return ret;
-	    }).setCaption("Tipo").setId("tipos");
+	@Override
+	public void enter(final ViewChangeListener.ViewChangeEvent event) {
+	}
 
-	    grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
-		    "Fecha De Vencimiento")
-		    .setId("fechasDeVencimiento");
+	public class Controller {
+		private final  Logger logger = Logger.getLogger(CobrosABMView.Controller.class);
 
-	    Grid.Column<Cobro, String> fechaCobroCol = grid.addColumn(cobro -> {
-		String ret = "";
-		if (cobro.getFechaDePago() != null) {
-		    DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
-		    ret = cobro.getFechaDePago().format(formatters);
-		} else
-		    ret = "No ha sido pagado";
-		return ret;
-	    }).setCaption("Fecha de Pago").setId("fechasDePagos");
+		private CobroService cobroService = new CobroService();
+		private PersonaService personaService = new PersonaService();
 
-	    Grid.Column<Cobro, String> inquilino = grid.addColumn(cobro -> {
-		String ret = "";
-		ret = cobro.getContrato().getInquilinoContrato().toString();
-		return ret;
-	    }).setCaption("Inquilino").setId("inquilinos");
+		public void configureComponents() {
+			configureFilter();
+			configureGrid();
+			updateList();
+			cobrosForm.cancel();
 
-	    Grid.Column<Cobro, String> monto = grid.addColumn(cobro -> {
-		String ret = "";
-		ret = cobro.getMontoRecibido().toString();
-		return ret;
-	    }).setCaption("Monto").setId("montos");
+		}
 
-	    grid.addComponentColumn(cobro -> {
-		Button ver = new Button(VaadinIcons.EYE);
-		ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
-		ver.addClickListener(e -> {
-		    // TODO
-		    cobrosForm.setCobro(cobro);
+		private void configureFilter() {
+			filter.addValueChangeListener(e -> updateList());
+			filter.setValueChangeMode(ValueChangeMode.LAZY);
+			filter.setPlaceholder("Filtrar");
 
-		});
+			clearFilterTextBtn.setDescription("Limpiar filtro");
+			clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
+			seleccionFiltro.addClickListener(e -> abriVentanaSelectoraFiltros());
+		}
 
-		Button pagar = new Button(VaadinIcons.MONEY);
-		pagar.addClickListener(click -> {
-		    if (cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
-			Notification.show("Este alquiler ya esta cobrado",
-				Notification.Type.WARNING_MESSAGE);
-		    } else {
-			DialogConfirmacion dialog = new DialogConfirmacion("Cobrar alquiler",
-				VaadinIcons.WARNING,
-				"¿Esta seguro que desea cobrar este alquiler?",
-				"100px",
-				confirmacion -> {
-				    if (cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
-					cobro.setEstadoCobro(EstadoCobro.COBRADO);
-					cobro.setFechaDePago(LocalDate.now());
-					cobroService.save(cobro);
-					Persona p = cobro.getContrato().getInquilinoContrato().getPersona();
-					if (logger.isDebugEnabled()) {
-					    logger.debug("Calificacion antes de actualizar: " + ((Inquilino)p.getRol(Rol.Inquilino)).getCalificacion());
+		private void abriVentanaSelectoraFiltros() {
+			HorizontalLayout hl = new HorizontalLayout(filtroRoles);
+			hl.setMargin(true);
+			hl.setSpacing(true);
+			sw.setContent(hl);
+			filtroRoles.setItems("Todos", "Cobrados", "No cobrados");
+			filtroRoles.addValueChangeListener(l -> {
+				System.out.println(l.getValue());
+				String valor = l.getValue();
+				filter(valor);
+			});
+			Responsive.makeResponsive(sw);
+			sw.setModal(true);
+			sw.setResizable(false);
+			sw.setClosable(true);
+			sw.setVisible(true);
+			sw.center();
+			UI.getCurrent().addWindow(sw);
+			sw.focus();
+		}
+
+		public void filter(String valor) {
+			List<Cobro> customers = null;
+			if (valor.equals("Todos")) {
+				customers = cobroService.findAll(filter.getValue());
+			} else if (valor.equals("Cobrados")) {
+				customers = cobroService.findByEstado(EstadoCobro.COBRADO.toString());
+
+			} else if (valor.equals("No cobrados")) {
+				customers = cobroService.findByEstado(EstadoCobro.NOCOBRADO.toString());
+
+			}
+			grid.setItems(customers);
+		}
+
+		@SuppressWarnings("unchecked")
+		private void configureGrid() {
+			grid.setStyleGenerator(cobro -> {
+				String ret = null;
+				if (cobro.getFechaDeVencimiento() != null) {
+					if (cobro.getFechaDeVencimiento().isBefore(LocalDate.now())) {
+						ret = "vencido";
 					}
-					personaService.calificarInquilino(p);
-					if (logger.isDebugEnabled()) {
-					    logger.debug("Calificacion despues de actualizar: " + ((Inquilino)p.getRol(Rol.Inquilino)).getCalificacion());
-					}
-					personaService.saveOrUpdate(p);
-				    }
-				    updateList();
+				}
+				return ret;
+			});
+
+			grid.asSingleSelect().addValueChangeListener(event -> {
+				if (event.getValue() == null) {
+					if (cobrosForm.isVisible())
+						setComponentsVisible(true);
+					cobrosForm.setVisible(false);
+					cobrosForm.clearFields();
+					cobrosForm.setVisible(false);
+				}
+			});
+
+			Grid.Column<Cobro, String> inmuebleCol = grid.addColumn(cobro -> {
+				String ret = "";
+				ret = cobro.getContrato().getInmueble().toString();
+				return ret;
+			}).setCaption("Inmueble").setId("inmuebles");
+
+			Grid.Column<Cobro, String> tipoCol = grid.addColumn(cobro -> {
+				String ret = "";
+				ret = "Alquiler";
+				return ret;
+			}).setCaption("Tipo").setId("tipos");
+
+			grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
+					"Fecha De Vencimiento")
+			.setId("fechasDeVencimiento");
+
+			Grid.Column<Cobro, String> fechaCobroCol = grid.addColumn(cobro -> {
+				String ret = "";
+				if (cobro.getFechaDePago() != null) {
+					DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+					ret = cobro.getFechaDePago().format(formatters);
+				} else
+					ret = "No ha sido pagado";
+				return ret;
+			}).setCaption("Fecha de Pago").setId("fechasDePagos");
+
+			Grid.Column<Cobro, String> inquilino = grid.addColumn(cobro -> {
+				String ret = "";
+				ret = cobro.getContrato().getInquilinoContrato().toString();
+				return ret;
+			}).setCaption("Inquilino").setId("inquilinos");
+
+			Grid.Column<Cobro, String> monto = grid.addColumn(cobro -> {
+				String ret = "";
+				ret = cobro.getMontoRecibido().toString();
+				return ret;
+			}).setCaption("Monto").setId("montos");
+
+			grid.addComponentColumn(cobro -> {
+				Button ver = new Button(VaadinIcons.EYE);
+				ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
+				ver.addClickListener(e -> {
+					// TODO
+					cobrosForm.setCobro(cobro);
+
 				});
-		    }
 
-		});
-		pagar.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
-		CssLayout hl = new CssLayout(ver, pagar);
-		hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		hl.setCaption("Accion " + acciones);
-		hl.setId("acciones");
-		acciones++;
-		return hl;
-	    }).setCaption("Acciones").setId("acciones");
-	    grid.setColumnOrder("acciones", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos", "inquilinos",
-		    "montos");
-	    grid.getColumns().forEach(col -> {
-		    col.setResizable(false);
-		    col.setHidable(true);
-		});
+				Button pagar = new Button(VaadinIcons.MONEY);
+				pagar.addClickListener(click -> {
+					if (cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
+						Notification.show("Este alquiler ya esta cobrado",
+								Notification.Type.WARNING_MESSAGE);
+					} else {
+						DialogConfirmacion dialog = new DialogConfirmacion("Cobrar alquiler",
+								VaadinIcons.WARNING,
+								"¿Esta seguro que desea cobrar este alquiler?",
+								"100px",
+								confirmacion -> {
+									if (cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
+										cobro.setEstadoCobro(EstadoCobro.COBRADO);
+										cobro.setFechaDePago(LocalDate.now());
+										boolean guardo=cobroService.save(cobro);
+										if(guardo) {
+											Planificador.get().removeCobroVencido(cobro);
+											System.out.println("Removido");
+										}
+											
+										Persona p = cobro.getContrato().getInquilinoContrato().getPersona();
+										if (logger.isDebugEnabled()) {
+											logger.debug("Calificacion antes de actualizar: " + ((Inquilino)p.getRol(Rol.Inquilino)).getCalificacion());
+										}
+										personaService.calificarInquilino(p);
+										if (logger.isDebugEnabled()) {
+											logger.debug("Calificacion despues de actualizar: " + ((Inquilino)p.getRol(Rol.Inquilino)).getCalificacion());
+										}
+										personaService.saveOrUpdate(p);
+									}
+									updateList();
+								});
+					}
+
+				});
+				pagar.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
+				CssLayout hl = new CssLayout(ver, pagar);
+				hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+				hl.setCaption("Accion " + acciones);
+				hl.setId("acciones");
+				acciones++;
+				return hl;
+			}).setCaption("Acciones").setId("acciones");
+			grid.setColumnOrder("acciones", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos", "inquilinos",
+					"montos");
+			grid.getColumns().forEach(col -> {
+				col.setResizable(false);
+				col.setHidable(true);
+			});
+		}
+
+		public void updateList() {
+			List<Cobro> cobros = cobroService.findAll(filter.getValue());
+			cobros.sort((c1, c2) -> {
+				return c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento());
+			});
+			grid.setItems(cobros);
+		}
+
 	}
-
-	public void updateList() {
-	    List<Cobro> cobros = cobroService.findAll(filter.getValue());
-	    cobros.sort((c1, c2) -> {
-		return c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento());
-	    });
-	    grid.setItems(cobros);
-	}
-
-    }
 
 }

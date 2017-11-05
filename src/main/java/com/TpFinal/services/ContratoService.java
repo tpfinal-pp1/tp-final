@@ -400,6 +400,12 @@ public class ContratoService {
 	ret = c.getFechaCelebracion().plus(c.getDuracionContrato().getDuracion(), ChronoUnit.MONTHS);
 	return ret;
     }
+    
+    public ContratoAlquiler getUltimoAlquiler() {
+    	List<ContratoAlquiler> ContratoAlquilers = daoAlquiler.readAllActives();
+    	ContratoAlquilers.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
+    	return ContratoAlquilers.get(0);
+    }
 
     public static ContratoAlquiler getInstanciaAlquiler() {
 	return new ContratoAlquiler.Builder()
