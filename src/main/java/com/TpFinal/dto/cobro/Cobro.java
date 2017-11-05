@@ -327,8 +327,7 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	@Override
 	public String getTitulo() {
-		return this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre()+" "
-				+"No pago en termino";
+		return "Inquilino: "+this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre();
 	}
 
 	@Override
