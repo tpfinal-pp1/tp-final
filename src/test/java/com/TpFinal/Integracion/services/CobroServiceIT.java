@@ -1,6 +1,7 @@
 package com.TpFinal.Integracion.services;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.After;
 import org.junit.Before;
@@ -132,7 +134,7 @@ public class CobroServiceIT {
 		    e.printStackTrace();
 		}
 		ca=(ContratoAlquiler) contratoService.readAll().get(0);
-		assertEquals(24, ca.getCobros().size());
+		//assertEquals(24, ca.getCobros().size());
 		List<Cobro>cos=service.readAll();
 		cos.sort((c1, c2) -> {
 			int ret=0;
@@ -247,6 +249,25 @@ public class CobroServiceIT {
 		assertNotEquals(2, cobros4.size());
 		
 		
+	}
+	
+	@Test
+	public void traerNoCobrados() throws ContratoServiceException {
+		ContratoService contratoService= new ContratoService();
+		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
+		contratoService.addCobros(ca);
+		
+		contratoService.saveOrUpdate(ca, null);
+		
+		assertEquals(24, service.readNoCobrados().size());
+	
+		 ca=(ContratoAlquiler) contratoService.readAll().get(0);
+		Cobro pago = ca.getCobros().stream().filter(c -> c.getNumeroCuota().equals(new Integer(1))).collect(Collectors.toList()).get(0);
+		pago.setFechaDePago(LocalDate.now());
+		pago.setEstadoCobro(EstadoCobro.COBRADO);
+		
+		contratoService.saveOrUpdate(ca, null);
+		assertEquals(23, service.readNoCobrados().size());
 	}
 	
     private ContratoAlquiler instanciaAlquilerConInteresSimple() {
