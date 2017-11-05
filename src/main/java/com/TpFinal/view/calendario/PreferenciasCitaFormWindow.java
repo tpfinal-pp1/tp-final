@@ -1,31 +1,24 @@
 package com.TpFinal.view.calendario;
 
-import com.TpFinal.dto.cita.Cita;
-import com.TpFinal.dto.cita.TipoCita;
-
-import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
-import com.TpFinal.services.CredencialService;
+
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
+
 import com.vaadin.data.*;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.VaadinSession;
+
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public abstract class PreferenciasCitaFormWindow extends Window {
@@ -67,9 +60,9 @@ public abstract class PreferenciasCitaFormWindow extends Window {
 	setCloseShortcut(KeyCode.ESCAPE, null);
 	setResizable(false);
 	setClosable(true);
-	setHeight(200f, Unit.PERCENTAGE);
+	setHeight(100f, Unit.PERCENTAGE);
 
-	FormLayout content = new FormLayout();
+	VerticalLayout content = new VerticalLayout();
 	content.setSizeFull();
 	content.setMargin(new MarginInfo(true, false, false, false));
 	content.setSpacing(false);
@@ -102,7 +95,7 @@ public abstract class PreferenciasCitaFormWindow extends Window {
 	binderEmpleado.forField(this.hsrecordatorio1).asRequired("Debe ingresar una cantidad de horas")
 		.withConverter(new StringToIntegerConverter("Debe Ingresar un número entero!"))
 		.withValidator(n -> n >= 0, "Ingrese un número no negativo!")
-		.bind(Empleado::getHorasAntesRecoradatorio1, Empleado::setHorasAntesRecoradatorio2);
+		.bind(Empleado::getHorasAntesRecoradatorio1, Empleado::setHorasAntesRecoradatorio1);
 	binderEmpleado.forField(this.hsrecordatorio2).asRequired("Debe ingresar una cantidad de horas")
 		.withConverter(new StringToIntegerConverter("Debe Ingresar un número entero!"))
 		.withValidator(n -> n >= 0, "Ingrese un número no negativo!")
