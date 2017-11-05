@@ -166,15 +166,10 @@ public class Inmueble implements Identificable, BorradoLogico {
 
     public void setNombreArchivoPortada(String nombreArchivoPortada) {
 	this.nombreArchivoPortada = nombreArchivoPortada;
-	this.pathImagenes.remove(nombreArchivoPortada);
     }
 
-    /**
-     * Añade el path de la imagen a la lista si y solo si no es la imagen de portada
-     * @param pathImagen
-     */
+    
     public void addPathImagen(String pathImagen) {
-	if (!(pathImagen == nombreArchivoPortada))
 	    this.pathImagenes.add(pathImagen);
     }
 
