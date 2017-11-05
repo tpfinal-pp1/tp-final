@@ -67,9 +67,9 @@ public abstract class PreferenciasCitaFormWindow extends Window {
 	setCloseShortcut(KeyCode.ESCAPE, null);
 	setResizable(false);
 	setClosable(true);
-	setHeight(500f, Unit.PERCENTAGE);
+	setHeight(200f, Unit.PERCENTAGE);
 
-	VerticalLayout content = new VerticalLayout();
+	FormLayout content = new FormLayout();
 	content.setSizeFull();
 	content.setMargin(new MarginInfo(true, false, false, false));
 	content.setSpacing(false);
