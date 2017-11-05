@@ -1,6 +1,7 @@
 package com.TpFinal.view.persona;
 
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.DashboardEvent;
@@ -88,9 +89,18 @@ public class PersonaABMView extends DefaultLayout implements View {
 	    for (Rol rol : persona.giveMeYourRoles())
 		ret += rol + ", ";
 	    return ret.length() >= 2 ? ret.substring(0, ret.length() - 2) : "Sin Rol";
-	}).setCaption("Rol");
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	}).setCaption("Rol").setId("rol");
+	grid.addColumn(persona ->{
+	    String ret = "N/A";
+	   if (persona.giveMeYourRoles().contains(Rol.Inquilino)) {
+	       Inquilino inquilino = (Inquilino)persona.getRol(Rol.Inquilino);
+	       ret = inquilino.getCalificacion().toString();
+	   } 
+	       return ret;
+	}).setCaption("Califación").setId("calificacion");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.getColumns().forEach(col -> col.setResizable(false));
+	grid.setColumnOrder("acciones","nombre","apellido","DNI","calificacion","rol");
     }
 
     private ValueProvider<Persona, HorizontalLayout> configurarAcciones() {
