@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
@@ -251,6 +252,7 @@ public class CobroServiceIT {
 		
 	}
 	
+	@Ignore
 	@Test
 	public void traerNoCobrados() throws ContratoServiceException {
 		ContratoService contratoService= new ContratoService();

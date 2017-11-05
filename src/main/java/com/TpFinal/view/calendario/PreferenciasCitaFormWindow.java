@@ -1,31 +1,24 @@
 package com.TpFinal.view.calendario;
 
-import com.TpFinal.dto.cita.Cita;
-import com.TpFinal.dto.cita.TipoCita;
-
-import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
-import com.TpFinal.services.CredencialService;
+
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
+
 import com.vaadin.data.*;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
-import com.vaadin.server.VaadinSession;
+
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @SuppressWarnings("serial")
 public abstract class PreferenciasCitaFormWindow extends Window {
