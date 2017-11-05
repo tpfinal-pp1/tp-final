@@ -76,7 +76,10 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
 	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario").setId("propietario");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
-	grid.getColumns().forEach(c -> c.setResizable(false));
+	grid.getColumns().forEach(col -> {
+	    col.setResizable(false);
+	    col.setHidable(true);
+	});
 	
 	  HeaderRow filterRow = grid.appendHeaderRow();
 			filterRow.getCell("inmueble").setComponent(filtroInmueble());

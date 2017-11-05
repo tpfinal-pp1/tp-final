@@ -90,17 +90,20 @@ public class PersonaABMView extends DefaultLayout implements View {
 		ret += rol + ", ";
 	    return ret.length() >= 2 ? ret.substring(0, ret.length() - 2) : "Sin Rol";
 	}).setCaption("Rol").setId("rol");
-	grid.addColumn(persona ->{
+	grid.addColumn(persona -> {
 	    String ret = "N/A";
-	   if (persona.giveMeYourRoles().contains(Rol.Inquilino)) {
-	       Inquilino inquilino = (Inquilino)persona.getRol(Rol.Inquilino);
-	       ret = inquilino.getCalificacion().toString();
-	   } 
-	       return ret;
+	    if (persona.giveMeYourRoles().contains(Rol.Inquilino)) {
+		Inquilino inquilino = (Inquilino) persona.getRol(Rol.Inquilino);
+		ret = inquilino.getCalificacion().toString();
+	    }
+	    return ret;
 	}).setCaption("Califación").setId("calificacion");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-	grid.getColumns().forEach(col -> col.setResizable(false));
-	grid.setColumnOrder("acciones","nombre","apellido","DNI","calificacion","rol");
+	grid.getColumns().forEach(col -> {
+	    col.setResizable(false);
+	    col.setHidable(true);
+	});
+	grid.setColumnOrder("acciones", "nombre", "apellido", "DNI", "calificacion", "rol");
     }
 
     private ValueProvider<Persona, HorizontalLayout> configurarAcciones() {
@@ -130,7 +133,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Borrar");
 
-	    Button addIntereses = new Button(VaadinIcons.THUMBS_UP_O);
+	    Button addIntereses = new Button(VaadinIcons.SEARCH_MINUS);
 	    addIntereses.addClickListener(click -> {
 		new PreferenciasBusqueda(persona.getPrefBusqueda()) {
 

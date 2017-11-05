@@ -8,6 +8,7 @@ import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DeleteButton;
+import com.TpFinal.view.component.PreferenciasBusqueda;
 import com.TpFinal.view.component.TinyButton;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
@@ -23,20 +24,20 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PersonaForm extends FormLayout {
     private Persona persona;
     private Button save = new Button("Guardar");
-    //Button test = new Button("Test");
+    // Button test = new Button("Test");
     private DeleteButton delete = new DeleteButton("Eliminar",
-            VaadinIcons.WARNING,"Eliminar","20%", new Button.ClickListener() {
-        @Override
-        public void buttonClick(Button.ClickEvent clickEvent) {
-            delete();
-        }
-    });
+	    VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+		    delete();
+		}
+	    });
+    private Button cargarPrefsBusqueda = new Button("Cargar Preferencias De Búsqueda");
 
-    private CheckBox cbEsInmobiliaria= new CheckBox(null);
+    private CheckBox cbEsInmobiliaria = new CheckBox(null);
     private TextField nombre = new TextField("Nombre");
     private TextField apellido = new TextField("Apellido");
     private TextField DNI = new TextField("DNI");
@@ -45,310 +46,303 @@ public class PersonaForm extends FormLayout {
     private TextField mail = new TextField("Mail");
     private TextArea infoAdicional = new TextArea("Info");
     private ContratoVenta aSeleccionar;
-    private NativeSelect<Calificacion> calificacion =
-            new NativeSelect<>("Calificacion Inquilino");
+    private NativeSelect<Calificacion> calificacion = new NativeSelect<>("Calificacion Inquilino");
 
     // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
-    PersonaService service = new PersonaService();
+    PersonaService personaService = new PersonaService();
     private PersonaABMView addressbookView;
     private Binder<Persona> binderPersona = new Binder<>(Persona.class);
 
-    //TabSheet
+    // TabSheet
     private FormLayout principal;
     private FormLayout adicional;
     private TabSheet personaFormTabSheet;
 
     // Easily binding forms to beans and manage validation and buffering
 
-
     public PersonaForm(PersonaABMView addressbook) {
-        // setSizeUndefined();
+	// setSizeUndefined();
 
-        addressbookView=addressbook;
-        configureComponents();
-        binding();
-        buildLayout();
+	addressbookView = addressbook;
+	configureComponents();
+	binding();
+	buildLayout();
 
     }
 
     private void configureComponents() {
-        /*
-         * Highlight primary actions.
-         *
-         * With Vaadin built-in styles you can highlight the primary save button
-         *
-         * and give it a keyoard shortcut for a better UX.
-         */
+	calificacion.setItems(Calificacion.values());
+	calificacion.setEmptySelectionAllowed(true);
+	calificacion.setSelectedItem(Calificacion.A);
+	delete.setStyleName(ValoTheme.BUTTON_DANGER);
+	save.addClickListener(e -> this.save());
+	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+	cargarPrefsBusqueda.setIcon(VaadinIcons.SEARCH_MINUS);
+	cargarPrefsBusqueda.addClickListener(click -> {
+	    new PreferenciasBusqueda(persona.getPrefBusqueda()) {
+		@Override
+		public boolean onSave() {
+		    persona.setPrefBusqueda(getCriterio());
+		    addressbookView.showSuccessNotification("Preferencias de búsqueda establecidas");
+		    close();
+		    return false;		    
+		}
 
-        calificacion.setItems(Calificacion.values());
-        calificacion.setEmptySelectionAllowed(true);
-        calificacion.setSelectedItem(Calificacion.A);
-        delete.setStyleName(ValoTheme.BUTTON_DANGER);
-        save.addClickListener(e -> this.save());
-        save.setStyleName(ValoTheme.BUTTON_PRIMARY);
-        save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-        cbEsInmobiliaria.addValueChangeListener(new HasValue.ValueChangeListener<Boolean>() {
-            @Override
-            public void valueChange(HasValue.ValueChangeEvent<Boolean> valueChangeEvent) {
+		@Override
+		public boolean onClean() {
+		    return true;
+		}
 
-                   if (valueChangeEvent.getValue()) {
-                       nombre.setValue("Inmobiliaria");
-                       nombre.setVisible(false);
-                       nombre.setRequiredIndicatorVisible(false);
-                       apellido.setCaption("Nombre");
-                       DNI.setVisible(false);
-                       DNI.setValue("");
-                   }
+		@Override
+		public boolean searchVisible() {
+		    return true;
+		}
 
-                   else {
-                       if(valueChangeEvent.isUserOriginated())
-                           nombre.setValue("");
-                       nombre.setVisible(true);
-                       nombre.setRequiredIndicatorVisible(true);
-                       apellido.setCaption("Apellido");
-                       DNI.setVisible(true);
+	    };
+	});
+	cbEsInmobiliaria.addValueChangeListener(new HasValue.ValueChangeListener<Boolean>() {
+	    @Override
+	    public void valueChange(HasValue.ValueChangeEvent<Boolean> valueChangeEvent) {
 
+		if (valueChangeEvent.getValue()) {
+		    nombre.setValue("Inmobiliaria");
+		    nombre.setVisible(false);
+		    nombre.setRequiredIndicatorVisible(false);
+		    apellido.setCaption("Nombre");
+		    DNI.setVisible(false);
+		    DNI.setValue("");
+		}
 
-                   }
+		else {
+		    if (valueChangeEvent.isUserOriginated())
+			nombre.setValue("");
+		    nombre.setVisible(true);
+		    nombre.setRequiredIndicatorVisible(true);
+		    apellido.setCaption("Apellido");
+		    DNI.setVisible(true);
 
+		}
 
-
-            }
-        });
-        setVisible(false);
+	    }
+	});
+	setVisible(false);
     }
 
+    private void binding() {
+	// binder.bindInstanceFields(this); //Binding automatico
+	nombre.setRequiredIndicatorVisible(true);
+	apellido.setRequiredIndicatorVisible(true);
+	mail.setRequiredIndicatorVisible(true);
+	telefono.setRequiredIndicatorVisible(true);
+	DNI.setRequiredIndicatorVisible(false);
+	binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre, Persona::setNombre);
 
+	binderPersona.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getApellido,
+		Persona::setApellido);
 
-    private void binding(){
-        //binder.bindInstanceFields(this); //Binding automatico
-        nombre.setRequiredIndicatorVisible(true);
-        apellido.setRequiredIndicatorVisible(true);
-        mail.setRequiredIndicatorVisible(true);
-        telefono.setRequiredIndicatorVisible(true);
-        DNI.setRequiredIndicatorVisible(false);
-        binderPersona.forField(nombre).asRequired("Ingrese un nombre").bind(Persona::getNombre,Persona::setNombre);
+	binderPersona.forField(DNI).bind(Persona::getDNI, Persona::setDNI);
 
-        binderPersona.forField(apellido).asRequired("Ingrese un apellido").bind(Persona::getApellido,Persona::setApellido);
+	binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,
+		Persona::setTelefono);
 
-        binderPersona.forField(DNI).bind(Persona::getDNI,Persona::setDNI);
+	binderPersona.forField(telefono2).bind(Persona::getTelefono2, Persona::setTelefono2);
 
+	binderPersona.forField(mail).withValidator(new EmailValidator(
+		"Introduzca un email valido!")).bind(Persona::getMail, Persona::setMail);
 
-        binderPersona.forField(telefono).asRequired("Ingrese un teléfono").bind(Persona::getTelefono,Persona::setTelefono);
+	binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional, Persona::setInfoAdicional);
 
-        binderPersona.forField(telefono2).bind(Persona::getTelefono2,Persona::setTelefono2);
-
-
-        binderPersona.forField(mail).withValidator(new EmailValidator(
-                "Introduzca un email valido!" )).bind(Persona::getMail,Persona::setMail);
-        
-        binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional,Persona::setInfoAdicional);
-
-        binderPersona.forField(cbEsInmobiliaria).bind(Persona::getEsInmobiliaria,Persona::setEsInmobiliaria);
+	binderPersona.forField(cbEsInmobiliaria).bind(Persona::getEsInmobiliaria, Persona::setEsInmobiliaria);
 
     }
 
     private void buildLayout() {
-        setSizeFull();
-        setMargin(true);
+	setSizeFull();
+	setMargin(true);
 
-        personaFormTabSheet =new TabSheet();
+	personaFormTabSheet = new TabSheet();
 
+	BlueLabel Publicaciones = new BlueLabel("Operaciones");
+	BlueLabel info = new BlueLabel("Información Adicional");
+	BlueLabel contacto = new BlueLabel("Contacto");
 
-        BlueLabel Publicaciones = new  BlueLabel("Operaciones");
-        BlueLabel info = new  BlueLabel("Información Adicional");
-        BlueLabel contacto = new  BlueLabel("Contacto");
-        
-        TinyButton contratos=new TinyButton("Ver Contratos");
-        contratos.setEnabled(false);
-        TinyButton busquedas= new TinyButton("Ver Busquedas");
-        busquedas.setEnabled(false);
+	TinyButton contratos = new TinyButton("Ver Contratos");
+	contratos.setEnabled(false);
+	TinyButton busquedas = new TinyButton("Ver Busquedas");
+	busquedas.setEnabled(false);
 
+	aSeleccionar = new ContratoVenta();
+	/*
+	 * contratos.addClickListener(e -> new PersonaFormWindow(new Persona()));
+	 */
+	VerticalLayout Roles = new VerticalLayout(calificacion, contratos, busquedas);
 
-        aSeleccionar=new ContratoVenta();
-     /*   contratos.addClickListener(e ->
-                new PersonaFormWindow(new Persona()));*/
-        VerticalLayout Roles=new VerticalLayout(calificacion,contratos
-                ,busquedas
-                );
+	HorizontalLayout checkboxInm = new HorizontalLayout(cbEsInmobiliaria);
+	checkboxInm.setCaption("Inmobiliaria");
 
+	principal = new FormLayout(checkboxInm, nombre, apellido, DNI, contacto, mail, telefono, telefono2);
+	adicional = new FormLayout(
+		Publicaciones, Roles);
+	adicional.addComponent(info);
+	adicional.addComponent(infoAdicional);
 
-        HorizontalLayout checkboxInm=new HorizontalLayout(cbEsInmobiliaria);
-        checkboxInm.setCaption("Inmobiliaria");
+	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
-        principal=new FormLayout(checkboxInm,nombre, apellido,DNI,contacto,mail,telefono,telefono2);
-        adicional=new FormLayout(
-                Publicaciones, Roles
-                );
-        adicional.addComponent(info);
-        adicional.addComponent(infoAdicional);
+	calificacion.setEnabled(false);
+	calificacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
-        principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
-        adicional.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
+	personaFormTabSheet.addTab(principal, "Principal");
+	personaFormTabSheet.addTab(adicional, "Adicional");
 
+	addComponent(personaFormTabSheet);
+	// HorizontalLayout actions = new HorizontalLayout(save,test,delete);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, cargarPrefsBusqueda);
+	addComponent(actions);
+	this.setSpacing(false);
+	actions.setSpacing(true);
 
-        calificacion.setEnabled(false);
-        calificacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-
-        personaFormTabSheet.addTab(principal,"Principal");
-        personaFormTabSheet.addTab(adicional,"Adicional");
-
-        addComponent(personaFormTabSheet);
-        //HorizontalLayout actions = new HorizontalLayout(save,test,delete);
-        HorizontalLayout actions = new HorizontalLayout(save,delete);
-        addComponent(actions);
-        this.setSpacing(false);
-        actions.setSpacing(true);
-
-      //  addStyleName("v-scrollable");
+	// addStyleName("v-scrollable");
 
     }
 
-
     public void setPersona(Persona persona) {
-   /*   if(persona.getInquilino()!=null){
-            this.calificacion.setVisible(true);
-            calificacion.setSelectedItem(Calificacion.A);
-            this.calificacion.setSelectedItem(persona.getInquilino().getCalificacion());
-        }
-        else{
-            this.calificacion.setVisible(false);
-        }*/
-        this.calificacion.setVisible(false);
-        this.persona = persona;
-        binderPersona.readBean(persona);
+	/*
+	 * if(persona.getInquilino()!=null){ this.calificacion.setVisible(true);
+	 * calificacion.setSelectedItem(Calificacion.A);
+	 * this.calificacion.setSelectedItem(persona.getInquilino().getCalificacion());
+	 * } else{ this.calificacion.setVisible(false); }
+	 */
+	this.calificacion.setVisible(false);
+	this.persona = persona;
+	binderPersona.readBean(persona);
 
-        // Show delete button for only Persons already in the database
-        delete.setVisible(persona.getId()!=null);
+	// Show delete button for only Persons already in the database
+	delete.setVisible(persona.getId() != null);
 
-        setVisible(true);
-        getAddressbookView().setComponentsVisible(false);
-        nombre.selectAll();
-        if(getAddressbookView().isIsonMobile())
-            personaFormTabSheet.focus();
+	setVisible(true);
+	getAddressbookView().setComponentsVisible(false);
+	nombre.selectAll();
+	if (getAddressbookView().isIsonMobile())
+	    personaFormTabSheet.focus();
 
     }
 
     private void delete() {
-        service.delete(persona);
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
-        getAddressbookView().showSuccessNotification("Borrado: "+ persona.getNombre()+" "+
-                persona.getApellido());
+	personaService.delete(persona);
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
+	getAddressbookView().showSuccessNotification("Borrado: " + persona.getNombre() + " " +
+		persona.getApellido());
 
     }
 
     private void test() {
-        nombre.setValue(DummyDataGenerator.randomFirstName());
-        apellido.setValue(DummyDataGenerator.randomLastName());
-        mail.setValue(nombre.getValue()+"@"+apellido.getValue()+".com");
-        DNI.setValue(DummyDataGenerator.randomNumber(8));
-        telefono.setValue(DummyDataGenerator.randomPhoneNumber());
-        telefono2.setValue(DummyDataGenerator.randomPhoneNumber());
-        String info=DummyDataGenerator.randomText(80);
-        if(info.length()>255){
-            info=info.substring(0,255);
+	nombre.setValue(DummyDataGenerator.randomFirstName());
+	apellido.setValue(DummyDataGenerator.randomLastName());
+	mail.setValue(nombre.getValue() + "@" + apellido.getValue() + ".com");
+	DNI.setValue(DummyDataGenerator.randomNumber(8));
+	telefono.setValue(DummyDataGenerator.randomPhoneNumber());
+	telefono2.setValue(DummyDataGenerator.randomPhoneNumber());
+	String info = DummyDataGenerator.randomText(80);
+	if (info.length() > 255) {
+	    info = info.substring(0, 255);
 
-        }
-        infoAdicional.setValue(info);
+	}
+	infoAdicional.setValue(info);
 
-
-        save();
+	save();
 
     }
 
     private void save() {
 
-        boolean success=false;
-        try {
-            binderPersona.writeBean(persona);
-            service.saveOrUpdate(persona);
-            success=true;
+	boolean success = false;
+	try {
+	    binderPersona.writeBean(persona);
+	    personaService.saveOrUpdate(persona);
+	    success = true;
 
+	} catch (ValidationException e) {
+	    Utils.mostarErroresValidator(e);
+	    checkFieldsPerTab(e.getFieldValidationErrors());
 
-        } catch (ValidationException e) {
-            Utils.mostarErroresValidator(e);
-            checkFieldsPerTab(e.getFieldValidationErrors());
-           
-            return;
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            Notification.show("Error: "+e.toString());
-        }
+	    return;
+	} catch (Exception e) {
+	    e.printStackTrace();
+	    Notification.show("Error: " + e.toString());
+	}
 
-        addressbookView.updateList();
-       /* String msg = String.format("Guardado '%s %s'.", persona.getNombre(),
-                persona.getApellido());*
-        Notification.show(msg, Type.TRAY_NOTIFICATION);*/
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
+	addressbookView.updateList();
+	/*
+	 * String msg = String.format("Guardado '%s %s'.", persona.getNombre(),
+	 * persona.getApellido());* Notification.show(msg, Type.TRAY_NOTIFICATION);
+	 */
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
 
-
-        if(success)
-            getAddressbookView().showSuccessNotification("Guardado: "+ persona.getNombre()+" "+
-                    persona.getApellido());
-
+	if (success)
+	    getAddressbookView().showSuccessNotification("Guardado: " + persona.getNombre() + " " +
+		    persona.getApellido());
 
     }
 
     public void cancel() {
-        addressbookView.updateList();
-        setVisible(false);
-        getAddressbookView().setComponentsVisible(true);
+	addressbookView.updateList();
+	setVisible(false);
+	getAddressbookView().setComponentsVisible(true);
     }
-
-
 
     public PersonaABMView getAddressbookView() {
-        return addressbookView;
+	return addressbookView;
     }
 
-
     private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
-        boolean tabPrincipalInvalidFields = false ;
-        boolean tabConditionsInvalidFields =false;
-        //TabElements for tab principal
-        List<Component> tabPrincipalComponents = new ArrayList<Component>();
-        tabPrincipalComponents.add( nombre);
-        tabPrincipalComponents.add(apellido);
-        tabPrincipalComponents.add(DNI);
-        tabPrincipalComponents.add(mail);
-        tabPrincipalComponents.add(telefono);
-        tabPrincipalComponents.add(telefono2);
+	boolean tabPrincipalInvalidFields = false;
+	boolean tabConditionsInvalidFields = false;
+	// TabElements for tab principal
+	List<Component> tabPrincipalComponents = new ArrayList<Component>();
+	tabPrincipalComponents.add(nombre);
+	tabPrincipalComponents.add(apellido);
+	tabPrincipalComponents.add(DNI);
+	tabPrincipalComponents.add(mail);
+	tabPrincipalComponents.add(telefono);
+	tabPrincipalComponents.add(telefono2);
 
-        for(BindingValidationStatus invalidField : invalidComponents){
-            tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
-            if(tabPrincipalInvalidFields)
-                break;
-        }
-        System.out.println(tabPrincipalInvalidFields);
+	for (BindingValidationStatus invalidField : invalidComponents) {
+	    tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
+	    if (tabPrincipalInvalidFields)
+		break;
+	}
+	System.out.println(tabPrincipalInvalidFields);
 
-        //Tab elements for tab caracteristicas
-        List<Component> tabConditionsComponents = new ArrayList<Component>();
-        tabConditionsComponents.add(calificacion);
+	// Tab elements for tab caracteristicas
+	List<Component> tabConditionsComponents = new ArrayList<Component>();
+	tabConditionsComponents.add(calificacion);
 
-        for(BindingValidationStatus invalidField : invalidComponents){
-            tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
-            if(tabConditionsInvalidFields)
-                break;
-        }
-        System.out.println(tabConditionsInvalidFields);
+	for (BindingValidationStatus invalidField : invalidComponents) {
+	    tabConditionsInvalidFields = tabConditionsComponents.contains(invalidField.getField());
+	    if (tabConditionsInvalidFields)
+		break;
+	}
+	System.out.println(tabConditionsInvalidFields);
 
-        //Take user to the invalid components tag (in case there's only one)
-        if(tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
-            Notification.show("Error al guardar, porfavor revise los campos principales", Notification.Type.WARNING_MESSAGE);
-            personaFormTabSheet.setSelectedTab(principal);
-        }
-        else if(!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
-            Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo", Notification.Type.WARNING_MESSAGE);
-            personaFormTabSheet.setSelectedTab(adicional);
-        }
-        else{
-            Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo", Notification.Type.WARNING_MESSAGE);
-        }
+	// Take user to the invalid components tag (in case there's only one)
+	if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
+	    Notification.show("Error al guardar, porfavor revise los campos principales",
+		    Notification.Type.WARNING_MESSAGE);
+	    personaFormTabSheet.setSelectedTab(principal);
+	} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
+	    Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	    personaFormTabSheet.setSelectedTab(adicional);
+	} else {
+	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+		    Notification.Type.WARNING_MESSAGE);
+	}
     }
 
 }

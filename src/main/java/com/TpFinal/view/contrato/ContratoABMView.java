@@ -110,8 +110,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 	grid.addColumn(contrato -> contrato.getInmueble().getDireccion()).setCaption("Dirección").setId("direccion");
 	grid.addColumn(getIntervinientes()).setCaption("Intervinientes").setId("intervinientes");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-	grid.getColumns().forEach(col -> col.setResizable(false));
-
+	grid.getColumns().forEach(col -> {
+	    col.setResizable(false);
+	    col.setHidable(true);
+	});
 	HeaderRow filterRow = grid.appendHeaderRow();
 	filterRow.getCell("tipo").setComponent(filtroTipo());
 	filterRow.getCell("fecha celebracion").setComponent(filtroFecha());

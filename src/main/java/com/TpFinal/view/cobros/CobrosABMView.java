@@ -322,7 +322,10 @@ public class CobrosABMView extends DefaultLayout implements View {
 	    }).setCaption("Acciones").setId("acciones");
 	    grid.setColumnOrder("acciones", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos", "inquilinos",
 		    "montos");
-	    grid.getColumns().forEach(c -> c.setResizable(false));
+	    grid.getColumns().forEach(col -> {
+		    col.setResizable(false);
+		    col.setHidable(true);
+		});
 	}
 
 	public void updateList() {

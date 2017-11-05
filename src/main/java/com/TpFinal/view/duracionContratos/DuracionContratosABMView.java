@@ -33,7 +33,6 @@ import java.util.List;
 
 @Title("Addressbook")
 @Theme("valo")
-@Widgetset("com.vaadin.v7.Vaadin7WidgetSet")
 public class DuracionContratosABMView extends DefaultLayout implements View {
 
     /*
@@ -101,7 +100,10 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 	grid.getColumn("descripcion").setCaption("Descripcion");
 	grid.getColumn("duracion").setCaption("Duracion");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
-	grid.getColumns().forEach(col -> col.setResizable(false));
+	grid.getColumns().forEach(col -> {
+	    col.setResizable(false);
+	    col.setHidable(true);
+	});
 
 	Responsive.makeResponsive(this);
 

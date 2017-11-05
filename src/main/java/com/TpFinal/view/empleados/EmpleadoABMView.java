@@ -117,7 +117,10 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	}).setCaption("Estado Empleado").setId("estadoEmp");
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.setColumnOrder("acciones", "nombre", "apellido", "mail", "telefono", "categoria", "acceso", "estadoEmp");
-	grid.getColumns().forEach(col -> col.setResizable(false));
+	grid.getColumns().forEach(col -> {
+	    col.setResizable(false);
+	    col.setHidable(true);
+	});
 
 	HeaderRow filterRow = grid.appendHeaderRow();
 	filterRow.getCell("nombre").setComponent(filtroNombre());
