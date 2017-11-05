@@ -29,9 +29,12 @@ import com.vaadin.server.ThemeResource;
 import java.io.*;
 import java.nio.file.CopyOption;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -111,7 +114,7 @@ public class InmuebleService {
 		.build();
     }
 
-    public Resource getPortada(Inmueble inmueble) {
+    public static Resource getPortada(Inmueble inmueble) {
 	if (inmueble != null && inmueble.getId() != null) {
 	    if (new File("Files" + File.separator + inmueble.getNombreArchivoPortada()).exists()) {
 		StreamResource str = new StreamResource(new StreamResource.StreamSource() {
@@ -134,6 +137,51 @@ public class InmuebleService {
 	}
 	return null;
 
+    }
+
+    public List<Resource> getFotos(Inmueble inmueble) {
+	List<Resource> fotos = new ArrayList<>();
+
+	if (inmueble != null && inmueble.getId() != null) {
+	    fotos = inmueble.getPathImagenes().stream()
+		    .filter(path -> {
+			return new File("Files" + File.separator + path).exists();
+		    })
+		    .map(InmuebleService::GenerarStreamResource)
+		    .collect(Collectors.toList());
+	}
+	return fotos.isEmpty()? null : fotos;
+    }
+    
+    public Map<String,Resource> getFotosYPath(Inmueble inmueble) {
+	Map<String,Resource> fotos = new HashMap<>();
+
+   	if (inmueble != null && inmueble.getId() != null) {
+   	    fotos = inmueble.getPathImagenes().stream()
+   		    .filter(path -> {
+   			return new File("Files" + File.separator + path).exists();
+   		    })   		    
+   		    .collect(Collectors.toMap(path -> path, InmuebleService::GenerarStreamResource));
+   	}
+   	return fotos.isEmpty()? null : fotos;
+       }
+
+    private static Resource GenerarStreamResource(String path) {
+	if (new File("Files" + File.separator + path).exists()) {
+	    StreamResource str = new StreamResource(new StreamResource.StreamSource() {
+		@Override
+		public InputStream getStream() {
+		    try {
+			return new FileInputStream("Files" + File.separator + path);
+		    } catch (FileNotFoundException e) {
+			System.out.println("Error al Buscar Foto: " + path);
+		    }
+		    return null;
+		}
+	    }, "Files" + File.separator + path);
+	    return str;
+	}
+	return null;
     }
 
     public List<Inmueble> filtrarPorCalle(String filtro) {
@@ -219,7 +267,8 @@ public class InmuebleService {
 	if (inmueble != null) {
 	    Set<Contrato> contratos = dao.findById(inmueble.getId()).getContratos();
 	    if (contratos != null)
-		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente || contrato.getEstadoContrato() == EstadoContrato.ProximoAVencer);
+		ret = contratos.stream().anyMatch(contrato -> contrato.getEstadoContrato() == EstadoContrato.Vigente
+			|| contrato.getEstadoContrato() == EstadoContrato.ProximoAVencer);
 	}
 	return ret;
     }

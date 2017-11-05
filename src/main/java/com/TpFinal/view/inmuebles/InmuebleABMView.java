@@ -403,7 +403,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 			ImageVisualizer imgv = new ImageVisualizer();
 			imgv.singleImage(resource);
 		    } else {
-			Notification.show("Este imueble no posee portada");
+			Notification.show("Este imueble no posee fotos");
 
 		    }
 		});

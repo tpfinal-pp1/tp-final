@@ -42,6 +42,10 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Column(name = Inmueble.pIdInmueble)
     private Long idInmueble;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @JoinTable(name = "Paths_imagenes", joinColumns = @JoinColumn(name = "id_inmueble"))
+    private Set<String> pathImagenes = new HashSet<>();
+
     @Column(name = Inmueble.pCantAmbientes)
     private Integer cantidadAmbientes;
 
@@ -162,6 +166,28 @@ public class Inmueble implements Identificable, BorradoLogico {
 
     public void setNombreArchivoPortada(String nombreArchivoPortada) {
 	this.nombreArchivoPortada = nombreArchivoPortada;
+	this.pathImagenes.remove(nombreArchivoPortada);
+    }
+
+    /**
+     * Añade el path de la imagen a la lista si y solo si no es la imagen de portada
+     * @param pathImagen
+     */
+    public void addPathImagen(String pathImagen) {
+	if (!(pathImagen == nombreArchivoPortada))
+	    this.pathImagenes.add(pathImagen);
+    }
+
+    public void removePathImagen(String pathImagen) {
+	this.pathImagenes.remove(pathImagen);
+    }
+
+    public Set<String> getPathImagenes() {
+	return pathImagenes;
+    }
+
+    public void setPathImagenes(Set<String> pathImagenes) {
+	this.pathImagenes = pathImagenes;
     }
 
     public Imagen getPortada() {
