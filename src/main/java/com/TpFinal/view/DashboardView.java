@@ -143,7 +143,7 @@ public final class DashboardView extends Panel implements View {
 	    };
 	});
 	
-	HorizontalLayout tools = new HorizontalLayout(notificationsButton, nuevo, preferenciasRecordatorios);
+	HorizontalLayout tools = new HorizontalLayout( nuevo,notificationsButton, preferenciasRecordatorios);
 	tools.addStyleName("toolbar");
 	header.addComponent(tools);
 
@@ -406,6 +406,7 @@ public final class DashboardView extends Panel implements View {
 		    CitaService citaService = new CitaService();
 		    Cita ret = citaService.getCitaFromTriggerKey(notificationLayout.getDescription());
 		    if (ret != null) {
+		    	notificationsWindow.close();
 			citaWindow = new CitaFormWindow(ret) {
 			    @Override
 			    public void onSave() {

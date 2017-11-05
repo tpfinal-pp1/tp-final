@@ -4,12 +4,9 @@ package com.TpFinal.services;
 import com.TpFinal.data.dao.DAONotificacionImpl;
 import com.TpFinal.data.dao.interfaces.DAONotificacion;
 import com.TpFinal.dto.notificacion.Notificacion;
-import com.TpFinal.dto.persona.Empleado;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.*;
-import com.vaadin.server.VaadinSession;
-import org.mockito.internal.matchers.Not;
 
 import java.util.*;
 
@@ -42,7 +39,7 @@ public class NotificacionService {
             Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
                 @Override
                 public boolean apply(Notificacion input) {
-                    return !input.isVisto()&&CredencialService.getCurrentUser().getCredencial().getUsuario().equals(input.getUsuario());
+                    return !input.isVisto()&& itsForCurrentUser(input);
                 }
             };
             cantNotificacionesNoVistas = Collections2.filter(dao.readAllActives(), unreadPredicate).size();
@@ -54,11 +51,21 @@ public class NotificacionService {
 
 
 
+    public boolean itsForCurrentUser(Notificacion input){
+        if(CredencialService.getCurrentUser().getCredencial().getUsuario().equals(input.getUsuario()))
+            return true;
+        if(input.getUsuario().equals("broadcast"))
+            return true;
+
+        return false;
+
+    }
+
     public  Collection<Notificacion> getNotifications() {
         ArrayList<Notificacion> userNotis=new ArrayList<>();
         ArrayList<Notificacion> notificaciones=new ArrayList<>(dao.readAllActives());
         for(Notificacion noti:notificaciones)
-            if(noti.getUsuario().equals(CredencialService.getCurrentUser().getCredencial().getUsuario()))
+            if(itsForCurrentUser(noti))
                 userNotis.add(noti);
 
         setRead(userNotis);
@@ -82,7 +89,7 @@ public class NotificacionService {
         cantNotificacionesNoVistas=0;
         for (Notificacion noti:notificaciones
                 ) {
-            if(CredencialService.getCurrentUser().getCredencial().getUsuario().equals(noti.getUsuario())) {
+            if(itsForCurrentUser(noti)) {
                 noti.setVisto(true);
             }
             saveOrUpdate(noti);

@@ -215,7 +215,7 @@ public class Planificador {
 		fechaInicio=fechaInicio.minusHours(horas);
 		Integer perioricidad=horas+1;
 		String triggerKey=c.getId().toString()+"-"+key.toString();
-		String username="admin";
+		String username="broadcast";
 		agregarCita(c.getTitulo(), c.getMessage(),username, fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
 	}
 
