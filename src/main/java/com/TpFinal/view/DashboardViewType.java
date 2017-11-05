@@ -14,7 +14,7 @@ import com.vaadin.server.Resource;
 
 public enum DashboardViewType {
     INICIO("inicio", DashboardView.class, VaadinIcons.HOME, true),
-    PERSONAS("personas",PersonaABMView.class, VaadinIcons.USER, false),
+    PERSONAS("clientes",PersonaABMView.class, VaadinIcons.USER, false),
     INMUEBLES("inmuebles",InmuebleABMView.class, VaadinIcons.BUILDING,false),
     PUBLICACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
     CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
