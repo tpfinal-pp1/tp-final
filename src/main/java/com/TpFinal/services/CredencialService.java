@@ -52,7 +52,6 @@ public class CredencialService {
 	public static Empleado getCurrentUser() {
 		Empleado empleado=(Empleado) VaadinSession.getCurrent()
 				.getAttribute(Empleado.class.getName());
-		System.out.println(empleado.getCredencial().getUsuario());
 		return empleado;
 	}
 

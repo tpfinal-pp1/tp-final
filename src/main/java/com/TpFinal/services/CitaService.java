@@ -103,6 +103,31 @@ public class CitaService {
         return ret1;
     }
 
+    public boolean colisionaConCitasUser(Empleado user,Cita cita){
+        ArrayList<Cita> citas= (ArrayList<Cita>) readAllFromUser(user);
+        for(Cita candidata:citas){
+            if(colisionDeCitas(cita,candidata)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
+    private boolean colisionDeCitas(Cita A, Cita B){
+        if(A.getFechaInicio().isAfter(B.getFechaFin())){
+            return false;
+        }
+        else if(A.getFechaFin().isBefore(B.getFechaInicio())){
+            return false;
+        }
+        else{
+            return true;
+        }
+
+    }
+
     public List<Cita> readAllFromUser(Empleado user){
         if(user.getCategoriaEmpleado().equals(CategoriaEmpleado.admin)){
             return readAll();
