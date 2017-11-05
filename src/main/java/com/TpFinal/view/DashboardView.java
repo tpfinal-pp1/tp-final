@@ -96,7 +96,6 @@ public final class DashboardView extends Panel implements View {
 	    final DashboardEvent.NotificationsCountUpdatedEvent event) {
 	notificationsButton.setUnreadCount(nS
 		.getUnreadNotificationsCount());
-
     }
 
     private Component buildHeader() {
