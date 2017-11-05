@@ -27,6 +27,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.interfaces.Messageable;
 
 public class Planificador {
@@ -95,10 +96,22 @@ public class Planificador {
 		}
 	}
 	
+	public void agregarNotificaciones(ContratoAlquiler c) {
+		c.getCobros().forEach(c1 -> this.addCobroVencido(c1));
+	}
+	
 	public void addCita(Cita cita) {
 		if(cita.getId()!=null) {
 			agregarNotificacionCita(cita, horasAntesRecoradatorio1,1);
 			agregarNotificacionCita(cita, horasAntesRecoradatorio2,2);
+		}else
+			throw new IllegalArgumentException("La cita debe estar persistida");
+	}
+	
+	public void addCita(Cita cita, Integer hsAntesRecordatorio1,Integer hsAntesRecordatorio2 ) {
+		if(cita.getId()!=null) {
+			agregarNotificacionCita(cita, hsAntesRecordatorio1,1);
+			agregarNotificacionCita(cita, hsAntesRecordatorio2,2);
 		}else
 			throw new IllegalArgumentException("La cita debe estar persistida");
 	}
@@ -188,7 +201,6 @@ public class Planificador {
 
 	private void agregarNotificacionCita(Cita c, Integer horas, Integer key) {
 		LocalDateTime fechaInicio= c.getFechaInicio();
-		System.out.println(fechaInicio);
 		fechaInicio=fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin=c.getFechaInicio();
 		Integer perioricidad=horas+1;
@@ -198,13 +210,12 @@ public class Planificador {
 	}
 
 	private void agregarNotificacionCobro(Cobro c, Integer horas, Integer key) {
-		LocalDateTime fechaInicio= LocalDateTime.of(c.getFechaDeVencimiento(), this.horaInicioCobrosVencidos);
-		LocalDateTime fechaFin= LocalDateTime.of(c.getFechaDeVencimiento(), this.horaInicioCobrosVencidos);
-		System.out.println(fechaInicio);
+		LocalDateTime fechaInicio= LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(5));
+		LocalDateTime fechaFin= LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
 		fechaInicio=fechaInicio.minusHours(horas);
 		Integer perioricidad=horas+1;
 		String triggerKey=c.getId().toString()+"-"+key.toString();
-		String username="";
+		String username="admin";
 		agregarCita(c.getTitulo(), c.getMessage(),username, fechaInicio, fechaFin, String.valueOf(perioricidad), triggerKey);
 	}
 

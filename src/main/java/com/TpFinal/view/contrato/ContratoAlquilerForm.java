@@ -8,6 +8,7 @@ import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.notificacion.NotificadorJob;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -18,6 +19,7 @@ import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
+import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.*;
 import com.vaadin.data.Binder;
@@ -248,6 +250,10 @@ public class ContratoAlquilerForm extends FormLayout {
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
 		service.addCobros(contratoAlquiler);
 		this.save();
+		ContratoAlquiler ultimo=service.getUltimoAlquiler();
+		System.out.println(ultimo.getCobros().size());
+		Planificador.get().setNotificacion(new NotificadorJob());
+		Planificador.get().agregarNotificaciones(ultimo);
 
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
@@ -578,6 +584,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    contratoABMView.updateList();
 	    setVisible(false);
 	    contratoABMView().setComponentsVisible(true);
+	    
 
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
