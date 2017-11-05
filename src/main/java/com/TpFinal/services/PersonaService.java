@@ -234,7 +234,7 @@ public class PersonaService {
 
 	public List<Persona> findAllClientes(FiltroInteresados filtro) {
 		List<Persona> personas = dao.readAllActives().stream()
-				.filter(p -> !p.giveMeYourRoles().contains(Rol.Empleado))
+				.filter(p -> p.giveMeYourRoles().contains(Rol.Inquilino) || p.giveMeYourRoles().contains(Rol.Propietario) || (!p.giveMeYourRoles().contains(Rol.Empleado)))
 				.filter(filtro.getFiltroCompuesto()).collect(Collectors.toList());
 		personas.sort(Comparator.comparing(Persona::getId));
 		return personas;

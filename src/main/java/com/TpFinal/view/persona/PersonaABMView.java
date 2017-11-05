@@ -27,7 +27,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
 import java.util.function.Supplier;
 
-@Title("Personas")
+@Title("Clientes")
 @Theme("valo")
 public class PersonaABMView extends DefaultLayout implements View {
 
@@ -232,7 +232,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	hl.addComponent(filtering);
 
-	buildToolbar("Personas", hl);
+	buildToolbar("Clientes", hl);
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid, personaForm);
 	mainLayout.setSizeFull();
