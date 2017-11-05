@@ -108,6 +108,14 @@ public class Planificador {
 			throw new IllegalArgumentException("La cita debe estar persistida");
 	}
 	
+	public void addCita(Cita cita, Integer hsAntesRecordatorio1,Integer hsAntesRecordatorio2 ) {
+		if(cita.getId()!=null) {
+			agregarNotificacionCita(cita, hsAntesRecordatorio1,1);
+			agregarNotificacionCita(cita, hsAntesRecordatorio2,2);
+		}else
+			throw new IllegalArgumentException("La cita debe estar persistida");
+	}
+	
 	public boolean removeCita(Cita cita) {
 		boolean ret=false;
 		try {

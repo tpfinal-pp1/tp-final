@@ -11,6 +11,7 @@ import org.h2.table.Plan;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CitaService {
     DAOCitaImpl dao;
@@ -75,6 +76,23 @@ public class CitaService {
 
     }
 
+    public static boolean actualizarHsAntesCitas(Empleado emp) {
+	DAOCitaImpl dao = new DAOCitaImpl();
+	boolean ret = false;
+	List<Cita> citasDelEmpleado = dao.readAll()
+		.stream()
+		.filter(c -> {
+		    return c.getEmpleado().equals(emp.getCredencial().getUsuario());
+		})
+		.collect(Collectors.toList());
+	citasDelEmpleado.forEach(cita -> {
+	    Planificador.get().removeCita(cita);
+	    Planificador.get().addCita(cita, emp.getHorasAntesRecoradatorio1(), emp.getHorasAntesRecoradatorio2());
+	});
+
+	return ret;
+    }
+
     public boolean delete(Cita p) {
 
 	return dao.logicalDelete(p);
@@ -115,6 +133,10 @@ public class CitaService {
     }
 
     private boolean colisionDeCitas(Cita A, Cita B) {
+	logger.debug("Id cita 1: " + A.getId() + " - Id cita 2: " + B.getId());
+	if (A != null && A.equals(B)) {
+	    return false;
+	}
 	if (B.getFechaFin().isBefore(A.getFechaInicio())) {
 	    return false;
 	} else if (A.getFechaFin().isBefore(B.getFechaInicio())) {
