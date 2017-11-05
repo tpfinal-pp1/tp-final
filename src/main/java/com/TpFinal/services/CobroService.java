@@ -47,6 +47,15 @@ public class CobroService {
 		return ret;
 	}
 	
+	public List<Cobro> readNoCobrados(){
+		return this.readAll().stream()
+				.filter(c -> c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)
+						|| c.getMontoRecibido().compareTo(new BigDecimal("0.00"))==0 
+						|| c.getMontoRecibido()==null 
+						|| c.getFechaDePago()==null)
+				.collect(Collectors.toList());
+	}
+	
 	public List<Cobro> readCobrosByEstado(EstadoCobro estado){
 		return  dao.findCobrobyEstado(estado);
 	}
