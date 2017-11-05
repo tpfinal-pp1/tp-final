@@ -95,7 +95,7 @@ public class ContratoABMView extends DefaultLayout implements View {
     }
 
     private void configureGrid() {
-
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.addColumn(getTipoContrato()).setCaption("Tipo").setId("tipo");
 	grid.addColumn(Contrato::getFechaCelebracion, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
 		"Fecha de celebración").setId("fecha celebracion");
@@ -109,7 +109,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	grid.addColumn(Contrato::getEstadoContrato).setCaption("Estado").setId("estado");
 	grid.addColumn(contrato -> contrato.getInmueble().getDireccion()).setCaption("Dirección").setId("direccion");
 	grid.addColumn(getIntervinientes()).setCaption("Intervinientes").setId("intervinientes");
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+
 	grid.getColumns().forEach(col -> {
 	    col.setResizable(false);
 	    col.setHidable(true);

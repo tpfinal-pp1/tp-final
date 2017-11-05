@@ -434,7 +434,8 @@ public class EmpleadoForm extends FormLayout {
     }
 
     public void cancel() {
-	cerrarForm();
+		this.getAddressbookView().clearFilterTextBtn.setVisible(false);
+    	cerrarForm();
     }
 
     public void clearFields() {
