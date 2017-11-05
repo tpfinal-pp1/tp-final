@@ -155,7 +155,6 @@ public class InmuebleService {
     
     public Map<String,Resource> getFotosYPath(Inmueble inmueble) {
 	Map<String,Resource> fotos = new HashMap<>();
-
    	if (inmueble != null && inmueble.getId() != null) {
    	    fotos = inmueble.getPathImagenes().stream()
    		    .filter(path -> {

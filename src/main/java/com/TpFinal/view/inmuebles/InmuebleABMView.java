@@ -24,7 +24,9 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -398,10 +400,12 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 
 		verFotos.addClickListener(click -> {
+		    Map<String,Resource> fotos = new HashMap<>();
 		    Resource resource = inmuebleService.getPortada(inmueble);
 		    if (resource != null) {
-			ImageVisualizer imgv = new ImageVisualizer();
-			imgv.singleImage(resource);
+			fotos.put(inmueble.getNombreArchivoPortada(), resource);
+			ImageVisualizer imgv = new ImageVisualizer(fotos,inmueble.getNombreArchivoPortada());
+			//imgv.singleImage(resource);
 		    } else {
 			Notification.show("Este imueble no posee fotos");
 

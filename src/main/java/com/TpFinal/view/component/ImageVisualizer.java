@@ -26,9 +26,10 @@ public class ImageVisualizer extends Window {
     private TextField selectedImage = new TextField();
     private Map<String,Resource> mapaStringFoto;
 
-    public ImageVisualizer(Map<String,Resource> mapaStringFoto) {
+    public ImageVisualizer(Map<String,Resource> mapaStringFoto, String portada) {
 	this();
 	this.mapaStringFoto = mapaStringFoto;	
+	this.setFotoPortada(portada);
     }
     
     public ImageVisualizer() {
@@ -209,10 +210,10 @@ public class ImageVisualizer extends Window {
 
     private void setFotoPortada(String portada) {
 	List<Resource> img = new ArrayList<Resource>();
-	//XXX Implementando
+	mapaStringFoto.forEach((path, resource) -> img.add(resource));
 	imageViewer.setImages(img);
 	imageViewer.setCenterImageRelativeWidth(0.5f);
-	imageViewer.setCenterImageIndex(img.indexOf(portada));
+	imageViewer.setCenterImageIndex(img.indexOf(mapaStringFoto.get(portada)));
     }
 
     /*
