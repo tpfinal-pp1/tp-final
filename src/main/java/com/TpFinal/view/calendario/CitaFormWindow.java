@@ -125,10 +125,9 @@ public abstract class CitaFormWindow extends Window {
                     return ValidationResult.error("La fecha de Inicio no puede ser despues que la de Fin");
                 }
                 else{
-
-                    if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
-                        return ValidationResult.error("La duracion mínima de una cita es de 30 Minutos");
-                    }
+//                    if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
+//                        return ValidationResult.error("La duracion mínima de una cita es de 30 Minutos");
+//                    }
                     return ValidationResult.ok();
                 }
             }
@@ -141,9 +140,9 @@ public abstract class CitaFormWindow extends Window {
                     return ValidationResult.error("La fecha de Fin no puede ser antes que la de Inicio");
                 }
                 else{
-                    if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
-                        return ValidationResult.error("La duracion mínima de una cita es de 30 Minutos");
-                    }
+//                    if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
+//                        return ValidationResult.error("La duracion mínima de una cita es de 30 Minutos");
+//                    }
                     return ValidationResult.ok();
                 }
             }
