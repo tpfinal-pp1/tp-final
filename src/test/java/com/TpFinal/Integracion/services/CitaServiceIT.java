@@ -1,6 +1,7 @@
 package com.TpFinal.Integracion.services;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
@@ -31,7 +32,7 @@ import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.CitaService;
 
 public class CitaServiceIT {
-/*	CitaService service;
+	CitaService service;
 	List<Cita>Cita= new ArrayList<>();
 
 	@BeforeClass
@@ -47,7 +48,7 @@ public class CitaServiceIT {
 		service.readAll().forEach(p -> dao.delete(p));
 		DAOPersona daop = new DAOPersonaImpl();
 		daop.readAll().forEach(p -> daop.delete(p));
-		
+
 		Cita.clear();
 	}
 
@@ -59,7 +60,7 @@ public class CitaServiceIT {
 		DAOPersona daop = new DAOPersonaImpl();
 		daop.readAll().forEach(p -> daop.delete(p));
 	}
-	
+
 	private void desvicular() {
 		DAOCita dao = new DAOCitaImpl();
 		dao.readAll().forEach(c ->{
@@ -67,118 +68,94 @@ public class CitaServiceIT {
 			dao.saveOrUpdate(c);
 		});
 	}
-	
+
 	@Test
 	public void agregar() {
-		
 		assertTrue(service.saveOrUpdate(instanciaCita(1)));
 		assertTrue(service.saveOrUpdate(instanciaCita(2)));
 		assertTrue(service.saveOrUpdate(instanciaCita(3)));
 		assertTrue(service.saveOrUpdate(instanciaCita(4)));
-		
+
 		assertEquals(4, service.readAll().size());
-		
+
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 1")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 2")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 3")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 4")));
 	}
-	
+
 	@Test
 	public void eliminar() {
-		
 		assertTrue(service.saveOrUpdate(instanciaCita(1)));
 		assertTrue(service.saveOrUpdate(instanciaCita(2)));
 		assertTrue(service.saveOrUpdate(instanciaCita(3)));
 		assertTrue(service.saveOrUpdate(instanciaCita(4)));
-		
+
 		assertEquals(4, service.readAll().size());
-		
+
 		assertTrue(service.delete(service.getUltimaAgregada()));
 		assertTrue(service.delete(service.getUltimaAgregada()));
 		assertTrue(service.delete(service.getUltimaAgregada()));
 		assertTrue(service.delete(service.getUltimaAgregada()));
-		
+
 		assertEquals(0, service.readAll().size());
 	}
-	
+
 	@Test
 	public void editar() {
-		
 		assertTrue(service.saveOrUpdate(instanciaCita(1)));
 		assertTrue(service.saveOrUpdate(instanciaCita(2)));
 		assertTrue(service.saveOrUpdate(instanciaCita(3)));
 		assertTrue(service.saveOrUpdate(instanciaCita(4)));
-		
+
 		assertEquals(4, service.readAll().size());
-		
+
 		Cita cita4=service.getUltimaAgregada();
 		cita4.setCitado("nuevo");
-		
+
 		service.saveOrUpdate(cita4);
-		
+
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 1")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 2")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 3")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("nuevo")));
 	}
-	
+
 	@Test
 	public void getCitasDeUsuario() {
-		DAOPersona daop = new DAOPersonaImpl();
-
-		System.out.println("Total al empezar "+service.readAll().size());
-		Persona p1= instanciaEmpleadoAdministrador("1");
-		Persona p2= instanciaEmpleadoAdministrador("2");
-		p1.addRol(instanciaEmpleado());
-		Empleado e = (Empleado)p1.getRol(Rol.Empleado);
-		e.getCredencial().setUsuario("User nuevo");
+		Empleado e1=new Empleado.Builder()
+				.setCategoriaEmpleado(CategoriaEmpleado.agenteInmobilario)
+				.setCredencial(new Credencial.Builder().setUsuario("emp1").build()).build();
+		Empleado e2=new Empleado.Builder()
+				.setCategoriaEmpleado(CategoriaEmpleado.agenteInmobilario)
+				.setCredencial(new Credencial.Builder().setUsuario("emp2").build()).build();
 		
-		p2.addRol(instanciaEmpleado());
-	
-		
-		daop.saveOrUpdate(p1);
-		daop.saveOrUpdate(p2);
 		for(int i=0; i<5; i++) {
-			
-			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-			Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
-			
+
 			Cita c1=instanciaCita(i);
-			c1.setEmpleado(e1);
-			
+			c1.setEmpleado(e1.getCredencial().getUsuario());
+
 			Cita c2=instanciaCita(i);
-			c2.setEmpleado(e2);
-			
+			c2.setEmpleado(e2.getCredencial().getUsuario());
+
 			service.saveOrUpdate(c1);
 			service.saveOrUpdate(c2);
 		}
-	for(int i=0; i<3; i++) {
-			
-			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-			
+		
+		for(int i=0; i<3; i++) {
+
 			Cita c1=instanciaCita(i);
-			c1.setEmpleado(e1);
-			
-			
+			c1.setEmpleado(e1.getCredencial().getUsuario());
+
 			service.saveOrUpdate(c1);
 		}
-		
-		daop.saveOrUpdate(p1);
-		daop.saveOrUpdate(p2);
-		
-		Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-		Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
-		
-		System.out.println("Total de citas "+service.readAll().size());
-		System.out.println("p1: "+service.readAllFromUser(e1).size());
-		System.out.println("p2: "+service.readAllFromUser(e2).size());
-		
+
 		assertEquals(8, service.readAllFromUser(e1).size());
 		assertEquals(5, service.readAllFromUser(e2).size());
-		
+
 	}
-	/*@Test
+
+	@Test
 	public void errorDeCargaDuplicada(){
 		System.out.println("Total al empezar "+service.readAll().size());
 		Persona p1= instanciaEmpleadoAdministrador("1");
@@ -188,69 +165,71 @@ public class CitaServiceIT {
 		e.getCredencial().setUsuario("User nuevo");
 		p2.addRol(instanciaEmpleado());
 
-
 	}
 
 
 	@Test
 	public void getCitasDeUsuarioEliminando() {
-		DAOPersona daop = new DAOPersonaImpl();
+		Empleado e1=new Empleado.Builder()
+				.setCategoriaEmpleado(CategoriaEmpleado.agenteInmobilario)
+				.setCredencial(new Credencial.Builder().setUsuario("emp1").build()).build();
+		Empleado e2=new Empleado.Builder()
+				.setCategoriaEmpleado(CategoriaEmpleado.agenteInmobilario)
+				.setCredencial(new Credencial.Builder().setUsuario("emp2").build()).build();
 
-		System.out.println("Total al empezar "+service.readAll().size());
-		Persona p1= instanciaEmpleadoAdministrador("1");
-		Persona p2= instanciaEmpleadoAdministrador("2");
-		p1.addRol(instanciaEmpleado());
-		Empleado e = (Empleado)p1.getRol(Rol.Empleado);
-		e.getCredencial().setUsuario("User nuevo");
-		
-		p2.addRol(instanciaEmpleado());
-	
-		
-		daop.saveOrUpdate(p1);
-		daop.saveOrUpdate(p2);
 		for(int i=0; i<5; i++) {
-			
-			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-			Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
-			
+
 			Cita c1=instanciaCita(i);
-			c1.setEmpleado(e1);
-			
+			c1.setEmpleado(e1.getCredencial().getUsuario());
+
 			Cita c2=instanciaCita(i);
-			c2.setEmpleado(e2);
-			
+			c2.setEmpleado(e2.getCredencial().getUsuario());
+
 			service.saveOrUpdate(c1);
 			service.saveOrUpdate(c2);
 		}
-	for(int i=0; i<3; i++) {
-			
-			Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-			
+		
+		for(int i=0; i<3; i++) {
+
 			Cita c1=instanciaCita(i);
-			c1.setEmpleado(e1);
-			
-			
+			c1.setEmpleado(e1.getCredencial().getUsuario());
+
 			service.saveOrUpdate(c1);
 		}
-		
-		daop.saveOrUpdate(p1);
-		daop.saveOrUpdate(p2);
-		
-		Empleado e1=(Empleado) daop.readAllActives().get(0).getRol(Rol.Empleado);
-		Empleado e2=(Empleado) daop.readAllActives().get(1).getRol(Rol.Empleado);
-		
+
 		assertEquals(8, service.readAllFromUser(e1).size());
 		assertEquals(5, service.readAllFromUser(e2).size());
-		
+
 		service.delete(service.readAllFromUser(e1).get(0));
 		service.delete(service.readAllFromUser(e1).get(0));
 		service.delete(service.readAllFromUser(e1).get(0));
-		
+
 		assertEquals(5, service.readAllFromUser(e1).size());
 		assertEquals(5, service.readAllFromUser(e2).size());
 		assertEquals(10, service.readAll().size());
 	}
 	
+	@Test
+	public void colisionCita() {
+		for(int i =0; i<10; i++) {
+			Cita c= instanciaCita(i);
+			c.setFechaInicio(LocalDateTime.now().plusDays(i));
+			c.setFechaFin(LocalDateTime.now().plusDays(i).minusMinutes(2));
+			service.saveOrUpdate(c);
+		}
+		
+		Cita c= instanciaCita(1);
+		c.setFechaInicio(LocalDateTime.now().minusDays(1));
+		c.setFechaFin(LocalDateTime.now().minusDays(1).minusMinutes(2));
+		
+		Empleado e = new Empleado.Builder().setCategoriaEmpleado(CategoriaEmpleado.admin).build();
+		
+		assertFalse(service.colisionaConCitasUser(e, c));
+		
+		
+		
+	}
+
 	private Cita instanciaCita(int i) {
 
 		Empleado e=instanciaEmpleado();
@@ -265,7 +244,7 @@ public class CitaServiceIT {
 				.build();
 		return c;
 	}
-	
+
 	private Credencial instanciaCredencial() {
 		Credencial c = new Credencial.Builder()
 				.setUsuario("usuario")
@@ -273,7 +252,7 @@ public class CitaServiceIT {
 				.build();
 		return c;
 	}
-	
+
 	private Empleado instanciaEmpleado() {
 		Empleado e = new Empleado.Builder()
 				.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria)
@@ -317,5 +296,5 @@ public class CitaServiceIT {
 
 		return p;
 	}
-*/
+
 }
