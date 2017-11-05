@@ -37,7 +37,7 @@ public class NotificacionService {
 
 
     public int getUnreadNotificationsCount() {
-        System.out.println("notis no vistas "+cantNotificacionesNoVistas);
+
       //  if(cantNotificacionesNoVistas==-1) {
             Predicate<Notificacion> unreadPredicate = new Predicate<Notificacion>() {
                 @Override
