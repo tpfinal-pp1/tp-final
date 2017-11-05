@@ -40,6 +40,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /* Create custom UI Components.
  *
  * Create your own Vaadin components by inheritance and composition.
@@ -115,6 +117,8 @@ public class ContratoAlquilerForm extends FormLayout {
     TabSheet tabSheet;
 
     public ContratoAlquilerForm(ContratoABMView addressbook) {
+	final Logger logger = Logger.getLogger(ContratoAlquilerForm.class);
+
 	contratoABMView = addressbook;
 	configureComponents();
 	binding();
@@ -149,6 +153,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	configurarAcciones();
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
+
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<Inmueble> valueChangeEvent) {
 		if (valueChangeEvent != null) {
@@ -160,14 +165,13 @@ public class ContratoAlquilerForm extends FormLayout {
 			Persona propietario = inmueble.getPropietario().getPersona();
 			tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
 			contratoAlquiler.setInmueble(inmueble);
-			contratoAlquiler.setPropietario(propietario);
+			contratoAlquiler.setPropietario(propietario);			
 			PublicacionAlquiler asociado = service.getPublicacionAlquilerActiva(inmueble);
 			if (asociado != null) {
 			    contratoAlquiler.setValorInicial(asociado.getValorCuota());
 			    contratoAlquiler.setMoneda(asociado.getMoneda());
 			    binderContratoAlquiler.readBean(contratoAlquiler);
-			    cbInquilino.clear();
-			}
+			}		
 		    }
 		}
 	    }
@@ -264,7 +268,8 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	binderContratoAlquiler.forField(this.fechaVencimiento)
 		.bind(c -> {
-		    return c.getFechaCelebracion()!=null ? c.getFechaCelebracion().plusMonths(c.getDuracionContrato().getDuracion() ): null;
+		    return c.getFechaCelebracion() != null ? c.getFechaCelebracion().plusMonths(c.getDuracionContrato()
+			    .getDuracion()) : null;
 		}, (c, ca) -> {
 		});
 
@@ -611,7 +616,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	this.cbInquilino.clear();
 	this.cbInteresFueraDeTermino.clear();
 	this.cbtipointeres.clear();
-	this.fechaCelebracion.clear();	
+	this.fechaCelebracion.clear();
 	this.fechaVencimiento.clear();
 	this.rbgTipoMoneda.clear();
 	this.stIncremento.clear();
