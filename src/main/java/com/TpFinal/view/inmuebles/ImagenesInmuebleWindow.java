@@ -63,6 +63,7 @@ public abstract class ImagenesInmuebleWindow extends Window {
    private void resize(){
        center();
        fireResize();
+       addStyleName("v-scrollable");
 
    }
 
@@ -98,6 +99,8 @@ public abstract class ImagenesInmuebleWindow extends Window {
             );
 
         makePortada.setIcon(VaadinIcons.BOOKMARK);
+        resize();
+
 
 }
     private void delete() {
@@ -105,7 +108,11 @@ public abstract class ImagenesInmuebleWindow extends Window {
              ) {
             inmueble.removePathImagen(path);
             if(path.equals(inmueble.getNombreArchivoPortada())){
-                inmueble.setNombreArchivoPortada(null);
+
+                if(inmueble.getPathImagenes().size()>0)
+                    inmueble.setNombreArchivoPortada(inmueble.getPathImagenes().iterator().next());
+                else
+                    inmueble.setNombreArchivoPortada(null);
             }
         }
 
@@ -118,7 +125,7 @@ public abstract class ImagenesInmuebleWindow extends Window {
         refreshListSelect();
         configureComponents();
 
-        addStyleName("v-scrollable");
+
 
         select.setItems(inmueble.getPathImagenes());
         select.setRows(4);
@@ -128,20 +135,21 @@ public abstract class ImagenesInmuebleWindow extends Window {
 
         select.addValueChangeListener(event -> {
             Set<String> selected = event.getValue();
-            if(selected.iterator().hasNext()) {
-                String first=selected.iterator().next();
-                Resource res=InmuebleService.
-                        GenerarStreamResource(first);
-                preview.setSource(res);
-                if(first.equals(inmueble.getNombreArchivoPortada())){
-                    makePortada.setIcon(VaadinIcons.BOOKMARK);
-                }
-                else{
-                    makePortada.setIcon(null);
-                }
+            if(selected.size()==1) {
+                if (selected.iterator().hasNext()) {
+                    String first = selected.iterator().next();
+                    Resource res = InmuebleService.
+                            GenerarStreamResource(first);
+                    preview.setSource(res);
+                    if (first.equals(inmueble.getNombreArchivoPortada())) {
+                        makePortada.setIcon(VaadinIcons.BOOKMARK);
+                    } else {
+                        makePortada.setIcon(null);
+                    }
 
+                }
+                resize();
             }
-            resize();
 
 
         });
