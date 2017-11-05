@@ -120,15 +120,18 @@ public abstract class CitaFormWindow extends Window {
 	binderCita.forField(fechaInicio).withValidator(new Validator<LocalDateTime>() {
 	    @Override
 	    public ValidationResult apply(LocalDateTime localDateTime, ValueContext valueContext) {
-		if (fechaInicio.getValue().isAfter(fechaFin.getValue())) {
-
-		    return ValidationResult.error("La fecha de Inicio no puede ser despues que la de Fin");
+		if (fechaInicio.getValue() != null && fechaFin.getValue() != null) {
+		    if (fechaInicio.getValue().isAfter(fechaFin.getValue())) {
+			return ValidationResult.error("La fecha de Inicio no puede ser despues que la de Fin");
+		    } else {
+			// if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
+			// return ValidationResult.error("La duracion mínima de una cita es de 30
+			// Minutos");
+			// }
+			return ValidationResult.ok();
+		    }
 		} else {
-		    // if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
-		    // return ValidationResult.error("La duracion mínima de una cita es de 30
-		    // Minutos");
-		    // }
-		    return ValidationResult.ok();
+		    return ValidationResult.error("Ingrese un formato de fecha válido");
 		}
 	    }
 	}).asRequired("Seleccione una fecha de inicio")
@@ -136,14 +139,18 @@ public abstract class CitaFormWindow extends Window {
 	binderCita.forField(fechaFin).withValidator(new Validator<LocalDateTime>() {
 	    @Override
 	    public ValidationResult apply(LocalDateTime localDateTime, ValueContext valueContext) {
-		if (fechaFin.getValue().isBefore(fechaInicio.getValue())) {
-		    return ValidationResult.error("La fecha de Fin no puede ser antes que la de Inicio");
+		if (fechaInicio.getValue() != null && fechaFin.getValue() != null) {
+		    if (fechaFin.getValue().isBefore(fechaInicio.getValue())) {
+			return ValidationResult.error("La fecha de Fin no puede ser antes que la de Inicio");
+		    } else {
+			// if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
+			// return ValidationResult.error("La duracion mínima de una cita es de 30
+			// Minutos");
+			// }
+			return ValidationResult.ok();
+		    }
 		} else {
-		    // if(fechaInicio.getValue().plusMinutes(30).isAfter(fechaFin.getValue())){
-		    // return ValidationResult.error("La duracion mínima de una cita es de 30
-		    // Minutos");
-		    // }
-		    return ValidationResult.ok();
+		    return ValidationResult.error("Ingrese un formato de fecha válido");
 		}
 	    }
 	}).asRequired("Seleccione una fecha de fin")
