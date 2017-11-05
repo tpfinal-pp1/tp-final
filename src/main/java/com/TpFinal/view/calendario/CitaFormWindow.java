@@ -218,11 +218,12 @@ public abstract class CitaFormWindow extends Window {
     private void save(){
         boolean success=false;
         try {
+            binderCita.writeBean(cita);
             if(service.colisionaConCitasUser(CredencialService.getCurrentUser(),cita)){
                 Notification.show("Ya existe una Cita en ese rango horario");
                 return ;
             }
-            binderCita.writeBean(cita);
+            
 
             cita.setEmpleado(CredencialService.getCurrentUser().getCredencial().getUsuario());
 

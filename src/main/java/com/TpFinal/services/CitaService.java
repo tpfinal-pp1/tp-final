@@ -5,6 +5,8 @@ import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Empleado;
+
+import org.apache.log4j.Logger;
 import org.h2.table.Plan;
 
 import java.util.ArrayList;
@@ -12,142 +14,133 @@ import java.util.List;
 
 public class CitaService {
     DAOCitaImpl dao;
+    private static final Logger logger = Logger.getLogger(CitaService.class);
 
-    public CitaService(){
-        dao =new DAOCitaImpl();
+    public CitaService() {
+	dao = new DAOCitaImpl();
 
     }
 
     public boolean saveOrUpdate(Cita cita) {
-        return dao.saveOrUpdate(cita);
+	return dao.saveOrUpdate(cita);
     }
 
+    public boolean addCita(Cita cita) {
+	boolean b = saveOrUpdate(cita);
+	Long id = null;
+	if (b) {
+	    List<Cita> citas = readAll();
+	    for (Cita citaGuardada : citas) {
+		id = citaGuardada.getId();
+		citaGuardada.setId(null);
+		if (citaGuardada.equals(cita)) {
+		    cita.setId(id);
+		    break;
+		}
+	    }
+	}
 
+	agregarTriggers(cita);
 
-    public boolean addCita(Cita cita){
-       boolean b= saveOrUpdate(cita);
-        Long id=null;
-        if(b){
-            List<Cita> citas=readAll();
-            for (Cita citaGuardada:citas) {
-                id=citaGuardada.getId();
-                citaGuardada.setId(null);
-                if (citaGuardada.equals(cita)) {
-                    cita.setId(id);
-                    break;
-                }
-            }
-        }
-
-
-      agregarTriggers(cita);
-
-
-       return b;
+	return b;
     }
 
-    public Cita getCitaFromTriggerKey(String triggerKey){
-        int corte=triggerKey.indexOf('-');
+    public Cita getCitaFromTriggerKey(String triggerKey) {
+	int corte = triggerKey.indexOf('-');
 
-        for (Cita cita:readAll()){
-            if(cita.getId().toString().equals(triggerKey.substring(0,corte))){
-                return cita;
-            }
-        }
-        return null;
-
+	for (Cita cita : readAll()) {
+	    if (cita.getId().toString().equals(triggerKey.substring(0, corte))) {
+		return cita;
+	    }
+	}
+	return null;
 
     }
 
-    public void agregarTriggers(Cita cita){
-        Planificador.get().removeCita(cita);
-        Planificador.get().addCita(cita);
+    public void agregarTriggers(Cita cita) {
+	Planificador.get().removeCita(cita);
+	Planificador.get().addCita(cita);
     }
 
     public Cita getUltimaAgregada() {
-        List<Cita>citas=dao.readAllActives();
-        citas.sort((c1,c2)-> c2.getId().compareTo(c1.getId()));
-        return citas.get(0);
+	List<Cita> citas = dao.readAllActives();
+	citas.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
+	return citas.get(0);
     }
 
-    public boolean editCita(Cita cita){
-        System.out.println("EDITADA "+cita);
-       agregarTriggers(cita);
-       return saveOrUpdate(cita);
+    public boolean editCita(Cita cita) {
+	System.out.println("EDITADA " + cita);
+	agregarTriggers(cita);
+	return saveOrUpdate(cita);
 
     }
-
 
     public boolean delete(Cita p) {
 
-       return dao.logicalDelete(p);
+	return dao.logicalDelete(p);
 
     }
 
     public boolean deleteCita(Cita p) {
-        System.out.println("BORRADA"+p);
-        boolean ret1=true;
-        boolean ret2=true;
+	System.out.println("BORRADA" + p);
+	boolean ret1 = true;
+	boolean ret2 = true;
 
-        ret1=dao.logicalDelete(p);
-        if(!ret1){
-            System.err.println("Error al Borrar la cita..");
-        }
-        ret2=Planificador.get().removeCita(p);
-        if(!ret2){
-            System.err.println("Error al Borrar los recodatorios de la cita... " +
-                    "\nes probable que ya se hayan detonado los triggers");
-        }
+	ret1 = dao.logicalDelete(p);
+	if (!ret1) {
+	    System.err.println("Error al Borrar la cita..");
+	}
+	ret2 = Planificador.get().removeCita(p);
+	if (!ret2) {
+	    System.err.println("Error al Borrar los recodatorios de la cita... " +
+		    "\nes probable que ya se hayan detonado los triggers");
+	}
 
-
-        return ret1;
+	return ret1;
     }
 
-    public boolean colisionaConCitasUser(Empleado user,Cita cita){
-        ArrayList<Cita> citas= (ArrayList<Cita>) readAllFromUser(user);
-        for(Cita candidata:citas){
-            if(colisionDeCitas(cita,candidata)){
-                return true;
-            }
-        }
-        return false;
+    public boolean colisionaConCitasUser(Empleado user, Cita cita) {
+	ArrayList<Cita> citas = (ArrayList<Cita>) readAllFromUser(user);
+	for (Cita candidata : citas) {
+	    if (logger.isDebugEnabled())
+		logger.debug("Candidata: " + candidata.getFechaInicio() + " - " + candidata.getFechaFin() + " Cita: "
+			+ cita.getFechaInicio() + " - " + cita.getFechaFin() + " Resultado: " + (colisionDeCitas(cita,
+				candidata) ? "colisiona" : "no colisiona"));
+	    ;
+	    if (colisionDeCitas(cita, candidata)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
-
-
-    private boolean colisionDeCitas(Cita A, Cita B){
-        if(A.getFechaInicio().isAfter(B.getFechaFin())){
-            return false;
-        }
-        else if(A.getFechaFin().isBefore(B.getFechaInicio())){
-            return false;
-        }
-        else{
-            return true;
-        }
+    private boolean colisionDeCitas(Cita A, Cita B) {
+	if (B.getFechaFin().isBefore(A.getFechaInicio())) {
+	    return false;
+	} else if (A.getFechaFin().isBefore(B.getFechaInicio())) {
+	    return false;
+	} else {
+	    return true;
+	}
 
     }
 
-    public List<Cita> readAllFromUser(Empleado user){
-        if(user.getCategoriaEmpleado().equals(CategoriaEmpleado.admin)){
-            return readAll();
-        }
-        List<Cita> ret=new ArrayList<>();
-        for (Cita cita:readAll()){
-            if(cita.getEmpleado().equals(user.getCredencial().getUsuario())){
-               ret.add(cita);
-            }}
+    public List<Cita> readAllFromUser(Empleado user) {
+	if (user.getCategoriaEmpleado().equals(CategoriaEmpleado.admin)) {
+	    return readAll();
+	}
+	List<Cita> ret = new ArrayList<>();
+	for (Cita cita : readAll()) {
+	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())) {
+		ret.add(cita);
+	    }
+	}
 
-        return ret;
+	return ret;
     }
 
-    public List<Cita> readAll(){
-        return dao.readAllActives();
+    public List<Cita> readAll() {
+	return dao.readAllActives();
     }
-
-
-
-
-
 
 }
