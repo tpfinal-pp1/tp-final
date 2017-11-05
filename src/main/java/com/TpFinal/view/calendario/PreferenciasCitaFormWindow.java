@@ -95,7 +95,7 @@ public abstract class PreferenciasCitaFormWindow extends Window {
 	binderEmpleado.forField(this.hsrecordatorio1).asRequired("Debe ingresar una cantidad de horas")
 		.withConverter(new StringToIntegerConverter("Debe Ingresar un número entero!"))
 		.withValidator(n -> n >= 0, "Ingrese un número no negativo!")
-		.bind(Empleado::getHorasAntesRecoradatorio1, Empleado::setHorasAntesRecoradatorio2);
+		.bind(Empleado::getHorasAntesRecoradatorio1, Empleado::setHorasAntesRecoradatorio1);
 	binderEmpleado.forField(this.hsrecordatorio2).asRequired("Debe ingresar una cantidad de horas")
 		.withConverter(new StringToIntegerConverter("Debe Ingresar un número entero!"))
 		.withValidator(n -> n >= 0, "Ingrese un número no negativo!")
