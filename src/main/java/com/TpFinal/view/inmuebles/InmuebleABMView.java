@@ -24,7 +24,10 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -396,21 +399,24 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		del.setDescription("Borrar");
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
-
+			Map<String,Resource> fotos = new HashMap<>();
 		verFotos.addClickListener(click -> {
-		    Resource resource = inmuebleService.getPortada(inmueble);
-		    if (resource != null) {
-			ImageVisualizer imgv = new ImageVisualizer();
-			imgv.singleImage(resource);
-		    } else {
-			Notification.show("Este imueble no posee portada");
+
+			for (String pathFoto:inmueble.getPathImagenes()) {
+				Resource foto=InmuebleService.GenerarStreamResource(pathFoto);
+				if(foto!=null){
+					fotos.put(pathFoto,foto);}
+
+			}
+
+			ImageVisualizer imgv = new ImageVisualizer(fotos,inmueble.getNombreArchivoPortada());
 
 		    }
-		});
+		);
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
 		String archivoPortada = inmueble.getNombreArchivoPortada();
-		if (archivoPortada == null || archivoPortada == "")
+		if (inmueble.getNombreArchivoPortada()==null)
 		    verFotos.setEnabled(false);
 
 		Button verIntesados = new Button(VaadinIcons.SEARCH);
