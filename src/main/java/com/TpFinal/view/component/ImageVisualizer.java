@@ -2,13 +2,10 @@ package com.TpFinal.view.component;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.vaadin.ui.*;
-
-import net.sf.jasperreports.components.sort.FilterTypeBooleanOperatorsEnum;
 
 import org.tepi.imageviewer.ImageViewer;
 import org.tepi.imageviewer.ImageViewer.ImageSelectionListener;
@@ -29,7 +26,7 @@ public class ImageVisualizer extends Window {
     public ImageVisualizer(Map<String,Resource> mapaStringFoto, String portada) {
 	this();
 	this.mapaStringFoto = mapaStringFoto;	
-	this.setFotoPortada(portada);
+	this.setFotos(portada);
     }
     
     public ImageVisualizer() {
@@ -208,7 +205,7 @@ public class ImageVisualizer extends Window {
 
     }
 
-    private void setFotoPortada(String portada) {
+    private void setFotos(String portada) {
 	List<Resource> img = new ArrayList<Resource>();
 	mapaStringFoto.forEach((path, resource) -> img.add(resource));
 	imageViewer.setImages(img);

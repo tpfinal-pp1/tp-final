@@ -165,7 +165,7 @@ public class InmuebleService {
    	return fotos.isEmpty()? null : fotos;
        }
 
-    private static Resource GenerarStreamResource(String path) {
+	public static Resource GenerarStreamResource(String path) {
 	if (new File("Files" + File.separator + path).exists()) {
 	    StreamResource str = new StreamResource(new StreamResource.StreamSource() {
 		@Override
