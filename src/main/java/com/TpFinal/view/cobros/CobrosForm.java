@@ -37,12 +37,18 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 /**
  * Created by Max on 10/14/2017.
  */
 public class CobrosForm extends FormLayout {
+    private static final Logger logger = Logger.getLogger(CobrosForm.class);
+    
+    private PersonaService personaService = new PersonaService();
     private CobroService inmbService = new CobroService();
     private Cobro cobro;
+    
 
     //TabSheet
     TabSheet inmuebleFromTabSheet;
