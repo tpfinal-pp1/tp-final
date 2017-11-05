@@ -273,7 +273,10 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble").setId("tipo inmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble").setId("estado inmueble");
 	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
-	    grid.getColumns().forEach(c -> c.setResizable(false));
+	    grid.getColumns().forEach(col -> {
+		    col.setResizable(false);
+		    col.setHidable(true);
+		});
 
 	    HeaderRow filterRow = grid.appendHeaderRow();
 	    filterRow.getCell("direccion").setComponent(filtroDireccion());
