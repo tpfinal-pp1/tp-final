@@ -256,10 +256,7 @@ public class CobroServiceIT {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
 		contratoService.addCobros(ca);
-		
 		contratoService.saveOrUpdate(ca, null);
-		
-		assertEquals(24, service.readNoCobrados().size());
 	
 		 ca=(ContratoAlquiler) contratoService.readAll().get(0);
 		Cobro pago = ca.getCobros().stream().filter(c -> c.getNumeroCuota().equals(new Integer(1))).collect(Collectors.toList()).get(0);
