@@ -127,7 +127,8 @@ public class CitaService {
 			+ cita.getFechaInicio() + " - " + cita.getFechaFin() + " Resultado: " + (colisionDeCitas(cita,
 				candidata) ? "colisiona" : "no colisiona"));
 	    ;
-	    if (colisionDeCitas(cita, candidata)) {
+	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())
+				&&colisionDeCitas(cita, candidata)) {
 		return true;
 	    }
 	}
