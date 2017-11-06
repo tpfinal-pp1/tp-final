@@ -48,8 +48,7 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
     private InmuebleFormMatching inmuebleForm = new InmuebleFormMatching(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
-    private Supplier<List<Inmueble>> inmuebleSupplier;
-    private Button btnSearch = new Button(VaadinIcons.SEARCH_MINUS);
+    private Supplier<List<Inmueble>> inmuebleSupplier;  
     private FiltroInmueble filtro = new FiltroInmueble();
     private Predicate<Inmueble> filtroCustom = i -> true;
 
@@ -87,9 +86,6 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
-
-	filtering.addComponents(btnSearch, clearFilterTextBtn);
-
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	HorizontalLayout hlf = new HorizontalLayout(filtering);
 
@@ -108,8 +104,6 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
      *            true para mostrar, false para ocultar
      */
     public void setComponentsVisible(boolean b) {
-	btnSearch.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
 
@@ -188,47 +182,8 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		inmuebleSupplier = () -> inmuebleService.readAll();
 	    inmuebleService.setSupplier(inmuebleSupplier);
 	    configureFilter();
-	    configureGrid();
-	    configureSearch();
+	    configureGrid();	   
 	    updateList();
-	}
-
-	@SuppressWarnings("serial")
-	private void configureSearch() {
-	    btnSearch.addClickListener(click -> {
-		CriterioBusqInmueble criterio = new CriterioBusqInmueble();
-		new PreferenciasBusqueda(criterio) {
-
-		    @Override
-		    public boolean onSave() {
-			inmuebleSupplier = () -> inmuebleService.findByCaracteristicas(criterio);
-			inmuebleService.setSupplier(inmuebleSupplier);
-			updateList();
-			close();
-			return false;
-		    }
-
-		    @Override
-		    public boolean onClean() {
-			boolean success = true;
-			try {
-			    inmuebleSupplier = () -> inmuebleService.readAll();
-			    inmuebleService.setSupplier(inmuebleSupplier);
-			    updateList();
-			    close();
-			} catch (Exception e) {
-			    success = false;
-			    e.printStackTrace();
-			}
-			return success;
-		    }
-
-		    @Override
-		    public boolean searchVisible() {
-			return false;
-		    }
-		};
-	    });
 	}
 
 	private void configureFilter() {

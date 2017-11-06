@@ -11,11 +11,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 public class PersonaABMViewWindow extends Window {
-    private PersonaABMView abmView;
+    private PersonaMatchingView abmView;
 
     public PersonaABMViewWindow(String caption, FiltroInteresados filtro) {
 	super(caption);
-	abmView = new PersonaABMView(filtro);
+	abmView = new PersonaMatchingView(filtro);
 	setModal(true);
 	setResizable(false);
 	setClosable(true);
