@@ -287,7 +287,7 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		col.setResizable(false);
 		col.setHidable(true);
 	    });
-	    grid.setColumnOrder("acciones", "estado inmueble", "tipo inmueble", "direccion");
+	    grid.setColumnOrder("acciones","precio", "estado inmueble", "tipo inmueble", "direccion");
 
 	    HeaderRow filterRow = grid.appendHeaderRow();
 	    filterRow.getCell("direccion").setComponent(filtroDireccion());
