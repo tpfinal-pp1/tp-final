@@ -503,21 +503,21 @@ public class ContratoService {
 	}
     }
 
-    public static void setMontoInicialRenovacio(ContratoAlquiler ca) {
+    public static void setMontoInicialRenovacion(ContratoAlquiler ca) {
 	BigDecimal valorOriginal = ca.getValorInicial();
 	BigDecimal ret;
 	if (ca.getTipoIncrementoCuota() == TipoInteres.Simple) {
 	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
 	    interes = interes.divide(new BigDecimal("100"));
 	    interes = interes.multiply(new BigDecimal(ca.getDuracionContrato().getDuracion() / ca
-		    .getIntervaloActualizacion()));
+		    .getIntervaloActualizacion()).subtract(BigDecimal.ONE));
 	    ret = valorOriginal.multiply(BigDecimal.ONE.add(interes));
 	} else {
 	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
 	    interes = interes.divide(new BigDecimal("100"));
 	    ret = valorOriginal;
-	    for (int i = 1; i < ca.getDuracionContrato().getDuracion() / ca
-		    .getIntervaloActualizacion(); i++) {
+	    for (int i = 1; i < (ca.getDuracionContrato().getDuracion() / ca
+		    .getIntervaloActualizacion()); i++) {
 		ret = ret.multiply(BigDecimal.ONE.add(interes));
 	    }
 	}

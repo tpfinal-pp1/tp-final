@@ -235,7 +235,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	renovarContrato.addClickListener(e -> {
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    ContratoAlquiler ca = contratoAlquiler.clone();
-	    ContratoService.setMontoInicialRenovacio(ca);
+	    ContratoService.setMontoInicialRenovacion(ca);
 	    this.setContratoAlquiler(ca);
 
 	});
