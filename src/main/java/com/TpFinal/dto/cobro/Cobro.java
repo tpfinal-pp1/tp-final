@@ -3,6 +3,8 @@ package com.TpFinal.dto.cobro;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Objects;
 
 import javax.persistence.Column;
@@ -327,12 +329,12 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	@Override
 	public String getTitulo() {
-		return "Couta Vencida, "+this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre();
+		return "Vencimiento, "+this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre();
 	}
 
 	@Override
 	public String getMessage() {
-		return "Venc: "+this.fechaDeVencimiento+"\n"+", Monto: "+this.montoRecibido;
+		return "Venc: "+this.fechaDeVencimiento.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter())+"\n"+", Monto: $"+this.montoRecibido;
 	}
 
 
