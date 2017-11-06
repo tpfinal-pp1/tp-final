@@ -368,13 +368,13 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    String ret = "";
 	    if (contrato instanceof ContratoVenta) {
 		ContratoVenta c = (ContratoVenta) contrato;
-		Persona propietario = c.getInmueble().getPropietario().getPersona();
+		Persona propietario = c.getVendedor();
 		Persona comprador = c.getComprador();
 		ret = propietario.getNombre() + " " + propietario.getApellido() + ", " + comprador.getNombre() + " "
 			+ comprador.getApellido();
 	    } else {
 		ContratoAlquiler c = (ContratoAlquiler) contrato;
-		Persona propietario = c.getInmueble().getPropietario().getPersona();
+		Persona propietario = c.getPropietario();
 		Persona inquilino = c.getInquilinoContrato().getPersona();
 		ret = propietario.getNombre() + " " + propietario.getApellido() + ", " + inquilino.getNombre() + " "
 			+ inquilino.getApellido();
