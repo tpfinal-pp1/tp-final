@@ -8,7 +8,6 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 import com.TpFinal.dto.cobro.Cobro;
-import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.persona.Inquilino;
 
