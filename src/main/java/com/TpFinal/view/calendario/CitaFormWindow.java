@@ -167,9 +167,11 @@ public abstract class CitaFormWindow extends Window {
     }
 
     private void setCita(Cita cita) {
-	if (cita.getId() == null || (cita.getCitado() != null
-		&& cita.getCitado().equals(DashboardUI.getEmpleadoLogueado().getCredencial().getUsuario()))) {
-	    this.citado.setEnabled(true);
+	if (cita.getId() == null || (
+		 cita.getEmpleado().equals(CredencialService.
+			getCurrentUser().getCredencial().getUsuario()))) {
+
+		this.citado.setEnabled(true);
 	    this.direccionLugar.setEnabled(true);
 	    this.fechaFin.setEnabled(true);
 	    this.fechaInicio.setEnabled(true);
