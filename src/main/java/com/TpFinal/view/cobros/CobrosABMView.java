@@ -250,7 +250,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 			grid.addColumn(Cobro::getFechaDeVencimiento, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
 					"Fecha De Vencimiento")
-			.setId("fechasDeVencimiento");
+					.setId("fechasDeVencimiento");
 
 			Grid.Column<Cobro, String> fechaCobroCol = grid.addColumn(cobro -> {
 				String ret = "";
@@ -274,7 +274,58 @@ public class CobrosABMView extends DefaultLayout implements View {
 				return ret;
 			}).setCaption("Monto").setId("montos");
 
+			grid.addComponentColumn(cobro -> {
+				Button ver = new Button(VaadinIcons.EYE);
+				ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
+				ver.addClickListener(e -> {
+					// TODO
+					cobrosForm.setCobro(cobro);
 
+				});
+
+				Button pagar = new Button(VaadinIcons.MONEY);
+				pagar.addClickListener(click -> {
+					if (cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
+						Notification.show("Este alquiler ya esta cobrado",
+								Notification.Type.WARNING_MESSAGE);
+					} else {
+						DialogConfirmacion dialog = new DialogConfirmacion("Cobrar alquiler",
+								VaadinIcons.WARNING,
+								"¿Esta seguro que desea cobrar este alquiler?",
+								"100px",
+								confirmacion -> {
+									if (cobro.getEstadoCobro().equals(EstadoCobro.NOCOBRADO)) {
+										cobro.setEstadoCobro(EstadoCobro.COBRADO);
+										cobro.setFechaDePago(LocalDate.now());
+										boolean guardo=cobroService.save(cobro);
+										if(guardo) {
+											Planificador.get().removeCobroVencido(cobro);
+											System.out.println("Removido");
+										}
+
+										Persona p = cobro.getContrato().getInquilinoContrato().getPersona();
+										if (logger.isDebugEnabled()) {
+											logger.debug("Calificacion antes de actualizar: " + ((Inquilino)p.getRol(Rol.Inquilino)).getCalificacion());
+										}
+										personaService.calificarInquilino(p);
+										if (logger.isDebugEnabled()) {
+											logger.debug("Calificacion despues de actualizar: " + ((Inquilino)p.getRol(Rol.Inquilino)).getCalificacion());
+										}
+										personaService.saveOrUpdate(p);
+									}
+									updateList();
+								});
+					}
+
+				});
+				pagar.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
+				CssLayout hl = new CssLayout(ver, pagar);
+				hl.addStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+				hl.setCaption("Accion " + acciones);
+				hl.setId("acciones");
+				acciones++;
+				return hl;
+			}).setCaption("Acciones").setId("acciones");
 			grid.setColumnOrder("acciones", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos", "inquilinos",
 					"montos");
 			grid.getColumns().forEach(col -> {

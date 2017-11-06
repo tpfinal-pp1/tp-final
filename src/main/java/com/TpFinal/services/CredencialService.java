@@ -3,6 +3,7 @@ package com.TpFinal.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.TpFinal.DashboardUI;
 import com.TpFinal.data.dao.DAOCredencialImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOCredencial;
@@ -50,9 +51,7 @@ public class CredencialService {
 
     }
 	public static Empleado getCurrentUser() {
-		Empleado empleado=(Empleado) VaadinSession.getCurrent()
-				.getAttribute(Empleado.class.getName());
-		return empleado;
+		return DashboardUI.getEmpleadoLogueado();
 	}
 
     public boolean hasViewAccess(Credencial credencial, Class view) {

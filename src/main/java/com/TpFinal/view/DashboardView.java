@@ -366,7 +366,8 @@ public final class DashboardView extends Panel implements View {
 	if (size > 9)
 	    size = 9;
 	boolean first = true;
-	for (Notificacion notification : notifications) {
+	for (int i=0 ;i<size ;i++) {
+		Notificacion notification=notifications.get(i);
 
 	    VerticalLayout notificationLayout = new VerticalLayout();
 	    notificationLayout.setMargin(false);
@@ -420,13 +421,13 @@ public final class DashboardView extends Panel implements View {
 		    && notification.isVisto();
 
 	    if ((!stale)) {
-		if (!first) {
-		    Label divider = notificationDivider();
-		    divider.setSizeFull();
-		    notificationsLayout.addComponent(divider);
-		}
-		notificationsLayout.addComponent(notificationLayout);
-		first = false;
+			if (!first) {
+				Label divider = notificationDivider();
+				divider.setSizeFull();
+				notificationsLayout.addComponent(divider);
+			}
+			notificationsLayout.addComponent(notificationLayout);
+			first = false;
 	    }
 
 	}
