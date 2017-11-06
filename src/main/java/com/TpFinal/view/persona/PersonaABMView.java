@@ -86,8 +86,10 @@ public class PersonaABMView extends DefaultLayout implements View {
 	    String ret = "";
 	    if (persona.getPrefBusqueda() != null)
 		ret = "Interesado, ";
-	    for (Rol rol : persona.giveMeYourRoles())
-		ret += rol + ", ";
+	    for (Rol rol : persona.giveMeYourRoles()) {
+		if (!ret.contains(rol.toString()))
+		    ret += rol + ", ";
+	    }
 	    return ret.length() >= 2 ? ret.substring(0, ret.length() - 2) : "Sin Rol";
 	}).setCaption("Rol").setId("rol");
 	grid.addColumn(persona -> {

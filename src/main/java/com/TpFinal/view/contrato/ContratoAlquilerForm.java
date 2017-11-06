@@ -56,6 +56,7 @@ public class ContratoAlquilerForm extends FormLayout {
     /**
      * 
      */
+    final Logger logger = Logger.getLogger(ContratoAlquilerForm.class);
     private static final long serialVersionUID = 1L;
 
     private ContratoAlquiler contratoAlquiler;
@@ -119,7 +120,6 @@ public class ContratoAlquilerForm extends FormLayout {
     TabSheet tabSheet;
 
     public ContratoAlquilerForm(ContratoABMView addressbook) {
-	final Logger logger = Logger.getLogger(ContratoAlquilerForm.class);
 
 	contratoABMView = addressbook;
 	configureComponents();
@@ -164,16 +164,25 @@ public class ContratoAlquilerForm extends FormLayout {
 			contratoAlquiler.setInmueble(null);
 			tfPropietario.setValue("No seleccionado");
 		    } else {
-			Persona propietario = inmueble.getPropietario().getPersona();
-			tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
-			contratoAlquiler.setInmueble(inmueble);
-			contratoAlquiler.setPropietario(propietario);			
-			PublicacionAlquiler asociado = service.getPublicacionAlquilerActiva(inmueble);
-			if (asociado != null) {
-			    contratoAlquiler.setValorInicial(asociado.getValorCuota());
-			    contratoAlquiler.setMoneda(asociado.getMoneda());
-			    binderContratoAlquiler.readBean(contratoAlquiler);
-			}		
+			Persona propietario;
+			if (contratoAlquiler.getEstadoContrato() == EstadoContrato.EnProcesoDeCarga) {
+			    propietario = inmueble.getPropietario().getPersona();
+			    tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
+			    contratoAlquiler.setInmueble(inmueble);
+			    contratoAlquiler.setPropietario(propietario);
+			    PublicacionAlquiler asociado = service.getPublicacionAlquilerActiva(inmueble);
+			    if (asociado != null) {
+				contratoAlquiler.setValorInicial(asociado.getValorCuota());
+				contratoAlquiler.setMoneda(asociado.getMoneda());
+				binderContratoAlquiler.readBean(contratoAlquiler);
+			    }
+			} else {
+			    propietario = contratoAlquiler.getPropietario();
+			    if (propietario != null)
+				tfPropietario.setValue(propietario.getNombre() + " " + propietario.getApellido());
+			    else
+				tfPropietario.setValue("No Encontrado");
+			}
 		    }
 		}
 	    }
@@ -192,6 +201,7 @@ public class ContratoAlquilerForm extends FormLayout {
 				    .setPersona(inquilino).build();
 			    i.getContratos().add(contratoAlquiler);
 			    inquilino.addRol(i);
+			    contratoAlquiler.setInquilinoContrato(i);
 			}
 		    } else
 			contratoAlquiler.setInquilinoContrato(null);
@@ -249,8 +259,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
 		service.addCobros(contratoAlquiler);
+		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
-		ContratoAlquiler ultimo=service.getUltimoAlquiler();
+		ContratoAlquiler ultimo = service.getUltimoAlquiler();
 		System.out.println(ultimo.getCobros().size());
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().agregarNotificaciones(ultimo);
@@ -584,7 +595,6 @@ public class ContratoAlquilerForm extends FormLayout {
 	    contratoABMView.updateList();
 	    setVisible(false);
 	    contratoABMView().setComponentsVisible(true);
-	    
 
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);

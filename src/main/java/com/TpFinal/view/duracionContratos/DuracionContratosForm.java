@@ -27,7 +27,7 @@ public class DuracionContratosForm extends FormLayout {
     });
 
 
-    TextField descripcion = new TextField("Descripcion");  
+    TextField descripcion = new TextField("Descripcion"); 
     TextField cantidad = new TextField("Cantidad");
 
     ContratoDuracionService service = new ContratoDuracionService();
@@ -56,7 +56,6 @@ public class DuracionContratosForm extends FormLayout {
          *
          * and give it a keyoard shortcut for a better UX.
          */
-
         delete.setStyleName(ValoTheme.BUTTON_DANGER);
         save.addClickListener(e -> this.save());
         //test.addClickListener(e -> this.test());
@@ -76,7 +75,7 @@ public class DuracionContratosForm extends FormLayout {
                 
         binderContratoDuracion.forField(this.cantidad).withNullRepresentation("")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n > 0, "Ingrese una cantidad de meses mayor a 0")
+		.withValidator(n -> n > 0 && n<=1200, "Ingrese una cantidad de meses entre 1 y 1200 meses")
 		.bind(ContratoDuracion::getDuracion, ContratoDuracion::setDuracion);
         
        
