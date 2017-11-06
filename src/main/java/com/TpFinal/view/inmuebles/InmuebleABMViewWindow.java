@@ -12,11 +12,11 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 public class InmuebleABMViewWindow extends Window {
-    private InmuebleABMView abmView;
+    private InmuebleMatchingView abmView;
 
     public InmuebleABMViewWindow(String caption, Supplier<List<Inmueble>> supplier, Predicate<Inmueble> filtroCustom) {
 	super(caption);
-	abmView = new InmuebleABMView(supplier, filtroCustom);
+	abmView = new InmuebleMatchingView(supplier, filtroCustom);
 	setModal(true);
 	setResizable(false);
 	setClosable(true);
