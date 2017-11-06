@@ -47,14 +47,16 @@ public class CitaService {
     }
 
     public Cita getCitaFromTriggerKey(String triggerKey) {
-	int corte = triggerKey.indexOf('-');
+    	if(!triggerKey.equals("")){
+				int corte = triggerKey.indexOf('-');
 
-	for (Cita cita : readAll()) {
-	    if (cita.getId().toString().equals(triggerKey.substring(0, corte))) {
-		return cita;
-	    }
-	}
-	return null;
+				for (Cita cita : readAll()) {
+					if (cita.getId().toString().equals(triggerKey.substring(0, corte))) {
+					return cita;
+					}
+				}
+    	}
+				return null;
 
     }
 

@@ -354,7 +354,7 @@ public final class DashboardView extends Panel implements View {
 	}
 
 	notificationsLayout = new VerticalLayout();
-
+	notificationsLayout.addStyleName("v-scrollable");
 	Label title = new Label("Notificaciones");
 	title.addStyleName(ValoTheme.LABEL_H3);
 	title.addStyleName(ValoTheme.LABEL_NO_MARGIN);
@@ -363,8 +363,7 @@ public final class DashboardView extends Panel implements View {
 	ArrayList<Notificacion> notifications = (ArrayList<Notificacion>) nS.getNotifications();
 	DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
 	int size = notifications.size();
-	if (size > 9)
-	    size = 9;
+
 	boolean first = true;
 	for (int i=0 ;i<size ;i++) {
 		Notificacion notification=notifications.get(i);
