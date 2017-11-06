@@ -253,6 +253,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	private void configureGrid() {
+		grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	    grid.asSingleSelect().addValueChangeListener(event -> {
 		if (event.getValue() == null) {
 		    if (inmuebleForm.isVisible())
@@ -271,11 +272,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		}
 		return ret;
 	    }).setCaption("Dirección").setId("direccion");
-
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario").setId("propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble").setId("tipo inmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble").setId("estado inmueble");
-	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	    grid.getColumns().forEach(col -> {
 		    col.setResizable(false);
 		    col.setHidable(true);

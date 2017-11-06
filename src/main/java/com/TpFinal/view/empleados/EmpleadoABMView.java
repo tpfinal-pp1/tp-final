@@ -1,8 +1,10 @@
 package com.TpFinal.view.empleados;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import com.vaadin.ui.*;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.DashboardUI;
@@ -27,15 +29,6 @@ import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CssLayout;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -63,6 +56,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	configureComponents();
+	clearFilterTextBtn.setVisible(false);
 
     }
 
@@ -82,6 +76,17 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
     private void configureGrid() {
+		UI.getCurrent().getPage().getStyles().add(".v-grid-row.baja {color: darkred;}");
+		grid.setStyleGenerator(empleado -> {
+			String ret = null;
+			if (empleado.getFechaDeBaja() != null) {
+					ret = "baja";
+
+			}
+			return ret;
+		});
+
+    	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.addColumn(empleado -> {
 	    return empleado.getPersona().getNombre();
 	}).setCaption("Nombre").setId("nombre");
@@ -115,7 +120,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    }
 	    return ret;
 	}).setCaption("Estado Empleado").setId("estadoEmp");
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+
 	grid.setColumnOrder("acciones", "nombre", "apellido", "mail", "telefono", "categoria", "acceso", "estadoEmp");
 	grid.getColumns().forEach(col -> {
 	    col.setResizable(false);
@@ -357,6 +362,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
+	clearFilterTextBtn.setVisible(!b);
 	if (isonMobile)
 	    grid.setVisible(b);
 

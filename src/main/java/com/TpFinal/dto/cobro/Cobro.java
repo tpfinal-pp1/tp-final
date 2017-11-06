@@ -327,12 +327,12 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	@Override
 	public String getTitulo() {
-		return "Inquilino: "+this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre();
+		return "Couta Vencida, "+this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre();
 	}
 
 	@Override
 	public String getMessage() {
-		return "Fecha de vencimiento: "+this.fechaDeVencimiento+"\n"+"Importe: "+this.montoRecibido;
+		return "Venc: "+this.fechaDeVencimiento+"\n"+", Monto: "+this.montoRecibido;
 	}
 
 

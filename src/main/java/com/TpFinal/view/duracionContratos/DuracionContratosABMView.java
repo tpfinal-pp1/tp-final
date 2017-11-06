@@ -99,7 +99,8 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 	grid.setColumns("descripcion", "duracion");
 	grid.getColumn("descripcion").setCaption("Descripcion");
 	grid.getColumn("duracion").setCaption("Duracion");
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+		grid.setColumns("acciones","descripcion", "duracion");
 	grid.getColumns().forEach(col -> {
 	    col.setResizable(false);
 	    col.setHidable(true);
