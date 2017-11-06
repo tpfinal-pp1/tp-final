@@ -24,14 +24,6 @@ import com.vaadin.ui.themes.ValoTheme;
 public abstract class PreferenciasCitaFormWindow extends Window {
 
     public static final String ID = "profilepreferenceswindow";
-
-    /*
-     * Fields for editing the User object are defined here as class members. They
-     * are later bound to a FieldGroup by calling fieldGroup.bindMemberFields(this).
-     * The Fields' values don't need to be explicitly set, calling
-     * fieldGroup.setItemDataSource(user) synchronizes the fields with the user
-     * object.
-     */
     protected HorizontalLayout root = new HorizontalLayout();
     protected Empleado empleado;
     private Binder<Empleado> binderEmpleado = new Binder<>(Empleado.class);
