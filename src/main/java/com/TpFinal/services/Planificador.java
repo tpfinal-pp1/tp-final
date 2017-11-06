@@ -213,6 +213,7 @@ public class Planificador {
 		LocalDateTime fechaInicio= LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(5));
 		LocalDateTime fechaFin= LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
 		fechaInicio=fechaInicio.minusHours(horas);
+		fechaFin=fechaFin.minusHours(horas);
 		Integer perioricidad=horas+1;
 		String triggerKey=c.getId().toString()+"-"+key.toString();
 		String username="broadcast";

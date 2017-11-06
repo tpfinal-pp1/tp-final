@@ -40,6 +40,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("======================");
 	Planificador planificador = Planificador.get();
 	planificador.encender();
+	Planificador.get().setNotificacion(new NotificadorJob());
     }
 
     private void establecerConexionesBD() {
@@ -57,17 +58,12 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
-	logger.info("=================");
-	logger.info("Generando datos..");
-	logger.info("=================");
-	GeneradorDeDatosSinAsociaciones.generarDatos(4);
-	logger.info("===========================");
-	logger.info("Encendiendo Scheduler..");
-	logger.info("===========================");
-	Planificador.get().encender();
-	Planificador.get().setNotificacion(new NotificadorJob());
+		logger.info("=================");
+		logger.info("Generando datos..");
+		logger.info("=================");
+		GeneradorDeDatosSinAsociaciones.generarDatos(4);
 
-    }
+	}
 
     @Override
     public void destroy() {
