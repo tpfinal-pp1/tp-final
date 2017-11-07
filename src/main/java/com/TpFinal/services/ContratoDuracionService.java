@@ -4,67 +4,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.TpFinal.data.dao.DAOContratoDuracionImpl;
 import com.TpFinal.data.dao.interfaces.DAOContratoDuracion;
 import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.view.duracionContratos.FiltroDuracion;
 
 public class ContratoDuracionService {
-	DAOContratoDuracion dao;
-	
-	public ContratoDuracionService() {
-		dao = new DAOContratoDuracionImpl();
-	}
-	
-	public boolean saveOrUpdate(ContratoDuracion p) {
-		return dao.saveOrUpdate(p);
-	}
-	
-	public boolean delete(ContratoDuracion p) {
-		return dao.logicalDelete(p);
-	}
-	
-	public List<ContratoDuracion>readAll(){
-		return dao.readAllActives();
-	}
-	
-	 public synchronized List<ContratoDuracion> findAll(String stringFilter) {
-	        ArrayList arrayList = new ArrayList();
-	        List<ContratoDuracion> duracionesContratos=dao.readAllActives();
-	        if(stringFilter!=""){
+    DAOContratoDuracion dao;
 
-	            for (ContratoDuracion duracionContrato : duracionesContratos) {
+    public ContratoDuracionService() {
+	dao = new DAOContratoDuracionImpl();
+    }
 
-	                    boolean passesFilter = (stringFilter == null || stringFilter.isEmpty())
-	                                            || duracionContrato.toString().toLowerCase()
-	                                            .contains(stringFilter.toLowerCase());
-	                    if (passesFilter) {
+    public boolean saveOrUpdate(ContratoDuracion p) {
+	return dao.saveOrUpdate(p);
+    }
 
-	                        arrayList.add(duracionContrato);
-	                    }
+    public boolean delete(ContratoDuracion p) {
+	return dao.logicalDelete(p);
+    }
 
-	            }
-	        }
-	        else{
-	            arrayList.addAll(duracionesContratos);
-	        }
+    public List<ContratoDuracion> readAll() {
+	return dao.readAllActives();
+    }
 
-	        Collections.sort(arrayList, new Comparator<ContratoDuracion>() {
+    public List<ContratoDuracion> findAll(FiltroDuracion filtro) {
+	List<ContratoDuracion> duraciones = dao.readAllActives().stream()
+						.filter(filtro.getFiltroCompuesto())
+						.collect(Collectors.toList());
+	duraciones.sort(Comparator.comparing(ContratoDuracion::getId));
+	return duraciones;
+    }
 
-	            @Override
-	            public int compare(ContratoDuracion o1, ContratoDuracion o2) {
-	                return (int) (o2.getId() - o1.getId());
-	            }
-	        });
-	        return arrayList;
-	    }
-	 
-	public static ContratoDuracion getInstancia() {
-		return new ContratoDuracion.Builder()
-				.setDescripcion("")
-				.setDuracion(1)
-				.build();
-	}
-	
-	
+    public static ContratoDuracion getInstancia() {
+	return new ContratoDuracion.Builder()
+		.setDescripcion("")
+		.setDuracion(1)
+		.build();
+    }
+
 }
