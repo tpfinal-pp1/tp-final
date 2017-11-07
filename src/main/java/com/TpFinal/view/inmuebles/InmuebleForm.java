@@ -583,17 +583,17 @@ public class InmuebleForm extends FormLayout {
 	}
 	System.out.println(tabCaracteristicasInvalidFields);
 	if (tabPrincipalInvalidFields && !tabCaracteristicasInvalidFields) {
-	    Notification.show("Error al guardar, porfavor revise los campos principales",
+	    Notification.show("Error al guardar, por favor revise los campos principales",
 		    Notification.Type.WARNING_MESSAGE);
 	    inmuebleFromTabSheet.setSelectedTab(principal);
 	}
 
 	else if (!tabPrincipalInvalidFields && tabCaracteristicasInvalidFields) {
-	    Notification.show("Error al guardar, porfavor revise las caracterisitcas del inmueble e intente de nuevo",
+	    Notification.show("Error al guardar, por favor revise las caracterisitcas del inmueble e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
 	    inmuebleFromTabSheet.setSelectedTab(caracteristicas1);
 	} else {
-	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+	    Notification.show("Error al guardar, por favor revise los campos e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
 	}
     }
