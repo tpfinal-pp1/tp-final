@@ -36,7 +36,7 @@ import com.TpFinal.dto.persona.RolPersona;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.PersonaService;
-import com.TpFinal.view.persona.FiltroEmpleados;
+import com.TpFinal.view.empleados.FiltroEmpleados;
 
 public class PersonaServiceNuevoIT {
 
