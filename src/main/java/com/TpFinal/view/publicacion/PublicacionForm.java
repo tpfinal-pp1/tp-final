@@ -262,6 +262,8 @@ public class PublicacionForm extends FormLayout {
 	    publicacion = PublicacionService.InstanciaPublicacionAlquiler();
 	    binderPublicacion.getFields().forEach(field -> field.clear());
 	    fechaPublicacion.setValue(LocalDate.now());
+	    fechaPublicacion.setParseErrorMessage("Fecha no reconocida");
+	    fechaPublicacion.setDateOutOfRangeMessage("Debe seleccionar una fecha de hoy en adelante");
 	    moneda.setSelectedItem(TipoMoneda.Pesos);
 	    estadoPublicacion.setSelectedItem(EstadoPublicacion.Activa);
 	    // Por defecto en alquiler para evitar problemas
