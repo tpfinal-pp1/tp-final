@@ -27,6 +27,16 @@ public class ImageVisualizer extends Window {
 	this();
 	this.mapaStringFoto = mapaStringFoto;	
 	this.setFotos(portada);
+	this.addStyleName("translucent");
+	UI.getCurrent().getPage().getStyles().add(".v-window-translucent" +
+			"{" +
+			"  background-color: rgba(255,255,255,0.6) !important;" +
+			"}" +
+			"div.v-window-translucent .v-window-contents {" +
+			"  background: rgba(255,255,255,0.6);" +
+			"}");
+
+
     }
     
     public ImageVisualizer() {
