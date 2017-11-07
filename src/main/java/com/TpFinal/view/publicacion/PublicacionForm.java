@@ -65,7 +65,7 @@ public class PublicacionForm extends FormLayout {
     }
 
     private void configureComponents() {
-
+	fechaPublicacion.setRangeStart(LocalDate.now());
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -258,6 +258,9 @@ public class PublicacionForm extends FormLayout {
 	    tipoPublicacion.setValue(TipoPublicacion.Alquiler);
 	    publicacion = PublicacionService.InstanciaPublicacionAlquiler();
 	    binderPublicacion.getFields().forEach(field -> field.clear());
+	    fechaPublicacion.setValue(LocalDate.now());	    
+	    moneda.setSelectedItem(TipoMoneda.Pesos);
+	    estadoPublicacion.setSelectedItem(EstadoPublicacion.Activa);
 	    // Por defecto en alquiler para evitar problemas
 	}
 

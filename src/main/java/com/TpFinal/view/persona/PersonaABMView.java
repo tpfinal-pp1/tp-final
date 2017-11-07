@@ -1,8 +1,8 @@
 package com.TpFinal.view.persona;
 
-import com.TpFinal.dto.inmueble.Inmueble;
+
 import com.TpFinal.dto.persona.Calificacion;
-import com.TpFinal.dto.persona.CategoriaEmpleado;
+
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -21,27 +21,21 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
-import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
-
 import java.util.List;
-import java.util.function.Supplier;
 
+
+@SuppressWarnings("serial")
 @Title("Clientes")
 @Theme("valo")
 public class PersonaABMView extends DefaultLayout implements View {
 
-    TextField filter = new TextField();
     private Grid<Persona> grid = new Grid<>(Persona.class);
     Button newItem = new Button("Nuevo");
-    Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
+    Button cerrarForm = new Button(VaadinIcons.CLOSE);
     RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
-    Button seleccionFiltro = new Button(VaadinIcons.SEARCH_MINUS);
-    Window sw = new Window("Filtrar");
-
     HorizontalLayout mainLayout;
     PersonaForm personaForm = new PersonaForm(this);
     private boolean isonMobile = false;
@@ -61,14 +55,12 @@ public class PersonaABMView extends DefaultLayout implements View {
     public PersonaABMView(FiltroInteresados filtroBase) {
 	super();
 	this.filtroBase = filtroBase;
-	filtroBase.setFiltroCustom(filtroClientes.getFiltroCompuesto());
 	buildLayout();
 	configureComponents();
     }
 
     private void configureComponents() {
 	Responsive.makeResponsive(this);
-	configureFilter();
 	configurarNewItem();
 	configurarGrid();
 	updateList();
@@ -229,7 +221,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 	    } else {
 		filtroClientes.setFiltroRol(persona -> true);
 	    }
-	    
+
 	    updateList();
 	});
 	return filtroRol;
@@ -303,64 +295,18 @@ public class PersonaABMView extends DefaultLayout implements View {
 	};
     }
 
-    private void abriVentanaSelectoraFiltros() {
-	HorizontalLayout hl = new HorizontalLayout(filtroRoles);
-	hl.setMargin(true);
-	hl.setSpacing(true);
-	sw.setContent(hl);
-	filtroRoles.setItems("Todos", "Inquilinos", "Propietarios");
-	filtroRoles.addValueChangeListener(l -> {
-	    System.out.println(l.getValue());
-	    String valor = l.getValue();
-	    filter(valor);
-	});
-	Responsive.makeResponsive(sw);
-	sw.setModal(true);
-	sw.setResizable(false);
-	sw.setClosable(true);
-	sw.setVisible(true);
-	sw.center();
-	UI.getCurrent().addWindow(sw);
-	sw.focus();
-    }
-
-    private void configureFilter() {
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
-	filter.setPlaceholder("Filtrar");
-
-	filter.addValueChangeListener(e -> {
-	    if (filter.getValue() != null) {
-		String filtro = filter.getValue();
-		filtroBase.setFiltroCustom(p -> {
-		    String PersonaString = p.getNombre() + " " + p.getApellido() + " " + p.getDNI();
-		    return PersonaString.toLowerCase().contains(filtro.toLowerCase());
-		});
-	    }
-	    updateList();
-	});
-	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
-	if (isonMobile) {
-	    filter.setWidth("100%");
-	}
-	seleccionFiltro.addClickListener(event -> {
-	    abriVentanaSelectoraFiltros();
-	});
-    }
-
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
-	filter.setVisible(b);
-	seleccionFiltro.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
 
     }
 
-    private void buildLayout() {
-
+    private void buildLayout() {	
+	
 	CssLayout filtering = new CssLayout();
 	HorizontalLayout hl = new HorizontalLayout();
-	filtering.addComponents(seleccionFiltro, filter, clearFilterTextBtn, newItem);
+	filtering.addComponents(cerrarForm, newItem);
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	hl.addComponent(filtering);
 
@@ -372,15 +318,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 	this.setExpandRatio(mainLayout, 1);
 
     }
-
-    /*
-     * Choose the design patterns you like.
-     *
-     * It is good practice to have separate data access methods that handle the
-     * back-end access and/or the user interface updates. You can further split your
-     * code into classes to easier maintenance. With Vaadin you can follow MVC, MVP
-     * or any other design pattern you choose.
-     */
 
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(
@@ -401,19 +338,8 @@ public class PersonaABMView extends DefaultLayout implements View {
     }
 
     public void updateList() {
-	filtroBase.setFiltroCustom(filtroClientes.getFiltroCompuesto());
+	filtroBase.setFiltroPersona(filtroClientes.getFiltroCompuesto());
 	List<Persona> customers = personaService.findAllClientes(filtroBase);
-	grid.setItems(customers);
-    }
-
-    public void filter(String valor) {
-	List<Persona> customers = null;
-	if (valor.equals("Todos"))
-	    customers = personaService.findAll(filter.getValue());
-	else if (valor.equals("Inquilinos"))
-	    customers = personaService.findForRole(Rol.Inquilino.toString());
-	else if (valor.equals("Propietarios"))
-	    customers = personaService.findForRole(Rol.Propietario.toString());
 	grid.setItems(customers);
     }
 
@@ -425,9 +351,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 	if (this.personaForm.isVisible()) {
 	    newItem.focus();
 	    personaForm.cancel();
-
 	}
-	filter.clear();
     }
 
     /*

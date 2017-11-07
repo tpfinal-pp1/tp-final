@@ -1,6 +1,7 @@
 package com.TpFinal.view.persona;
 
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -22,6 +23,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Notification.Type;
+import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
@@ -36,6 +38,7 @@ public class PersonaMatchingView extends DefaultLayout implements View {
     private boolean isonMobile = false;
     PersonaService personaService = new PersonaService();
     FiltroInteresados filtroBase = new FiltroInteresados();
+    FiltroClientes filtroClientes = new FiltroClientes();
 
     // Para identificar los layout de acciones
     private int acciones = 0;
@@ -83,6 +86,128 @@ public class PersonaMatchingView extends DefaultLayout implements View {
 	    return ret;
 	}).setCaption("Califación").setId("calificacion");
 	grid.setColumnOrder("nombre", "apellido", "DNI", "calificacion", "rol");
+	HeaderRow filterRow = grid.appendHeaderRow();
+	filterRow.getCell("nombre").setComponent(filtroNombre());
+	filterRow.getCell("apellido").setComponent(filtroApellido());
+	filterRow.getCell("DNI").setComponent(filtroDNI());
+	filterRow.getCell("calificacion").setComponent(filtroCalificacion());
+	filterRow.getCell("rol").setComponent(filtroRol());
+    }
+
+    private Component filtroNombre() {
+	TextField filtroNombre = new TextField();
+	filtroNombre.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroNombre.setPlaceholder("Sin Filtro");
+	filtroNombre.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroNombre.isEmpty()) {
+		    filtroClientes.setFiltroNombre(persona -> {
+			if (persona.getNombre() != null)
+			    return persona.getNombre().toLowerCase().contains(e.getValue().toLowerCase());
+			return true;
+		    });
+		} else
+		    filtroClientes.setFiltroNombre(persona -> true);
+
+	    } else {
+		filtroClientes.setFiltroNombre(persona -> true);
+	    }
+	    updateList();
+	});
+	return filtroNombre;
+    }
+
+    private Component filtroApellido() {
+	TextField filtroApellido = new TextField();
+	filtroApellido.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroApellido.setPlaceholder("Sin Filtro");
+	filtroApellido.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroApellido.isEmpty()) {
+		    filtroClientes.setFiltroApellido(persona -> {
+			if (persona.getApellido() != null)
+			    return persona.getApellido().toLowerCase().contains(e.getValue().toLowerCase());
+			return true;
+		    });
+		} else
+		    filtroClientes.setFiltroApellido(persona -> true);
+
+	    } else {
+		filtroClientes.setFiltroApellido(persona -> true);
+	    }
+	    updateList();
+	});
+	return filtroApellido;
+    }
+
+    private Component filtroDNI() {
+	TextField filtroDNI = new TextField();
+	filtroDNI.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroDNI.setPlaceholder("Sin Filtro");
+	filtroDNI.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroDNI.isEmpty()) {
+		    filtroClientes.setFiltroDNI(persona -> {
+			if (persona.getDNI() != null)
+			    return persona.getDNI().toLowerCase().contains(e.getValue().toLowerCase());
+			return true;
+		    });
+		} else
+		    filtroClientes.setFiltroDNI(persona -> true);
+
+	    } else {
+		filtroClientes.setFiltroDNI(persona -> true);
+	    }
+	    updateList();
+	});
+	return filtroDNI;
+    }
+
+    private Component filtroCalificacion() {
+	ComboBox<Calificacion> filtroCalificacion = new ComboBox<>();
+	filtroCalificacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	filtroCalificacion.setPlaceholder("Sin Filtro");
+	filtroCalificacion.setItems(Calificacion.values());
+	filtroCalificacion.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroCalificacion.isEmpty())
+		    filtroClientes.setFiltroCalificacion(persona -> {
+			Inquilino inquilino = (Inquilino) persona.getRol(Rol.Inquilino);
+			if (inquilino != null)
+			    return inquilino.getCalificacion().equals(e.getValue());
+			else
+			    return false;
+		    });
+		else
+		    filtroClientes.setFiltroCalificacion(persona -> true);
+	    } else {
+		filtroClientes.setFiltroCalificacion(persona -> true);
+	    }
+	    updateList();
+	});
+	return filtroCalificacion;
+    }
+
+    private Component filtroRol() {
+	ComboBox<Rol> filtroRol = new ComboBox<>();
+	filtroRol.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	filtroRol.setPlaceholder("Sin Filtro");
+	filtroRol.setItems(Rol.values());
+	filtroRol.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroRol.isEmpty())
+		    filtroClientes.setFiltroRol(persona -> {
+			return persona.contiene(e.getValue());
+		    });
+		else
+		    filtroClientes.setFiltroRol(persona -> true);
+	    } else {
+		filtroClientes.setFiltroRol(persona -> true);
+	    }
+
+	    updateList();
+	});
+	return filtroRol;
     }
 
     public void setComponentsVisible(boolean b) {
@@ -95,7 +220,7 @@ public class PersonaMatchingView extends DefaultLayout implements View {
     private void buildLayout() {
 
 	HorizontalLayout hl = new HorizontalLayout();
-	buildToolbar("Clientes", hl);
+	buildToolbar("Interesados", hl);
 	grid.setSizeFull();
 	mainLayout = new HorizontalLayout(grid);
 	mainLayout.setSizeFull();
@@ -103,6 +228,7 @@ public class PersonaMatchingView extends DefaultLayout implements View {
 	this.setExpandRatio(mainLayout, 1);
 
     }
+
     public void showErrorNotification(String notification) {
 	Notification success = new Notification(
 		notification);
@@ -122,12 +248,15 @@ public class PersonaMatchingView extends DefaultLayout implements View {
     }
 
     public void updateList() {
+	filtroBase.setFiltroPersona(filtroClientes.getFiltroCompuesto());
 	List<Persona> customers = personaService.findAllClientes(filtroBase);
 	grid.setItems(customers);
     }
+
     public boolean isIsonMobile() {
 	return isonMobile;
     }
+
     @Override
     public void detach() {
 	super.detach();

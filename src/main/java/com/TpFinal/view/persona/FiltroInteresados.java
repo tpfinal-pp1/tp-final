@@ -41,6 +41,7 @@ public class FiltroInteresados {
     private Predicate<Persona> clasesDeInmueble = p -> true;
     private Predicate<Persona> aEstrenar = p -> true;
     private Predicate<Persona> filtroCustom = p -> true;
+    private Predicate<Persona> filtroPersona = p -> true;
 
     public FiltroInteresados() {
 	filtroCompuesto = p -> true;
@@ -70,49 +71,20 @@ public class FiltroInteresados {
 	tipoInmueble = filtroTipoInm(i);
 	publicaciones = filtroPublicaciones(i);
 	filtroCustom = p -> true;
-	filtros.addAll(Arrays.asList(
-	// this.aEstrenar,
-	// this.clasesDeInmueble, //XXX ok
-	// this.conAireAcondicionado,
-	// this.conJardin,
-	// this.conPileta,
-	// this.conParrilla,
-	// this.estadoInmueble ,//XXX ok
-	// this.localidad //XXX ok
-	// this.provincia,
-	// this.tipoInmueble,
-	// this.maxAmbientes
-	// this.minAmbientes, //XXX ok
-	// this.minCocheras,
-	// this.maxCocheras,
-	// this.minDormitorios,
-	// this.maxDormitorios,
-	// this.minSupCubierta,
-	// this.maxSupCubierta,
-	// this.minSupTotal,
-	// this.maxSupTotal,
-	 this.publicaciones,
-	 filtroCustom
-	));
-
-	filtroCompuesto = filtros.stream().reduce(persona -> true, Predicate::and);
-    }
-    
-    private void actualizarComposicion() {
-	filtros.clear();
+	filtroPersona =  p -> true;
 	filtros.addAll(Arrays.asList(
 		 this.aEstrenar,
-		 this.clasesDeInmueble,
+		 this.clasesDeInmueble, //XXX ok
 		 this.conAireAcondicionado,
 		 this.conJardin,
 		 this.conPileta,
 		 this.conParrilla,
-		 this.estadoInmueble ,
-		 this.localidad, 
+		 this.estadoInmueble ,//XXX ok
+		 this.localidad, //XXX ok
 		 this.provincia,
 		 this.tipoInmueble,
 		 this.maxAmbientes,
-		 this.minAmbientes,
+		 this.minAmbientes, //XXX ok
 		 this.minCocheras,
 		 this.maxCocheras,
 		 this.minDormitorios,
@@ -121,13 +93,42 @@ public class FiltroInteresados {
 		 this.maxSupCubierta,
 		 this.minSupTotal,
 		 this.maxSupTotal,
-		 this.publicaciones,
-		 this.filtroCustom
-		));
-	filtroCompuesto = filtros.stream().reduce(contrato -> true, Predicate::and);
-}
+		this.publicaciones,
+		filtroCustom,
+		filtroPersona));
 
-    
+	filtroCompuesto = filtros.stream().reduce(persona -> true, Predicate::and);
+    }
+
+    private void actualizarComposicion() {
+	filtros.clear();
+	filtros.addAll(Arrays.asList(
+		this.aEstrenar,
+		this.clasesDeInmueble,
+		this.conAireAcondicionado,
+		this.conJardin,
+		this.conPileta,
+		this.conParrilla,
+		this.estadoInmueble,
+		this.localidad,
+		this.provincia,
+		this.tipoInmueble,
+		this.maxAmbientes,
+		this.minAmbientes,
+		this.minCocheras,
+		this.maxCocheras,
+		this.minDormitorios,
+		this.maxDormitorios,
+		this.minSupCubierta,
+		this.maxSupCubierta,
+		this.minSupTotal,
+		this.maxSupTotal,
+		this.publicaciones,
+		this.filtroCustom,
+		this.filtroPersona));
+	filtroCompuesto = filtros.stream().reduce(contrato -> true, Predicate::and);
+    }
+
     public List<Predicate<Persona>> getFiltros() {
 	return filtros;
     }
@@ -215,15 +216,23 @@ public class FiltroInteresados {
     public Predicate<Persona> getaEstrenar() {
 	return aEstrenar;
     }
-    
 
     public Predicate<Persona> getFiltroCustom() {
-        return filtroCustom;
+	return filtroCustom;
+    }
+
+    public Predicate<Persona> getFiltroPersona() {
+	return filtroPersona;
+    }
+
+    public void setFiltroPersona(Predicate<Persona> filtroPersona) {
+	this.filtroPersona = filtroPersona;
+	actualizarComposicion();
     }
 
     public void setFiltroCustom(Predicate<Persona> filtroCustom) {
-        this.filtroCustom = filtroCustom;
-        actualizarComposicion();
+	this.filtroCustom = filtroCustom;
+	actualizarComposicion();
     }
 
     private Predicate<Persona> filtroAEstrenar(Inmueble i) {
