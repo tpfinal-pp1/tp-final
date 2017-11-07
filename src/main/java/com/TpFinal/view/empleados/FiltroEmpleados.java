@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.Persona;
 
 public class FiltroEmpleados {
 

@@ -454,7 +454,7 @@ public class ContratoVentaForm extends FormLayout {
 
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
-	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo.",
+	    Notification.show("Error al guardar, por favor revise los campos e intente de nuevo.",
 		    Notification.Type.WARNING_MESSAGE);
 	} catch (Exception e) {
 	    e.printStackTrace();
