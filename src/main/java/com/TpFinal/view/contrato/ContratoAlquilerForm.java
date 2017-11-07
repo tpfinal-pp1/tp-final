@@ -598,6 +598,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
+	    Notification.show("Errores de validación, por favor revise los campos.", Notification.Type.WARNING_MESSAGE);
 	    checkFieldsPerTab(e.getFieldValidationErrors());
 
 	} catch (ContratoServiceException e) {

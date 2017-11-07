@@ -301,6 +301,7 @@ public class PublicacionForm extends FormLayout {
 	} catch (ValidationException e) {
 	    Utils.mostarErroresValidator(e);
 	    printInvalidComponents(e.getFieldValidationErrors());
+	    Notification.show("Errores de validación, por favor revise los campos.", Notification.Type.WARNING_MESSAGE);
 	    return;
 	} catch (Exception e) {
 	    e.printStackTrace();
