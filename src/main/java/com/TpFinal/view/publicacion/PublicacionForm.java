@@ -111,7 +111,7 @@ public class PublicacionForm extends FormLayout {
 	binderPublicacion.forField(fechaPublicacion)
 		.asRequired("Debe introducirse una fecha")
 		.withValidator(new DateRangeValidator(
-			"Debe celebrarse desde mañana en adelante", LocalDate.now(), LocalDate.now().plusDays(365)))
+			"Debe celebrarse desde hoy en adelante", LocalDate.now(), LocalDate.now().plusDays(365)))
 		.bind(Publicacion::getFechaPublicacion, Publicacion::setFechaPublicacion);
 
 	binderPublicacion.forField(moneda).asRequired("Seleccione un tipo de moneda").bind(publicacion -> {
