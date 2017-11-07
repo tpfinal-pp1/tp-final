@@ -77,8 +77,7 @@ public class ReportesView extends DefaultLayout implements View {
 	switch (tipo) {
 	case Propietario: {
 	    PersonaService servicePersona = new PersonaService();
-	    objects.addAll(servicePersona.findForRole(
-		    Rol.Propietario.toString()));
+	    objects.addAll(servicePersona.getPropietariosQueNoSeanInmobiliarias());
 	    break;
 	}
 

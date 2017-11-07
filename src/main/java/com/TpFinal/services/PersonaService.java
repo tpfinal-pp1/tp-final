@@ -62,7 +62,13 @@ public class PersonaService {
 				.filter(p -> !p.getEsInmobiliaria())
 				.collect(Collectors.toList());
 	}
-
+	
+	public List<Persona> getPropietariosQueNoSeanInmobiliarias(){
+	return findForRole(Rol.Propietario.toString()).stream()
+	.filter(p -> !p.getEsInmobiliaria())
+	.collect(Collectors.toList());
+	}
+	
 	public Calificacion calificarInquilino(Persona p) {
 		Calificacion ret=null;
 		List<ContratoAlquiler> vigentes=getContratosVigentes(p);

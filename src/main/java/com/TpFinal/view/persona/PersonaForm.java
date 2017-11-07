@@ -332,15 +332,15 @@ public class PersonaForm extends FormLayout {
 
 	// Take user to the invalid components tag (in case there's only one)
 	if (tabPrincipalInvalidFields && !tabConditionsInvalidFields) {
-	    Notification.show("Error al guardar, porfavor revise los campos principales",
+	    Notification.show("Error al guardar, por favor revise los campos principales",
 		    Notification.Type.WARNING_MESSAGE);
 	    personaFormTabSheet.setSelectedTab(principal);
 	} else if (!tabPrincipalInvalidFields && tabConditionsInvalidFields) {
-	    Notification.show("Error al guardar, porfavor revise las condiciones del contrato e intente de nuevo",
+	    Notification.show("Error al guardar, por favor revise las condiciones del contrato e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
 	    personaFormTabSheet.setSelectedTab(adicional);
 	} else {
-	    Notification.show("Error al guardar, porfavor revise los campos e intente de nuevo",
+	    Notification.show("Error al guardar, por favor revise los campos e intente de nuevo",
 		    Notification.Type.WARNING_MESSAGE);
 	}
     }
