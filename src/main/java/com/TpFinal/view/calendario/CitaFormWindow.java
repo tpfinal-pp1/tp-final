@@ -238,12 +238,12 @@ public abstract class CitaFormWindow extends Window {
 	boolean success = false;
 	try {
 	    binderCita.writeBean(cita);
+	    cita.setEmpleado(CredencialService.getCurrentUser().getCredencial().getUsuario());
+	    
 	    if (service.colisionaConCitasUser(CredencialService.getCurrentUser(), cita)) {
 		Notification.show("Ya existe una Cita en ese rango horario");
 		return;
-	    }
-
-	    cita.setEmpleado(CredencialService.getCurrentUser().getCredencial().getUsuario());
+	    }	 
 
 	    if (cita.getId() != null)
 		success = service.editCita(cita);

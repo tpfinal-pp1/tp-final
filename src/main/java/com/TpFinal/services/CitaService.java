@@ -122,11 +122,19 @@ public class CitaService {
     public boolean colisionaConCitasUser(Empleado user, Cita cita) {
 	ArrayList<Cita> citas = (ArrayList<Cita>) readAllFromUser(user);
 	for (Cita candidata : citas) {
-	    if (logger.isDebugEnabled())
+	    if (logger.isDebugEnabled()) {
 		logger.debug("Candidata: " + candidata.getFechaInicio() + " - " + candidata.getFechaFin() + " Cita: "
 			+ cita.getFechaInicio() + " - " + cita.getFechaFin() + " Resultado: " + (colisionDeCitas(cita,
 				candidata) ? "colisiona" : "no colisiona"));
 	    ;
+	    String mensaje = cita.getEmpleado()!=null? cita.getEmpleado(): "nulo";
+	    logger.debug("cita.empleado: " + mensaje);
+	    mensaje = user.getCredencial()!=null? user.getCredencial().toString(): "nulo";
+	    logger.debug("user.getCredencial: " + mensaje);
+	    mensaje= user.getCredencial()!=null? (user.getCredencial().getUsuario()!=null? user.getCredencial().getUsuario(): "nulo"):"nulo";
+	    logger.debug("user.getCredencial.getUsuario: " + mensaje);
+	    }
+	    
 	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())
 				&&colisionDeCitas(cita, candidata)) {
 		return true;
