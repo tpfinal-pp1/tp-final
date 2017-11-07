@@ -76,8 +76,6 @@ public class PersonaService {
 			for(ContratoAlquiler ca:vigentes) {
 				List<Cobro>cobros = ca.getCobros().stream().collect(Collectors.toList());
 				cobros=this.filtrarUltimosSeisMeses(cobros);
-				System.out.println("Cantidad: "+cobros.size());
-				cobros.forEach(c-> System.out.println("Fecha de venc: "+c.getFechaDeVencimiento()));
 				new CobroService().calcularDatosFaltantes(cobros);
 				cobros.sort((c1,c2)-> c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento()));
 				

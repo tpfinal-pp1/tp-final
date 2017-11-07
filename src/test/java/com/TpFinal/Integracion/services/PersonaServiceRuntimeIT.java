@@ -59,7 +59,7 @@ public class PersonaServiceRuntimeIT {
 		List<Cobro>cobros=setearContratoParaTest(c);
 	
 		assertEquals(true,service.cobroAtrasado(cobros.get(0)));
-		assertEquals(false,service.cobroAtrasado(cobros.get(8)));
+		assertEquals(true,service.cobroAtrasado(cobros.get(5)));
 	}
 	
 	@Test
