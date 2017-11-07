@@ -22,6 +22,7 @@ import com.vaadin.server.SerializablePredicate;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -151,9 +152,11 @@ public class PublicacionForm extends FormLayout {
 
 	binderPublicacion.forField(monto).asRequired("Ingrese un valor mayor a 0").withValidator(new RegexpValidator(
 		"Ingrese un valor mayor a 0",
-		"^[1-9][0-9]|.*$")).withConverter(new StringToBigDecimalConverter("Ingrese un valor mayor a 0")).
-
-		bind(publicacion -> {
+		"^[1-9][0-9]|.*$")).withConverter(new StringToBigDecimalConverter("Ingrese un valor mayor a 0"))
+		.withValidator(n -> {
+		    return n.compareTo(BigDecimal.ZERO) > 0;
+		}, "Debe ingresar un precio positivo")
+		.bind(publicacion -> {
 
 		    if (publicacion instanceof PublicacionAlquiler) {
 			PublicacionAlquiler publiAl = (PublicacionAlquiler) publicacion;
@@ -258,7 +261,9 @@ public class PublicacionForm extends FormLayout {
 	    tipoPublicacion.setValue(TipoPublicacion.Alquiler);
 	    publicacion = PublicacionService.InstanciaPublicacionAlquiler();
 	    binderPublicacion.getFields().forEach(field -> field.clear());
-	    fechaPublicacion.setValue(LocalDate.now());	    
+	    fechaPublicacion.setValue(LocalDate.now());
+	    fechaPublicacion.setParseErrorMessage("Fecha no reconocida");
+	    fechaPublicacion.setDateOutOfRangeMessage("Debe seleccionar una fecha de hoy en adelante");
 	    moneda.setSelectedItem(TipoMoneda.Pesos);
 	    estadoPublicacion.setSelectedItem(EstadoPublicacion.Activa);
 	    // Por defecto en alquiler para evitar problemas
