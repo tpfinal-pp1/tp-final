@@ -67,6 +67,9 @@ public class PersonaABMView extends DefaultLayout implements View {
 	configurarNewItem();
 	configurarGrid();
 	updateList();
+	cerrarForm.addClickListener(click -> {
+	   personaForm.setVisible(false); 
+	});
     }
 
     private void configurarNewItem() {

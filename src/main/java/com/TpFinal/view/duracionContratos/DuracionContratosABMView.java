@@ -19,6 +19,7 @@ import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
+import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
@@ -43,14 +44,10 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 
     // Para identificar los layout de acciones
     private int acciones = 0;
-
-    TextField filter = new TextField();
     private Grid<ContratoDuracion> grid = new Grid<>(ContratoDuracion.class);
     Button newItem = new Button("Nuevo");
     Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
     RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
-    // Button seleccionFiltro=new Button(VaadinIcons.SEARCH);
-    Window sw = new Window("Filtrar");
 
     HorizontalLayout mainLayout;
     // DuracionContratosForm is an example of a custom component class
@@ -62,6 +59,8 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     // example as EJB or Spring Data based service.
     ContratoDuracionService service = new ContratoDuracionService();
 
+    private FiltroDuracion filtro;
+
     public DuracionContratosABMView() {
 
 	super();
@@ -71,21 +70,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     }
 
     private void configureComponents() {
-	/*
-	 * Synchronous event handling.
-	 *
-	 * Receive user interaction events on the server-side. This allows you to
-	 * synchronously handle those events. Vaadin automatically sends only the needed
-	 * changes to the web page without loading a new page.
-	 */
-
-	filter.addValueChangeListener(e -> updateList());
-	filter.setIcon(VaadinIcons.SEARCH);
-	filter.setStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-	filter.setValueChangeMode(ValueChangeMode.LAZY);
-	filter.setPlaceholder("Filtrar");
-	filter.addValueChangeListener(e -> updateList());
-
+	filtro = new FiltroDuracion();
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
 	newItem.addClickListener(e -> {
@@ -95,15 +80,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 	    DuracionContratosForm.setContratoDuracion(null);
 	});
 
-	grid.setColumns("descripcion", "duracion");
-	grid.getColumn("descripcion").setCaption("Descripcion");
-	grid.getColumn("duracion").setCaption("Duracion");
-	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-		grid.setColumns("acciones","descripcion", "duracion");
-	grid.getColumns().forEach(col -> {
-	    col.setResizable(false);
-	    col.setHidable(true);
-	});
+	configureGrid();
 
 	Responsive.makeResponsive(this);
 
@@ -111,15 +88,74 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 	//
 	// e.SINGLE);
 
-	if (isonMobile) {
-	    filter.setWidth("100%");
-	}
 	newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
 	// filter.setIcon(VaadinIcons.SEARCH);
 	// filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
 	updateList();
+    }
+
+    private void configureGrid() {
+	grid.setColumns("descripcion", "duracion");
+	grid.getColumn("descripcion").setCaption("Descripcion");
+	grid.getColumn("duracion").setCaption("Duracion");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.setColumns("acciones", "descripcion", "duracion");
+	grid.getColumns().forEach(col -> {
+	    col.setResizable(false);
+	    col.setHidable(true);
+	});
+	HeaderRow filterRow = grid.appendHeaderRow();
+	filterRow.getCell("descripcion").setComponent(filtroDescripcion());
+	filterRow.getCell("duracion").setComponent(filtroDuracion());
+	
+    }
+    
+    private Component filtroDescripcion() {
+	TextField filtroDescripcion = new TextField();
+	filtroDescripcion.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroDescripcion.setPlaceholder("Sin Filtro");
+	filtroDescripcion.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroDescripcion.isEmpty()) {
+		    filtro.setFiltroDescripcion(duracion -> {
+			if (duracion.getDescripcion() != null)
+			    return duracion.getDescripcion().toLowerCase().contains(e.getValue().toLowerCase());
+			return true;
+		    });
+		} else
+		    filtro.setFiltroDescripcion(duracion -> true);
+
+	    } else {
+		filtro.setFiltroDescripcion(duracion -> true);
+	    }
+	    updateList();
+	});
+	return filtroDescripcion;
+    }
+    
+    private Component filtroDuracion() {
+	TextField filtroDuracion = new TextField();
+	filtroDuracion.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroDuracion.setPlaceholder("Sin Filtro");
+	filtroDuracion.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroDuracion.isEmpty()) {
+		    filtro.setFiltroDuracion(duracion -> {
+			if (duracion.getDuracion() != null)
+			    return duracion.getDuracion().toString().toLowerCase().contains(e.getValue().toLowerCase());
+			return true;
+		    });
+		} else
+		    filtro.setFiltroDuracion(duracion -> true);
+
+	    } else {
+		filtro.setFiltroDuracion(duracion -> true);
+	    }
+	    updateList();
+	});
+	return filtroDuracion;
     }
 
     private ValueProvider<ContratoDuracion, HorizontalLayout> configurarAcciones() {
@@ -171,7 +207,6 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
-	filter.setVisible(b);
 	// seleccionFiltro.setVisible(b);
 	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
@@ -183,7 +218,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 
 	CssLayout filtering = new CssLayout();
 	HorizontalLayout hl = new HorizontalLayout();
-	filtering.addComponents(filter, clearFilterTextBtn, newItem);
+	filtering.addComponents(clearFilterTextBtn, newItem);
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	hl.addComponent(filtering);
 
@@ -225,7 +260,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 
     public void updateList() {
 
-	List<ContratoDuracion> customers = service.findAll(filter.getValue());
+	List<ContratoDuracion> customers = service.findAll(filtro);
 	grid.setItems(customers);
     }
 
@@ -237,9 +272,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 	if (this.DuracionContratosForm.isVisible()) {
 	    newItem.focus();
 	    DuracionContratosForm.cancel();
-
 	}
-	filter.clear();
     }
 
     /*

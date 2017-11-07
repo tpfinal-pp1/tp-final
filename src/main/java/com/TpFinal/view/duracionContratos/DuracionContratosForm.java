@@ -29,6 +29,7 @@ public class DuracionContratosForm extends FormLayout {
 
     TextField descripcion = new TextField("Descripcion"); 
     TextField cantidad = new TextField("Cantidad");
+    FiltroDuracion filtro = new FiltroDuracion();
 
     ContratoDuracionService service = new ContratoDuracionService();
     private DuracionContratosABMView addressbookView;
