@@ -71,7 +71,7 @@ public class PersonaService {
 	
 	public Calificacion calificarInquilino(Persona p) {
 		Calificacion ret=null;
-		List<ContratoAlquiler> vigentes=getContratosVigentes(p);
+		List<ContratoAlquiler> vigentes=getListaDeContratos(p);
 		if(p.getInquilino()!=null && p.getInquilino().getContratos()!=null && p.getInquilino().getContratos().size()!=0) {
 			for(ContratoAlquiler ca:vigentes) {
 				List<Cobro>cobros = ca.getCobros().stream().collect(Collectors.toList());
@@ -97,11 +97,10 @@ public class PersonaService {
 		return ret;
 	}
 
-	public List<ContratoAlquiler> getContratosVigentes(Persona p) {
+	public List<ContratoAlquiler> getListaDeContratos(Persona p) {
 		List<ContratoAlquiler> ret=new ArrayList<>();
 		if(p.getInquilino()!=null && p.getInquilino().getContratos()!=null && p.getInquilino().getContratos().size()!=0) {
 			ret=p.getInquilino().getContratos().stream()
-					.filter(c -> c.getEstadoContrato().equals(EstadoContrato.Vigente))
 					.collect(Collectors.toList());
 		}
 		return ret;
@@ -145,7 +144,7 @@ public class PersonaService {
 	public List<Cobro> filtrarUltimosSeisMeses(List<Cobro>cobros) {
 		LocalDate fecha = haceSeisMeses(cobros.get(0).getFechaDeVencimiento().getDayOfMonth());
 		return cobros.stream()
-				.filter(cob -> cob.getFechaDeVencimiento().compareTo(fecha)>0 || cob.getFechaDeVencimiento().compareTo(fecha)==0)
+				.filter(cob -> cob.getFechaDeVencimiento().compareTo(fecha)>=0 && cob.getFechaDeVencimiento().compareTo(LocalDate.now())<=0)
 				.collect(Collectors.toList());
 	}
 
