@@ -20,6 +20,7 @@ import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
+import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.time.format.TextStyle;
@@ -73,10 +74,12 @@ public class PublicacionABMView extends DefaultLayout implements View {
     private void configureGrid() {
 
     grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-	grid.setColumns("acciones","inmueble", "tipoPublicacion", "fechaPublicacion", "estadoPublicacion");
+	grid.setColumns("acciones","inmueble", "tipoPublicacion", "estadoPublicacion");
 
 	grid.getColumn("tipoPublicacion").setCaption("Operación");
-	grid.getColumn("fechaPublicacion").setCaption("Fecha Publicación");
+	grid.addColumn(publicacion -> publicacion.getFechaPublicacion(),new LocalDateRenderer("dd/MM/yyyy"))
+	.setCaption("Fecha Publicación")
+	.setId("fechaPublicacion");
 
 	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario").setId("propietario");
 	grid.getColumns().forEach(col -> {

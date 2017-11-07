@@ -522,6 +522,9 @@ public abstract class PreferenciasBusqueda extends Window {
 		} else if (criterio.getEstadoInmueble() == EstadoInmueble.EnVenta) {
 		    criterio.setTipoPublicacion(TipoPublicacion.Venta);
 		}
+	    }else {
+		criterio.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
+		criterio.setTipoPublicacion(null);
 	    }
 	    System.err.println(criterio);
 	    success = onSave();

@@ -39,7 +39,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
      * 
      */
     private static final long serialVersionUID = 1749224574589852377L;
-    private TextField filter = new TextField();
     private Grid<Inmueble> grid = new Grid<>();
     private Button newItem = new Button("Nuevo");
     private Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
@@ -87,7 +86,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     private void buildLayout() {
 	CssLayout filtering = new CssLayout();
 
-	filtering.addComponents(btnSearch, filter, clearFilterTextBtn, newItem);
+	filtering.addComponents(btnSearch, clearFilterTextBtn, newItem);
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	HorizontalLayout hlf = new HorizontalLayout(filtering);
@@ -108,9 +107,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
      */
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
-	filter.setVisible(b);
 	btnSearch.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
 
@@ -143,7 +140,6 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    newItem.focus();
 	    inmuebleForm.cancel();
 	}
-	filter.clear();
     }
 
     public void setSupplier(Supplier<List<Inmueble>> supplier) {
@@ -245,10 +241,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	private void configureFilter() {
-	    filter.addValueChangeListener(e -> filtrarPorCalle(filter.getValue()));
-	    filter.setValueChangeMode(ValueChangeMode.LAZY);
-	    filter.setPlaceholder("Filtrar");
-	    clearFilterTextBtn.setDescription("Limpiar filtro");
+	    clearFilterTextBtn.setDescription("Cerrar Ventana");
 	    clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 	}
 
