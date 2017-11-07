@@ -1,8 +1,9 @@
 package com.TpFinal.view.persona;
 
 
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Calificacion;
-
+import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -22,6 +23,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 import java.util.List;
@@ -55,6 +57,7 @@ public class PersonaABMView extends DefaultLayout implements View {
     public PersonaABMView(FiltroInteresados filtroBase) {
 	super();
 	this.filtroBase = filtroBase;
+	filtroBase.setFiltroCustom(filtroClientes.getFiltroCompuesto());
 	buildLayout();
 	configureComponents();
     }
