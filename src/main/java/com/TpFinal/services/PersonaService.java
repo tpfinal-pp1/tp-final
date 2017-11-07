@@ -21,7 +21,7 @@ import com.TpFinal.dto.persona.EstadoEmpleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
-import com.TpFinal.view.persona.FiltroEmpleados;
+import com.TpFinal.view.empleados.FiltroEmpleados;
 import com.TpFinal.view.persona.FiltroInteresados;
 import com.itextpdf.text.log.SysoCounter;
 
