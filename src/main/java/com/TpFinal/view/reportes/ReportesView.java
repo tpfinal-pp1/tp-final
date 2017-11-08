@@ -21,8 +21,10 @@ import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.DefaultLayout;
 import com.vaadin.annotations.Theme;
@@ -65,6 +67,9 @@ public class ReportesView extends DefaultLayout implements View {
     List<Object> objects = null;
     boolean incluirCobrosPendientes;
     private ContratoService contratoService = new ContratoService();
+    
+    ComboBox <Inmueble> comboInmuebles = new ComboBox<>("Inmuebles");
+    private InmuebleService inmuebleService = new InmuebleService();
 
     public List<Object> getObjetos(TipoReporte tipo) {
 	List<Object> objects = new ArrayList<>();
@@ -125,6 +130,25 @@ public class ReportesView extends DefaultLayout implements View {
 	    objects = contratoService.getListadoAlquileresDelMes(fechaDesde, fechaHasta,incluirCobrosPendientes);
 	    break;
 	}
+	
+	case FichaInmuebleSimple: {
+		Inmueble inmueble = comboInmuebles.getValue();
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("==========================");
+			
+			logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
+			logger.debug("la cantidad de inmuebles es vacia?: "+ comboInmuebles.isEmpty());
+			logger.debug("==========================");
+			
+		}
+		
+		if (inmueble != null) {
+			objects = inmuebleService.getListaFichaInmueble(inmueble);
+		}
+		
+		break;
+	}
 
 	}
 
@@ -142,6 +166,9 @@ public class ReportesView extends DefaultLayout implements View {
 
     public void buildLayout() {
 	CssLayout filtering = new CssLayout();
+	
+	comboInmuebles.setVisible(false);
+	comboInmuebles.setItems(inmuebleService.readAll());
 
 	incluirCobrosPendientes = false;
 	checkboxIncluirPendientes = new CheckBox("Incluir Cobros Pendientes", false);
@@ -178,7 +205,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 	generarReporte();
 	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
-		tipoReporteCB,
+			comboInmuebles,	tipoReporteCB,
 		newReport);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
@@ -191,6 +218,7 @@ public class ReportesView extends DefaultLayout implements View {
 		    fHastaDatePicker.setVisible(false);
 		    fDesde2.setVisible(false);
 		    checkboxIncluirPendientes.setVisible(false);
+		    comboInmuebles.setVisible(false);
 
 		}
 
@@ -200,6 +228,7 @@ public class ReportesView extends DefaultLayout implements View {
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
 		    fHastaDatePicker.setVisible(false);
+		    comboInmuebles.setVisible(false);
 		}
 
 		if (valueChangeEvent.getValue() == TipoReporte.AlquileresPorCobrar) {
@@ -208,6 +237,17 @@ public class ReportesView extends DefaultLayout implements View {
 		    fHastaDatePicker.setVisible(true);
 		    fDesde2.setVisible(false);
 		    checkboxIncluirPendientes.setVisible(false);
+		    comboInmuebles.setVisible(false);
+		}
+		
+		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleSimple) {
+			comboInmuebles.setVisible(true);
+		    clearFilterTextBtn.setVisible(false);
+		    fDesdeDatePicker.setVisible(false);
+		    fHastaDatePicker.setVisible(false);
+		    fDesde2.setVisible(false);
+		    checkboxIncluirPendientes.setVisible(false);
+		    
 		}
 
 	    }
