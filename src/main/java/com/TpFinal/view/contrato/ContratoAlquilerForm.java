@@ -81,18 +81,21 @@ public class ContratoAlquilerForm extends FormLayout {
 
     // Documento
     TextField tfDocumento = new TextField();
-    UploadButton btCargar = new UploadButton(new UploadReceiver() {
+    UploadReceiverRefactorizado upRcvr = new UploadReceiverRefactorizado();
+    UploadButton btCargar = new UploadButton(upRcvr);
 
-	@Override
-	public void onSuccessfullUpload(String filename) {
-	    nombreArchivo = filename;
-	    tfDocumento.setValue("Cargando Documento");
-	    btDescargar.setFile(filename);
-	    archivo = new File(this.getPathAndName());
-	}
-    });
+    // new UploadReceiver() {
+    //
+    // @Override
+    // public void onSuccessfullUpload(String filename) {
+    // nombreArchivo = filename;
+    // tfDocumento.setValue("Cargando Documento");
+    // btDescargar.setFile(filename);
+    // archivo = new File(this.getPathAndName());
+    // }
+    // });
 
-    DownloadButton btDescargar = new DownloadButton();
+    DownloadButtonRefactor btDescargar = new DownloadButtonRefactor();
 
     // Condiciones
     TextField tfDiaDePago = new TextField("Día de Pago");
@@ -150,6 +153,15 @@ public class ContratoAlquilerForm extends FormLayout {
 	    tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
 	    tfDocumento.setValue("Documento Cargado");
 	    estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+	    contratoAlquiler.getArchivo().setExtension(upRcvr.getFileName());
+	    contratoAlquiler.getArchivo().setNombre(upRcvr.getFileName());
+	    archivo = new File(upRcvr.getFullPath());
+	    try {
+		upRcvr.getOutputFile().flush();
+		upRcvr.getOutputFile().close();
+		btDescargar.setArchivo(archivo.getPath());
+	    } catch (Exception ex) {
+	    }
 	});
 
 	configurarAcciones();
@@ -432,7 +444,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	btCargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	btDescargar.addClickListener(event -> {
-	    btDescargar.descargar(contratoAlquiler, "Contrato.doc");
+	    btDescargar.descargar(contratoAlquiler.getArchivo());
 	});
 
 	principal = new FormLayout(cbInmuebles, tfPropietario, cbInquilino, fechaCelebracion, fechaVencimiento,
@@ -466,6 +478,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
 	    binderContratoAlquiler.readBean(contratoAlquiler);
+	    this.btDescargar.setArchivo(contratoAlquiler.getArchivo());
 
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();

@@ -7,8 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public abstract class UploadReceiverRefactorizado implements Receiver {
+import org.apache.log4j.Logger;
+
+public class UploadReceiverRefactorizado implements Receiver {
     private static final long serialVersionUID = 2215337036540966711L;
+    private static Logger logger = Logger.getLogger(UploadReceiverRefactorizado.class);
     
     private OutputStream outputFile = null;
     private static final String directorioUpload =  "Files";
@@ -27,7 +30,12 @@ public abstract class UploadReceiverRefactorizado implements Receiver {
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
         File file=null;
         try {
-            this.setFullPath(filePath+strFilename+"."+strMIMEType);
+            
+            this.setFullPath(filePath+strFilename);
+            if (logger.isDebugEnabled()) {
+        	logger.debug("Cargando archivo: " + fullPath);}
+            this.setFileName(strFilename);
+            this.setFileType(strMIMEType);
             file = new File(this.getFullPath());
             if(!file.exists()) {
                 file.createNewFile();
