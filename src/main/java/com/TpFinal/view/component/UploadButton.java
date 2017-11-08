@@ -24,8 +24,5 @@ public class UploadButton extends Upload {
         this.setStyleName(ValoTheme.BUTTON_TINY);
         this.setCaption(null);
     }
-
-
-
 }
 

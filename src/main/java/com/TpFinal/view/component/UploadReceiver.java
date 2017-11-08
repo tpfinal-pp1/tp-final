@@ -18,11 +18,9 @@ public abstract class UploadReceiver implements Receiver {
     public UploadReceiver()
 
     {
-
         this.filePath="Files"+File.separator;
         File dir = new File("Files");
         dir.mkdir();
-
     }
 
 
