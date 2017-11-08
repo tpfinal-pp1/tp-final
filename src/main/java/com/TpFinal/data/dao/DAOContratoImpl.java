@@ -13,6 +13,7 @@ import org.hibernate.Transaction;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContrato;
+import com.TpFinal.dto.contrato.Archivo;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoVenta;
 

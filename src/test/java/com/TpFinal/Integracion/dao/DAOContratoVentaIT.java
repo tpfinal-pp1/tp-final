@@ -120,7 +120,7 @@ public class DAOContratoVentaIT {
 		assertEquals(1, dao.readAll().size());
 		ContratoVenta contratoPersistido = dao.readAll().get(0); // Lo traigo de DB
 		String pathPersistido = "Files" + File.separator + "demo2.pdf";
-		guardar(pathPersistido, blobToBytes(contratoPersistido.getDocumento())); // Lo escribo en disco de nuevo
+		guardar(pathPersistido, blobToBytes(contratoPersistido.getArchivo().getDocumento())); // Lo escribo en disco de nuevo
 		File archivoPersistido = new File(pathPersistido);
 		assertTrue(archivoPersistido.exists());
 		assertTrue(FileUtils.contentEquals(archivoOriginal, archivoPersistido));
