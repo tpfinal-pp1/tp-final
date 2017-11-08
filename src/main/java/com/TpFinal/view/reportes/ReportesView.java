@@ -137,7 +137,7 @@ public class ReportesView extends DefaultLayout implements View {
 		if (logger.isDebugEnabled()) {
 			logger.debug("==========================");
 			
-			logger.debug("inmueble: " + comboInmuebles.getValue());
+			logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
 			logger.debug("la cantidad de inmuebles es vacia?: "+ comboInmuebles.isEmpty());
 			logger.debug("==========================");
 			
