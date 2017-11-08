@@ -19,7 +19,7 @@ import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.view.inmuebles.FiltroInmueble;
-
+import com.TpFinal.view.reportes.ItemFichaInmueble;
 import com.google.gwt.user.server.rpc.UnexpectedException;
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Resource;
@@ -65,6 +65,14 @@ public class InmuebleService {
 	List<Inmueble> ret = dao.readAllActives();
 	ret.sort(Comparator.comparing(Inmueble::getId));
 	return ret;
+    }
+    
+    public List<Object> getListaFichaInmueble(Inmueble inmueble){
+    	List <ItemFichaInmueble> lista = new ArrayList<>();
+   
+    	ItemFichaInmueble item = new ItemFichaInmueble(inmueble); 
+    	lista.add(item);
+    	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
     }
 
     public boolean merge(Inmueble entidad) {
