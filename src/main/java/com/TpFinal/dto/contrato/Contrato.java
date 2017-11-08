@@ -27,6 +27,7 @@ public class Contrato implements Identificable, BorradoLogico {
     protected Long id;
     @Column(name = "fechaCelebracion")
     protected LocalDate fechaCelebracion;
+    //TODELETE
     @Column(name = "documento")
     protected Blob documento;
     @Enumerated(EnumType.STRING)
