@@ -186,7 +186,10 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 	}
 
 	public String getEstadoCobroString() {
-		return this.estadoCobro.toString();
+		if (this.estadoCobro.equals(EstadoCobro.COBRADO)){
+			return "Cobrado";
+		}
+		else return "No Cobrado";
 	}
 
 	public int oldHashCode() {

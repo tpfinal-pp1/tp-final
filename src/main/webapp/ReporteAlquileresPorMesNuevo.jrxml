@@ -76,7 +76,7 @@
 				<frame>
 					<reportElement x="0" y="0" width="554" height="30" uuid="69bd7f87-add6-4efc-978c-2cf16ed88ee8"/>
 					<textField>
-						<reportElement mode="Opaque" x="0" y="0" width="554" height="30" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="8f697147-abe7-49d3-a72b-5a74b600ef1a"/>
+						<reportElement mode="Opaque" x="0" y="0" width="554" height="30" forecolor="#FFFFFF" backcolor="#588781" uuid="8f697147-abe7-49d3-a72b-5a74b600ef1a"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
@@ -128,7 +128,7 @@
 		<groupHeader>
 			<band height="35">
 				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="553" height="30" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="d27bbcb6-2c44-4473-a0c0-624518cff085"/>
+					<reportElement mode="Opaque" x="0" y="0" width="553" height="30" forecolor="#FFFFFF" backcolor="#7E8B8C" uuid="d27bbcb6-2c44-4473-a0c0-624518cff085"/>
 					<box>
 						<pen lineStyle="Solid" lineColor="#000000"/>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -165,7 +165,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="24" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[      Datos de Alquileres en un Mes Determinado]]></text>
+					<text><![CDATA[    Datos de Alquileres en un Mes Determinado]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="120" y="45" width="160" height="30" uuid="c634e1ad-47e1-4ddb-96cc-9ee6ec2a7b04"/>
