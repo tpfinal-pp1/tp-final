@@ -38,7 +38,7 @@
 				<frame>
 					<reportElement x="0" y="0" width="554" height="39" uuid="e896df64-6b1d-476d-8d02-79125eaff600"/>
 					<textField>
-						<reportElement mode="Opaque" x="0" y="0" width="554" height="30" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="d5a226e2-968a-4b3a-82b0-dc5753053274"/>
+						<reportElement mode="Opaque" x="0" y="0" width="554" height="30" forecolor="#FFFFFF" backcolor="#588781" uuid="d5a226e2-968a-4b3a-82b0-dc5753053274"/>
 						<box>
 							<pen lineWidth="1.0"/>
 						</box>
@@ -95,7 +95,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="24" isBold="true"/>
 					</textElement>
-					<text><![CDATA[                     Alquileres Por Cobrar]]></text>
+					<text><![CDATA[                     Alquileres por Cobrar]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="120" y="50" width="160" height="30" uuid="c722e0b3-85dd-46b3-9d91-b460f683f2df"/>
