@@ -264,7 +264,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	clon.setEstadoRegistro(EstadoRegistro.ACTIVO);
 	clon.setId(null);
 	clon.setDiaDePago(diaDePago.intValue());
-	clon.setDocumento(null);
+	//clon.setDocumento(null);
 	clon.setDuracionContrato(duracionContrato);
 	clon.setInmueble(inmueble);
 	clon.setEstadoContrato(EstadoContrato.EnProcesoDeCarga);
@@ -277,7 +277,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	clon.setTipoIncrementoCuota(tipoIncrementoCuota);
 	clon.setTipoInteresPunitorio(tipoInteresPunitorio);
 	clon.setValorInicial(valorInicial);
-	clon.setDocumento(null);
+	//clon.setDocumento(null);
 	return clon;
     }
 
