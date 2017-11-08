@@ -6,7 +6,8 @@ import java.util.List;
 public enum TipoReporte {
     Propietario("ReportePropietarios.jasper"),
 	AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper"),
-	AlquileresPorMes("ReporteAlquileresPorMesNuevo.jasper");
+	AlquileresPorMes("ReporteAlquileresPorMesNuevo.jasper"),
+	FichaInmuebleSimple("FichaInmuebleSimple.jasper");
 
     private final String archivoGeneradorDeReporte;
 
@@ -23,6 +24,8 @@ public enum TipoReporte {
 	    return "Alquileres a Cobrar";
 	case AlquileresPorMes:
 	    return "Alquileres por Mes";
+	case FichaInmuebleSimple:
+		return "Ficha inmueble simple";
 	default:
 	    return super.toString();
 
@@ -37,6 +40,8 @@ public enum TipoReporte {
 	    return "rep_alq_a_cobrar_";
 	case AlquileresPorMes:
 	    return "rep_alq_x_mes_";
+	case FichaInmuebleSimple:
+		return "ficha_inm_simple";
 	default:
 	    return super.toString();
 
