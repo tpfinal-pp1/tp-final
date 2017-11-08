@@ -25,6 +25,7 @@ public class ItemFichaInmueble {
 	private String paisDireccion;
     private String nombrePropietario;
     private String apellidoPropietario;
+    private String propietario;
     
     public ItemFichaInmueble(Inmueble inmueble) {
     	 this.cantidadAmbientes = inmueble.getCantidadAmbientes();
@@ -48,6 +49,7 @@ public class ItemFichaInmueble {
     	 this.paisDireccion = inmueble.getDireccion().getPais();
     	 this.nombrePropietario = inmueble.getPropietario().getPersona().getNombre();
     	 this.apellidoPropietario = inmueble.getPropietario().getPersona().getApellido();
+    	 this.propietario = inmueble.getPropietario().getPersona().toString();
     	
     }
 
@@ -218,6 +220,15 @@ public class ItemFichaInmueble {
 	public void setApellidoPropietario(String apellidoPropietario) {
 		this.apellidoPropietario = apellidoPropietario;
 	}
+
+	public String getPropietario() {
+		return propietario;
+	}
+
+	public void setPropietario(String propietario) {
+		this.propietario = propietario;
+	}
     
+	
     
 }
