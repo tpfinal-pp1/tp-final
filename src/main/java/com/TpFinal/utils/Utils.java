@@ -22,9 +22,11 @@ import java.util.List;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
+import org.apache.tika.mime.MimeTypes;
 
 public class Utils {
     final static Logger logger = Logger.getLogger(Utils.class);
+    public static final MimeTypes allTypes = MimeTypes.getDefaultMimeTypes();
 
     public String resourcesPath() {
 
@@ -67,7 +69,9 @@ public class Utils {
     }
 
     public static StreamResource fromPathtoSR(String filename) {
-
+	if (logger.isDebugEnabled())
+	    logger.debug("Seteando path de fileSystem: " + filename);
+	
 	return new StreamResource(new StreamResource.StreamSource() {
 	    public InputStream getStream() {
 		InputStream is = null;
@@ -98,7 +102,7 @@ public class Utils {
 		}
 		return is;
 	    }
-	}, archivo.getNombre());
+	}, archivo.getNombre()+archivo.getExtension());
 
     }
 
@@ -168,5 +172,24 @@ public class Utils {
 	nf.setParseBigDecimal(true);
 	BigDecimal bd = (BigDecimal) nf.parse(val, new ParsePosition(0));
 	return bd;
+    }
+
+    public static String removeFileExtension(String strFilename) {
+	int j;
+	String ret = strFilename;
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String antes de remover extension: " + ret);
+	}
+
+	int index = ret.lastIndexOf('.');
+	if (index != -1)
+	    ret = ret.substring(0, ret.lastIndexOf('.'));
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String después de remover extension: " + ret);
+	}
+	
+	return ret;
+
     }
 }

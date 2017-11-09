@@ -187,11 +187,11 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>2.1.2</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.javamoney/moneta -->
+		<!-- https://mvnrepository.com/artifact/org.apache.tika/tika-core -->
 		<dependency>
-			<groupId>org.javamoney</groupId>
-			<artifactId>moneta</artifactId>
-			<version>1.1</version>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>1.16</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -295,7 +295,7 @@
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
 		</dependency>
-			<dependency>
+		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>2.2.3</version>
@@ -304,6 +304,17 @@
 			<groupId>com.sendgrid</groupId>
 			<artifactId>sendgrid-java</artifactId>
 			<version>4.0.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.maps/google-maps-services -->
+		<dependency>
+			<groupId>com.google.maps</groupId>
+			<artifactId>google-maps-services</artifactId>
+			<version>0.2.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-nop</artifactId>
+			<version>1.7.25</version>
 		</dependency>
 	</dependencies>
 

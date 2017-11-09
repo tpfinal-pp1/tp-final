@@ -1,5 +1,6 @@
 package com.TpFinal.view.component;
 
+import com.TpFinal.utils.Utils;
 import com.vaadin.ui.Upload.Receiver;
 
 import java.io.File;
@@ -7,45 +8,90 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public abstract class UploadReceiver implements Receiver {
+import org.apache.log4j.Logger;
+import org.apache.tika.mime.MimeTypeException;
+import org.apache.tika.mime.MimeTypes;
+
+public class UploadReceiver implements Receiver {
     private static final long serialVersionUID = 2215337036540966711L;
-    OutputStream outputFile = null;
-
-    private String pathAndName;
-    private String filePath;
-
-
+    private static Logger logger = Logger.getLogger(UploadReceiver.class);
+    
+    private OutputStream outputFile = null;
+    private static final String directorioUpload =  "Files";
+    private String fullPath;
+    private final String  filePath =directorioUpload+File.separator;
+    private String fileName;
+    private String fileType;
+    private String fileExtension;
+    
     public UploadReceiver()
-
     {
-        this.filePath="Files"+File.separator;
-        File dir = new File("Files");
+        File dir = new File(directorioUpload);
         dir.mkdir();
     }
-
-
-
-
-
-    public abstract void onSuccessfullUpload(String filename);
 
     @Override
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
         File file=null;
         try {
-            this.setPathAndName(filePath+strFilename);
-
-            file = new File(this.getPathAndName());
-
+            this.setFullPath(filePath+strFilename);
+            if (logger.isDebugEnabled()) {
+        	logger.debug("Cargando archivo: " + strFilename);}
+            this.setFileName(strFilename);
+            this.setFileType(strMIMEType);
+            try {
+		this.fileExtension = Utils.allTypes.forName(strMIMEType).getExtension();
+		fileName = Utils.removeFileExtension(strFilename);
+	    } catch (MimeTypeException e) {
+		fileExtension = "";
+	    }
+            if (logger.isDebugEnabled()) {
+        	logger.debug("Extension Obtenida: " + fileExtension);}
+            file = new File(this.getFullPath());
             if(!file.exists()) {
                 file.createNewFile();
             }
             outputFile =  new FileOutputStream(file);
-            onSuccessfullUpload(strFilename);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return outputFile;
+    }    
+    
+    public String getFileExtension() {
+        return fileExtension;
+    }
+
+    public void setFileExtension(String fileExtension) {
+        this.fileExtension = fileExtension;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }   
+
+    public OutputStream getOutputFile() {
+        return outputFile;
+    }
+
+    public void setOutputFile(OutputStream outputFile) {
+        this.outputFile = outputFile;
     }
 
     protected void finalize() {
@@ -53,17 +99,27 @@ public abstract class UploadReceiver implements Receiver {
             super.finalize();
             if(outputFile!=null) {
                 outputFile.close();
+                outputFile = null;
             }
         } catch (Throwable exception) {
             exception.printStackTrace();
         }
     }
+    
 
-    public String getPathAndName() {
-        return pathAndName;
+    /**
+     * Devuelve path completo de un archivo. Path + filename + . + extension.
+     * @return String con el path completo e.g. "../File/file.doc"
+     */
+    public String getFullPath() {
+        return fullPath;
     }
 
-    public void setPathAndName(String fileName) {
-        this.pathAndName = fileName;
+    /**
+     * Setea path completo de un archivo. "Path + filename + . + extension"
+     */
+    
+    public void setFullPath(String fileName) {
+        this.fullPath = fileName;
     }
 }

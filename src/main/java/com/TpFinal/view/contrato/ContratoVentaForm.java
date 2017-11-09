@@ -60,16 +60,19 @@ public class ContratoVentaForm extends FormLayout {
     File archivo;
 
     DownloadButton btDescargar = new DownloadButton();
-    UploadButton btCargar = new UploadButton(new UploadReceiver() {
-
-	@Override
-	public void onSuccessfullUpload(String filename) {
-	    nombreArchivo = filename;
-	    tfDocumento.setValue("Documento Cargado");
-	   // btDescargar.setFile(filename);
-	    archivo = new File(this.getPathAndName());
-	}
-    });
+    UploadReceiver uploadReceiver = new UploadReceiver();
+    UploadButton btCargar = new UploadButton(uploadReceiver);
+    
+//    UploadButton btCargar = new UploadButton(new AbstractUploadReceiver() {
+//
+//	@Override
+//	public void onSuccessfullUpload(String filename) {
+//	    nombreArchivo = filename;
+//	    tfDocumento.setValue("Documento Cargado");
+//	   // btDescargar.setFile(filename);
+//	    archivo = new File(this.getPathAndName());
+//	}
+//    });
 
     TextField tfPrecioDeVenta = new TextField("Valor de venta $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
@@ -99,19 +102,28 @@ public class ContratoVentaForm extends FormLayout {
 	configurarAcciones();
 
 	btCargar.addStartedListener(e -> {
-	    tfDocumento.setIcon(VaadinIcons.UPLOAD);
-	    tfDocumento.setValue("Cargando documento...");
-	    estadoCargaDocumento = EstadoCargaDocumento.Cargando;
+		tfDocumento.setIcon(VaadinIcons.UPLOAD);
+		tfDocumento.setValue("Cargando documento...");
+		estadoCargaDocumento = EstadoCargaDocumento.Cargando;
 	});
 	btCargar.addFailedListener(e -> {
-	    tfDocumento.setIcon(VaadinIcons.WARNING);
-	    tfDocumento.setValue("Error al Cargar el documento");
-	    estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
+		tfDocumento.setIcon(VaadinIcons.WARNING);
+		tfDocumento.setValue("Error al Cargar el documento");
+		estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
 	});
 	btCargar.addSucceededListener(e -> {
-	    tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
-	    tfDocumento.setValue("Documento Cargado");
-	    estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+		tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
+		tfDocumento.setValue("Documento Cargado");
+		estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+		contratoVenta.getArchivo().setExtension(uploadReceiver.getFileName());
+		contratoVenta.getArchivo().setNombre(uploadReceiver.getFileName());
+		archivo = new File(uploadReceiver.getFullPath());
+		try {
+		    uploadReceiver.getOutputFile().flush();
+		    uploadReceiver.getOutputFile().close();
+			btDescargar.setArchivoFromPath(archivo.getPath(),contratoVenta.getArchivo().getNombre()+contratoVenta.getArchivo().getExtension());
+		} catch (Exception ex) {
+		}
 	});
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
@@ -152,7 +164,7 @@ public class ContratoVentaForm extends FormLayout {
 	});
 
 	btDescargar.addClickListener(event -> {
-	    btDescargar.descargar(contratoVenta, "Contrato.doc");
+	    btDescargar.descargar(contratoVenta.getArchivo());
 	});
 
 	setVisible(false);
