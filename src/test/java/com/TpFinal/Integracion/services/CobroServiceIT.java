@@ -274,7 +274,7 @@ public class CobroServiceIT {
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
-                .setFechaCelebracion(fecha)
+                .setFechaIngreso(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
                 .setInteresPunitorio(new Double(50))
@@ -295,7 +295,7 @@ public class CobroServiceIT {
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
-                .setFechaCelebracion(fecha)
+                .setFechaIngreso(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
                 .setInteresPunitorio(new Double(50))
@@ -316,7 +316,7 @@ public class CobroServiceIT {
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
-                .setFechaCelebracion(fecha)
+                .setFechaIngreso(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
                 .setInteresPunitorio(new Double(50))
@@ -337,7 +337,7 @@ public class CobroServiceIT {
     	fecha=fecha.minusDays(2);
     	fecha=fecha.minusMonths(1);
         ContratoAlquiler ret = new ContratoAlquiler.Builder()
-                .setFechaCelebracion(fecha)
+                .setFechaIngreso(fecha)
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
                 .setInteresPunitorio(new Double(50))

@@ -27,6 +27,8 @@ public class Contrato implements Identificable, BorradoLogico {
 	protected Long id;
 	@Column(name = "fechaCelebracion")
 	protected LocalDate fechaCelebracion;
+	@Column(name = "fechaIngreso")
+	protected LocalDate fechaIngreso;
 	@Enumerated(EnumType.STRING)
 	@Column(name = Contrato.estadoRegistroS)
 	private EstadoRegistro estadoRegistro;
@@ -48,10 +50,10 @@ public class Contrato implements Identificable, BorradoLogico {
 	public Contrato() {
 	}
 
-	public Contrato(Long id, LocalDate fechaCelebracion, Blob documento, EstadoRegistro estado, Inmueble inmueble) {
+	public Contrato(Long id, LocalDate fechaIngreso, Blob documento, EstadoRegistro estado, Inmueble inmueble) {
 		super();
 		this.id = id;
-		this.fechaCelebracion = fechaCelebracion;
+		this.fechaIngreso = fechaIngreso;
 		if(this.archivo==null)
 			this.archivo=new Archivo();
 		this.archivo.setDocumento(documento);
@@ -84,6 +86,14 @@ public class Contrato implements Identificable, BorradoLogico {
 		this.moneda = moneda;
 	}
 
+	public LocalDate getFechaIngreso() {
+		return fechaIngreso;
+	}
+
+	public void setFechaIngreso(LocalDate fechaIngreso) {
+		this.fechaIngreso = fechaIngreso;
+	}
+	
 	public LocalDate getFechaCelebracion() {
 		return fechaCelebracion;
 	}

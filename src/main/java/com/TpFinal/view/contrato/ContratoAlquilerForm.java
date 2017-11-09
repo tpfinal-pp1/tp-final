@@ -293,11 +293,11 @@ public class ContratoAlquilerForm extends FormLayout {
     private Binder<ContratoAlquiler> getBinderParaEdicion() {
 	Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
 	binderContratoAlquiler.forField(this.fechaCelebracion).asRequired("Seleccione una fecha de celebración")
-		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
+		.bind(Contrato::getFechaIngreso, Contrato::setFechaIngreso);
 
 	binderContratoAlquiler.forField(this.fechaVencimiento)
 		.bind(c -> {
-		    return c.getFechaCelebracion() != null ? c.getFechaCelebracion().plusMonths(c.getDuracionContrato()
+		    return c.getFechaIngreso() != null ? c.getFechaIngreso().plusMonths(c.getDuracionContrato()
 			    .getDuracion()) : null;
 		}, (c, ca) -> {
 		});

@@ -190,8 +190,8 @@ public class ContratoVentaForm extends FormLayout {
 	Binder<ContratoVenta> binderContratoVenta = new Binder<>(ContratoVenta.class);
 
 	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha").bind(
-		Contrato::getFechaCelebracion,
-		Contrato::setFechaCelebracion);
+		Contrato::getFechaIngreso,
+		Contrato::setFechaIngreso);
 	binderContratoVenta.forField(rbgTipoMoneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
 		.withValidator(inmueble -> {

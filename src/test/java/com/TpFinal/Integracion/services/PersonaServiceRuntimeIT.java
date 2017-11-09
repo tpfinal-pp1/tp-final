@@ -209,7 +209,7 @@ public class PersonaServiceRuntimeIT {
 						.setDescripcion("12")
 						.setDuracion(12)
 						.build())
-				.setFechaCelebracion(LocalDate.now().minusMonths(meses))
+				.setFechaIngreso(LocalDate.now().minusMonths(meses))
 				.setInteresPunitorio(new Double(12))
 				.setIntervaloActualizacion(2)
 				.setPorcentajeIncremento(new Double(10))

@@ -68,14 +68,14 @@ public class DAOContratoImplIT {
 	
 	private ContratoVenta instanciaVenta(String numero) {
 		return new ContratoVenta.Builder()
-				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+				.setFechaIngreso(LocalDate.of(2017, 05, 12))
 				.setPrecioVenta(new BigDecimal(numero))
 				.build();
 	}
 	
     private ContratoAlquiler instanciaAlquiler(String numero) {
         return new ContratoAlquiler.Builder()
-                .setFechaCelebracion(LocalDate.of(2017, 05, 12))
+                .setFechaIngreso(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal(numero))
                 .setDiaDePago(new Integer(numero))
                 .setInteresPunitorio(new Double(numero))

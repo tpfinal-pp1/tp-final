@@ -271,7 +271,7 @@ public class DAOContratoAlquilerIT {
 
 	private ContratoAlquiler instancia(String numero) {
 		return new ContratoAlquiler.Builder()
-				.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+				.setFechaIngreso(LocalDate.of(2017, 05, 12))
 				.setValorIncial(new BigDecimal(numero))
 				.setDiaDePago(new Integer(numero))
 				.setInteresPunitorio(new Double(numero))

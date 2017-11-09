@@ -80,7 +80,7 @@ public class DAOCobroImplIT {
 	
     private ContratoAlquiler instanciaAlquilerSimple() {
         return new ContratoAlquiler.Builder()
-                .setFechaCelebracion(LocalDate.of(2017, 05, 12))
+                .setFechaIngreso(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(13))
                 .setInteresPunitorio(new Double(0.5))
@@ -96,7 +96,7 @@ public class DAOCobroImplIT {
     
     private ContratoAlquiler instanciaAlquilerAcumulativo() {
         return new ContratoAlquiler.Builder()
-                .setFechaCelebracion(LocalDate.of(2017, 05, 12))
+                .setFechaIngreso(LocalDate.of(2017, 05, 12))
                 .setValorIncial(new BigDecimal("100.00"))
                 .setDiaDePago(new Integer(11))
                 .setInteresPunitorio(new Double(0.5))

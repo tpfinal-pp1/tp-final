@@ -176,7 +176,7 @@ public class GeneradorDeDatosSinAsociaciones {
 	return new ContratoAlquiler.Builder()
 		.setDiaDePago(1 + random.nextInt(28))
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
-		.setFechaCelebracion(fechaRandom())
+		.setFechaIngreso(fechaRandom())
 		.setInmueble(inmueble)
 		.setInquilinoContrato(inquilino)
 		.setInteresPunitorio(new Double(1))
@@ -214,7 +214,7 @@ public class GeneradorDeDatosSinAsociaciones {
     private static ContratoVenta contratoVentaDe(Inmueble inmueble, PublicacionVenta pubVenta, Persona comprador) {
 	return new ContratoVenta.Builder()
 		.setComprador(comprador)
-		.setFechaCelebracion(fechaRandom())
+		.setFechaIngreso(fechaRandom())
 		.setPrecioVenta(pubVenta.getPrecio())
 		.setInmueble(inmueble)
 		.build();

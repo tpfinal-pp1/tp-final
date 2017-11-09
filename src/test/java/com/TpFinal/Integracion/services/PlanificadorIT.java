@@ -278,7 +278,7 @@ public class PlanificadorIT {
     	LocalDate fecha=LocalDate.now();
     	fecha=fecha.minusMonths(5);
 	ContratoAlquiler ret = new ContratoAlquiler.Builder()
-		.setFechaCelebracion(fecha)
+		.setFechaIngreso(fecha)
 		.setValorIncial(new BigDecimal("100.00"))
 		.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
 		.setInteresPunitorio(new Double(50))

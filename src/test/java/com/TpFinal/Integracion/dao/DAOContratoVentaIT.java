@@ -173,7 +173,7 @@ public class DAOContratoVentaIT {
 
     private ContratoVenta instancia(String numero) {
 	return new ContratoVenta.Builder()
-		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+		.setFechaIngreso(LocalDate.of(2017, 05, 12))
 		.setPrecioVenta(new BigDecimal(numero))
 	
 		.build();
