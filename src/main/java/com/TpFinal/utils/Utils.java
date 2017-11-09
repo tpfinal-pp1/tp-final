@@ -1,15 +1,19 @@
 package com.TpFinal.utils;
 
+import com.TpFinal.dto.contrato.Archivo;
+import com.TpFinal.dto.contrato.Contrato;
 import com.vaadin.data.ValidationException;
 import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.sql.Blob;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -79,6 +83,25 @@ public class Utils {
 
     }
 
+    public static StreamResource archivoToStreamResource(Archivo archivo) {
+
+	return new StreamResource(new StreamResource.StreamSource() {
+	    public InputStream getStream() {
+		InputStream is = null;
+		try {
+		    Blob docBlob = archivo.getDocumento();
+		    byte[] docBlobBytes = docBlob.getBytes(1, (int) docBlob.length());
+		    is = new ByteArrayInputStream(docBlobBytes);
+		} catch (Exception e) {
+		    System.err.println("No se ha encontrado el archivo a descargar");
+		    e.printStackTrace();
+		}
+		return is;
+	    }
+	}, archivo.getNombre());
+
+    }
+
     public static int percentageOfTextMatch(String s0, String s1) { // Trim and remove duplicate spaces
 	int percentage = 0;
 	s0 = s0.trim().replaceAll("\\s+", " ");
@@ -135,7 +158,7 @@ public class Utils {
 
     public static void mostarErroresValidator(ValidationException e) {
 	logger.debug(e.getMessage());
-	e.getFieldValidationErrors().forEach(err -> logger.debug("Campo invalido "+err.getField()));
+	e.getFieldValidationErrors().forEach(err -> logger.debug("Campo invalido " + err.getField()));
 	e.getValidationErrors().forEach(err -> logger.debug(err.getErrorMessage()));
     }
 

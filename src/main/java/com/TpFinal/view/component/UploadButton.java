@@ -24,8 +24,12 @@ public class UploadButton extends Upload {
         this.setStyleName(ValoTheme.BUTTON_TINY);
         this.setCaption(null);
     }
-
-
-
+    
+    public UploadButton (UploadReceiverRefactorizado uploadReceiver){
+        super(null,uploadReceiver);
+       // this.setIcon(VaadinIcons.UPLOAD);
+        this.setStyleName(ValoTheme.BUTTON_TINY);
+        this.setCaption(null);
+    }
 }
 

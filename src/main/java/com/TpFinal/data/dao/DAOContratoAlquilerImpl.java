@@ -2,6 +2,7 @@ package com.TpFinal.data.dao;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoAlquiler;
+import com.TpFinal.dto.contrato.Archivo;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 
 import org.hibernate.Hibernate;
@@ -34,8 +35,9 @@ public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implement
 
             docInputStream = new FileInputStream(doc);
             archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
-
+            
             contrato.setDocumento(archivo);
+            
             session.saveOrUpdate(contrato);
             tx.commit();
             ret = true;

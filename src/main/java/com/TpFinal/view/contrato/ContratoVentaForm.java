@@ -51,6 +51,7 @@ public class ContratoVentaForm extends FormLayout {
 
     Label lblNombreVendedor = new Label("No seleccionado");
     ComboBox<Persona> cbComprador = new ComboBox<>("Comprador");
+    DateField fechaIngreso = new DateField("Fecha de Ingreso");
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
 
     // Documento
@@ -65,7 +66,7 @@ public class ContratoVentaForm extends FormLayout {
 	public void onSuccessfullUpload(String filename) {
 	    nombreArchivo = filename;
 	    tfDocumento.setValue("Documento Cargado");
-	    btDescargar.setFile(filename);
+	   // btDescargar.setFile(filename);
 	    archivo = new File(this.getPathAndName());
 	}
     });
@@ -189,9 +190,12 @@ public class ContratoVentaForm extends FormLayout {
     private Binder<ContratoVenta> getBinderParaEdicion() {
 	Binder<ContratoVenta> binderContratoVenta = new Binder<>(ContratoVenta.class);
 
-	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha").bind(
-		Contrato::getFechaCelebracion,
-		Contrato::setFechaCelebracion);
+	binderContratoVenta.forField(fechaIngreso).asRequired("Seleccione una fecha de ingreso").bind(
+		Contrato::getFechaIngreso,
+		Contrato::setFechaIngreso);
+	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha celebracion").bind(
+			Contrato::getFechaCelebracion,
+			Contrato::setFechaCelebracion);
 	binderContratoVenta.forField(rbgTipoMoneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
 		.withValidator(inmueble -> {
@@ -319,13 +323,14 @@ public class ContratoVentaForm extends FormLayout {
 
 	HorizontalLayout hl = new HorizontalLayout(lblNombreVendedor);
 	hl.setCaption("Vendedor");
-	FormLayout principal = new FormLayout(cbInmuebles, cbComprador, fechaCelebracion, hl, tfPrecioDeVenta,
+	FormLayout principal = new FormLayout(cbInmuebles, cbComprador,fechaCelebracion, fechaIngreso, hl, tfPrecioDeVenta,
 		rbgTipoMoneda, seccionDoc,
 		tfDocumento,
 		documentoButtonsRow);
 
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 
+	fechaIngreso.setWidth("100");
 	fechaCelebracion.setWidth("100");
 
 	tabSheet.addTab(principal, "Venta");
@@ -379,6 +384,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.btDescargar.setEnabled(true);
 	    this.cbComprador.setEnabled(true);
 	    this.cbInmuebles.setEnabled(true);
+	    this.fechaIngreso.setEnabled(true);
 	    this.fechaCelebracion.setEnabled(true);
 	    this.rbgTipoMoneda.setEnabled(true);
 	    this.tfDocumento.setEnabled(false);
@@ -393,6 +399,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.btDescargar.setEnabled(true);
 	    this.cbComprador.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);
+	    this.fechaIngreso.setEnabled(false);
 	    this.fechaCelebracion.setEnabled(false);
 	    this.rbgTipoMoneda.setEnabled(false);
 	    this.tfDocumento.setEnabled(false);
@@ -407,6 +414,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.btDescargar.setEnabled(true);
 	    this.cbComprador.setEnabled(false);
 	    this.cbInmuebles.setEnabled(false);
+	    this.fechaIngreso.setEnabled(false);
 	    this.fechaCelebracion.setEnabled(false);
 	    this.rbgTipoMoneda.setEnabled(false);
 	    this.tfDocumento.setEnabled(false);
@@ -506,6 +514,7 @@ public class ContratoVentaForm extends FormLayout {
     public void clearFields() {
 	this.cbComprador.clear();
 	this.cbInmuebles.clear();
+	this.fechaIngreso.clear();
 	this.fechaCelebracion.clear();
 	this.lblNombreVendedor.setCaption("");
 	this.rbgTipoMoneda.clear();

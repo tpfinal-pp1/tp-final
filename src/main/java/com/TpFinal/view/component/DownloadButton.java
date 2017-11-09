@@ -38,18 +38,9 @@ public class DownloadButton extends Button {
         this.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 
     }
-    public DownloadButton(String filename){
-	this();        
-        fileDownloader = new FileDownloader(fromPathtoSR(filename));
-        fileDownloader.extend(this);        
-
-    }
-    public void setFile(String filename){
-        fileDownloader = new FileDownloader(fromPathtoSR(filename));
-        fileDownloader.extend(this);
-    }
-
-    public void setFile(Contrato contrato, String filename) {
+   
+    // XXX
+    public void setContrato(Contrato contrato, String filename) {
     	 fileDownloader = new FileDownloader(fromPathtoSR(contrato,filename));
          fileDownloader.extend(this);
     }

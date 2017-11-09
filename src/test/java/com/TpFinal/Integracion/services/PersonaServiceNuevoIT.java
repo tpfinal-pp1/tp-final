@@ -247,7 +247,7 @@ public class PersonaServiceNuevoIT {
 						.setDescripcion("12")
 						.setDuracion(12)
 						.build())
-				.setFechaCelebracion(LocalDate.now().minusMonths(6))
+				.setFechaIngreso(LocalDate.now().minusMonths(6))
 				.setInteresPunitorio(new Double(12))
 				.setIntervaloActualizacion(2)
 				.setPorcentajeIncremento(new Double(10))

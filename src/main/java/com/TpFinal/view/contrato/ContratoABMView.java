@@ -97,13 +97,13 @@ public class ContratoABMView extends DefaultLayout implements View {
     private void configureGrid() {
 	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.addColumn(getTipoContrato()).setCaption("Tipo").setId("tipo");
-	grid.addColumn(Contrato::getFechaCelebracion, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
+	grid.addColumn(Contrato::getFechaIngreso, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
 		"Fecha de celebración").setId("fecha celebracion");
 	grid.addColumn(contrato -> {
 	    if (contrato instanceof ContratoAlquiler)
 		return ContratoService.getFechaVencimiento((ContratoAlquiler) contrato);
 	    else
-		return ((ContratoVenta) contrato).getFechaCelebracion();
+		return ((ContratoVenta) contrato).getFechaIngreso();
 	}, new LocalDateRenderer("dd/MM/yyyy")).setCaption(
 		"Fecha de vencimiento").setId("fecha vencimiento");
 	grid.addColumn(Contrato::getEstadoContrato).setCaption("Estado").setId("estado");
@@ -266,7 +266,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	});
 	mes.addValueChangeListener(e -> {
 	    if (e.getValue() != null) {
-		filtro.setMes(contrato -> contrato.getFechaCelebracion()
+		filtro.setMes(contrato -> contrato.getFechaIngreso()
 			.getMonth()
 			.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"))
 			.toLowerCase().contains(mes.getValue().toLowerCase()));
@@ -292,7 +292,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 		Integer anioInt;
 		try {
 		    anioInt = Integer.parseInt(anio.getValue());
-		    filtro.setAnio(contrato -> contrato.getFechaCelebracion().getYear() == anioInt);
+		    filtro.setAnio(contrato -> contrato.getFechaIngreso().getYear() == anioInt);
 		} catch (Exception ex) {
 		    System.err.println(ex.getMessage());
 		    filtro.setAnio(contrato -> true);
@@ -314,7 +314,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    if (fDesde.getValue() != null) {
 		filtro.setFechaDesde(contrato -> {
 		    return fDesde.getValue() == null ? true
-			    : contrato.getFechaCelebracion().compareTo(fDesde.getValue()) >= 0;
+			    : contrato.getFechaIngreso().compareTo(fDesde.getValue()) >= 0;
 		});
 	    } else {
 		filtro.setFechaDesde(f -> true);
@@ -332,7 +332,7 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    if (fHasta.getValue() != null) {
 		filtro.setFechaHasta(contrato -> {
 		    return fHasta.getValue() == null ? true
-			    : contrato.getFechaCelebracion().compareTo(fHasta.getValue()) <= 0;
+			    : contrato.getFechaIngreso().compareTo(fHasta.getValue()) <= 0;
 		});
 	    } else {
 		filtro.setFechaHasta(f -> true);

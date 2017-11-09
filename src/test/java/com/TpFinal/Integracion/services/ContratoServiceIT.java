@@ -321,14 +321,14 @@ public class ContratoServiceIT {
    
     private ContratoVenta instanciaVenta(String numero) {
 	return new ContratoVenta.Builder()
-		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+		.setFechaIngreso(LocalDate.of(2017, 05, 12))
 		.setPrecioVenta(new BigDecimal(numero))
 		.build();
     }
 
     private ContratoAlquiler instanciaAlquiler(String numero) {
 	return new ContratoAlquiler.Builder()
-		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+		.setFechaIngreso(LocalDate.of(2017, 05, 12))
 		.setValorIncial(new BigDecimal(numero))
 		.setDiaDePago(new Integer(numero))
 		.setInteresPunitorio(new Double(numero))
@@ -339,7 +339,7 @@ public class ContratoServiceIT {
 
     private ContratoAlquiler instanciaAlquilerSimple() {
 	ContratoAlquiler ret = new ContratoAlquiler.Builder()
-		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+		.setFechaIngreso(LocalDate.of(2017, 05, 12))
 		.setValorIncial(new BigDecimal("100.00"))
 		.setDiaDePago(new Integer(13))
 		.setInteresPunitorio(new Double(50))
@@ -358,7 +358,7 @@ public class ContratoServiceIT {
 
     private ContratoAlquiler instanciaAlquilerAcumulativo() {
 	ContratoAlquiler ca = new ContratoAlquiler.Builder()
-		.setFechaCelebracion(LocalDate.of(2017, 05, 12))
+		.setFechaIngreso(LocalDate.of(2017, 05, 12))
 		.setValorIncial(new BigDecimal("100.00"))
 		.setDiaDePago(new Integer(11))
 		.setInteresPunitorio(new Double(50))
@@ -376,7 +376,7 @@ public class ContratoServiceIT {
     
     private ContratoAlquiler instanciaAlquilerAcumulativoConAñoViejo() {
     	ContratoAlquiler ca = new ContratoAlquiler.Builder()
-    		.setFechaCelebracion(LocalDate.of(2016, 05, 12))
+    		.setFechaIngreso(LocalDate.of(2016, 05, 12))
     		.setValorIncial(new BigDecimal("100.00"))
     		.setDiaDePago(new Integer(11))
     		.setInteresPunitorio(new Double(50))
