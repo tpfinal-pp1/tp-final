@@ -40,22 +40,22 @@
 	<sortField name="anio" order="Descending"/>
 	<sortField name="estadoCobro"/>
 	<variable name="PagosCobradosDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("COBRADO") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="PagosPendientesDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("NOCOBRADO") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("No Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="PagosCobradosPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("COBRADO") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="PagosPendientesPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("NOCOBRADO") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("No Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="GananciaInmobiliariaPagosCobradosDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("COBRADO") ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("Cobrado") ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="GananciaInmobiliariaPagosCobradosPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("COBRADO") ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("Cobrado") ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="GananciaInmobiliariaTotalPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$")  ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
@@ -64,10 +64,10 @@
 		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="CantCobrosRealizados" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{estadoCobro}.equals("COBRADO")  ? new Integer(1) : new Integer(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{estadoCobro}.equals("Cobrado")  ? new Integer(1) : new Integer(0)]]></variableExpression>
 	</variable>
 	<variable name="CantCobrosPendientes" class="java.lang.Integer" calculation="Sum">
-		<variableExpression><![CDATA[$F{estadoCobro}.equals("NOCOBRADO")  ? new Integer(1) : new Integer(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{estadoCobro}.equals("No Cobrado")  ? new Integer(1) : new Integer(0)]]></variableExpression>
 	</variable>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{anio}]]></groupExpression>
@@ -128,7 +128,7 @@
 		<groupHeader>
 			<band height="35">
 				<textField>
-					<reportElement mode="Opaque" x="0" y="0" width="553" height="30" forecolor="#FFFFFF" backcolor="#7E8B8C" uuid="d27bbcb6-2c44-4473-a0c0-624518cff085"/>
+					<reportElement mode="Opaque" x="0" y="0" width="553" height="30" printWhenGroupChanges="Group2" forecolor="#FFFFFF" backcolor="#7E8B8C" uuid="d27bbcb6-2c44-4473-a0c0-624518cff085"/>
 					<box>
 						<pen lineStyle="Solid" lineColor="#000000"/>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -165,7 +165,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="24" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[    Datos de Alquileres en un Mes Determinado]]></text>
+					<text><![CDATA[ Datos de Alquileres en un Mes Determinado]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="120" y="45" width="160" height="30" uuid="c634e1ad-47e1-4ddb-96cc-9ee6ec2a7b04"/>
@@ -398,7 +398,9 @@
 					<text><![CDATA[Importe Total de Cobros Pagados en Dolares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="76" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="94d32b04-b8ec-422b-b437-2bfe7f63e843"/>
+					<reportElement mode="Opaque" x="280" y="10" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="94d32b04-b8ec-422b-b437-2bfe7f63e843">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -411,7 +413,7 @@
 					<text><![CDATA[Importe Total de Cobros Pendientes en Dolares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="280" y="12" width="140" height="49" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="d1feb90a-94ea-45bb-8df7-62065a9d0487"/>
+					<reportElement mode="Opaque" x="0" y="152" width="140" height="49" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="d1feb90a-94ea-45bb-8df7-62065a9d0487"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -437,7 +439,9 @@
 					<text><![CDATA[Cantidad de Cobros Pagados:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="280" y="287" width="140" height="40" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="886d8e61-6206-42d6-a9ee-4fe8f34627ed"/>
+					<reportElement mode="Opaque" x="280" y="287" width="140" height="40" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="886d8e61-6206-42d6-a9ee-4fe8f34627ed">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -450,7 +454,9 @@
 					<text><![CDATA[Cantidad de Cobros Pendientes:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="280" y="131" width="140" height="70" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="1329bf6b-51aa-4cf8-93b5-dd02217649f9"/>
+					<reportElement mode="Opaque" x="280" y="131" width="140" height="70" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="1329bf6b-51aa-4cf8-93b5-dd02217649f9">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -476,7 +482,9 @@
 					<textFieldExpression><![CDATA["  "+$V{PagosCobradosDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="140" y="76" width="120" height="50" uuid="3af4df65-734b-4b11-83e9-bfd2cff5340e"/>
+					<reportElement x="420" y="10" width="120" height="50" uuid="3af4df65-734b-4b11-83e9-bfd2cff5340e">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -489,7 +497,7 @@
 					<textFieldExpression><![CDATA["  "+$V{PagosPendientesDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="420" y="12" width="120" height="49" uuid="5adf6899-034e-4ced-95e5-4d98b1288c38"/>
+					<reportElement x="140" y="152" width="120" height="49" uuid="5adf6899-034e-4ced-95e5-4d98b1288c38"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -515,7 +523,9 @@
 					<textFieldExpression><![CDATA["  "+$V{CantCobrosRealizados}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="420" y="287" width="120" height="40" uuid="fd2083b0-6e26-4b7e-aec1-9440567f49b4"/>
+					<reportElement x="420" y="287" width="120" height="40" uuid="fd2083b0-6e26-4b7e-aec1-9440567f49b4">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -528,7 +538,7 @@
 					<textFieldExpression><![CDATA["  "+$V{CantCobrosPendientes}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="420" y="71" width="120" height="50" uuid="c34c28e3-5845-4ed3-b0d2-447ab6fca0d5"/>
+					<reportElement x="140" y="220" width="120" height="50" uuid="c34c28e3-5845-4ed3-b0d2-447ab6fca0d5"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -541,7 +551,7 @@
 					<textFieldExpression><![CDATA["  "+$V{GananciaInmobiliariaPagosCobradosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="146" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="9473ac2b-8c3c-4649-b194-26ab260e6207"/>
+					<reportElement mode="Opaque" x="0" y="80" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="9473ac2b-8c3c-4649-b194-26ab260e6207"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -554,7 +564,7 @@
 					<text><![CDATA[Importe Total de Cobros Pagados en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="140" y="146" width="120" height="50" uuid="cd7b7039-76dd-4631-86e0-25181784c056"/>
+					<reportElement x="140" y="80" width="120" height="50" uuid="cd7b7039-76dd-4631-86e0-25181784c056"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -567,7 +577,9 @@
 					<textFieldExpression><![CDATA["  "+$V{PagosCobradosPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="0" y="216" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="1045fff3-746e-4eda-9e9a-efbb441358bc"/>
+					<reportElement mode="Opaque" x="280" y="70" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="1045fff3-746e-4eda-9e9a-efbb441358bc">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -580,7 +592,9 @@
 					<text><![CDATA[Importe Total de Cobros Pendientes en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="140" y="216" width="120" height="50" uuid="13c4cb1a-efb5-40b3-bf3d-9b6e17bce617"/>
+					<reportElement x="420" y="70" width="120" height="50" uuid="13c4cb1a-efb5-40b3-bf3d-9b6e17bce617">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -593,7 +607,7 @@
 					<textFieldExpression><![CDATA["  "+$V{PagosPendientesPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="280" y="71" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="1e02f2bf-5163-4425-b1cb-85cb4b82e9d4"/>
+					<reportElement mode="Opaque" x="0" y="220" width="140" height="50" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="1e02f2bf-5163-4425-b1cb-85cb4b82e9d4"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -606,7 +620,9 @@
 					<text><![CDATA[Ganancia Inmobiliaria con Cobros Pagados en Dolares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="420" y="131" width="120" height="70" uuid="50946b17-a968-4d12-a03a-ff2696143414"/>
+					<reportElement x="420" y="131" width="120" height="70" uuid="50946b17-a968-4d12-a03a-ff2696143414">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -619,7 +635,9 @@
 					<textFieldExpression><![CDATA["  "+$V{GananciaInmobiliariaTotalDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="280" y="209" width="140" height="70" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="74707932-6088-4aa5-9122-8f77abf55553"/>
+					<reportElement mode="Opaque" x="280" y="209" width="140" height="70" forecolor="#FFFFFF" backcolor="#64A8CC" uuid="74707932-6088-4aa5-9122-8f77abf55553">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -632,7 +650,9 @@
 					<text><![CDATA[Ganancia Inmobiliaria Total Cobros (Pendientes y Pagados) en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="420" y="209" width="120" height="70" uuid="81c9e26f-fcd0-41f5-9a29-e29e6e3f913c"/>
+					<reportElement x="420" y="209" width="120" height="70" uuid="81c9e26f-fcd0-41f5-9a29-e29e6e3f913c">
+						<printWhenExpression><![CDATA[new Boolean($F{estadoCobro}.equals("No Cobrado"))]]></printWhenExpression>
+					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
