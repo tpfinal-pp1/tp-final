@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.vaadin.ui.*;
 
+import org.apache.log4j.Logger;
 import org.tepi.imageviewer.ImageViewer;
 import org.tepi.imageviewer.ImageViewer.ImageSelectionListener;
 
@@ -17,7 +18,7 @@ import com.vaadin.server.ThemeResource;
 @SuppressWarnings("serial")
 @Theme("demotheme")
 public class ImageVisualizer extends Window {
-
+    private final static Logger logger= Logger.getLogger(ImageVisualizer.class);
     private ImageViewer imageViewer;
     private VerticalLayout mainLayout;
     private TextField selectedImage = new TextField();
@@ -219,8 +220,9 @@ public class ImageVisualizer extends Window {
 	List<Resource> img = new ArrayList<Resource>();
 	mapaStringFoto.forEach((path, resource) -> img.add(resource));
 	imageViewer.setImages(img);
-	imageViewer.setCenterImageRelativeWidth(0.5f);
-	imageViewer.setCenterImageIndex(img.indexOf(mapaStringFoto.get(portada)));
+	imageViewer.setCenterImageRelativeWidth(0.5f);	
+	imageViewer.setCenterImageIndex(img.indexOf(mapaStringFoto.get(portada))-1);
+	
     }
 
     /*

@@ -29,8 +29,9 @@ public abstract class PreferenciasCitaFormWindow extends Window {
     private Binder<Empleado> binderEmpleado = new Binder<>(Empleado.class);
     protected CitaService citaService = new CitaService();
     protected PersonaService personaService = new PersonaService();
-    BlueLabel titulo = new BlueLabel("Cant. de hs antes para recordar");
+    BlueLabel titulo1 = new BlueLabel("Cant. de hs antes para recordar");
     private TextField hsrecordatorio1 = new TextField("Recordatorio 1");
+    BlueLabel titulo2 = new BlueLabel("Cant. de días antes para recordar");
     private TextField hsrecordatorio2 = new TextField("Recordatorio 2");
 
     public PreferenciasCitaFormWindow(Empleado emp) {
@@ -88,10 +89,11 @@ public abstract class PreferenciasCitaFormWindow extends Window {
 		.withConverter(new StringToIntegerConverter("Debe Ingresar un número entero!"))
 		.withValidator(n -> n >= 0, "Ingrese un número no negativo!")
 		.bind(Empleado::getHorasAntesRecoradatorio1, Empleado::setHorasAntesRecoradatorio1);
-	binderEmpleado.forField(this.hsrecordatorio2).asRequired("Debe ingresar una cantidad de horas")
+	binderEmpleado.forField(this.hsrecordatorio2).asRequired("Debe ingresar una cantidad de días")
 		.withConverter(new StringToIntegerConverter("Debe Ingresar un número entero!"))
 		.withValidator(n -> n >= 0, "Ingrese un número no negativo!")
-		.bind(Empleado::getHorasAntesRecoradatorio2, Empleado::setHorasAntesRecoradatorio2);
+		.bind(empleado -> {return empleado.getHorasAntesRecoradatorio2() / 24;},
+			(empleado, dias) -> {empleado.setHorasAntesRecoradatorio2(dias*24);});
     }
 
     private void setEmpleado(Empleado empleado) {
@@ -171,8 +173,9 @@ public abstract class PreferenciasCitaFormWindow extends Window {
 	root.addComponent(details);
 	root.setExpandRatio(details, 1);
 
-	details.addComponent(titulo);
+	details.addComponent(titulo1);
 	details.addComponent(hsrecordatorio1);
+	details.addComponent(titulo2);
 	details.addComponent(hsrecordatorio2);
 	return root;
     }
