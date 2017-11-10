@@ -23,14 +23,6 @@ import java.util.Set;
 public abstract class ImagenesInmuebleWindow extends Window {
     public static final String ID = "profilepreferenceswindow";
 
-    /*
-     * Fields for editing the User object are defined here as class members. They
-     * are later bound to a FieldGroup by calling fieldGroup.bindMemberFields(this).
-     * The Fields' values don't need to be explicitly set, calling
-     * fieldGroup.setItemDataSource(user) synchronizes the fields with the user
-     * object.
-     */
-
     private InmuebleService inmbService = new InmuebleService();
     protected Inmueble inmueble;
     DeleteButton delete = new DeleteButton("Eliminar",
