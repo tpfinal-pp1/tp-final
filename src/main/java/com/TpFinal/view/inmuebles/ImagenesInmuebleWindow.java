@@ -140,7 +140,7 @@ public abstract class ImagenesInmuebleWindow extends Window {
 
 	upload.addSucceededListener(success -> {
 	    if (uploadReciever.getFileName() != null && uploadReciever.getFileName() != "") {
-		inmueble.addPathImagen(uploadReciever.getFileName());
+		inmueble.addPathImagen(uploadReciever.getFileName()+uploadReciever.getFileExtension());
 		refreshListSelect();
 		try {
 		    uploadReciever.getOutputFile().flush();
