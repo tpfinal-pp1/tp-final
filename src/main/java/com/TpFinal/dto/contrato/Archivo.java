@@ -9,9 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.TpFinal.dto.Identificable;
+
 @Entity
 @Table(name="Archivo")
-public class Archivo {
+public class Archivo  implements Identificable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
