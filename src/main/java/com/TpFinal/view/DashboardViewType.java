@@ -1,13 +1,14 @@
 package com.TpFinal.view;
 
-import com.TpFinal.view.empleados.*;
-import com.TpFinal.view.reportes.*;
 import com.TpFinal.view.cobros.CobrosABMView;
 import com.TpFinal.view.contrato.ContratoABMView;
 import com.TpFinal.view.duracionContratos.DuracionContratosABMView;
+import com.TpFinal.view.empleados.EmpleadoABMView;
 import com.TpFinal.view.inmuebles.InmuebleABMView;
+import com.TpFinal.view.movimientos.MovimientoABMView;
 import com.TpFinal.view.persona.PersonaABMView;
 import com.TpFinal.view.publicacion.PublicacionABMView;
+import com.TpFinal.view.reportes.ReportesView;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Resource;
@@ -21,8 +22,9 @@ public enum DashboardViewType {
     DURACIONCONTRATOS("duracion Contratos",DuracionContratosABMView.class, VaadinIcons.CLOCK,false),
     COBROS("cobros", CobrosABMView.class,VaadinIcons.CASH,false),
     REPORTES("reportes", ReportesView.class, VaadinIcons.FILE, false),
-	EMPLEADOS("empleados", EmpleadoABMView.class, VaadinIcons.GROUP, false);
-   //SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
+	EMPLEADOS("empleados", EmpleadoABMView.class, VaadinIcons.GROUP, false),
+	MOVIMIENTOS("movimientos", MovimientoABMView.class, VaadinIcons.CHART_GRID, false);
+	//SCHEDULE("calendario", ScheduleView.class, VaadinIcons.CALENDAR_O, false);
 
     private final String viewName;
     private final Class<? extends View> viewClass;

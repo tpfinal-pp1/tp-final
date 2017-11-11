@@ -1,10 +1,19 @@
 package com.TpFinal.dto.contrato;
 
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Blob;
+import java.time.LocalDate;
+import java.util.Objects;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -12,15 +21,9 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.TpFinal.dto.EstadoRegistro;
-import com.TpFinal.dto.contrato.ContratoAlquiler.Builder;
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.persona.Persona;
-
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Blob;
-import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "contratoVenta")
@@ -39,7 +42,11 @@ public class ContratoVenta extends Contrato  implements Cloneable{
 	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
 	@JoinColumn(name = "id_vendedor")
 	private Persona vendedor;
-
+	
+	@OneToMany(mappedBy = "contratoVenta",fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.ALL})
+    private Set<Movimiento> movimientos;
+	
 	public ContratoVenta() {
 		super();
 	}
@@ -79,6 +86,28 @@ public class ContratoVenta extends Contrato  implements Cloneable{
 
 	public void setComprador(Persona comprador) {
 		this.comprador = comprador;
+	}
+
+	public Set<Movimiento> getMovimientos() {
+		return movimientos;
+	}
+
+	public void setMovimientos(Set<Movimiento> movimientos) {
+		this.movimientos = movimientos;
+	}
+	
+	public void addMovimiento(Movimiento m) {
+		if (!this.movimientos.contains(m)) {
+			this.addMovimiento(m);
+			m.setContratoVenta(this);
+		}
+	}
+	
+	public void removeMovimiento(Movimiento m) {
+		if (this.movimientos.contains(m)) {
+			this.removeMovimiento(m);
+			m.setContratoVenta(null);
+		}
 	}
 
 	@Override

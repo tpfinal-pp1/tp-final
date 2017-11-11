@@ -1,46 +1,38 @@
 package com.TpFinal.view.cobros;
 
-import com.TpFinal.dto.Localidad;
-import com.TpFinal.dto.Provincia;
-import com.TpFinal.dto.cobro.Cobro;
-import com.TpFinal.dto.cobro.EstadoCobro;
-import com.TpFinal.dto.inmueble.ClaseInmueble;
-import com.TpFinal.dto.inmueble.Direccion;
-import com.TpFinal.dto.inmueble.Inmueble;
-import com.TpFinal.dto.inmueble.TipoInmueble;
-import com.TpFinal.dto.persona.Inquilino;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.persona.Propietario;
-import com.TpFinal.dto.persona.Rol;
-import com.TpFinal.services.CobroService;
-import com.TpFinal.services.InmuebleService;
-import com.TpFinal.services.PersonaService;
-import com.TpFinal.services.Planificador;
-import com.TpFinal.services.ProvinciaService;
-import com.TpFinal.utils.Utils;
-import com.TpFinal.view.component.BlueLabel;
-import com.TpFinal.view.component.DeleteButton;
-import com.TpFinal.view.component.DialogConfirmacion;
-import com.TpFinal.view.component.TinyButton;
-import com.TpFinal.view.persona.PersonaFormWindow;
-import com.vaadin.data.Binder;
-import com.vaadin.data.BindingValidationStatus;
-import com.vaadin.data.HasValue;
-import com.vaadin.data.ValidationException;
-import com.vaadin.data.converter.StringToIntegerConverter;
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.icons.VaadinIcons;
-import com.vaadin.server.Setter;
-import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.log4j.Logger;
+
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
+import com.TpFinal.dto.movimiento.ClaseMovimiento;
+import com.TpFinal.dto.movimiento.Movimiento;
+import com.TpFinal.dto.movimiento.TipoMovimiento;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.persona.Rol;
+import com.TpFinal.services.CobroService;
+import com.TpFinal.services.MovimientoService;
+import com.TpFinal.services.PersonaService;
+import com.TpFinal.services.Planificador;
+import com.TpFinal.services.ProvinciaService;
+import com.TpFinal.view.component.DialogConfirmacion;
+import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * Created by Max on 10/14/2017.
@@ -50,6 +42,7 @@ public class CobrosForm extends FormLayout {
 
     private PersonaService personaService = new PersonaService();
     private CobroService inmbService = new CobroService();
+    private MovimientoService movimientoService = new MovimientoService();
     private Cobro cobro;
 
     // TabSheet
@@ -99,6 +92,16 @@ public class CobrosForm extends FormLayout {
 				cobro.setFechaDePago(LocalDate.now());
 				boolean guardo = cobroService.save(cobro);
 				if (guardo) {
+					//Creando el movimiento al cobrar
+					Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoAlquiler(cobro);
+					movimientoService.saveOrUpdate(movPagoAlquiler);
+					
+					Movimiento movGananciaInmobiliaria = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
+					movimientoService.saveOrUpdate(movGananciaInmobiliaria);
+					
+					Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
+					movimientoService.saveOrUpdate(movPagoAPropietario);
+							
 				    Planificador.get().removeCobroVencido(cobro);
 				    System.out.println("Removido");
 				}
