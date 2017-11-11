@@ -211,20 +211,40 @@ public class CitaServiceIT {
 	
 	@Test
 	public void colisionCita() {
-		for(int i =0; i<10; i++) {
-			Cita c= instanciaCita(i);
-			c.setFechaInicio(LocalDateTime.now().plusDays(i));
-			c.setFechaFin(LocalDateTime.now().plusDays(i).minusMinutes(2));
-			service.saveOrUpdate(c);
-		}
-		
-		Cita c= instanciaCita(1);
-		c.setFechaInicio(LocalDateTime.now().minusDays(1));
-		c.setFechaFin(LocalDateTime.now().minusDays(1).minusMinutes(2));
-		
-		Empleado e = new Empleado.Builder().setCategoriaEmpleado(CategoriaEmpleado.admin).build();
-		
-		assertFalse(service.colisionaConCitasUser(e, c));
+		//CITA NORMAL
+		Cita citaNormal= instanciaCita(0);
+		citaNormal.setFechaInicio(LocalDateTime.now().plusDays(1));
+		citaNormal.setFechaFin(LocalDateTime.now().plusDays(1).plusMinutes(2));
+		citaNormal.setEmpleado("admin");
+		service.saveOrUpdate(citaNormal);
+		//CITA DE OTRO USER
+		Cita citaOtroUser= instanciaCita(0);
+		citaOtroUser.setFechaInicio(LocalDateTime.now().plusDays(3));
+		citaOtroUser.setFechaFin(LocalDateTime.now().plusDays(3).plusMinutes(2));
+		citaOtroUser.setEmpleado("pepe");
+		service.saveOrUpdate(citaOtroUser);
+		//CITA NORMAL 2 NO COLISIONA
+		Cita citaNormal2= instanciaCita(0);
+		citaNormal2.setFechaInicio(LocalDateTime.now().plusDays(2));
+		citaNormal2.setFechaFin(LocalDateTime.now().plusDays(2).plusMinutes(2));
+		citaNormal2.setEmpleado("admin");
+		service.saveOrUpdate(citaNormal);
+
+
+		Empleado emp = new Empleado.Builder().setCategoriaEmpleado(CategoriaEmpleado.admin).setCredencial(new
+				Credencial.Builder().setUsuario("admin").setContrasenia("admin").build()).build();
+		//Testea con una propia
+		Cita citaColisionTest= instanciaCita(1);
+		citaColisionTest.setFechaInicio(LocalDateTime.now().minusDays(1));
+		citaColisionTest.setFechaFin(LocalDateTime.now().plusDays(1).plusMinutes(2));
+		assertTrue(service.colisionaConCitasUser(emp, citaColisionTest));
+		//Testea con la de otro user
+		Cita citaColisionTest2= instanciaCita(1);
+		citaColisionTest2.setFechaInicio(LocalDateTime.now().plusDays(3));
+		citaColisionTest2.setFechaFin(LocalDateTime.now().plusDays(3).plusMinutes(2));
+		assertFalse(service.colisionaConCitasUser(emp, citaColisionTest2));
+
+
 		
 		
 		

@@ -135,8 +135,7 @@ public class CitaService {
 	    logger.debug("user.getCredencial.getUsuario: " + mensaje);
 	    }
 	    
-	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())
-				&&colisionDeCitas(cita, candidata)) {
+	    if (colisionDeCitas(cita, candidata)) {
 		return true;
 	    }
 	}
