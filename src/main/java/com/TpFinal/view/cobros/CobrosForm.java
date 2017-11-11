@@ -102,7 +102,7 @@ public class CobrosForm extends FormLayout {
 					Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
 					movimientoService.saveOrUpdate(movPagoAPropietario);
 							
-				    Planificador.get().removeCobroVencido(cobro);
+				    Planificador.get().removeJobCobroVencido(cobro);
 				    System.out.println("Removido");
 				}
 
