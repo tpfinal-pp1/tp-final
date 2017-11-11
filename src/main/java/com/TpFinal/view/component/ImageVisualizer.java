@@ -18,28 +18,26 @@ import com.vaadin.server.ThemeResource;
 @SuppressWarnings("serial")
 @Theme("demotheme")
 public class ImageVisualizer extends Window {
-    private final static Logger logger= Logger.getLogger(ImageVisualizer.class);
+    private final static Logger logger = Logger.getLogger(ImageVisualizer.class);
     private ImageViewer imageViewer;
     private VerticalLayout mainLayout;
     private TextField selectedImage = new TextField();
-    private Map<String,Resource> mapaStringFoto;
+    private Map<String, Resource> mapaStringFoto;
 
-    public ImageVisualizer(Map<String,Resource> mapaStringFoto, String portada) {
+    public ImageVisualizer(Map<String, Resource> mapaStringFoto, String portada) {
 	this();
-	this.mapaStringFoto = mapaStringFoto;	
+	this.mapaStringFoto = mapaStringFoto;
 	this.setFotos(portada);
 	this.addStyleName("translucent");
 	UI.getCurrent().getPage().getStyles().add(".v-window-translucent" +
-			"{" +
-			"  background-color: rgba(255,255,255,0.6) !important;" +
-			"}" +
-			"div.v-window-translucent .v-window-contents {" +
-			"  background: rgba(255,255,255,0.6);" +
-			"}");
-
-
+		"{" +
+		"  background-color: rgba(0,0,0,0.6) !important;" +
+		"}" +
+		"div.v-window-translucent .v-window-contents {" +
+		"  background: rgba(0,0,0,0.6);" +
+		"}");
     }
-    
+
     public ImageVisualizer() {
 	super();
 	mainLayout = new VerticalLayout();
@@ -220,9 +218,9 @@ public class ImageVisualizer extends Window {
 	List<Resource> img = new ArrayList<Resource>();
 	mapaStringFoto.forEach((path, resource) -> img.add(resource));
 	imageViewer.setImages(img);
-	imageViewer.setCenterImageRelativeWidth(0.5f);	
-	imageViewer.setCenterImageIndex(img.indexOf(mapaStringFoto.get(portada))-1);
-	
+	imageViewer.setCenterImageRelativeWidth(0.5f);
+	imageViewer.setCenterImageIndex(img.indexOf(mapaStringFoto.get(portada)) - 1);
+
     }
 
     /*
