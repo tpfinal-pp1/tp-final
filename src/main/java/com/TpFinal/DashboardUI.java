@@ -18,6 +18,7 @@ import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
@@ -88,10 +89,10 @@ public final class DashboardUI extends UI {
 	    // Cuando recien inicia entra con empleado=null
 	} else if (empleado.getCredencial() == null) {
 	    setContent(new LoginView());
-	    Notification.show("Usuario o Contraseña Incorrectos");
+	    showErrorNotification("Usuario o Contraseña Incorrectos");
 	} else if (empleado.getCredencial().getViewAccess() == null) {
 	    setContent(new LoginView());
-	    Notification.show("Credenciales sin acceso al sistema");
+	    showErrorNotification("Credenciales sin acceso al sistema");
 	} else {
 	    setContent(new MainView());
 	    removeStyleName("loginview");
@@ -99,6 +100,14 @@ public final class DashboardUI extends UI {
 	}
     }
 
+	public void showErrorNotification(String notification) {
+		Notification success = new Notification(
+				notification);
+		success.setDelayMsec(4000);
+		success.setStyleName("bar error small");
+		success.setPosition(Position.BOTTOM_CENTER);
+		success.show(Page.getCurrent());
+	}
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
 	Empleado empleado = credServ.logIn(event.getUserName(),
