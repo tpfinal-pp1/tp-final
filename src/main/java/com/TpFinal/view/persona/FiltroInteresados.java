@@ -54,7 +54,7 @@ public class FiltroInteresados {
 	conAireAcondicionado = filtroAireAcondicionado(i);
 	conJardin = filtroConJardin(i);
 	conPileta = filtroConPileta(i);
-	conParrilla = filtroConParrila(i);
+	conParrilla = filtroConParrilla(i);
 	estadoInmueble = filtroEstadoInmueble(i);
 	localidad = filtroLocalidad(i);
 	minAmbientes = filtroMinAmbientes(i);
@@ -71,28 +71,28 @@ public class FiltroInteresados {
 	tipoInmueble = filtroTipoInm(i);
 	publicaciones = filtroPublicaciones(i);
 	filtroCustom = p -> true;
-	filtroPersona =  p -> true;
+	filtroPersona = p -> true;
 	filtros.addAll(Arrays.asList(
-		 this.aEstrenar,
-		 this.clasesDeInmueble, //XXX ok
-		 this.conAireAcondicionado,
-		 this.conJardin,
-		 this.conPileta,
-		 this.conParrilla,
-		 this.estadoInmueble ,//XXX ok
-		 this.localidad, //XXX ok
-		 this.provincia,
-		 this.tipoInmueble,
-		 this.maxAmbientes,
-		 this.minAmbientes, //XXX ok
-		 this.minCocheras,
-		 this.maxCocheras,
-		 this.minDormitorios,
-		 this.maxDormitorios,
-		 this.minSupCubierta,
-		 this.maxSupCubierta,
-		 this.minSupTotal,
-		 this.maxSupTotal,
+		this.aEstrenar,
+		this.clasesDeInmueble, // XXX ok
+		this.conAireAcondicionado,
+		this.conJardin,
+		this.conPileta,
+		this.conParrilla,
+		this.estadoInmueble, // XXX ok
+		this.localidad, // XXX ok
+		this.provincia,
+		this.tipoInmueble,
+		this.maxAmbientes,
+		this.minAmbientes, // XXX ok
+		this.minCocheras,
+		this.maxCocheras,
+		this.minDormitorios,
+		this.maxDormitorios,
+		this.minSupCubierta,
+		this.maxSupCubierta,
+		this.minSupTotal,
+		this.maxSupTotal,
 		this.publicaciones,
 		filtroCustom,
 		filtroPersona));
@@ -235,6 +235,7 @@ public class FiltroInteresados {
 	actualizarComposicion();
     }
 
+    // XXX
     private Predicate<Persona> filtroAEstrenar(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -248,6 +249,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroAireAcondicionado(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -262,10 +264,12 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroClaseInmueble(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
-		if (p.getPrefBusqueda().getClasesDeInmueble() != null) {
+		if (p.getPrefBusqueda().getClasesDeInmueble() != null && !p.getPrefBusqueda().getClasesDeInmueble()
+			.isEmpty()) {
 		    return p.getPrefBusqueda().getClasesDeInmueble().contains(i.getClaseInmueble());
 		} else {
 		    return true;
@@ -276,6 +280,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroConJardin(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -290,6 +295,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroConPileta(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -304,7 +310,8 @@ public class FiltroInteresados {
 	};
     }
 
-    private Predicate<Persona> filtroConParrila(Inmueble i) {
+    // XXX
+    private Predicate<Persona> filtroConParrilla(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
 		if (p.getPrefBusqueda().getConParrilla() != null) {
@@ -318,6 +325,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroEstadoInmueble(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -327,7 +335,8 @@ public class FiltroInteresados {
 				i.getEstadoInmueble() == EstadoInmueble.EnAlquiler ||
 				i.getEstadoInmueble() == EstadoInmueble.EnVenta;
 		    else
-			return p.getPrefBusqueda().getEstadoInmueble().equals(i.getEstadoInmueble());
+			return p.getPrefBusqueda().getEstadoInmueble().equals(i.getEstadoInmueble())
+				|| i.getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta;
 		} else {
 		    return true;
 		}
@@ -337,6 +346,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroLocalidad(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -352,6 +362,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMaxAmbientes(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -366,6 +377,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMaxcocheras(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -380,6 +392,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMaxDormitorios(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -394,6 +407,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMaxSupCubierta(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -408,6 +422,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMaxSupTotal(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -422,6 +437,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMinAmbientes(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -436,6 +452,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMinCocheras(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -450,6 +467,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMinDormitorios(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -464,6 +482,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMinSupcubierta(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -478,6 +497,7 @@ public class FiltroInteresados {
 	};
     }
 
+    // XXX
     private Predicate<Persona> filtroMinSupTotal(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -492,6 +512,7 @@ public class FiltroInteresados {
 	};
     }
 
+    //XXX
     private Predicate<Persona> filtroProvincia(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -507,6 +528,7 @@ public class FiltroInteresados {
 	};
     }
 
+    //XXX
     private Predicate<Persona> filtroPublicaciones(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {
@@ -581,6 +603,7 @@ public class FiltroInteresados {
 		.collect(Collectors.toList());
     }
 
+    //XXX
     private Predicate<Persona> filtroTipoInm(Inmueble i) {
 	return p -> {
 	    if (p.getPrefBusqueda() != null) {

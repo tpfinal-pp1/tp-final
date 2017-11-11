@@ -266,7 +266,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	return conParrilla;
     }
 
-    public void setConParilla(Boolean conParilla) {
+    public void setConParrilla(Boolean conParilla) {
 	this.conParrilla = conParilla;
     }
 
