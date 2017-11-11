@@ -160,7 +160,8 @@ public abstract class CitaFormWindow extends Window {
 	fechaInicio.addValueChangeListener(new HasValue.ValueChangeListener<LocalDateTime>() {
 	    @Override
 	    public void valueChange(HasValue.ValueChangeEvent<LocalDateTime> valueChangeEvent) {
-		fechaFin.setValue(valueChangeEvent.getValue().plusHours(1));
+	    	if(valueChangeEvent!=null&&valueChangeEvent.getValue()!=null)
+				fechaFin.setValue(valueChangeEvent.getValue().plusHours(1));
 	    }
 	});
 
