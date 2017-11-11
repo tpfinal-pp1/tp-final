@@ -158,10 +158,8 @@ public class CitaService {
 
     }
 
+
     public List<Cita> readAllFromUser(Empleado user) {
-	if (user.getCategoriaEmpleado().equals(CategoriaEmpleado.admin)) {
-	    return readAll();
-	}
 	List<Cita> ret = new ArrayList<>();
 	for (Cita cita : readAll()) {
 	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())) {

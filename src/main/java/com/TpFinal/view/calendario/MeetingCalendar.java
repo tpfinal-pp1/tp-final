@@ -1,6 +1,7 @@
 package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.cita.Cita;
+import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
 import com.TpFinal.services.CredencialService;
@@ -59,8 +60,15 @@ public abstract class MeetingCalendar extends CustomComponent {
 
     public void refreshCitas(){
         eventProvider.removeAllEvents();
-        service.readAllFromUser(CredencialService.getCurrentUser()).
-                forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
+
+        if (CredencialService.getCurrentUser().getCategoriaEmpleado().equals(CategoriaEmpleado.admin))
+            service.readAll().
+                    forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
+        else
+            service.readAllFromUser(CredencialService.getCurrentUser()).
+                    forEach(cita->eventProvider.addItem(new MeetingItem(cita)));
+
+
     }
 
     public abstract void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event);
