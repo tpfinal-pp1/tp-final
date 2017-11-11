@@ -251,7 +251,7 @@ public class InmuebleFormMatching extends FormLayout {
 		.bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
 
 	binderInmueble.forField(this.cParrilla)
-		.bind(Inmueble::getConParilla, Inmueble::setConParilla);
+		.bind(Inmueble::getConParilla, Inmueble::setConParrilla);
 
 	binderInmueble.forField(this.cPpileta)
 		.bind(Inmueble::getConPileta, Inmueble::setConPileta);
