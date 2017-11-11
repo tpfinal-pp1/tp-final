@@ -94,26 +94,26 @@ public class Planificador {
 	}
 
 	public void agregarNotificaciones(ContratoAlquiler c) {
-		c.getCobros().forEach(c1 -> this.addCobroVencido(c1));
+		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
 	}
 
-	public void addCita(Cita cita) {
+	public void addJobCita(Cita cita) {
 		if (cita.getId() != null) {
-			agregarNotificacionCita(cita, horasAntesRecoradatorio1, 1);
-			agregarNotificacionCita(cita, horasAntesRecoradatorio2, 2);
+			agregarJobNotificacionCita(cita, horasAntesRecoradatorio1, 1);
+			agregarJobNotificacionCita(cita, horasAntesRecoradatorio2, 2);
 		} else
 			throw new IllegalArgumentException("La cita debe estar persistida");
 	}
 
-	public void addCita(Cita cita, Integer hsAntesRecordatorio1, Integer hsAntesRecordatorio2) {
+	public void addJobCita(Cita cita, Integer hsAntesRecordatorio1, Integer hsAntesRecordatorio2) {
 		if (cita.getId() != null) {
-			agregarNotificacionCita(cita, hsAntesRecordatorio1, 1);
-			agregarNotificacionCita(cita, hsAntesRecordatorio2, 2);
+			agregarJobNotificacionCita(cita, hsAntesRecordatorio1, 1);
+			agregarJobNotificacionCita(cita, hsAntesRecordatorio2, 2);
 		} else
 			throw new IllegalArgumentException("La cita debe estar persistida");
 	}
 
-	public boolean removeCita(Cita cita) {
+	public boolean removeJobCita(Cita cita) {
 		boolean ret = false;
 		try {
 			if (cita.getId() != null) {
@@ -128,14 +128,14 @@ public class Planificador {
 		return ret;
 	}
 
-	public void addCobroVencido(Cobro cobro) {
+	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
-			agregarNotificacionCobro(cobro, horasAntesCobrosVencidos, 1);
+			agregarJobNotificacionCobro(cobro, horasAntesCobrosVencidos, 1);
 		} else
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
 	}
 
-	public boolean removeCobroVencido(Cobro cobro) {
+	public boolean removeJobCobroVencido(Cobro cobro) {
 		boolean ret = false;
 		try {
 			if (cobro.getId() != null) {
@@ -149,23 +149,23 @@ public class Planificador {
 		return ret;
 	}
 
-	public void agregarNotificaciones(List<Messageable> citas) {
+	public void agregarJobs(List<Messageable> citas) {
 		if (citas != null && citas.size() > 0) {
 			citas.forEach(c -> {
 				if (c instanceof Cita) {
 					Cita c1 = (Cita) c;
-					agregarNotificacionCita(c1, horasAntesRecoradatorio1, 1);
-					agregarNotificacionCita(c1, horasAntesRecoradatorio2, 2);
+					agregarJobNotificacionCita(c1, horasAntesRecoradatorio1, 1);
+					agregarJobNotificacionCita(c1, horasAntesRecoradatorio2, 2);
 				} else if (c instanceof Cobro) {
 					Cobro c1 = (Cobro) c;
-					agregarNotificacionCobro(c1, horasAntesCobrosVencidos, 1);
+					agregarJobNotificacionCobro(c1, horasAntesCobrosVencidos, 1);
 				}
 
 			});
 		}
 	}
 
-	public void agregarCita(String titulo, String mensaje, String username, LocalDateTime fechaInicio,
+	public void agregarJobNotificacionSistema(String titulo, String mensaje, String username, LocalDateTime fechaInicio,
 			LocalDateTime fechaFin, String perioricidad, String id) {
 		try {
 
@@ -194,17 +194,17 @@ public class Planificador {
 		}
 	}
 
-	private void agregarNotificacionCita(Cita c, Integer horas, Integer key) {
+	private void agregarJobNotificacionCita(Cita c, Integer horas, Integer key) {
 		LocalDateTime fechaInicio = c.getFechaInicio();
 		fechaInicio = fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin = c.getFechaInicio();
 		Integer perioricidad = horas + 1;
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = c.getEmpleado();
-		agregarCita(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
+		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
 	}
 
-	private void agregarNotificacionCobro(Cobro c, Integer horas, Integer key) {
+	private void agregarJobNotificacionCobro(Cobro c, Integer horas, Integer key) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(1));
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
 		fechaInicio = fechaInicio.minusHours(horas);
@@ -212,7 +212,7 @@ public class Planificador {
 		Integer perioricidad = horas + 1;
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = "broadcast";
-		agregarCita(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
+		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
 	}
 
 	public static void initDemo() {
@@ -240,7 +240,7 @@ public class Planificador {
 
 					citas.add(c);
 				}
-				planificador.agregarNotificaciones(citas);
+				planificador.agregarJobs(citas);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
