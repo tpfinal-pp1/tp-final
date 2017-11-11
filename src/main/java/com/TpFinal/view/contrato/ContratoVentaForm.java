@@ -1,30 +1,52 @@
 package com.TpFinal.view.contrato;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
+import com.TpFinal.services.MovimientoService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.Utils;
-import com.TpFinal.view.component.*;
-import com.vaadin.data.*;
+import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.DeleteButton;
+import com.TpFinal.view.component.DownloadButton;
+import com.TpFinal.view.component.UploadButton;
+import com.TpFinal.view.component.UploadReceiver;
+import com.TpFinal.view.component.VentanaSelectora;
+import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
+import com.vaadin.data.ValidationException;
+import com.vaadin.data.ValidationResult;
+import com.vaadin.data.Validator;
+import com.vaadin.data.ValueContext;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.RadioButtonGroup;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /* Create custom UI Components.
  *
@@ -37,6 +59,7 @@ import java.util.List;
 public class ContratoVentaForm extends FormLayout {
     private ContratoVenta contratoVenta;
     private InmuebleService inmuebleService = new InmuebleService();
+    private MovimientoService movimientoService = new MovimientoService();
 
     // Actions
     EstadoCargaDocumento estadoCargaDocumento = EstadoCargaDocumento.NoCargado;
@@ -187,6 +210,9 @@ public class ContratoVentaForm extends FormLayout {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoVenta.isValid()) {
 		contratoVenta.setEstadoContrato(EstadoContrato.Vigente);
+		Movimiento movPagoVenta = MovimientoService.getInstanciaPagoVenta(contratoVenta);
+		movimientoService.saveOrUpdate(movPagoVenta);
+		//XXX
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 	    }

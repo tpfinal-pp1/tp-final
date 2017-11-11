@@ -48,6 +48,7 @@
 		<mapping class="com.TpFinal.dto.cita.Recordatorio" />
 		<mapping class="com.TpFinal.dto.cita.TipoCita" />
 		<mapping class="com.TpFinal.dto.notificacion.Notificacion" />
+		<mapping class="com.TpFinal.dto.movimiento.Movimiento" />
 	</session-factory>
 
 </hibernate-configuration>

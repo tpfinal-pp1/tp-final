@@ -1,5 +1,21 @@
 package com.TpFinal.services;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
+
 import com.TpFinal.data.dao.DAOInmuebleImpl;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.dto.EstadoRegistro;
@@ -20,27 +36,8 @@ import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.view.inmuebles.FiltroInmueble;
 import com.TpFinal.view.reportes.ItemFichaInmueble;
-import com.google.gwt.user.server.rpc.UnexpectedException;
-import com.vaadin.server.FileResource;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
-import com.vaadin.server.ThemeResource;
-
-import java.io.*;
-import java.nio.file.CopyOption;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
-import org.apache.log4j.Logger;
 
 public class InmuebleService {
     private DAOInmueble dao;
