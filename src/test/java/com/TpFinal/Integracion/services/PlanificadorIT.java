@@ -132,7 +132,6 @@ public class PlanificadorIT {
 		}
 	}
 	
-	@Ignore
 	@Test
 	public void addCitas() {
 		try {
@@ -200,7 +199,7 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep( 300);
 	}
 	
-	
+	@Ignore
 	@Test
 	public void addCobros() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
