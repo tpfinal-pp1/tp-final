@@ -43,13 +43,9 @@ public class MovimientoABMView extends DefaultLayout implements View {
     //RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
 
     HorizontalLayout mainLayout;
-    // DuracionContratosForm is an example of a custom component class
     MovimientoForm finanzasForm = new MovimientoForm(this);
     private boolean isonMobile = false;
-
-    // DuracionContratosService is a in-memory mock DAO that mimics
-    // a real-world datasource. Typically implemented for
-    // example as EJB or Spring Data based service.
+    
     MovimientoService service = new MovimientoService();
 
     //private FiltroDuracion filtro;
