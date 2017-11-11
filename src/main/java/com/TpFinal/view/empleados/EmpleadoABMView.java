@@ -75,17 +75,16 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
     private void configureGrid() {
-		UI.getCurrent().getPage().getStyles().add(".v-grid-row.baja {color: darkred;}");
-		grid.setStyleGenerator(empleado -> {
-			String ret = null;
-			if (empleado.getFechaDeBaja() != null) {
-					ret = "baja";
+	UI.getCurrent().getPage().getStyles().add(".v-grid-row.baja {color: darkred;}");
+	grid.setStyleGenerator(empleado -> {
+	    String ret = null;
+	    if (empleado.getFechaDeBaja() != null) {
+		ret = "baja";
+	    }
+	    return ret;
+	});
 
-			}
-			return ret;
-		});
-
-    	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
 	grid.addColumn(empleado -> {
 	    return empleado.getPersona().getNombre();
 	}).setCaption("Nombre").setId("nombre");
@@ -111,6 +110,15 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    return ret;
 	}).setCaption("Posee Acceso").setId("acceso");
 	grid.addColumn(empleado -> {
+	    String ret = "Sin credenciales";
+	    if (empleado.getCredencial() != null) {
+		Credencial c = empleado.getCredencial();
+		if (c.getContrasenia() != null && c.getUsuario() != null && c.getViewAccess() != null)
+		    ret = c.getUsuario();
+	    }
+	    return ret;
+	}).setCaption("Nombre de Usuario").setId("username");
+	grid.addColumn(empleado -> {
 	    String ret = "";
 	    logger.debug("Empleado : " + empleado);
 	    logger.debug("Estado: " + empleado.getEstadoEmpleado());
@@ -120,7 +128,8 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	    return ret;
 	}).setCaption("Estado Empleado").setId("estadoEmp");
 
-	grid.setColumnOrder("acciones", "nombre", "apellido", "mail", "telefono", "categoria", "acceso", "estadoEmp");
+	grid.setColumnOrder("acciones", "nombre", "apellido", "mail", "telefono", "categoria", "acceso", "username",
+		"estadoEmp");
 	grid.getColumns().forEach(col -> {
 	    col.setResizable(false);
 	    col.setHidable(true);
@@ -133,6 +142,7 @@ public class EmpleadoABMView extends DefaultLayout implements View {
 	filterRow.getCell("telefono").setComponent(filtroTelefono());
 	filterRow.getCell("categoria").setComponent(filtroCategoria());
 	filterRow.getCell("acceso").setComponent(filtroAcceso());
+	filterRow.getCell("username").setComponent(filtroUsername());
 	filterRow.getCell("estadoEmp").setComponent(filtroEstadoEmpleado());
     }
 
@@ -279,6 +289,29 @@ public class EmpleadoABMView extends DefaultLayout implements View {
     }
 
     private Component filtroAcceso() {
+	TextField filtroUsername = new TextField();
+	filtroUsername.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroUsername.setPlaceholder("Sin Filtro");
+	filtroUsername.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroUsername.isEmpty()) {
+		    filtro.setFiltroUsuario(empleado -> {
+			if (empleado.getCredencial() != null && empleado.getCredencial().getUsuario() != null)
+			    return empleado.getCredencial().getUsuario().toLowerCase().contains(e.getValue().toLowerCase());
+			return true;
+		    });
+		} else
+		    filtro.setFiltroUsuario(empleado -> true);
+
+	    } else {
+		filtro.setFiltroUsuario(empleado -> true);
+	    }
+	    updateList();
+	});
+	return filtroUsername;
+    }
+
+    private Component filtroUsername() {
 	ComboBox<String> filtroTipo = new ComboBox<String>();
 	filtroTipo.setItems("Sí", "No");
 	filtroTipo.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);

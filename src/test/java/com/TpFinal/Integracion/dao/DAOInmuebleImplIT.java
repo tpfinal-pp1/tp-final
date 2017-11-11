@@ -298,9 +298,9 @@ public class DAOInmuebleImplIT {
     @Test
     public void findInmueblesByCriteria_Parrilla() {
 	Inmueble inmuebleCon = unInmuebleNoPublicado();
-	inmuebleCon.setConParilla(true);
+	inmuebleCon.setConParrilla(true);
 	Inmueble inmuebleSin = unInmuebleNoPublicado();
-	inmuebleSin.setConParilla(false);
+	inmuebleSin.setConParrilla(false);
 
 	dao.create(inmuebleCon);
 	dao.create(inmuebleSin);

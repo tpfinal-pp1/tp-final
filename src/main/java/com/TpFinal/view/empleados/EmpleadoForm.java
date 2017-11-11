@@ -397,6 +397,15 @@ public class EmpleadoForm extends FormLayout {
 		logger.debug("Seteando a null credencial");
 		empleado.setCredencial(null);
 	    }
+	    if (empleado.getCredencial()!= null 
+		    && empleado.getCredencial().getUsuario() != null
+		    && credencial != null 
+		    && credencial.getUsuario()!= null
+		    && empleado.getCredencial().getUsuario() != credencial.getUsuario())
+	    {
+		credencialService.deepDelete(empleado.getCredencial());
+		empleado.setCredencial(credencial);
+	    }
 
 	    // XXX
 	    success = service.saveOrUpdate(empleado.getPersona());

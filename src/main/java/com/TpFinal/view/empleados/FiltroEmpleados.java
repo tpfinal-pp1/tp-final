@@ -18,7 +18,7 @@ public class FiltroEmpleados {
     private Predicate<Empleado> filtroAcceso = p -> true;
     private Predicate<Empleado> filtroTelefono = p -> true;
     private Predicate<Empleado> filtroEstadoEmpleado = p -> true;
-
+    private Predicate<Empleado> filtroUsuario = p -> true;
     private Predicate<Empleado> filtroCustom = p -> true;
 
     public FiltroEmpleados() {
@@ -30,7 +30,7 @@ public class FiltroEmpleados {
 	filtros.clear();
 	filtros.addAll(Arrays.asList(this.filtroApellido, this.filtroCategoria, this.filtroEmail,
 		this.filtroEstadoEmpleado, this.filtroNombre,
-		this.filtroCustom, this.filtroAcceso, this.filtroTelefono));
+		this.filtroCustom, this.filtroAcceso, this.filtroTelefono, this.filtroUsuario));
 	filtroCompuesto = filtros.stream().reduce(contrato -> true, Predicate::and);
     }
 
@@ -53,6 +53,15 @@ public class FiltroEmpleados {
 
     public List<Predicate<Empleado>> getTodosLosFiltros() {
 	return filtros;
+    }
+
+    public Predicate<Empleado> getFiltroUsuario() {
+	return filtroUsuario;
+    }
+
+    public void setFiltroUsuario(Predicate<Empleado> filtroUsuario) {
+	this.filtroUsuario = filtroUsuario;
+	actualizarComposicion();
     }
 
     public Predicate<Empleado> getFiltroNombre() {
