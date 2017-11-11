@@ -7,13 +7,17 @@ import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.DashboardEvent.BrowserResizeEvent;
 import com.TpFinal.services.DashboardEvent.CloseOpenWindowsEvent;
 import com.TpFinal.services.DashboardEvent.PostViewChangeEvent;
+import com.TpFinal.view.DashboardView;
 import com.TpFinal.view.DashboardViewType;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import org.vaadin.googleanalytics.tracking.GoogleAnalyticsTracker;
 
@@ -32,13 +36,13 @@ DashboardNavigator extends Navigator {
 
     public DashboardNavigator(final ComponentContainer container) {
         super(UI.getCurrent(), container);
-
         String host = getUI().getPage().getLocation().getHost();
         if (TRACKER_ID != null && host.endsWith("inmobi.ddns.net")) {
             initGATracker(TRACKER_ID);
         }
         initViewChangeListener();
         initViewProviders();
+
 
     }
 
@@ -58,12 +62,14 @@ DashboardNavigator extends Navigator {
 
                 CredencialService credServ=new CredencialService();
                 Credencial userCred=credServ.getCurrentUser().getCredencial();
-
+              
                    if(credServ.hasViewAccess(userCred,event.getNewView().getClass())) {
                        System.out.println("Acceso Permitido a view:"+event.getNewView().getClass().toString());
                        return true;
                    }
-                System.out.println("Acceso Denegado a view:"+event.getNewView().getClass().toString());
+                    System.out.println("Acceso Denegado a view:"+event.getNewView().getClass().toString()+
+                            "\nRedirigiendo a inicio...");
+                   navigateTo("Inicio");
                     return false;
                 }
 
@@ -85,7 +91,14 @@ DashboardNavigator extends Navigator {
     }
 
 
-
+    public void showErrorNotification(String notification) {
+        Notification success = new Notification(
+                notification);
+        success.setDelayMsec(4000);
+        success.setStyleName("bar error small");
+        success.setPosition(Position.BOTTOM_CENTER);
+        success.show(Page.getCurrent());
+    }
     private void initViewProviders() {
         // A dedicated view provider is added for each separate view type
         for (final DashboardViewType viewType : DashboardViewType.values()) {
