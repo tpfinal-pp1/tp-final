@@ -201,8 +201,7 @@ public class Planificador {
 		Integer perioricidad = horas + 1;
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = c.getEmpleado();
-		agregarCita(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1",
-				triggerKey);
+		agregarCita(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
 	}
 
 	private void agregarNotificacionCobro(Cobro c, Integer horas, Integer key) {
@@ -213,8 +212,7 @@ public class Planificador {
 		Integer perioricidad = horas + 1;
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = "broadcast";
-		agregarCita(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1",
-				triggerKey);
+		agregarCita(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
 	}
 
 	public static void initDemo() {
