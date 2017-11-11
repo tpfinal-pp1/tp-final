@@ -1,10 +1,12 @@
 package com.TpFinal.dto.contrato;
 
-import com.TpFinal.dto.EstadoRegistro;
-import com.TpFinal.dto.cobro.Cobro;
-import com.TpFinal.dto.inmueble.Inmueble;
-import com.TpFinal.dto.persona.Inquilino;
-import com.TpFinal.dto.persona.Persona;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Blob;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,13 +22,12 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.sql.Blob;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.movimiento.Movimiento;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
 
 /**
  * Created by Max on 9/30/2017.
@@ -71,6 +72,10 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	@OneToMany(mappedBy = "contrato", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
 	private Set<Cobro> cobros;
+	
+	@OneToMany(mappedBy = "contratoAlquiler",fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.ALL})
+    private Set<Movimiento> movimientos;
 
 	public ContratoAlquiler() {
 		super();
@@ -89,6 +94,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 		this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
 		this.fechaCelebracion=b.fechaCelebracion;
 		cobros = new HashSet<>();
+		movimientos = new HashSet<>();
 
 		if (b.inmueble != null) {
 			this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
@@ -200,6 +206,28 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 		if (this.cobros.contains(c)) {
 			this.cobros.remove(c);
 			c.setContrato(null);
+		}
+	}
+	
+	public Set<Movimiento> getMovimientos() {
+		return movimientos;
+	}
+
+	public void setMovimientos(Set<Movimiento> movimientos) {
+		this.movimientos = movimientos;
+	}
+	
+	public void addMovimiento(Movimiento m) {
+		if (!this.movimientos.contains(m)) {
+			this.addMovimiento(m);
+			m.setContratoAlquiler(this);
+		}
+	}
+	
+	public void removeMovimiento(Movimiento m) {
+		if (this.movimientos.contains(m)) {
+			this.movimientos.remove(m);
+			m.setContratoAlquiler(null);
 		}
 	}
 
