@@ -14,6 +14,7 @@ import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
@@ -85,17 +86,17 @@ public class ContratoVentaForm extends FormLayout {
     DownloadButton btDescargar = new DownloadButton();
     UploadReceiver uploadReceiver = new UploadReceiver();
     UploadButton btCargar = new UploadButton(uploadReceiver);
-    
-//    UploadButton btCargar = new UploadButton(new AbstractUploadReceiver() {
-//
-//	@Override
-//	public void onSuccessfullUpload(String filename) {
-//	    nombreArchivo = filename;
-//	    tfDocumento.setValue("Documento Cargado");
-//	   // btDescargar.setFile(filename);
-//	    archivo = new File(this.getPathAndName());
-//	}
-//    });
+
+    // UploadButton btCargar = new UploadButton(new AbstractUploadReceiver() {
+    //
+    // @Override
+    // public void onSuccessfullUpload(String filename) {
+    // nombreArchivo = filename;
+    // tfDocumento.setValue("Documento Cargado");
+    // // btDescargar.setFile(filename);
+    // archivo = new File(this.getPathAndName());
+    // }
+    // });
 
     TextField tfPrecioDeVenta = new TextField("Valor de venta $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
@@ -125,28 +126,29 @@ public class ContratoVentaForm extends FormLayout {
 	configurarAcciones();
 
 	btCargar.addStartedListener(e -> {
-		tfDocumento.setIcon(VaadinIcons.UPLOAD);
-		tfDocumento.setValue("Cargando documento...");
-		estadoCargaDocumento = EstadoCargaDocumento.Cargando;
+	    tfDocumento.setIcon(VaadinIcons.UPLOAD);
+	    tfDocumento.setValue("Cargando documento...");
+	    estadoCargaDocumento = EstadoCargaDocumento.Cargando;
 	});
 	btCargar.addFailedListener(e -> {
-		tfDocumento.setIcon(VaadinIcons.WARNING);
-		tfDocumento.setValue("Error al Cargar el documento");
-		estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
+	    tfDocumento.setIcon(VaadinIcons.WARNING);
+	    tfDocumento.setValue("Error al Cargar el documento");
+	    estadoCargaDocumento = EstadoCargaDocumento.FalloLaCarga;
 	});
 	btCargar.addSucceededListener(e -> {
-		tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
-		tfDocumento.setValue("Documento Cargado");
-		estadoCargaDocumento = EstadoCargaDocumento.Cargado;
-		contratoVenta.getArchivo().setExtension(uploadReceiver.getFileName());
-		contratoVenta.getArchivo().setNombre(uploadReceiver.getFileName());
-		archivo = new File(uploadReceiver.getFullPath());
-		try {
-		    uploadReceiver.getOutputFile().flush();
-		    uploadReceiver.getOutputFile().close();
-			btDescargar.setArchivoFromPath(archivo.getPath(),contratoVenta.getArchivo().getNombre()+contratoVenta.getArchivo().getExtension());
-		} catch (Exception ex) {
-		}
+	    tfDocumento.setIcon(VaadinIcons.CHECK_CIRCLE);
+	    tfDocumento.setValue("Documento Cargado");
+	    estadoCargaDocumento = EstadoCargaDocumento.Cargado;
+	    contratoVenta.getArchivo().setExtension(uploadReceiver.getFileName());
+	    contratoVenta.getArchivo().setNombre(uploadReceiver.getFileName());
+	    archivo = new File(uploadReceiver.getFullPath());
+	    try {
+		uploadReceiver.getOutputFile().flush();
+		uploadReceiver.getOutputFile().close();
+		btDescargar.setArchivoFromPath(archivo.getPath(), contratoVenta.getArchivo().getNombre() + contratoVenta
+			.getArchivo().getExtension());
+	    } catch (Exception ex) {
+	    }
 	});
 
 	cbInmuebles.addValueChangeListener(new HasValue.ValueChangeListener<Inmueble>() {
@@ -209,10 +211,13 @@ public class ContratoVentaForm extends FormLayout {
 	finalizarCarga.addClickListener(e -> {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoVenta.isValid()) {
-		contratoVenta.setEstadoContrato(EstadoContrato.Vigente);
-//		Movimiento movPagoVenta = MovimientoService.getInstanciaPagoVenta(contratoVenta);
-//		movimientoService.saveOrUpdate(movPagoVenta);
-		//XXX
+		contratoVenta.setEstadoContrato(EstadoContrato.Celebrado);
+		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
+		
+		// Movimiento movPagoVenta =
+		// MovimientoService.getInstanciaPagoVenta(contratoVenta);
+		// movimientoService.saveOrUpdate(movPagoVenta);
+		// XXX
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 	    }
@@ -232,8 +237,8 @@ public class ContratoVentaForm extends FormLayout {
 		Contrato::getFechaIngreso,
 		Contrato::setFechaIngreso);
 	binderContratoVenta.forField(fechaCelebracion).asRequired("Seleccione una fecha celebracion").bind(
-			Contrato::getFechaCelebracion,
-			Contrato::setFechaCelebracion);
+		Contrato::getFechaCelebracion,
+		Contrato::setFechaCelebracion);
 	binderContratoVenta.forField(rbgTipoMoneda).asRequired("Seleccione un tipo de moneda").bind("moneda");
 	binderContratoVenta.forField(cbInmuebles).asRequired("Debe Ingresar un inmueble")
 		.withValidator(inmueble -> {
@@ -306,7 +311,7 @@ public class ContratoVentaForm extends FormLayout {
     private Binder<ContratoVenta> getBinderParaFinalizacionDeCarga() {
 	binderContratoVenta = getBinderParaEdicion();
 	binderContratoVenta.forField(this.tfDocumento)
-		.asRequired("Debe Cargar al menos un documento antes de finalizar la carga.")
+		.asRequired("Documento requerido")
 		.withValidator(text -> text == "Documento Cargado",
 			"Debe Cargar al menos un documento antes de finalizar la carga.")
 		.bind(contrato -> {
@@ -361,7 +366,8 @@ public class ContratoVentaForm extends FormLayout {
 
 	HorizontalLayout hl = new HorizontalLayout(lblNombreVendedor);
 	hl.setCaption("Vendedor");
-	FormLayout principal = new FormLayout(cbInmuebles, cbComprador,fechaCelebracion, fechaIngreso, hl, tfPrecioDeVenta,
+	FormLayout principal = new FormLayout(cbInmuebles, cbComprador, fechaCelebracion, fechaIngreso, hl,
+		tfPrecioDeVenta,
 		rbgTipoMoneda, seccionDoc,
 		tfDocumento,
 		documentoButtonsRow);
@@ -479,8 +485,10 @@ public class ContratoVentaForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderContratoVenta.writeBean(contratoVenta);
-	    if (contratoVenta.getEstadoContrato() == EstadoContrato.Vigente)
+	    if (contratoVenta.getEstadoContrato() == EstadoContrato.Vigente) {
 		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
+		service.getPublicacionVentaActiva(contratoVenta.getInmueble()).setEstadoPublicacion(EstadoPublicacion.Terminada);
+		}
 
 	    if (archivo != null && !archivo.exists())
 		success = service.saveOrUpdate(contratoVenta, null);

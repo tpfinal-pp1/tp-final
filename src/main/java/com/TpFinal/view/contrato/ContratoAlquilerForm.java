@@ -13,6 +13,7 @@ import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
+import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.ContratoDuracionService;
@@ -260,6 +261,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoAlquiler.isValid()) {
 		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
+		service.finalizarPublicacionAsociada(contratoAlquiler);
 		service.addCobros(contratoAlquiler);
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
@@ -270,7 +272,9 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
-		binderContratoAlquiler.validate();
+		binderContratoAlquiler.validate().getFieldValidationErrors();
+		Notification.show("Errores de validación, por favor revise los campos.", Notification.Type.WARNING_MESSAGE);
+		checkFieldsPerTab(binderContratoAlquiler.validate().getFieldValidationErrors());
 	    }
 
 	};
