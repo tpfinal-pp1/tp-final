@@ -161,8 +161,22 @@ public class Planificador {
 	
 	public void addJobAlquilerPorVencer(ContratoAlquiler contrato) {
 		if(contrato.getId()!=null) {
-			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato, Integer.valueOf(contrato.getId().toString()));
+			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,1);
 		}
+	}
+	
+	public boolean removeJobAlquilerPorVencer(ContratoAlquiler contrato) {
+		boolean ret = false;
+		try {
+			if (contrato.getId() != null) {
+
+				return sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-1"));
+			} else
+				throw new IllegalArgumentException("El Cobro debe estar persistida");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	public void agregarJobs(List<Messageable> citas) {
@@ -238,25 +252,25 @@ public class Planificador {
 		}
 	}
 
-	private void agregarJobNotificacionCita(Cita c, Integer horas, Integer key) {
+	private void agregarJobNotificacionCita(Cita c, Integer horas, Integer nro) {
 		LocalDateTime fechaInicio = c.getFechaInicio();
 		fechaInicio = fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin = c.getFechaInicio();
-		Integer perioricidad = horas + 1;
-		String triggerKey = c.getId().toString() + "-" + key.toString();
+		String perioricidad = "1/1";
+		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
 		String username = c.getEmpleado();
-		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", c.getTriggerKey()+"-"+key.toString());
+		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, perioricidad, triggerKey);
 	}
 
-	private void agregarJobNotificacionCobro(Cobro c, Integer horas, Integer key) {
+	private void agregarJobNotificacionCobro(Cobro c, Integer horas, Integer nro) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(1));
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
 		fechaInicio = fechaInicio.minusHours(horas);
 		fechaFin = fechaFin.minusHours(horas);
-		Integer perioricidad = horas + 1;
-		String triggerKey = c.getId().toString() + "-" + key.toString();
+		String perioricidad = "1/1";
+		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
 		String username = "broadcast";
-		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", c.getTriggerKey()+"-"+key.toString());
+		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, perioricidad, triggerKey);
 	}
 	
 	private void agregarJobMailAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {
@@ -264,10 +278,9 @@ public class Planificador {
 				LocalTime.now().plusMinutes(1));
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()), LocalTime.now().plusMinutes(10));
 		fechaInicio=fechaInicio.minusMonths(meses);
-		String triggerKey = c.getId().toString() + "-" + key.toString();
-		//TODO agregar a messageable un random id para que no colisionen cobros con contratos por ejemplo
-		agregarJobMail(c.getTitulo(), c.getMessage(), c.getPropietario().getMail(), fechaInicio, fechaFin, "1/"+perioricidadVencimientoContrato.toString(),
-				c.getTriggerKey()+"-"+key.toString());
+		String triggerKey = c.getTriggerKey()+"-"+key.toString();
+		String perioricidad="1/"+this.perioricidadVencimientoContrato.toString();
+		agregarJobMail(c.getTitulo(), c.getMessage(), c.getPropietario().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
 
 	public static void initDemo() {

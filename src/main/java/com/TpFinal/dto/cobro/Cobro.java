@@ -193,6 +193,14 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		if(contrato!=null && !this.contrato.getCobros().contains(this))
 			this.contrato.addCobro(this);
 	}
+	
+	public UUID getRandomKey() {
+		return randomKey;
+	}
+
+	public void setRandomKey(UUID randomKey) {
+		this.randomKey = randomKey;
+	}
 
 	public String getEstadoCobroString() {
 		if (this.estadoCobro.equals(EstadoCobro.COBRADO)){

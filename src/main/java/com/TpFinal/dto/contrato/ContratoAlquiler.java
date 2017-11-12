@@ -235,6 +235,14 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 			m.setContratoAlquiler(null);
 		}
 	}
+	
+	public UUID getRandomKey() {
+		return randomKey;
+	}
+
+	public void setRandomKey(UUID randomKey) {
+		this.randomKey = randomKey;
+	}
 
 	@Override
 	public String toString() {

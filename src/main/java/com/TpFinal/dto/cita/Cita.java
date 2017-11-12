@@ -80,13 +80,13 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
 	protected Set<Recordatorio> recordatorios = new HashSet<>();
-	
+
 	public enum State {
 		empty,
 		planned,
 		confirmed
 	}
-	
+
 	public Cita() {
 
 	}
@@ -99,7 +99,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		this.tipoDeCita = b.tipoDeCita;
 		this.randomKey=UUID.randomUUID();
 	}
-	
+
 	@Override
 	public String getTriggerKey() {
 		return this.id.toString()+"-"+this.randomKey.toString();
@@ -112,9 +112,9 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		LocalDateTime i=
 				this.getFechaInicio();
 
-			return recortarStrings("Cita: "
+		return recortarStrings("Cita: "
 				+citado)+"<br>"+this.tipoDeCita+"<br>"+ "Lugar:<br>"+recortarStrings(getDireccionLugar())+"<br>Observaciones:<br>"+
-					recortarStrings(getObservaciones());
+				recortarStrings(getObservaciones());
 
 	}
 
@@ -132,7 +132,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 			}
 
 
-			}
+		}
 		return ret;
 
 	}
@@ -142,7 +142,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	}
 
 	public void setLongTimeEvent(boolean b) {
-		 longTime=b;
+		longTime=b;
 	}
 
 	public boolean isEditable() {
@@ -227,6 +227,14 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		this.id = id;
 	}
 
+	public UUID getRandomKey() {
+		return randomKey;
+	}
+
+	public void setRandomKey(UUID randomKey) {
+		this.randomKey = randomKey;
+	}
+
 	@Override
 	public void setEstadoRegistro(EstadoRegistro estado) {
 		this.estadoRegistro = estado;
@@ -262,7 +270,7 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 		return "Cita [\nid=" + id + "\nestadoRegistro=" + estadoRegistro + "\nfechaHora=" + fechaInicio
 				+ "\ndireccionLugar=" + direccionLugar + "\ncitado=" + citado + "\nobservaciones=" + observaciones
 				+ "\ntipoDeCita=" + tipoDeCita + "\nrecordatorios=" + recordatorios + "\n]";
-}
+	}
 
 	@Override
 	public String getMessage() {
