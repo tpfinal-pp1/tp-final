@@ -116,12 +116,12 @@ public class PlanificadorIT {
 				c.setId(Long.valueOf(i));
 				citas.add(c);
 			}
-			sc.agregarNotificaciones(citas);
+			sc.agregarJobs(citas);
 			boolean eliminar=true;
 
 			for (Messageable mess:citas){
 				Cita citat=(Cita) mess;
-				eliminar=eliminar&&sc.removeCita(citat);
+				eliminar=eliminar&&sc.removeJobCita(citat);
 
 			}
 			Assert.assertTrue(eliminar);
@@ -157,7 +157,7 @@ public class PlanificadorIT {
 				c.setId(Long.valueOf(i));
 				citas.add(c);
 			}
-			sc.agregarNotificaciones(citas);
+			sc.agregarJobs(citas);
 
 			TimeUnit.SECONDS.sleep( 300);
 		} catch (Exception e) {
@@ -195,7 +195,7 @@ public class PlanificadorIT {
 			id++;
 		}
 		
-		Planificador.get().agregarNotificaciones(cobros);
+		Planificador.get().agregarJobs(cobros);
 		TimeUnit.SECONDS.sleep( 300);
 	}
 	
@@ -223,7 +223,7 @@ public class PlanificadorIT {
 		}
 		
 		
-		contrato.getCobros().forEach(c -> Planificador.get().addCobroVencido(c));
+		contrato.getCobros().forEach(c -> Planificador.get().addJobCobroVencido(c));
 		TimeUnit.SECONDS.sleep( 300);
 	}
 

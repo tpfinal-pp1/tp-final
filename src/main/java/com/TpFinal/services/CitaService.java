@@ -61,8 +61,8 @@ public class CitaService {
     }
 
     public void agregarTriggers(Cita cita) {
-	Planificador.get().removeCita(cita);
-	Planificador.get().addCita(cita);
+	Planificador.get().removeJobCita(cita);
+	Planificador.get().addJobCita(cita);
     }
 
     public Cita getUltimaAgregada() {
@@ -88,8 +88,8 @@ public class CitaService {
 		})
 		.collect(Collectors.toList());
 	citasDelEmpleado.forEach(cita -> {
-	    Planificador.get().removeCita(cita);
-	    Planificador.get().addCita(cita, emp.getHorasAntesRecoradatorio1(), emp.getHorasAntesRecoradatorio2());
+	    Planificador.get().removeJobCita(cita);
+	    Planificador.get().addJobCita(cita, emp.getHorasAntesRecoradatorio1(), emp.getHorasAntesRecoradatorio2());
 	});
 
 	return ret;
@@ -110,7 +110,7 @@ public class CitaService {
 	if (!ret1) {
 	    System.err.println("Error al Borrar la cita..");
 	}
-	ret2 = Planificador.get().removeCita(p);
+	ret2 = Planificador.get().removeJobCita(p);
 	if (!ret2) {
 	    System.err.println("Error al Borrar los recodatorios de la cita... " +
 		    "\nes probable que ya se hayan detonado los triggers");
@@ -135,8 +135,7 @@ public class CitaService {
 	    logger.debug("user.getCredencial.getUsuario: " + mensaje);
 	    }
 	    
-	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())
-				&&colisionDeCitas(cita, candidata)) {
+	    if (colisionDeCitas(cita, candidata)) {
 		return true;
 	    }
 	}
@@ -158,10 +157,8 @@ public class CitaService {
 
     }
 
+
     public List<Cita> readAllFromUser(Empleado user) {
-	if (user.getCategoriaEmpleado().equals(CategoriaEmpleado.admin)) {
-	    return readAll();
-	}
 	List<Cita> ret = new ArrayList<>();
 	for (Cita cita : readAll()) {
 	    if (cita.getEmpleado().equals(user.getCredencial().getUsuario())) {
