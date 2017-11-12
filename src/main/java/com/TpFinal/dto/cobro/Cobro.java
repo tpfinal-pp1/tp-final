@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Objects;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -63,6 +64,8 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@JoinColumn(name="idContrato")
 	private ContratoAlquiler contrato;
+	@Column(name="randomKey")
+	UUID randomKey;
 
 	public Cobro() {}
 
@@ -77,11 +80,17 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		this.fechaDeVencimiento=b.fechaDeVencimiento;
 		this.estadoCobro=EstadoCobro.NOCOBRADO;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
+		this.randomKey=UUID.randomUUID();
 	}
 
 	@Override
 	public Long getId() {
 		return this.id;
+	}
+	
+	@Override
+	public String getTriggerKey() {
+		return this.id.toString()+"-"+this.randomKey.toString();
 	}
 
 	public void SetId(Long id) {

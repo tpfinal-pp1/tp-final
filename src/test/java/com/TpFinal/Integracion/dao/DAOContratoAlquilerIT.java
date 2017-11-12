@@ -129,7 +129,7 @@ public class DAOContratoAlquilerIT {
 		dao.save(instancia("3"));
 
 		assertEquals(3, dao.readAll().size());
-
+		System.out.println("Trigger key "+dao.readAll().get(0).getTriggerKey());
 	}
 
 	@Test

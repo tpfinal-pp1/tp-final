@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,6 +55,8 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	private Integer intervaloActualizacion;
 	@Column(name = "diaDePago")
 	private Integer diaDePago;
+	@Column(name="randomKey")
+	UUID randomKey;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
@@ -100,6 +103,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		if (b.inmueble != null) {
 			this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 		}
+		this.randomKey=UUID.randomUUID();
 	}
 
 	public Double getInteresPunitorio() {
@@ -417,6 +421,11 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	@Override
 	public String getMessage() {
 		return "El contrato de: "+this.getInquilinoContrato().getPersona().getApellido()+" "+this.getInquilinoContrato().getPersona().getNombre()+" está por vencer";
+	}
+
+	@Override
+	public String getTriggerKey() {
+		return this.id.toString()+"-"+this.randomKey.toString();
 	}
 
 }

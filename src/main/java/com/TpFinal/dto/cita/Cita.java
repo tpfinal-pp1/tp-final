@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,6 +44,8 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Column(name = "estado_registro")
 	@NotNull
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
+	@Column(name="randomKey")
+	UUID randomKey;
 
 	public LocalDateTime getFechaFin() {
 		return fechaFin;
@@ -74,19 +77,32 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_cita")
 	TipoCita tipoDeCita;
-
-
-
 	@OneToMany(mappedBy = "cita", fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.ALL })
 	protected Set<Recordatorio> recordatorios = new HashSet<>();
-
 	
-	//Mod by agus(calendario)
 	public enum State {
 		empty,
 		planned,
 		confirmed
+	}
+	
+	public Cita() {
+
+	}
+
+	private Cita(Builder b) {
+		this.fechaInicio = b.fechahora;
+		this.citado = b.citado;
+		this.direccionLugar = b.direccionLugar;
+		this.observaciones = b.observaciones;
+		this.tipoDeCita = b.tipoDeCita;
+		this.randomKey=UUID.randomUUID();
+	}
+	
+	@Override
+	public String getTriggerKey() {
+		return this.id.toString()+"-"+this.randomKey.toString();
 	}
 
 	public String getName() {
@@ -140,25 +156,6 @@ public class Cita implements Identificable, BorradoLogico, Messageable {
 	public void setState(State state){
 		this.state=state;
 	}
-
-
-	//Mod by agus(calendario)
-
-	public Cita() {
-
-	}
-
-	private Cita(Builder b) {
-		this.fechaInicio = b.fechahora;
-		this.citado = b.citado;
-		this.direccionLugar = b.direccionLugar;
-		this.observaciones = b.observaciones;
-		this.tipoDeCita = b.tipoDeCita;
-
-	}
-
-
-
 
 	public Set<Recordatorio> getRecordatorios() {
 		return recordatorios;
