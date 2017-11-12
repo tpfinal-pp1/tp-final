@@ -25,6 +25,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.interfaces.Messageable;
 import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -35,7 +36,7 @@ import com.TpFinal.dto.persona.Persona;
 @Entity
 @Table(name = "contratoAlquiler")
 @PrimaryKeyJoinColumn(name = "id")
-public class ContratoAlquiler extends Contrato implements Cloneable {
+public class ContratoAlquiler extends Contrato implements Cloneable, Messageable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipointeresPunitorio")
@@ -406,6 +407,16 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 		public ContratoAlquiler build() {
 			return new ContratoAlquiler(this);
 		}
+	}
+
+	@Override
+	public String getTitulo() {
+		return "Vencimiento de contrato";
+	}
+
+	@Override
+	public String getMessage() {
+		return "El contrato de: "+this.getInquilinoContrato().getPersona().getApellido()+" "+this.getInquilinoContrato().getPersona().getNombre()+" está por vencer";
 	}
 
 }

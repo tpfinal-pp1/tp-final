@@ -31,12 +31,16 @@ public class Planificador {
 
 	Scheduler sc;
 	Job notificacion;
+	Job mailSender;
 	// citas
 	Integer horasAntesRecoradatorio1;
 	Integer horasAntesRecoradatorio2;
 	// cobros vencidos
 	Integer horasAntesCobrosVencidos;
 	LocalTime horaInicioCobrosVencidos;
+	//Contratos por vencer
+	Integer mesesAntesVencimientoContrato;
+	Integer perioricidadVencimientoContrato;
 
 	private static Planificador instancia;
 	public static boolean demoIniciado = false;
@@ -61,10 +65,16 @@ public class Planificador {
 		horasAntesRecoradatorio2 = 24;
 		horasAntesCobrosVencidos = 240;
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
+		mesesAntesVencimientoContrato=1;
+		perioricidadVencimientoContrato=1;
 	}
 
 	public void setNotificacion(Job notificacion) {
 		this.notificacion = notificacion;
+	}
+	
+	public void setMailSender(Job mailSender) {
+		this.mailSender=mailSender;
 	}
 
 	public void encender() {
@@ -93,7 +103,7 @@ public class Planificador {
 		}
 	}
 
-	public void agregarNotificaciones(ContratoAlquiler c) {
+	public void agregarJobsCobrosVencidos(ContratoAlquiler c) {
 		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
 	}
 
@@ -148,6 +158,12 @@ public class Planificador {
 		}
 		return ret;
 	}
+	
+	public void addJobAlquilerPorVencer(ContratoAlquiler contrato) {
+		if(contrato.getId()!=null) {
+			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato, Integer.valueOf(contrato.getId().toString()));
+		}
+	}
 
 	public void agregarJobs(List<Messageable> citas) {
 		if (citas != null && citas.size() > 0) {
@@ -193,6 +209,34 @@ public class Planificador {
 			e.printStackTrace();
 		}
 	}
+	
+	public void agregarJobMail(String encabezado, String mensaje, String destinatario, LocalDateTime fechaInicio,
+			LocalDateTime fechaFin, String perioricidad, String id) {
+		try {
+
+			String horan = "0 " + fechaInicio.getMinute() + " " + fechaInicio.getHour();
+			horan = horan + " "+perioricidad;
+			horan = horan + " * ? *";
+			JobDetail j1 = JobBuilder.newJob(mailSender.getClass())
+					.usingJobData("mensaje", mensaje)
+					.usingJobData("encabezado", encabezado)
+					.usingJobData("destinatario", destinatario)
+					.build();
+			j1.getKey();
+
+			Date startDate = Date.from(fechaInicio.minusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
+			Date endDate = Date.from(fechaFin.plusMinutes(1).atZone(ZoneId.systemDefault()).toInstant());
+
+			Trigger t = TriggerBuilder.newTrigger().withIdentity(id)
+					.startAt(startDate)
+					.withSchedule(CronScheduleBuilder.cronSchedule(horan))
+					.endAt(endDate)
+					.build();
+			sc.scheduleJob(j1, t);
+		} catch (SchedulerException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void agregarJobNotificacionCita(Cita c, Integer horas, Integer key) {
 		LocalDateTime fechaInicio = c.getFechaInicio();
@@ -213,6 +257,16 @@ public class Planificador {
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = "broadcast";
 		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
+	}
+	
+	private void agregarJobMailAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {
+		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()),
+				LocalTime.now().plusMinutes(1));
+		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()), LocalTime.now().plusMinutes(10));
+		fechaInicio=fechaInicio.minusMonths(meses);
+		String triggerKey = c.getId().toString() + "-" + key.toString();
+		//TODO agregar a messageable un random id para que no colisionen cobros con contratos por ejemplo
+		agregarJobMail(c.getTitulo(), c.getMessage(), c.getPropietario().getMail(), fechaInicio, fechaFin, "1/"+perioricidadVencimientoContrato.toString(), c.getId().toString());
 	}
 
 	public static void initDemo() {
