@@ -96,7 +96,7 @@ public class PlanificadorIT {
 		System.out.println("--------------------");
 		System.out.println();
 	}
-	
+
 	@Test
 	public void addCitas() {
 		try {
@@ -131,7 +131,7 @@ public class PlanificadorIT {
 		System.out.println("--------------------");
 		System.out.println();
 	}
-	
+
 	@Test
 	public void addCobros() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
@@ -139,17 +139,17 @@ public class PlanificadorIT {
 		ContratoAlquiler contrato=instanciaAlquilerSimple();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
-		
+
 		new ContratoService().addCobros(contrato);
-		
+
 		Long id=new Long(0);
-		
+
 		for (Messageable c: contrato.getCobros()) {
 			Cobro c1=(Cobro)c;
 			c1.SetId(id);
 			id++;
 		}
-		
+
 		contrato.getCobros().forEach(c -> Planificador.get().addJobCobroVencido(c));
 		TimeUnit.SECONDS.sleep(62);
 		System.out.println();
@@ -171,7 +171,7 @@ public class PlanificadorIT {
 			ret=TipoCita.Tasacion;
 		return ret;
 	}
-	
+
 	private Credencial instanciaCredencial() {
 		Credencial c = new Credencial.Builder()
 				.setUsuario("usuario")
@@ -179,7 +179,7 @@ public class PlanificadorIT {
 				.build();
 		return c;
 	}
-	
+
 	private Empleado instanciaEmpleado() {
 		Empleado e = new Empleado.Builder()
 				.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria)
@@ -188,7 +188,7 @@ public class PlanificadorIT {
 				.build();
 		return e;
 	}
-	
+
 	private Persona personaInquilino(int i) {
 		Persona ret= new Persona.Builder()
 				.setApellido("dasd")
@@ -202,29 +202,29 @@ public class PlanificadorIT {
 		ret.addRol(new Inquilino());
 		return ret;
 	}
-	
-    private ContratoAlquiler instanciaAlquilerSimple() {
-    	LocalDate fecha=LocalDate.now();
-    	fecha=fecha.minusMonths(5);
-	ContratoAlquiler ret = new ContratoAlquiler.Builder()
-		.setFechaIngreso(fecha)
-		.setValorIncial(new BigDecimal("100.00"))
-		.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
-		.setInteresPunitorio(new Double(50))
-		.setIntervaloActualizacion(new Integer(2))
-		.setTipoIncrementoCuota(TipoInteres.Simple)
-		.setTipoInteresPunitorio(TipoInteres.Simple)
-		.setPorcentajeIncremento(new Double(50))
-		.setInquilinoContrato(null)
-		.setDuracionContrato(instanciaContratoDuracion24())
-		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 
-		.build();
-	ret.setEstadoContrato(EstadoContrato.Vigente);
-	return ret;
-    }
-    
-    private ContratoDuracion instanciaContratoDuracion24() {
-    	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
-        }
+	private ContratoAlquiler instanciaAlquilerSimple() {
+		LocalDate fecha=LocalDate.now();
+		fecha=fecha.minusMonths(5);
+		ContratoAlquiler ret = new ContratoAlquiler.Builder()
+				.setFechaIngreso(fecha)
+				.setValorIncial(new BigDecimal("100.00"))
+				.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
+				.setInteresPunitorio(new Double(50))
+				.setIntervaloActualizacion(new Integer(2))
+				.setTipoIncrementoCuota(TipoInteres.Simple)
+				.setTipoInteresPunitorio(TipoInteres.Simple)
+				.setPorcentajeIncremento(new Double(50))
+				.setInquilinoContrato(null)
+				.setDuracionContrato(instanciaContratoDuracion24())
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+
+				.build();
+		ret.setEstadoContrato(EstadoContrato.Vigente);
+		return ret;
+	}
+
+	private ContratoDuracion instanciaContratoDuracion24() {
+		return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
+	}
 }
