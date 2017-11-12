@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -34,6 +35,7 @@ import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.NotificadorConcreto;
 import com.TpFinal.services.Planificador;
+import com.itextpdf.text.log.SysoCounter;
 
 
 public class PlanificadorIT {
@@ -47,56 +49,15 @@ public class PlanificadorIT {
 
 	@After
 	public void tearDown() throws Exception {
-		sc.apagar();
+		//sc.apagar();
 	}
 
-	@Ignore
-	@Test
-	public void test() {
-		sc.setNotificacion(new NotificadorConcreto());
-		for(int i=0; i<3; i++) {
-			LocalDate fInicio = LocalDate.now();
-			LocalDate fFin = fInicio.plusDays(1);
-
-			sc.agregarAccion("Mensaje numero "+i, fInicio, fFin, "15", String.valueOf(31+i), "1", Long.valueOf(i));
-		}
-
-		try {
-			TimeUnit.SECONDS.sleep(300);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/*@Ignore
-	@Test
-	public void testJob() {
-		try {
-			sc.setNotificacion(new NotificadorConcreto());
-			for(int i=0; i<3; i++) {
-				LocalDateTime fInicio = LocalDateTime.now();
-				fInicio=fInicio.plusMinutes(i+1);
-				LocalDateTime fFin = fInicio.plusDays(i+1);
-
-				//sc.agregarCita("t "+i,"m "+i, fInicio, fFin, "1", UUID.randomUUID().toString());
-			}
-
-
-			TimeUnit.SECONDS.sleep(300);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-
-
-
-	@Ignore
 	@Test
 	public void eliminarCita() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
 			List<Messageable>citas = new ArrayList<>();
+			System.out.println("Agregando citas \n deberia eliminarlas");
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
@@ -127,9 +88,13 @@ public class PlanificadorIT {
 			Assert.assertTrue(eliminar);
 
 			TimeUnit.SECONDS.sleep(5);
+			System.out.println("Elimine todas");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
 	}
 	
 	@Test
@@ -141,7 +106,6 @@ public class PlanificadorIT {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
 				fInicio=fInicio.plusHours(1);
-				System.out.println("Fecha de cita "+fInicio);
 
 				Empleado e=instanciaEmpleado();
 				e.setIdRol(new Long (i));
@@ -159,60 +123,24 @@ public class PlanificadorIT {
 			}
 			sc.agregarJobs(citas);
 
-			TimeUnit.SECONDS.sleep( 300);
+			TimeUnit.SECONDS.sleep( 182);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
 	}
 	
-	@Ignore
-	@Test
-	public void cargarCobros() throws InterruptedException {
-		sc.setNotificacion(new NotificadorConcreto());
-		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
-		ContratoAlquiler contrato=instanciaAlquilerSimple();
-		contrato.setEstadoContrato(EstadoContrato.Vigente);
-		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
-		
-		new ContratoService().addCobros(contrato);
-		
-		
-		List<Messageable>cobros=contrato.getCobros().stream().collect(Collectors.toList());
-		cobros.sort((c1,c2) -> {
-			Cobro c11 = (Cobro)c1;
-			Cobro c22 = (Cobro)c2;
-			
-			return c11.getFechaDeVencimiento().compareTo(c22.getFechaDeVencimiento());
-		});
-		
-		Cobro cob=(Cobro)cobros.get(0);
-		
-		Long id=new Long(0);
-		
-		for (Messageable c: cobros) {
-			Cobro c1=(Cobro)c;
-			c1.SetId(id);
-			id++;
-		}
-		
-		Planificador.get().agregarJobs(cobros);
-		TimeUnit.SECONDS.sleep( 300);
-	}
-	
-	@Ignore
 	@Test
 	public void addCobros() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
-		System.out.println(sc.getHoraInicioCobrosVencidos());
 		ContratoAlquiler contrato=instanciaAlquilerSimple();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
 		
 		new ContratoService().addCobros(contrato);
-		
-		
-		
 		
 		Long id=new Long(0);
 		
@@ -222,9 +150,11 @@ public class PlanificadorIT {
 			id++;
 		}
 		
-		
 		contrato.getCobros().forEach(c -> Planificador.get().addJobCobroVencido(c));
-		TimeUnit.SECONDS.sleep( 300);
+		TimeUnit.SECONDS.sleep(62);
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
 	}
 
 	public TipoCita randomCita() {

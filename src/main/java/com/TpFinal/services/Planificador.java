@@ -128,8 +128,8 @@ public class Planificador {
 		try {
 			if (cita.getId() != null) {
 
-				return sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId()) + "-1")) &&
-						sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cita.getId()) + "-2"));
+				return sc.unscheduleJob(TriggerKey.triggerKey(cita.getTriggerKey() + "-1")) &&
+						sc.unscheduleJob(TriggerKey.triggerKey(cita.getTriggerKey() + "-2"));
 			} else
 				throw new IllegalArgumentException("La cita debe estar persistida");
 		} catch (Exception e) {
@@ -150,7 +150,7 @@ public class Planificador {
 		try {
 			if (cobro.getId() != null) {
 
-				return sc.unscheduleJob(TriggerKey.triggerKey(String.valueOf(cobro.getId()) + "-1"));
+				return sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
 			} else
 				throw new IllegalArgumentException("El Cobro debe estar persistida");
 		} catch (Exception e) {
@@ -245,7 +245,7 @@ public class Planificador {
 		Integer perioricidad = horas + 1;
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = c.getEmpleado();
-		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
+		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", c.getTriggerKey()+"-"+key.toString());
 	}
 
 	private void agregarJobNotificacionCobro(Cobro c, Integer horas, Integer key) {
@@ -256,7 +256,7 @@ public class Planificador {
 		Integer perioricidad = horas + 1;
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		String username = "broadcast";
-		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", triggerKey);
+		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, "1/1", c.getTriggerKey()+"-"+key.toString());
 	}
 	
 	private void agregarJobMailAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {
@@ -266,7 +266,8 @@ public class Planificador {
 		fechaInicio=fechaInicio.minusMonths(meses);
 		String triggerKey = c.getId().toString() + "-" + key.toString();
 		//TODO agregar a messageable un random id para que no colisionen cobros con contratos por ejemplo
-		agregarJobMail(c.getTitulo(), c.getMessage(), c.getPropietario().getMail(), fechaInicio, fechaFin, "1/"+perioricidadVencimientoContrato.toString(), c.getId().toString());
+		agregarJobMail(c.getTitulo(), c.getMessage(), c.getPropietario().getMail(), fechaInicio, fechaFin, "1/"+perioricidadVencimientoContrato.toString(),
+				c.getTriggerKey()+"-"+key.toString());
 	}
 
 	public static void initDemo() {
