@@ -104,7 +104,7 @@ public class PublicacionForm extends FormLayout {
 
 	binderPublicacion.forField(estadoPublicacion)
 		.asRequired("Seleccione el estado de la publicación")
-		.withValidator(noMasDeUnaPublicacionPorTipo(),
+		.withValidator(noMasDeUnaPublicacionPorTipo(this.publicacion),
 			"No puede haber más de una publicación activa del mismo tipo asociada al inmueble!")
 		.bind(Publicacion::getEstadoPublicacion,
 			Publicacion::setEstadoPublicacion);
@@ -197,10 +197,15 @@ public class PublicacionForm extends FormLayout {
 			inmueble));
     }
 
-    private SerializablePredicate<? super EstadoPublicacion> noMasDeUnaPublicacionPorTipo() {
+    private SerializablePredicate<? super EstadoPublicacion> noMasDeUnaPublicacionPorTipo(Publicacion publicacion2) {
 	return estado -> {
+	    logger.debug("Publicacion: " +publicacion);
 	    if (estado == EstadoPublicacion.Activa && comboInmueble.getValue() != null && publicacion
 		    .getTipoPublicacion() != null) {
+		if(publicacion != null && publicacion.getId()!= null) {
+		    if (publicacion.getEstadoPublicacion() == EstadoPublicacion.Activa)
+			return true;
+		}
 		return !inmuebleService.inmueblePoseePubActivaDeTipo(comboInmueble.getValue(), publicacion
 			.getTipoPublicacion());
 	    } else

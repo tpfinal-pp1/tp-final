@@ -210,8 +210,8 @@ public class ContratoVentaForm extends FormLayout {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoVenta.isValid()) {
 		contratoVenta.setEstadoContrato(EstadoContrato.Vigente);
-		Movimiento movPagoVenta = MovimientoService.getInstanciaPagoVenta(contratoVenta);
-		movimientoService.saveOrUpdate(movPagoVenta);
+//		Movimiento movPagoVenta = MovimientoService.getInstanciaPagoVenta(contratoVenta);
+//		movimientoService.saveOrUpdate(movPagoVenta);
 		//XXX
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");

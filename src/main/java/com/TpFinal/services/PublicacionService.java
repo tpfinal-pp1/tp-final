@@ -42,7 +42,10 @@ public class PublicacionService {
 
 	    if (publicacion.getEstadoPublicacion() == EstadoPublicacion.Activa) {
 		if (!inmuebleService.inmueblePoseePubActivaDeTipo(publicacion.getInmueble(), publicacion
-			.getTipoPublicacion()))
+			.getTipoPublicacion()) || (publicacion.getId() != null
+				&& findById(publicacion.getId()).getEstadoPublicacion().equals(publicacion
+					.getEstadoPublicacion())
+				|| publicacion.getEstadoPublicacion().equals(EstadoPublicacion.Terminada)))
 		    ret = daoPublicacion.saveOrUpdate(publicacion);
 		else {
 		    ret = false;
