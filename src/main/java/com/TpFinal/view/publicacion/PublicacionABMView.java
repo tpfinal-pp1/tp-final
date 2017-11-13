@@ -5,6 +5,7 @@ import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.PublicacionService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
@@ -23,6 +24,8 @@ import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
@@ -35,7 +38,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
      * 
      */
     private static final long serialVersionUID = 8290150520198357534L;
- //   TextField filter = new TextField();
+    // TextField filter = new TextField();
     private Grid<Publicacion> grid = new Grid<>(Publicacion.class);
     Button nuevo = new Button("Nueva");
 
@@ -53,8 +56,8 @@ public class PublicacionABMView extends DefaultLayout implements View {
     // example as EJB or Spring Data based service.
     PublicacionService publicacionService = new PublicacionService();
 
-    //acciones segun numero de fila
-	int acciones = 0;
+    // acciones segun numero de fila
+    int acciones = 0;
 
     public PublicacionABMView() {
 	super();
@@ -73,272 +76,305 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
     private void configureGrid() {
 
-    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
-	grid.setColumns("acciones","inmueble", "tipoPublicacion", "estadoPublicacion");
+	grid.addComponentColumn(configurarAcciones()).setCaption("Acciones").setId("acciones");
+	grid.setColumns("acciones", "inmueble", "tipoPublicacion", "estadoPublicacion");
 
 	grid.getColumn("tipoPublicacion").setCaption("Operación");
-	grid.addColumn(publicacion -> publicacion.getFechaPublicacion(),new LocalDateRenderer("dd/MM/yyyy"))
-	.setCaption("Fecha Publicación")
-	.setId("fechaPublicacion");
+	grid.addColumn(publicacion -> publicacion.getFechaPublicacion(), new LocalDateRenderer("dd/MM/yyyy"))
+		.setCaption("Fecha Publicación")
+		.setId("fechaPublicacion");
 
-	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario").setId("propietario");
+	grid.addColumn(publicacion -> {
+	    String ret = "Disponible";
+	    if (publicacion.getEstadoPublicacion().equals(EstadoPublicacion.Terminada)) {
+		ret = "N/A";
+	    } else if (publicacion.getFechaDisponibilidad() != null && publicacion.getFechaDisponibilidad().isAfter(
+		    LocalDate.now())) {
+		ret = publicacion.getFechaDisponibilidad().format(Utils.getFormatoFechaArg());
+	    }
+	    return ret;
+
+	}).setCaption("Fecha de disponibilidad").setId("FechaDisponibilidad");
+
+	grid.addColumn(Publicacion -> Publicacion.getInmueble().getPropietario()).setCaption("Propietario").setId(
+		"propietario");
 	grid.getColumns().forEach(col -> {
 	    col.setResizable(false);
 	    col.setHidable(true);
 	});
-	
-	  HeaderRow filterRow = grid.appendHeaderRow();
-			filterRow.getCell("inmueble").setComponent(filtroInmueble());
-			filterRow.getCell("tipoPublicacion").setComponent(filtroOperacion());
-			filterRow.getCell("fechaPublicacion").setComponent(filtroFecha());
-			filterRow.getCell("propietario").setComponent(filtroPropietario());
-			filterRow.getCell("estadoPublicacion").setComponent(filtroEstado());
+
+	HeaderRow filterRow = grid.appendHeaderRow();
+	filterRow.getCell("inmueble").setComponent(filtroInmueble());
+	filterRow.getCell("tipoPublicacion").setComponent(filtroOperacion());
+	filterRow.getCell("fechaPublicacion").setComponent(filtroFecha());
+	filterRow.getCell("propietario").setComponent(filtroPropietario());
+	filterRow.getCell("estadoPublicacion").setComponent(filtroEstado());
+	filterRow.getCell("FechaDisponibilidad").setComponent(filtroFechaDisp());
     }
-    
+
+    private Component filtroFechaDisp() {
+	DateField fDesde = new DateField();
+	fDesde.setPlaceholder("Antes de");
+	fDesde.setParseErrorMessage("Formato de fecha no reconocido");
+	fDesde.addValueChangeListener(e -> {
+	    if (fDesde.getValue() != null) {
+		filtro.setFechaDisponibilidadDesde(publicacion -> {
+		    return publicacion.getFechaDisponibilidad() == null
+			    || publicacion.getFechaDisponibilidad().compareTo(fDesde.getValue()) <= 0;
+		});
+	    } else {
+		filtro.setFechaDisponibilidadDesde(f -> true);
+	    }
+	    updateList();
+	});
+	fDesde.addStyleNames(ValoTheme.DATEFIELD_BORDERLESS);
+	return fDesde;
+    }
+
     private Component filtroInmueble() {
-    	TextField filtroInmueble = new TextField();
-		filtroInmueble.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
-		filtroInmueble.setPlaceholder("Sin Filtro");
-		filtroInmueble.addValueChangeListener(e -> {
-			if (e.getValue() != null) {
-				if(!filtroInmueble.isEmpty()) {
-					filtro.setInmueble(Publicacion -> Publicacion.getInmueble().getDireccion()
-							.toString().toLowerCase()
-							.contains(filtroInmueble.getValue().toLowerCase()));
-				}else
-					filtro.setInmueble(Publicacion -> true);
-				
-			} else {
-				filtro.setInmueble(Publicacion -> true);
-			}
-			updateList();
-		});
-		return filtroInmueble;
+	TextField filtroInmueble = new TextField();
+	filtroInmueble.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroInmueble.setPlaceholder("Sin Filtro");
+	filtroInmueble.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroInmueble.isEmpty()) {
+		    filtro.setInmueble(Publicacion -> Publicacion.getInmueble().getDireccion()
+			    .toString().toLowerCase()
+			    .contains(filtroInmueble.getValue().toLowerCase()));
+		} else
+		    filtro.setInmueble(Publicacion -> true);
+
+	    } else {
+		filtro.setInmueble(Publicacion -> true);
+	    }
+	    updateList();
+	});
+	return filtroInmueble;
     }
-    
+
     private Component filtroOperacion() {
-    	ComboBox<TipoPublicacion> filtroOperacion = new ComboBox<>();
-		filtroOperacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-		filtroOperacion.setPlaceholder("Sin Filtro");
-		filtroOperacion.setItems(TipoPublicacion.toList());
-		filtroOperacion.addValueChangeListener(e -> {
-			if (e.getValue() != null) {
-				if (!filtroOperacion.isEmpty())
-					filtro.setOperacion(contrato -> contrato.getTipoPublicacion().equals(e.getValue()));
-				else
-					filtro.setOperacion(contrato -> true);
-			} else {
-				filtro.setOperacion(contrato -> true);
-			}
-			updateList();
-		});
-		return filtroOperacion;
+	ComboBox<TipoPublicacion> filtroOperacion = new ComboBox<>();
+	filtroOperacion.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	filtroOperacion.setPlaceholder("Sin Filtro");
+	filtroOperacion.setItems(TipoPublicacion.toList());
+	filtroOperacion.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroOperacion.isEmpty())
+		    filtro.setOperacion(contrato -> contrato.getTipoPublicacion().equals(e.getValue()));
+		else
+		    filtro.setOperacion(contrato -> true);
+	    } else {
+		filtro.setOperacion(contrato -> true);
+	    }
+	    updateList();
+	});
+	return filtroOperacion;
     }
-    
+
     private Component filtroPropietario() {
-    	TextField filtroPropietario = new TextField();
-		filtroPropietario.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
-		filtroPropietario.setPlaceholder("Sin Filtro");
-		filtroPropietario.addValueChangeListener(e -> {
-			if (e.getValue() != null) {
-				if(!filtroPropietario.isEmpty()) {
-					filtro.setPropietario(Publicacion -> Publicacion.getInmueble().getPropietario()
-							.toString().toLowerCase()
-							.contains(filtroPropietario.getValue().toLowerCase()));
-				}else
-					filtro.setPropietario(Publicacion -> true);
-			} else {
-				filtro.setPropietario(Publicacion -> true);
-			}
-			updateList();
-		});
-		return filtroPropietario;
+	TextField filtroPropietario = new TextField();
+	filtroPropietario.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	filtroPropietario.setPlaceholder("Sin Filtro");
+	filtroPropietario.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroPropietario.isEmpty()) {
+		    filtro.setPropietario(Publicacion -> Publicacion.getInmueble().getPropietario()
+			    .toString().toLowerCase()
+			    .contains(filtroPropietario.getValue().toLowerCase()));
+		} else
+		    filtro.setPropietario(Publicacion -> true);
+	    } else {
+		filtro.setPropietario(Publicacion -> true);
+	    }
+	    updateList();
+	});
+	return filtroPropietario;
     }
-    
+
     private Component filtroEstado() {
-    	ComboBox<EstadoPublicacion> filtroEstado = new ComboBox<>();
-		filtroEstado.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
-		filtroEstado.setPlaceholder("Sin Filtro");
-		filtroEstado.setItems(EstadoPublicacion.toList());
-		filtroEstado.addValueChangeListener(e -> {
-			if (e.getValue() != null) {
-				if (!filtroEstado.isEmpty())
-					filtro.setEstado(publicacion -> publicacion.getEstadoPublicacion().equals(e.getValue()));
-				else
-					filtro.setEstado(publicacion -> true);
-			} else {
-				filtro.setEstado(publicacion -> true);
-			}
-			updateList();
-		});
-		return filtroEstado;
+	ComboBox<EstadoPublicacion> filtroEstado = new ComboBox<>();
+	filtroEstado.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
+	filtroEstado.setPlaceholder("Sin Filtro");
+	filtroEstado.setItems(EstadoPublicacion.toList());
+	filtroEstado.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		if (!filtroEstado.isEmpty())
+		    filtro.setEstado(publicacion -> publicacion.getEstadoPublicacion().equals(e.getValue()));
+		else
+		    filtro.setEstado(publicacion -> true);
+	    } else {
+		filtro.setEstado(publicacion -> true);
+	    }
+	    updateList();
+	});
+	return filtroEstado;
     }
-    
+
     private Component filtroFecha() {
-		HorizontalLayout hl = new HorizontalLayout();
-		DateField fDesde = filtroFDesde();
-		DateField fHasta = filtroFHasta();
-		TextField anio = filtroAnio();
-		TextField mes = filtroMes();
+	HorizontalLayout hl = new HorizontalLayout();
+	DateField fDesde = filtroFDesde();
+	DateField fHasta = filtroFHasta();
+	TextField anio = filtroAnio();
+	TextField mes = filtroMes();
 
-		HorizontalLayout hlFechas = hlFechas(fDesde, fHasta);
-		HorizontalLayout hlAnioMes = hlAnioMes(anio, mes);
+	HorizontalLayout hlFechas = hlFechas(fDesde, fHasta);
+	HorizontalLayout hlAnioMes = hlAnioMes(anio, mes);
 
-		Button adicionales = new Button(VaadinIcons.BOOKMARK);
-		adicionales.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_TINY, ValoTheme.BUTTON_ICON_ONLY);
-		adicionales.setWidth("90%");
+	Button adicionales = new Button(VaadinIcons.BOOKMARK);
+	adicionales.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_TINY, ValoTheme.BUTTON_ICON_ONLY);
+	adicionales.setWidth("90%");
+	adicionales.setDescription("Búsqueda por Año y Mes");
+	adicionales.setCaption("Boton desde");
+	adicionales.addClickListener(e -> {
+	    if (adicionales.getIcon().equals(VaadinIcons.BOOKMARK)) {
+		adicionales.setIcon(VaadinIcons.BOOKMARK_O);
+		adicionales.setDescription("Búsqueda por fechas");
+		fDesde.clear();
+		fHasta.clear();
+		filtro.setAnio(c -> true);
+		filtro.setMes(f -> true);
+		mostrarAnioMes(hl, adicionales, hlAnioMes);
+	    } else {
+		adicionales.setIcon(VaadinIcons.BOOKMARK);
 		adicionales.setDescription("Búsqueda por Año y Mes");
-		adicionales.setCaption("Boton desde");
-		adicionales.addClickListener(e -> {
-			if (adicionales.getIcon().equals(VaadinIcons.BOOKMARK)) {
-				adicionales.setIcon(VaadinIcons.BOOKMARK_O);
-				adicionales.setDescription("Búsqueda por fechas");
-				fDesde.clear();
-				fHasta.clear();
-				filtro.setAnio(c -> true);
-				filtro.setMes(f -> true);
-				mostrarAnioMes(hl, adicionales, hlAnioMes);
-			} else {
-				adicionales.setIcon(VaadinIcons.BOOKMARK);
-				adicionales.setDescription("Búsqueda por Año y Mes");
-				anio.clear();
-				mes.clear();
-				filtro.setAnio(c -> true);
-				filtro.setMes(f -> true);
-				mostrarFechas(hl, adicionales, hlFechas);
-			}
-			updateList();
-		});
+		anio.clear();
+		mes.clear();
+		filtro.setAnio(c -> true);
+		filtro.setMes(f -> true);
 		mostrarFechas(hl, adicionales, hlFechas);
-		return hl;
-	}
+	    }
+	    updateList();
+	});
+	mostrarFechas(hl, adicionales, hlFechas);
+	return hl;
+    }
 
-	private void mostrarFechas(HorizontalLayout hl, Button adicionales, HorizontalLayout hlFechas) {
-		hl.removeAllComponents();
-		hl.addComponents(adicionales, hlFechas);
-		hl.setWidth("175px");
-		hl.setSpacing(false);
-		hl.setExpandRatio(adicionales, 0.10f);
-		hl.setExpandRatio(hlFechas, 1);
-	}
+    private void mostrarFechas(HorizontalLayout hl, Button adicionales, HorizontalLayout hlFechas) {
+	hl.removeAllComponents();
+	hl.addComponents(adicionales, hlFechas);
+	hl.setWidth("175px");
+	hl.setSpacing(false);
+	hl.setExpandRatio(adicionales, 0.10f);
+	hl.setExpandRatio(hlFechas, 1);
+    }
 
-	private void mostrarAnioMes(HorizontalLayout hl, Button adicionales, HorizontalLayout hlAnioMes) {
-		hl.removeAllComponents();
-		hl.addComponents(adicionales, hlAnioMes);
-		hl.setWidth("175px");
-		hl.setSpacing(false);
-		hl.setExpandRatio(adicionales, 0.10f);
-		hl.setExpandRatio(hlAnioMes, 1);
-	}
+    private void mostrarAnioMes(HorizontalLayout hl, Button adicionales, HorizontalLayout hlAnioMes) {
+	hl.removeAllComponents();
+	hl.addComponents(adicionales, hlAnioMes);
+	hl.setWidth("175px");
+	hl.setSpacing(false);
+	hl.setExpandRatio(adicionales, 0.10f);
+	hl.setExpandRatio(hlAnioMes, 1);
+    }
 
-	private HorizontalLayout hlFechas(DateField fDesde, DateField fHasta) {
+    private HorizontalLayout hlFechas(DateField fDesde, DateField fHasta) {
 
-		HorizontalLayout hlFechas = new HorizontalLayout(fDesde, fHasta);
-		hlFechas.setSpacing(false);
-		hlFechas.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY,
-				ValoTheme.DATEFIELD_BORDERLESS));
-		hlFechas.setWidth("160px");
-		return hlFechas;
-	}
+	HorizontalLayout hlFechas = new HorizontalLayout(fDesde, fHasta);
+	hlFechas.setSpacing(false);
+	hlFechas.forEach(component -> component.addStyleNames(ValoTheme.DATEFIELD_TINY,
+		ValoTheme.DATEFIELD_BORDERLESS));
+	hlFechas.setWidth("160px");
+	return hlFechas;
+    }
 
-	private HorizontalLayout hlAnioMes(TextField anio, TextField mes) {
+    private HorizontalLayout hlAnioMes(TextField anio, TextField mes) {
 
-		anio.setWidth("100%");
-		mes.setWidth("100%");
-		HorizontalLayout hl = new HorizontalLayout(anio, mes);
-		hl.setSpacing(true);
-		hl.forEach(component -> component.addStyleNames(ValoTheme.TEXTFIELD_ALIGN_CENTER, ValoTheme.TEXTFIELD_TINY,
-				ValoTheme.TEXTFIELD_BORDERLESS));
-		hl.setWidth("160px");
-		hl.setExpandRatio(anio, 0.5f);
-		hl.setExpandRatio(mes, 0.5f);
-		return hl;
-	}
+	anio.setWidth("100%");
+	mes.setWidth("100%");
+	HorizontalLayout hl = new HorizontalLayout(anio, mes);
+	hl.setSpacing(true);
+	hl.forEach(component -> component.addStyleNames(ValoTheme.TEXTFIELD_ALIGN_CENTER, ValoTheme.TEXTFIELD_TINY,
+		ValoTheme.TEXTFIELD_BORDERLESS));
+	hl.setWidth("160px");
+	hl.setExpandRatio(anio, 0.5f);
+	hl.setExpandRatio(mes, 0.5f);
+	return hl;
+    }
 
-	private TextField filtroMes() {
-		TextField mes = new TextField();
-		mes.setPlaceholder("Mes");
-		mes.addBlurListener(e -> {
-			if (!mes.isVisible())
-				mes.clear();
+    private TextField filtroMes() {
+	TextField mes = new TextField();
+	mes.setPlaceholder("Mes");
+	mes.addBlurListener(e -> {
+	    if (!mes.isVisible())
+		mes.clear();
+	});
+	mes.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		filtro.setMes(contrato -> contrato.getFechaPublicacion()
+			.getMonth()
+			.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"))
+			.toLowerCase().contains(mes.getValue().toLowerCase()));
+		;
+	    } else {
+		filtro.setMes(contrato -> true);
+	    }
+	    updateList();
+	});
+	return mes;
+    }
+
+    private TextField filtroAnio() {
+
+	TextField anio = new TextField();
+	anio.setPlaceholder("Año");
+	anio.addBlurListener(e -> {
+	    if (!anio.isVisible())
+		anio.setValue("");
+	});
+	anio.addValueChangeListener(e -> {
+	    if (e.getValue() != null) {
+		Integer anioInt;
+		try {
+		    anioInt = Integer.parseInt(anio.getValue());
+		    filtro.setAnio(contrato -> contrato.getFechaPublicacion().getYear() == anioInt);
+		} catch (Exception ex) {
+		    System.err.println(ex.getMessage());
+		    filtro.setAnio(contrato -> true);
+		}
+	    } else {
+		filtro.setAnio(contrato -> true);
+	    }
+	    updateList();
+	});
+
+	return anio;
+    }
+
+    private DateField filtroFDesde() {
+	DateField fDesde = new DateField();
+	fDesde.setPlaceholder("Desde");
+	fDesde.setParseErrorMessage("Formato de fecha no reconocido");
+	fDesde.addValueChangeListener(e -> {
+	    if (fDesde.getValue() != null) {
+		filtro.setFechaDesde(contrato -> {
+		    return fDesde.getValue() == null ? true
+			    : contrato.getFechaPublicacion().compareTo(fDesde.getValue()) >= 0;
 		});
-		mes.addValueChangeListener(e -> {
-			if (e.getValue() != null) {
-				filtro.setMes(contrato -> contrato.getFechaPublicacion()
-						.getMonth()
-						.getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"))
-						.toLowerCase().contains(mes.getValue().toLowerCase()));
-				;
-			} else {
-				filtro.setMes(contrato -> true);
-			}
-			updateList();
-		});
-		return mes;
-	}
+	    } else {
+		filtro.setFechaDesde(f -> true);
+	    }
+	    updateList();
+	});
+	return fDesde;
+    }
 
-	private TextField filtroAnio() {
-
-		TextField anio = new TextField();
-		anio.setPlaceholder("Año");
-		anio.addBlurListener(e -> {
-			if (!anio.isVisible())
-				anio.setValue("");
+    private DateField filtroFHasta() {
+	DateField fHasta = new DateField();
+	fHasta.setPlaceholder("Hasta");
+	fHasta.setParseErrorMessage("Formato de fecha no reconocido");
+	fHasta.addValueChangeListener(e -> {
+	    if (fHasta.getValue() != null) {
+		filtro.setFechaHasta(contrato -> {
+		    return fHasta.getValue() == null ? true
+			    : contrato.getFechaPublicacion().compareTo(fHasta.getValue()) <= 0;
 		});
-		anio.addValueChangeListener(e -> {
-			if (e.getValue() != null) {
-				Integer anioInt;
-				try {
-					anioInt = Integer.parseInt(anio.getValue());
-					filtro.setAnio(contrato -> contrato.getFechaPublicacion().getYear() == anioInt);
-				} catch (Exception ex) {
-				    System.err.println(ex.getMessage());
-					filtro.setAnio(contrato -> true);
-				}
-			} else {
-				filtro.setAnio(contrato -> true);
-			}
-			updateList();
-		});
-
-		return anio;
-	}
-
-	private DateField filtroFDesde() {
-		DateField fDesde = new DateField();
-		fDesde.setPlaceholder("Desde");
-		fDesde.setParseErrorMessage("Formato de fecha no reconocido");
-		fDesde.addValueChangeListener(e -> {
-			if (fDesde.getValue() != null) {
-				filtro.setFechaDesde(contrato -> {
-					return fDesde.getValue() == null ? true
-							: contrato.getFechaPublicacion().compareTo(fDesde.getValue()) >= 0;
-				});
-			} else {
-				filtro.setFechaDesde(f -> true);
-			}
-			updateList();
-		});
-		return fDesde;
-	}
-
-	private DateField filtroFHasta() {
-		DateField fHasta = new DateField();
-		fHasta.setPlaceholder("Hasta");
-		fHasta.setParseErrorMessage("Formato de fecha no reconocido");
-		fHasta.addValueChangeListener(e -> {
-			if (fHasta.getValue() != null) {
-				filtro.setFechaHasta(contrato -> {
-					return fHasta.getValue() == null ? true
-							: contrato.getFechaPublicacion().compareTo(fHasta.getValue()) <= 0;
-				});
-			} else {
-				filtro.setFechaHasta(f -> true);
-			}
-			updateList();
-		});
-		return fHasta;
-	}
+	    } else {
+		filtro.setFechaHasta(f -> true);
+	    }
+	    updateList();
+	});
+	return fHasta;
+    }
 
     private ValueProvider<Publicacion, HorizontalLayout> configurarAcciones() {
 	return publicacion -> {
@@ -369,7 +405,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	    del.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 	    del.setDescription("Borrar");
 	    HorizontalLayout hl = new HorizontalLayout(edit, del);
-	    hl.setCaption("Accion "+acciones);
+	    hl.setCaption("Accion " + acciones);
 	    hl.setSpacing(false);
 	    acciones++;
 	    return hl;
@@ -386,22 +422,22 @@ public class PublicacionABMView extends DefaultLayout implements View {
     }
 
     private void configureFilter() {
-		clearFilterTextBtn.setVisible(false);
-	//filter.addValueChangeListener(e -> updateList());
-	//filter.setValueChangeMode(ValueChangeMode.LAZY);
-	//filter.setPlaceholder("Filtrar");
-//	filter.addValueChangeListener(e -> updateList());
+	clearFilterTextBtn.setVisible(false);
+	// filter.addValueChangeListener(e -> updateList());
+	// filter.setValueChangeMode(ValueChangeMode.LAZY);
+	// filter.setPlaceholder("Filtrar");
+	// filter.addValueChangeListener(e -> updateList());
 
 	clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
-	//filter.setIcon(VaadinIcons.SEARCH);
-	//filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+	// filter.setIcon(VaadinIcons.SEARCH);
+	// filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
     }
 
     public void setComponentsVisible(boolean b) {
 	nuevo.setVisible(b);
-	//filter.setVisible(b);
+	// filter.setVisible(b);
 
-		clearFilterTextBtn.setVisible(!b);
+	clearFilterTextBtn.setVisible(!b);
 	// clearFilterTextBtn.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
@@ -413,7 +449,7 @@ public class PublicacionABMView extends DefaultLayout implements View {
 
 	nuevo.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	HorizontalLayout layout = new HorizontalLayout(nuevo);
-	filtering.addComponents( clearFilterTextBtn, layout);
+	filtering.addComponents(clearFilterTextBtn, layout);
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	buildToolbar("Publicaciones", filtering/* , layout */);
@@ -469,7 +505,6 @@ public class PublicacionABMView extends DefaultLayout implements View {
 	    publicacionForm.cancel();
 
 	}
-
 
     }
 

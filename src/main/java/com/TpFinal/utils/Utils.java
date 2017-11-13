@@ -17,6 +17,8 @@ import java.sql.Blob;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -191,5 +193,9 @@ public class Utils {
 	
 	return ret;
 
+    }
+
+    public static DateTimeFormatter getFormatoFechaArg() {	
+	return new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter();
     }
 }
