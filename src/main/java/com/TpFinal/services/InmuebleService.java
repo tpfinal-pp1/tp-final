@@ -63,13 +63,13 @@ public class InmuebleService {
 	ret.sort(Comparator.comparing(Inmueble::getId));
 	return ret;
     }
-    
-    public List<Object> getListaFichaInmueble(Inmueble inmueble){
-    	List <ItemFichaInmueble> lista = new ArrayList<>();
-   
-    	ItemFichaInmueble item = new ItemFichaInmueble(inmueble); 
-    	lista.add(item);
-    	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
+
+    public List<Object> getListaFichaInmueble(Inmueble inmueble) {
+	List<ItemFichaInmueble> lista = new ArrayList<>();
+
+	ItemFichaInmueble item = new ItemFichaInmueble(inmueble);
+	lista.add(item);
+	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
     }
 
     public boolean merge(Inmueble entidad) {
@@ -155,22 +155,22 @@ public class InmuebleService {
 		    .map(InmuebleService::GenerarStreamResource)
 		    .collect(Collectors.toList());
 	}
-	return fotos.isEmpty()? null : fotos;
+	return fotos.isEmpty() ? null : fotos;
     }
-    
-    public Map<String,Resource> getFotosYPath(Inmueble inmueble) {
-	Map<String,Resource> fotos = new HashMap<>();
-   	if (inmueble != null && inmueble.getId() != null) {
-   	    fotos = inmueble.getPathImagenes().stream()
-   		    .filter(path -> {
-   			return new File("Files" + File.separator + path).exists();
-   		    })   		    
-   		    .collect(Collectors.toMap(path -> path, InmuebleService::GenerarStreamResource));
-   	}
-   	return fotos.isEmpty()? null : fotos;
-       }
 
-	public static Resource GenerarStreamResource(String path) {
+    public Map<String, Resource> getFotosYPath(Inmueble inmueble) {
+	Map<String, Resource> fotos = new HashMap<>();
+	if (inmueble != null && inmueble.getId() != null) {
+	    fotos = inmueble.getPathImagenes().stream()
+		    .filter(path -> {
+			return new File("Files" + File.separator + path).exists();
+		    })
+		    .collect(Collectors.toMap(path -> path, InmuebleService::GenerarStreamResource));
+	}
+	return fotos.isEmpty() ? null : fotos;
+    }
+
+    public static Resource GenerarStreamResource(String path) {
 	if (new File("Files" + File.separator + path).exists()) {
 	    StreamResource str = new StreamResource(new StreamResource.StreamSource() {
 		@Override
@@ -233,21 +233,19 @@ public class InmuebleService {
     }
 
     private void setEstadoInmuebleSegunPublicaciones(Inmueble inmueble, List<Publicacion> publicaciones) {
-	if (!(inmueble.getEstadoInmueble() == EstadoInmueble.Alquilado
-		|| (inmueble.getEstadoInmueble() == EstadoInmueble.Vendido))) {
-	    boolean algunaVenta = publicaciones.stream()
-		    .anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Venta);
-	    boolean algunAlquiler = publicaciones.stream()
-		    .anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Alquiler);
-	    if (algunaVenta && algunAlquiler) {
-		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
-	    } else if (algunaVenta) {
-		inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
-	    } else if (algunAlquiler) {
-		inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
-	    } else {
-		inmueble.setEstadoInmueble(EstadoInmueble.NoPublicado);
-	    }
+
+	boolean algunaVenta = publicaciones.stream()
+		.anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Venta);
+	boolean algunAlquiler = publicaciones.stream()
+		.anyMatch(p -> p.getTipoPublicacion() == TipoPublicacion.Alquiler);
+	if (algunaVenta && algunAlquiler) {
+	    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquilerYVenta);
+	} else if (algunaVenta) {
+	    inmueble.setEstadoInmueble(EstadoInmueble.EnVenta);
+	} else if (algunAlquiler) {
+	    inmueble.setEstadoInmueble(EstadoInmueble.EnAlquiler);
+	} else {
+	    inmueble.setEstadoInmueble(EstadoInmueble.NoPublicado);
 	}
 
     }

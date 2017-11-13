@@ -63,6 +63,7 @@ public class DAOCobroImplIT {
 		assertEquals(new Integer(1), cobros.get(1).getNumeroCuota());
 		assertEquals(new Integer(2), cobros.get(2).getNumeroCuota());
 		assertEquals(new Integer(3), cobros.get(3).getNumeroCuota());
+		System.out.println("Trigger key "+daoCobro.readAll().get(0).getTriggerKey());
 	}
 	
 	@Test

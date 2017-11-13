@@ -49,6 +49,8 @@ public class DAOCitaImplIT {
 	dao.save(instancia("3"));
 	dao.save(instancia("4"));
 
+	System.out.println("Trigger key "+dao.readAll().get(0).getTriggerKey());
+	
 	assertEquals(dao.readAll().size(), 4);
     }
 

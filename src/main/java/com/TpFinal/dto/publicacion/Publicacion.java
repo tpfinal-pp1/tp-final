@@ -37,6 +37,19 @@ public abstract class Publicacion implements Identificable, BorradoLogico {
     @Enumerated(EnumType.STRING)
     @Column(name = "estado_publicacion")
     protected EstadoPublicacion estadoPublicacion;
+    
+    @Transient
+    protected LocalDate fechaDisponibilidad;
+    
+    
+
+    public LocalDate getFechaDisponibilidad() {
+        return fechaDisponibilidad;
+    }
+
+    public void setFechaDisponibilidad(LocalDate fechaDisponibilidad) {
+        this.fechaDisponibilidad = fechaDisponibilidad;
+    }
 
     public static String getpTipoPublicacion() {
 	return pTipoPublicacion;

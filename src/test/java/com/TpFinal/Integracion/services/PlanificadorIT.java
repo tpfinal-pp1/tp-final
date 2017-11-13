@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -34,6 +35,7 @@ import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.NotificadorConcreto;
 import com.TpFinal.services.Planificador;
+import com.itextpdf.text.log.SysoCounter;
 
 
 public class PlanificadorIT {
@@ -47,56 +49,15 @@ public class PlanificadorIT {
 
 	@After
 	public void tearDown() throws Exception {
-		sc.apagar();
+		//sc.apagar();
 	}
 
-	@Ignore
-	@Test
-	public void test() {
-		sc.setNotificacion(new NotificadorConcreto());
-		for(int i=0; i<3; i++) {
-			LocalDate fInicio = LocalDate.now();
-			LocalDate fFin = fInicio.plusDays(1);
-
-			sc.agregarAccion("Mensaje numero "+i, fInicio, fFin, "15", String.valueOf(31+i), "1", Long.valueOf(i));
-		}
-
-		try {
-			TimeUnit.SECONDS.sleep(300);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	/*@Ignore
-	@Test
-	public void testJob() {
-		try {
-			sc.setNotificacion(new NotificadorConcreto());
-			for(int i=0; i<3; i++) {
-				LocalDateTime fInicio = LocalDateTime.now();
-				fInicio=fInicio.plusMinutes(i+1);
-				LocalDateTime fFin = fInicio.plusDays(i+1);
-
-				//sc.agregarCita("t "+i,"m "+i, fInicio, fFin, "1", UUID.randomUUID().toString());
-			}
-
-
-			TimeUnit.SECONDS.sleep(300);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}*/
-
-
-
-	@Ignore
 	@Test
 	public void eliminarCita() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
 			List<Messageable>citas = new ArrayList<>();
+			System.out.println("Agregando citas \n deberia eliminarlas");
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
@@ -127,11 +88,15 @@ public class PlanificadorIT {
 			Assert.assertTrue(eliminar);
 
 			TimeUnit.SECONDS.sleep(5);
+			System.out.println("Elimine todas");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
 	}
-	
+
 	@Test
 	public void addCitas() {
 		try {
@@ -141,7 +106,6 @@ public class PlanificadorIT {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
 				fInicio=fInicio.plusHours(1);
-				System.out.println("Fecha de cita "+fInicio);
 
 				Empleado e=instanciaEmpleado();
 				e.setIdRol(new Long (i));
@@ -159,72 +123,38 @@ public class PlanificadorIT {
 			}
 			sc.agregarJobs(citas);
 
-			TimeUnit.SECONDS.sleep( 300);
+			TimeUnit.SECONDS.sleep( 182);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
 	}
-	
-	@Ignore
-	@Test
-	public void cargarCobros() throws InterruptedException {
-		sc.setNotificacion(new NotificadorConcreto());
-		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
-		ContratoAlquiler contrato=instanciaAlquilerSimple();
-		contrato.setEstadoContrato(EstadoContrato.Vigente);
-		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
-		
-		new ContratoService().addCobros(contrato);
-		
-		
-		List<Messageable>cobros=contrato.getCobros().stream().collect(Collectors.toList());
-		cobros.sort((c1,c2) -> {
-			Cobro c11 = (Cobro)c1;
-			Cobro c22 = (Cobro)c2;
-			
-			return c11.getFechaDeVencimiento().compareTo(c22.getFechaDeVencimiento());
-		});
-		
-		Cobro cob=(Cobro)cobros.get(0);
-		
-		Long id=new Long(0);
-		
-		for (Messageable c: cobros) {
-			Cobro c1=(Cobro)c;
-			c1.SetId(id);
-			id++;
-		}
-		
-		Planificador.get().agregarJobs(cobros);
-		TimeUnit.SECONDS.sleep( 300);
-	}
-	
-	@Ignore
+
 	@Test
 	public void addCobros() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
-		System.out.println(sc.getHoraInicioCobrosVencidos());
 		ContratoAlquiler contrato=instanciaAlquilerSimple();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
-		
+
 		new ContratoService().addCobros(contrato);
-		
-		
-		
-		
+
 		Long id=new Long(0);
-		
+
 		for (Messageable c: contrato.getCobros()) {
 			Cobro c1=(Cobro)c;
 			c1.SetId(id);
 			id++;
 		}
-		
-		
+
 		contrato.getCobros().forEach(c -> Planificador.get().addJobCobroVencido(c));
-		TimeUnit.SECONDS.sleep( 300);
+		TimeUnit.SECONDS.sleep(62);
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
 	}
 
 	public TipoCita randomCita() {
@@ -241,7 +171,7 @@ public class PlanificadorIT {
 			ret=TipoCita.Tasacion;
 		return ret;
 	}
-	
+
 	private Credencial instanciaCredencial() {
 		Credencial c = new Credencial.Builder()
 				.setUsuario("usuario")
@@ -249,7 +179,7 @@ public class PlanificadorIT {
 				.build();
 		return c;
 	}
-	
+
 	private Empleado instanciaEmpleado() {
 		Empleado e = new Empleado.Builder()
 				.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria)
@@ -258,7 +188,7 @@ public class PlanificadorIT {
 				.build();
 		return e;
 	}
-	
+
 	private Persona personaInquilino(int i) {
 		Persona ret= new Persona.Builder()
 				.setApellido("dasd")
@@ -272,29 +202,29 @@ public class PlanificadorIT {
 		ret.addRol(new Inquilino());
 		return ret;
 	}
-	
-    private ContratoAlquiler instanciaAlquilerSimple() {
-    	LocalDate fecha=LocalDate.now();
-    	fecha=fecha.minusMonths(5);
-	ContratoAlquiler ret = new ContratoAlquiler.Builder()
-		.setFechaIngreso(fecha)
-		.setValorIncial(new BigDecimal("100.00"))
-		.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
-		.setInteresPunitorio(new Double(50))
-		.setIntervaloActualizacion(new Integer(2))
-		.setTipoIncrementoCuota(TipoInteres.Simple)
-		.setTipoInteresPunitorio(TipoInteres.Simple)
-		.setPorcentajeIncremento(new Double(50))
-		.setInquilinoContrato(null)
-		.setDuracionContrato(instanciaContratoDuracion24())
-		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 
-		.build();
-	ret.setEstadoContrato(EstadoContrato.Vigente);
-	return ret;
-    }
-    
-    private ContratoDuracion instanciaContratoDuracion24() {
-    	return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
-        }
+	private ContratoAlquiler instanciaAlquilerSimple() {
+		LocalDate fecha=LocalDate.now();
+		fecha=fecha.minusMonths(5);
+		ContratoAlquiler ret = new ContratoAlquiler.Builder()
+				.setFechaIngreso(fecha)
+				.setValorIncial(new BigDecimal("100.00"))
+				.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
+				.setInteresPunitorio(new Double(50))
+				.setIntervaloActualizacion(new Integer(2))
+				.setTipoIncrementoCuota(TipoInteres.Simple)
+				.setTipoInteresPunitorio(TipoInteres.Simple)
+				.setPorcentajeIncremento(new Double(50))
+				.setInquilinoContrato(null)
+				.setDuracionContrato(instanciaContratoDuracion24())
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+
+				.build();
+		ret.setEstadoContrato(EstadoContrato.Vigente);
+		return ret;
+	}
+
+	private ContratoDuracion instanciaContratoDuracion24() {
+		return new ContratoDuracion.Builder().setDescripcion("24 Horas").setDuracion(24).build();
+	}
 }

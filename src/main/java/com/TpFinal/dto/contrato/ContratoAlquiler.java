@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -25,6 +26,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.dto.interfaces.Messageable;
 import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
@@ -35,7 +37,7 @@ import com.TpFinal.dto.persona.Persona;
 @Entity
 @Table(name = "contratoAlquiler")
 @PrimaryKeyJoinColumn(name = "id")
-public class ContratoAlquiler extends Contrato implements Cloneable {
+public class ContratoAlquiler extends Contrato implements Cloneable, Messageable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipointeresPunitorio")
@@ -53,6 +55,8 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 	private Integer intervaloActualizacion;
 	@Column(name = "diaDePago")
 	private Integer diaDePago;
+	@Column(name="randomKey")
+	UUID randomKey;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
@@ -99,6 +103,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 		if (b.inmueble != null) {
 			this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 		}
+		this.randomKey=UUID.randomUUID();
 	}
 
 	public Double getInteresPunitorio() {
@@ -229,6 +234,14 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 			this.movimientos.remove(m);
 			m.setContratoAlquiler(null);
 		}
+	}
+	
+	public UUID getRandomKey() {
+		return randomKey;
+	}
+
+	public void setRandomKey(UUID randomKey) {
+		this.randomKey = randomKey;
 	}
 
 	@Override
@@ -406,6 +419,21 @@ public class ContratoAlquiler extends Contrato implements Cloneable {
 		public ContratoAlquiler build() {
 			return new ContratoAlquiler(this);
 		}
+	}
+
+	@Override
+	public String getTitulo() {
+		return "Vencimiento de contrato";
+	}
+
+	@Override
+	public String getMessage() {
+		return "El contrato de: "+this.getInquilinoContrato().getPersona().getApellido()+" "+this.getInquilinoContrato().getPersona().getNombre()+" está por vencer";
+	}
+
+	@Override
+	public String getTriggerKey() {
+		return this.id.toString()+"-"+this.randomKey.toString();
 	}
 
 }

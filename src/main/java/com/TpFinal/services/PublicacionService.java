@@ -2,6 +2,9 @@ package com.TpFinal.services;
 
 import com.TpFinal.data.dao.DAOPublicacionImpl;
 import com.TpFinal.data.dao.interfaces.DAOPublicacion;
+import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -107,9 +110,10 @@ public class PublicacionService {
     public List<Publicacion> findAll(FiltroPublicacion filtro) {
 	List<Publicacion> publicaciones = daoPublicacion.readAllActives()
 		.stream()
-		.filter(filtro.getFiltroCompuesto())
+		.map(this::setFechaDisponibilidad)
+		.filter(filtro.getFiltroCompuesto())		
+		.sorted(Comparator.comparing(Publicacion::getId))
 		.collect(Collectors.toList());
-	publicaciones.sort(Comparator.comparing(Publicacion::getId));
 	return publicaciones;
     }
 
@@ -184,6 +188,23 @@ public class PublicacionService {
 		.build();
 	return PV;
 
+    }
+
+    public Publicacion setFechaDisponibilidad(Publicacion publicacion) {
+	if (publicacion.getEstadoPublicacion().equals(EstadoPublicacion.Activa)) {
+	    Inmueble i = publicacion.getInmueble();
+	    if (inmuebleService.inmueblePoseeContratoVigente(i)) {
+		Contrato contrato = i.getContratos().stream()
+			.filter(c -> c.getEstadoContrato().equals(EstadoContrato.Vigente))
+			.findFirst()
+			.orElse(null);
+		if (contrato != null && contrato instanceof ContratoAlquiler) {
+		    LocalDate fechaVencimiento = ContratoService.getFechaVencimiento((ContratoAlquiler) contrato);
+		    publicacion.setFechaDisponibilidad(fechaVencimiento);
+		}
+	    }
+	}
+	return publicacion;
     }
 
 }

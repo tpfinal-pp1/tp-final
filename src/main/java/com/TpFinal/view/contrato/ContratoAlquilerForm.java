@@ -268,7 +268,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
 		System.out.println(ultimo.getCobros().size());
 		Planificador.get().setNotificacion(new NotificadorJob());
-		Planificador.get().agregarNotificaciones(ultimo);
+		Planificador.get().agregarJobsCobrosVencidos(ultimo);
 
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
