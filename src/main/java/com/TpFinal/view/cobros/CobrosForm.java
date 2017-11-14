@@ -9,10 +9,8 @@ import org.apache.log4j.Logger;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.movimiento.Movimiento;
-import com.TpFinal.dto.persona.Inquilino;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.MovimientoService;
 import com.TpFinal.services.PersonaService;
@@ -92,19 +90,25 @@ public class CobrosForm extends FormLayout {
 								if(guardo)
 									binderCobro.readBean(cobro);
 								System.out.println("Fecha de cobro "+cobro.getFechaDePago());
-								if (guardo && cobro.getContrato() instanceof ContratoAlquiler) {
-									//Creando el movimiento al cobrar
-									Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoAlquiler(cobro);
-									movimientoService.saveOrUpdate(movPagoAlquiler);
+								if (guardo) {
+									if(cobro.getContrato() instanceof ContratoAlquiler) {
+										//Creando el movimiento al cobrar
+										Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoAlquiler(cobro);
+										movimientoService.saveOrUpdate(movPagoAlquiler);
 
-									Movimiento movGananciaInmobiliaria = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
-									movimientoService.saveOrUpdate(movGananciaInmobiliaria);
+										Movimiento movGananciaInmobiliaria = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
+										movimientoService.saveOrUpdate(movGananciaInmobiliaria);
 
-									Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
-									movimientoService.saveOrUpdate(movPagoAPropietario);
+										Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
+										movimientoService.saveOrUpdate(movPagoAPropietario);
 
-									Planificador.get().removeJobCobroVencido(cobro);
-									System.out.println("Removido");
+										Planificador.get().removeJobCobroVencido(cobro);
+										System.out.println("Removido");
+									}else if(cobro.getContrato() instanceof ContratoVenta) {
+										Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoVenta(cobro);
+										movimientoService.saveOrUpdate(movPagoAlquiler);
+									}
+									
 								}
 
 								//TODO dijo que lo saquemos

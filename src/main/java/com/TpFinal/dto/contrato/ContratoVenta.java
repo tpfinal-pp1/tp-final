@@ -43,10 +43,6 @@ public class ContratoVenta extends Contrato  implements Cloneable{
 	@JoinColumn(name = "id_vendedor")
 	private Persona vendedor;
 	
-	@OneToMany(mappedBy = "contratoVenta",fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL})
-    private Set<Movimiento> movimientos;
-	
 	public ContratoVenta() {
 		super();
 	}
@@ -86,28 +82,6 @@ public class ContratoVenta extends Contrato  implements Cloneable{
 
 	public void setComprador(Persona comprador) {
 		this.comprador = comprador;
-	}
-
-	public Set<Movimiento> getMovimientos() {
-		return movimientos;
-	}
-
-	public void setMovimientos(Set<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
-	
-	public void addMovimiento(Movimiento m) {
-		if (!this.movimientos.contains(m)) {
-			this.addMovimiento(m);
-			m.setContratoVenta(this);
-		}
-	}
-	
-	public void removeMovimiento(Movimiento m) {
-		if (this.movimientos.contains(m)) {
-			this.removeMovimiento(m);
-			m.setContratoVenta(null);
-		}
 	}
 
 	@Override
