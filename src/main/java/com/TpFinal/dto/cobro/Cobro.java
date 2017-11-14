@@ -3,7 +3,6 @@ package com.TpFinal.dto.cobro;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Objects;
 import java.util.UUID;
@@ -25,6 +24,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.interfaces.Messageable;
 
@@ -63,7 +63,7 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 	@ManyToOne
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@JoinColumn(name="idContrato")
-	private ContratoAlquiler contrato;
+	private Contrato contrato;
 	@Column(name="randomKey")
 	UUID randomKey;
 
@@ -182,11 +182,11 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		this.estadoRegistro = estadoRegistro;
 	}
 
-	public ContratoAlquiler getContrato() {
+	public Contrato getContrato() {
 		return contrato;
 	}
 
-	public void setContrato(ContratoAlquiler contrato) {
+	public void setContrato(Contrato contrato) {
 		if(this.contrato!=null && !this.contrato.equals(contrato))
 			this.contrato.removeCobro(this);
 		this.contrato = contrato;
@@ -349,7 +349,8 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	@Override
 	public String getTitulo() {
-		return "Vencimiento, "+this.contrato.getInquilinoContrato().getPersona().getApellido()+" "+this.contrato.getInquilinoContrato().getPersona().getNombre();
+		ContratoAlquiler contrato=(ContratoAlquiler)this.contrato;
+		return "Vencimiento, "+contrato.getInquilinoContrato().getPersona().getApellido()+" "+contrato.getInquilinoContrato().getPersona().getNombre();
 	}
 
 	@Override

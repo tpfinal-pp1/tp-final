@@ -238,8 +238,9 @@ public class ContratoService {
 		cobroService.calcularDatosFaltantes(cobros);
 		if (logger.isDebugEnabled()) {
 		    cobros.forEach(c -> {
-			logger.debug("Cobro " + c.getId() + " Moneda:" + c.getContrato().getMoneda() + " Inquilino:" + c
-				.getContrato().getInquilinoContrato().getPersona());
+		    	ContratoAlquiler c1=(ContratoAlquiler)c.getContrato();
+			logger.debug("Cobro " + c.getId() + " Moneda:" + c1.getMoneda() + " Inquilino:" + c1
+				.getInquilinoContrato().getPersona());
 		    });
 		}
 		cobros.forEach(cobro -> {
