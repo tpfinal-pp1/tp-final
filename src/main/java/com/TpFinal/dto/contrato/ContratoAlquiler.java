@@ -73,10 +73,6 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	@JoinColumn(name = "id_propietario")
 	private Persona propietario;
 
-	@OneToMany(mappedBy = "contrato", fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.ALL })
-	private Set<Cobro> cobros;
-	
 	@OneToMany(mappedBy = "contratoAlquiler",fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL})
     private Set<Movimiento> movimientos;
@@ -97,7 +93,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		this.duracionContrato = b.duracionContrato;
 		this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
 		this.fechaCelebracion=b.fechaCelebracion;
-		cobros = new HashSet<>();
+		this.setCobros(new HashSet<>());
 		movimientos = new HashSet<>();
 
 		if (b.inmueble != null) {
@@ -192,27 +188,6 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		this.intervaloActualizacion = intervaloActualizacion;
 	}
 
-	public Set<Cobro> getCobros() {
-		return cobros;
-	}
-
-	public void setCobros(Set<Cobro> cobros) {
-		this.cobros = cobros;
-	}
-
-	public void addCobro(Cobro c) {
-		if (!this.cobros.contains(c)) {
-			this.cobros.add(c);
-			c.setContrato(this);
-		}
-	}
-
-	public void removeCobro(Cobro c) {
-		if (this.cobros.contains(c)) {
-			this.cobros.remove(c);
-			c.setContrato(null);
-		}
-	}
 	
 	public Set<Movimiento> getMovimientos() {
 		return movimientos;
@@ -263,41 +238,6 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	@Override
 	public int hashCode() {
 		return 3;
-	}
-
-	private void agregarCobros() {
-		if (this.duracionContrato != null) {
-			BigDecimal valorAnterior = this.valorInicial;
-			for (int i = 0; i < this.duracionContrato.getDuracion(); i++) {
-				// si el dia de celebracion es mayor o igual al dia de pago entonces las coutas
-				// empiezan el proximo mes
-				LocalDate fechaCobro = LocalDate.of(fechaIngreso.getDayOfMonth(), fechaIngreso.getMonthValue(),
-						this.diaDePago);
-				if (fechaIngreso.getDayOfMonth() >= (int) this.diaDePago) {
-					fechaCobro = fechaCobro.plusMonths(i + 1);
-				} else {
-					fechaCobro = fechaCobro.plusMonths(i);
-				}
-
-				Cobro c = new Cobro.Builder()
-						.setNumeroCuota(i)
-						.setFechaDePago(fechaCobro)
-						.setMontoOriginal(valorAnterior)
-						.build();
-				if (i + 1 % this.intervaloActualizacion == 0) {
-					if (this.tipoIncrementoCuota.equals(TipoInteres.Acumulativo)) {
-						BigDecimal incremento = new BigDecimal(this.porcentajeIncrementoCuota.toString());
-						BigDecimal aux = valorAnterior.multiply(incremento);
-						valorAnterior = valorAnterior.add(aux);
-					} else if (this.tipoIncrementoCuota.equals(TipoInteres.Simple)) {
-						BigDecimal incremento = new BigDecimal(this.porcentajeIncrementoCuota.toString());
-						BigDecimal aux = this.valorInicial.multiply(incremento);
-						valorAnterior = valorAnterior.add(aux);
-					}
-				}
-				this.cobros.add(c);
-			}
-		}
 	}
 
 	@Override
