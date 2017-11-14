@@ -201,7 +201,7 @@ public class ContratoServiceIT {
     @Test
     public void testAddCobrosSimples() {
 	ContratoAlquiler ca = instanciaAlquilerSimple();
-	service.addCobros(ca);
+	service.addCobrosAlquiler(ca);
 	List<Cobro> cos = new ArrayList<>();
 	ca.getCobros().forEach(c -> cos.add(c));
 	cos.sort((c1, c2) -> {
@@ -234,7 +234,7 @@ public class ContratoServiceIT {
     @Test
     public void testAddCobrosAcumulativos() {
 	ContratoAlquiler ca = instanciaAlquilerAcumulativo();
-	service.addCobros(ca);
+	service.addCobrosAlquiler(ca);
 	List<Cobro> cos = new ArrayList<>();
 	ca.getCobros().forEach(c -> cos.add(c));
 	cos.sort((c1, c2) -> {
@@ -270,7 +270,7 @@ public class ContratoServiceIT {
     	 	
         LocalDate fechaPrueba = LocalDate.of(2017, 10, 22);
         ContratoAlquiler ca = instanciaAlquilerAcumulativo();
-    	service.addCobros(ca);
+    	service.addCobrosAlquiler(ca);
     	service.saveOrUpdate(ca, null);
     	
     	ca.getCobros().forEach(e -> {
@@ -282,7 +282,7 @@ public class ContratoServiceIT {
     	
     	ContratoAlquiler ca2 = instanciaAlquilerAcumulativoConAñoViejo();
     	
-    	service.addCobros(ca2);
+    	service.addCobrosAlquiler(ca2);
     	service.saveOrUpdate(ca2, null);
     	
     	ca2.getCobros().forEach(e -> {

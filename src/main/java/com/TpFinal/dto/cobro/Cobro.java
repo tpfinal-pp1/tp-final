@@ -60,6 +60,9 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 	@Column(name="estadoRegistro")
 	@Enumerated(EnumType.STRING)
 	private EstadoRegistro estadoRegistro;
+	@Column(name="tipoCobro")
+	@Enumerated(EnumType.STRING)
+	private TipoCobro tipoCobro;
 	@ManyToOne
 	@Cascade({CascadeType.SAVE_UPDATE})
 	@JoinColumn(name="idContrato")
@@ -80,6 +83,7 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		this.fechaDeVencimiento=b.fechaDeVencimiento;
 		this.estadoCobro=EstadoCobro.NOCOBRADO;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
+		this.tipoCobro=b.tipoCobro;
 		this.randomKey=UUID.randomUUID();
 	}
 
@@ -127,6 +131,18 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	public LocalDate getFechaDeVencimiento() {
 		return fechaDeVencimiento;
+	}
+	
+	public TipoCobro getTipoCobro() {
+		return tipoCobro;
+	}
+
+	public void setTipoCobro(TipoCobro tipoCobro) {
+		this.tipoCobro = tipoCobro;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public void setNumeroCuota(Integer numeroCuota) {
@@ -303,6 +319,7 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		BigDecimal montoPropietario;
 		LocalDate fechaDePago;
 		LocalDate fechaDeVencimiento;
+		TipoCobro tipoCobro;
 
 		public Builder setNumeroCuota(Integer dato) {
 			this.numeroCuota=dato;
@@ -339,6 +356,10 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		}
 		public Builder setFechaDeVencimiento(LocalDate dato) {
 			this.fechaDeVencimiento=dato;
+			return this;
+		}
+		public Builder setTipoCobro(TipoCobro dato) {
+			this.tipoCobro=dato;
 			return this;
 		}
 		public Cobro build() {
