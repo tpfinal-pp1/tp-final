@@ -259,7 +259,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		clon.setTipoIncrementoCuota(tipoIncrementoCuota);
 		clon.setTipoInteresPunitorio(tipoInteresPunitorio);
 		clon.setValorInicial(valorInicial);
-		//clon.setDocumento(null);
+		clon.setArchivo(new Archivo());
 		return clon;
 	}
 

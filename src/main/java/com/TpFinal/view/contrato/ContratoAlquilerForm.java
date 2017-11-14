@@ -246,6 +246,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	});
 	finalizarCarga.addClickListener(finalizarContrato());
 	renovarContrato.addClickListener(e -> {
+	   
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    ContratoAlquiler ca = contratoAlquiler.clone();
 	    ContratoService.setMontoInicialRenovacion(ca);
@@ -472,7 +473,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-
+	 //this.clearFields();
 	if (contratoAlquiler != null) {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
