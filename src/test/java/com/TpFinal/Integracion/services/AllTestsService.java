@@ -8,6 +8,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ PersonaServiceNuevoIT.class, ContratoServiceIT.class, ProvinciaServiceTest.class,
 	 InmuebleServiceIT.class,
-	PublicacionServiceIT.class, CobroServiceIT.class, ContratoDuracionServiceIT.class, CredencialServiceIT.class })
+	PublicacionServiceIT.class, CobroServiceIT.class, ContratoDuracionServiceIT.class, CredencialServiceIT.class, PersonaServiceRuntimeIT.class })
 public class AllTestsService {
 }

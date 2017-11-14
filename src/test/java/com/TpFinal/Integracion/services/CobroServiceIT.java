@@ -126,7 +126,7 @@ public class CobroServiceIT {
 	public void calculadorDeInteres() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		//aca deberia guardar el contrato con sus cobros
 		try {
 		contratoService.saveOrUpdate(ca, null);
@@ -162,7 +162,7 @@ public class CobroServiceIT {
 	public void calculadorDeInteresAcumulativo() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativo();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		try {
 		    contratoService.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
@@ -199,7 +199,7 @@ public class CobroServiceIT {
 	public void calculadorDeInteresAcumulativoNoVigente() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativoNoVigente();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		try {
 		    contratoService.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
@@ -257,7 +257,7 @@ public class CobroServiceIT {
 	public void traerNoCobrados() throws ContratoServiceException {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		contratoService.saveOrUpdate(ca, null);
 	
 		 ca=(ContratoAlquiler) contratoService.readAll().get(0);

@@ -104,7 +104,8 @@ public class PersonaService {
 	if (p.getInquilino() != null && p.getInquilino().getContratos() != null && p.getInquilino().getContratos()
 		.size() != 0) {
 	    ret = p.getInquilino().getContratos().stream()
-		    .collect(Collectors.toList());
+	    		.filter(contrato -> contrato instanceof ContratoAlquiler)
+	    		.collect(Collectors.toList());
 	}
 	return ret;
     }

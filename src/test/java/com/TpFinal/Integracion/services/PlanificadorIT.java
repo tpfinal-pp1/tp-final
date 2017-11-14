@@ -140,7 +140,7 @@ public class PlanificadorIT {
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
 
-		new ContratoService().addCobros(contrato);
+		new ContratoService().addCobrosAlquiler(contrato);
 
 		Long id=new Long(0);
 
