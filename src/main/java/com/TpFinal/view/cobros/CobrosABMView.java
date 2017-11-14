@@ -239,7 +239,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 					ret=c1.getComprador().getNombre()+" "+c1.getComprador().getApellido();
 				}
 				return ret;
-			}).setCaption("Inquilino").setId("inquilinos");
+			}).setCaption("Inquilino/Comprador").setId("inquilinos");
 
 			grid.addColumn(cobro -> {
 				String ret = "";
