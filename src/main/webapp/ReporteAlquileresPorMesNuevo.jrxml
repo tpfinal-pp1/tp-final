@@ -40,16 +40,16 @@
 	<sortField name="anio" order="Descending"/>
 	<sortField name="estadoCobro"/>
 	<variable name="PagosCobradosDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("Cobrado") ? $F{montoConIntereses} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="PagosPendientesDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("No Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("No Cobrado") ? $F{montoConIntereses} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="PagosCobradosPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("Cobrado") ? $F{montoConIntereses} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="PagosPendientesPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("No Cobrado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("$") && $F{estadoCobro}.equals("No Cobrado") ? $F{montoConIntereses} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="GananciaInmobiliariaPagosCobradosDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{tipoMonedaString}.equals("U$S") && $F{estadoCobro}.equals("Cobrado") ? $F{gananciaImboliaria} : new BigDecimal(0)]]></variableExpression>
@@ -165,7 +165,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="24" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[ Datos de Alquileres en un Mes Determinado]]></text>
+					<text><![CDATA[Datos de Alquileres en un Mes Específico]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="120" y="45" width="160" height="30" uuid="c634e1ad-47e1-4ddb-96cc-9ee6ec2a7b04"/>

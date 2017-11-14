@@ -25,7 +25,7 @@ public enum TipoReporte {
 	case AlquileresPorMes:
 	    return "Alquileres por Mes";
 	case FichaInmuebleSimple:
-		return "Ficha inmueble simple";
+		return "Ficha Inmueble Simple";
 	default:
 	    return super.toString();
 

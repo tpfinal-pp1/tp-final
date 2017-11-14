@@ -38,7 +38,7 @@ public class MovimientoForm extends FormLayout {
 	    TextField descripcion = new TextField("Descripcion"); 
 	    TextField monto = new TextField("Cantidad");
 	    ComboBox <TipoMovimiento> comboTipoMov = new ComboBox <>("Tipo de Movimiento");
-	    ComboBox <ClaseMovimiento> comboClaseMov = new ComboBox <>("Tipo de Movimiento");
+	    ComboBox <ClaseMovimiento> comboClaseMov = new ComboBox <>("Clase de Movimiento");
 	    DateField fechaCarga = new DateField("Fecha de Movimiento");
 	    //FiltroDuracion filtro = new FiltroDuracion();
 

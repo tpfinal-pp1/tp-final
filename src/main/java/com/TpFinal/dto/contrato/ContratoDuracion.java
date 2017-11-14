@@ -25,7 +25,6 @@ import com.TpFinal.dto.Identificable;
 
 @Entity
 @Table(name = "contratoDuracion")
-@PrimaryKeyJoinColumn(name = "id")
 public class ContratoDuracion implements Identificable, BorradoLogico {
 
     private static final String estadoRegistroS = "estadoRegistro";

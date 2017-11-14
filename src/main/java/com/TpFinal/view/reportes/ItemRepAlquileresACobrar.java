@@ -42,7 +42,6 @@ public class ItemRepAlquileresACobrar {
 	montoConIntereses = c.getMontoOriginal().add(c.getInteres());
 	estadoCobro = c.getEstadoCobroString();
 	tipoMonedaString = TipoMoneda.getSimbolo(tipoMoneda);
-	
 	gananciaDolares = c.getMontoOriginal().add(c.getInteres());
     }
 
