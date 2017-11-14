@@ -168,6 +168,7 @@ public class ReportesView extends DefaultLayout implements View {
 	CssLayout filtering = new CssLayout();
 	
 	comboInmuebles.setVisible(false);
+	
 	comboInmuebles.setItems(inmuebleService.readAll());
 
 	incluirCobrosPendientes = false;
@@ -184,7 +185,7 @@ public class ReportesView extends DefaultLayout implements View {
 	fDesde2 = new DateField();
 	fDesde2.setPlaceholder("Fecha Mes");
 	fDesde2.setParseErrorMessage("Formato de fecha no reconocido");
-
+	
 	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
 	clearFilterTextBtn.setVisible(false);
 	clearFilterTextBtn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
@@ -204,9 +205,11 @@ public class ReportesView extends DefaultLayout implements View {
 	});
 
 	generarReporte();
-	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
-			comboInmuebles,	tipoReporteCB,
-		newReport);
+	
+	filtering.addComponents(newReport, tipoReporteCB, comboInmuebles, fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes
+			);
+	/*filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
+			comboInmuebles,	tipoReporteCB, newReport);*/
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
@@ -256,7 +259,9 @@ public class ReportesView extends DefaultLayout implements View {
 	checkboxIncluirPendientes.addValueChangeListener(event -> incluirCobrosPendientes =event.getValue());
 
 	// tipoReporteCB.setWidth("101%");
+
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	filtering.setResponsive(true);
 
 	buildToolbar("Reportes", filtering);
 

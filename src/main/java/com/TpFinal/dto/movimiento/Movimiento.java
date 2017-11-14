@@ -31,7 +31,6 @@ import com.TpFinal.dto.contrato.ContratoVenta;
 
 @Entity
 @Table(name = "movimiento")
-@PrimaryKeyJoinColumn(name = "id")
 public class Movimiento implements Identificable, BorradoLogico{
 
 	private static final String estadoRegistroS = "estadoRegistro";
