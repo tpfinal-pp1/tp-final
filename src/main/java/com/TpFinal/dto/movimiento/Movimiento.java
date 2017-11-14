@@ -24,6 +24,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
 
@@ -72,9 +73,9 @@ public class Movimiento implements Identificable, BorradoLogico{
 	private ClaseMovimiento claseMovimiento;
 
 	public Movimiento() {
-		
+
 	}
-	
+
 	public Movimiento(Builder b) {
 		this.contratoVenta = b.contratoVenta;
 		this.contratoAlquiler = b.contratoAlquiler;
@@ -85,9 +86,9 @@ public class Movimiento implements Identificable, BorradoLogico{
 		this.tipoMovimiento = b.tipoMovimiento;
 		this.claseMovimiento = b.claseMovimiento;
 	}
-	
+
 	public static class Builder {
-		
+
 		private ContratoVenta contratoVenta;
 		private ContratoAlquiler contratoAlquiler;
 		private String descripcionMovimiento;
@@ -96,32 +97,32 @@ public class Movimiento implements Identificable, BorradoLogico{
 		private EstadoRegistro estadoRegistro;
 		private TipoMovimiento tipoMovimiento;
 		private ClaseMovimiento claseMovimiento;
-		
+
 		public Builder setContratoVenta(ContratoVenta contratoVenta) {
 			this.contratoVenta = contratoVenta;
 			return this;
 		}
-		
+
 		public Builder setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
 			this.contratoAlquiler = contratoAlquiler;
 			return this;
 		}
-		
+
 		public Builder setdescripcionMovimiento(String descripcionMovimiento) {
 			this.descripcionMovimiento = descripcionMovimiento;
 			return this;
 		}
-		
+
 		public Builder setMonto(BigDecimal monto) {
 			this.monto = monto;
 			return this;
 		}
-		
+
 		public Builder setFecha(LocalDate fecha) {
 			this.fecha = fecha;
 			return this;
 		}
-		
+
 		public Builder setEstadoRegistro(EstadoRegistro estadoRegistro) {
 			this.estadoRegistro = estadoRegistro;
 			return this;
@@ -134,11 +135,11 @@ public class Movimiento implements Identificable, BorradoLogico{
 			this.claseMovimiento = claseMovimiento;
 			return this;
 		}
-		
+
 		public Movimiento build() {
 			return new Movimiento(this);
 		}
-		
+
 	}
 
 	@Override
@@ -233,6 +234,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 		return getId() != null && Objects.equals(getId(), movimiento.getId());
 	}
 
-	
+
 
 }

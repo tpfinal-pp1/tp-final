@@ -3,6 +3,7 @@ package com.TpFinal.dto.contrato;
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
+import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 
@@ -46,6 +48,10 @@ public class Contrato implements Identificable, BorradoLogico {
 	@OneToOne
 	@Cascade({CascadeType.ALL})
 	private Archivo archivo;
+	
+	@OneToMany(mappedBy = "contrato", fetch = FetchType.EAGER)
+	@Cascade({ CascadeType.ALL })
+	private Set<Cobro> cobros;
 
 	public Contrato() {
 	}
@@ -154,6 +160,28 @@ public class Contrato implements Identificable, BorradoLogico {
 	@Override
 	public EstadoRegistro getEstadoRegistro() {
 		return estadoRegistro;
+	}
+	
+	public Set<Cobro> getCobros() {
+		return cobros;
+	}
+
+	public void setCobros(Set<Cobro> cobros) {
+		this.cobros = cobros;
+	}
+
+	public void addCobro(Cobro c) {
+		if (!this.cobros.contains(c)) {
+			this.cobros.add(c);
+			c.setContrato(this);
+		}
+	}
+
+	public void removeCobro(Cobro c) {
+		if (this.cobros.contains(c)) {
+			this.cobros.remove(c);
+			c.setContrato(null);
+		}
 	}
 
 	@Override

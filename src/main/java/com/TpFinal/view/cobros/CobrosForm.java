@@ -6,12 +6,10 @@ import java.time.temporal.ChronoUnit;
 
 import org.apache.log4j.Logger;
 
-import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
-import com.TpFinal.dto.movimiento.ClaseMovimiento;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.movimiento.Movimiento;
-import com.TpFinal.dto.movimiento.TipoMovimiento;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -106,7 +104,8 @@ public class CobrosForm extends FormLayout {
 				    System.out.println("Removido");
 				}
 
-				Persona p = cobro.getContrato().getInquilinoContrato().getPersona();
+				ContratoAlquiler c1=(ContratoAlquiler)cobro.getContrato();
+				Persona p = c1.getInquilinoContrato().getPersona();
 				if (logger.isDebugEnabled()) {
 				    logger.debug("Calificacion antes de actualizar: " + ((Inquilino) p.getRol(
 					    Rol.Inquilino)).getCalificacion());
