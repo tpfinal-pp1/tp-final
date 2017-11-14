@@ -206,10 +206,8 @@ public class ReportesView extends DefaultLayout implements View {
 
 	generarReporte();
 	
-	filtering.addComponents(newReport, tipoReporteCB, comboInmuebles, fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes
-			);
-	/*filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
-			comboInmuebles,	tipoReporteCB, newReport);*/
+	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
+			comboInmuebles,	tipoReporteCB, newReport);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
