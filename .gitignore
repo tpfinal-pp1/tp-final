@@ -65,7 +65,8 @@ rebel.xml
 *.iml
 .idea/
 *.png/
-/Files/
+/Files
+
 
 
 src/main/resources/prueba.pdf
