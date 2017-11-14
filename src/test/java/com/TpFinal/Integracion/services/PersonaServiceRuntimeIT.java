@@ -95,7 +95,7 @@ public class PersonaServiceRuntimeIT {
 	public void calificarInquilinoA() {
 		ContratoAlquiler c= instanciaContrato(8);
 		c.setEstadoContrato(EstadoContrato.Vigente);
-		new ContratoService().addCobros(c);
+		new ContratoService().addCobrosAlquiler(c);
 		Persona p = instancia("1");
 		p.addRol(instanciaInquilino(Calificacion.B));
 		System.out.println(p.getInquilino());
@@ -115,7 +115,7 @@ public class PersonaServiceRuntimeIT {
 	public void calificarInquilinoB() {
 		ContratoAlquiler c= instanciaContrato(6);
 		c.setEstadoContrato(EstadoContrato.Vigente);
-		new ContratoService().addCobros(c);
+		new ContratoService().addCobrosAlquiler(c);
 		
 		List<Cobro>cobros=c.getCobros().stream().collect(Collectors.toList());
 		cobros.sort((c1,c2)-> c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento()));
@@ -141,7 +141,7 @@ public class PersonaServiceRuntimeIT {
 	public void calificarInquilinoC() {
 		ContratoAlquiler c= instanciaContrato(3);
 		c.setEstadoContrato(EstadoContrato.Vigente);
-		new ContratoService().addCobros(c);
+		new ContratoService().addCobrosAlquiler(c);
 		
 		List<Cobro>cobros=c.getCobros().stream().collect(Collectors.toList());
 		cobros.sort((c1,c2)-> c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento()));
@@ -167,7 +167,7 @@ public class PersonaServiceRuntimeIT {
 	public void calificarInquilinoD() {
 		ContratoAlquiler c= instanciaContrato(6);
 		c.setEstadoContrato(EstadoContrato.Vigente);
-		new ContratoService().addCobros(c);
+		new ContratoService().addCobrosAlquiler(c);
 		
 		List<Cobro>cobros=c.getCobros().stream().collect(Collectors.toList());
 		cobros.sort((c1,c2)-> c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento()));
@@ -195,7 +195,7 @@ public class PersonaServiceRuntimeIT {
 	
 	private List<Cobro> setearContratoParaTest(ContratoAlquiler c) {
 		c.setEstadoContrato(EstadoContrato.Vigente);
-		new ContratoService().addCobros(c);
+		new ContratoService().addCobrosAlquiler(c);
 		List<Cobro>cobros=c.getCobros().stream().collect(Collectors.toList());
 		new CobroService().calcularDatosFaltantes(cobros);
 		cobros.sort((c1,c2)-> c1.getFechaDeVencimiento().compareTo(c2.getFechaDeVencimiento()));

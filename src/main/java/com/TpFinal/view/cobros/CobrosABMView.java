@@ -1,7 +1,17 @@
 package com.TpFinal.view.cobros;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.log4j.Logger;
+
 import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.TipoCobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.DashboardEvent;
@@ -14,18 +24,19 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.shared.Position;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CssLayout;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.LocalDateRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.List;
-import java.util.Locale;
-
-import org.apache.log4j.Logger;
 
 /**
  * Created by Max on 10/14/2017.
@@ -195,10 +206,12 @@ public class CobrosABMView extends DefaultLayout implements View {
 				return ret;
 			}).setCaption("Inmueble").setId("inmuebles");
 
-			// XXX para futuros cobros de ventas y otros
 			grid.addColumn(cobro -> {
 				String ret = "";
-				ret = "Alquiler";
+				if(cobro.getTipoCobro().equals(TipoCobro.Alquiler))
+					ret = "Alquiler";
+				else if(cobro.getTipoCobro().equals(TipoCobro.Venta))
+					ret="Venta";
 				return ret;
 			}).setCaption("Tipo").setId("tipos");
 
@@ -221,8 +234,10 @@ public class CobrosABMView extends DefaultLayout implements View {
 				if(cobro.getContrato() instanceof ContratoAlquiler) {
 					ContratoAlquiler c1=(ContratoAlquiler) cobro.getContrato();
 					ret = c1.getInquilinoContrato().toString();
+				} else if(cobro.getContrato() instanceof ContratoVenta) {
+					ContratoVenta c1=(ContratoVenta)cobro.getContrato();
+					ret=c1.getComprador().getNombre()+" "+c1.getComprador().getApellido();
 				}
-
 				return ret;
 			}).setCaption("Inquilino").setId("inquilinos");
 

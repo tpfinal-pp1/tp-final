@@ -1,5 +1,19 @@
 package com.TpFinal.services;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
+
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
 import com.TpFinal.data.dao.DAOContratoImpl;
 import com.TpFinal.data.dao.DAOContratoVentaImpl;
@@ -9,10 +23,10 @@ import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
+import com.TpFinal.dto.cobro.TipoCobro;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
-
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
@@ -30,528 +44,530 @@ import com.TpFinal.exceptions.services.PublicacionServiceException;
 import com.TpFinal.view.contrato.FiltroContrato;
 import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
 
-import java.io.File;
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.function.Consumer;
-import java.util.stream.Collectors;
-
-import org.apache.log4j.Logger;
-
 public class ContratoService {
-    public static enum instancia {
-	venta, alquiler
-    };
+	public static enum instancia {
+		venta, alquiler
+	};
 
-    private final static Logger logger = Logger.getLogger(ContratoService.class);
+	private final static Logger logger = Logger.getLogger(ContratoService.class);
 
-    private DAOContratoAlquiler daoAlquiler;
-    private DAOContratoVenta daoVenta;
-    private DAOContrato daoContrato;
-    private InmuebleService inmuebleService;
-    private ContratoDuracionService contratoDuracionService;
-    private PublicacionService publicacionService;
-    private boolean existe = false;
+	private DAOContratoAlquiler daoAlquiler;
+	private DAOContratoVenta daoVenta;
+	private DAOContrato daoContrato;
+	private InmuebleService inmuebleService;
+	private ContratoDuracionService contratoDuracionService;
+	private PublicacionService publicacionService;
+	private boolean existe = false;
 
-    BigDecimal gananciaInmobiliariaPagosCobrados;
-    BigDecimal gananciaInmobiliariaTodosLosCobros;
-    BigDecimal ingresosTotalesPagosCobrados;
-    BigDecimal ingresosTotalesPagosPendientes;
-    int cantidadPagosCobrados;
-    int cantidadPagosPendientes;
+	BigDecimal gananciaInmobiliariaPagosCobrados;
+	BigDecimal gananciaInmobiliariaTodosLosCobros;
+	BigDecimal ingresosTotalesPagosCobrados;
+	BigDecimal ingresosTotalesPagosPendientes;
+	int cantidadPagosCobrados;
+	int cantidadPagosPendientes;
 
-    public ContratoService() {
-	daoAlquiler = new DAOContratoAlquilerImpl();
-	daoVenta = new DAOContratoVentaImpl();
-	daoContrato = new DAOContratoImpl();
-	inmuebleService = new InmuebleService();
-	contratoDuracionService = new ContratoDuracionService();
-	publicacionService = new PublicacionService();
-	this.gananciaInmobiliariaPagosCobrados = BigDecimal.ZERO;
-	this.gananciaInmobiliariaTodosLosCobros = BigDecimal.ZERO;
-	this.ingresosTotalesPagosCobrados = BigDecimal.ZERO;
-	this.ingresosTotalesPagosPendientes = BigDecimal.ZERO;
-	this.cantidadPagosCobrados = 0;
-	this.cantidadPagosPendientes = 0;
-    }
-
-    public List<ItemRepAlquileresACobrar> getCobrosOrdenadosPorAño() {
-
-	LocalDate fechaActual = LocalDate.now();
-
-	LocalDate fechaMesActual;
-
-	if (fechaActual.getMonthValue() == 12) {
-	    fechaMesActual = LocalDate.of(fechaActual.getYear() + 1, 1, 1);
+	public ContratoService() {
+		daoAlquiler = new DAOContratoAlquilerImpl();
+		daoVenta = new DAOContratoVentaImpl();
+		daoContrato = new DAOContratoImpl();
+		inmuebleService = new InmuebleService();
+		contratoDuracionService = new ContratoDuracionService();
+		publicacionService = new PublicacionService();
+		this.gananciaInmobiliariaPagosCobrados = BigDecimal.ZERO;
+		this.gananciaInmobiliariaTodosLosCobros = BigDecimal.ZERO;
+		this.ingresosTotalesPagosCobrados = BigDecimal.ZERO;
+		this.ingresosTotalesPagosPendientes = BigDecimal.ZERO;
+		this.cantidadPagosCobrados = 0;
+		this.cantidadPagosPendientes = 0;
 	}
 
-	else {
-	    fechaMesActual = LocalDate.of(fechaActual.getYear(), fechaActual.getMonthValue() + 1, 1);
-	}
+	public List<ItemRepAlquileresACobrar> getCobrosOrdenadosPorAño() {
 
-	CobroService cobroService = new CobroService();
+		LocalDate fechaActual = LocalDate.now();
 
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+		LocalDate fechaMesActual;
 
-	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosVigentes.forEach(contrato -> {
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream().filter(c -> {
-
-		    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
-		})
-			.filter(c -> {
-			    return c.getFechaDeVencimiento().compareTo(fechaMesActual) < 0;
-			})
-			.collect(Collectors.toList()));
-
-		cobroService.calcularDatosFaltantes(cobros);
-		cobros.forEach(cobro -> {
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
-		});
-	    }
-	});
-
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-
-	return itemsReporte;
-
-    }
-
-    public boolean verificarSiExisteCobroConMasDeUnAnio(LocalDate fechaActual) {
-
-	// existe = false;
-
-	List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
-
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosVigentes.forEach(contrato -> {
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-
-			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
-			})
-			.collect(Collectors.toList()));
-
-	    }
-	});
-
-	cobros.forEach(cobro -> {
-	    if (Integer.valueOf(cobro.getFechaDeVencimiento().getYear()) < fechaActual.getYear()) {
-		existe = true;
-	    }
-	});
-
-	return existe;
-    }
-
-    public List<Object> getListadoAlquileresACobrar(LocalDate fechaDesde, LocalDate fechaHasta) {
-
-	CobroService cobroService = new CobroService();
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-	List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
-	List<Cobro> cobros = new ArrayList<>();
-
-	contratosACobrar.forEach(contrato -> {
-	    cobros.clear();
-	    if (contrato.getCobros() != null) {
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-			    return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
-			})
-			.filter(c -> {
-			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
-			})
-			.filter(c -> {
-			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
-			})
-			.collect(Collectors.toList()));
-		cobroService.calcularDatosFaltantes(cobros);
-		cobros.forEach(cobro -> {
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
-		});
-	    }
-	});
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-
-	return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
-    }
-
-    public List<Object> getListadoAlquileresDelMes(LocalDate fechaDesde, LocalDate fechaHasta,
-	    boolean incluirCobrosPendientes) {
-
-	CobroService cobroService = new CobroService();
-	List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
-	List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
-	List<Cobro> cobros = new ArrayList<>();
-	if (logger.isDebugEnabled()) {
-	    logger.debug("=================================================================");
-	    logger.debug("Contratos a procesar: " + contratosACobrar.size());
-	}
-
-	contratosACobrar.forEach(contrato -> {
-	    cobros.clear();
-	    if (contrato.getCobros() != null) {
-		if (logger.isDebugEnabled()) {
-		    logger.debug("=================================================================");
-		    logger.debug("Cantidad de cobros del contrato: " + contrato.getCobros().size());
+		if (fechaActual.getMonthValue() == 12) {
+			fechaMesActual = LocalDate.of(fechaActual.getYear() + 1, 1, 1);
 		}
-		cobros.addAll(contrato.getCobros().stream()
-			.filter(c -> {
-			    if (!incluirCobrosPendientes)
-				return c.getEstadoCobro().equals(EstadoCobro.COBRADO);
-			    else
-				return true;
-			})
-			.filter(c -> {
-			    return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
-			})
-			.filter(c -> {
-			    return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
-			})
-			.collect(Collectors.toList()));
 
-		if (logger.isDebugEnabled())
-		    logger.debug("Cantidad de cobros obtenidos: " + cobros.size());
-
-		cobroService.calcularDatosFaltantes(cobros);
-		if (logger.isDebugEnabled()) {
-		    cobros.forEach(c -> {
-		    	ContratoAlquiler c1=(ContratoAlquiler)c.getContrato();
-			logger.debug("Cobro " + c.getId() + " Moneda:" + c1.getMoneda() + " Inquilino:" + c1
-				.getInquilinoContrato().getPersona());
-		    });
+		else {
+			fechaMesActual = LocalDate.of(fechaActual.getYear(), fechaActual.getMonthValue() + 1, 1);
 		}
-		cobros.forEach(cobro -> {
-		    itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
-			    cobro, contrato.getMoneda()));
+
+		CobroService cobroService = new CobroService();
+
+		List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+
+		List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
+
+		List<Cobro> cobros = new ArrayList<>();
+
+		contratosVigentes.forEach(contrato -> {
+			if (contrato.getCobros() != null) {
+				cobros.addAll(contrato.getCobros().stream().filter(c -> {
+
+					return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+				})
+						.filter(c -> {
+							return c.getFechaDeVencimiento().compareTo(fechaMesActual) < 0;
+						})
+						.collect(Collectors.toList()));
+
+				cobroService.calcularDatosFaltantes(cobros);
+				cobros.forEach(cobro -> {
+					itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
+							cobro, contrato.getMoneda()));
+				});
+			}
 		});
-	    }
-	});
-	itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
-		.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
-		.thenComparing(ItemRepAlquileresACobrar::getApellido)
-		.thenComparing(ItemRepAlquileresACobrar::getNombre));
-	if (logger.isDebugEnabled()) {
-	    logger.debug("=====================================================");
-	    logger.debug("Cantidad de items obtenidos: " + itemsReporte.size());
-	}
-	itemsReporte.forEach(i -> System.out.println(i + " Moneda: " + i.getTipoMonedaString()));
-	return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
-    }
 
-    public List<ContratoAlquiler> getContratosAlquilerVigentes() {
-	List<ContratoAlquiler> contratosVigentes = daoAlquiler.readAllActives().stream()
-		.filter(c -> {
-		    return c.getEstadoContrato().equals(EstadoContrato.Vigente);
-		})
-		.collect(Collectors.toList());
-	return contratosVigentes;
-    }
+		itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
+				.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
+				.thenComparing(ItemRepAlquileresACobrar::getApellido)
+				.thenComparing(ItemRepAlquileresACobrar::getNombre));
 
-    public List<ContratoAlquiler> getContratosAlquilerCobrables() {
-	List<ContratoAlquiler> contratosCobrables = daoAlquiler.readAllActives().stream()
-		.filter(c -> {
-		    return !c.getEstadoContrato().equals(EstadoContrato.EnProcesoDeCarga);
-		})
-		.collect(Collectors.toList());
-	return contratosCobrables;
-    }
+		return itemsReporte;
 
-    public boolean saveOrUpdate(Contrato contrato, File doc) throws ContratoServiceException {
-	boolean ret = false;
-	if (contrato.getId() != null) {
-	    Contrato contratoAntiguo = daoContrato.findById(contrato.getId());
-	    if (contrato.getInmueble() != null && !contratoAntiguo.getInmueble().equals(contrato.getInmueble())) {
-		inmuebleService.desvincularContrato(contratoAntiguo);
-	    }
-	}
-	if (contrato instanceof ContratoVenta) {
-	    ContratoVenta c = (ContratoVenta) contrato;
-	    if (doc != null) {
-		ret = daoVenta.mergeContrato(c, doc);
-		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoVenta.mergeContrato(c,doc) ");
-
-	    } else {
-		ret = daoVenta.merge(c);
-		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoVenta.merge(c)");
-	    }
-	} else {
-	    ContratoAlquiler c = (ContratoAlquiler) contrato;
-
-	    if (doc != null) {
-		ret = daoAlquiler.mergeContrato(c, doc);
-		if (ret == false)
-		    throw new ContratoServiceException("Fallo daAlquiler.mergeContrato(c, doc)");
-	    } else {
-		ret = daoAlquiler.merge(c);
-		if (ret == false)
-		    throw new ContratoServiceException("Fallo daoAlquiler.merge(c)");
-	    }
 	}
 
-	return ret;
-    }
+	public boolean verificarSiExisteCobroConMasDeUnAnio(LocalDate fechaActual) {
 
-    public boolean delete(Contrato contrato) {
-	boolean ret = false;
-	if (contrato instanceof ContratoVenta) {
-	    ContratoVenta c = (ContratoVenta) contrato;
-	    ret = daoVenta.logicalDelete(c);
-	} else {
-	    ContratoAlquiler c = (ContratoAlquiler) contrato;
-	    ret = daoAlquiler.logicalDelete(c);
+		// existe = false;
+
+		List<ContratoAlquiler> contratosVigentes = this.getContratosAlquilerVigentes();
+
+		List<Cobro> cobros = new ArrayList<>();
+
+		contratosVigentes.forEach(contrato -> {
+			if (contrato.getCobros() != null) {
+				cobros.addAll(contrato.getCobros().stream()
+						.filter(c -> {
+
+							return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+						})
+						.collect(Collectors.toList()));
+
+			}
+		});
+
+		cobros.forEach(cobro -> {
+			if (Integer.valueOf(cobro.getFechaDeVencimiento().getYear()) < fechaActual.getYear()) {
+				existe = true;
+			}
+		});
+
+		return existe;
 	}
-	return ret;
-    }
 
-    public List<Contrato> readAll() {
-	List<Contrato> ret = daoContrato.readAllActives();
-	return ret;
-    }
+	public List<Object> getListadoAlquileresACobrar(LocalDate fechaDesde, LocalDate fechaHasta) {
 
-    public void actualizarEstadoContratosAlquiler() {
-	List<Contrato> contratos = readAll();
-	contratos.stream().filter(c -> c instanceof ContratoAlquiler)
+		CobroService cobroService = new CobroService();
+		List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+		List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
+		List<Cobro> cobros = new ArrayList<>();
+
+		contratosACobrar.forEach(contrato -> {
+			cobros.clear();
+			if (contrato.getCobros() != null) {
+				cobros.addAll(contrato.getCobros().stream()
+						.filter(c -> {
+							return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+						})
+						.filter(c -> {
+							return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
+						})
+						.filter(c -> {
+							return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
+						})
+						.collect(Collectors.toList()));
+				cobroService.calcularDatosFaltantes(cobros);
+				cobros.forEach(cobro -> {
+					itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
+							cobro, contrato.getMoneda()));
+				});
+			}
+		});
+		itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
+				.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
+				.thenComparing(ItemRepAlquileresACobrar::getApellido)
+				.thenComparing(ItemRepAlquileresACobrar::getNombre));
+
+		return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
+	}
+
+	public List<Object> getListadoAlquileresDelMes(LocalDate fechaDesde, LocalDate fechaHasta,
+			boolean incluirCobrosPendientes) {
+
+		CobroService cobroService = new CobroService();
+		List<ItemRepAlquileresACobrar> itemsReporte = new ArrayList<>();
+		List<ContratoAlquiler> contratosACobrar = this.getContratosAlquilerCobrables();
+		List<Cobro> cobros = new ArrayList<>();
+		if (logger.isDebugEnabled()) {
+			logger.debug("=================================================================");
+			logger.debug("Contratos a procesar: " + contratosACobrar.size());
+		}
+
+		contratosACobrar.forEach(contrato -> {
+			cobros.clear();
+			if (contrato.getCobros() != null) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("=================================================================");
+					logger.debug("Cantidad de cobros del contrato: " + contrato.getCobros().size());
+				}
+				cobros.addAll(contrato.getCobros().stream()
+						.filter(c -> {
+							if (!incluirCobrosPendientes)
+								return c.getEstadoCobro().equals(EstadoCobro.COBRADO);
+							else
+								return true;
+						})
+						.filter(c -> {
+							return fechaDesde != null ? c.getFechaDeVencimiento().compareTo(fechaDesde) >= 0 : true;
+						})
+						.filter(c -> {
+							return fechaHasta != null ? c.getFechaDeVencimiento().compareTo(fechaHasta) <= 0 : true;
+						})
+						.collect(Collectors.toList()));
+
+				if (logger.isDebugEnabled())
+					logger.debug("Cantidad de cobros obtenidos: " + cobros.size());
+
+				cobroService.calcularDatosFaltantes(cobros);
+				if (logger.isDebugEnabled()) {
+					cobros.forEach(c -> {
+						ContratoAlquiler c1=(ContratoAlquiler)c.getContrato();
+						logger.debug("Cobro " + c.getId() + " Moneda:" + c1.getMoneda() + " Inquilino:" + c1
+								.getInquilinoContrato().getPersona());
+					});
+				}
+				cobros.forEach(cobro -> {
+					itemsReporte.add(new ItemRepAlquileresACobrar(contrato.getInquilinoContrato(),
+							cobro, contrato.getMoneda()));
+				});
+			}
+		});
+		itemsReporte.sort(Comparator.comparing(ItemRepAlquileresACobrar::getAnio).reversed()
+				.thenComparing(ItemRepAlquileresACobrar::getNumeroMes)
+				.thenComparing(ItemRepAlquileresACobrar::getApellido)
+				.thenComparing(ItemRepAlquileresACobrar::getNombre));
+		if (logger.isDebugEnabled()) {
+			logger.debug("=====================================================");
+			logger.debug("Cantidad de items obtenidos: " + itemsReporte.size());
+		}
+		itemsReporte.forEach(i -> System.out.println(i + " Moneda: " + i.getTipoMonedaString()));
+		return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
+	}
+
+	public List<ContratoAlquiler> getContratosAlquilerVigentes() {
+		List<ContratoAlquiler> contratosVigentes = daoAlquiler.readAllActives().stream()
+				.filter(c -> {
+					return c.getEstadoContrato().equals(EstadoContrato.Vigente);
+				})
+				.collect(Collectors.toList());
+		return contratosVigentes;
+	}
+
+	public List<ContratoAlquiler> getContratosAlquilerCobrables() {
+		List<ContratoAlquiler> contratosCobrables = daoAlquiler.readAllActives().stream()
+				.filter(c -> {
+					return !c.getEstadoContrato().equals(EstadoContrato.EnProcesoDeCarga);
+				})
+				.collect(Collectors.toList());
+		return contratosCobrables;
+	}
+
+	public boolean saveOrUpdate(Contrato contrato, File doc) throws ContratoServiceException {
+		boolean ret = false;
+		if (contrato.getId() != null) {
+			Contrato contratoAntiguo = daoContrato.findById(contrato.getId());
+			if (contrato.getInmueble() != null && !contratoAntiguo.getInmueble().equals(contrato.getInmueble())) {
+				inmuebleService.desvincularContrato(contratoAntiguo);
+			}
+		}
+		if (contrato instanceof ContratoVenta) {
+			ContratoVenta c = (ContratoVenta) contrato;
+			if (doc != null) {
+				ret = daoVenta.mergeContrato(c, doc);
+				if (ret == false)
+					throw new ContratoServiceException("Fallo daoVenta.mergeContrato(c,doc) ");
+
+			} else {
+				ret = daoVenta.merge(c);
+				if (ret == false)
+					throw new ContratoServiceException("Fallo daoVenta.merge(c)");
+			}
+		} else {
+			ContratoAlquiler c = (ContratoAlquiler) contrato;
+
+			if (doc != null) {
+				ret = daoAlquiler.mergeContrato(c, doc);
+				if (ret == false)
+					throw new ContratoServiceException("Fallo daAlquiler.mergeContrato(c, doc)");
+			} else {
+				ret = daoAlquiler.merge(c);
+				if (ret == false)
+					throw new ContratoServiceException("Fallo daoAlquiler.merge(c)");
+			}
+		}
+
+		return ret;
+	}
+
+	public boolean delete(Contrato contrato) {
+		boolean ret = false;
+		if (contrato instanceof ContratoVenta) {
+			ContratoVenta c = (ContratoVenta) contrato;
+			ret = daoVenta.logicalDelete(c);
+		} else {
+			ContratoAlquiler c = (ContratoAlquiler) contrato;
+			ret = daoAlquiler.logicalDelete(c);
+		}
+		return ret;
+	}
+
+	public List<Contrato> readAll() {
+		List<Contrato> ret = daoContrato.readAllActives();
+		return ret;
+	}
+
+	public void actualizarEstadoContratosAlquiler() {
+		List<Contrato> contratos = readAll();
+		contratos.stream().filter(c -> c instanceof ContratoAlquiler)
 		.map(c -> (ContratoAlquiler) c)
 		.forEach(actualizarEstadoContrato());
-    }
-
-    private Consumer<? super ContratoAlquiler> actualizarEstadoContrato() {
-	return contratoAlquiler -> {
-	    if (getFechaVencimiento(contratoAlquiler).compareTo(LocalDate.now()) <= 0) {
-		contratoAlquiler.setEstadoContrato(EstadoContrato.Vencido);
-	    } else if (faltaMenosDeUnMesParaVencimiento(contratoAlquiler)) {
-		contratoAlquiler.setEstadoContrato(EstadoContrato.ProximoAVencer);
-	    }
-	    daoAlquiler.merge(contratoAlquiler);
-	};
-    }
-
-    private boolean faltaMenosDeUnMesParaVencimiento(ContratoAlquiler contratoAlquiler) {
-	boolean ret = true && contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente);
-	logger.debug("Meses entre fechas: " + ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(
-		contratoAlquiler)));
-	ret = ret && ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 1;
-	logger.debug("Años entre fechas: " + ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(
-		contratoAlquiler)));
-	ret = ret && ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 0;
-	return ret;
-    }
-
-    public List<Contrato> findAll(FiltroContrato filtro) {
-	actualizarEstadoContratosAlquiler();
-	List<Contrato> contratos = daoContrato.readAllActives()
-		.stream()
-		.filter(filtro.getFiltroCompuesto())
-		.collect(Collectors.toList());
-	contratos.sort(Comparator.comparing(Contrato::getId));
-	return contratos;
-    }
-
-    public PublicacionVenta getPublicacionVentaActiva(Inmueble i) {
-	PublicacionVenta ret = null;
-	Set<Publicacion> publicaciones = i.getPublicaciones();
-	if (publicaciones != null && publicaciones.size() > 0) {
-
-	    List<Publicacion> ventas = i.getPublicaciones().stream()
-		    .filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO) && p instanceof PublicacionVenta)
-		    .collect(Collectors.toList());
-	    if (ventas != null && ventas.size() > 0)
-		ret = (PublicacionVenta) ventas.get(0);
 	}
-	return ret;
-    }
 
-    public PublicacionAlquiler getPublicacionAlquilerActiva(Inmueble i) {
-	PublicacionAlquiler ret = null;
-	Set<Publicacion> publicaciones = i.getPublicaciones();
-	if (publicaciones != null && publicaciones.size() > 0) {
-	    List<Publicacion> alquileres = i.getPublicaciones().stream()
-		    .filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)
-			    && p instanceof PublicacionAlquiler)
-		    .collect(Collectors.toList());
-	    if (alquileres != null && alquileres.size() > 0)
-		ret = (PublicacionAlquiler) alquileres.get(0);
+	private Consumer<? super ContratoAlquiler> actualizarEstadoContrato() {
+		return contratoAlquiler -> {
+			if (getFechaVencimiento(contratoAlquiler).compareTo(LocalDate.now()) <= 0) {
+				contratoAlquiler.setEstadoContrato(EstadoContrato.Vencido);
+			} else if (faltaMenosDeUnMesParaVencimiento(contratoAlquiler)) {
+				contratoAlquiler.setEstadoContrato(EstadoContrato.ProximoAVencer);
+			}
+			daoAlquiler.merge(contratoAlquiler);
+		};
 	}
-	return ret;
-    }
 
-    public static LocalDate getFechaVencimiento(ContratoAlquiler c) {
-	LocalDate ret;
-	ret = c.getFechaIngreso().plus(c.getDuracionContrato().getDuracion(), ChronoUnit.MONTHS);
-	return ret;
-    }
+	private boolean faltaMenosDeUnMesParaVencimiento(ContratoAlquiler contratoAlquiler) {
+		boolean ret = true && contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente);
+		logger.debug("Meses entre fechas: " + ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(
+				contratoAlquiler)));
+		ret = ret && ChronoUnit.MONTHS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 1;
+		logger.debug("Años entre fechas: " + ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(
+				contratoAlquiler)));
+		ret = ret && ChronoUnit.YEARS.between(LocalDate.now(), getFechaVencimiento(contratoAlquiler)) <= 0;
+		return ret;
+	}
 
-    public ContratoAlquiler getUltimoAlquiler() {
-	List<ContratoAlquiler> ContratoAlquilers = daoAlquiler.readAllActives();
-	ContratoAlquilers.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
-	return ContratoAlquilers.get(0);
-    }
+	public List<Contrato> findAll(FiltroContrato filtro) {
+		actualizarEstadoContratosAlquiler();
+		List<Contrato> contratos = daoContrato.readAllActives()
+				.stream()
+				.filter(filtro.getFiltroCompuesto())
+				.collect(Collectors.toList());
+		contratos.sort(Comparator.comparing(Contrato::getId));
+		return contratos;
+	}
 
-    public static ContratoAlquiler getInstanciaAlquiler() {
-	return new ContratoAlquiler.Builder()
-		.setDiaDePago(10)
-		.setDuracionContrato(ContratoDuracionService.getInstancia())
-		.setInquilinoContrato(PersonaService.getPersonaConInquilino())
-		.setInteresPunitorio(0.0)
-		.setIntervaloActualizacion(24)
-		.setTipoIncrementoCuota(TipoInteres.Acumulativo)
-		.setTipoInteresPunitorio(TipoInteres.Simple)
-		.setValorIncial(BigDecimal.ZERO)
-		.setDocumento(null)
-		.setEstadoRegistro(EstadoRegistro.ACTIVO)
-		.setFechaIngreso(LocalDate.now())
-		.setInmueble(InmuebleService.getInstancia())
-		.build();
-    }
+	public PublicacionVenta getPublicacionVentaActiva(Inmueble i) {
+		PublicacionVenta ret = null;
+		Set<Publicacion> publicaciones = i.getPublicaciones();
+		if (publicaciones != null && publicaciones.size() > 0) {
 
-    public static ContratoVenta getInstanciaVenta() {
-	return new ContratoVenta.Builder()
-		.setPrecioVenta(new BigDecimal("0"))
-		.setFechaIngreso(LocalDate.now())
-		.setDocumento(null)
-		.setInmueble(new Inmueble.Builder()
-			.setaEstrenar(false)
-			.setCantidadAmbientes(0)
-			.setCantidadCocheras(0)
-			.setCantidadDormitorios(0)
-			.setClaseInmueble(ClaseInmueble.OtroInmueble)
-			.setConAireAcondicionado(false)
-			.setConJardin(false)
-			.setConParilla(false)
-			.setConPileta(false)
-			.setDireccion(new Direccion.Builder()
-				.setCalle("")
-				.setCodPostal("")
-				.setCoordenada(new Coordenada())
-				.setLocalidad("")
-				.setNro(0)
-				.setPais("Argentina")
-				.setProvincia("")
-				.build())
-			.setPropietario(new Propietario.Builder()
-				.setPersona(new Persona())
-				.build())
-			.build())
-		.setEstadoRegistro(EstadoRegistro.ACTIVO)
-		.build();
-    }
-
-    public void addCobros(ContratoAlquiler contrato) {
-	if (contrato.getDuracionContrato() != null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente)
-		&& (contrato.getCobros() == null || contrato.getCobros().size() == 0)) {
-	    if (contrato.getCobros() == null)
-		contrato.setCobros(new HashSet<>());
-	    BigDecimal valorAnterior = contrato.getValorInicial();
-	    for (int i = 0; i < contrato.getDuracionContrato().getDuracion(); i++) {
-		// si el dia de celebracion es mayor o igual al dia de pago entonces las coutas
-		// empiezan el proximo mes
-		LocalDate fechaCobro = LocalDate.of(contrato.getFechaIngreso().getYear(), contrato
-			.getFechaIngreso().getMonthValue(), contrato.getDiaDePago());
-		if (contrato.getFechaIngreso().getDayOfMonth() >= (int) contrato.getDiaDePago()) {
-		    fechaCobro = fechaCobro.plusMonths(i + 1);
-		} else {
-		    fechaCobro = fechaCobro.plusMonths(i);
+			List<Publicacion> ventas = i.getPublicaciones().stream()
+					.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO) && p instanceof PublicacionVenta)
+					.collect(Collectors.toList());
+			if (ventas != null && ventas.size() > 0)
+				ret = (PublicacionVenta) ventas.get(0);
 		}
+		return ret;
+	}
 
+	public PublicacionAlquiler getPublicacionAlquilerActiva(Inmueble i) {
+		PublicacionAlquiler ret = null;
+		Set<Publicacion> publicaciones = i.getPublicaciones();
+		if (publicaciones != null && publicaciones.size() > 0) {
+			List<Publicacion> alquileres = i.getPublicaciones().stream()
+					.filter(p -> p.getEstadoRegistro().equals(EstadoRegistro.ACTIVO)
+							&& p instanceof PublicacionAlquiler)
+					.collect(Collectors.toList());
+			if (alquileres != null && alquileres.size() > 0)
+				ret = (PublicacionAlquiler) alquileres.get(0);
+		}
+		return ret;
+	}
+
+	public static LocalDate getFechaVencimiento(ContratoAlquiler c) {
+		LocalDate ret;
+		ret = c.getFechaIngreso().plus(c.getDuracionContrato().getDuracion(), ChronoUnit.MONTHS);
+		return ret;
+	}
+
+	public ContratoAlquiler getUltimoAlquiler() {
+		List<ContratoAlquiler> ContratoAlquilers = daoAlquiler.readAllActives();
+		ContratoAlquilers.sort((c1, c2) -> c2.getId().compareTo(c1.getId()));
+		return ContratoAlquilers.get(0);
+	}
+
+	public static ContratoAlquiler getInstanciaAlquiler() {
+		return new ContratoAlquiler.Builder()
+				.setDiaDePago(10)
+				.setDuracionContrato(ContratoDuracionService.getInstancia())
+				.setInquilinoContrato(PersonaService.getPersonaConInquilino())
+				.setInteresPunitorio(0.0)
+				.setIntervaloActualizacion(24)
+				.setTipoIncrementoCuota(TipoInteres.Acumulativo)
+				.setTipoInteresPunitorio(TipoInteres.Simple)
+				.setValorIncial(BigDecimal.ZERO)
+				.setDocumento(null)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setFechaIngreso(LocalDate.now())
+				.setInmueble(InmuebleService.getInstancia())
+				.build();
+	}
+
+	public static ContratoVenta getInstanciaVenta() {
+		return new ContratoVenta.Builder()
+				.setPrecioVenta(new BigDecimal("0"))
+				.setFechaIngreso(LocalDate.now())
+				.setDocumento(null)
+				.setInmueble(new Inmueble.Builder()
+						.setaEstrenar(false)
+						.setCantidadAmbientes(0)
+						.setCantidadCocheras(0)
+						.setCantidadDormitorios(0)
+						.setClaseInmueble(ClaseInmueble.OtroInmueble)
+						.setConAireAcondicionado(false)
+						.setConJardin(false)
+						.setConParilla(false)
+						.setConPileta(false)
+						.setDireccion(new Direccion.Builder()
+								.setCalle("")
+								.setCodPostal("")
+								.setCoordenada(new Coordenada())
+								.setLocalidad("")
+								.setNro(0)
+								.setPais("Argentina")
+								.setProvincia("")
+								.build())
+						.setPropietario(new Propietario.Builder()
+								.setPersona(new Persona())
+								.build())
+						.build())
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.build();
+	}
+	
+	public void addCobroVenta(ContratoVenta contrato) {
+		if(contrato.getCobros()==null)
+			contrato.setCobros(new HashSet<>());
+		
 		Cobro c = new Cobro.Builder()
-			.setNumeroCuota(i + 1)
-			.setFechaDeVencimiento(fechaCobro)
-			.setMontoOriginal(valorAnterior)
-			.setMontoRecibido(valorAnterior)
-			.setInteres(new BigDecimal(0))
-			.setMontoPropietario(new BigDecimal(0))
-			.setComision(new BigDecimal(0))
-			.build();
-		c.setComision(valorAnterior.multiply(new BigDecimal(0.06)));
-		c.setMontoPropietario(valorAnterior.subtract(c.getComision()));
-
-		if ((i + 1) % contrato.getIntervaloActualizacion() == 0) {
-		    if (contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
-			BigDecimal incremento = new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
-			incremento = incremento.divide(new BigDecimal("100"));
-			BigDecimal aux = valorAnterior.multiply(incremento);
-			valorAnterior = valorAnterior.add(aux);
-		    } else if (contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
-			BigDecimal incremento = new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
-			incremento = incremento.divide(new BigDecimal("100"));
-			BigDecimal aux = contrato.getValorInicial().multiply(incremento);
-			valorAnterior = valorAnterior.add(aux);
-		    }
-		}
+				.setNumeroCuota(0)
+				.setFechaDeVencimiento(contrato.getFechaCelebracion())
+				.setMontoOriginal(contrato.getPrecioVenta())
+				.setMontoRecibido(contrato.getPrecioVenta())
+				.setInteres(new BigDecimal(0))
+				.setMontoPropietario(new BigDecimal(0))
+				.setComision(new BigDecimal(0))
+				.setTipoCobro(TipoCobro.Venta)
+				.build();
 		contrato.addCobro(c);
-	    }
 	}
-    }
 
-    public static void setMontoInicialRenovacion(ContratoAlquiler ca) {
-	BigDecimal valorOriginal = ca.getValorInicial();
-	BigDecimal ret;
-	if (ca.getTipoIncrementoCuota() == TipoInteres.Simple) {
-	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
-	    interes = interes.divide(new BigDecimal("100"));
-	    interes = interes.multiply(new BigDecimal(ca.getDuracionContrato().getDuracion() / ca
-		    .getIntervaloActualizacion()).subtract(BigDecimal.ONE));
-	    ret = valorOriginal.multiply(BigDecimal.ONE.add(interes));
-	} else {
-	    BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
-	    interes = interes.divide(new BigDecimal("100"));
-	    ret = valorOriginal;
-	    for (int i = 1; i < (ca.getDuracionContrato().getDuracion() / ca
-		    .getIntervaloActualizacion()); i++) {
-		ret = ret.multiply(BigDecimal.ONE.add(interes));
-	    }
-	}
-	ca.setValorInicial(ret);
+	public void addCobrosAlquiler(ContratoAlquiler contrato) {
+		if (contrato.getDuracionContrato() != null && contrato.getEstadoContrato().equals(EstadoContrato.Vigente)
+				&& (contrato.getCobros() == null || contrato.getCobros().size() == 0)) {
+			if (contrato.getCobros() == null)
+				contrato.setCobros(new HashSet<>());
+			BigDecimal valorAnterior = contrato.getValorInicial();
+			for (int i = 0; i < contrato.getDuracionContrato().getDuracion(); i++) {
+				// si el dia de celebracion es mayor o igual al dia de pago entonces las coutas
+				// empiezan el proximo mes
+				LocalDate fechaCobro = LocalDate.of(contrato.getFechaIngreso().getYear(), contrato
+						.getFechaIngreso().getMonthValue(), contrato.getDiaDePago());
+				if (contrato.getFechaIngreso().getDayOfMonth() >= (int) contrato.getDiaDePago()) {
+					fechaCobro = fechaCobro.plusMonths(i + 1);
+				} else {
+					fechaCobro = fechaCobro.plusMonths(i);
+				}
 
-    }
+				Cobro c = new Cobro.Builder()
+						.setNumeroCuota(i + 1)
+						.setFechaDeVencimiento(fechaCobro)
+						.setMontoOriginal(valorAnterior)
+						.setMontoRecibido(valorAnterior)
+						.setInteres(new BigDecimal(0))
+						.setMontoPropietario(new BigDecimal(0))
+						.setComision(new BigDecimal(0))
+						.setTipoCobro(TipoCobro.Alquiler)
+						.build();
+				c.setComision(valorAnterior.multiply(new BigDecimal(0.06)));
+				c.setMontoPropietario(valorAnterior.subtract(c.getComision()));
 
-    public void finalizarPublicacionAsociada(Contrato contrato) {
-	if (contrato != null && contrato.getInmueble() != null) {
-	    if (contrato instanceof ContratoAlquiler) {
-		PublicacionAlquiler pubA = getPublicacionAlquilerActiva(contrato.getInmueble());
-		try {
-		    if (pubA != null) {
-			pubA.setEstadoPublicacion(EstadoPublicacion.Terminada);
-			publicacionService.save(pubA);}
-		} catch (PublicacionServiceException e) {
-		    e.printStackTrace();
+				if ((i + 1) % contrato.getIntervaloActualizacion() == 0) {
+					if (contrato.getTipoIncrementoCuota().equals(TipoInteres.Acumulativo)) {
+						BigDecimal incremento = new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+						incremento = incremento.divide(new BigDecimal("100"));
+						BigDecimal aux = valorAnterior.multiply(incremento);
+						valorAnterior = valorAnterior.add(aux);
+					} else if (contrato.getTipoIncrementoCuota().equals(TipoInteres.Simple)) {
+						BigDecimal incremento = new BigDecimal(contrato.getPorcentajeIncrementoCuota().toString());
+						incremento = incremento.divide(new BigDecimal("100"));
+						BigDecimal aux = contrato.getValorInicial().multiply(incremento);
+						valorAnterior = valorAnterior.add(aux);
+					}
+				}
+				contrato.addCobro(c);
+			}
 		}
-	    }else {
-		PublicacionVenta pubV = getPublicacionVentaActiva(contrato.getInmueble());
-		try {
-		    if (pubV != null) {
-			pubV.setEstadoPublicacion(EstadoPublicacion.Terminada);
-			publicacionService.save(pubV);}
-		} catch (PublicacionServiceException e) {
-		    e.printStackTrace();
-		}
-	    }
 	}
 
-    }
+	public static void setMontoInicialRenovacion(ContratoAlquiler ca) {
+		BigDecimal valorOriginal = ca.getValorInicial();
+		BigDecimal ret;
+		if (ca.getTipoIncrementoCuota() == TipoInteres.Simple) {
+			BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
+			interes = interes.divide(new BigDecimal("100"));
+			interes = interes.multiply(new BigDecimal(ca.getDuracionContrato().getDuracion() / ca
+					.getIntervaloActualizacion()).subtract(BigDecimal.ONE));
+			ret = valorOriginal.multiply(BigDecimal.ONE.add(interes));
+		} else {
+			BigDecimal interes = new BigDecimal(ca.getPorcentajeIncrementoCuota().toString());
+			interes = interes.divide(new BigDecimal("100"));
+			ret = valorOriginal;
+			for (int i = 1; i < (ca.getDuracionContrato().getDuracion() / ca
+					.getIntervaloActualizacion()); i++) {
+				ret = ret.multiply(BigDecimal.ONE.add(interes));
+			}
+		}
+		ca.setValorInicial(ret);
+
+	}
+
+	public void finalizarPublicacionAsociada(Contrato contrato) {
+		if (contrato != null && contrato.getInmueble() != null) {
+			if (contrato instanceof ContratoAlquiler) {
+				PublicacionAlquiler pubA = getPublicacionAlquilerActiva(contrato.getInmueble());
+				try {
+					if (pubA != null) {
+						pubA.setEstadoPublicacion(EstadoPublicacion.Terminada);
+						publicacionService.save(pubA);}
+				} catch (PublicacionServiceException e) {
+					e.printStackTrace();
+				}
+			}else {
+				PublicacionVenta pubV = getPublicacionVentaActiva(contrato.getInmueble());
+				try {
+					if (pubV != null) {
+						pubV.setEstadoPublicacion(EstadoPublicacion.Terminada);
+						publicacionService.save(pubV);}
+				} catch (PublicacionServiceException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
 }

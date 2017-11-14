@@ -128,7 +128,7 @@ public class GeneradorDeDatos {
 		    daoInm.saveOrUpdate(inmueble);
 		    if (contratoAlquiler.getEstadoContrato().equals(EstadoContrato.Vigente)) {
 			System.out.println("un contrato vigente");
-			contratoService.addCobros(contratoAlquiler);
+			contratoService.addCobrosAlquiler(contratoAlquiler);
 			daoContratos.saveOrUpdate(contratoAlquiler);
 		    }
 

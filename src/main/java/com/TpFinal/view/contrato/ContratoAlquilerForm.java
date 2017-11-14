@@ -263,7 +263,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		binderContratoAlquiler.writeBeanIfValid(contratoAlquiler);
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
 		service.finalizarPublicacionAsociada(contratoAlquiler);
-		service.addCobros(contratoAlquiler);
+		service.addCobrosAlquiler(contratoAlquiler);
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();

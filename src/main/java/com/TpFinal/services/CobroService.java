@@ -4,6 +4,7 @@ import com.TpFinal.data.dao.DAOCobroImpl;
 import com.TpFinal.data.dao.interfaces.DAOCobro;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.cobro.EstadoCobro;
+import com.TpFinal.dto.cobro.TipoCobro;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.EstadoContrato;
@@ -99,7 +100,7 @@ public class CobroService {
 	}
 
 	private boolean hayQueCalcular(Cobro c) {
-		return c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
+		return c.getTipoCobro().equals(TipoCobro.Alquiler)||c.getEstadoCobro().equals(EstadoCobro.NOCOBRADO);
 	}
 
 	// Ver que se necesita "arriba"
