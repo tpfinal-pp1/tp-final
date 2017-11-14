@@ -3,25 +3,27 @@ package com.TpFinal.services;
 import java.io.IOException;
 import java.util.Properties;
 
+import org.apache.commons.io.FileExistsException;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
+import com.TpFinal.properties.Parametros;
 import com.sendgrid.*;
 
 
 public class MailSender implements Job{
 
-	public void enviarMensaje(String destinatario, String encabezado, String mensaje) {		
-		Email from = new Email("noResponder@Megafono.com");
+	public void enviarMensaje(String destinatario, String encabezado, String mensaje) throws IllegalArgumentException, FileExistsException {		
+		Email from = new Email("Inmobiliaria@inmobi.ddns.net");
 		String subject = encabezado;
 		Email to = new Email(destinatario);
 		Content content = new Content("text/plain", mensaje);
 		Mail mail = new Mail(from, subject, to, content);
 
-		//SendGrid sg = new SendGrid(Parametros.getProperty("sendgrid.api.key"));
-		SendGrid sg = new SendGrid("key");
+		SendGrid sg = new SendGrid(Parametros.getProperty("sendgrid.api.key"));
+		//SendGrid sg = new SendGrid(Parametros.getProperty(key));
 
 		Request request = new Request();
 		try {
@@ -46,7 +48,11 @@ public class MailSender implements Job{
 			String encabezado = dataMap.getString("encabezado");
 			String mensaje = dataMap.getString("mensaje");
 
-			enviarMensaje(destinatario, encabezado, mensaje);
+			try {
+				enviarMensaje(destinatario, encabezado, mensaje);
+			} catch (IllegalArgumentException | FileExistsException e) {
+				e.printStackTrace();
+			}
 		}else{
 			System.out.println("algo salio mal");
 		}

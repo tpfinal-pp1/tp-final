@@ -105,7 +105,7 @@ public class CobroService {
 	// Ver que se necesita "arriba"
 	public List<Cobro> findAll(FiltroCobros filtro) {
 		List<Cobro> cobros;
-		cobros = dao.readAllActives().stream()
+		cobros = this.readAll().stream()
 				.filter(filtro.getFiltroCompuesto())
 				.collect(Collectors.toList());
 		cobros.sort(Comparator.comparing(Cobro::getFechaDeVencimiento).reversed());
