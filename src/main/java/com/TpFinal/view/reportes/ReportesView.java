@@ -131,7 +131,7 @@ public class ReportesView extends DefaultLayout implements View {
 	    break;
 	}
 	
-	case FichaInmuebleSimple: {
+	case FichaInmuebleConMapa: {
 		Inmueble inmueble = comboInmuebles.getValue();
 		
 		if (logger.isDebugEnabled()) {
@@ -241,7 +241,7 @@ public class ReportesView extends DefaultLayout implements View {
 		    comboInmuebles.setVisible(false);
 		}
 		
-		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleSimple) {
+		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleConMapa) {
 			comboInmuebles.setVisible(true);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
@@ -256,7 +256,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 	checkboxIncluirPendientes.addValueChangeListener(event -> incluirCobrosPendientes =event.getValue());
 
-	// tipoReporteCB.setWidth("101%");
+	// tipoReporteCB.setWidth("103%");
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering.setResponsive(true);

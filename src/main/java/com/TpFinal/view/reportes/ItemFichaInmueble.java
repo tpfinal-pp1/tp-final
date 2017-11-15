@@ -1,6 +1,9 @@
 package com.TpFinal.view.reportes;
 
+import java.awt.Image;
+
 import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.services.UbicacionService;
 
 public class ItemFichaInmueble {
    
@@ -26,6 +29,8 @@ public class ItemFichaInmueble {
     private String nombrePropietario;
     private String apellidoPropietario;
     private String propietario;
+    private Image imagen;
+    private UbicacionService service = new UbicacionService();
     
     public ItemFichaInmueble(Inmueble inmueble) {
     	 this.cantidadAmbientes = inmueble.getCantidadAmbientes();
@@ -50,7 +55,7 @@ public class ItemFichaInmueble {
     	 this.nombrePropietario = inmueble.getPropietario().getPersona().getNombre();
     	 this.apellidoPropietario = inmueble.getPropietario().getPersona().getApellido();
     	 this.propietario = inmueble.getPropietario().getPersona().toString();
-    	
+    	 this.imagen = service.getMapImage(inmueble.getDireccion().getCoordenada());
     }
 
 	public Integer getCantidadAmbientes() {
@@ -228,7 +233,13 @@ public class ItemFichaInmueble {
 	public void setPropietario(String propietario) {
 		this.propietario = propietario;
 	}
-    
-	
+
+	public Image getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Image imagen) {
+		this.imagen = imagen;
+	}	
     
 }

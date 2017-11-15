@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.dto.cobro.Cobro;
@@ -101,6 +102,16 @@ public class CobrosForm extends FormLayout {
 
 										Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
 										movimientoService.saveOrUpdate(movPagoAPropietario);
+										
+										if(cobroService.esAtrasado(cobro)) {
+											try {
+												cobroService.enviarMailPorPagoAtrasado(cobro);
+												System.out.println("[DEBUG] Mail enviado");
+											} catch (IllegalArgumentException | FileExistsException e) {
+												System.err.println("Error al enviar el mail o en las properties");
+												e.printStackTrace();
+											}
+										}
 
 										Planificador.get().removeJobCobroVencido(cobro);
 										System.out.println("Removido");
@@ -108,7 +119,6 @@ public class CobrosForm extends FormLayout {
 										Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoVenta(cobro);
 										movimientoService.saveOrUpdate(movPagoAlquiler);
 									}
-									
 								}
 
 								//TODO dijo que lo saquemos
