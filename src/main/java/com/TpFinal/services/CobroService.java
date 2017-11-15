@@ -1,29 +1,26 @@
 package com.TpFinal.services;
 
-import com.TpFinal.data.dao.DAOCobroImpl;
-import com.TpFinal.data.dao.interfaces.DAOCobro;
-import com.TpFinal.dto.cobro.Cobro;
-import com.TpFinal.dto.cobro.EstadoCobro;
-import com.TpFinal.dto.cobro.TipoCobro;
-import com.TpFinal.dto.contrato.Contrato;
-import com.TpFinal.dto.contrato.ContratoAlquiler;
-import com.TpFinal.dto.contrato.EstadoContrato;
-import com.TpFinal.dto.contrato.TipoInteres;
-import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.view.cobros.FiltroCobros;
-
 import java.math.BigDecimal;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
-import org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor;
-import org.omg.DynamicAny.DynAnySeqHelper;
+import org.apache.commons.io.FileExistsException;
+
+import com.TpFinal.data.dao.DAOCobroImpl;
+import com.TpFinal.data.dao.interfaces.DAOCobro;
+import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
+import com.TpFinal.dto.cobro.TipoCobro;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.view.cobros.FiltroCobros;
 
 public class CobroService {
 
@@ -142,46 +139,30 @@ public class CobroService {
 		});
 		return arrayList;
 	}
-
-	private void llenarConDatosHardCodeados() {
-		List<Contrato> contratos = new ContratoService().readAll();
-		int cobroIndex = 0;
-		for (int i = 0; i < contratos.size(); i++) {
-			if (contratos.get(i) instanceof ContratoAlquiler) {
-				addRandomPayment();
-				cobros.get(cobroIndex).setContrato((ContratoAlquiler) contratos.get(i));
-				cobroIndex++;
-			}
+	
+	public boolean esAtrasado(Cobro c) {
+		return c.getFechaDeVencimiento().compareTo(LocalDate.now())<0;
+	}
+	
+	public void enviarMailPorPagoAtrasado(Cobro c) throws IllegalArgumentException, FileExistsException {
+		ContratoAlquiler ca= (ContratoAlquiler) c.getContrato();
+		Persona propietario=ca.getPropietario();
+		if(propietario.getMail()==null || propietario.getMail().length()==0)
+			throw new IllegalArgumentException("El mail del propietario es invalido");
+		else {
+			LocalDate fechaVencimiento=c.getFechaDeVencimiento();
+			LocalDate fechaPago=c.getFechaDePago();
+			
+			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+		    String fdvLinda = fechaVencimiento.format(formatters);
+		    String fdpLinda = fechaPago.format(formatters);
+			
+			new MailSender().enviarMail(propietario.getMail(), "Pago atrasado", "El inquilino "+ca.getInquilinoContrato().getPersona().toString()+"\n "
+					+"Fecha de vencimiento: "+fdvLinda+"\n "
+					+"Fecha del pago: "+fdpLinda+"\n "
+					+"Monto total: "+c.getMontoRecibido().toString()+" "+ca.getMoneda().toString()
+					);
 		}
 	}
 
-	// FIXME este metodo es temporal hasta que se implemente el dao
-	private void addRandomPayment() {
-		Random randomGenerator = new Random();
-		int upperBound = 500;
-		int lowerBound = 100;
-		Integer comision = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		Integer montoOriginal = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		Integer montoPropietario = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		Integer montoRecibido = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		Integer interes = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		;
-		Integer numeroCuenta = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		Integer fechaPago = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-		Integer fechaVencimiento = randomGenerator.nextInt(upperBound - lowerBound) + lowerBound;
-
-		LocalDate pago = LocalDate.now().plusDays(fechaPago);
-		LocalDate vencimiento = LocalDate.now().plusDays(fechaVencimiento);
-
-		cobros.add(new Cobro.Builder()
-				.setComision(new BigDecimal(comision))
-				.setFechaDePago(pago)
-				.setFechaDeVencimiento(vencimiento)
-				.setMontoOriginal(new BigDecimal(montoOriginal))
-				.setMontoPropietario(new BigDecimal(montoPropietario))
-				.setMontoRecibido(new BigDecimal(montoRecibido))
-				.setNumeroCuota(numeroCuenta)
-				.setInteres(new BigDecimal(interes))
-				.build());
-	}
 }
