@@ -73,10 +73,6 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	@JoinColumn(name = "id_propietario")
 	private Persona propietario;
 
-	@OneToMany(mappedBy = "contratoAlquiler",fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL})
-    private Set<Movimiento> movimientos;
-
 	public ContratoAlquiler() {
 		super();
 	}
@@ -94,7 +90,6 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
 		this.fechaCelebracion=b.fechaCelebracion;
 		this.setCobros(new HashSet<>());
-		movimientos = new HashSet<>();
 
 		if (b.inmueble != null) {
 			this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
@@ -188,28 +183,6 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		this.intervaloActualizacion = intervaloActualizacion;
 	}
 
-	
-	public Set<Movimiento> getMovimientos() {
-		return movimientos;
-	}
-
-	public void setMovimientos(Set<Movimiento> movimientos) {
-		this.movimientos = movimientos;
-	}
-	
-	public void addMovimiento(Movimiento m) {
-		if (!this.movimientos.contains(m)) {
-			this.addMovimiento(m);
-			m.setContratoAlquiler(this);
-		}
-	}
-	
-	public void removeMovimiento(Movimiento m) {
-		if (this.movimientos.contains(m)) {
-			this.movimientos.remove(m);
-			m.setContratoAlquiler(null);
-		}
-	}
 	
 	public UUID getRandomKey() {
 		return randomKey;
