@@ -79,10 +79,10 @@ public class Parametros {
 
 
 		if (p.getProperty(key) == null){
-			throw new IllegalArgumentException("El parametro no existe");
+		throw new IllegalArgumentException("El parametro no existe");
 		}
 		//Si es una api key desencriptala
-		if(key.equals("emailKey")||key.equals("mapsKey"))
+		if(key.equals("emailKey")||key.equals("mapsKey")||key.equals("geoKey"))
 			return Cipher.decrypt(p.getProperty(key));
 
 		return p.getProperty(key);
@@ -97,6 +97,8 @@ public class Parametros {
 			output = new FileOutputStream(PARAM_FILE);
 			prop.setProperty("emailKey","NjRaCxUzGScrPjY1XjcPCzIsEVIZADkKMVsHDjssABUJCzpSDzowIiArJjQYBCEsNUwsHCcmEi0/MUIGPBwyPD8hJSFR");
 			prop.setProperty("mapsKey","JDoODiAJNEUIMDETGikJKBo8A1FKOhcDBzIhEABFACsMEisdBiM8");
+			prop.setProperty("geoKey","JDoODiAJNjlcMiwSPR0NNjgAIzUVNSErOFgCPjBDMykzDz0ADlQw");
+
 			prop.store(output, null);
 			return true;
 
