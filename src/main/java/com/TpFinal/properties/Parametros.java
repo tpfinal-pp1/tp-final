@@ -128,7 +128,7 @@ public class Parametros {
 	}
 
 	private static boolean checkAndCreateDefaultsIfMissing(){
-		File dir=new File("File");
+		File dir=new File("Files");
 		boolean ret=true;
 		if(!dir.exists())
 			ret=ret&&dir.mkdir();

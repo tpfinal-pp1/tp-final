@@ -9,7 +9,7 @@ import java.time.Instant;
 public class UbicacionService {
     private final String baseUrl="https://maps.googleapis.com/maps/api/staticmap?";
     private final String size="600x300";
-    private final String format="png";
+    private final String format="jpg";
     private final String markerName="A";
     private final String path="Files"+ File.separator;
 
