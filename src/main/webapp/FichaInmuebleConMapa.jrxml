@@ -72,6 +72,9 @@
 	<field name="propietario" class="java.lang.String">
 		<fieldDescription><![CDATA[propietario]]></fieldDescription>
 	</field>
+	<field name="imagen" class="java.awt.Image">
+		<fieldDescription><![CDATA[imagen]]></fieldDescription>
+	</field>
 	<variable name="conParilla" class="java.lang.String">
 		<variableExpression><![CDATA[$F{conParrilla}.equals(true)  ? new String ("Sí") : new String("No")]]></variableExpression>
 	</variable>
@@ -116,7 +119,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="24" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[                  Ficha de Inmueble Simple]]></text>
+					<text><![CDATA[                Ficha de Inmueble con Mapa]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="120" y="45" width="160" height="25" uuid="c4a52bff-cec7-4881-9278-28898fffab3d"/>
@@ -673,14 +676,6 @@
 					</textElement>
 					<textFieldExpression><![CDATA[$V{aEstrenar}]]></textFieldExpression>
 				</textField>
-				<componentElement>
-					<reportElement x="1" y="319" width="558" height="300" uuid="1f7aa183-6902-40c4-98d8-e0bbde989a56"/>
-					<c:map xmlns:c="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" mapScale="2">
-						<c:latitudeExpression><![CDATA[-34.543341]]></c:latitudeExpression>
-						<c:longitudeExpression><![CDATA[-58.711538]]></c:longitudeExpression>
-						<c:zoomExpression><![CDATA[15]]></c:zoomExpression>
-					</c:map>
-				</componentElement>
 				<staticText>
 					<reportElement mode="Opaque" x="1" y="290" width="559" height="29" forecolor="#FFFFFF" backcolor="#006666" uuid="dd3d3e75-e225-4a0f-ad16-9db19cf525fe"/>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
@@ -688,6 +683,10 @@
 					</textElement>
 					<text><![CDATA[                                    Ubicación del Inmueble]]></text>
 				</staticText>
+				<image hAlign="Center" vAlign="Middle">
+					<reportElement x="2" y="319" width="557" height="300" uuid="4751bb45-de54-4f01-b593-2df1f9611f6e"/>
+					<imageExpression><![CDATA[$F{imagen}]]></imageExpression>
+				</image>
 			</frame>
 		</band>
 	</detail>
