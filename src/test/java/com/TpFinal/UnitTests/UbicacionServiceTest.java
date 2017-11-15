@@ -2,6 +2,8 @@ package com.TpFinal.UnitTests;
 
 import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.UbicacionService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -14,23 +16,21 @@ public class UbicacionServiceTest {
          uS=new UbicacionService();
     }
 
-    @Test
-    public void downloadMapImageTest(){
-
-        Assert.assertNotNull(uS.getMapImage(new Coordenada(-34.541461,+-58.715379)));
-
-
-    }
 
     @Test
-    public void downloadJsonGeocodeDataTest(){
-        Coordenada coordenada=uS.geoCode(new Direccion.Builder().setLocalidad("San Miguel")
-                .setCalle("Domingo Faustino Sarmiento")
-                .setNro(1765)
+    public void downloadJsonGeocodeDataAndStaticMapTest(){
+        Inmueble inmueble= InmuebleService.getInstancia();
+        Direccion dir=new Direccion.Builder().setLocalidad("San Miguel")
+                .setCalle("Libertad")
+                .setNro(2136)
                 .setProvincia("Buenos Aires")
-                .setPais("Argentina").build());
+                .setPais("Argentina").build();
+
+        Coordenada coordenada=uS.geoCode(dir);
+        dir.setCoordenada(coordenada);
+        inmueble.setDireccion(dir);
         Assert.assertNotNull( coordenada);
-        Assert.assertNotNull(uS.getMapImage(coordenada));
+        Assert.assertNotNull(uS.getMapImage(inmueble));
     }
 
 }

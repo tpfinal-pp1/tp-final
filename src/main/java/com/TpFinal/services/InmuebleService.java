@@ -73,8 +73,8 @@ public class InmuebleService {
     }
 
     public boolean merge(Inmueble entidad) {
-	System.out.println(entidad.nombreArchivoPortada);
-	if(entidad.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
+	//System.out.println(entidad.nombreArchivoPortada);
+/*	if(entidad.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
 		logger.info("Sin Coordenadas...realizando geocoding...");
 		//new Thread(() -> {
 			UbicacionService us=new UbicacionService();
@@ -84,7 +84,7 @@ public class InmuebleService {
 
 	//	}).start();
 		//return true;
-	}
+	}*/
 	return dao.merge(entidad);
     }
 

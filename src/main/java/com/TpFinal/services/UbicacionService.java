@@ -2,6 +2,7 @@ package com.TpFinal.services;
 
 import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.properties.Parametros;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -33,7 +34,10 @@ public class UbicacionService {
 
     public Coordenada geoCode(Direccion direccion){
        String filename= dowloadGeoCodingData(direccion);
+
        Coordenada ret=null;
+        if(filename.equals(""))
+            return new Coordenada(null,null);
         try {
             ret= getCoordinatesFromJson(path+filename);
         } catch (FileNotFoundException e) {
@@ -95,7 +99,8 @@ public class UbicacionService {
                     + replaceSpaces(direccion.getProvincia())+"&key="+Parametros.getProperty("geoKey"));
             in = new BufferedInputStream(url.openStream());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("No hay Conexion a Internet... Geocoding ha fallado");
+            return filename;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];
@@ -130,15 +135,32 @@ public class UbicacionService {
     }
 
 
-    public Image getMapImage(Coordenada coordinates){
+    private Image getMapImage(Coordenada coordinates){
         Image image =null;
+        if(coordinates.equals(new Coordenada(null,null)))
+            return null;
         try {
-            File pathToFile = new File(path+dowloadGStaticMapsWithMarker(coordinates.toString()));
+            String file=dowloadGStaticMapsWithMarker(coordinates.toString());
+            if(file.equals("")){
+                return null;
+            }
+            File pathToFile = new File(path+file);
+
             image = ImageIO.read(pathToFile);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
         return image;
+    }
+
+    public Image getMapImage(Inmueble inm){
+
+        Coordenada coordenadas=inm.getDireccion().getCoordenada();
+        if(coordenadas.equals(new Coordenada(null,null))) {
+            coordenadas = geoCode(inm.getDireccion());
+        }
+
+        return getMapImage(coordenadas);
     }
 
 
@@ -147,6 +169,7 @@ public class UbicacionService {
         URL url = null;
         InputStream in = null;
         String filename="";
+
         try {
             url = new URL(baseStaticMapsUrl +"center="+coordinates+"&zoom=16&" +
                     "scale=false&" +
@@ -156,7 +179,8 @@ public class UbicacionService {
                     "label:"+markerName+"%7C"+coordinates);
             in = new BufferedInputStream(url.openStream());
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("No hay Conexion a Internet... Static Maps ha fallado");
+            return filename;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         byte[] buf = new byte[1024];

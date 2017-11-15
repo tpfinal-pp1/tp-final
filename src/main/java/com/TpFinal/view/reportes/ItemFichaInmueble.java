@@ -55,7 +55,7 @@ public class ItemFichaInmueble {
     	 this.nombrePropietario = inmueble.getPropietario().getPersona().getNombre();
     	 this.apellidoPropietario = inmueble.getPropietario().getPersona().getApellido();
     	 this.propietario = inmueble.getPropietario().getPersona().toString();
-    	 this.imagen = service.getMapImage(inmueble.getDireccion().getCoordenada());
+    	 this.imagen = service.getMapImage(inmueble);
     }
 
 	public Integer getCantidadAmbientes() {
