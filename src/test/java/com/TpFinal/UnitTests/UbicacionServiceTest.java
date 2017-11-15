@@ -24,12 +24,13 @@ public class UbicacionServiceTest {
 
     @Test
     public void downloadJsonGeocodeDataTest(){
-        uS.dowloadGeoCodingData(new Direccion.Builder().setLocalidad("San Miguel")
-        .setCalle("Domingo Faustino Sarmiento")
+        Coordenada coordenada=uS.geoCode(new Direccion.Builder().setLocalidad("San Miguel")
+                .setCalle("Domingo Faustino Sarmiento")
                 .setNro(1765)
                 .setProvincia("Buenos Aires")
-                .setCodPostal("1663")
                 .setPais("Argentina").build());
-
+        Assert.assertNotNull( coordenada);
+        Assert.assertNotNull(uS.getMapImage(coordenada));
     }
+
 }

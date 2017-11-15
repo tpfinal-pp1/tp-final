@@ -3,12 +3,17 @@ package com.TpFinal.services;
 import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.properties.Parametros;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.time.Instant;
+import java.util.Map;
 
 public class UbicacionService {
 
@@ -20,18 +25,48 @@ public class UbicacionService {
 
     //Static Maps
     private final String baseStaticMapsUrl ="https://maps.googleapis.com/maps/api/staticmap?";
-    private final String size="1024x768";
+    private final String size="600x300";
     private final String mapFormat ="jpg";
     private final String markerName="A";
     private final String path="Files"+ File.separator;
 
 
-    private void geoCode(Direccion direccion){
-        String sadasd="address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=YOUR_API_KEY";
+    public Coordenada geoCode(Direccion direccion){
+       String filename= dowloadGeoCodingData(direccion);
+       Coordenada ret=null;
+        try {
+            ret= getCoordinatesFromJson(path+filename);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return ret;
+    }
 
+    private Coordenada getCoordinatesFromJson(String filename) throws FileNotFoundException {
 
+        final JsonParser parser = new JsonParser();
+        final JsonElement jsonElement = parser.parse(new FileReader(filename));
+        final JsonObject jsonObject = jsonElement.getAsJsonObject();
+        //RESULTS
+        Map.Entry<String, JsonElement> results=jsonObject.entrySet().iterator().next();
+        final JsonElement value = results.getValue();
+        //[
+        JsonArray array=value.getAsJsonArray();
+        //{
+        if(array.size()==0){
+            return new Coordenada(null,null);
+        }
+        JsonObject elementos=array.get(0).getAsJsonObject();
+        // "geometry" : {
+        JsonObject geometry=elementos.get("geometry").getAsJsonObject();
+        // "location" : {
+         JsonObject coordenada=geometry.get("location").getAsJsonObject();
+       // "lat" :
+        Double lat=coordenada.get("lat").getAsDouble();
+        // "lng" :
+        Double lon=coordenada.get("lng").getAsDouble();
 
-
+        return new Coordenada(lat,lon);
     }
 
     private String replaceSpaces(String stringconEspacios){
@@ -48,15 +83,12 @@ public class UbicacionService {
 
     }
 
-    public String dowloadGeoCodingData(Direccion direccion){
+    private String dowloadGeoCodingData(Direccion direccion){
         URL url = null;
         InputStream in = null;
         String filename="";
         try {
-            System.out.println(baseGeoCodingUrl + "address="+direccion.getNro()
-                    +"+"+ replaceSpaces(direccion.getCalle())+",+"
-                    + replaceSpaces(direccion.getLocalidad())+",+"
-                    + replaceSpaces(direccion.getProvincia())+"&key="+Parametros.getProperty("geoKey"));
+
             url = new URL(baseGeoCodingUrl + "address="+direccion.getNro()
                     +"+"+ replaceSpaces(direccion.getCalle())+",+"
                     + replaceSpaces(direccion.getLocalidad())+",+"
@@ -108,6 +140,7 @@ public class UbicacionService {
         }
         return image;
     }
+
 
     //Descarga el mapa en /Files
     private String dowloadGStaticMapsWithMarker(String coordinates) {
