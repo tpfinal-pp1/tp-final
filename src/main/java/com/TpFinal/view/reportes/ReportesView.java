@@ -256,7 +256,7 @@ public class ReportesView extends DefaultLayout implements View {
 
 	checkboxIncluirPendientes.addValueChangeListener(event -> incluirCobrosPendientes =event.getValue());
 
-	// tipoReporteCB.setWidth("101%");
+	// tipoReporteCB.setWidth("103%");
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering.setResponsive(true);
