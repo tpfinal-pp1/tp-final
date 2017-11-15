@@ -9,7 +9,7 @@ public class MailSenderTest {
 
 	@Test
 	public void test() throws IllegalArgumentException, FileExistsException {
-		new MailSender().enviarMail("agusalexander@hotmail.com", "Se que fuiste vos", "Me enteré que uno de los puristas del reglamento eras vos, realmente estoy muy triste\n"
+		new MailSender().enviarMail("inmobi@mailinator.com", "Se que fuiste vos", "Me enteré que uno de los puristas del reglamento eras vos, realmente estoy muy triste\n"
 				+ ""
 				+ " ");
 	}
