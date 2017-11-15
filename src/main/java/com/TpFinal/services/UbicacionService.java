@@ -171,8 +171,8 @@ public class UbicacionService {
         String filename="";
 
         try {
-            url = new URL(baseStaticMapsUrl +"center="+coordinates+"&zoom=16&" +
-                    "scale=false&" +
+             url = new URL(baseStaticMapsUrl +"center="+coordinates+"&zoom=16&" +
+                    "scale=2&" +
                     "size="+size+"&maptype=roadmap" +
                     "&key="+ Parametros.getProperty("mapsKey")+"&mapFormat="+ mapFormat +"" +
                     "&visual_refresh=true&markers=size:mid%7Ccolor:0x162ce9%7C" +
