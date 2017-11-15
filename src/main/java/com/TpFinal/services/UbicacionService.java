@@ -1,7 +1,6 @@
 package com.TpFinal.services;
 
-import com.vaadin.server.FileResource;
-import com.vaadin.server.Resource;
+import com.TpFinal.properties.Parametros;
 
 import java.io.*;
 import java.net.URL;
@@ -9,7 +8,6 @@ import java.time.Instant;
 
 public class UbicacionService {
     private final String baseUrl="https://maps.googleapis.com/maps/api/staticmap?";
-    private final String apiKey="AIzaSyA7aCEriMlDqYz49NxpwGSys1aXhwGvcZY";
     private final String size="600x300";
     private final String format="png";
     private final String markerName="A";
@@ -25,7 +23,7 @@ public class UbicacionService {
             url = new URL(baseUrl+"center="+coordinates+"&zoom=16&" +
                     "scale=false&" +
                     "size="+size+"&maptype=roadmap" +
-                    "&key="+apiKey+"&format="+format+"" +
+                    "&key="+ Parametros.getProperty("mapsKey")+"&format="+format+"" +
                     "&visual_refresh=true&markers=size:mid%7Ccolor:0x162ce9%7C" +
                     "label:"+markerName+"%7C"+coordinates);
             in = new BufferedInputStream(url.openStream());
