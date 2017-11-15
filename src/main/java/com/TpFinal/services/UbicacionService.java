@@ -1,7 +1,10 @@
 package com.TpFinal.services;
 
+import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.properties.Parametros;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.time.Instant;
@@ -14,8 +17,19 @@ public class UbicacionService {
     private final String path="Files"+ File.separator;
 
 
+    public Image getMapImage(Coordenada coordinates){
+        Image image =null;
+        try {
+            File pathToFile = new File(path+dowloadGStaticMapsWithMarker(coordinates.toString()));
+            image = ImageIO.read(pathToFile);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return image;
+    }
+
     //Descarga el mapa en /Files
-    public String dowloadGStaticMapsWithMarker(String coordinates) {
+    private String dowloadGStaticMapsWithMarker(String coordinates) {
         URL url = null;
         InputStream in = null;
         String filename="";
