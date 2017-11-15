@@ -1,7 +1,6 @@
 package com.TpFinal.services;
 
 import java.io.IOException;
-import java.util.Properties;
 
 import org.apache.commons.io.FileExistsException;
 import org.quartz.Job;
@@ -15,14 +14,14 @@ import com.sendgrid.*;
 
 public class MailSender implements Job{
 
-	public void enviarMensaje(String destinatario, String encabezado, String mensaje) throws IllegalArgumentException, FileExistsException {		
-		Email from = new Email("Inmobiliaria@inmobi.ddns.net");
+	public void enviarMail(String destinatario, String encabezado, String mensaje) throws IllegalArgumentException, FileExistsException {
+		Email from = new Email("inmobiliaria@inmobi.ddns.net");
 		String subject = encabezado;
 		Email to = new Email(destinatario);
 		Content content = new Content("text/plain", mensaje);
 		Mail mail = new Mail(from, subject, to, content);
 
-		SendGrid sg = new SendGrid(Parametros.getProperty("sendgrid.api.key"));
+		SendGrid sg = new SendGrid(Parametros.getProperty("emailKey"));
 		//SendGrid sg = new SendGrid(Parametros.getProperty(key));
 
 		Request request = new Request();
@@ -49,7 +48,7 @@ public class MailSender implements Job{
 			String mensaje = dataMap.getString("mensaje");
 
 			try {
-				enviarMensaje(destinatario, encabezado, mensaje);
+				enviarMail(destinatario, encabezado, mensaje);
 			} catch (IllegalArgumentException | FileExistsException e) {
 				e.printStackTrace();
 			}

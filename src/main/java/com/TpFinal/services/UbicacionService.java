@@ -1,23 +1,35 @@
 package com.TpFinal.services;
 
-import com.vaadin.server.FileResource;
-import com.vaadin.server.Resource;
+import com.TpFinal.dto.inmueble.Coordenada;
+import com.TpFinal.properties.Parametros;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.time.Instant;
 
 public class UbicacionService {
     private final String baseUrl="https://maps.googleapis.com/maps/api/staticmap?";
-    private final String apiKey="AIzaSyA7aCEriMlDqYz49NxpwGSys1aXhwGvcZY";
     private final String size="600x300";
-    private final String format="png";
+    private final String format="jpg";
     private final String markerName="A";
     private final String path="Files"+ File.separator;
 
 
+    public Image getMapImage(Coordenada coordinates){
+        Image image =null;
+        try {
+            File pathToFile = new File(path+dowloadGStaticMapsWithMarker(coordinates.toString()));
+            image = ImageIO.read(pathToFile);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return image;
+    }
+
     //Descarga el mapa en /Files
-    public String dowloadGStaticMapsWithMarker(String coordinates) {
+    private String dowloadGStaticMapsWithMarker(String coordinates) {
         URL url = null;
         InputStream in = null;
         String filename="";
@@ -25,7 +37,7 @@ public class UbicacionService {
             url = new URL(baseUrl+"center="+coordinates+"&zoom=16&" +
                     "scale=false&" +
                     "size="+size+"&maptype=roadmap" +
-                    "&key="+apiKey+"&format="+format+"" +
+                    "&key="+ Parametros.getProperty("mapsKey")+"&format="+format+"" +
                     "&visual_refresh=true&markers=size:mid%7Ccolor:0x162ce9%7C" +
                     "label:"+markerName+"%7C"+coordinates);
             in = new BufferedInputStream(url.openStream());
@@ -65,3 +77,4 @@ public class UbicacionService {
     }
 
 }
+
