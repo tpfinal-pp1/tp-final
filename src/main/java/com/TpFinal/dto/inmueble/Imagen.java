@@ -3,8 +3,6 @@ package com.TpFinal.dto.inmueble;
 import org.hibernate.annotations.Cascade;
 
 import com.TpFinal.dto.Identificable;
-import com.TpFinal.dto.publicacion.Publicacion;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.sql.Blob;
