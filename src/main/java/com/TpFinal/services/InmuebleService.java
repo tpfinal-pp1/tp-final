@@ -1,5 +1,8 @@
 package com.TpFinal.services;
 
+import java.awt.Image;
+import java.awt.MediaTracker;
+import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -313,6 +316,32 @@ public class InmuebleService {
 			    }).anyMatch(p -> p.getEstadoPublicacion() == EstadoPublicacion.Activa);
 	}
 	return ret;
+    }
+
+    /**
+     * Devuelve la imagen de portada correspondiente al Inmueble. Si el inmueble no
+     * posee una imagen de portada, devuelve nul
+     * 
+     * @param i
+     * @return
+     */
+    public static Image getImagenPortada(Inmueble i) {
+	Toolkit toolkit = Toolkit.getDefaultToolkit();
+	Image image = null;
+	if (logger.isDebugEnabled()) {
+	    logger.debug("Nombre Archivo Portada: " + i.getNombreArchivoPortada());
+	}
+	if (i.getNombreArchivoPortada() != null && i.getNombreArchivoPortada() != "") {
+	    image = toolkit.getImage(i.getNombreArchivoPortada());
+	    if (logger.isDebugEnabled()) {
+		if (image != null)
+		    logger.debug("Imagen cargada");
+		else
+		    logger.debug("Imagen null");
+	    }
+	}
+
+	return image;
     }
 
 }
