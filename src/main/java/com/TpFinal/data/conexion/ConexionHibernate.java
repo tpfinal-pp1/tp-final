@@ -7,6 +7,8 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
+import java.util.Properties;
+
 
 public class ConexionHibernate {
 	private static Configuration configuration = new Configuration();
@@ -14,7 +16,7 @@ public class ConexionHibernate {
 	
 	//TipoConexion Por Defecto
 	private static TipoConexion	tipoConexion =TipoConexion.H2Server;
-	
+	private static boolean backupmode=false;
 	
 	public static void setTipoConexion(TipoConexion tipo) {
 		tipoConexion = tipo;
@@ -26,6 +28,19 @@ public class ConexionHibernate {
 		configuration
 		 		.configure().setProperties(tipoConexion.properties());
 		return configuration;
+	}
+
+
+	public static void Backup(){
+
+
+		Session session = ConexionHibernate.openSession();
+		session.beginTransaction();
+		session.createSQLQuery("BACKUP TO 'backupmio.zip'");
+		session.getTransaction().commit();
+		session.close();
+
+
 	}
 	
 	private static ServiceRegistry getServiceRegistry(Configuration configuration) {
@@ -43,8 +58,14 @@ public class ConexionHibernate {
 		}
 		return serviceRegistry;
 	}
-	
+	public static void enterBackupMode(){
+		backupmode=true;
+	}
+	public static void leaveBackupMode(){
+		backupmode=false;
+	}
 	private static SessionFactory getSession() {
+
 		if(sf==null) {
 			try {
 				sf=getConfiguration().buildSessionFactory(getServiceRegistry(getConfiguration()));
@@ -59,6 +80,16 @@ public class ConexionHibernate {
 	}
 
 	public static Session openSession() {
+		if(backupmode){
+			try {
+				while(backupmode) {
+					Thread.sleep(1000);
+				}
+
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		return getSession().openSession();
 	}
 	public static void createSessionFactory() {

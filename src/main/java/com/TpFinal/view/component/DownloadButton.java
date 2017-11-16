@@ -1,5 +1,6 @@
 package com.TpFinal.view.component;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.dto.contrato.Archivo;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.utils.Utils;
@@ -100,6 +101,8 @@ public class DownloadButton extends Button {
 	}
     }
 
+
+
     private StreamResource fromPathtoSR(String path, String filename) {
 	if (logger.isDebugEnabled())
 	    logger.debug("Seteando path de fileSystem: " + path);
@@ -108,9 +111,9 @@ public class DownloadButton extends Button {
 	    public InputStream getStream() {
 		InputStream is = null;
 		try {
-		    is = new FileInputStream(path);
+		    is = new FileInputStream(path+File.separator+filename);
 		} catch (FileNotFoundException e) {
-		    System.err.println("No se ha encontrado el archivo a descargar: " + path);
+		    System.err.println("No se ha encontrado el archivo a descargar: " + path+File.separator+filename);
 		    e.printStackTrace();
 		}
 		return is;
