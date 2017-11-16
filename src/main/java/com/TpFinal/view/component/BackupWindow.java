@@ -32,8 +32,7 @@ public class BackupWindow extends CustomComponent {
 	popupVLayout.setMargin(true);
 	HorizontalLayout buttonsHLayout = new HorizontalLayout();
 	buttonsHLayout.setSpacing(true);
-	buttonsHLayout.addComponent(importar);
-	buttonsHLayout.addComponent(exportar);
+
 	
 	window.setHeightUndefined();
 	window.setModal(true);
@@ -77,6 +76,8 @@ public class BackupWindow extends CustomComponent {
 			ConexionHibernate.leaveBackupMode();
 		}
 	});
+		buttonsHLayout.addComponent(importar);
+		buttonsHLayout.addComponent(exportar);
     }
 
     public void setInfo(String info) {

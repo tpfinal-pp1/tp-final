@@ -154,7 +154,7 @@ public abstract class ParametrosDelSistemaWindow extends Window {
 	    }
 	});
 	ok.focus();
-	Button openBackupWindow=new Button();
+	Button openBackupWindow=new Button("Backup/Restore");
 	openBackupWindow.addClickListener(new ClickListener() {
 		@Override
 		public void buttonClick(ClickEvent clickEvent) {
