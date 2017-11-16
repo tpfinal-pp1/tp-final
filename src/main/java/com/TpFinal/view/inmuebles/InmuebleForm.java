@@ -416,14 +416,8 @@ public class InmuebleForm extends FormLayout {
 
 	// pic.setSpacing(true);
 
-	Button mapa=new Button(VaadinIcons.MAP_MARKER);
-	mapa.addClickListener(new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
-			new MapWindow(inmueble);
-		}
-	});
-	HorizontalLayout actions = new HorizontalLayout(save, delete,imageManager,mapa);
+
+	HorizontalLayout actions = new HorizontalLayout(save, delete,imageManager);
 	addComponents(inmuebleFromTabSheet, actions);
 	actions.setSpacing(true);
 

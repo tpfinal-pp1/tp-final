@@ -3,10 +3,7 @@ package com.TpFinal.view.inmuebles;
 import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
-import com.TpFinal.view.component.DefaultLayout;
-import com.TpFinal.view.component.DialogConfirmacion;
-import com.TpFinal.view.component.ImageVisualizer;
-import com.TpFinal.view.component.PreferenciasBusqueda;
+import com.TpFinal.view.component.*;
 import com.TpFinal.view.persona.FiltroInteresados;
 import com.TpFinal.view.persona.PersonaABMViewWindow;
 import com.google.common.eventbus.Subscribe;
@@ -417,6 +414,20 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		if (inmueble.getNombreArchivoPortada() == null)
 		    verFotos.setEnabled(false);
 
+
+		Button verMapa = new Button(VaadinIcons.MAP_MARKER);
+		verMapa.addClickListener(click -> {
+			new MapWindow(inmueble);
+
+		});
+		verMapa.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
+		verMapa.setDescription("Ver Mapa");
+
+
+
+
+
+
 		Button verIntesados = new Button(VaadinIcons.SEARCH);
 		verIntesados.addClickListener(click -> {
 		    new PersonaABMViewWindow("Posibles interesados en este inmueble", new FiltroInteresados(inmueble));
@@ -424,7 +435,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		verIntesados.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verIntesados.setDescription("Buscar interesados.");
 
-		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos, verIntesados);
+		HorizontalLayout hl = new HorizontalLayout(edit, del, verFotos,verMapa, verIntesados);
 		hl.setCaption("Accion " + acciones);
 		hl.setSpacing(false);
 		acciones++;

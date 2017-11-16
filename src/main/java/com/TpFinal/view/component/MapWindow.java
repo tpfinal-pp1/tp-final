@@ -24,6 +24,7 @@ import org.tepi.imageviewer.ImageViewer.ImageSelectionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @SuppressWarnings("serial")
@@ -85,7 +86,7 @@ public class MapWindow extends Window {
 		}
 	});
 	gmaps.setCenter(latLon);
-	gmaps.setZoom(19);
+	gmaps.setZoom(16);
 	gmaps.addMarker(marker);
 	mainLayout.addComponents(gmaps);
 	setContent(mainLayout);
@@ -108,6 +109,7 @@ public class MapWindow extends Window {
 
 		}
 	});
+	gmaps.setLocale(new Locale("es_AR"));
 	mainLayout.setExpandRatio(gmaps,1);
 	recalcularDir.setIcon(VaadinIcons.LOCATION_ARROW_CIRCLE_O);
 	recalcularDir.setStyleName(ValoTheme.BUTTON_PRIMARY);
