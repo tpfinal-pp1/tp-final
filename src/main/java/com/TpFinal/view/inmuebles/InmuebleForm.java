@@ -447,15 +447,18 @@ public class InmuebleForm extends FormLayout {
 	    localidades.setEnabled(true);
 	    Resource res = InmuebleService.getPortada(this.inmueble);
 	    if (res == null) {
+			System.out.println("Res es null?");
+
 		portada.setSource(null);
 		portada.setVisible(false);
 	    } else {
 	    	portada.setVisible(true);
-		portada.setSource(res);
+			portada.setSource(res);
 	    }
 	    delete.setVisible(true);
 	} else {
-	    portada.setSource(null);
+		portada.setSource(null);
+		portada.setVisible(false);
 		delete.setVisible(false);
 	    this.inmueble = InmuebleService.getInstancia();
 	    localidades.setEnabled(false);
