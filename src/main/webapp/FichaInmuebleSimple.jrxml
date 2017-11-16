@@ -119,7 +119,7 @@
 					<textElement textAlignment="Left" verticalAlignment="Middle">
 						<font fontName="SansSerif" size="24" isBold="true" isUnderline="false"/>
 					</textElement>
-					<text><![CDATA[              Ficha de Inmueble con Simple]]></text>
+					<text><![CDATA[                 Ficha de Inmueble Simple]]></text>
 				</staticText>
 				<staticText>
 					<reportElement key="" x="120" y="45" width="160" height="25" uuid="c4a52bff-cec7-4881-9278-28898fffab3d"/>
