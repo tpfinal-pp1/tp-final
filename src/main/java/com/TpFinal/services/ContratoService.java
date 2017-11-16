@@ -477,7 +477,7 @@ public class ContratoService {
 		comisionVendedor=comisionVendedor.multiply(new BigDecimal(this.porcentajeComisionVendedor)).divide(new BigDecimal("100"));
 		total=total.add(comisionComprador).add(comisionVendedor);
 		totalComision=totalComision.add(comisionComprador).add(comisionVendedor);
-		montoVendedor.subtract(comisionVendedor);
+		montoVendedor=montoVendedor.subtract(comisionVendedor);
 		
 		Cobro c = new Cobro.Builder()
 				.setNumeroCuota(0)
