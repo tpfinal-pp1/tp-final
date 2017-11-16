@@ -174,7 +174,7 @@ public class UbicacionService {
              url = new URL(baseStaticMapsUrl +"center="+coordinates+"&zoom=16&" +
                     "scale=2&" +
                     "size="+size+"&maptype=roadmap" +
-                    "&key="+ Parametros.getProperty("mapsKey")+"&mapFormat="+ mapFormat +"" +
+                    "&key="+ Parametros.getProperty("staticMapsKey")+"&mapFormat="+ mapFormat +"" +
                     "&visual_refresh=true&markers=size:mid%7Ccolor:0x162ce9%7C" +
                     "label:"+markerName+"%7C"+coordinates);
             in = new BufferedInputStream(url.openStream());

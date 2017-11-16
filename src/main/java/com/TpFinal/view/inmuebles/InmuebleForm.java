@@ -92,7 +92,7 @@ public class InmuebleForm extends FormLayout {
     private ProvinciaService provinciaService = new ProvinciaService();
 
     private Image portada;
-    private Button imageManager=new Button("Imagenes",e-> new ImagenesInmuebleWindow(inmueble) {
+    private Button imageManager=new Button(null,e-> new ImagenesInmuebleWindow(inmueble) {
 		@Override
 		public void onClose() {
 			Resource res=InmuebleService.getPortada(inmueble);
@@ -416,7 +416,14 @@ public class InmuebleForm extends FormLayout {
 
 	// pic.setSpacing(true);
 
-	HorizontalLayout actions = new HorizontalLayout(save, delete,imageManager);
+	Button mapa=new Button(VaadinIcons.MAP_MARKER);
+	mapa.addClickListener(new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+			new MapWindow(inmueble);
+		}
+	});
+	HorizontalLayout actions = new HorizontalLayout(save, delete,imageManager,mapa);
 	addComponents(inmuebleFromTabSheet, actions);
 	actions.setSpacing(true);
 
