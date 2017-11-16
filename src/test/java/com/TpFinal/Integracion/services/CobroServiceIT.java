@@ -1,7 +1,6 @@
 package com.TpFinal.Integracion.services;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -9,12 +8,11 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import org.apache.commons.io.FileExistsException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
@@ -32,6 +30,8 @@ import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.persona.Inquilino;
+import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.CobroService;
 import com.TpFinal.services.ContratoService;
@@ -126,7 +126,7 @@ public class CobroServiceIT {
 	public void calculadorDeInteres() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		//aca deberia guardar el contrato con sus cobros
 		try {
 		contratoService.saveOrUpdate(ca, null);
@@ -162,7 +162,7 @@ public class CobroServiceIT {
 	public void calculadorDeInteresAcumulativo() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativo();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		try {
 		    contratoService.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
@@ -199,7 +199,7 @@ public class CobroServiceIT {
 	public void calculadorDeInteresAcumulativoNoVigente() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativoNoVigente();
-		contratoService.addCobros(ca);
+		contratoService.addCobrosAlquiler(ca);
 		try {
 		    contratoService.saveOrUpdate(ca, null);
 		} catch (ContratoServiceException e) {
@@ -248,25 +248,44 @@ public class CobroServiceIT {
 		assertEquals(1, cobros3.size());
 		assertEquals(3, cobros4.size());
 		assertNotEquals(2, cobros4.size());
+	}
+	
+	@Test
+	public void esAtrasado() {
+		Cobro c = new Cobro.Builder()
+				.setFechaDeVencimiento(LocalDate.now().minusDays(1))
+				.build();
 		
+		assertTrue(service.esAtrasado(c));
+		c.setFechaDeVencimiento(LocalDate.now());
+		assertFalse(service.esAtrasado(c));
+		c.setFechaDeVencimiento(LocalDate.now().plusDays(1));
+		assertFalse(service.esAtrasado(c));
 		
 	}
 	
-	@Ignore
 	@Test
-	public void traerNoCobrados() throws ContratoServiceException {
-		ContratoService contratoService= new ContratoService();
-		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
-		contratoService.addCobros(ca);
-		contratoService.saveOrUpdate(ca, null);
-	
-		 ca=(ContratoAlquiler) contratoService.readAll().get(0);
-		Cobro pago = ca.getCobros().stream().filter(c -> c.getNumeroCuota().equals(new Integer(1))).collect(Collectors.toList()).get(0);
-		pago.setFechaDePago(LocalDate.now());
-		pago.setEstadoCobro(EstadoCobro.COBRADO);
+	public void enviarMail() throws IllegalArgumentException, FileExistsException {
+		Cobro c = new Cobro.Builder()
+				.setFechaDePago(LocalDate.now())
+				.setFechaDeVencimiento(LocalDate.now().minusDays(1))
+				.setMontoRecibido(new BigDecimal("100"))
+				.build();
 		
-		contratoService.saveOrUpdate(ca, null);
-		assertEquals(23, service.readNoCobrados().size());
+		ContratoAlquiler ca = instanciaAlquilerConInteresSimple();
+		ca.addCobro(c);
+		
+		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
+		
+		ca.setInquilinoContrato( new Inquilino.Builder().setPersona(
+				new Persona.Builder()
+				.setNombre("Señor Britos")
+				.setApellido("Del lago del terror")
+				.build()
+			).build()
+		);
+		
+		service.enviarMailPorPagoAtrasado(c);
 	}
 	
     private ContratoAlquiler instanciaAlquilerConInteresSimple() {

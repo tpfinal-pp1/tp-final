@@ -484,6 +484,7 @@ public class InmuebleForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderInmueble.writeBean(inmueble);
+
 	    Notification.show(inmueble.nombreArchivoPortada);
 	    if (inmueble.getPropietario().getPersona() != null)
 		success = inmbService.merge(inmueble);

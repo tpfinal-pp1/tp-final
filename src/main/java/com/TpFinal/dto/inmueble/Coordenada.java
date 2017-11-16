@@ -25,6 +25,11 @@ public class Coordenada implements Identificable{
 		this.lon = lon;
 	}
 
+	@Override
+	public String toString(){
+		return lat+","+lon;
+	}
+
 	@Id 
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long idCoordenada;

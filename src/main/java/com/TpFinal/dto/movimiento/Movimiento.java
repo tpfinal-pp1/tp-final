@@ -14,7 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -24,7 +24,7 @@ import org.hibernate.annotations.CascadeType;
 import com.TpFinal.dto.BorradoLogico;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
-import com.TpFinal.dto.contrato.Contrato;
+import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
 
@@ -39,16 +39,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	protected Long id;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
-	@JoinColumn(name = "contratoVentaId")
-	private ContratoVenta contratoVenta;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
-	@JoinColumn(name = "contratoAlquilerId")
-	private ContratoAlquiler contratoAlquiler;
 
 	@Column(name = "descripcionMovimiento")
 	private String descripcionMovimiento;
@@ -71,41 +61,33 @@ public class Movimiento implements Identificable, BorradoLogico{
 	@Column(name =  "claseMovimiento")
 	private ClaseMovimiento claseMovimiento;
 
+	@OneToOne(fetch=FetchType.EAGER)
+	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE})
+	private Cobro cobro;
+
 	public Movimiento() {
 
 	}
 
 	public Movimiento(Builder b) {
-		this.contratoVenta = b.contratoVenta;
-		this.contratoAlquiler = b.contratoAlquiler;
 		this.descripcionMovimiento = b.descripcionMovimiento;
 		this.monto = b.monto;
 		this.fecha = b.fecha;
 		this.estadoRegistro = b.estadoRegistro;
 		this.tipoMovimiento = b.tipoMovimiento;
 		this.claseMovimiento = b.claseMovimiento;
+		this.cobro=b.cobro;
 	}
 
 	public static class Builder {
 
-		private ContratoVenta contratoVenta;
-		private ContratoAlquiler contratoAlquiler;
 		private String descripcionMovimiento;
 		private BigDecimal monto;
 		private LocalDate fecha;
+		private Cobro cobro;
 		private EstadoRegistro estadoRegistro;
 		private TipoMovimiento tipoMovimiento;
 		private ClaseMovimiento claseMovimiento;
-
-		public Builder setContratoVenta(ContratoVenta contratoVenta) {
-			this.contratoVenta = contratoVenta;
-			return this;
-		}
-
-		public Builder setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-			this.contratoAlquiler = contratoAlquiler;
-			return this;
-		}
 
 		public Builder setdescripcionMovimiento(String descripcionMovimiento) {
 			this.descripcionMovimiento = descripcionMovimiento;
@@ -119,6 +101,11 @@ public class Movimiento implements Identificable, BorradoLogico{
 
 		public Builder setFecha(LocalDate fecha) {
 			this.fecha = fecha;
+			return this;
+		}
+
+		public Builder setCobro(Cobro dato) {
+			this.cobro=dato;
 			return this;
 		}
 
@@ -155,22 +142,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 	@Override
 	public Long getId() {
 		return this.id;
-	}
-
-	public ContratoVenta getContratoVenta() {
-		return contratoVenta;
-	}
-
-	public void setContratoVenta(ContratoVenta contratoVenta) {
-		this.contratoVenta = contratoVenta;
-	}
-
-	public ContratoAlquiler getContratoAlquiler() {
-		return contratoAlquiler;
-	}
-
-	public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-		this.contratoAlquiler = contratoAlquiler;
 	}
 
 	public String getDescripcionMovimiento() {
@@ -216,6 +187,14 @@ public class Movimiento implements Identificable, BorradoLogico{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Cobro getCobro() {
+		return cobro;
+	}
+
+	public void setCobro(Cobro cobro) {
+		this.cobro = cobro;
 	}
 
 	@Override

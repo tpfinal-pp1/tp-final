@@ -65,9 +65,11 @@ rebel.xml
 *.iml
 .idea/
 *.png/
-/Files/
+/Files
+*.properties/
 
 
 src/main/resources/prueba.pdf
 /ReportePropietarios.jasper
 /ReporteAlquileresPorCobrar.jasper
+

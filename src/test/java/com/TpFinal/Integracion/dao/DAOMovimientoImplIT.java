@@ -62,11 +62,9 @@ public class DAOMovimientoImplIT {
 
 	private void desvincularMovimientoYContratoAlquiler() {
 		daoContratoAlquiler.readAll().forEach(contrato -> {
-			contrato.setMovimientos(null);
 			daoContratoAlquiler.saveOrUpdate(contrato);
 		});
 		dao.readAll().forEach(movimiento -> {
-			movimiento.setContratoAlquiler(null);
 			dao.saveOrUpdate(movimiento);
 		});
 
@@ -75,11 +73,9 @@ public class DAOMovimientoImplIT {
 
 	private void desvincularMovimientoYContratoVenta() {
 		daoContratoVenta.readAll().forEach(contrato -> {
-			contrato.setMovimientos(null);
 			daoContratoVenta.saveOrUpdate(contrato);
 		});
 		dao.readAll().forEach(movimiento -> {
-			movimiento.setContratoVenta(null);
 			dao.saveOrUpdate(movimiento);
 		});
 
