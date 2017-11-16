@@ -31,6 +31,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
+import org.apache.log4j.Logger;
+
 @Title("Inmuebles")
 @Theme("valo")
 public class InmuebleABMView extends DefaultLayout implements View {
@@ -180,6 +182,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
     public class Controller {
 
 	private InmuebleService inmuebleService = new InmuebleService();
+	private Logger logger = Logger.getLogger(InmuebleABMView.Controller.class);
 
 	public void configureComponents() {
 	    if (inmuebleSupplier == null)
@@ -196,7 +199,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    newItem.addClickListener(e -> {
 		grid.asSingleSelect().clear();
 		inmuebleForm.clearFields();
-		inmuebleForm.edicion=false;
+		inmuebleForm.edicion = false;
 		inmuebleForm.setInmueble(null);
 	    });
 	    newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -246,7 +249,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	}
 
 	private void configureGrid() {
-		grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
+	    grid.addComponentColumn(configurarAcciones()).setCaption("Acciones");
 	    grid.asSingleSelect().addValueChangeListener(event -> {
 		if (event.getValue() == null) {
 		    if (inmuebleForm.isVisible())
@@ -269,9 +272,9 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble").setId("tipo inmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble").setId("estado inmueble");
 	    grid.getColumns().forEach(col -> {
-		    col.setResizable(false);
-		    col.setHidable(true);
-		});
+		col.setResizable(false);
+		col.setHidable(true);
+	    });
 
 	    HeaderRow filterRow = grid.appendHeaderRow();
 	    filterRow.getCell("direccion").setComponent(filtroDireccion());
@@ -288,7 +291,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		if (e.getValue() != null) {
 		    if (!filtroDireccion.isEmpty()) {
 			filtro.setDireccion(inmueble -> inmueble.getDireccion() != null &&
-					inmueble.getDireccion()
+				inmueble.getDireccion()
 					.toString().toLowerCase()
 					.contains(filtroDireccion.getValue().toLowerCase()));
 		    } else
@@ -391,24 +394,27 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		del.setDescription("Borrar");
 
 		Button verFotos = new Button(VaadinIcons.PICTURE);
-			Map<String,Resource> fotos = new HashMap<>();
+		Map<String, Resource> fotos = new HashMap<>();
 		verFotos.addClickListener(click -> {
-
-			for (String pathFoto:inmueble.getPathImagenes()) {
-				Resource foto=InmuebleService.GenerarStreamResource(pathFoto);
-				if(foto!=null){
-					fotos.put(pathFoto,foto);}
-
+		    if (logger.isDebugEnabled()) {
+			logger.debug("Imagen Foto de portada: " + inmueble.getNombreArchivoPortada());
+			InmuebleService.getImagenPortada(inmueble);
+		    }
+		    for (String pathFoto : inmueble.getPathImagenes()) {
+			Resource foto = InmuebleService.GenerarStreamResource(pathFoto);
+			if (foto != null) {
+			    fotos.put(pathFoto, foto);
 			}
 
-			ImageVisualizer imgv = new ImageVisualizer(fotos,inmueble.getNombreArchivoPortada());
-
 		    }
-		);
+
+		    ImageVisualizer imgv = new ImageVisualizer(fotos, inmueble.getNombreArchivoPortada());
+
+		});
 		verFotos.addStyleNames(ValoTheme.BUTTON_QUIET, ValoTheme.BUTTON_SMALL);
 		verFotos.setDescription("Ver Fotos");
 		String archivoPortada = inmueble.getNombreArchivoPortada();
-		if (inmueble.getNombreArchivoPortada()==null)
+		if (inmueble.getNombreArchivoPortada() == null)
 		    verFotos.setEnabled(false);
 
 		Button verIntesados = new Button(VaadinIcons.SEARCH);
@@ -428,21 +434,22 @@ public class InmuebleABMView extends DefaultLayout implements View {
 
 	public void updateList() {
 	    List<Inmueble> inmuebles = inmuebleService.findAll(filtro);
-	    inmuebles.forEach(i ->{
-		//System.out.println("---------------------------------------------------------");
-		//System.out.println("---------------------------------------------------------");
-		//System.out.println(i);
-		//System.out.println("Cantidad de publicaciones: " + i.getPublicaciones()!= null? i.getPublicaciones().size() : "0");
-		if (i.getPublicaciones()!= null) {
-		   // i.getPublicaciones().forEach(p ->// System.out.println("Publicacion:" + p));
+	    inmuebles.forEach(i -> {
+		// System.out.println("---------------------------------------------------------");
+		// System.out.println("---------------------------------------------------------");
+		// System.out.println(i);
+		// System.out.println("Cantidad de publicaciones: " + i.getPublicaciones()!=
+		// null? i.getPublicaciones().size() : "0");
+		if (i.getPublicaciones() != null) {
+		    // i.getPublicaciones().forEach(p ->// System.out.println("Publicacion:" + p));
 		}
 	    });
 	    grid.setItems(inmuebles);
 	}
 
 	public void filtrarPorCalle(String filtro) {
-		List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
-		grid.setItems(inmuebles);
+	    List<Inmueble> inmuebles = inmuebleService.filtrarPorCalle(filtro);
+	    grid.setItems(inmuebles);
 	}
 
     }
