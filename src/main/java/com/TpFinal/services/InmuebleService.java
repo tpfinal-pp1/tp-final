@@ -134,7 +134,7 @@ public class InmuebleService {
     }
 
     public static Resource getPortada(Inmueble inmueble) {
-	if (inmueble != null && inmueble.getId() != null) {
+	if (inmueble != null) {
 	    if (new File("Files" + File.separator + inmueble.getNombreArchivoPortada()).exists()) {
 		StreamResource str = new StreamResource(new StreamResource.StreamSource() {
 		    @Override
