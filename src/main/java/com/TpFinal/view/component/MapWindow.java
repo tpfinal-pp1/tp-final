@@ -53,12 +53,11 @@ public class MapWindow extends Window {
 		} catch (FileExistsException e) {
 			e.printStackTrace();
 		}
-	GoogleMap gmaps = new GoogleMap(key,null,null);
+	GoogleMap gmaps = new GoogleMap(key,null,"spanish");
 
 	gmaps.setSizeFull();
 
 	if(inmueble.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
-		System.out.println("son nul "+inmueble.getDireccion().getCoordenada());
 		if(inmueble.getDireccion().getCalle().equals("")){
 			return;
 		}
@@ -109,7 +108,6 @@ public class MapWindow extends Window {
 
 		}
 	});
-	gmaps.setLocale(new Locale("es_AR"));
 	mainLayout.setExpandRatio(gmaps,1);
 	recalcularDir.setIcon(VaadinIcons.LOCATION_ARROW_CIRCLE_O);
 	recalcularDir.setStyleName(ValoTheme.BUTTON_PRIMARY);
