@@ -149,6 +149,25 @@ public class ReportesView extends DefaultLayout implements View {
 		
 		break;
 	}
+	
+	case FichaInmuebleSimple: {
+		Inmueble inmueble = comboInmuebles.getValue();
+		
+		if (logger.isDebugEnabled()) {
+			logger.debug("==========================");
+			
+			logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
+			logger.debug("la cantidad de inmuebles es vacia?: "+ comboInmuebles.isEmpty());
+			logger.debug("==========================");
+			
+		}
+		
+		if (inmueble != null) {
+			objects = inmuebleService.getListaFichaInmuebleSimple(inmueble);
+		}
+		
+		break;
+	}
 
 	}
 
@@ -242,6 +261,16 @@ public class ReportesView extends DefaultLayout implements View {
 		}
 		
 		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleConMapa) {
+			comboInmuebles.setVisible(true);
+		    clearFilterTextBtn.setVisible(false);
+		    fDesdeDatePicker.setVisible(false);
+		    fHastaDatePicker.setVisible(false);
+		    fDesde2.setVisible(false);
+		    checkboxIncluirPendientes.setVisible(false);
+		    
+		}
+		
+		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleSimple) {
 			comboInmuebles.setVisible(true);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
