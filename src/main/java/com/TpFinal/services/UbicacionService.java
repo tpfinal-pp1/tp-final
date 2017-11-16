@@ -172,14 +172,13 @@ public class UbicacionService {
 
         try {
              url = new URL(baseStaticMapsUrl +"center="+coordinates+"&zoom=16&" +
-                    "scale=2&" +
+                    "scale=2&" +"language=es&"+
                     "size="+size+"&maptype=roadmap" +
-                    "&key="+ Parametros.getProperty("mapsKey")+"&mapFormat="+ mapFormat +"" +
-                    "&visual_refresh=true&markers=size:mid%7Ccolor:0x162ce9%7C" +
-                    "label:"+markerName+"%7C"+coordinates);
+                    "&key="+ Parametros.getProperty("staticMapsKey")+"&mapFormat="+ mapFormat +"" +
+                    "&visual_refresh=true&markers=size:mid" +"%7C"+coordinates);
             in = new BufferedInputStream(url.openStream());
         } catch (Exception e) {
-            System.err.println("No hay Conexion a Internet... Static Maps ha fallado");
+            System.err.println("No hay Conexion a Internet... la generacion de Static Maps ha fallado");
             return filename;
         }
         ByteArrayOutputStream out = new ByteArrayOutputStream();

@@ -92,7 +92,7 @@ public class InmuebleForm extends FormLayout {
     private ProvinciaService provinciaService = new ProvinciaService();
 
     private Image portada;
-    private Button imageManager=new Button("Imagenes",e-> new ImagenesInmuebleWindow(inmueble) {
+    private Button imageManager=new Button(null,e-> new ImagenesInmuebleWindow(inmueble) {
 		@Override
 		public void onClose() {
 			Resource res=InmuebleService.getPortada(inmueble);
@@ -416,6 +416,7 @@ public class InmuebleForm extends FormLayout {
 
 	// pic.setSpacing(true);
 
+
 	HorizontalLayout actions = new HorizontalLayout(save, delete,imageManager);
 	addComponents(inmuebleFromTabSheet, actions);
 	actions.setSpacing(true);
@@ -440,15 +441,18 @@ public class InmuebleForm extends FormLayout {
 	    localidades.setEnabled(true);
 	    Resource res = InmuebleService.getPortada(this.inmueble);
 	    if (res == null) {
+			System.out.println("Res es null?");
+
 		portada.setSource(null);
 		portada.setVisible(false);
 	    } else {
 	    	portada.setVisible(true);
-		portada.setSource(res);
+			portada.setSource(res);
 	    }
 	    delete.setVisible(true);
 	} else {
-	    portada.setSource(null);
+		portada.setSource(null);
+		portada.setVisible(false);
 		delete.setVisible(false);
 	    this.inmueble = InmuebleService.getInstancia();
 	    localidades.setEnabled(false);
