@@ -175,8 +175,7 @@ public class UbicacionService {
                     "scale=2&" +"language=es&"+
                     "size="+size+"&maptype=roadmap" +
                     "&key="+ Parametros.getProperty("staticMapsKey")+"&mapFormat="+ mapFormat +"" +
-                    "&visual_refresh=true&markers=size:mid%7Ccolor:0x162ce9%7C" +
-                    "label:"+markerName+"%7C"+coordinates);
+                    "&visual_refresh=true&markers=size:mid" +"%7C"+coordinates);
             in = new BufferedInputStream(url.openStream());
         } catch (Exception e) {
             System.err.println("No hay Conexion a Internet... la generacion de Static Maps ha fallado");
