@@ -22,7 +22,6 @@ import net.sf.jasperreports.export.SimpleExporterInput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 
 import com.TpFinal.dto.inmueble.Inmueble;
-import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PersonaService;
