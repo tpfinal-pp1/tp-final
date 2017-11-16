@@ -6,6 +6,7 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import javax.imageio.ImageIO;
 
 import org.apache.log4j.Logger;
 
@@ -76,18 +79,16 @@ public class InmuebleService {
     }
 
     public boolean merge(Inmueble entidad) {
-	//System.out.println(entidad.nombreArchivoPortada);
-/*	if(entidad.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
-		logger.info("Sin Coordenadas...realizando geocoding...");
-		//new Thread(() -> {
-			UbicacionService us=new UbicacionService();
-			Coordenada coordenadas=us.geoCode(entidad.getDireccion());
-			Direccion direccion=entidad.getDireccion();
-			direccion.setCoordenada(coordenadas);
-
-	//	}).start();
-		//return true;
-	}*/
+	// System.out.println(entidad.nombreArchivoPortada);
+	/*
+	 * if(entidad.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
+	 * logger.info("Sin Coordenadas...realizando geocoding..."); //new Thread(() ->
+	 * { UbicacionService us=new UbicacionService(); Coordenada
+	 * coordenadas=us.geoCode(entidad.getDireccion()); Direccion
+	 * direccion=entidad.getDireccion(); direccion.setCoordenada(coordenadas);
+	 * 
+	 * // }).start(); //return true; }
+	 */
 	return dao.merge(entidad);
     }
 
@@ -337,13 +338,17 @@ public class InmuebleService {
      * @return
      */
     public static Image getImagenPortada(Inmueble i) {
-	Toolkit toolkit = Toolkit.getDefaultToolkit();
 	Image image = null;
 	if (logger.isDebugEnabled()) {
 	    logger.debug("Nombre Archivo Portada: " + i.getNombreArchivoPortada());
 	}
 	if (i.getNombreArchivoPortada() != null && i.getNombreArchivoPortada() != "") {
-	    image = toolkit.getImage(i.getNombreArchivoPortada());
+	    try {
+		File pathToFile = new File("Files" + File.separator + i.getNombreArchivoPortada());
+		image = ImageIO.read(pathToFile);
+	    } catch (IOException ex) {
+		ex.printStackTrace();
+	    }
 	    if (logger.isDebugEnabled()) {
 		if (image != null)
 		    logger.debug("Imagen cargada");

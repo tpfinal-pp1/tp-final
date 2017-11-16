@@ -110,7 +110,7 @@ public class Inmueble implements Identificable, BorradoLogico {
     protected Set<Contrato> contratos = new HashSet<>();
 
     @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+    @Cascade({ CascadeType.ALL})
     protected Set<Imagen> imagenes = new HashSet<>();
 
     @OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
@@ -168,6 +168,20 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.nombreArchivoPortada = nombreArchivoPortada;
     }
 
+    public void addImagem(Imagen imagen) {
+  	if (!this.imagenes.contains(imagen)) {
+  	    this.imagenes.add(imagen);
+  	    imagen.setInmueble(this);
+  	}
+      }
+
+      public void removeImagen(Imagen imagen) {
+  	if (this.imagenes.contains(imagen)) {
+  	    this.imagenes.remove(imagen);
+  	    imagen.setInmueble(null);
+  	}
+      }
+    
     
     public void addPathImagen(String pathImagen) {
 	    this.pathImagenes.add(pathImagen);
