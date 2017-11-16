@@ -1,7 +1,6 @@
 package com.TpFinal.services;
 
 import java.awt.Image;
-import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
@@ -42,6 +41,7 @@ import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.view.inmuebles.FiltroInmueble;
 import com.TpFinal.view.reportes.ItemFichaInmueble;
+import com.TpFinal.view.reportes.ItemFichaInmuebleSimple;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 
@@ -77,6 +77,14 @@ public class InmuebleService {
 	lista.add(item);
 	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
     }
+    
+    public List<Object> getListaFichaInmuebleSimple(Inmueble inmueble) {
+    	List<ItemFichaInmuebleSimple> lista = new ArrayList<>();
+
+    	ItemFichaInmuebleSimple item = new ItemFichaInmuebleSimple(inmueble);
+    	lista.add(item);
+    	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
+        }
 
     public boolean merge(Inmueble entidad) {
 	// System.out.println(entidad.nombreArchivoPortada);
