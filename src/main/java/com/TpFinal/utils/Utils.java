@@ -11,9 +11,13 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.sql.Blob;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParsePosition;
@@ -23,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.apache.tika.mime.MimeTypes;
 
@@ -73,7 +78,7 @@ public class Utils {
     public static StreamResource fromPathtoSR(String filename) {
 	if (logger.isDebugEnabled())
 	    logger.debug("Seteando path de fileSystem: " + filename);
-	
+
 	return new StreamResource(new StreamResource.StreamSource() {
 	    public InputStream getStream() {
 		InputStream is = null;
@@ -87,6 +92,32 @@ public class Utils {
 	    }
 	}, filename);
 
+    }
+
+    public static byte[] BlobToBytes(Blob blob) {
+	byte[] bytes = null;
+	try {
+	    bytes = blob.getBytes(1, (int) blob.length());
+	} catch (SQLException e) {
+	    System.err.println("Error al convertir el archivo");
+	    e.printStackTrace();
+	}
+	return bytes;
+    }
+
+    public static void guardarArchivoBinarioEnFileSystem(byte[] file, String path) {
+	InputStream input = new ByteArrayInputStream(file);
+	File f = new File(path);
+	OutputStream output;
+	try {
+	    output = new FileOutputStream(f);
+	    IOUtils.copy(input, output);
+	} catch (FileNotFoundException e1) {
+	    System.err.println("No se pudo crear el archivo");
+	    e1.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     public static StreamResource archivoToStreamResource(Archivo archivo) {
@@ -104,7 +135,7 @@ public class Utils {
 		}
 		return is;
 	    }
-	}, archivo.getNombre()+archivo.getExtension());
+	}, archivo.getNombre() + archivo.getExtension());
 
     }
 
@@ -190,12 +221,12 @@ public class Utils {
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String después de remover extension: " + ret);
 	}
-	
+
 	return ret;
 
     }
 
-    public static DateTimeFormatter getFormatoFechaArg() {	
+    public static DateTimeFormatter getFormatoFechaArg() {
 	return new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter();
     }
 }

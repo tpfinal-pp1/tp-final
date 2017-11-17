@@ -7,99 +7,114 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
+import com.TpFinal.properties.Parametros;
+
 import java.util.Properties;
 
-
 public class ConexionHibernate {
-	private static Configuration configuration = new Configuration();
-	private static SessionFactory sf=null;
-	
-	//TipoConexion Por Defecto
-	private static TipoConexion	tipoConexion =TipoConexion.H2Server;
-	private static boolean backupmode=false;
-	
-	public static void setTipoConexion(TipoConexion tipo) {
-		tipoConexion = tipo;
+    private static Configuration configuration = new Configuration();
+    private static SessionFactory sf = null;
+
+    // TipoConexion Por Defecto
+
+    private static TipoConexion tipoConexion = TipoConexion.H2Server;
+    private static Conexion conexion = Conexion.getTipoConexionFrom(tipoConexion);
+
+    private static boolean backupmode = false;
+
+    public static void setTipoConexion(TipoConexion tipo) {
+	tipoConexion = tipo;
+	conexion = Conexion.getTipoConexionFrom(tipoConexion);
+	Parametros.setProperty(Parametros.DB_NAME, conexion.getDbName());
+    }
+
+    public static Conexion getConexion() {
+	return conexion;
+    }
+
+    public static void setConexion(Conexion conexion) {
+	ConexionHibernate.conexion = conexion;
+    }
+
+    private static Configuration getConfiguration() {
+	// La ultima property es para que no crashee el add lo saque de aca:
+	// https://stackoverflow.com/questions/32968527/hibernate-sequence-doesnt-exist
+	configuration
+		.configure().setProperties(conexion.getProperties());
+	return configuration;
+    }
+
+    public static void Backup() {
+
+	Session session = ConexionHibernate.openSession();
+	session.beginTransaction();
+	session.createSQLQuery("BACKUP TO 'backupmio.zip'");
+	session.getTransaction().commit();
+	session.close();
+
+    }
+
+    private static ServiceRegistry getServiceRegistry(Configuration configuration) {
+	ServiceRegistry serviceRegistry = null;
+	try {
+
+	    serviceRegistry = new StandardServiceRegistryBuilder()
+		    .applySettings(configuration.getProperties())
+		    .configure()
+		    .build();
+
+	} catch (Exception e) {
+	    System.err.println("Error al conectar: ");
+	    e.printStackTrace();
 	}
-	
-	private static Configuration getConfiguration() {
-		//La ultima property es para que no crashee el add lo saque de aca:
-		// https://stackoverflow.com/questions/32968527/hibernate-sequence-doesnt-exist
-		configuration
-		 		.configure().setProperties(tipoConexion.properties());
-		return configuration;
+	return serviceRegistry;
+    }
+
+    public static void enterBackupMode() {
+	backupmode = true;
+    }
+
+    public static void leaveBackupMode() {
+	backupmode = false;
+    }
+
+    private static SessionFactory getSession() {
+
+	if (sf == null) {
+	    try {
+		sf = getConfiguration().buildSessionFactory(getServiceRegistry(getConfiguration()));
+		System.out.println("Conexion exitosa a url: " + conexion.getProperties().getProperty(Environment.URL));
+		System.out.println("----------------");
+	    } catch (Exception e) {
+		System.err.println("Error al establecer la conexión.");
+		e.printStackTrace();
+	    }
 	}
+	return sf;
+    }
 
-
-	public static void Backup(){
-
-
-		Session session = ConexionHibernate.openSession();
-		session.beginTransaction();
-		session.createSQLQuery("BACKUP TO 'backupmio.zip'");
-		session.getTransaction().commit();
-		session.close();
-
-
-	}
-	
-	private static ServiceRegistry getServiceRegistry(Configuration configuration) {
-		ServiceRegistry serviceRegistry=null;
-		try {
-			
-			 serviceRegistry = new StandardServiceRegistryBuilder()
-					 				.applySettings(configuration.getProperties())
-					 				.configure()
-					 				.build();
-			
-		} catch (Exception e) {
-			System.err.println("Error al conectar: ");
-			e.printStackTrace();
+    public static Session openSession() {
+	if (backupmode) {
+	    try {
+		while (backupmode) {
+		    Thread.sleep(1000);
 		}
-		return serviceRegistry;
-	}
-	public static void enterBackupMode(){
-		backupmode=true;
-	}
-	public static void leaveBackupMode(){
-		backupmode=false;
-	}
-	private static SessionFactory getSession() {
 
-		if(sf==null) {
-			try {
-				sf=getConfiguration().buildSessionFactory(getServiceRegistry(getConfiguration()));
-				System.out.println("Conexion exitosa a url: "+tipoConexion.properties().getProperty(Environment.URL));
-				System.out.println("----------------");
-			} catch (Exception e) {
-				System.err.println("Error al establecer la conexión.");
-				e.printStackTrace();
-			}
-		}
-		return sf;
+	    } catch (InterruptedException e) {
+		e.printStackTrace();
+	    }
 	}
+	return getSession().openSession();
+    }
 
-	public static Session openSession() {
-		if(backupmode){
-			try {
-				while(backupmode) {
-					Thread.sleep(1000);
-				}
+    public static void createSessionFactory() {
+	getSession();
+    }
 
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		return getSession().openSession();
+    public static void close() {
+	if (sf != null) {
+	    sf.close();
 	}
-	public static void createSessionFactory() {
-	    getSession();
-	}
-	
-	public static void close() {
-		if(sf!= null) {
-			sf.close();
-		}
-	}
-	
+    }
+
 }
