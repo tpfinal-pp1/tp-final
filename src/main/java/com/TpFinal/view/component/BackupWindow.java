@@ -44,7 +44,7 @@ public class BackupWindow extends CustomComponent {
 	window.setIcon(VaadinIcons.DATABASE);
 	String dbFile="";
 		try {
-			dbFile=Parametros.getProperty(Parametros.DB_NAME);
+			dbFile=Parametros.getProperty(Parametros.DB_NAME)+".mv.db";
 		} catch (FileExistsException e) {
 			e.printStackTrace();
 		}
