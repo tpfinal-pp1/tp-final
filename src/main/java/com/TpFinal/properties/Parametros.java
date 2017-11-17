@@ -1,6 +1,7 @@
 package com.TpFinal.properties;
 
 import java.io.*;
+import java.time.Instant;
 import java.util.Properties;
 
 import com.TpFinal.services.Cipher;
@@ -97,6 +98,8 @@ public class Parametros {
 	    prop.setProperty(MAPS_KEY, "JDoODiAJNyADIQw7OQITK1IxHysmDFgsAkM1BBkxTF4qAw4KER1d");
 	    prop.setProperty(DB_PATH, "Files");
 	    prop.setProperty(DB_NAME, "inmobi_db");
+	    // TODO
+	    //Long randomName=+Instant.now().toEpochMilli();
 
 	    prop.store(output, null);
 	    return true;

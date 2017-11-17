@@ -225,6 +225,25 @@ public class Utils {
 	return ret;
 
     }
+    
+    public static String removeDBFileExtension(String strFilename) {
+	int j;
+	String ret = strFilename;
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String antes de remover extension: " + ret);
+	}
+
+	int index = ret.lastIndexOf('.');
+	if (index != -1)
+	    ret = ret.substring(0,ret.length()-6);
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String después de remover extension: " + ret);
+	}
+
+	return ret;
+
+    }
 
     public static DateTimeFormatter getFormatoFechaArg() {
 	return new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter();

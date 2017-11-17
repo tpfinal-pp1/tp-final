@@ -22,13 +22,13 @@ public class UploadDbReceiver implements Receiver {
     private OutputStream outputFile = null;
     private static final String directorioUpload = "Files";
     private String fullPath;
-    private String filePath = directorioUpload + File.separator;
+    private String filePath =directorioUpload + File.separator;
     private String fileName;
 
     public UploadDbReceiver() {
 	File dir = new File(directorioUpload);
 	dir.mkdir();
-	fullPath = filePath;
+	//fullPath = filePath;
     }
 
     @Override
