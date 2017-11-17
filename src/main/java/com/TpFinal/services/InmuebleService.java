@@ -32,6 +32,7 @@ import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Imagen;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Propietario;
@@ -358,6 +359,11 @@ public class InmuebleService {
 	}
 
 	return image;
+    }
+
+    public static boolean addImagenToInmueble(Imagen img, Inmueble inmueble) {
+	DAOInmuebleImpl dao = new DAOInmuebleImpl();
+	return dao.addImagen(img, inmueble);
     }
 
 }
