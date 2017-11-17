@@ -50,7 +50,8 @@ public class UploadDbReceiver implements Receiver {
 	    }
 	}
 	try {
-	    outputFile = new FileOutputStream(file);
+		System.out.println(file);
+		outputFile = new FileOutputStream(file);
 	} catch (FileNotFoundException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
