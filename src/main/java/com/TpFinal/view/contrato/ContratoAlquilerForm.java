@@ -19,6 +19,7 @@ import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
+import com.TpFinal.services.MailSender;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.Utils;
@@ -269,8 +270,11 @@ public class ContratoAlquilerForm extends FormLayout {
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
 		System.out.println(ultimo.getCobros().size());
 		Planificador.get().setNotificacion(new NotificadorJob());
+		Planificador.get().setMailSender(new MailSender());
+		//agrego los cobros a quartz
 		Planificador.get().agregarJobsCobrosVencidos(ultimo);
-
+		//agrego el contrato 
+		Planificador.get().addJobAlquilerPorVencer(ultimo);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();

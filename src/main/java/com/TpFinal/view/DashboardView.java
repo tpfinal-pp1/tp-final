@@ -387,7 +387,7 @@ public final class DashboardView extends Panel implements View {
 	    String content = notification.getMensaje();
 	    String ret = "";
 
-	    if (content.length() > 39) {
+	    if (content.length() > 39 &&  notification.getMensaje().length()>=42) {
 		content = notification.getMensaje().substring(0, 42) + "...";
 	    }
 
