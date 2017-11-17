@@ -341,7 +341,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 
 	@Override
 	public String getMessage() {
-		return "El contrato de: "+this.getInquilinoContrato().getPersona().getApellido()+" "+this.getInquilinoContrato().getPersona().getNombre()+" está por vencer";
+		return "El contrato de: "+this.getInquilinoContrato().getPersona().toString()+" está por vencer";
 	}
 
 	@Override
