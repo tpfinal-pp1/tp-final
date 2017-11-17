@@ -190,8 +190,7 @@ public class Planificador {
 		if(contrato.getId()!=null) {
 			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,1);
 			agregarJobNotificacionAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,2);
-			agregarJobMailAlquilerVencido(contrato, 3);
-			System.out.println("[INFO] Contrato agregado a quartz correctamente");
+			System.out.println("[INFO] Alquiler por vencer agregado a quartz correctamente");
 		}
 	}
 	
@@ -202,8 +201,28 @@ public class Planificador {
 
 				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-1"));
 				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-2"));
+				System.out.println("[INFO] Alquiler por vencer borrado de quartz correctamente");
+			} else
+				throw new IllegalArgumentException("El contrato debe estar persistida");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	public void addJobAlquilerVencido(ContratoAlquiler contrato) {
+		if(contrato.getId()!=null) {
+			agregarJobMailAlquilerVencido(contrato, 3);
+			System.out.println("[INFO] Alquiler vencido agregado a quartz correctamente");
+		}
+	}
+	
+	public boolean removeJobAlquilerPorVencido(ContratoAlquiler contrato) {
+		boolean ret = true;
+		try {
+			if (contrato.getId() != null) {
 				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-3"));
-				System.out.println("[INFO] Contrato borrado de quartz correctamente");
+				System.out.println("[INFO] Alquiler vencido borrado de quartz correctamente");
 			} else
 				throw new IllegalArgumentException("El contrato debe estar persistida");
 		} catch (Exception e) {
