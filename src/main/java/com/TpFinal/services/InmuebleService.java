@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import com.TpFinal.view.reportes.ItemFichaInmuebleSimple;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
@@ -310,6 +311,15 @@ public class InmuebleService {
 	inmuebles.sort(Comparator.comparing(Inmueble::getId));
 	return inmuebles;
     }
+
+
+	public List<Object> getListaFichaInmuebleSimple(Inmueble inmueble) {
+		List<ItemFichaInmuebleSimple> lista = new ArrayList<>();
+
+		ItemFichaInmuebleSimple item = new ItemFichaInmuebleSimple(inmueble);
+		lista.add(item);
+		return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
+	}
 
     public boolean inmueblePoseePubActivaDeTipo(Inmueble inmueble, TipoPublicacion tipoPublicacion) {
 	boolean ret = false;
