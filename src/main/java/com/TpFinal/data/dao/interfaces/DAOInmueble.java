@@ -11,5 +11,6 @@ public interface DAOInmueble extends DAO<Inmueble>{
 	public List<Inmueble> findInmueblesbyEstado(EstadoInmueble estado); 
 	public List<Inmueble> findInmueblesbyCaracteristicas(CriterioBusqInmueble criterio);
 	public boolean addImagen(Imagen img, Inmueble inmueble);
+	public Long mergeAndGetId(Inmueble i);
 
 }
