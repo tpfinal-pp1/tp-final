@@ -80,18 +80,14 @@ public class InmuebleService {
 	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
     }
 
-    public boolean merge(Inmueble entidad) {
-	// System.out.println(entidad.nombreArchivoPortada);
-	/*
-	 * if(entidad.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
-	 * logger.info("Sin Coordenadas...realizando geocoding..."); //new Thread(() ->
-	 * { UbicacionService us=new UbicacionService(); Coordenada
-	 * coordenadas=us.geoCode(entidad.getDireccion()); Direccion
-	 * direccion=entidad.getDireccion(); direccion.setCoordenada(coordenadas);
-	 * 
-	 * // }).start(); //return true; }
-	 */
-	return dao.merge(entidad);
+    public boolean merge(Inmueble inmueble) {
+	boolean ret = dao.merge(inmueble);
+	List<Imagen> imagenes = inmueble.getImagenes().stream().collect(Collectors.toList());
+	for (Imagen i : imagenes) {
+	    if(logger.isDebugEnabled())
+		logger.debug("Añadiendo imagen: " + i.getNombre()+i.getExtension());
+	    ret = ret && dao.addImagen(i, inmueble);}
+	return ret;
     }
 
     public boolean delete(Inmueble i) {
@@ -312,14 +308,13 @@ public class InmuebleService {
 	return inmuebles;
     }
 
+    public List<Object> getListaFichaInmuebleSimple(Inmueble inmueble) {
+	List<ItemFichaInmuebleSimple> lista = new ArrayList<>();
 
-	public List<Object> getListaFichaInmuebleSimple(Inmueble inmueble) {
-		List<ItemFichaInmuebleSimple> lista = new ArrayList<>();
-
-		ItemFichaInmuebleSimple item = new ItemFichaInmuebleSimple(inmueble);
-		lista.add(item);
-		return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
-	}
+	ItemFichaInmuebleSimple item = new ItemFichaInmuebleSimple(inmueble);
+	lista.add(item);
+	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
+    }
 
     public boolean inmueblePoseePubActivaDeTipo(Inmueble inmueble, TipoPublicacion tipoPublicacion) {
 	boolean ret = false;
