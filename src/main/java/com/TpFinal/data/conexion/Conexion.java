@@ -6,6 +6,8 @@ import java.util.Random;
 
 import org.hibernate.cfg.Environment;
 
+import com.TpFinal.properties.Parametros;
+
 public class Conexion {
     private String dialect;
     private String driver;
@@ -58,6 +60,7 @@ public class Conexion {
 	    Random r = new Random();
 	    c.setDbName("db_"+ r.nextInt(Integer.MAX_VALUE));
 	    p.setProperty(Environment.URL, "jdbc:h2:~//"+ c.getDbName() +";AUTO_SERVER=TRUE");
+	    Parametros.setProperty(Parametros.DB_NAME, c.getDbName());
 	}else {
 	    c.setDbName("Test");
 	}
