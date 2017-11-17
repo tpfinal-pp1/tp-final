@@ -209,14 +209,22 @@ public class Utils {
 
     public static String removeFileExtension(String strFilename) {
 	int j;
-	String ret = strFilename;
+		String ret = strFilename;
+
+
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String antes de remover extension: " + ret);
 	}
+		int index ;
+	if(strFilename.contains(".mv.db")) {
+		index = ret.lastIndexOf('.');
+		if (index != -1)
+			ret = ret.substring(0, ret.lastIndexOf('.'));
+	}
 
-	int index = ret.lastIndexOf('.');
+	index = ret.lastIndexOf('.');
 	if (index != -1)
-	    ret = ret.substring(0, ret.lastIndexOf('.'));
+		ret = ret.substring(0, ret.lastIndexOf('.'));
 
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String después de remover extension: " + ret);

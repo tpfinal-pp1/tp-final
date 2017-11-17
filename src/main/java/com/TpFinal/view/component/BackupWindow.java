@@ -42,6 +42,7 @@ public class BackupWindow extends CustomComponent {
 	window.setContent(popupVLayout);
 	window.setCaption("Backup/Restore");
 	window.setIcon(VaadinIcons.DATABASE);
+	window.setDraggable(false);
 	String dbFile="";
 		try {
 			dbFile=Parametros.getProperty(Parametros.DB_NAME)+".mv.db";

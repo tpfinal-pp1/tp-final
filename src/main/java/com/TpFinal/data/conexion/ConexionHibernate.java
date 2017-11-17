@@ -53,19 +53,8 @@ public class ConexionHibernate {
 	return configuration;
     }
 
-    public static void Backup() {
-	if(logger.isDebugEnabled()) {
-	    logger.debug("Ejecutando backup");
 
-	}
 
-	Session session = getSession().openSession();
-	session.beginTransaction();
-	session.createSQLQuery("BACKUP TO 'backupmio.zip'");
-	session.getTransaction().commit();
-	session.close();
-
-    }
 
     private static ServiceRegistry getServiceRegistry(Configuration configuration) {
 	ServiceRegistry serviceRegistry = null;
