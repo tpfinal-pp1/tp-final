@@ -11,9 +11,7 @@ import org.hibernate.service.ServiceRegistry;
 
 import com.TpFinal.properties.Parametros;
 
-
 import java.util.Properties;
-
 
 public class ConexionHibernate {
 
@@ -53,9 +51,6 @@ public class ConexionHibernate {
 		.configure().setProperties(conexion.getProperties());
 	return configuration;
     }
-
-
-
 
     private static ServiceRegistry getServiceRegistry(Configuration configuration) {
 	ServiceRegistry serviceRegistry = null;
@@ -119,10 +114,10 @@ public class ConexionHibernate {
     public static void close() {
 	if (sf != null) {
 	    sf.close();
-	    
+	    sf = null;
 	}
     }
-    
+
     public static void refreshConnection() {
 	close();
 	sf = null;
@@ -131,7 +126,7 @@ public class ConexionHibernate {
 		logger.debug("Actualizando Conexion");
 	    conexion.setDbName(Parametros.getProperty(Parametros.DB_NAME));
 	    if (logger.isDebugEnabled())
-		logger.debug("Nueva URL: "+ conexion.getUrl());
+		logger.debug("Nueva URL: " + conexion.getUrl());
 	} catch (IllegalArgumentException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
