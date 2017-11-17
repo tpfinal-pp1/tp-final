@@ -1,6 +1,7 @@
 package com.TpFinal.services;
 
 import java.awt.Image;
+import java.awt.MediaTracker;
 import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 
+import com.TpFinal.view.reportes.ItemFichaInmuebleSimple;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
@@ -31,6 +33,7 @@ import com.TpFinal.dto.inmueble.Coordenada;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Imagen;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoInmueble;
 import com.TpFinal.dto.persona.Propietario;
@@ -41,7 +44,6 @@ import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 import com.TpFinal.view.inmuebles.FiltroInmueble;
 import com.TpFinal.view.reportes.ItemFichaInmueble;
-import com.TpFinal.view.reportes.ItemFichaInmuebleSimple;
 import com.vaadin.server.Resource;
 import com.vaadin.server.StreamResource;
 
@@ -77,14 +79,6 @@ public class InmuebleService {
 	lista.add(item);
 	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
     }
-    
-    public List<Object> getListaFichaInmuebleSimple(Inmueble inmueble) {
-    	List<ItemFichaInmuebleSimple> lista = new ArrayList<>();
-
-    	ItemFichaInmuebleSimple item = new ItemFichaInmuebleSimple(inmueble);
-    	lista.add(item);
-    	return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
-        }
 
     public boolean merge(Inmueble entidad) {
 	// System.out.println(entidad.nombreArchivoPortada);
@@ -318,6 +312,15 @@ public class InmuebleService {
 	return inmuebles;
     }
 
+
+	public List<Object> getListaFichaInmuebleSimple(Inmueble inmueble) {
+		List<ItemFichaInmuebleSimple> lista = new ArrayList<>();
+
+		ItemFichaInmuebleSimple item = new ItemFichaInmuebleSimple(inmueble);
+		lista.add(item);
+		return lista.stream().map(i -> (Object) i).collect(Collectors.toList());
+	}
+
     public boolean inmueblePoseePubActivaDeTipo(Inmueble inmueble, TipoPublicacion tipoPublicacion) {
 	boolean ret = false;
 	logger.debug("Inmueble: " + inmueble);
@@ -366,6 +369,11 @@ public class InmuebleService {
 	}
 
 	return image;
+    }
+
+    public static boolean addImagenToInmueble(Imagen img, Inmueble inmueble) {
+	DAOInmuebleImpl dao = new DAOInmuebleImpl();
+	return dao.addImagen(img, inmueble);
     }
 
 }

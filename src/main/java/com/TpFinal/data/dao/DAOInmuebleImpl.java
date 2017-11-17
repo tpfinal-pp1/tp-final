@@ -1,19 +1,31 @@
 package com.TpFinal.data.dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.inmueble.ClaseInmueble;
 import com.TpFinal.dto.inmueble.CriterioBusqInmueble;
 import com.TpFinal.dto.inmueble.Direccion;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
+import com.TpFinal.dto.inmueble.Imagen;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
@@ -24,6 +36,44 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
     public DAOInmuebleImpl() {
 	super(Inmueble.class);
+    }
+
+    @Override
+    public boolean addImagen(Imagen img, Inmueble inmueble) {
+	boolean ret = false;
+	FileInputStream docInputStream = null;
+	Session session = ConexionHibernate.openSession();
+	Transaction tx = null;
+	try {
+	    tx = session.beginTransaction();
+
+	    Blob archivo = null;
+	    File imagen = new File(img.getPath());
+
+	    docInputStream = new FileInputStream(imagen);
+	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, imagen.length());
+	    img.setImagen(archivo);
+	    inmueble.addImagen(img);
+	    session.merge(inmueble);
+	    tx.commit();
+	    ret = true;
+	} catch (HibernateException | FileNotFoundException e) {
+	    System.err.println("Error al realizar Merge: " + inmueble);
+	    e.printStackTrace();
+	    if (tx != null)
+		tx.rollback();
+	} finally {
+	    session.close();
+	    if (docInputStream != null)
+		try {
+		    docInputStream.close();
+		} catch (IOException e) {
+		    System.err.println("Error cerrar el archivo: " + docInputStream);
+		    e.printStackTrace();
+		}
+	}
+	return ret;
+
     }
 
     @Override
@@ -41,44 +91,46 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	DetachedCriteria query = null;
 	List<Inmueble> resultadoQuery = new ArrayList<>();
 
-//	if (criterio.getTipoPublicacion() != null || criterio.getTipoMoneda() != null) {
-//	    TipoPublicacion to = criterio.getTipoPublicacion();
-//	    query = DetachedCriteria.forClass(Publicacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-//
-//	    if (to != null || (criterio.getEstadoInmueble() != null && criterio
-//		    .getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta)) {
-//		query.add(Restrictions.eq(Publicacion.pTipoPublicacion, to));
-//		query.add(Restrictions.eq("estadoRegistro", EstadoRegistro.ACTIVO));
-//
-//		if (to != null) {
-//		    if (to.equals(TipoPublicacion.Alquiler)) {
-//			addRestriccionesDeAlquiler(query, criterio);
-//
-//		    } else if (to.equals(TipoPublicacion.Venta)) {
-//			addRestriccionesDeVenta(query, criterio);
-//		    }
-//		} else {
-//		    addRestriccionesDeVentaOAlquiler(query, criterio);
-//		}
-//	    }
-//
-//	    if (criterio.getTipoMoneda() != null) {
-//		query.add(Restrictions.eq("moneda", criterio.getTipoMoneda()));
-//	    }
-//
-//	    DAOImpl<Publicacion> dao = new DAOImpl<>(Publicacion.class);
-//	    query.createAlias("inmueble", "i");
-//	    addRestriccionesDeInmueble(query, criterio, "i.");
-//	    List<Publicacion> publicaciones = dao.findByCriteria(query);
-//	    for (Publicacion o : publicaciones) {
-//		resultadoQuery.add(o.getInmueble());
-//	    }
-//
-//	} else {
-	    query = DetachedCriteria.forClass(Inmueble.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-	    addRestriccionesDeInmueble(query, criterio, "");
-	    resultadoQuery = findByCriteria(query);
-	//}
+	// if (criterio.getTipoPublicacion() != null || criterio.getTipoMoneda() !=
+	// null) {
+	// TipoPublicacion to = criterio.getTipoPublicacion();
+	// query =
+	// DetachedCriteria.forClass(Publicacion.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	//
+	// if (to != null || (criterio.getEstadoInmueble() != null && criterio
+	// .getEstadoInmueble() == EstadoInmueble.EnAlquilerYVenta)) {
+	// query.add(Restrictions.eq(Publicacion.pTipoPublicacion, to));
+	// query.add(Restrictions.eq("estadoRegistro", EstadoRegistro.ACTIVO));
+	//
+	// if (to != null) {
+	// if (to.equals(TipoPublicacion.Alquiler)) {
+	// addRestriccionesDeAlquiler(query, criterio);
+	//
+	// } else if (to.equals(TipoPublicacion.Venta)) {
+	// addRestriccionesDeVenta(query, criterio);
+	// }
+	// } else {
+	// addRestriccionesDeVentaOAlquiler(query, criterio);
+	// }
+	// }
+	//
+	// if (criterio.getTipoMoneda() != null) {
+	// query.add(Restrictions.eq("moneda", criterio.getTipoMoneda()));
+	// }
+	//
+	// DAOImpl<Publicacion> dao = new DAOImpl<>(Publicacion.class);
+	// query.createAlias("inmueble", "i");
+	// addRestriccionesDeInmueble(query, criterio, "i.");
+	// List<Publicacion> publicaciones = dao.findByCriteria(query);
+	// for (Publicacion o : publicaciones) {
+	// resultadoQuery.add(o.getInmueble());
+	// }
+	//
+	// } else {
+	query = DetachedCriteria.forClass(Inmueble.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+	addRestriccionesDeInmueble(query, criterio, "");
+	resultadoQuery = findByCriteria(query);
+	// }
 	return resultadoQuery;
     }
 

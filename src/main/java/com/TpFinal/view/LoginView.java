@@ -34,6 +34,7 @@ public class LoginView extends VerticalLayout {
         notification.show(Page.getCurrent());
 
         */
+
     }
 
     private Component buildLoginForm() {
@@ -64,7 +65,7 @@ public class LoginView extends VerticalLayout {
         final Button signin = new Button("Iniciar Sesión");
         signin.addStyleName(ValoTheme.BUTTON_PRIMARY);
         signin.setClickShortcut(KeyCode.ENTER);
-        signin.focus();
+       username.focus();
 
         fields.addComponents(username, password, signin);
         fields.setComponentAlignment(signin, Alignment.BOTTOM_LEFT);

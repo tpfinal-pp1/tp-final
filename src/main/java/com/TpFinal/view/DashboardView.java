@@ -3,32 +3,26 @@ package com.TpFinal.view;
 import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.notificacion.Notificacion;
-import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.NotificacionService;
-import com.TpFinal.utils.Utils;
 import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
 import com.TpFinal.view.calendario.MeetingItem;
-import com.TpFinal.view.calendario.PreferenciasCitaFormWindow;
+import com.TpFinal.view.calendario.ParametrosDelSistemaWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Title;
-import com.vaadin.event.LayoutEvents;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;
 import com.vaadin.event.LayoutEvents.LayoutClickListener;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
-import org.exolab.castor.types.DateTime;
 import org.ocpsoft.prettytime.PrettyTime;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
@@ -132,7 +126,7 @@ public final class DashboardView extends Panel implements View {
 	preferenciasRecordatorios.setDescription("Modificar preferencias de notificaciones");
 	preferenciasRecordatorios.addClickListener(e ->{
 	    Empleado emp = DashboardUI.getEmpleadoLogueado();
-	    new PreferenciasCitaFormWindow(emp) {
+	    new ParametrosDelSistemaWindow(emp) {
 	        
 	        @Override
 	        public void onSave() {
