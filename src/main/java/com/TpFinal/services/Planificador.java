@@ -145,8 +145,7 @@ public class Planificador {
 	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
 			agregarJobNotificacionCobro(cobro, horasAntesCobrosVencidos, 1);
-			agregarJobMailCobroPorVencer(cobro, this.diasAntesCobroPorVencer, 2);
-			System.out.println("[INFO] Agregados jobs de cobros correctamente");
+			System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
 		} else
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
 	}
@@ -156,8 +155,29 @@ public class Planificador {
 		try {
 			if (cobro.getId() != null) {
 				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
+				System.out.println("[INFO] Eliminados jobs de cobros vencidos correctamente");
+			} else
+				throw new IllegalArgumentException("El Cobro debe estar persistida");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	public void addJobCobroPorVencer(Cobro cobro) {
+		if (cobro.getId() != null) {
+			agregarJobMailCobroPorVencer(cobro, this.diasAntesCobroPorVencer, 2);
+			System.out.println("[INFO] Agregados jobs de cobros por vencer correctamente");
+		} else
+			throw new IllegalArgumentException("El Cobro debe estar persistida");
+	}
+
+	public boolean removeJobPorVencer(Cobro cobro) {
+		boolean ret = true;;
+		try {
+			if (cobro.getId() != null) {
 				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-2"));
-				System.out.println("[INFO] Eliminados jobs de cobros correctamente");
+				System.out.println("[INFO] Eliminados jobs de cobros por vencer correctamente");
 			} else
 				throw new IllegalArgumentException("El Cobro debe estar persistida");
 		} catch (Exception e) {
