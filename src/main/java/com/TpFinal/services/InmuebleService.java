@@ -81,14 +81,19 @@ public class InmuebleService {
     }
 
     public boolean merge(Inmueble inmueble) {
-	boolean ret = dao.merge(inmueble);
-	List<Imagen> imagenes = inmueble.getImagenes().stream().collect(Collectors.toList());
-	for (Imagen i : imagenes) {
-	    if (logger.isDebugEnabled())
-		logger.debug("Añadiendo imagen: " + i.getNombre() + i.getExtension());
-	    ret = ret && dao.addImagen(i, inmueble);
+	Long id = dao.mergeAndGetId(inmueble);
+	Boolean ret = id != null;
+	if (id != null) {
+	    Inmueble inmb = dao.findById(id);
+	    List<Imagen> imagenes = inmb.getImagenes().stream().collect(Collectors.toList());
+	    for (Imagen i : imagenes) {
+		if (logger.isDebugEnabled())
+		    logger.debug("Añadiendo imagen: " + i.getNombre() + i.getExtension());
+		ret = ret && dao.addImagen(i, inmb);
+	    }
 	}
 	return ret;
+
     }
 
     public boolean delete(Inmueble i) {
