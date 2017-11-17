@@ -49,7 +49,8 @@ public class BackupWindow extends CustomComponent {
 			e.printStackTrace();
 		}
 
-	UploadDbReceiver uR=new UploadDbReceiver();
+		UploadReceiver uR=new UploadReceiver();
+	//UploadDbReceiver uR=new UploadDbReceiver();
 	importar=new UploadButton(uR);
 	importar.addSucceededListener(success -> {
 			Parametros.setProperty(Parametros.DB_NAME,uR.getFileName());
