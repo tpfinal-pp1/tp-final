@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.Instant;
 
 import org.apache.log4j.Logger;
 import org.apache.tika.mime.MimeTypeException;
@@ -20,7 +19,7 @@ public class UploadReceiver implements Receiver {
     private OutputStream outputFile = null;
     private static final String directorioUpload =  "Files";
     private String fullPath;
-    private String filePath =directorioUpload+File.separator;
+    private final String  filePath =directorioUpload+File.separator;
     private String fileName;
     private String fileType;
     private String fileExtension;
@@ -36,12 +35,6 @@ public class UploadReceiver implements Receiver {
         File file=null;
         try {
             this.setFullPath(filePath+strFilename);
-            if(filePath.equals(System.getProperty("user.home"))){
-                Long randomName=+Instant.now().toEpochMilli();
-                this.setFullPath(System.getProperty("user.home")+randomName+".mv.db");
-                this.setFileName(randomName.toString()+".mv.db");
-            }
-
             if (logger.isDebugEnabled()) {
         	logger.debug("Cargando archivo: " + strFilename);}
             this.setFileName(strFilename);
@@ -75,10 +68,6 @@ public class UploadReceiver implements Receiver {
 
     public String getFileName() {
         return fileName;
-    }
-
-    public void setFilePath(String filePath){
-        this.filePath=filePath;
     }
 
     public void setFileName(String fileName) {

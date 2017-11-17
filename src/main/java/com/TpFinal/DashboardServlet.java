@@ -1,6 +1,7 @@
 package com.TpFinal;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.dto.notificacion.NotificadorJob;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
@@ -47,6 +48,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("==============================================");
 	logger.info("Estableciendo conexiones a la base de datos..");
 	logger.info("==============================================");
+	ConexionHibernate.setTipoConexion(TipoConexion.H2Server);
 	ConexionHibernate.createSessionFactory();
     }
 

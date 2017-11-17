@@ -44,22 +44,27 @@ public class BackupWindow extends CustomComponent {
 	window.setIcon(VaadinIcons.DATABASE);
 	String dbFile="";
 		try {
-			dbFile=Parametros.getProperty("db_name");
+			dbFile=Parametros.getProperty(Parametros.DB_NAME);
 		} catch (FileExistsException e) {
 			e.printStackTrace();
 		}
 
-	UploadReceiver uR=new UploadReceiver();
-	uR.setFilePath(System.getProperty("user.home"));
+	UploadDbReceiver uR=new UploadDbReceiver();
 	importar=new UploadButton(uR);
-	importar.addSucceededListener(new Upload.SucceededListener() {
-		@Override
-		public void uploadSucceeded(Upload.SucceededEvent succeededEvent) {
-			Parametros.setProperty("db_name",uR.getFileName());
+	importar.addSucceededListener(success -> {
+			Parametros.setProperty(Parametros.DB_NAME,uR.getFileName());
 		}
-	});
+	);
 	exportar.focus();
-	exportar.setArchivoFromPath(System.getProperty("user.home"),dbFile);
+	try {
+	    exportar.setArchivoFromPath(Parametros.getProperty(Parametros.DB_PATH) + File.separator,dbFile);
+	} catch (IllegalArgumentException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (FileExistsException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 	exportar.addClickListener(new Button.ClickListener() {
 		@Override
 		public void buttonClick(Button.ClickEvent clickEvent) {

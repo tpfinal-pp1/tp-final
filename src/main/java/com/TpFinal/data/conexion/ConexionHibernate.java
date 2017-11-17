@@ -1,5 +1,6 @@
 package com.TpFinal.data.conexion;
 
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -9,9 +10,9 @@ import org.hibernate.service.ServiceRegistry;
 
 import com.TpFinal.properties.Parametros;
 
-import java.util.Properties;
 
 public class ConexionHibernate {
+    private static Logger logger = Logger.getLogger(ConexionHibernate.class);
     private static Configuration configuration = new Configuration();
     private static SessionFactory sf = null;
 
@@ -25,6 +26,8 @@ public class ConexionHibernate {
     public static void setTipoConexion(TipoConexion tipo) {
 	tipoConexion = tipo;
 	conexion = Conexion.getTipoConexionFrom(tipoConexion);
+	conexion.setDbRelativePath("Files");
+	Parametros.setProperty(Parametros.DB_PATH, conexion.getDbPath());
 	Parametros.setProperty(Parametros.DB_NAME, conexion.getDbName());
     }
 
@@ -45,8 +48,10 @@ public class ConexionHibernate {
     }
 
     public static void Backup() {
-
-	Session session = ConexionHibernate.openSession();
+	if(logger.isDebugEnabled()) {
+	    logger.debug("Ejecutando backup");
+	}
+	Session session = getSession().openSession();
 	session.beginTransaction();
 	session.createSQLQuery("BACKUP TO 'backupmio.zip'");
 	session.getTransaction().commit();

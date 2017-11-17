@@ -95,8 +95,8 @@ public class Parametros {
 	    prop.setProperty(STATIC_MAPS_KEY, "JDoODiAJNEUIMDETGikJKBo8A1FKOhcDBzIhEABFACsMEisdBiM8");
 	    prop.setProperty(GEO_KEY, "JDoODiAJNjlcMiwSPR0NNjgAIzUVNSErOFgCPjBDMykzDz0ADlQw");
 	    prop.setProperty(MAPS_KEY, "JDoODiAJNyADIQw7OQITK1IxHysmDFgsAkM1BBkxTF4qAw4KER1d");
-	    prop.setProperty(DB_PATH, System.getProperty("user.home"));
-	    prop.setProperty(DB_NAME, "InmobiTest");
+	    prop.setProperty(DB_PATH, "Files");
+	    prop.setProperty(DB_NAME, "inmobi_db");
 
 	    prop.store(output, null);
 	    return true;
