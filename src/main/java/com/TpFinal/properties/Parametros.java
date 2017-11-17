@@ -90,6 +90,7 @@ public class Parametros {
 	OutputStream output = null;
 
 	try {
+	    Long randomName=+Instant.now().toEpochMilli();
 	    output = new FileOutputStream(PARAM_FILE);
 	    prop.setProperty(EMAIL_KEY,
 		    "NjRaCxUzGScrPjY1XjcPCzIsEVIZADkKMVsHDjssABUJCzpSDzowIiArJjQYBCEsNUwsHCcmEi0/MUIGPBwyPD8hJSFR");
@@ -97,9 +98,8 @@ public class Parametros {
 	    prop.setProperty(GEO_KEY, "JDoODiAJNjlcMiwSPR0NNjgAIzUVNSErOFgCPjBDMykzDz0ADlQw");
 	    prop.setProperty(MAPS_KEY, "JDoODiAJNyADIQw7OQITK1IxHysmDFgsAkM1BBkxTF4qAw4KER1d");
 	    prop.setProperty(DB_PATH, "Files");
-	    prop.setProperty(DB_NAME, "inmobi_db");
-	    // TODO
-	    //Long randomName=+Instant.now().toEpochMilli();
+	    prop.setProperty(DB_NAME, "inmobi_db_" + randomName);
+	    
 
 	    prop.store(output, null);
 	    return true;
