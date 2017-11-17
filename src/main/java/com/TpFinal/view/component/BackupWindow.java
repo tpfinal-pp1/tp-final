@@ -1,5 +1,6 @@
 package com.TpFinal.view.component;
 
+import com.TpFinal.DashboardServlet;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.properties.Parametros;
 import com.vaadin.icons.VaadinIcons;
@@ -9,6 +10,8 @@ import org.apache.commons.io.FileExistsException;
 
 import java.io.File;
 import java.time.Instant;
+
+import javax.servlet.ServletException;
 
 public class BackupWindow extends CustomComponent {
     /**
@@ -55,7 +58,8 @@ public class BackupWindow extends CustomComponent {
 	importar=new UploadButton(uR);
 	importar.addSucceededListener(success -> {
 			Parametros.setProperty(Parametros.DB_NAME,uR.getFileName());
-			ConexionHibernate.refreshConnection();
+			//ConexionHibernate.refreshConnection();
+			DashboardServlet.getCurrent().destroy();			
 		}
 	);
 	exportar.focus();
@@ -88,8 +92,7 @@ public class BackupWindow extends CustomComponent {
 	window.addCloseListener(new Window.CloseListener() {
 		@Override
 		public void windowClose(Window.CloseEvent closeEvent) {
-			getUI().getCurrent().setPollInterval(10000);
-			ConexionHibernate.leaveBackupMode();
+			getUI().getCurrent().setPollInterval(10000);			
 		}
 	});
 		buttonsHLayout.addComponent(importar);

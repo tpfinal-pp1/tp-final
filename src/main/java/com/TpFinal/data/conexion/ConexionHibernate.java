@@ -134,6 +134,7 @@ public class ConexionHibernate {
 	    e.printStackTrace();
 	}
 	getSession();
+	ConexionHibernate.leaveBackupMode();
     }
 
 }
