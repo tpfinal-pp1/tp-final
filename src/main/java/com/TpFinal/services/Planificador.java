@@ -36,6 +36,8 @@ public class Planificador {
 	// citas
 	Integer horasAntesRecoradatorio1;
 	Integer horasAntesRecoradatorio2;
+	// cobros por vencer
+	Integer diasAntesCobroPorVencer;
 	// cobros vencidos
 	Integer horasAntesCobrosVencidos;
 	LocalTime horaInicioCobrosVencidos;
@@ -61,13 +63,14 @@ public class Planificador {
 	private Planificador() throws SchedulerException {
 		if (sc == null)
 			this.sc = StdSchedulerFactory.getDefaultScheduler();
-		// Luego se remplaza por la info de la bd
+		//parametros
 		horasAntesRecoradatorio1 = 1;
 		horasAntesRecoradatorio2 = 24;
 		horasAntesCobrosVencidos = 240;
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
 		mesesAntesVencimientoContrato=1;
 		perioricidadEnDiasVencimientoContrato=1;
+		this.diasAntesCobroPorVencer=1;
 	}
 
 	public void setNotificacion(Job notificacion) {
@@ -104,10 +107,6 @@ public class Planificador {
 		}
 	}
 
-	public void agregarJobsCobrosVencidos(ContratoAlquiler c) {
-		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
-	}
-
 	public void addJobCita(Cita cita) {
 		if (cita.getId() != null) {
 			agregarJobNotificacionCita(cita, horasAntesRecoradatorio1, 1);
@@ -138,20 +137,55 @@ public class Planificador {
 		}
 		return ret;
 	}
+	
+	public void addJobsCobrosVencidos(ContratoAlquiler c) {
+		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
+	}
 
 	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
 			agregarJobNotificacionCobro(cobro, horasAntesCobrosVencidos, 1);
+			System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
 		} else
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
 	}
 
 	public boolean removeJobCobroVencido(Cobro cobro) {
-		boolean ret = false;
+		boolean ret = true;;
 		try {
 			if (cobro.getId() != null) {
+				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
+				System.out.println("[INFO] Eliminados jobs de cobros vencidos correctamente");
+			} else
+				throw new IllegalArgumentException("El Cobro debe estar persistida");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	public void addJobsCobrosPorVencer(ContratoAlquiler ca){
+		ca.getCobros().forEach(cob -> {
+			if(cob.getFechaDeVencimiento().compareTo(LocalDate.now())>0){
+				addJobCobroPorVencer(cob);
+			}
+		});
+	}
+	
+	public void addJobCobroPorVencer(Cobro cobro) {
+		if (cobro.getId() != null) {
+			agregarJobMailCobroPorVencer(cobro, this.diasAntesCobroPorVencer, 2);
+			System.out.println("[INFO] Agregados jobs de cobros por vencer correctamente");
+		} else
+			throw new IllegalArgumentException("El Cobro debe estar persistida");
+	}
 
-				return sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
+	public boolean removeJobPorVencer(Cobro cobro) {
+		boolean ret = true;;
+		try {
+			if (cobro.getId() != null) {
+				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-2"));
+				System.out.println("[INFO] Eliminados jobs de cobros por vencer correctamente");
 			} else
 				throw new IllegalArgumentException("El Cobro debe estar persistida");
 		} catch (Exception e) {
@@ -164,8 +198,7 @@ public class Planificador {
 		if(contrato.getId()!=null) {
 			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,1);
 			agregarJobNotificacionAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,2);
-			agregarJobMailAlquilerVencido(contrato, 3);
-			System.out.println("[INFO] Contrato agregado a quartz correctamente");
+			System.out.println("[INFO] Alquiler por vencer agregado a quartz correctamente");
 		}
 	}
 	
@@ -176,8 +209,7 @@ public class Planificador {
 
 				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-1"));
 				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-2"));
-				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-3"));
-				System.out.println("[INFO] Contrato borrado de quartz correctamente");
+				System.out.println("[INFO] Alquiler por vencer borrado de quartz correctamente");
 			} else
 				throw new IllegalArgumentException("El contrato debe estar persistida");
 		} catch (Exception e) {
@@ -185,21 +217,26 @@ public class Planificador {
 		}
 		return ret;
 	}
-
-	public void agregarJobs(List<Messageable> citas) {
-		if (citas != null && citas.size() > 0) {
-			citas.forEach(c -> {
-				if (c instanceof Cita) {
-					Cita c1 = (Cita) c;
-					agregarJobNotificacionCita(c1, horasAntesRecoradatorio1, 1);
-					agregarJobNotificacionCita(c1, horasAntesRecoradatorio2, 2);
-				} else if (c instanceof Cobro) {
-					Cobro c1 = (Cobro) c;
-					agregarJobNotificacionCobro(c1, horasAntesCobrosVencidos, 1);
-				}
-
-			});
+	
+	public void addJobAlquilerVencido(ContratoAlquiler contrato) {
+		if(contrato.getId()!=null) {
+			agregarJobMailAlquilerVencido(contrato, 3);
+			System.out.println("[INFO] Alquiler vencido agregado a quartz correctamente");
 		}
+	}
+	
+	public boolean removeJobAlquilerPorVencido(ContratoAlquiler contrato) {
+		boolean ret = true;
+		try {
+			if (contrato.getId() != null) {
+				ret=ret && sc.unscheduleJob(TriggerKey.triggerKey(contrato.getTriggerKey() + "-3"));
+				System.out.println("[INFO] Alquiler vencido borrado de quartz correctamente");
+			} else
+				throw new IllegalArgumentException("El contrato debe estar persistida");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	public void agregarJobNotificacionSistema(String titulo, String mensaje, String username, LocalDateTime fechaInicio,
@@ -280,6 +317,22 @@ public class Planificador {
 		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, perioricidad, triggerKey);
 	}
 	
+	private void agregarJobMailCobroPorVencer(Cobro c, Integer dias, Integer nro) {
+		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(1));
+		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
+		fechaInicio = fechaInicio.minusDays(dias);
+		fechaFin = fechaFin.minusHours(dias);
+		String perioricidad = "1/1";
+		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
+		ContratoAlquiler ca= (ContratoAlquiler) c.getContrato();
+		String titulo="Pago proximo a vencer";
+		String texto="Señor: "+ca.getInquilinoContrato().getPersona().toString()+" recuerde que el pago de su alquiler vence el dia: "
+				+c.getFechaDeVencimiento()
+			.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString();
+		String mail=ca.getInquilinoContrato().getPersona().getMail();
+		agregarJobMail(titulo, texto, mail, fechaInicio, fechaFin, perioricidad, triggerKey);
+	}
+	
 	private void agregarJobMailAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()),
 				LocalTime.now().plusMinutes(1));
@@ -316,38 +369,6 @@ public class Planificador {
 		agregarJobMail("Se vencio el contrato de alquiler",mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
 	
-	public static void initDemo() {
-		if (!demoIniciado) {
-			try {
-				demoIniciado = true;
-				Planificador planificador = Planificador.get();
-				planificador.encender();
-				planificador.setNotificacion(new NotificadorJob());
-				List<Messageable> citas = new ArrayList<>();
-
-				for (int i = 0; i < 10; i++) {
-					LocalDateTime fInicio = LocalDateTime.now();
-					fInicio = fInicio.plusMinutes(i + 2);
-					fInicio = fInicio.plusHours(1);
-
-					Cita c = new Cita.Builder()
-							.setCitado("Señor " + String.valueOf(i))
-							.setDireccionLugar("sarasa: " + String.valueOf(i))
-							.setFechahora(fInicio)
-							.setObservaciones("obs" + String.valueOf(i))
-							.setTipoDeCita(TipoCita.Otros)
-							.build();
-					c.setId(Long.valueOf(i));
-
-					citas.add(c);
-				}
-				planificador.agregarJobs(citas);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	// TODO Lo dejo porque quizas sirva para otro tipo de notificacion
 	@Deprecated
 	public void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin, String hora, String minuto,
