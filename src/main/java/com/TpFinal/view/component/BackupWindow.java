@@ -16,7 +16,7 @@ public class BackupWindow extends CustomComponent {
      */
     private static final long serialVersionUID = 1L;
     private final Label infoLabel = new Label("", ContentMode.HTML);
-    private  UploadButton importar=null;
+    private UploadButton importar = null;
     private final DownloadButton exportar = new DownloadButton();
     private final Window window = new Window();
 
@@ -65,13 +65,12 @@ public class BackupWindow extends CustomComponent {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
 	}
-	exportar.addClickListener(new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
+	//TODO 
+	exportar.addClickListener(click ->{});
+//=======
+//	exportar.setArchivoFromPath(System.getProperty("user.home"),dbFile);
+//>>>>>>> branch 'refactorImagenes' of https://github.com/tpfinal-pp1/tp-final.git
 
-			window.close();
-		}
-	});
 
 
 
@@ -101,8 +100,6 @@ public class BackupWindow extends CustomComponent {
     public void setWindowWidth(String width) {
 	window.setWidth(width);
     }
-
-
 
     public void close() {
 	window.close();

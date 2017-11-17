@@ -7,7 +7,8 @@ public enum TipoReporte {
     Propietario("ReportePropietarios.jasper"),
 	AlquileresPorCobrar("ReporteAlquileresPorCobrar.jasper"),
 	AlquileresPorMes("ReporteAlquileresPorMesNuevo.jasper"),
-	FichaInmuebleConMapa("FichaInmuebleConMapa.jasper");
+	FichaInmuebleConMapa("FichaInmuebleConMapa.jasper"),
+	FichaInmuebleSimple("FichaInmuebleSimple.jasper");
 
     private final String archivoGeneradorDeReporte;
 
@@ -26,6 +27,8 @@ public enum TipoReporte {
 	    return "Alquileres por Mes";
 	case FichaInmuebleConMapa:
 		return "Ficha Inmueble con Mapa";
+	case FichaInmuebleSimple:
+		return "Ficha Inmueble Simple";
 	default:
 	    return super.toString();
 
@@ -42,6 +45,8 @@ public enum TipoReporte {
 	    return "rep_alq_x_mes_";
 	case FichaInmuebleConMapa:
 		return "ficha_inm_con_mapa";
+	case FichaInmuebleSimple:
+		return "ficha_inm_simple";
 	default:
 	    return super.toString();
 
