@@ -1,22 +1,11 @@
 package com.TpFinal.dto.inmueble;
-
-import org.hibernate.annotations.Cascade;
-
-import com.TpFinal.dto.EstadoRegistro;
-import com.TpFinal.dto.Identificable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Blob;
-import java.util.Objects;
 
-@Entity
+@Embeddable
 @Table(name = "Imagenes")
-public class Imagen implements Identificable {
+public class Imagen {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "idImagen")
-    private Long idImagen;
     @Column(name = "nombre")
     private String nombre;
     @Column(name = "extension")
@@ -25,38 +14,14 @@ public class Imagen implements Identificable {
     private String path;
     @Column(name = "imagen")
     private Blob imagen;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.MERGE })
-    @JoinColumn(name = "id_inmueble")
-    @NotNull
-    protected Inmueble inmueble;
 
     @Column(name = "portada")
     private boolean isPortada;
 
     public Imagen() {
-	super();	
-    }
-    
-    public Long getIdImagen() {
-	return idImagen;
+	super();
     }
 
-    public Inmueble getInmueble() {
-	return inmueble;
-    }
-
-    public void setInmueble(Inmueble inmueble) {
-	if (inmueble != null) {
-	    this.inmueble = inmueble;
-	    this.inmueble.addImagen(this);
-	} else {
-	    if (this.inmueble != null) {
-		this.inmueble.removeImagen(this);
-		this.inmueble = null;
-	    }
-	}
-    }
 
     public Blob getImagen() {
 	return imagen;
@@ -107,23 +72,43 @@ public class Imagen implements Identificable {
     }
 
     @Override
-    public Long getId() {
-	return this.idImagen;
-    }
-
-    @Override
     public int hashCode() {
-	return 57;
+	final int prime = 31;
+	int result = 1;
+	result = prime * result + ((extension == null) ? 0 : extension.hashCode());
+	result = prime * result + (isPortada ? 1231 : 1237);
+	result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+	result = prime * result + ((path == null) ? 0 : path.hashCode());
+	return result;
     }
 
     @Override
     public boolean equals(Object obj) {
 	if (this == obj)
 	    return true;
+	if (obj == null)
+	    return false;
 	if (!(obj instanceof Imagen))
 	    return false;
-	Imagen p = (Imagen) obj;
-	return Objects.equals(p.getId(), this.getId());
+	Imagen other = (Imagen) obj;
+	if (extension == null) {
+	    if (other.extension != null)
+		return false;
+	} else if (!extension.equals(other.extension))
+	    return false;
+	if (isPortada != other.isPortada)
+	    return false;
+	if (nombre == null) {
+	    if (other.nombre != null)
+		return false;
+	} else if (!nombre.equals(other.nombre))
+	    return false;
+	if (path == null) {
+	    if (other.path != null)
+		return false;
+	} else if (!path.equals(other.path))
+	    return false;
+	return true;
     }
 
     public static class Builder {

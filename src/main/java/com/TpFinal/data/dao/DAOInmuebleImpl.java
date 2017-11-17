@@ -1,5 +1,8 @@
 package com.TpFinal.data.dao;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,6 +11,9 @@ import java.sql.Blob;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
@@ -16,6 +22,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.engine.jdbc.BlobProxy;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOInmueble;
@@ -33,6 +40,7 @@ import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.dto.publicacion.TipoPublicacion;
 
 public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
+    private static Logger logger = Logger.getLogger(DAOInmuebleImpl.class);
 
     public DAOInmuebleImpl() {
 	super(Inmueble.class);
@@ -46,18 +54,34 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	Transaction tx = null;
 	try {
 	    tx = session.beginTransaction();
-
-	    Blob archivo = null;
-	    File imagen = new File(img.getPath());
-
-	    docInputStream = new FileInputStream(imagen);
-	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, imagen.length());
-	    img.setImagen(archivo);
-	    inmueble.addImagen(img);
+	    inmueble.removeImagen(img);
 	    session.merge(inmueble);
 	    tx.commit();
-	    ret = true;
-	} catch (HibernateException | FileNotFoundException e) {
+	} catch (HibernateException e) {
+	    System.err.println("Error al realizar Merge: " + inmueble);
+	    e.printStackTrace();
+	    if (tx != null)
+		tx.rollback();
+	} finally {
+	    session.close();
+	}
+	session = ConexionHibernate.openSession();
+	try {
+	    tx = session.beginTransaction();
+	    Blob archivo = null;
+	    byte[] imagen = getImage(img.getPath());
+	    if (imagen != null) {
+		archivo = BlobProxy.generateProxy(imagen);
+		img.setImagen(archivo);
+		inmueble.addImagen(img);
+		session.merge(inmueble);
+		tx.commit();
+		ret = true;
+	    } else {
+		ret = false;
+		tx.rollback();
+	    }
+	} catch (HibernateException e) {
 	    System.err.println("Error al realizar Merge: " + inmueble);
 	    e.printStackTrace();
 	    if (tx != null)
@@ -74,6 +98,21 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	}
 	return ret;
 
+    }
+
+    public static byte[] getImage(String path) {
+	File file = new File("./" + path);
+	if (file.exists()) {
+	    try {
+		BufferedImage bufferedImage = ImageIO.read(file);
+		ByteArrayOutputStream byteOutStream = new ByteArrayOutputStream();
+		ImageIO.write(bufferedImage, "jpg", byteOutStream);
+		return byteOutStream.toByteArray();
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
+	}
+	return null;
     }
 
     @Override

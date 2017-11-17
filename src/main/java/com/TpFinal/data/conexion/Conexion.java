@@ -2,10 +2,9 @@ package com.TpFinal.data.conexion;
 
 import java.io.File;
 import java.util.Properties;
-import java.util.Random;
 
+import org.apache.commons.io.FileExistsException;
 import org.hibernate.cfg.Environment;
-
 import com.TpFinal.properties.Parametros;
 
 public class Conexion {
@@ -21,7 +20,7 @@ public class Conexion {
     private Properties properties;
 
     public Conexion(String dialect, String driver, String url, String user, String pass,
-	    String useNewIdGeneratorMappings, String hbm2ddlauto) {
+	    String useNewIdGeneratorMappings, String hbm2ddlauto, String dbPath, String dbName) {
 	this.dialect = dialect;
 	this.driver = driver;
 	this.url = url;
@@ -29,8 +28,9 @@ public class Conexion {
 	this.pass = pass;
 	this.useNewIdGeneratorMappings = useNewIdGeneratorMappings;
 	this.hbm2ddlauto = hbm2ddlauto;
-	// TODO
-	// this.generarProperties();
+	this.dbPath = dbPath;
+	this.dbName = dbName;
+	this.generarProperties();
     }
 
     public Conexion(Builder b) {
@@ -56,15 +56,33 @@ public class Conexion {
 		.setUseNewIdGeneratorMappings(p.getProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS))
 		.setUser(p.getProperty(Environment.USER))
 		.build();
-	if(tc.equals(TipoConexion.H2Server)) {
-	    Random r = new Random();
-	    c.setDbName("db_"+ r.nextInt(Integer.MAX_VALUE));
-	    p.setProperty(Environment.URL, "jdbc:h2:~//"+ c.getDbName() +";AUTO_SERVER=TRUE");
-	    Parametros.setProperty(Parametros.DB_NAME, c.getDbName());
-	}else {
-	    c.setDbName("Test");
+	if (tc.equals(TipoConexion.H2Server)) {
+	    try {
+		c.setDbName(Parametros.getProperty(Parametros.DB_NAME));
+		c.setDbRelativePath(Parametros.getProperty(Parametros.DB_PATH));
+	    } catch (IllegalArgumentException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    } catch (FileExistsException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+
+	} else {
+	    c.setDbName("test_db");
 	}
 	return c;
+    }
+
+    private void generarProperties() {
+	properties.setProperty(Environment.DIALECT, this.dialect);
+	properties.setProperty(Environment.DRIVER, this.driver);
+	properties.setProperty(Environment.DIALECT, this.dialect);
+	properties.setProperty(Environment.HBM2DDL_AUTO, this.hbm2ddlauto);
+	properties.setProperty(Environment.PASS, this.pass);
+	properties.setProperty(Environment.USE_NEW_ID_GENERATOR_MAPPINGS, this.useNewIdGeneratorMappings);
+	properties.setProperty(Environment.USER, this.user);
+	properties.setProperty(Environment.URL, this.url);
     }
 
     public String getDbPath() {
@@ -72,31 +90,47 @@ public class Conexion {
     }
 
     /**
-     * <p>Setea la url al path relativo pasado como parametro.
-     * <p> URL = "jdbc:h2:file:." + File.separator + dbPath + File.separator + dbName
+     * <p>
+     * Setea la url al path relativo pasado como parametro.
+     * <p>
+     * URL = "jdbc:h2:file:." + File.separator + dbPath + File.separator + dbName
+     * 
      * @param dbPath
      */
     public void setDbRelativePath(String dbPath) {
 	this.dbPath = dbPath;
-	this.url = "jdbc:h2:file:." + File.separator + dbPath + File.separator + dbName +";AUTO_SERVER=TRUE";
+	this.url = "jdbc:h2:file:." + File.separator + dbPath + File.separator + dbName + ";AUTO_SERVER=TRUE";
+	this.generarProperties();
     }
-    
+
     /**
-     * <p>Setea la url al path absoluto pasado como parametro.
-     * <p> URL = "jdbc:h2:file:" + dbPath + File.separator + dbName
+     * <p>
+     * Setea la url al path absoluto pasado como parametro.
+     * <p>
+     * URL = "jdbc:h2:file:" + dbPath + File.separator + dbName
+     * 
      * @param dbPath
      */
     public void setDbAbsolutePath(String dbPath) {
-   	this.dbPath = dbPath;
-   	this.url = "jdbc:h2:file:" + dbPath + File.separator + dbName +";AUTO_SERVER=TRUE";
-       }
+	this.dbPath = dbPath;
+	this.url = "jdbc:h2:file:" + dbPath + File.separator + dbName + ";AUTO_SERVER=TRUE";
+	this.generarProperties();
+    }
 
     public String getDbName() {
 	return dbName;
     }
 
+    
+    
     public void setDbName(String dbName) {
 	this.dbName = dbName;
+	actualizarURLRelativa();
+	this.generarProperties();
+    }
+
+    private void actualizarURLRelativa() {
+	this.url = "jdbc:h2:file:." + File.separator + dbPath + File.separator + dbName + ";AUTO_SERVER=TRUE";
     }
 
     public String getDialect() {
@@ -105,6 +139,7 @@ public class Conexion {
 
     public void setDialect(String dialect) {
 	this.dialect = dialect;
+	this.generarProperties();
     }
 
     public String getDriver() {
@@ -113,14 +148,17 @@ public class Conexion {
 
     public void setDriver(String driver) {
 	this.driver = driver;
+	this.generarProperties();
     }
 
     public String getUrl() {
 	return url;
+
     }
 
     public void setUrl(String url) {
 	this.url = url;
+	this.generarProperties();
     }
 
     public String getUser() {
@@ -129,6 +167,7 @@ public class Conexion {
 
     public void setUser(String user) {
 	this.user = user;
+	this.generarProperties();
     }
 
     public String getPass() {
@@ -137,6 +176,7 @@ public class Conexion {
 
     public void setPass(String pass) {
 	this.pass = pass;
+	this.generarProperties();
     }
 
     public String getUseNewIdGeneratorMappings() {
@@ -145,6 +185,7 @@ public class Conexion {
 
     public void setUseNewIdGeneratorMappings(String useNewIdGeneratorMappings) {
 	this.useNewIdGeneratorMappings = useNewIdGeneratorMappings;
+	this.generarProperties();
     }
 
     public String getHbm2ddlauto() {
@@ -153,6 +194,8 @@ public class Conexion {
 
     public void setHbm2ddlauto(String hbm2ddlauto) {
 	this.hbm2ddlauto = hbm2ddlauto;
+	this.generarProperties();
+
     }
 
     public Properties getProperties() {

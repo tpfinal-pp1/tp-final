@@ -1,5 +1,7 @@
 package com.TpFinal.data.conexion;
 
+import org.apache.commons.io.FileExistsException;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -12,6 +14,9 @@ import com.TpFinal.properties.Parametros;
 import java.util.Properties;
 
 public class ConexionHibernate {
+
+    private static Logger logger = Logger.getLogger(ConexionHibernate.class);
+
     private static Configuration configuration = new Configuration();
     private static SessionFactory sf = null;
 
@@ -25,6 +30,9 @@ public class ConexionHibernate {
     public static void setTipoConexion(TipoConexion tipo) {
 	tipoConexion = tipo;
 	conexion = Conexion.getTipoConexionFrom(tipoConexion);
+
+	conexion.setDbRelativePath("Files");
+	Parametros.setProperty(Parametros.DB_PATH, conexion.getDbPath());
 	Parametros.setProperty(Parametros.DB_NAME, conexion.getDbName());
     }
 
@@ -44,16 +52,6 @@ public class ConexionHibernate {
 	return configuration;
     }
 
-    public static void Backup() {
-
-	Session session = ConexionHibernate.openSession();
-	session.beginTransaction();
-	session.createSQLQuery("BACKUP TO 'backupmio.zip'");
-	session.getTransaction().commit();
-	session.close();
-
-    }
-
     private static ServiceRegistry getServiceRegistry(Configuration configuration) {
 	ServiceRegistry serviceRegistry = null;
 	try {
@@ -66,7 +64,9 @@ public class ConexionHibernate {
 	} catch (Exception e) {
 	    System.err.println("Error al conectar: ");
 	    e.printStackTrace();
+
 	}
+
 	return serviceRegistry;
     }
 
@@ -114,7 +114,27 @@ public class ConexionHibernate {
     public static void close() {
 	if (sf != null) {
 	    sf.close();
+	    sf = null;
 	}
+    }
+
+    public static void refreshConnection() {
+	close();
+	sf = null;
+	try {
+	    if (logger.isDebugEnabled())
+		logger.debug("Actualizando Conexion");
+	    conexion.setDbName(Parametros.getProperty(Parametros.DB_NAME));
+	    if (logger.isDebugEnabled())
+		logger.debug("Nueva URL: " + conexion.getUrl());
+	} catch (IllegalArgumentException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (FileExistsException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	getSession();
     }
 
 }

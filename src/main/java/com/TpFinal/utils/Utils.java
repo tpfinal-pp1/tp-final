@@ -209,6 +209,33 @@ public class Utils {
 
     public static String removeFileExtension(String strFilename) {
 	int j;
+		String ret = strFilename;
+
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String antes de remover extension: " + ret);
+	}
+		int index ;
+	if(strFilename.contains(".mv.db")) {
+		index = ret.lastIndexOf('.');
+		if (index != -1)
+			ret = ret.substring(0, ret.lastIndexOf('.'));
+	}
+
+	index = ret.lastIndexOf('.');
+	if (index != -1)
+		ret = ret.substring(0, ret.lastIndexOf('.'));
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String después de remover extension: " + ret);
+	}
+
+	return ret;
+
+    }
+    
+    public static String removeDBFileExtension(String strFilename) {
+	int j;
 	String ret = strFilename;
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String antes de remover extension: " + ret);
@@ -216,7 +243,7 @@ public class Utils {
 
 	int index = ret.lastIndexOf('.');
 	if (index != -1)
-	    ret = ret.substring(0, ret.lastIndexOf('.'));
+	    ret = ret.substring(0,ret.length()-6);
 
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String después de remover extension: " + ret);

@@ -36,11 +36,11 @@ public class UploadReceiver implements Receiver {
         File file=null;
         try {
             this.setFullPath(filePath+strFilename);
-            if(filePath.equals(System.getProperty("user.home"))){
-                Long randomName=+Instant.now().toEpochMilli();
-                this.setFullPath(System.getProperty("user.home")+randomName+".mv.db");
-                this.setFileName(randomName.toString()+".mv.db");
-            }
+//            if(filePath.equals(System.getProperty("user.home"))){
+//                Long randomName=+Instant.now().toEpochMilli();
+//                this.setFullPath(System.getProperty("user.home")+randomName+".mv.db");
+//                this.setFileName(randomName.toString()+".mv.db");
+//            }
 
             if (logger.isDebugEnabled()) {
         	logger.debug("Cargando archivo: " + strFilename);}

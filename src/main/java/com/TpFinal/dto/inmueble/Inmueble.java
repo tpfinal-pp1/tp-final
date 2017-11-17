@@ -109,12 +109,17 @@ public class Inmueble implements Identificable, BorradoLogico {
     @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
     protected Set<Contrato> contratos = new HashSet<>();
 
-    @OneToMany(mappedBy = "inmueble", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.ALL})
+    @ElementCollection (fetch = FetchType.EAGER)
+    @CollectionTable(name = "imagen_inmueble", joinColumns = @JoinColumn(name = "inmueble_id"))
     protected Set<Imagen> imagenes = new HashSet<>();
 
-    @OneToOne(mappedBy = "inmueble", fetch = FetchType.EAGER)
-    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
+   @Embedded
+   @AttributeOverrides({
+       @AttributeOverride(name = "nombre", column = @Column(name = "nombrePortada")),
+       @AttributeOverride(name = "extension", column = @Column(name = "extensionPortada")),
+       @AttributeOverride(name = "path", column = @Column(name = "pathPortada")),
+       @AttributeOverride(name = "imagen", column = @Column(name = "imagenPortada"))
+       })
     protected Imagen portada;
 
     @Column(name = "archivoPortada")
@@ -169,22 +174,21 @@ public class Inmueble implements Identificable, BorradoLogico {
     }
 
     public void addImagen(Imagen imagen) {
-  	if (!this.imagenes.contains(imagen)) {
-  	    this.imagenes.add(imagen);
-  	    imagen.setInmueble(this);
-  	}
-      }
 
-      public void removeImagen(Imagen imagen) {
-  	if (this.imagenes.contains(imagen)) {
-  	    this.imagenes.remove(imagen);
-  	    imagen.setInmueble(null);
-  	}
-      }
-    
-    
+	if (!this.imagenes.contains(imagen)) {
+	    this.imagenes.add(imagen);
+	}
+    }
+
+
+    public void removeImagen(Imagen imagen) {
+	if (this.imagenes.contains(imagen)) {
+	    this.imagenes.remove(imagen);
+	}
+    }
+
     public void addPathImagen(String pathImagen) {
-	    this.pathImagenes.add(pathImagen);
+	this.pathImagenes.add(pathImagen);
     }
 
     public void removePathImagen(String pathImagen) {

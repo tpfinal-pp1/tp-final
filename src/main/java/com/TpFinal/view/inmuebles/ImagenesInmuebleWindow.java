@@ -154,15 +154,9 @@ public abstract class ImagenesInmuebleWindow extends Window {
 		    if (logger.isDebugEnabled()) {
 			logger.debug("Añadiendo imagen a inmueble");
 		    }
-		    InmuebleService.addImagenToInmueble(img, inmueble);
-		    if (logger.isDebugEnabled()) {
-			logger.debug("Guardando imagen en filesystem");
-			InmuebleService inmuebleService = new InmuebleService();
-			Inmueble i = inmuebleService.findById(inmueble.getId());
-			i.getImagenes().forEach(im -> Utils.guardarArchivoBinarioEnFileSystem(Utils.BlobToBytes(
-				im.getImagen()), im.getPath() + ".copy"));
-			logger.debug("copia de imagen en: " + img.getPath());
-		    }
+
+		    inmueble.addImagen(img);
+
 		} catch (Exception e) {
 
 		}
