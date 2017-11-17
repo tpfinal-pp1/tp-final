@@ -52,6 +52,7 @@ public class PlanificadorIT {
 		//sc.apagar();
 	}
 
+	@Ignore
 	@Test
 	public void eliminarCita() {
 		try {
@@ -97,6 +98,7 @@ public class PlanificadorIT {
 		System.out.println();
 	}
 
+	@Ignore
 	@Test
 	public void addCitas() {
 		try {
@@ -132,6 +134,7 @@ public class PlanificadorIT {
 		System.out.println();
 	}
 
+	@Ignore
 	@Test
 	public void addCobros() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
@@ -155,6 +158,56 @@ public class PlanificadorIT {
 		System.out.println();
 		System.out.println("--------------------");
 		System.out.println();
+	}
+	
+	@Ignore
+	@Test 
+	public void contratosPorVencer() throws InterruptedException {
+		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
+		ContratoAlquiler ca =contratoAlquilerPorVencer();
+		ca.setId(new Long("1"));
+		
+
+		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
+		
+		ca.setInquilinoContrato( new Inquilino.Builder().setPersona(
+				new Persona.Builder()
+				.setNombre("Señor Britos")
+				.setApellido("Del lago del terror")
+				.setMail("mail")
+				.build()
+			).build()
+		);
+		
+		sc.addJobAlquilerPorVencer(ca);
+		
+		TimeUnit.SECONDS.sleep(62);
+	}
+	
+	@Test 
+	public void removeContratosPorVencer() throws InterruptedException {
+		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
+		ContratoAlquiler ca =contratoAlquilerPorVencer();
+		ca.setId(new Long("1"));
+		
+
+		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
+		
+		ca.setInquilinoContrato( new Inquilino.Builder().setPersona(
+				new Persona.Builder()
+				.setNombre("Señor Britos")
+				.setApellido("Del lago del terror")
+				.setMail("mail")
+				.build()
+			).build()
+		);
+		
+		sc.addJobAlquilerPorVencer(ca);
+		sc.removeJobAlquilerPorVencer(ca);
+		
+		TimeUnit.SECONDS.sleep(62);
 	}
 
 	public TipoCita randomCita() {
@@ -206,6 +259,27 @@ public class PlanificadorIT {
 	private ContratoAlquiler instanciaAlquilerSimple() {
 		LocalDate fecha=LocalDate.now();
 		fecha=fecha.minusMonths(5);
+		ContratoAlquiler ret = new ContratoAlquiler.Builder()
+				.setFechaIngreso(fecha)
+				.setValorIncial(new BigDecimal("100.00"))
+				.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
+				.setInteresPunitorio(new Double(50))
+				.setIntervaloActualizacion(new Integer(2))
+				.setTipoIncrementoCuota(TipoInteres.Simple)
+				.setTipoInteresPunitorio(TipoInteres.Simple)
+				.setPorcentajeIncremento(new Double(50))
+				.setInquilinoContrato(null)
+				.setDuracionContrato(instanciaContratoDuracion24())
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+
+				.build();
+		ret.setEstadoContrato(EstadoContrato.Vigente);
+		return ret;
+	}
+	
+	private ContratoAlquiler contratoAlquilerPorVencer() {
+		LocalDate fecha=LocalDate.now();
+		fecha=fecha.minusMonths(23);
 		ContratoAlquiler ret = new ContratoAlquiler.Builder()
 				.setFechaIngreso(fecha)
 				.setValorIncial(new BigDecimal("100.00"))

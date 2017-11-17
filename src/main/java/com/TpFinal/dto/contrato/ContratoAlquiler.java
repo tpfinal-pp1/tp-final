@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -341,7 +342,9 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 
 	@Override
 	public String getMessage() {
-		return "El contrato de: "+this.getInquilinoContrato().getPersona().getApellido()+" "+this.getInquilinoContrato().getPersona().getNombre()+" está por vencer";
+		return "El contrato de: "+this.getInquilinoContrato().getPersona().toString()
+				+" vence el: "+this.getFechaIngreso().plusMonths(this.duracionContrato.getDuracion())
+				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString();
 	}
 
 	@Override
