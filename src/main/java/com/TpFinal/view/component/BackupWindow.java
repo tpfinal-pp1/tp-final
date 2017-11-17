@@ -21,7 +21,8 @@ public class BackupWindow extends CustomComponent {
     private final Window window = new Window();
 
     public BackupWindow() {
-
+		ConexionHibernate.enterBackupMode();
+    	getUI().getCurrent().setPollInterval(999999999);
 	infoLabel.setSizeFull();
 	infoLabel.setValue("Al abrir esta ventana Todas las Conexiones estan siendo congeladas \n " +
 			"hasta no terminar las operaciones");
@@ -69,10 +70,12 @@ public class BackupWindow extends CustomComponent {
 	popupVLayout.setComponentAlignment(buttonsHLayout, Alignment.TOP_CENTER);
 	UI.getCurrent().addWindow(window);
 	window.center();
-	ConexionHibernate.enterBackupMode();
+
+
 	window.addCloseListener(new Window.CloseListener() {
 		@Override
 		public void windowClose(Window.CloseEvent closeEvent) {
+			getUI().getCurrent().setPollInterval(10000);
 			ConexionHibernate.leaveBackupMode();
 		}
 	});
