@@ -28,11 +28,11 @@ public class BackupWindow extends CustomComponent {
 
     private final DownloadButton exportar = new DownloadButton();
     private final Window window = new Window();
-    // XXX para test
     private Button shutdown = new Button("Apagar", VaadinIcons.POWER_OFF);
 
     public BackupWindow() {
 	ConexionHibernate.enterBackupMode();
+	apagarServicios();
 	getUI().getCurrent().setPollInterval(999999999);
 	infoLabel.setSizeFull();
 	infoLabel.setValue("Al abrir esta ventana Todas las Conexiones estan siendo congeladas \n " +
@@ -91,36 +91,6 @@ public class BackupWindow extends CustomComponent {
 	exportar.addClickListener(click -> {
 	});
 
-	shutdown.setVisible(true);
-	shutdown.addClickListener(click -> {
-	    if (shutdown.getCaption().equals("Apagar")) {
-		logger.debug("Cerrando conexiones");
-		ConexionHibernate.refreshConnection();
-		ConexionHibernate.close();
-		logger.debug("Apagando Planificador..");
-		Planificador.get().apagar();
-		shutdown.setCaption("Encender");
-		shutdown.removeStyleName(ValoTheme.BUTTON_DANGER);
-		shutdown.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-	    } else {
-		logger.debug("Abriendo Conexiones");
-		ConexionHibernate.createSessionFactory();
-		logger.debug("Encendiendo Planificador");
-		Planificador.get().encender();
-		logger.debug("Creando nueva SessionFactory");
-		ConexionHibernate.createSessionFactory();
-		logger.debug("Encendiendo Planificador");
-		Planificador.get().encender();
-		logger.debug("Saliendo de modo BackUp..");
-		ConexionHibernate.leaveBackupMode();
-		logger.debug("Cerrando Session");
-		getUI().getCurrent().getSession().close();
-		shutdown.setCaption("Apagar");
-		shutdown.addStyleName(ValoTheme.BUTTON_DANGER);
-		shutdown.removeStyleName(ValoTheme.BUTTON_FRIENDLY);
-	    }
-	});
-
 	// ui
 
 	popupVLayout.addComponent(infoLabel);
@@ -134,12 +104,36 @@ public class BackupWindow extends CustomComponent {
 	    public void windowClose(Window.CloseEvent closeEvent) {
 		getUI().getCurrent().setPollInterval(10000);
 		ConexionHibernate.leaveBackupMode();
+		reiniciarServiciosYSesion();
 	    }
 	});
 
 	buttonsHLayout.addComponent(importar);
-	buttonsHLayout.addComponent(shutdown);
 	buttonsHLayout.addComponent(exportar);
+
+    }
+
+    private void reiniciarServiciosYSesion() {
+	logger.debug("Abriendo Conexiones");
+	ConexionHibernate.createSessionFactory();
+	logger.debug("Encendiendo Planificador");
+	Planificador.get().encender();
+	logger.debug("Creando nueva SessionFactory");
+	ConexionHibernate.createSessionFactory();
+	logger.debug("Encendiendo Planificador");
+	Planificador.get().encender();
+	logger.debug("Saliendo de modo BackUp..");
+	ConexionHibernate.leaveBackupMode();
+	logger.debug("Cerrando Session");
+	getUI().getCurrent().getSession().close();
+    }
+
+    private void apagarServicios() {
+	logger.debug("Cerrando conexiones");
+	ConexionHibernate.refreshConnection();
+	ConexionHibernate.close();
+	logger.debug("Apagando Planificador..");
+	Planificador.get().apagar();
 
     }
 
