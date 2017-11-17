@@ -36,6 +36,8 @@ public class Planificador {
 	// citas
 	Integer horasAntesRecoradatorio1;
 	Integer horasAntesRecoradatorio2;
+	// cobros por vencer
+	Integer diasAntesCobroPorVencer;
 	// cobros vencidos
 	Integer horasAntesCobrosVencidos;
 	LocalTime horaInicioCobrosVencidos;
@@ -68,6 +70,7 @@ public class Planificador {
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
 		mesesAntesVencimientoContrato=1;
 		perioricidadEnDiasVencimientoContrato=1;
+		this.diasAntesCobroPorVencer=1;
 	}
 
 	public void setNotificacion(Job notificacion) {
@@ -142,16 +145,19 @@ public class Planificador {
 	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
 			agregarJobNotificacionCobro(cobro, horasAntesCobrosVencidos, 1);
+			agregarJobMailCobroPorVencer(cobro, this.diasAntesCobroPorVencer, 2);
+			System.out.println("[INFO] Agregados jobs de cobros correctamente");
 		} else
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
 	}
 
 	public boolean removeJobCobroVencido(Cobro cobro) {
-		boolean ret = false;
+		boolean ret = true;;
 		try {
 			if (cobro.getId() != null) {
-
-				return sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
+				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
+				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-2"));
+				System.out.println("[INFO] Eliminados jobs de cobros correctamente");
 			} else
 				throw new IllegalArgumentException("El Cobro debe estar persistida");
 		} catch (Exception e) {
@@ -278,6 +284,22 @@ public class Planificador {
 		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
 		String username = "broadcast";
 		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, perioricidad, triggerKey);
+	}
+	
+	private void agregarJobMailCobroPorVencer(Cobro c, Integer dias, Integer nro) {
+		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(1));
+		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
+		fechaInicio = fechaInicio.minusDays(dias);
+		fechaFin = fechaFin.minusHours(dias);
+		String perioricidad = "1/1";
+		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
+		ContratoAlquiler ca= (ContratoAlquiler) c.getContrato();
+		String titulo="Pago proximo a vencer";
+		String texto="Señor: "+ca.getInquilinoContrato().getPersona().toString()+" recuerde que el pago de su alquiler vence el dia: "
+				+c.getFechaDeVencimiento()
+			.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString();
+		String mail=ca.getInquilinoContrato().getPersona().getMail();
+		agregarJobMail(titulo, texto, mail, fechaInicio, fechaFin, perioricidad, triggerKey);
 	}
 	
 	private void agregarJobMailAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {

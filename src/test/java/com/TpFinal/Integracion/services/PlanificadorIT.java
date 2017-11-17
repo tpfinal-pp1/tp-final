@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -138,12 +139,15 @@ public class PlanificadorIT {
 	@Test
 	public void addCobros() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
 		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
 		ContratoAlquiler contrato=instanciaAlquilerSimple();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
 
 		new ContratoService().addCobrosAlquiler(contrato);
+		System.out.println(contrato.getCobros().size());
+		contrato.getCobros().forEach(cob -> System.out.println(cob.getFechaDeVencimiento()));
 
 		Long id=new Long(0);
 
@@ -152,9 +156,49 @@ public class PlanificadorIT {
 			c1.SetId(id);
 			id++;
 		}
+		
+		contrato.getCobros().forEach(cob -> System.out.println(cob.getFechaDeVencimiento()));
 
+		
 		contrato.getCobros().forEach(c -> Planificador.get().addJobCobroVencido(c));
+	
+		
 		TimeUnit.SECONDS.sleep(62);
+		System.out.println();
+		System.out.println("--------------------");
+		System.out.println();
+	}
+	
+	@Test
+	public void removeCobros() throws InterruptedException {
+		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
+		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
+		ContratoAlquiler contrato=instanciaAlquilerSimple();
+		contrato.setEstadoContrato(EstadoContrato.Vigente);
+		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
+
+		new ContratoService().addCobrosAlquiler(contrato);
+		System.out.println(contrato.getCobros().size());
+
+		Long id=new Long(0);
+
+		for (Messageable c: contrato.getCobros()) {
+			Cobro c1=(Cobro)c;
+			c1.SetId(id);
+			id++;
+		}
+		
+		contrato.getCobros().forEach(cob -> System.out.println(cob.getFechaDeVencimiento()));
+
+		
+		contrato.getCobros().forEach(c -> {
+			Planificador.get().addJobCobroVencido(c);
+			Planificador.get().removeJobCobroVencido(c);
+		});
+	
+		
+		TimeUnit.SECONDS.sleep(10);
 		System.out.println();
 		System.out.println("--------------------");
 		System.out.println();
@@ -185,6 +229,7 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep(62);
 	}
 	
+	@Ignore
 	@Test 
 	public void contratosVencido() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
@@ -287,7 +332,7 @@ public class PlanificadorIT {
 		ContratoAlquiler ret = new ContratoAlquiler.Builder()
 				.setFechaIngreso(fecha)
 				.setValorIncial(new BigDecimal("100.00"))
-				.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
+				.setDiaDePago(fecha.plusDays(1).getDayOfMonth())
 				.setInteresPunitorio(new Double(50))
 				.setIntervaloActualizacion(new Integer(2))
 				.setTipoIncrementoCuota(TipoInteres.Simple)
