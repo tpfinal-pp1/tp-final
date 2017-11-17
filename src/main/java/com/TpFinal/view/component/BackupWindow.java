@@ -3,10 +3,12 @@ package com.TpFinal.view.component;
 import com.TpFinal.DashboardServlet;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.properties.Parametros;
+import com.TpFinal.services.Planificador;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
 import org.apache.commons.io.FileExistsException;
+import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.time.Instant;
@@ -17,6 +19,7 @@ public class BackupWindow extends CustomComponent {
     /**
      *
      */
+    private static final Logger logger = Logger.getLogger(BackupWindow.class);
     private static final long serialVersionUID = 1L;
     private final Label infoLabel = new Label("", ContentMode.HTML);
     private UploadButton importar = null;
@@ -54,12 +57,20 @@ public class BackupWindow extends CustomComponent {
 		}
 
 		UploadReceiver uR=new UploadReceiver();
-	//UploadDbReceiver uR=new UploadDbReceiver();
 	importar=new UploadButton(uR);
 	importar.addSucceededListener(success -> {
 			Parametros.setProperty(Parametros.DB_NAME,uR.getFileName());
-			//ConexionHibernate.refreshConnection();
-			DashboardServlet.getCurrent().destroy();			
+			logger.debug("Actualizando Conexión");
+			ConexionHibernate.refreshConnection();
+			logger.debug("Apagando Planificador");
+			Planificador.get().apagar();
+			logger.debug("Creando nueva SessionFactory");
+			ConexionHibernate.createSessionFactory();
+			logger.debug("Encendiendo Planificador");
+			Planificador.get().encender();
+			logger.debug("Saliendo de modo BackUp");
+			ConexionHibernate.leaveBackupMode();
+			//DashboardServlet.getCurrent().destroy();			
 		}
 	);
 	exportar.focus();
@@ -92,7 +103,8 @@ public class BackupWindow extends CustomComponent {
 	window.addCloseListener(new Window.CloseListener() {
 		@Override
 		public void windowClose(Window.CloseEvent closeEvent) {
-			getUI().getCurrent().setPollInterval(10000);			
+			getUI().getCurrent().setPollInterval(10000);	
+			ConexionHibernate.leaveBackupMode();
 		}
 	});
 		buttonsHLayout.addComponent(importar);

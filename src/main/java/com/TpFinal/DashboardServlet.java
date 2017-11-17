@@ -57,6 +57,8 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	// TODO Auto-generated method stub
 
     }
+    
+    
 
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
@@ -76,6 +78,8 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	cerrarConexiones();
 	apagarScheduller();
     }
+    
+    
 
     private void apagarScheduller() {
 	logger.info("=======================");

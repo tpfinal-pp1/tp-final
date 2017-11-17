@@ -119,13 +119,19 @@ public class ConexionHibernate {
     public static void close() {
 	if (sf != null) {
 	    sf.close();
+	    
 	}
     }
     
     public static void refreshConnection() {
 	close();
+	sf = null;
 	try {
+	    if (logger.isDebugEnabled())
+		logger.debug("Actualizando Conexion");
 	    conexion.setDbName(Parametros.getProperty(Parametros.DB_NAME));
+	    if (logger.isDebugEnabled())
+		logger.debug("Nueva URL: "+ conexion.getUrl());
 	} catch (IllegalArgumentException e) {
 	    // TODO Auto-generated catch block
 	    e.printStackTrace();
@@ -134,7 +140,6 @@ public class ConexionHibernate {
 	    e.printStackTrace();
 	}
 	getSession();
-	ConexionHibernate.leaveBackupMode();
     }
 
 }
