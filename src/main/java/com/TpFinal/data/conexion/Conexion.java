@@ -121,9 +121,16 @@ public class Conexion {
 	return dbName;
     }
 
+    
+    
     public void setDbName(String dbName) {
 	this.dbName = dbName;
+	actualizarURLRelativa();
 	this.generarProperties();
+    }
+
+    private void actualizarURLRelativa() {
+	this.url = "jdbc:h2:file:." + File.separator + dbPath + File.separator + dbName + ";AUTO_SERVER=TRUE";
     }
 
     public String getDialect() {

@@ -55,6 +55,7 @@ public class BackupWindow extends CustomComponent {
 	importar=new UploadButton(uR);
 	importar.addSucceededListener(success -> {
 			Parametros.setProperty(Parametros.DB_NAME,uR.getFileName());
+			ConexionHibernate.refreshConnection();
 		}
 	);
 	exportar.focus();

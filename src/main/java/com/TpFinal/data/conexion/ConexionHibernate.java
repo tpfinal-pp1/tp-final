@@ -1,5 +1,6 @@
 package com.TpFinal.data.conexion;
 
+import org.apache.commons.io.FileExistsException;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -119,6 +120,20 @@ public class ConexionHibernate {
 	if (sf != null) {
 	    sf.close();
 	}
+    }
+    
+    public static void refreshConnection() {
+	close();
+	try {
+	    conexion.setDbName(Parametros.getProperty(Parametros.DB_NAME));
+	} catch (IllegalArgumentException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	} catch (FileExistsException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+	getSession();
     }
 
 }
