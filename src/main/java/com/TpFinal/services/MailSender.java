@@ -21,7 +21,7 @@ public class MailSender implements Job{
 		Content content = new Content("text/plain", mensaje);
 		Mail mail = new Mail(from, subject, to, content);
 
-		SendGrid sg = new SendGrid(Parametros.getProperty("emailKey"));
+		SendGrid sg = new SendGrid(Parametros.getProperty(Parametros.EMAIL_KEY));
 		//SendGrid sg = new SendGrid(Parametros.getProperty(key));
 
 		Request request = new Request();

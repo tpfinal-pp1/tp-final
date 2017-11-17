@@ -2,6 +2,7 @@ package com.TpFinal.dto.inmueble;
 
 import org.hibernate.annotations.Cascade;
 
+import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.Identificable;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,6 +34,10 @@ public class Imagen implements Identificable {
     @Column(name = "portada")
     private boolean isPortada;
 
+    public Imagen() {
+	super();	
+    }
+    
     public Long getIdImagen() {
 	return idImagen;
     }
@@ -44,7 +49,7 @@ public class Imagen implements Identificable {
     public void setInmueble(Inmueble inmueble) {
 	if (inmueble != null) {
 	    this.inmueble = inmueble;
-	    this.inmueble.addImagem(this);
+	    this.inmueble.addImagen(this);
 	} else {
 	    if (this.inmueble != null) {
 		this.inmueble.removeImagen(this);

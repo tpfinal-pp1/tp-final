@@ -168,7 +168,7 @@ public class Inmueble implements Identificable, BorradoLogico {
 	this.nombreArchivoPortada = nombreArchivoPortada;
     }
 
-    public void addImagem(Imagen imagen) {
+    public void addImagen(Imagen imagen) {
   	if (!this.imagenes.contains(imagen)) {
   	    this.imagenes.add(imagen);
   	    imagen.setInmueble(this);
