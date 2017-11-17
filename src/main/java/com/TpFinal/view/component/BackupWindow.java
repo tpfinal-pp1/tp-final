@@ -60,7 +60,13 @@ public class BackupWindow extends CustomComponent {
 	});
 	exportar.focus();
 	exportar.setArchivoFromPath(System.getProperty("user.home"),dbFile);
+	exportar.addClickListener(new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
 
+			window.close();
+		}
+	});
 
 
 
