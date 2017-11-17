@@ -2,6 +2,7 @@ package com.TpFinal.data.conexion;
 
 import java.io.File;
 import java.util.Properties;
+
 import org.apache.commons.io.FileExistsException;
 import org.hibernate.cfg.Environment;
 import com.TpFinal.properties.Parametros;
@@ -187,6 +188,7 @@ public class Conexion {
     public void setHbm2ddlauto(String hbm2ddlauto) {
 	this.hbm2ddlauto = hbm2ddlauto;
 	this.generarProperties();
+
     }
 
     public Properties getProperties() {

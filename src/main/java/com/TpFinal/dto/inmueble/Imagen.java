@@ -1,13 +1,6 @@
 package com.TpFinal.dto.inmueble;
-
-import org.hibernate.annotations.Cascade;
-
-import com.TpFinal.dto.EstadoRegistro;
-import com.TpFinal.dto.Identificable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.sql.Blob;
-import java.util.Objects;
 
 @Embeddable
 @Table(name = "Imagenes")
@@ -28,6 +21,7 @@ public class Imagen {
     public Imagen() {
 	super();
     }
+
 
     public Blob getImagen() {
 	return imagen;

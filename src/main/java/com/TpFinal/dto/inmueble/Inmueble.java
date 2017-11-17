@@ -174,10 +174,12 @@ public class Inmueble implements Identificable, BorradoLogico {
     }
 
     public void addImagen(Imagen imagen) {
+
 	if (!this.imagenes.contains(imagen)) {
 	    this.imagenes.add(imagen);
 	}
     }
+
 
     public void removeImagen(Imagen imagen) {
 	if (this.imagenes.contains(imagen)) {

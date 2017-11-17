@@ -20,7 +20,18 @@ public class NotificadorConcreto implements Job{
 			if(dataMap.size() != 0){
 				String mensaje = dataMap.getString("mensaje");
 				String titulo = dataMap.getString("titulo");
-				System.out.println(titulo);
+				String encabezado=dataMap.getString("encabezado");
+				
+				if(titulo != null) {
+					System.out.println("Soy una notificacion");
+					System.out.println("--------------------");
+					System.out.println(titulo);
+				}else if(encabezado!=null) {
+					System.out.println("Soy un mail");
+					System.out.println("-----------");
+					System.out.println(encabezado);
+				}
+				
 				System.out.println("-------");
 				System.out.println(mensaje);
 				System.out.println(" ");

@@ -11,8 +11,13 @@ import org.hibernate.service.ServiceRegistry;
 import com.TpFinal.properties.Parametros;
 
 
+import java.util.Properties;
+
+
 public class ConexionHibernate {
+
     private static Logger logger = Logger.getLogger(ConexionHibernate.class);
+
     private static Configuration configuration = new Configuration();
     private static SessionFactory sf = null;
 
@@ -26,6 +31,7 @@ public class ConexionHibernate {
     public static void setTipoConexion(TipoConexion tipo) {
 	tipoConexion = tipo;
 	conexion = Conexion.getTipoConexionFrom(tipoConexion);
+
 	conexion.setDbRelativePath("Files");
 	Parametros.setProperty(Parametros.DB_PATH, conexion.getDbPath());
 	Parametros.setProperty(Parametros.DB_NAME, conexion.getDbName());
@@ -50,7 +56,9 @@ public class ConexionHibernate {
     public static void Backup() {
 	if(logger.isDebugEnabled()) {
 	    logger.debug("Ejecutando backup");
+
 	}
+
 	Session session = getSession().openSession();
 	session.beginTransaction();
 	session.createSQLQuery("BACKUP TO 'backupmio.zip'");
@@ -71,7 +79,9 @@ public class ConexionHibernate {
 	} catch (Exception e) {
 	    System.err.println("Error al conectar: ");
 	    e.printStackTrace();
+
 	}
+
 	return serviceRegistry;
     }
 
