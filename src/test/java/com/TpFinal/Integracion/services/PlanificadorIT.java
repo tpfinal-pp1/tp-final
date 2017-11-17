@@ -186,6 +186,31 @@ public class PlanificadorIT {
 	}
 	
 	@Test 
+	public void contratosVencido() throws InterruptedException {
+		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
+		ContratoAlquiler ca =contratoVencido();
+		ca.setId(new Long("1"));
+		
+
+		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
+		
+		ca.setInquilinoContrato( new Inquilino.Builder().setPersona(
+				new Persona.Builder()
+				.setNombre("Señor Britos")
+				.setApellido("Del lago del terror")
+				.setMail("mail")
+				.build()
+			).build()
+		);
+		
+		sc.addJobAlquilerPorVencer(ca);
+		
+		TimeUnit.SECONDS.sleep(62);
+	}
+	
+	@Ignore
+	@Test 
 	public void removeContratosPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
@@ -280,6 +305,27 @@ public class PlanificadorIT {
 	private ContratoAlquiler contratoAlquilerPorVencer() {
 		LocalDate fecha=LocalDate.now();
 		fecha=fecha.minusMonths(23);
+		ContratoAlquiler ret = new ContratoAlquiler.Builder()
+				.setFechaIngreso(fecha)
+				.setValorIncial(new BigDecimal("100.00"))
+				.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
+				.setInteresPunitorio(new Double(50))
+				.setIntervaloActualizacion(new Integer(2))
+				.setTipoIncrementoCuota(TipoInteres.Simple)
+				.setTipoInteresPunitorio(TipoInteres.Simple)
+				.setPorcentajeIncremento(new Double(50))
+				.setInquilinoContrato(null)
+				.setDuracionContrato(instanciaContratoDuracion24())
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+
+				.build();
+		ret.setEstadoContrato(EstadoContrato.Vigente);
+		return ret;
+	}
+	
+	private ContratoAlquiler contratoVencido() {
+		LocalDate fecha=LocalDate.now();
+		fecha=fecha.minusMonths(24);
 		ContratoAlquiler ret = new ContratoAlquiler.Builder()
 				.setFechaIngreso(fecha)
 				.setValorIncial(new BigDecimal("100.00"))
