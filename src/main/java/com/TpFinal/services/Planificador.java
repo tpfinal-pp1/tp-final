@@ -63,7 +63,7 @@ public class Planificador {
 	private Planificador() throws SchedulerException {
 		if (sc == null)
 			this.sc = StdSchedulerFactory.getDefaultScheduler();
-		// Luego se remplaza por la info de la bd
+		//parametros
 		horasAntesRecoradatorio1 = 1;
 		horasAntesRecoradatorio2 = 24;
 		horasAntesCobrosVencidos = 240;
@@ -107,10 +107,6 @@ public class Planificador {
 		}
 	}
 
-	public void agregarJobsCobrosVencidos(ContratoAlquiler c) {
-		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
-	}
-
 	public void addJobCita(Cita cita) {
 		if (cita.getId() != null) {
 			agregarJobNotificacionCita(cita, horasAntesRecoradatorio1, 1);
@@ -141,6 +137,10 @@ public class Planificador {
 		}
 		return ret;
 	}
+	
+	public void addJobsCobrosVencidos(ContratoAlquiler c) {
+		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
+	}
 
 	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
@@ -162,6 +162,14 @@ public class Planificador {
 			e.printStackTrace();
 		}
 		return ret;
+	}
+	
+	public void addJobsCobrosPorVencer(ContratoAlquiler ca){
+		ca.getCobros().forEach(cob -> {
+			if(cob.getFechaDeVencimiento().compareTo(LocalDate.now())>0){
+				addJobCobroPorVencer(cob);
+			}
+		});
 	}
 	
 	public void addJobCobroPorVencer(Cobro cobro) {
@@ -229,22 +237,6 @@ public class Planificador {
 			e.printStackTrace();
 		}
 		return ret;
-	}
-
-	public void agregarJobs(List<Messageable> citas) {
-		if (citas != null && citas.size() > 0) {
-			citas.forEach(c -> {
-				if (c instanceof Cita) {
-					Cita c1 = (Cita) c;
-					agregarJobNotificacionCita(c1, horasAntesRecoradatorio1, 1);
-					agregarJobNotificacionCita(c1, horasAntesRecoradatorio2, 2);
-				} else if (c instanceof Cobro) {
-					Cobro c1 = (Cobro) c;
-					agregarJobNotificacionCobro(c1, horasAntesCobrosVencidos, 1);
-				}
-
-			});
-		}
 	}
 
 	public void agregarJobNotificacionSistema(String titulo, String mensaje, String username, LocalDateTime fechaInicio,
@@ -377,38 +369,6 @@ public class Planificador {
 		agregarJobMail("Se vencio el contrato de alquiler",mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
 	
-	public static void initDemo() {
-		if (!demoIniciado) {
-			try {
-				demoIniciado = true;
-				Planificador planificador = Planificador.get();
-				planificador.encender();
-				planificador.setNotificacion(new NotificadorJob());
-				List<Messageable> citas = new ArrayList<>();
-
-				for (int i = 0; i < 10; i++) {
-					LocalDateTime fInicio = LocalDateTime.now();
-					fInicio = fInicio.plusMinutes(i + 2);
-					fInicio = fInicio.plusHours(1);
-
-					Cita c = new Cita.Builder()
-							.setCitado("Señor " + String.valueOf(i))
-							.setDireccionLugar("sarasa: " + String.valueOf(i))
-							.setFechahora(fInicio)
-							.setObservaciones("obs" + String.valueOf(i))
-							.setTipoDeCita(TipoCita.Otros)
-							.build();
-					c.setId(Long.valueOf(i));
-
-					citas.add(c);
-				}
-				planificador.agregarJobs(citas);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	// TODO Lo dejo porque quizas sirva para otro tipo de notificacion
 	@Deprecated
 	public void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin, String hora, String minuto,

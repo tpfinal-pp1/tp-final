@@ -57,7 +57,7 @@ public class PlanificadorIT {
 	public void eliminarCita() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
-			List<Messageable>citas = new ArrayList<>();
+			List<Cita>citas = new ArrayList<>();
 			System.out.println("Agregando citas \n deberia eliminarlas");
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
@@ -78,7 +78,7 @@ public class PlanificadorIT {
 				c.setId(Long.valueOf(i));
 				citas.add(c);
 			}
-			sc.agregarJobs(citas);
+			citas.forEach(cit -> sc.addJobCita(cit));
 			boolean eliminar=true;
 
 			for (Messageable mess:citas){
@@ -103,7 +103,7 @@ public class PlanificadorIT {
 	public void addCitas() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
-			List<Messageable>citas = new ArrayList<>();
+			List<Cita>citas = new ArrayList<>();
 			for(int i=0; i<3; i++) {
 				LocalDateTime fInicio = LocalDateTime.now();
 				fInicio=fInicio.plusMinutes(i+1);
@@ -123,7 +123,7 @@ public class PlanificadorIT {
 				c.setId(Long.valueOf(i));
 				citas.add(c);
 			}
-			sc.agregarJobs(citas);
+			citas.forEach(cit -> sc.addJobCita(cit));
 
 			TimeUnit.SECONDS.sleep( 182);
 		} catch (Exception e) {
@@ -134,7 +134,6 @@ public class PlanificadorIT {
 		System.out.println();
 	}
 
-	@Ignore
 	@Test
 	public void addCobrosVencidos() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
@@ -153,7 +152,7 @@ public class PlanificadorIT {
 			id++;
 		}
 
-		contrato.getCobros().forEach(c -> Planificador.get().addJobCobroVencido(c));
+		sc.addJobsCobrosVencidos(contrato);
 		TimeUnit.SECONDS.sleep(62);
 		System.out.println();
 		System.out.println("--------------------");
@@ -209,8 +208,7 @@ public class PlanificadorIT {
 			c1.SetId(id);
 			id++;
 		}
-
-		contrato.getCobros().forEach(cob -> Planificador.get().addJobCobroPorVencer(cob));
+		sc.addJobsCobrosPorVencer(contrato);
 		TimeUnit.SECONDS.sleep(62);
 		System.out.println();
 		System.out.println("--------------------");
@@ -322,6 +320,7 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep(62);
 	}
 	
+	@Ignore
 	@Test 
 	public void removeAlquilerVencido() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());

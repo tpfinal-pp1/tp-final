@@ -268,13 +268,21 @@ public class ContratoAlquilerForm extends FormLayout {
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
-		System.out.println(ultimo.getCobros().size());
+		
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
-		//agrego los cobros a quartz
-		Planificador.get().agregarJobsCobrosVencidos(ultimo);
-		//agrego el contrato 
+		
+		//agrego los jobs para los cobros que esten vencidos
+		Planificador.get().addJobsCobrosVencidos(ultimo);
+		
+		//agrego los jobs para los cobros que vencen dentro de poco
+		Planificador.get().addJobsCobrosPorVencer(ultimo);
+		
+		//agrego el contrato para que avise cuando esta por vencer
 		Planificador.get().addJobAlquilerPorVencer(ultimo);
+		
+		//agrego los jobs para que avise cuando el alquiler este vencido
+		Planificador.get().addJobAlquilerVencido(ultimo);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();
