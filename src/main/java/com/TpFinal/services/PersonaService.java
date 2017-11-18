@@ -166,12 +166,16 @@ public class PersonaService {
 	}
 
 	public Integer cantidadDeMesesComoInquilino(List<Cobro> cobros) {
-		LocalDate hoy = LocalDate.now();
-		hoy = hoy.withDayOfMonth(1);
-		LocalDate diaPrimerCobro = cobros.get(0).getFechaDeVencimiento();
-		diaPrimerCobro = diaPrimerCobro.withDayOfMonth(1);
+		if(cobros.size()!=0) {
+			LocalDate hoy = LocalDate.now();
+			hoy = hoy.withDayOfMonth(1);
+			LocalDate diaPrimerCobro = cobros.get(0).getFechaDeVencimiento();
+			diaPrimerCobro = diaPrimerCobro.withDayOfMonth(1);
 
-		return (int) ChronoUnit.MONTHS.between(hoy, diaPrimerCobro);
+			return (int) ChronoUnit.MONTHS.between(hoy, diaPrimerCobro);
+		}else
+			return 0;
+		
 	}
 
 	private LocalDate haceSeisMeses(Integer diaCobro) {
