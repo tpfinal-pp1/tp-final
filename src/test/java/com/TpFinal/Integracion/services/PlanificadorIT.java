@@ -138,6 +138,7 @@ public class PlanificadorIT {
 	@Test
 	public void addCobrosVencidos() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
 		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
 		ContratoAlquiler contrato=instanciaAlquilerConCobrosVencidos();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
@@ -238,7 +239,7 @@ public class PlanificadorIT {
 			Planificador.get().addJobCobroPorVencer(c);
 			Planificador.get().removeJobCobroPorVencer(c);
 		});
-		TimeUnit.SECONDS.sleep(10);
+		TimeUnit.SECONDS.sleep(62);
 		System.out.println();
 		System.out.println("--------------------");
 		System.out.println();
