@@ -2,6 +2,7 @@ package com.TpFinal.view.component;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.properties.Parametros;
+import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.Planificador;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
@@ -24,24 +25,26 @@ public class BackupWindow extends CustomComponent {
     private static final long serialVersionUID = 1L;
     private final Label infoLabel = new Label("", ContentMode.HTML);
     private UploadButton importar = null;
-
+    private boolean seImportoBD = false;
     private final DownloadButton exportar = new DownloadButton();
     private final Window window = new Window();
     private Button shutdown = new Button("Detener", VaadinIcons.STOP_COG);
-	Button reiniciar=new Button("Reiniciar", VaadinIcons.START_COG);
-	private int pollInterval =0;
-	private static VaadinSession vaadinSession;
+    Button reiniciar = new Button("Reiniciar", VaadinIcons.START_COG);
+    private int pollInterval = 0;
+    private static VaadinSession vaadinSession;
 
-	public static VaadinSession getVaadinSession() {
-		return vaadinSession;
-	}
+    public static VaadinSession getVaadinSession() {
+	return vaadinSession;
+    }
 
-	public BackupWindow() {
-	vaadinSession=VaadinSession.getCurrent();
-	pollInterval =getUI().getCurrent().getPollInterval();
+    public BackupWindow() {
+	vaadinSession = VaadinSession.getCurrent();
+	pollInterval = getUI().getCurrent().getPollInterval();
 
 	infoLabel.setSizeFull();
-	infoLabel.setValue("Antes de realizar cualquier operacion debe Detener todas las conexiones con el servidor, este proceso tomara "+ pollInterval /1000+" segundos");
+	infoLabel.setValue(
+		"Antes de realizar cualquier operacion debe Detener todas las conexiones con el servidor, este proceso tomara "
+			+ pollInterval / 1000 + " segundos");
 	final VerticalLayout popupVLayout = new VerticalLayout();
 	popupVLayout.setSpacing(true);
 	popupVLayout.setMargin(true);
@@ -66,6 +69,8 @@ public class BackupWindow extends CustomComponent {
 	UploadReceiver uR = new UploadReceiver();
 	importar = new UploadButton(uR);
 	importar.addSucceededListener(success -> {
+	    logger.debug("Seteando importacion de db a true");
+	    seImportoBD = true;
 	    Parametros.setProperty(Parametros.DB_NAME, uR.getFileName());
 	    importar.setEnabled(false);
 	    exportar.setEnabled(false);
@@ -92,7 +97,6 @@ public class BackupWindow extends CustomComponent {
 	UI.getCurrent().addWindow(window);
 	window.center();
 
-
 	window.addCloseListener(new Window.CloseListener() {
 	    @Override
 	    public void windowClose(Window.CloseEvent closeEvent) {
@@ -102,54 +106,55 @@ public class BackupWindow extends CustomComponent {
 	importar.setEnabled(false);
 	exportar.setEnabled(false);
 	shutdown.addClickListener(new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
-							new DialogConfirmacion("Modo Mantenimiento",VaadinIcons.DATABASE,
-									"Esta seguro que quiere entrar en este modo?\n" +
-											" Todos los usuarios perderan su conexión\n" +
-											".Asegurese de que todos los usuarios hayan guardado el contenido","",new Button.ClickListener() {
-								@Override
-								public void buttonClick(Button.ClickEvent clickEvent) {
+	    @Override
+	    public void buttonClick(Button.ClickEvent clickEvent) {
+		new DialogConfirmacion("Modo Mantenimiento", VaadinIcons.DATABASE,
+			"Esta seguro que quiere entrar en este modo?\n" +
+				" Todos los usuarios perderan su conexión\n" +
+				".Asegurese de que todos los usuarios hayan guardado el contenido", "",
+			new Button.ClickListener() {
+			    @Override
+			    public void buttonClick(Button.ClickEvent clickEvent) {
 
-									ConexionHibernate.enterBackupMode();
-									apagarServicios();
-									for (int i = 0; i <10 ; i++) {
-							showWaitNotification();  //Para que no la pueda cerrar
-
-						}
-
-						window.setClosable(false);
-						shutdown.setEnabled(false);
-
-						new Thread(() -> {
-							try {
-								Thread.sleep(pollInterval);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							infoLabel.setValue("Ahora puede Importar o Exportar la Base de datos,\n" +
-									" porfavor antes de cerrar el navegador seleccione Reiniciar!!");
-							importar.setEnabled(true);
-							exportar.setEnabled(true);
-							shutdown.setVisible(false);
-							reiniciar.setVisible(true);
-
-						}).start();
-
+				ConexionHibernate.enterBackupMode();
+				apagarServicios();
+				for (int i = 0; i < 10; i++) {
+				    showWaitNotification(); // Para que no la pueda cerrar
 
 				}
+
+				window.setClosable(false);
+				shutdown.setEnabled(false);
+
+				new Thread(() -> {
+				    try {
+					Thread.sleep(pollInterval);
+				    } catch (InterruptedException e) {
+					e.printStackTrace();
+				    }
+				    infoLabel.setValue("Ahora puede Importar o Exportar la Base de datos,\n" +
+					    " porfavor antes de cerrar el navegador seleccione Reiniciar!!");
+				    importar.setEnabled(true);
+				    exportar.setEnabled(true);
+				    shutdown.setVisible(false);
+				    reiniciar.setVisible(true);
+
+				}).start();
+
+			    }
 			});
-		}
+	    }
 	});
 
 	reiniciar.addClickListener(new Button.ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
+	    @Override
+	    public void buttonClick(Button.ClickEvent clickEvent) {
 
-				ConexionHibernate.leaveBackupMode();
-				reiniciarServiciosYSesion();
+		ConexionHibernate.leaveBackupMode();
+		reiniciarServiciosYSesion();
 
-	}});
+	    }
+	});
 	reiniciar.setVisible(false);
 	reiniciar.setIcon(VaadinIcons.START_COG);
 
@@ -159,14 +164,15 @@ public class BackupWindow extends CustomComponent {
 	buttonsHLayout.addComponent(exportar);
 
     }
-	public void showWaitNotification() {
-		Notification success = new Notification(
-				"Espere "+pollInterval/1000+" segundos... Porfavor no cierre el navegador");
-		success.setDelayMsec(pollInterval);
-		success.setStyleName("bar success small");
-		success.setPosition(Position.MIDDLE_CENTER);
-		success.show(Page.getCurrent());
-	}
+
+    public void showWaitNotification() {
+	Notification success = new Notification(
+		"Espere " + pollInterval / 1000 + " segundos... Porfavor no cierre el navegador");
+	success.setDelayMsec(pollInterval);
+	success.setStyleName("bar success small");
+	success.setPosition(Position.MIDDLE_CENTER);
+	success.show(Page.getCurrent());
+    }
 
     private void reiniciarServiciosYSesion() {
 	logger.debug("Actualizando Conexión");
@@ -175,6 +181,13 @@ public class BackupWindow extends CustomComponent {
 	Planificador.get().apagar();
 	logger.debug("Abriendo Conexiones");
 	ConexionHibernate.createSessionFactory();
+	if(seImportoBD) {
+	    seImportoBD = false;
+	    ConexionHibernate.leaveBackupMode();
+	    logger.debug("Cargando Imagenes en File System");
+	    InmuebleService.cargarImagenesAFileSystem();
+	    ConexionHibernate.enterBackupMode();
+	}
 	logger.debug("Encendiendo Planificador");
 	Planificador.get().encender();
 	logger.debug("Creando nueva SessionFactory");

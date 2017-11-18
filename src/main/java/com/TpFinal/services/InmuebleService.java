@@ -6,8 +6,11 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -21,6 +24,8 @@ import java.util.stream.Collectors;
 import javax.imageio.ImageIO;
 
 import com.TpFinal.view.reportes.ItemFichaInmuebleSimple;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOInmuebleImpl;
@@ -377,4 +382,31 @@ public class InmuebleService {
 	return dao.addImagen(img, inmueble);
     }
 
+    public static void cargarImagenesAFileSystem() {
+	DAOInmuebleImpl dao = new DAOInmuebleImpl();
+	dao.readAllActives().forEach(InmuebleService::cargarImagenesDeInmueble);
+	
+    }
+
+    public static void cargarImagenesDeInmueble(Inmueble i) {
+	i.getImagenes().stream()
+		.filter(imagen -> imagen.getImagen() != null)
+		.filter(imagen -> imagen.getPath() != null)
+		.forEach(InmuebleService::cargarImagen);
+    }
+
+    private static void cargarImagen(Imagen imagen) {
+	File path = new File(imagen.getPath());
+	if (!path.exists()) {
+	    logger.debug("Cargando archivo a file system: " + path);
+	    FileOutputStream fout = null;
+	    try {
+		fout = new FileOutputStream(path);
+		IOUtils.copy(imagen.getImagen().getBinaryStream(), fout);
+	    } catch (IOException | SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	}
+    }
 }
