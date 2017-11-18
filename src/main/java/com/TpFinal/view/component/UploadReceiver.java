@@ -1,18 +1,14 @@
 package com.TpFinal.view.component;
 
 import com.TpFinal.utils.Utils;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.vaadin.ui.Upload.Receiver;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.time.Instant;
-
 import org.apache.log4j.Logger;
 import org.apache.tika.mime.MimeTypeException;
-import org.apache.tika.mime.MimeTypes;
+
 
 public class UploadReceiver implements Receiver {
     private static final long serialVersionUID = 2215337036540966711L;
