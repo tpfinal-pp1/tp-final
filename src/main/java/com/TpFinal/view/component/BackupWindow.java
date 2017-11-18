@@ -29,6 +29,7 @@ public class BackupWindow extends CustomComponent {
     private final DownloadButton exportar = new DownloadButton();
     private final Window window = new Window();
     private Button shutdown = new Button("Detener", VaadinIcons.STOP_COG);
+
     Button reiniciar = new Button("Reiniciar", VaadinIcons.START_COG);
     private int pollInterval = 0;
     private static VaadinSession vaadinSession;
@@ -40,7 +41,6 @@ public class BackupWindow extends CustomComponent {
     public BackupWindow() {
 	vaadinSession = VaadinSession.getCurrent();
 	pollInterval = getUI().getCurrent().getPollInterval();
-
 	infoLabel.setSizeFull();
 	infoLabel.setValue(
 		"Antes de realizar cualquier operacion debe Detener todas las conexiones con el servidor, este proceso tomara "
@@ -100,7 +100,6 @@ public class BackupWindow extends CustomComponent {
 	window.addCloseListener(new Window.CloseListener() {
 	    @Override
 	    public void windowClose(Window.CloseEvent closeEvent) {
-
 	    }
 	});
 	importar.setEnabled(false);
@@ -158,6 +157,18 @@ public class BackupWindow extends CustomComponent {
 	reiniciar.setVisible(false);
 	reiniciar.setIcon(VaadinIcons.START_COG);
 
+	reiniciar.addClickListener(new Button.ClickListener() {
+	    @Override
+	    public void buttonClick(Button.ClickEvent clickEvent) {
+
+		ConexionHibernate.leaveBackupMode();
+		reiniciarServiciosYSesion();
+
+	    }
+	});
+	reiniciar.setVisible(false);
+	reiniciar.setIcon(VaadinIcons.START_COG);
+
 	buttonsHLayout.addComponent(importar);
 	buttonsHLayout.addComponent(shutdown);
 	buttonsHLayout.addComponent(reiniciar);
@@ -181,7 +192,7 @@ public class BackupWindow extends CustomComponent {
 	Planificador.get().apagar();
 	logger.debug("Abriendo Conexiones");
 	ConexionHibernate.createSessionFactory();
-	if(seImportoBD) {
+	if (seImportoBD) {
 	    seImportoBD = false;
 	    ConexionHibernate.leaveBackupMode();
 	    logger.debug("Cargando Imagenes en File System");
