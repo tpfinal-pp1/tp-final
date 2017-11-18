@@ -39,6 +39,7 @@ public class BackupWindow extends CustomComponent {
     }
 
     public BackupWindow() {
+
 	vaadinSession = VaadinSession.getCurrent();
 	pollInterval = getUI().getCurrent().getPollInterval();
 	getUI().getCurrent().setPollInterval(500);
@@ -66,6 +67,7 @@ public class BackupWindow extends CustomComponent {
 	    if(!dbFile.contains(".mv.db")){
 	    	dbFile=dbFile+".mv.db";
 		}
+
 	} catch (FileExistsException e) {
 	    e.printStackTrace();
 	}
@@ -78,6 +80,7 @@ public class BackupWindow extends CustomComponent {
 	    Parametros.setProperty(Parametros.DB_NAME, uR.getFileName());
 	    importar.setEnabled(false);
 	    exportar.setEnabled(false);
+	    reiniciar.click();
 
 	});
 	exportar.focus();
@@ -120,11 +123,9 @@ public class BackupWindow extends CustomComponent {
 			    public void buttonClick(Button.ClickEvent clickEvent) {
 
 				ConexionHibernate.enterBackupMode();
-				apagarServicios();
-				for (int i = 0; i < 10; i++) {
-				    showWaitNotification(); // Para que no la pueda cerrar
 
-				}
+				apagarServicios();
+				infoLabel.setValue("Espere " + pollInterval / 1000 + " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora");
 
 				window.setClosable(false);
 				shutdown.setEnabled(false);
@@ -180,14 +181,6 @@ public class BackupWindow extends CustomComponent {
 
     }
 
-    public void showWaitNotification() {
-	Notification success = new Notification(
-		"Espere " + pollInterval / 1000 + " segundos... Porfavor no cierre el navegador");
-	success.setDelayMsec(pollInterval);
-	success.setStyleName("bar success small");
-	success.setPosition(Position.MIDDLE_CENTER);
-	success.show(Page.getCurrent());
-    }
 
     private void reiniciarServiciosYSesion() {
 	logger.debug("Actualizando Conexión");
