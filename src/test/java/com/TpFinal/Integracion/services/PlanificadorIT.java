@@ -134,6 +134,7 @@ public class PlanificadorIT {
 		System.out.println();
 	}
 
+	@Ignore
 	@Test
 	public void addCobrosVencidos() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
@@ -244,7 +245,6 @@ public class PlanificadorIT {
 		System.out.println();
 	}
 	
-	@Ignore
 	@Test 
 	public void addAlquilerPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
