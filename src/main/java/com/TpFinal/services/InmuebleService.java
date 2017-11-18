@@ -237,8 +237,9 @@ public class InmuebleService {
      * 
      * @param inmueble
      */
-    public boolean actualizarEstadoInmuebleSegunPublicacion(Inmueble inmueble) {
+    public boolean actualizarEstadoInmuebleSegunPublicacion(Inmueble i) {
 	boolean ret = true;
+	Inmueble inmueble = this.findById(i.getId());
 	List<Publicacion> publicaciones = getListadoDePublicaciones(inmueble);
 	List<Publicacion> pubsActivas = publicaciones.stream().filter(this::estaActivoYNoFueBorrado)
 		.collect(Collectors.toList());
