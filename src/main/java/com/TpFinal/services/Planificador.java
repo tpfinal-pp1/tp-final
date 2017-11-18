@@ -197,7 +197,7 @@ public class Planificador {
 	}
 	
 	public void addJobAlquilerPorVencer(ContratoAlquiler contrato) {
-		if(contrato.getId()!=null) {
+		if(contrato.getId()!=null && tieneVencimientoFuturo(contrato)) {
 			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,1);
 			agregarJobNotificacionAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,2);
 			System.out.println("[INFO] Alquiler por vencer agregado a quartz correctamente");
@@ -377,6 +377,11 @@ public class Planificador {
 
 	public void setHoraInicioCobrosVencidos(LocalTime horaInicioCobrosVencidos) {
 		this.horaInicioCobrosVencidos = horaInicioCobrosVencidos;
+	}
+	
+	private boolean tieneVencimientoFuturo(ContratoAlquiler ca) {
+		return ca.getFechaIngreso().plusMonths(ca.getDuracionContrato().getDuracion())
+				.compareTo(LocalDate.now())>0;
 	}
 
 }
