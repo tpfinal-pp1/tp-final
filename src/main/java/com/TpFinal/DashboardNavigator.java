@@ -2,6 +2,7 @@ package com.TpFinal;
 
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.DashboardEventBus;
 import com.TpFinal.services.DashboardEvent.BrowserResizeEvent;
@@ -9,6 +10,7 @@ import com.TpFinal.services.DashboardEvent.CloseOpenWindowsEvent;
 import com.TpFinal.services.DashboardEvent.PostViewChangeEvent;
 import com.TpFinal.view.DashboardView;
 import com.TpFinal.view.DashboardViewType;
+import com.TpFinal.view.empleados.EmpleadoABMView;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -62,13 +64,16 @@ DashboardNavigator extends Navigator {
 
                 CredencialService credServ=new CredencialService();
                 Credencial userCred=credServ.getCurrentUser().getCredencial();
-              
+
                    if(credServ.hasViewAccess(userCred,event.getNewView().getClass())) {
                        System.out.println("Acceso Permitido a view:"+event.getNewView().getClass().toString());
+
+
                        return true;
                    }
                     System.out.println("Acceso Denegado a view:"+event.getNewView().getClass().toString()+
                             "\nRedirigiendo a inicio...");
+
                    navigateTo("Inicio");
                     return false;
                 }

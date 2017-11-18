@@ -1,5 +1,6 @@
 package com.TpFinal.services;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,10 +8,10 @@ import com.TpFinal.DashboardUI;
 import com.TpFinal.data.dao.DAOCredencialImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOCredencial;
-import com.TpFinal.dto.persona.Credencial;
-import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.dto.persona.*;
 
 import com.TpFinal.view.DashboardViewType;
+import com.TpFinal.view.empleados.EmpleadoABMView;
 import com.vaadin.server.VaadinSession;
 
 
@@ -55,6 +56,8 @@ public class CredencialService {
 	}
 
     public boolean hasViewAccess(Credencial credencial, Class view) {
+
+
 	ArrayList<DashboardViewType> userViews = credencial.getViewAccess().views;
 	for (DashboardViewType viewType : userViews)
 	    if (viewType.getViewClass().equals(view))
@@ -64,32 +67,61 @@ public class CredencialService {
 
     public Empleado logIn(String user, String pass) {
 	Empleado ret = new Empleado();
-
+	ArrayList<Credencial> credencials=new ArrayList<Credencial>();
 	try {
-	    readAll();
+	   credencials.addAll(readAll());
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
-	for (Credencial cred : readAll()) {
+	boolean hayAlMenosUnAdmin=false;
+	boolean huboMatch=false;
+	boolean noHayEmpleados=credencials.size()==0;
+	for (Credencial cred : credencials) {
+
+		if(credencials.size()==1){  //ANTILOCKOUT
+			Persona personaTemp=cred.getEmpleado().getPersona();
+			if((personaTemp.getNombre()+personaTemp.getApellido()).equals("AccesoTemporal")){
+				cred.setViewAccess(ViewAccess.Admin);
+				return cred.getEmpleado();
+			}
+		}
+
 	    boolean match = cred.getUsuario().equals(user)
 		    && cred.getContrasenia().equals(pass);
 	    if (match) {
-		// TODO Hacer que se fije si las credenciales caducaron
-		return cred.getEmpleado();
+		ret= cred.getEmpleado();
+		huboMatch=true;
 	    }
-	}
+	    if(cred.getViewAccess().equals(ViewAccess.Admin)){
+	    	hayAlMenosUnAdmin=true;
 
-	/*
-	 * //todo PARA QUE PASEN LOS TESTS BORRAR EN PRODUCCION if(user.equals("")){
-	 * 
-	 * Persona p=new
-	 * Persona.Builder().setNombre("Test").setApellido("User").build(); Empleado
-	 * emp= new Empleado.Builder().setPersona(p).setPersona(p).build(); Credencial
-	 * cred=new Credencial(); cred.setUsuario(user); cred.setContrasenia(pass);
-	 * cred.setViewAccess(ViewAccess.Admin); emp.setCredencial(cred); return emp;
-	 * 
-	 * }
-	 */
+		}
+	}
+		//ANTILOCKOUT
+	if(!hayAlMenosUnAdmin&&!huboMatch){
+
+	  Persona p=new Persona.Builder().setNombre("Acceso").setApellido("Temporal").build(); Empleado
+	  emp= new Empleado.Builder().setPersona(p).setPersona(p).build(); Credencial cred=new Credencial();
+	  emp.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria);
+
+		if(noHayEmpleados){
+			 cred.setUsuario("admin"); cred.setContrasenia("admin");
+		}
+		else{
+			cred.setUsuario(String.valueOf(Instant.now().toEpochMilli()));
+			cred.setContrasenia(String.valueOf(Instant.now().toEpochMilli()));
+		}
+		cred.setEmpleado(emp);
+	  cred.setViewAccess(ViewAccess.Recovery); emp.setCredencial(cred);
+	  ret=emp;
+	}
+	//ANTILOCKOUT
+	else if(!hayAlMenosUnAdmin&&huboMatch)
+		{
+			Credencial credUpgrade=ret.getCredencial();
+			credUpgrade.setViewAccess(ViewAccess.Admin);
+			ret.setCredencial(credUpgrade);
+		}
 
 	return ret;
     }
