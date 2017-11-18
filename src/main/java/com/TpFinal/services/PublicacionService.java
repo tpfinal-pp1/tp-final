@@ -111,7 +111,7 @@ public class PublicacionService {
 	List<Publicacion> publicaciones = daoPublicacion.readAllActives()
 		.stream()
 		.map(this::setFechaDisponibilidad)
-		.filter(filtro.getFiltroCompuesto())		
+		.filter(filtro.getFiltroCompuesto())
 		.sorted(Comparator.comparing(Publicacion::getId))
 		.collect(Collectors.toList());
 	return publicaciones;
@@ -205,6 +205,21 @@ public class PublicacionService {
 	    }
 	}
 	return publicacion;
+    }
+
+    public static LocalDate getFechaDisponibilidad(Inmueble i) {
+	LocalDate ret = null;
+	InmuebleService inmuebleService = new InmuebleService();
+	if (inmuebleService.inmueblePoseeContratoVigente(i)) {
+	    Contrato contrato = i.getContratos().stream()
+		    .filter(c -> c.getEstadoContrato().equals(EstadoContrato.Vigente))
+		    .findFirst()
+		    .orElse(null);
+	    if (contrato != null && contrato instanceof ContratoAlquiler) {
+		ret = ContratoService.getFechaVencimiento((ContratoAlquiler) contrato);
+	    }
+	}
+	return ret;
     }
 
 }

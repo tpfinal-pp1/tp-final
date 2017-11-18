@@ -1,11 +1,14 @@
 package com.TpFinal.view.inmuebles;
 
 import com.TpFinal.dto.inmueble.*;
+import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
+import com.TpFinal.services.PublicacionService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
 import com.TpFinal.view.component.ImageVisualizer;
@@ -27,6 +30,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +52,7 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
     private InmuebleFormMatching inmuebleForm = new InmuebleFormMatching(this);
     private boolean isonMobile = false;
     private Controller controller = new Controller();
-    private Supplier<List<Inmueble>> inmuebleSupplier;  
+    private Supplier<List<Inmueble>> inmuebleSupplier;
     private FiltroInmueble filtro = new FiltroInmueble();
     private Predicate<Inmueble> filtroCustom = i -> true;
 
@@ -182,7 +186,7 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		inmuebleSupplier = () -> inmuebleService.readAll();
 	    inmuebleService.setSupplier(inmuebleSupplier);
 	    configureFilter();
-	    configureGrid();	   
+	    configureGrid();
 	    updateList();
 	}
 
@@ -242,7 +246,20 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		col.setResizable(false);
 		col.setHidable(true);
 	    });
-	    grid.setColumnOrder("acciones","precio", "estado inmueble", "tipo inmueble", "direccion");
+
+	    grid.addColumn(inmueble -> {
+		String ret = "Disponible";
+		LocalDate fecha = PublicacionService.getFechaDisponibilidad(inmueble);
+		if (fecha != null && fecha.isAfter(
+			LocalDate.now())) {
+		    ret = fecha.format(Utils.getFormatoFechaArg());
+		}
+		return ret;
+
+	    }).setCaption("Fecha de disponibilidad").setId("fechaDisponibilidad");
+
+	    grid.setColumnOrder("acciones", "precio", "fechaDisponibilidad", "estado inmueble", "tipo inmueble",
+		    "direccion");
 
 	    HeaderRow filterRow = grid.appendHeaderRow();
 	    filterRow.getCell("direccion").setComponent(filtroDireccion());

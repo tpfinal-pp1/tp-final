@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 public enum ViewAccess {
 
-    Admin(getAdminViews()),Agente(getAgenteViews()),Default(getDefaultViews());
+    Admin(getAdminViews()),Agente(getAgenteViews()),Default(getDefaultViews()),Recovery(getRecoveryViews());
     public ArrayList<DashboardViewType> views;
 
    private ViewAccess(ArrayList<DashboardViewType> dato){
@@ -27,6 +27,13 @@ public enum ViewAccess {
     private static ArrayList<DashboardViewType> getDefaultViews(){
         ArrayList<DashboardViewType> views= new ArrayList<DashboardViewType>();
         views.add(DashboardViewType.INICIO);
+        return views;
+
+    }
+    private static ArrayList<DashboardViewType> getRecoveryViews(){
+        ArrayList<DashboardViewType> views= new ArrayList<DashboardViewType>();
+        views.add(DashboardViewType.INICIO);
+        views.add(DashboardViewType.EMPLEADOS);
         return views;
 
     }
