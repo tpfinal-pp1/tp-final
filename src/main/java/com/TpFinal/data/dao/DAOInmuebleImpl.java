@@ -69,7 +69,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	try {
 	    tx = session.beginTransaction();
 	    Blob archivo = null;
-	    byte[] imagen = getImage(img.getPath());
+	    byte[] imagen = getImage(img.getPath(),img.getExtension());
 	    if (imagen != null) {
 		archivo = BlobProxy.generateProxy(imagen);
 		img.setImagen(archivo);
@@ -100,7 +100,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
     }
 
-    public static byte[] getImage(String path) {
+    public static byte[] getImage(String path,String extension) {
 	File file = new File("./" + path);
 	if (file.exists()) {
 	    try {
