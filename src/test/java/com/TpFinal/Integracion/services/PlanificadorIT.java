@@ -236,7 +236,7 @@ public class PlanificadorIT {
 
 		contrato.getCobros().forEach(c ->{
 			Planificador.get().addJobCobroPorVencer(c);
-			Planificador.get().removeJobPorVencer(c);
+			Planificador.get().removeJobCobroPorVencer(c);
 		});
 		TimeUnit.SECONDS.sleep(60);
 		System.out.println();

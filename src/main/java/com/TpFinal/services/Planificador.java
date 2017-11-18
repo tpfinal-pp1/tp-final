@@ -140,6 +140,7 @@ public class Planificador {
 	
 	public void addJobsCobrosVencidos(ContratoAlquiler c) {
 		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
+		System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
 	}
 
 	public void addJobCobroVencido(Cobro cobro) {
@@ -170,6 +171,7 @@ public class Planificador {
 				addJobCobroPorVencer(cob);
 			}
 		});
+		System.out.println("[INFO] Agregados jobs de cobros por vencer correctamente");
 	}
 	
 	public void addJobCobroPorVencer(Cobro cobro) {
@@ -180,7 +182,7 @@ public class Planificador {
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
 	}
 
-	public boolean removeJobPorVencer(Cobro cobro) {
+	public boolean removeJobCobroPorVencer(Cobro cobro) {
 		boolean ret = true;;
 		try {
 			if (cobro.getId() != null) {
@@ -367,35 +369,6 @@ public class Planificador {
 		String mensaje="El contrato de alquiler se vencio el dia: "+c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
 				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString();
 		agregarJobMail("Se vencio el contrato de alquiler",mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
-	}
-	
-	// TODO Lo dejo porque quizas sirva para otro tipo de notificacion
-	@Deprecated
-	public void agregarAccion(String mensaje, LocalDate fechaInicio, LocalDate fechaFin, String hora, String minuto,
-			String perioricidad, Long id) {
-		try {
-			String horan = "0 " + minuto + " " + hora;
-			horan = horan + " 1/" + perioricidad;
-			horan = horan + " * ? *";
-			JobDetail j1 = JobBuilder.newJob(notificacion.getClass())
-					.usingJobData("mensaje", mensaje)
-					.build();
-
-			String fi = fechaInicio.toString() + " 00:00:00.0";
-			String ff = fechaFin.toString() + " 00:00:00.0";
-
-			Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(fi);
-			Date endDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(ff);
-
-			Trigger t = TriggerBuilder.newTrigger().withIdentity(id.toString())
-					.startAt(startDate)
-					.withSchedule(CronScheduleBuilder.cronSchedule(horan))
-					.endAt(endDate)
-					.build();
-			sc.scheduleJob(j1, t);
-		} catch (SchedulerException | ParseException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public LocalTime getHoraInicioCobrosVencidos() {
