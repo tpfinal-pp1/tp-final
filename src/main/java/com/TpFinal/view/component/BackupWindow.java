@@ -27,8 +27,8 @@ public class BackupWindow extends CustomComponent {
 
     private final DownloadButton exportar = new DownloadButton();
     private final Window window = new Window();
-    private Button shutdown = new Button("Apagar", VaadinIcons.POWER_OFF);
-	Button reiniciar=new Button("Finalizar");
+    private Button shutdown = new Button("Detener", VaadinIcons.STOP_COG);
+	Button reiniciar=new Button("Reiniciar", VaadinIcons.START_COG);
 	private int pollInterval =0;
 	private static VaadinSession vaadinSession;
 
@@ -39,9 +39,9 @@ public class BackupWindow extends CustomComponent {
 	public BackupWindow() {
 	vaadinSession=VaadinSession.getCurrent();
 	pollInterval =getUI().getCurrent().getPollInterval();
-	shutdown.setStyleName(ValoTheme.BUTTON_PRIMARY);
+
 	infoLabel.setSizeFull();
-	infoLabel.setValue("Antes de realizar cualquier operacion debe Apagar todas las conexiones con el servidor, este proceso tomara "+ pollInterval /1000+" segundos");
+	infoLabel.setValue("Antes de realizar cualquier operacion debe Detener todas las conexiones con el servidor, este proceso tomara "+ pollInterval /1000+" segundos");
 	final VerticalLayout popupVLayout = new VerticalLayout();
 	popupVLayout.setSpacing(true);
 	popupVLayout.setMargin(true);
@@ -133,8 +133,7 @@ public class BackupWindow extends CustomComponent {
 							exportar.setEnabled(true);
 							shutdown.setVisible(false);
 							reiniciar.setVisible(true);
-							shutdown.setCaption("Reiniciar");
-							shutdown.setIcon(VaadinIcons.START_COG);
+
 						}).start();
 
 
@@ -152,8 +151,8 @@ public class BackupWindow extends CustomComponent {
 
 	}});
 	reiniciar.setVisible(false);
-	reiniciar.setIcon(VaadinIcons.PLAY);
-	reiniciar.setStyleName(ValoTheme.BUTTON_PRIMARY);
+	reiniciar.setIcon(VaadinIcons.START_COG);
+
 	buttonsHLayout.addComponent(importar);
 	buttonsHLayout.addComponent(shutdown);
 	buttonsHLayout.addComponent(reiniciar);
