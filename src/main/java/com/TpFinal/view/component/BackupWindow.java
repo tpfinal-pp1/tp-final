@@ -40,6 +40,7 @@ public class BackupWindow extends CustomComponent {
 
     public BackupWindow() {
 	vaadinSession = VaadinSession.getCurrent();
+	getUI().getCurrent().setPollInterval(500);
 	pollInterval = getUI().getCurrent().getPollInterval();
 	infoLabel.setSizeFull();
 	infoLabel.setValue(
@@ -61,7 +62,10 @@ public class BackupWindow extends CustomComponent {
 	window.setDraggable(false);
 	String dbFile = "";
 	try {
-	    dbFile = Parametros.getProperty(Parametros.DB_NAME) + ".mv.db";
+	    dbFile = Parametros.getProperty(Parametros.DB_NAME);
+	    if(!dbFile.contains(".mv.db")){
+	    	dbFile=dbFile+".mv.db";
+		}
 	} catch (FileExistsException e) {
 	    e.printStackTrace();
 	}

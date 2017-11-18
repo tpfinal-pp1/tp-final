@@ -1,6 +1,7 @@
 package com.TpFinal.view.component;
 
 import com.TpFinal.utils.Utils;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.vaadin.ui.Upload.Receiver;
 
 import java.io.File;
@@ -56,6 +57,17 @@ public class UploadReceiver implements Receiver {
         	logger.debug("Extension Obtenida: " + fileExtension);}
             file = new File(this.getFullPath());
             if(!file.exists()) {
+                System.out.println("No existe");
+                file.createNewFile();
+            }
+            else{
+                while (file.exists()){
+                    strFilename="copia_"+strFilename;
+                    fileName="copia_"+fileName;
+                    this.setFullPath(filePath+strFilename);
+                    System.out.println("Ya Existe");
+                    file = new File(this.getFullPath());
+                }
                 file.createNewFile();
             }
             outputFile =  new FileOutputStream(file);
