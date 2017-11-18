@@ -51,13 +51,14 @@ public class ParametroSistema implements Identificable {
     @Column(name = "valor_certificado")
     BigDecimal valorCertificado = BigDecimal.valueOf(1900);
     @Column(name = "comision_a_propietario")
-    // TODO porcentaje o cociente?
-    Double comisionAPropietario;
+    Integer comisionAPropietario =  4;
     @Column(name = "comision_a_inquilino")
-    // TODO porcentaje o cociente?
-    Double comisionAInquilino;
+    Integer comisionAInquilino = 3;
     @Column(name = "comision_cobro")
     Double comisionCobro = 0.06;
+//    @Column(name = "comision_cobro")
+//    Double comisionCobro = 0.06;
+    
 
     public ParametroSistema() {
 
