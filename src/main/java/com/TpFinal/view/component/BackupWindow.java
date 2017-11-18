@@ -40,8 +40,8 @@ public class BackupWindow extends CustomComponent {
 
     public BackupWindow() {
 	vaadinSession = VaadinSession.getCurrent();
-	getUI().getCurrent().setPollInterval(500);
 	pollInterval = getUI().getCurrent().getPollInterval();
+	getUI().getCurrent().setPollInterval(500);
 	infoLabel.setSizeFull();
 	infoLabel.setValue(
 		"Antes de realizar cualquier operacion debe Detener todas las conexiones con el servidor, este proceso tomara "
