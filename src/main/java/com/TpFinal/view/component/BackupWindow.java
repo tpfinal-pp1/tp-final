@@ -67,6 +67,7 @@ public class BackupWindow extends CustomComponent {
 	    if(!dbFile.contains(".mv.db")){
 	    	dbFile=dbFile+".mv.db";
 		}
+
 	} catch (FileExistsException e) {
 	    e.printStackTrace();
 	}
@@ -124,7 +125,7 @@ public class BackupWindow extends CustomComponent {
 				ConexionHibernate.enterBackupMode();
 
 				apagarServicios();
-				infoLabel.setValue("Espere " + pollInterval / 1000 + " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor quedar inhabilitado por 1 hora");
+				infoLabel.setValue("Espere " + pollInterval / 1000 + " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora");
 
 				window.setClosable(false);
 				shutdown.setEnabled(false);
