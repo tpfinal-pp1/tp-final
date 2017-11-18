@@ -23,18 +23,6 @@ public class LoginView extends VerticalLayout {
         setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 
 
-      /*  Notification notification = new Notification(
-                "Bienvenido!");
-        notification
-                .setDescription("-----");
-        notification.setHtmlContentAllowed(true);
-        notification.setStyleName("tray dark small closable login-help");
-        notification.setPosition(Position.BOTTOM_CENTER);
-        notification.setDelayMsec(20000);
-        notification.show(Page.getCurrent());
-
-        */
-
     }
 
     private Component buildLoginForm() {

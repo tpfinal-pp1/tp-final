@@ -1,6 +1,7 @@
 package com.TpFinal.view.calendario;
 
 import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.dto.persona.ViewAccess;
 import com.TpFinal.services.CitaService;
 
 import com.TpFinal.services.PersonaService;
@@ -154,7 +155,7 @@ public abstract class ParametrosDelSistemaWindow extends Window {
 	    }
 	});
 	ok.focus();
-	Button openBackupWindow=new Button("Backup/Restore");
+	Button openBackupWindow=new Button("Backup/Restore",VaadinIcons.DATABASE);
 	openBackupWindow.addClickListener(new ClickListener() {
 		@Override
 		public void buttonClick(ClickEvent clickEvent) {
@@ -162,6 +163,9 @@ public abstract class ParametrosDelSistemaWindow extends Window {
 		}
 	});
 	footer.addComponents(openBackupWindow,ok);
+
+	openBackupWindow.setVisible(empleado.getCredencial().getViewAccess().equals(ViewAccess.Admin));
+
 
 	footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
 		footer.setComponentAlignment(openBackupWindow, Alignment.TOP_LEFT);

@@ -10,7 +10,9 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import com.TpFinal.properties.Parametros;
+import org.joda.time.DateTime;
 
+import java.util.Date;
 import java.util.Properties;
 
 public class ConexionHibernate {
@@ -19,6 +21,7 @@ public class ConexionHibernate {
 
     private static Configuration configuration = new Configuration();
     private static SessionFactory sf = null;
+    private static DateTime startOfBackupMode;
 
     // TipoConexion Por Defecto
 
@@ -75,10 +78,13 @@ public class ConexionHibernate {
     }
 
     public static void enterBackupMode() {
-	backupmode = true;
+
+		startOfBackupMode=DateTime.now();
+		backupmode = true;
     }
 
     public static void leaveBackupMode() {
+	startOfBackupMode=null;
 	backupmode = false;
     }
 
@@ -99,6 +105,10 @@ public class ConexionHibernate {
 
     public static Session openSession() {
 	if (backupmode) {
+	
+		if(startOfBackupMode.plusHours(1).isBefore(DateTime.now())){
+			backupmode=false;
+		}
 	    try {
 		while (backupmode) {
 		    Thread.sleep(1000);
