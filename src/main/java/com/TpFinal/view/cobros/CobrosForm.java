@@ -114,26 +114,12 @@ public class CobrosForm extends FormLayout {
 										}
 
 										Planificador.get().removeJobCobroVencido(cobro);
-										System.out.println("Removido");
+										Planificador.get().removeJobCobroPorVencer(cobro);
 									}else if(cobro.getContrato() instanceof ContratoVenta) {
 										Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoVenta(cobro);
 										movimientoService.saveOrUpdate(movPagoAlquiler);
 									}
 								}
-
-								//TODO dijo que lo saquemos
-//								ContratoAlquiler c1=(ContratoAlquiler)cobro.getContrato();
-//								Persona p = c1.getInquilinoContrato().getPersona();
-//								if (logger.isDebugEnabled()) {
-//									logger.debug("Calificacion antes de actualizar: " + ((Inquilino) p.getRol(
-//											Rol.Inquilino)).getCalificacion());
-//								}
-//								personaService.calificarInquilino(p);
-//								if (logger.isDebugEnabled()) {
-//									logger.debug("Calificacion despues de actualizar: " + ((Inquilino) p.getRol(
-//											Rol.Inquilino)).getCalificacion());
-//								}
-//								personaService.saveOrUpdate(p);
 							}
 							abmView.getController().updateList();
 							this.binderCobro.readBean(cobro);
