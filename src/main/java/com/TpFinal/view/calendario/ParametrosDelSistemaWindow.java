@@ -164,7 +164,8 @@ public abstract class ParametrosDelSistemaWindow extends Window {
 	});
 	footer.addComponents(openBackupWindow,ok);
 
-	openBackupWindow.setVisible(empleado.getCredencial().getViewAccess().equals(ViewAccess.Admin));
+	openBackupWindow.setVisible(empleado.getCredencial().getViewAccess().equals(ViewAccess.Admin)
+			||empleado.getCredencial().getViewAccess().equals(ViewAccess.Recovery));
 
 
 	footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
