@@ -57,8 +57,9 @@ public final class DashboardUI extends UI {
 
 				if (ConexionHibernate.isBackupmode()) {
 					DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());
-					Notification.show("Sistema Inmobi se encuentra en mantenimiento, \n" +
-							"porfavor espere a que el administrador concluya el proceso de Backup");
+					for (int i = 0; i <999 ; i++) {
+						showWaitNotification();
+					}
 					try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
@@ -120,7 +121,15 @@ public final class DashboardUI extends UI {
 	    getNavigator().navigateTo(getNavigator().getState());
 	}
     }
-
+	public void showWaitNotification() {
+		Notification success = new Notification(
+				"Sistema Inmobi se encuentra en mantenimiento, \n" +
+						"porfavor espere a que el administrador concluya el proceso de Backup");
+		success.setDelayMsec(999999999);
+		success.setStyleName("bar error small");
+		success.setPosition(Position.MIDDLE_CENTER);
+		success.show(Page.getCurrent());
+	}
 	public void showErrorNotification(String notification) {
 		Notification success = new Notification(
 				notification);
