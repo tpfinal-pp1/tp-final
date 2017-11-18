@@ -27,7 +27,11 @@ public class ConexionHibernate {
 
     private static boolean backupmode = false;
 
-    public static void setTipoConexion(TipoConexion tipo) {
+	public static boolean isBackupmode() {
+		return backupmode;
+	}
+
+	public static void setTipoConexion(TipoConexion tipo) {
 	tipoConexion = tipo;
 	conexion = Conexion.getTipoConexionFrom(tipoConexion);
 

@@ -1,5 +1,6 @@
 package com.TpFinal;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.persona.Empleado;
@@ -7,6 +8,7 @@ import com.TpFinal.services.*;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
+import com.TpFinal.view.component.BackupWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -51,7 +53,26 @@ public final class DashboardUI extends UI {
 	getUI().getCurrent().addPollListener(new UIEvents.PollListener() {
 	    @Override
 	    public void poll(UIEvents.PollEvent event) {
-		DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
+			if (!VaadinSession.getCurrent().equals(BackupWindow.getVaadinSession())) {
+
+				if (ConexionHibernate.isBackupmode()) {
+					DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());
+					Notification.show("Sistema Inmobi se encuentra en mantenimiento, \n" +
+							"porfavor espere a que el administrador concluya el proceso de Backup");
+					try {
+						Thread.sleep(1000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					VaadinSession.getCurrent().close();
+					Page.getCurrent().reload();
+
+				} else {
+					DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
+				}
+
+			}
+
 
 	    }
 	});

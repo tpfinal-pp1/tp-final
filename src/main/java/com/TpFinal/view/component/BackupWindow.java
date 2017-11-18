@@ -1,21 +1,20 @@
 package com.TpFinal.view.component;
 
-import com.TpFinal.DashboardServlet;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.properties.Parametros;
 import com.TpFinal.services.Planificador;
 import com.vaadin.icons.VaadinIcons;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.*;
-import com.vaadin.ui.themes.ValoTheme;
 
+import com.vaadin.ui.themes.ValoTheme;
 import org.apache.commons.io.FileExistsException;
 import org.apache.log4j.Logger;
 
 import java.io.File;
-import java.time.Instant;
-
-import javax.servlet.ServletException;
 
 public class BackupWindow extends CustomComponent {
     /**
@@ -29,16 +28,20 @@ public class BackupWindow extends CustomComponent {
     private final DownloadButton exportar = new DownloadButton();
     private final Window window = new Window();
     private Button shutdown = new Button("Apagar", VaadinIcons.POWER_OFF);
+	Button reiniciar=new Button("Finalizar");
+	private int pollInterval =0;
+	private static VaadinSession vaadinSession;
 
-    public BackupWindow() {
-	ConexionHibernate.enterBackupMode();
-	apagarServicios();
-	getUI().getCurrent().setPollInterval(999999999);
+	public static VaadinSession getVaadinSession() {
+		return vaadinSession;
+	}
+
+	public BackupWindow() {
+	vaadinSession=VaadinSession.getCurrent();
+	pollInterval =getUI().getCurrent().getPollInterval();
+	shutdown.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	infoLabel.setSizeFull();
-	infoLabel.setValue("Al abrir esta ventana Todas las Conexiones estan siendo congeladas \n " +
-		"hasta no terminar las operaciones");
-	// importar.addStyleName(ValoTheme.BUTTON_DANGER);
-	// exportar.addStyleName(ValoTheme.BUTTON_PRIMARY);
+	infoLabel.setValue("Antes de realizar cualquier operacion debe Apagar todas las conexiones con el servidor, este proceso tomara "+ pollInterval /1000+" segundos");
 	final VerticalLayout popupVLayout = new VerticalLayout();
 	popupVLayout.setSpacing(true);
 	popupVLayout.setMargin(true);
@@ -64,18 +67,9 @@ public class BackupWindow extends CustomComponent {
 	importar = new UploadButton(uR);
 	importar.addSucceededListener(success -> {
 	    Parametros.setProperty(Parametros.DB_NAME, uR.getFileName());
-	    logger.debug("Actualizando Conexión");
-	    ConexionHibernate.refreshConnection();
-	    logger.debug("Apagando Planificador");
-	    Planificador.get().apagar();
-	    logger.debug("Creando nueva SessionFactory");
-	    ConexionHibernate.createSessionFactory();
-	    logger.debug("Encendiendo Planificador");
-	    Planificador.get().encender();
-	    logger.debug("Saliendo de modo BackUp..");
-	    ConexionHibernate.leaveBackupMode();
-	    logger.debug("Cerrando Session");
-	    getUI().getCurrent().getSession().close();
+	    importar.setEnabled(false);
+	    exportar.setEnabled(false);
+
 	});
 	exportar.focus();
 	try {
@@ -92,28 +86,94 @@ public class BackupWindow extends CustomComponent {
 	});
 
 	// ui
-
 	popupVLayout.addComponent(infoLabel);
 	popupVLayout.addComponent(buttonsHLayout);
 	popupVLayout.setComponentAlignment(buttonsHLayout, Alignment.TOP_CENTER);
 	UI.getCurrent().addWindow(window);
 	window.center();
 
+
 	window.addCloseListener(new Window.CloseListener() {
 	    @Override
 	    public void windowClose(Window.CloseEvent closeEvent) {
-		getUI().getCurrent().setPollInterval(10000);
-		ConexionHibernate.leaveBackupMode();
-		reiniciarServiciosYSesion();
+
 	    }
 	});
+	importar.setEnabled(false);
+	exportar.setEnabled(false);
+	shutdown.addClickListener(new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+							new DialogConfirmacion("Modo Mantenimiento",VaadinIcons.DATABASE,
+									"Esta seguro que quiere entrar en este modo?\n" +
+											" Todos los usuarios perderan su conexión\n" +
+											".Asegurese de que todos los usuarios hayan guardado el contenido","",new Button.ClickListener() {
+								@Override
+								public void buttonClick(Button.ClickEvent clickEvent) {
 
+									ConexionHibernate.enterBackupMode();
+									apagarServicios();
+									for (int i = 0; i <100 ; i++) {
+							showWaitNotification();  //Para que no la pueda cerrar
+
+						}
+
+						window.setClosable(false);
+						shutdown.setEnabled(false);
+
+						new Thread(() -> {
+							try {
+								Thread.sleep(pollInterval);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							infoLabel.setValue("Ahora puede Importar o Exportar la Base de datos,\n" +
+									" porfavor antes de cerrar el navegador seleccione Reiniciar!!");
+							importar.setEnabled(true);
+							exportar.setEnabled(true);
+							shutdown.setVisible(false);
+							reiniciar.setVisible(true);
+							shutdown.setCaption("Reiniciar");
+							shutdown.setIcon(VaadinIcons.START_COG);
+						}).start();
+
+
+				}
+			});
+		}
+	});
+
+	reiniciar.addClickListener(new Button.ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+
+				ConexionHibernate.leaveBackupMode();
+				reiniciarServiciosYSesion();
+
+	}});
+	reiniciar.setVisible(false);
+	reiniciar.setIcon(VaadinIcons.PLAY);
+	reiniciar.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	buttonsHLayout.addComponent(importar);
+	buttonsHLayout.addComponent(shutdown);
+	buttonsHLayout.addComponent(reiniciar);
 	buttonsHLayout.addComponent(exportar);
 
     }
+	public void showWaitNotification() {
+		Notification success = new Notification(
+				"Espere "+pollInterval/1000+" segundos... Porfavor no cierre el navegador");
+		success.setDelayMsec(pollInterval);
+		success.setStyleName("bar success small");
+		success.setPosition(Position.MIDDLE_CENTER);
+		success.show(Page.getCurrent());
+	}
 
     private void reiniciarServiciosYSesion() {
+	logger.debug("Actualizando Conexión");
+	ConexionHibernate.refreshConnection();
+	logger.debug("Apagando Planificador");
+	Planificador.get().apagar();
 	logger.debug("Abriendo Conexiones");
 	ConexionHibernate.createSessionFactory();
 	logger.debug("Encendiendo Planificador");
@@ -125,7 +185,8 @@ public class BackupWindow extends CustomComponent {
 	logger.debug("Saliendo de modo BackUp..");
 	ConexionHibernate.leaveBackupMode();
 	logger.debug("Cerrando Session");
-	getUI().getCurrent().getSession().close();
+	VaadinSession.getCurrent().close();
+	Page.getCurrent().reload();
     }
 
     private void apagarServicios() {
