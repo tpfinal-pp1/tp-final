@@ -41,6 +41,7 @@ public class BackupWindow extends CustomComponent {
     public BackupWindow() {
 	vaadinSession = VaadinSession.getCurrent();
 	pollInterval = getUI().getCurrent().getPollInterval();
+	getUI().getCurrent().setPollInterval(500);
 	infoLabel.setSizeFull();
 	infoLabel.setValue(
 		"Antes de realizar cualquier operacion debe Detener todas las conexiones con el servidor, este proceso tomara "
@@ -61,7 +62,10 @@ public class BackupWindow extends CustomComponent {
 	window.setDraggable(false);
 	String dbFile = "";
 	try {
-	    dbFile = Parametros.getProperty(Parametros.DB_NAME) + ".mv.db";
+	    dbFile = Parametros.getProperty(Parametros.DB_NAME);
+	    if(!dbFile.contains(".mv.db")){
+	    	dbFile=dbFile+".mv.db";
+		}
 	} catch (FileExistsException e) {
 	    e.printStackTrace();
 	}
