@@ -21,6 +21,19 @@ public class ParametrosSistemaService {
     }
     
     public static void updateParametros(ParametrosSistema parametros) {
+	ParametrosSistema parametrosViejos = getParametros();
+	boolean refreshTriggersContratratos = false 
+		|| parametros.getDiasAntesVencimientoContrato() != parametrosViejos.getDiasAntesVencimientoContrato()
+		|| parametros.getFrecuenciaAvisoCategoriaA() != parametrosViejos.getFrecuenciaAvisoCategoriaA()
+		|| parametros.getFrecuenciaAvisoCategoriaB() != parametrosViejos.getFrecuenciaAvisoCategoriaB()
+		|| parametros.getFrecuenciaAvisoCategoriaC() != parametrosViejos.getFrecuenciaAvisoCategoriaC()
+		|| parametros.getFrecuenciaAvisoCategoriaD() != parametrosViejos.getFrecuenciaAvisoCategoriaD()
+		|| parametros.getMesesAntesVencimientoContrato() != parametrosViejos.getMesesAntesVencimientoContrato()
+		|| parametros.getPeriodicidadEnDias_DiasAntesVencimientoContrato() != parametrosViejos.getPeriodicidadEnDias_DiasAntesVencimientoContrato()
+		|| parametros.getPeriodicidadEnDias_MesesAntesVencimientoContrato() != parametrosViejos.getPeriodicidadEnDias_MesesAntesVencimientoContrato();
+		
+	
+	
 	dao.merge(parametros);
     }
     
