@@ -2,20 +2,28 @@ package com.TpFinal.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOMovimientoImpl;
 import com.TpFinal.data.dao.interfaces.DAOMovimiento;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
+import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
-import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.movimiento.ClaseMovimiento;
 import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.movimiento.TipoMovimiento;
+import com.TpFinal.view.reportes.ItemFichaMovimientos;
+import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
 
 public class MovimientoService {
 	DAOMovimiento dao;
+	private final static Logger logger = Logger.getLogger(MovimientoService.class);
 
 	public MovimientoService() {
 		dao = new DAOMovimientoImpl();
@@ -95,6 +103,56 @@ public class MovimientoService {
 				.setCobro(c)
 				.build();
 		return ret;
+	}
+
+	public List<Object> getListadoMovimientos(LocalDate fechaDesde, LocalDate fechaHasta, Integer refMensualAnual,
+			TipoMovimiento tipoMov) {
+		
+		
+		List<ItemFichaMovimientos> itemsReporte = new ArrayList<>();
+		List<Movimiento> listaMovimientos = this.readAll();
+		List<Movimiento> movimientos = new ArrayList<>();
+		if (logger.isDebugEnabled()) {
+			logger.debug("=================================================================");
+			logger.debug("Movimientos cant: " + listaMovimientos.size());
+		}
+
+		listaMovimientos.forEach(movimiento -> {
+			
+				movimientos.addAll(listaMovimientos.stream()
+						.filter(c -> {
+							if (tipoMov.equals(TipoMovimiento.Ingreso))
+								return c.getTipoMovimiento().equals(TipoMovimiento.Ingreso);
+							if (tipoMov.equals(TipoMovimiento.Egreso))
+							return c.getTipoMovimiento().equals(TipoMovimiento.Egreso);
+							return false;
+								
+						})
+						.filter(c -> {
+							return fechaDesde != null ? c.getFecha().compareTo(fechaDesde) >= 0 : true;
+						})
+						.filter(c -> {
+							return fechaHasta != null ? c.getFecha().compareTo(fechaHasta) <= 0 : true;
+						})
+						.collect(Collectors.toList()));
+
+		
+				});
+		movimientos.forEach(mov -> {
+					itemsReporte.add(new ItemFichaMovimientos(mov, refMensualAnual));
+				});
+			
+	
+		itemsReporte.sort(Comparator.comparing(ItemFichaMovimientos::getAnio).reversed()
+				.thenComparing(ItemFichaMovimientos::getClaseMovimiento));
+				
+		if (logger.isDebugEnabled()) {
+			logger.debug("=====================================================");
+			logger.debug("Cantidad de items obtenidos: " + itemsReporte.size());
+		}
+		
+		return itemsReporte.stream().map(i -> (Object) i).collect(Collectors.toList());
+		
 	}
 
 
