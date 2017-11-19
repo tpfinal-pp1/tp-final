@@ -74,18 +74,18 @@ public class ReportesView extends DefaultLayout implements View {
     DateField fHastaDatePicker = null;
 
     DateField fDesde2 = null;
-    
+
     DateField fDesde3 = null;
-    
-    ComboBox <TipoMovimiento> comboTipoMov = new ComboBox<>("Tipo Mov.", TipoMovimiento.toList());
-    ComboBox <TipoReporteMovimientos> comboTipoRepMov = new ComboBox<>("Tipo Rep.", TipoReporteMovimientos.toList());
+
+    ComboBox<TipoMovimiento> comboTipoMov = new ComboBox<>("Tipo Mov.", TipoMovimiento.toList());
+    ComboBox<TipoReporteMovimientos> comboTipoRepMov = new ComboBox<>("Tipo Rep.", TipoReporteMovimientos.toList());
 
     List<Object> objects = null;
     boolean incluirCobrosPendientes;
     private ContratoService contratoService = new ContratoService();
     private MovimientoService movimientoService = new MovimientoService();
-    
-    ComboBox <Inmueble> comboInmuebles = new ComboBox<>("Inmuebles");
+
+    ComboBox<Inmueble> comboInmuebles = new ComboBox<>("Inmuebles");
     private InmuebleService inmuebleService = new InmuebleService();
 
     public List<Object> getObjetos(TipoReporte tipo) {
@@ -140,182 +140,109 @@ public class ReportesView extends DefaultLayout implements View {
 		logger.debug("==========================");
 		logger.debug("fechaDesde: " + fechaDesde);
 		logger.debug("fechaHasta: " + fechaHasta);
-		logger.debug("Incluir Cobros Pendientes: "+ incluirCobrosPendientes);
+		logger.debug("Incluir Cobros Pendientes: " + incluirCobrosPendientes);
 		logger.debug("==========================");
 	    }
 
-	    objects = contratoService.getListadoAlquileresDelMes(fechaDesde, fechaHasta,incluirCobrosPendientes);
+	    objects = contratoService.getListadoAlquileresDelMes(fechaDesde, fechaHasta, incluirCobrosPendientes);
 	    break;
 	}
-	
-	case FichaInmuebleConMapa: {
-		Inmueble inmueble = comboInmuebles.getValue();
-		
-		if (logger.isDebugEnabled()) {
-			logger.debug("==========================");
-			
-			logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
-			logger.debug("la cantidad de inmuebles es vacia?: "+ comboInmuebles.isEmpty());
-			logger.debug("==========================");
-			
-		}
-		
-		if (inmueble != null) {
-			objects = inmuebleService.getListaFichaInmueble(inmueble);
-		}
-		
-		break;
-	}
-	
-	case FichaInmuebleSimple: {
-		Inmueble inmueble = comboInmuebles.getValue();
-		
-		if (logger.isDebugEnabled()) {
-			logger.debug("==========================");
-			
-			logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
-			logger.debug("la cantidad de inmuebles es vacia?: "+ comboInmuebles.isEmpty());
-			logger.debug("==========================");
-			
-		}
-		
-		if (inmueble != null) {
-			objects = inmuebleService.getListaFichaInmuebleSimple(inmueble);
-		}
-		
-		break;
-	}
-	
-	case FichaMovimientos: {
-		
-		TipoMovimiento tipoMov = comboTipoMov.getValue();
-		TipoReporteMovimientos tipoRep = comboTipoRepMov.getValue();
-		
-		Integer refMensualAnual=1;
-		
-		LocalDate fechaDesde = fDesde3.getValue();
-	    LocalDate fechaHasta = null;
-	    
 
-	    // Por defecto traer cobros del mes actual
-	    if (fechaDesde == null && tipoMov == null && tipoRep == null) {
-		fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-		fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-		refMensualAnual=1;
-		tipoMov=TipoMovimiento.Ingreso;
-		logger.debug("========HEREEEEEEEEEEE==========");
-	    } 
-	    
-	    if (fechaDesde != null && tipoMov.equals(TipoMovimiento.Ingreso) && tipoRep == null){
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-			tipoMov=TipoMovimiento.Ingreso;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-	    if (fechaDesde != null && tipoMov.equals(TipoMovimiento.Egreso) && tipoRep == null) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-		    } 
-	    
-	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Mensual) && tipoMov==null) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-			tipoMov=TipoMovimiento.Ingreso;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-	    
-	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov==null) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
-			refMensualAnual=2;
-			tipoMov=TipoMovimiento.Ingreso;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-	    
-	    
-	    if (fechaDesde == null && tipoMov.equals(TipoMovimiento.Ingreso) && tipoRep == null) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-	    
-	    if (fechaDesde == null && tipoMov.equals(TipoMovimiento.Egreso) && tipoRep == null) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-	    
-	    if (fechaDesde == null && tipoMov == null && tipoRep.equals(TipoReporteMovimientos.Mensual)) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-			tipoMov=TipoMovimiento.Ingreso;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-	    
-	    if (fechaDesde == null && tipoMov == null && tipoRep.equals(TipoReporteMovimientos.Anual)) {
-			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
-			refMensualAnual=1;
-			tipoMov=TipoMovimiento.Ingreso;
-			logger.debug("========HEREEEEEEEEEEE==========");
-		    } 
-		    
-	    if (fechaDesde == null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Ingreso)) {
-	    	fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
-	    	fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
-	    	refMensualAnual=2;
-	    	logger.debug("========HEREEEEEEEEEEE==========");
+	case FichaInmuebleConMapa: {
+	    Inmueble inmueble = comboInmuebles.getValue();
+
+	    if (logger.isDebugEnabled()) {
+		logger.debug("==========================");
+		logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
+		logger.debug("la cantidad de inmuebles es vacia?: " + comboInmuebles.isEmpty());
+		logger.debug("==========================");
+
 	    }
-	    
-	    if (fechaDesde == null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Egreso)) {
-	    	fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
-	    	fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
-	    	refMensualAnual=2;
-	    	logger.debug("========HEREEEEEEEEEEE==========");
+
+	    if (inmueble != null) {
+		objects = inmuebleService.getListaFichaInmueble(inmueble);
 	    }
-	    
-	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Ingreso)) {
-	    	fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfYear());
-			fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
-	    	refMensualAnual=2;
-	    	logger.debug("========HEREEEEEEEEEEE==========");
-	    	
+
+	    break;
+	}
+
+	case FichaInmuebleSimple: {
+	    Inmueble inmueble = comboInmuebles.getValue();
+
+	    if (logger.isDebugEnabled()) {
+		logger.debug("==========================");
+		logger.debug("inmueble seleccionado: " + comboInmuebles.getValue());
+		logger.debug("la cantidad de inmuebles es vacia?: " + comboInmuebles.isEmpty());
+		logger.debug("==========================");
+
 	    }
-	    
-	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Egreso)) {
-	    	fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfYear());
-	    	fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
-	    	//fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfYear());
-	    	refMensualAnual=2;
-	    	logger.debug("========HEREEEEEEEEEEE==========");
+
+	    if (inmueble != null) {
+		objects = inmuebleService.getListaFichaInmuebleSimple(inmueble);
 	    }
-	    
-	    else {
-		//fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfMonth());
-		//fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfMonth());
-		//refMensualAnual=1;
-		//tipoMov=TipoMovimiento.Ingreso;
-		//logger.debug("========HEREEEEEEEEEEE==========");
+
+	    break;
+	}
+
+	case FichaMovimientos: {
+
+	    TipoMovimiento tipoMov = comboTipoMov.getValue();
+	    TipoReporteMovimientos tipoRep = comboTipoRepMov.getValue();
+
+	    Integer refMensualAnual = 1;
+
+	    LocalDate fechaDesde = fDesde3.getValue();
+	    LocalDate fechaHasta = null;
+
+	    if (tipoRep != null) {
+		if (tipoRep.equals(TipoReporteMovimientos.Mensual))
+		    refMensualAnual = 1;
+		else
+		    refMensualAnual = 2;
+	    } else {
+		//Por defecto Mensual
+		tipoRep = TipoReporteMovimientos.Mensual;
+		refMensualAnual = 1;
+	    }
+
+	    if (tipoMov == null) {
+		//Por defecto Ingreso
+		tipoMov = TipoMovimiento.Ingreso;
+	    }
+
+	    if (refMensualAnual == 1) {
+		if (fechaDesde != null) {
+		    fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfMonth());
+		    fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfMonth());
+		} else {
+		    //Por defecto mes actual
+		    fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+		    fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+		}
+	    }else {
+		if (fechaDesde != null) {
+		    fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfYear());
+		    fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfYear());
+		} else {
+		    //Por defecto mes año actual
+		    fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
+		    fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
+		}
 	    }
 
 	    if (logger.isDebugEnabled()) {
 		logger.debug("==========================");
 		logger.debug("fechaDesde: " + fechaDesde);
 		logger.debug("fechaHasta: " + fechaHasta);
-		logger.debug("Incluir Cobros Pendientes: "+ incluirCobrosPendientes);
+		logger.debug("Tipo de Reporte: " + tipoMov.toString());
+		logger.debug("Rango: " + tipoRep.toString());
 		logger.debug("==========================");
 	    }
 
 	    objects = movimientoService.getListadoMovimientos(fechaDesde, fechaHasta, refMensualAnual, tipoMov);
-		break;
+	    break;
 	}
-	
+
 	}
 
 	return objects;
@@ -333,13 +260,13 @@ public class ReportesView extends DefaultLayout implements View {
     public void buildLayout() {
 	CssLayout filtering = new CssLayout();
 	CssLayout filtering2 = new CssLayout();
-	
+
 	comboInmuebles.setVisible(false);
 	comboTipoMov.setVisible(false);
 	comboTipoRepMov.setVisible(false);
-	
-	comboInmuebles.setItems(inmuebleService.readAll());	
-	
+
+	comboInmuebles.setItems(inmuebleService.readAll());
+
 	incluirCobrosPendientes = false;
 	checkboxIncluirPendientes = new CheckBox("Incluir Cobros Pendientes", false);
 
@@ -354,20 +281,19 @@ public class ReportesView extends DefaultLayout implements View {
 	fDesde2 = new DateField();
 	fDesde2.setPlaceholder("Fecha Mes");
 	fDesde2.setParseErrorMessage("Formato de fecha no reconocido");
-	
+
 	fDesde3 = new DateField();
 	fDesde3.setPlaceholder("Mes-Año");
 	fDesde3.setParseErrorMessage("Formato de fecha no reconocido");
 	fDesde3.setVisible(false);
-	
-	
+
 	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
 	clearFilterTextBtn.setVisible(false);
 	clearFilterTextBtn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
 	fDesdeDatePicker.setVisible(false);
 	fHastaDatePicker.setVisible(false);
 	fDesde2.setVisible(false);
-	
+
 	checkboxIncluirPendientes.setVisible(false);
 	fDesdeDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fHastaDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
@@ -382,11 +308,12 @@ public class ReportesView extends DefaultLayout implements View {
 	});
 
 	generarReporte();
-	
-	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
-			comboInmuebles,	tipoReporteCB, newReport);
+
+	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2,
+		checkboxIncluirPendientes,
+		comboInmuebles, tipoReporteCB, newReport);
 	filtering2.addComponents(fDesde3,
-			comboTipoMov, comboTipoRepMov);
+		comboTipoMov, comboTipoRepMov);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
@@ -428,9 +355,9 @@ public class ReportesView extends DefaultLayout implements View {
 		    comboTipoMov.setVisible(false);
 		    comboTipoRepMov.setVisible(false);
 		}
-		
+
 		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleConMapa) {
-			comboInmuebles.setVisible(true);
+		    comboInmuebles.setVisible(true);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
 		    fHastaDatePicker.setVisible(false);
@@ -439,11 +366,11 @@ public class ReportesView extends DefaultLayout implements View {
 		    fDesde3.setVisible(false);
 		    comboTipoMov.setVisible(false);
 		    comboTipoRepMov.setVisible(false);
-		    
+
 		}
-		
+
 		if (valueChangeEvent.getValue() == TipoReporte.FichaInmuebleSimple) {
-			comboInmuebles.setVisible(true);
+		    comboInmuebles.setVisible(true);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
 		    fHastaDatePicker.setVisible(false);
@@ -453,33 +380,32 @@ public class ReportesView extends DefaultLayout implements View {
 		    comboTipoMov.setVisible(false);
 		    comboTipoRepMov.setVisible(false);
 		}
-		    
-		 if (valueChangeEvent.getValue() == TipoReporte.FichaMovimientos) {
-			fDesde3.setVisible(true);
-			comboTipoMov.setVisible(true);
-			comboTipoRepMov.setVisible(true);
+
+		if (valueChangeEvent.getValue() == TipoReporte.FichaMovimientos) {
+		    fDesde3.setVisible(true);
+		    comboTipoMov.setVisible(true);
+		    comboTipoRepMov.setVisible(true);
 		    comboInmuebles.setVisible(false);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
 		    fHastaDatePicker.setVisible(false);
 		    fDesde2.setVisible(false);
 		    checkboxIncluirPendientes.setVisible(false);
-	    
+
 		}
 
 	    }
 	});
 
-	checkboxIncluirPendientes.addValueChangeListener(event -> incluirCobrosPendientes =event.getValue());
+	checkboxIncluirPendientes.addValueChangeListener(event -> incluirCobrosPendientes = event.getValue());
 
 	// tipoReporteCB.setWidth("103%");
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering.setResponsive(true);
-	
+
 	filtering2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering2.setResponsive(true);
-
 
 	buildToolbar("Reportes", filtering);
 	buildToolbar("", filtering2);
