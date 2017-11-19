@@ -296,9 +296,9 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep(10);
 	}
 	
-	@Ignore
 	@Test 
 	public void addAlquilerVencido() throws InterruptedException {
+		//XXX
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
 		ContratoAlquiler ca =contratoAlquilerVencido();
@@ -457,8 +457,9 @@ public class PlanificadorIT {
 	private ContratoAlquiler contratoAlquilerVencido() {
 		LocalDate fecha=LocalDate.now();
 		fecha=fecha.minusMonths(24);
+		//fecha.minusDays(10);
 		ContratoAlquiler ret = new ContratoAlquiler.Builder()
-				.setFechaIngreso(fecha)
+				.setFechaIngreso(fecha.plusDays(10))
 				.setValorIncial(new BigDecimal("100.00"))
 				.setDiaDePago(fecha.plusDays(10).getDayOfMonth())
 				.setInteresPunitorio(new Double(50))

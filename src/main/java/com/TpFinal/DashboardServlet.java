@@ -4,6 +4,7 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.dto.notificacion.NotificadorJob;
 import com.TpFinal.services.ContratoDuracionService;
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
@@ -35,6 +36,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("===================");
 	establecerConexionesBD();
 	ParametrosSistemaService.crearParametrosDefault();
+	CredencialService.crearAdminAdmin();
 	ContratoDuracionService.crearDuracionesPorDefecto();
 	if(logger.isDebugEnabled()) {
 	    logger.debug("=============================");
