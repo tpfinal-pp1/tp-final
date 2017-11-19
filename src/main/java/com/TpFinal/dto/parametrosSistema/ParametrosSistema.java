@@ -43,9 +43,30 @@ public class ParametrosSistema implements Identificable, BorradoLogico {
     Integer frecuenciaAvisoCategoriaC = 10;
     @Column(name = "frecuencia_aviso_D")
     Integer frecuenciaAvisoCategoriaD = 20;
+    // Contratos por vencer:
+    @Column(name = "meses_antes_vencimiento_contrato")
+    Integer mesesAntesVencimientoContrato = 10;
+    @Column(name = "dias_antes_vencimiento_contrato")
+    Integer periodicidadEnDiasVencimientoContrato = 1;
 
     public ParametrosSistema() {
 
+    }
+
+    public Integer getMesesAntesVencimientoContrato() {
+	return mesesAntesVencimientoContrato;
+    }
+
+    public void setMesesAntesVencimientoContrato(Integer mesesAntesVencimientoContrato) {
+	this.mesesAntesVencimientoContrato = mesesAntesVencimientoContrato;
+    }
+
+    public Integer getPeriodicidadEnDiasVencimientoContrato() {
+	return periodicidadEnDiasVencimientoContrato;
+    }
+
+    public void setPeriodicidadEnDiasVencimientoContrato(Integer periodicidadEnDiasVencimientoContrato) {
+	this.periodicidadEnDiasVencimientoContrato = periodicidadEnDiasVencimientoContrato;
     }
 
     public Integer getProximoAVencer() {
@@ -178,7 +199,5 @@ public class ParametrosSistema implements Identificable, BorradoLogico {
 		+ "\nfrecuenciaAvisoCategoriaB=" + frecuenciaAvisoCategoriaB + "\nfrecuenciaAvisoCategoriaC="
 		+ frecuenciaAvisoCategoriaC + "\nfrecuenciaAvisoCategoriaD=" + frecuenciaAvisoCategoriaD + "\n]";
     }
-    
-    
 
 }
