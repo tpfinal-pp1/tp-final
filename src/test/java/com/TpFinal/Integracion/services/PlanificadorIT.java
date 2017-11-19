@@ -342,7 +342,7 @@ public class PlanificadorIT {
 		);
 		
 		sc.addJobAlquilerVencido(ca);
-		sc.removeJobAlquilerPorVencido(ca);
+		sc.removeJobAlquilerVencido(ca);
 		
 		TimeUnit.SECONDS.sleep(10);
 	}
