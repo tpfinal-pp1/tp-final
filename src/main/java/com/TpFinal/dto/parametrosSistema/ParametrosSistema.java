@@ -45,12 +45,34 @@ public class ParametrosSistema implements Identificable, BorradoLogico {
     Integer frecuenciaAvisoCategoriaD = 20;
     // Contratos por vencer:
     @Column(name = "meses_antes_vencimiento_contrato")
-    Integer mesesAntesVencimientoContrato = 10;
+    Integer mesesAntesVencimientoContrato = 1;
+    @Column(name = "perdiodicidadEnDias_meses_antes_vencimiento_contrato")
+    Integer periodicidadEnDias_MesesAntesVencimientoContrato = 1;
+
     @Column(name = "dias_antes_vencimiento_contrato")
-    Integer periodicidadEnDiasVencimientoContrato = 1;
+    Integer diasAntesVencimientoContrato = 10;
+    @Column(name = "periodicidad_dias_antes_vencimiento_contrato")
+    Integer periodicidadEnDias_DiasAntesVencimientoContrato = 1;
 
     public ParametrosSistema() {
 
+    }
+
+    public Integer getPeriodicidadEnDias_DiasAntesVencimientoContrato() {
+	return periodicidadEnDias_DiasAntesVencimientoContrato;
+    }
+
+    public void setPeriodicidadEnDias_DiasAntesVencimientoContrato(
+	    Integer periodicidadEnDias_DiasAntesVencimientoContrato) {
+	this.periodicidadEnDias_DiasAntesVencimientoContrato = periodicidadEnDias_DiasAntesVencimientoContrato;
+    }
+
+    public Integer getDiasAntesVencimientoContrato() {
+	return diasAntesVencimientoContrato;
+    }
+
+    public void setDiasAntesVencimientoContrato(Integer diasAntesVencimientoContrato) {
+	this.diasAntesVencimientoContrato = diasAntesVencimientoContrato;
     }
 
     public Integer getMesesAntesVencimientoContrato() {
@@ -61,12 +83,12 @@ public class ParametrosSistema implements Identificable, BorradoLogico {
 	this.mesesAntesVencimientoContrato = mesesAntesVencimientoContrato;
     }
 
-    public Integer getPeriodicidadEnDiasVencimientoContrato() {
-	return periodicidadEnDiasVencimientoContrato;
+    public Integer getPeriodicidadEnDias_MesesAntesVencimientoContrato() {
+	return periodicidadEnDias_MesesAntesVencimientoContrato;
     }
 
-    public void setPeriodicidadEnDiasVencimientoContrato(Integer periodicidadEnDiasVencimientoContrato) {
-	this.periodicidadEnDiasVencimientoContrato = periodicidadEnDiasVencimientoContrato;
+    public void setPeriodicidadEnDias_MesesAntesVencimientoContrato(Integer periodicidadEnDiasVencimientoContrato) {
+	this.periodicidadEnDias_MesesAntesVencimientoContrato = periodicidadEnDiasVencimientoContrato;
     }
 
     public Integer getProximoAVencer() {
