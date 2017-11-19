@@ -539,6 +539,13 @@ public class ContratoService {
 			}
 		}
 	}
+	
+	public void cobrarCuota(Integer numero, ContratoAlquiler contrato) {
+		contrato.getCobros().forEach(cobro -> {
+			if(cobro.getNumeroCuota().equals(numero))
+				cobro.setEstadoCobro(EstadoCobro.COBRADO);
+		});
+	}
 
 	public static void setMontoInicialRenovacion(ContratoAlquiler ca) {
 		BigDecimal valorOriginal = ca.getValorInicial();
