@@ -60,7 +60,6 @@ public class Planificador {
 				e.printStackTrace();
 			}
 		}
-		
 		return instancia;
 	}
 
