@@ -196,6 +196,16 @@ public class CobroServiceIT {
 	}
 	
 	@Test
+	public void cobrarCuotas() {
+		ContratoService contratoService= new ContratoService();
+		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativo();
+		contratoService.addCobrosAlquiler(ca);
+		contratoService.cobrarCuota(1, ca);
+		boolean cobroAlguno=ca.getCobros().stream().anyMatch(cobro -> cobro.getEstadoCobro().equals(EstadoCobro.COBRADO));
+		assertTrue(cobroAlguno);
+	}
+	
+	@Test
 	public void calculadorDeInteresAcumulativoNoVigente() {
 		ContratoService contratoService= new ContratoService();
 		ContratoAlquiler ca = instanciaAlquilerConInteresAcumulativoNoVigente();

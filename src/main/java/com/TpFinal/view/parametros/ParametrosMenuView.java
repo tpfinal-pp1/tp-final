@@ -2,6 +2,8 @@ package com.TpFinal.view.parametros;
 
 import java.math.BigDecimal;
 
+import javax.persistence.Column;
+
 import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.ParametrosSistemaService;
@@ -59,6 +61,14 @@ public class ParametrosMenuView extends DefaultLayout implements View {
     private TextField frecuenciaAvisoB = new TextField("Frecuencia de aviso calificación B");
     private TextField frecuenciaAvisoC = new TextField("Frecuencia de aviso calificación C");
     private TextField frecuenciaAvisoD = new TextField("Frecuencia de aviso calificación D");
+    private BlueLabel seccionRecordatoriosVencimientos = new BlueLabel("Recordatorios de contratos");
+    private TextField mesesAntesVencimientoContrato = new TextField("Inicio de aviso Próximo a vencer (meses)");
+    private TextField periodicidadEnDias_MesesAntesVencimientoContrato = new TextField(
+	    "Periodicidad de aviso Próximo a vencer (dias)");
+    private TextField diasAntesVencimientoContrato = new TextField("Inicio de aviso Vencimiento de contrato (dias)");
+    private TextField periodicidadEnDias_DiasAntesVencimientoContrato = new TextField(
+	    "Periodicidad de aviso Vencimiento de contrato (dias)");
+
     private Button guardar = new Button("Guardar", VaadinIcons.CHECK);
 
     // Services y binder
@@ -142,6 +152,34 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
 		.withValidator(n -> n.compareTo(BigDecimal.ZERO) >= 0, "Debe ingresar un número no negativo")
 		.bind(ParametrosSistema::getValorCertificado, ParametrosSistema::setValorCertificado);
+
+	binder.forField(this.mesesAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getMesesAntesVencimientoContrato,
+			ParametrosSistema::setMesesAntesVencimientoContrato);
+
+	binder.forField(this.periodicidadEnDias_MesesAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getPeriodicidadEnDias_MesesAntesVencimientoContrato,
+			ParametrosSistema::setPeriodicidadEnDias_MesesAntesVencimientoContrato);
+
+	binder.forField(this.diasAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getDiasAntesVencimientoContrato,
+			ParametrosSistema::setDiasAntesVencimientoContrato);
+
+	binder.forField(this.periodicidadEnDias_DiasAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getPeriodicidadEnDias_DiasAntesVencimientoContrato,
+			ParametrosSistema::setPeriodicidadEnDias_DiasAntesVencimientoContrato);
     }
 
     private void configureComponents() {
@@ -152,8 +190,8 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		    "¿Realmente desea modificar los parámetros del Sistema?", "200px", save());
 	    dialog.addNoListener(cancel());
 	});
-	
-	duracionesContratos.addClickListener(click ->{
+
+	duracionesContratos.addClickListener(click -> {
 	    new DuracionContratosABMWindow("Duraciones de Contratos");
 	});
 
@@ -198,7 +236,13 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		frecuenciaAvisoA,
 		frecuenciaAvisoB,
 		frecuenciaAvisoC,
-		frecuenciaAvisoD, guardar);
+		frecuenciaAvisoD,
+		seccionRecordatoriosVencimientos,
+		mesesAntesVencimientoContrato,
+		periodicidadEnDias_MesesAntesVencimientoContrato,
+		diasAntesVencimientoContrato,
+		periodicidadEnDias_DiasAntesVencimientoContrato,
+		guardar);
 	mainLayout.setSpacing(true);
 	mainLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	mainLayout.forEach(component -> {

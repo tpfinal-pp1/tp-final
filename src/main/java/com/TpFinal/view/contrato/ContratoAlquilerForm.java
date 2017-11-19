@@ -1,5 +1,15 @@
+
 package com.TpFinal.view.contrato;
 
+import java.io.File;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.apache.log4j.Logger;
+
+import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
@@ -8,22 +18,28 @@ import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
+import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.notificacion.NotificadorJob;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
-import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.exceptions.services.ContratoServiceException;
 import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.MailSender;
+import com.TpFinal.services.MovimientoService;
+import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.Utils;
-import com.TpFinal.view.component.*;
+import com.TpFinal.view.component.BlueLabel;
+import com.TpFinal.view.component.DeleteButton;
+import com.TpFinal.view.component.DownloadButton;
+import com.TpFinal.view.component.UploadButton;
+import com.TpFinal.view.component.UploadReceiver;
 import com.vaadin.data.Binder;
 import com.vaadin.data.BindingValidationStatus;
 import com.vaadin.data.HasValue;
@@ -33,18 +49,19 @@ import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.ui.*;
+import com.vaadin.ui.Alignment;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.RadioButtonGroup;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
-
-import java.io.File;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 
 /* Create custom UI Components.
  *
@@ -247,7 +264,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	});
 	finalizarCarga.addClickListener(finalizarContrato());
 	renovarContrato.addClickListener(e -> {
-	   
+
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    ContratoAlquiler ca = contratoAlquiler.clone();
 	    ContratoService.setMontoInicialRenovacion(ca);
@@ -265,28 +282,44 @@ public class ContratoAlquilerForm extends FormLayout {
 		contratoAlquiler.setEstadoContrato(EstadoContrato.Vigente);
 		service.finalizarPublicacionAsociada(contratoAlquiler);
 		service.addCobrosAlquiler(contratoAlquiler);
+		
+		service.cobrarCuota(1, contratoAlquiler);
+		
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
+
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
 		
+		Cobro cobro= ultimo.getCobros().stream().filter(cob -> cob.getNumeroCuota().equals(1)).collect(Collectors.toList()).get(0);
+		
+		MovimientoService movimientoService = new MovimientoService();
+		
+		Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoAlquiler(cobro);
+		movimientoService.saveOrUpdate(movPagoAlquiler);
+		Movimiento movGananciaInmobiliaria = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
+		movimientoService.saveOrUpdate(movGananciaInmobiliaria);
+		Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
+		movimientoService.saveOrUpdate(movPagoAPropietario);
+
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
-		
-		//agrego los jobs para los cobros que esten vencidos
+
+		// agrego los jobs para los cobros que esten vencidos
 		Planificador.get().addJobsCobrosVencidos(ultimo);
-		
-		//agrego los jobs para los cobros que vencen dentro de poco
+
+		// agrego los jobs para los cobros que vencen dentro de poco
 		Planificador.get().addJobsCobrosPorVencer(ultimo);
-		
-		//agrego el contrato para que avise cuando esta por vencer
+
+		// agrego el contrato para que avise cuando esta por vencer
 		Planificador.get().addJobAlquilerPorVencer(ultimo);
-		
-		//agrego los jobs para que avise cuando el alquiler este vencido
+
+		// agrego los jobs para que avise cuando el alquiler este vencido
 		Planificador.get().addJobAlquilerVencido(ultimo);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();
-		Notification.show("Errores de validación, por favor revise los campos.", Notification.Type.WARNING_MESSAGE);
+		Notification.show("Errores de validación, por favor revise los campos.",
+			Notification.Type.WARNING_MESSAGE);
 		checkFieldsPerTab(binderContratoAlquiler.validate().getFieldValidationErrors());
 	    }
 
@@ -485,7 +518,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-	 //this.clearFields();
+	// this.clearFields();
 	if (contratoAlquiler != null) {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
@@ -496,7 +529,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
-	    this.tfDiaDePago.setValue("10");
+	    this.tfDiaDePago.setValue(ParametrosSistemaService.getParametros().getDiaDePago().toString());
 	}
 
 	setVisible(true);

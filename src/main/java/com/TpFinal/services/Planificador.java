@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
+import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -46,6 +47,7 @@ public class Planificador {
 	
 	//Contratos vencidos
 	Integer perioricidadContratoVencido;
+	Integer diasAntesContratoVencido;
 
 	private static Planificador instancia;
 	public static boolean demoIniciado = false;
@@ -58,43 +60,31 @@ public class Planificador {
 				e.printStackTrace();
 			}
 		}
-
 		return instancia;
 	}
 
 	private Planificador() throws SchedulerException {
 		if (sc == null)
 			this.sc = StdSchedulerFactory.getDefaultScheduler();
-		//parametros
-//		horasAntesRecoradatorio1 = 1;
-//		horasAntesRecoradatorio2 = 24;
-//		horasAntesCobrosVencidos = 0;
-//		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
-//		mesesAntesVencimientoContrato=1;
-//		perioricidadEnDiasVencimientoContrato=1;
-//		this.perioricidadPorVencerA=1;
-//		this.perioricidadPorVencerB=3;
-//		this.perioricidadPorVencerC=4;
-//		this.perioricidadPorVencerD=5;
-//		this.diasAntesCobroPorVencer=10;
-		
 		ParametrosSistema ps = ParametrosSistemaService.getParametros();
-		//citas
-		horasAntesCita1 = 1;
-		horasAntesCita2 = 24;
+		setParametros(ps);
+	}
+	
+	public void setParametros(ParametrosSistema ps) {
 		//Cobros vencidos
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
-		//contrato por vencer
-		mesesAntesVencimientoContrato=1;
-		perioricidadEnDiasVencimientoContrato=10;
-		//Contrato vencido
-		this.perioricidadContratoVencido=1;
 		//Cobros por vencer
 		this.perioricidadPorVencerA=ps.getFrecuenciaAvisoCategoriaA();
 		this.perioricidadPorVencerB=ps.getFrecuenciaAvisoCategoriaB();
 		this.perioricidadPorVencerC=ps.getFrecuenciaAvisoCategoriaC();
 		this.perioricidadPorVencerD=ps.getFrecuenciaAvisoCategoriaD();
 		this.diasAntesCobroPorVencer=10;
+		//Contrato vencido
+		this.perioricidadContratoVencido=ps.getPeriodicidadEnDias_DiasAntesVencimientoContrato();
+		this.diasAntesContratoVencido=ps.getDiasAntesVencimientoContrato();
+		//contrato por vencer
+		this.mesesAntesVencimientoContrato=ps.getMesesAntesVencimientoContrato();
+		this.perioricidadEnDiasVencimientoContrato=ps.getPeriodicidadEnDias_MesesAntesVencimientoContrato();
 	}
 
 	public void setNotificacion(Job notificacion) {
@@ -130,6 +120,11 @@ public class Planificador {
 			e.printStackTrace();
 		}
 	}
+	
+	public void updateTriggersJobCita(List<Cita>citas) {
+		citas.forEach(cita -> this.removeJobCita(cita));
+		citas.forEach(cita -> this.addJobCita(cita));
+	}
 
 	public void addJobCita(Cita cita) {
 		if (cita.getId() != null) {
@@ -162,6 +157,11 @@ public class Planificador {
 		return ret;
 	}
 	
+	public void updateTriggersJobCobrosVencidos(List<Cobro>cobros) {
+		cobros.forEach(cobro -> this.removeJobCobroVencido(cobro));
+		cobros.forEach(cobro -> this.addJobCobroVencido(cobro));
+	}
+	
 	public void addJobsCobrosVencidos(ContratoAlquiler c) {
 		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
 		System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
@@ -189,6 +189,11 @@ public class Planificador {
 			e.printStackTrace();
 		}
 		return ret;
+	}
+	
+	public void updateTriggersJobCobrosPorVencer(List<Cobro>cobros) {
+		cobros.forEach(cobro -> this.removeJobCobroPorVencer(cobro));
+		cobros.forEach(cobro -> this.addJobCobroPorVencer(cobro));
 	}
 	
 	public void addJobsCobrosPorVencer(ContratoAlquiler ca){
@@ -222,6 +227,11 @@ public class Planificador {
 		return ret;
 	}
 	
+	public void updateTriggersJobAlquileresPorVencer(List<ContratoAlquiler>alquileres) {
+		alquileres.forEach(alquiler -> this.removeJobAlquilerPorVencer(alquiler));
+		alquileres.forEach(alquiler -> this.addJobAlquilerPorVencer(alquiler));
+	}
+	
 	public void addJobAlquilerPorVencer(ContratoAlquiler contrato) {
 		if(contrato.getId()!=null && tieneVencimientoFuturo(contrato)) {
 			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,1);
@@ -246,6 +256,11 @@ public class Planificador {
 		return ret;
 	}
 	
+	public void updateTriggersJobAlquileresVencidos(List<ContratoAlquiler>alquileres) {
+		alquileres.forEach(alquiler -> this.removeJobAlquilerVencido(alquiler));
+		alquileres.forEach(alquiler -> this.addJobAlquilerVencido(alquiler));
+	}
+	
 	public void addJobAlquilerVencido(ContratoAlquiler contrato) {
 		if(contrato.getId()!=null) {
 			agregarJobMailAlquilerVencido(contrato, 3);
@@ -253,7 +268,7 @@ public class Planificador {
 		}
 	}
 	
-	public boolean removeJobAlquilerPorVencido(ContratoAlquiler contrato) {
+	public boolean removeJobAlquilerVencido(ContratoAlquiler contrato) {
 		boolean ret = true;
 		try {
 			if (contrato.getId() != null) {
@@ -404,7 +419,7 @@ public class Planificador {
 	private void agregarJobMailAlquilerVencido(ContratoAlquiler c, Integer key) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()),
 				LocalTime.now().plusMinutes(1));
-		fechaInicio=fechaInicio.minusDays(10);
+		fechaInicio=fechaInicio.minusDays(this.diasAntesContratoVencido);
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()), LocalTime.now().plusMinutes(10));
 		String triggerKey = c.getTriggerKey()+"-"+key.toString();
 		String dia=String.valueOf(fechaInicio.getDayOfMonth());
