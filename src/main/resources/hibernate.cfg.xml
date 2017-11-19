@@ -51,6 +51,7 @@
 		<mapping class="com.TpFinal.dto.cita.TipoCita" />
 		<mapping class="com.TpFinal.dto.notificacion.Notificacion" />
 		<mapping class="com.TpFinal.dto.movimiento.Movimiento" />
+		<mapping class="com.TpFinal.dto.parametrosSistema.SelladoBanco" />
 	</session-factory>
 
 </hibernate-configuration>
