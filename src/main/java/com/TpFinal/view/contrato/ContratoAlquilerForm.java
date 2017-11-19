@@ -20,6 +20,7 @@ import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.MailSender;
+import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.Utils;
@@ -496,7 +497,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
-	    this.tfDiaDePago.setValue("10");
+	    this.tfDiaDePago.setValue(ParametrosSistemaService.getParametros().getDiaDePago().toString());
 	}
 
 	setVisible(true);
