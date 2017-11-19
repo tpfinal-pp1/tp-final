@@ -17,6 +17,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.TpFinal.data.conexion.ConexionHibernate;
+import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
@@ -26,6 +28,7 @@ import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.interfaces.Messageable;
+import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
 import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
@@ -34,6 +37,7 @@ import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.NotificadorConcreto;
+import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.services.Planificador;
 import com.itextpdf.text.log.SysoCounter;
 
@@ -45,6 +49,7 @@ public class PlanificadorIT {
 	public void setUp() throws Exception {
 		sc = Planificador.get();
 		sc.encender();
+		Planificador.get().setParametros(new ParametrosSistema());
 	}
 
 	@After
