@@ -17,7 +17,6 @@ import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.parametrosSistema.SelladoBanco;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.util.CurrentInstance;
-import javafx.scene.control.ProgressBar;
 
 public class ProvinciaService {
     public enum modoLecturaJson {
