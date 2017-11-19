@@ -264,7 +264,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	});
 	finalizarCarga.addClickListener(finalizarContrato());
 	renovarContrato.addClickListener(e -> {
-	   
+
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    ContratoAlquiler ca = contratoAlquiler.clone();
 	    ContratoService.setMontoInicialRenovacion(ca);
@@ -288,6 +288,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
+
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
 		
 		Cobro cobro= ultimo.getCobros().stream().filter(cob -> cob.getNumeroCuota().equals(1)).collect(Collectors.toList()).get(0);
@@ -300,25 +301,26 @@ public class ContratoAlquilerForm extends FormLayout {
 		movimientoService.saveOrUpdate(movGananciaInmobiliaria);
 		Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(cobro);
 		movimientoService.saveOrUpdate(movPagoAPropietario);
-		
+
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
-		
-		//agrego los jobs para los cobros que esten vencidos
+
+		// agrego los jobs para los cobros que esten vencidos
 		Planificador.get().addJobsCobrosVencidos(ultimo);
-		
-		//agrego los jobs para los cobros que vencen dentro de poco
+
+		// agrego los jobs para los cobros que vencen dentro de poco
 		Planificador.get().addJobsCobrosPorVencer(ultimo);
-		
-		//agrego el contrato para que avise cuando esta por vencer
+
+		// agrego el contrato para que avise cuando esta por vencer
 		Planificador.get().addJobAlquilerPorVencer(ultimo);
-		
-		//agrego los jobs para que avise cuando el alquiler este vencido
+
+		// agrego los jobs para que avise cuando el alquiler este vencido
 		Planificador.get().addJobAlquilerVencido(ultimo);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();
-		Notification.show("Errores de validación, por favor revise los campos.", Notification.Type.WARNING_MESSAGE);
+		Notification.show("Errores de validación, por favor revise los campos.",
+			Notification.Type.WARNING_MESSAGE);
 		checkFieldsPerTab(binderContratoAlquiler.validate().getFieldValidationErrors());
 	    }
 
@@ -517,7 +519,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-	 //this.clearFields();
+	// this.clearFields();
 	if (contratoAlquiler != null) {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;

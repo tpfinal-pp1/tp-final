@@ -56,6 +56,10 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	private Integer intervaloActualizacion;
 	@Column(name = "diaDePago")
 	private Integer diaDePago;
+	@Column(name = "comisionAInquilino")
+	private Integer comisionAInquilino;
+	@Column(name = "comisionAPropietario")
+	private Integer comsionAPropietario;	
 	@Column(name="randomKey")
 	UUID randomKey;
 
@@ -96,6 +100,22 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 			this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 		}
 		this.randomKey=UUID.randomUUID();
+	}
+
+	public Integer getComisionAInquilino() {
+	    return comisionAInquilino;
+	}
+
+	public void setComisionAInquilino(Integer comisionAInquilino) {
+	    this.comisionAInquilino = comisionAInquilino;
+	}
+
+	public Integer getComsionAPropietario() {
+	    return comsionAPropietario;
+	}
+
+	public void setComsionAPropietario(Integer comsionAPropietario) {
+	    this.comsionAPropietario = comsionAPropietario;
 	}
 
 	public Double getInteresPunitorio() {
