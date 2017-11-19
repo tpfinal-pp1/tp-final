@@ -21,17 +21,17 @@ public enum TipoReporte {
     public String toString() {
 	switch (this) {
 	case Propietario:
-	    return "Propietario";
+	    return "Propietarios";
 	case AlquileresPorCobrar:
 	    return "Alquileres a Cobrar";
 	case AlquileresPorMes:
 	    return "Alquileres por Mes";
 	case FichaInmuebleConMapa:
-		return "Ficha Inmueble con Mapa";
+		return "Inmueble c/Mapa";
 	case FichaInmuebleSimple:
-		return "Ficha Inmueble Simple";
+		return "Inmueble Simple";
 	case FichaMovimientos:
-		return "Ficha Movimientos";
+		return "Movimientos";
 	default:
 	    return super.toString();
 
