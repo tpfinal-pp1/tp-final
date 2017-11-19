@@ -1,6 +1,5 @@
 package com.TpFinal.dto.contrato;
 
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.sql.Blob;
@@ -28,149 +27,173 @@ import com.TpFinal.dto.persona.Persona;
 @Entity
 @Table(name = "contratoVenta")
 @PrimaryKeyJoinColumn(name = "id")
-public class ContratoVenta extends Contrato  implements Cloneable{
+public class ContratoVenta extends Contrato implements Cloneable {
 
-	@Column(name = "precioVenta")
-	private BigDecimal precioVenta;    
+    @Column(name = "precioVenta")
+    private BigDecimal precioVenta;
 
-	@ManyToOne
-	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
-	@JoinColumn(name = "id_comprador")
+    @ManyToOne
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @JoinColumn(name = "id_comprador")
+    private Persona comprador;
+
+    @ManyToOne
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @JoinColumn(name = "id_vendedor")
+    private Persona vendedor;
+
+    @Column(name = "comisionAInquilino")
+    private Integer comisionAInquilino;
+    @Column(name = "comisionAPropietario")
+    private Integer comsionAPropietario;
+
+    public ContratoVenta() {
+	super();
+    }
+
+    private ContratoVenta(Builder b) {
+	super(b.id, b.fechaIngreso, b.documento, b.estadoRegistro, b.inmueble);
+	this.fechaCelebracion = b.fechaCelebracion;
+	this.precioVenta = b.precioVenta;
+	this.comprador = b.comprador;
+	if (b.inmueble != null) {
+	    this.vendedor = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
+	    this.inmueble = b.inmueble;
+	}
+    }
+    
+    
+
+    public Integer getComisionAInquilino() {
+        return comisionAInquilino;
+    }
+
+    public void setComisionAInquilino(Integer comisionAInquilino) {
+        this.comisionAInquilino = comisionAInquilino;
+    }
+
+    public Integer getComsionAPropietario() {
+        return comsionAPropietario;
+    }
+
+    public void setComsionAPropietario(Integer comsionAPropietario) {
+        this.comsionAPropietario = comsionAPropietario;
+    }
+
+    public Persona getVendedor() {
+	return vendedor;
+    }
+
+    public void setVendedor(Persona vendedor) {
+	this.vendedor = vendedor;
+    }
+
+    public BigDecimal getPrecioVenta() {
+	return precioVenta;
+    }
+
+    public void setPrecioVenta(BigDecimal precioVenta) {
+	this.precioVenta = precioVenta;
+	this.precioVenta = this.precioVenta.setScale(2, RoundingMode.CEILING);
+    }
+
+    public Persona getComprador() {
+	return comprador;
+    }
+
+    public void setComprador(Persona comprador) {
+	this.comprador = comprador;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+	if (this == o)
+	    return true;
+	if (!(o instanceof ContratoVenta))
+	    return false;
+	ContratoVenta contrato = (ContratoVenta) o;
+	return getId() != null && Objects.equals(getId(), contrato.getId());
+    }
+
+    @Override
+    public int hashCode() {
+	return 5;
+    }
+
+    @Override
+    public String toString() {
+	return inmueble.toString() + ", "
+		+ this.vendedor + ", " + this.comprador;
+    }
+
+    @Override
+    public ContratoVenta clone() {
+	ContratoVenta clon = new ContratoVenta();
+	clon.setComprador(comprador);
+	clon.setVendedor(vendedor);
+	clon.setDocumento(null);
+	clon.setInmueble(inmueble);
+	clon.setEstadoContrato(EstadoContrato.EnProcesoDeCarga);
+	clon.setMoneda(getMoneda());
+	clon.setPrecioVenta(precioVenta);
+	return clon;
+    }
+
+    public static class Builder {
+
 	private Persona comprador;
+	private Inmueble inmueble;
+	private Long id;
+	private LocalDate fechaIngreso;
+	private LocalDate fechaCelebracion;
+	private Blob documento;
+	private BigDecimal precioVenta;
+	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
 
-	@ManyToOne
-	@Cascade({CascadeType.SAVE_UPDATE,CascadeType.MERGE})
-	@JoinColumn(name = "id_vendedor")
-	private Persona vendedor;
-	
-	public ContratoVenta() {
-		super();
+	public Builder setId(Long dato) {
+	    this.id = dato;
+	    return this;
 	}
 
-	private ContratoVenta(Builder b) {
-		super(b.id, b.fechaIngreso, b.documento, b.estadoRegistro, b.inmueble);
-		this.fechaCelebracion=b.fechaCelebracion;
-		this.precioVenta = b.precioVenta;
-		this.comprador = b.comprador;
-		if (b.inmueble != null) {
-			this.vendedor = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
-			this.inmueble = b.inmueble;
-		}
+	public Builder setFechaIngreso(LocalDate dato) {
+	    this.fechaIngreso = dato;
+	    return this;
 	}
 
-	public Persona getVendedor() {
-		return vendedor;
+	public Builder setFechaCelebracion(LocalDate dato) {
+	    this.fechaCelebracion = dato;
+	    return this;
 	}
 
-	public void setVendedor(Persona vendedor) {
-		this.vendedor = vendedor;
+	public Builder setDocumento(Blob dato) {
+	    this.documento = dato;
+	    return this;
 	}
 
-
-	public BigDecimal getPrecioVenta() {
-		return precioVenta;
+	public Builder setPrecioVenta(BigDecimal dato) {
+	    this.precioVenta = dato;
+	    return this;
 	}
 
-	public void setPrecioVenta(BigDecimal precioVenta) {
-		this.precioVenta = precioVenta;
-		this.precioVenta=this.precioVenta.setScale(2, RoundingMode.CEILING);
+	public Builder setEstadoRegistro(EstadoRegistro estadoRegistro) {
+	    this.estadoRegistro = estadoRegistro;
+	    return this;
 	}
 
-	public Persona getComprador() {
-		return comprador;
+	public Builder setInmueble(Inmueble inmueble) {
+	    this.inmueble = inmueble;
+	    return this;
 	}
 
-	public void setComprador(Persona comprador) {
-		this.comprador = comprador;
+	public Builder setComprador(Persona comprador) {
+	    this.comprador = comprador;
+	    return this;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (!(o instanceof ContratoVenta)) return false;
-		ContratoVenta contrato = (ContratoVenta) o;
-		return getId() != null && Objects.equals(getId(), contrato.getId());
+	public ContratoVenta build() {
+	    return new ContratoVenta(this);
 	}
 
-	@Override
-	public int hashCode() {
-		return 5;
-	}
-
-	@Override
-	public String toString() {
-		return  inmueble.toString()+", "
-				+this.vendedor+", "+this.comprador ;
-	}
-
-	@Override
-	public ContratoVenta clone() {
-		ContratoVenta clon = new ContratoVenta();
-		clon.setComprador(comprador);
-		clon.setVendedor(vendedor);
-		clon.setDocumento(null);	
-		clon.setInmueble(inmueble);
-		clon.setEstadoContrato(EstadoContrato.EnProcesoDeCarga);	
-		clon.setMoneda(getMoneda());	
-		clon.setPrecioVenta(precioVenta);	
-		return clon;
-	}
-
-	public static class Builder {
-
-		private Persona comprador;
-		private Inmueble inmueble;
-		private Long id;
-		private LocalDate fechaIngreso;
-		private LocalDate fechaCelebracion;
-		private Blob documento;
-		private BigDecimal precioVenta;
-		private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
-
-		public Builder setId(Long dato) {
-			this.id = dato;
-			return this;
-		}
-
-		public Builder setFechaIngreso(LocalDate dato) {
-			this.fechaIngreso = dato;
-			return this;
-		}
-		
-		public Builder setFechaCelebracion(LocalDate dato) {
-			this.fechaCelebracion = dato;
-			return this;
-		}
-
-		public Builder setDocumento(Blob dato) {
-			this.documento = dato;
-			return this;
-		}
-
-		public Builder setPrecioVenta(BigDecimal dato) {
-			this.precioVenta = dato;
-			return this;
-		}
-
-		public Builder setEstadoRegistro(EstadoRegistro estadoRegistro) {
-			this.estadoRegistro = estadoRegistro;
-			return this;
-		}
-
-		public Builder setInmueble(Inmueble inmueble) {
-			this.inmueble = inmueble;
-			return this;
-		}
-
-		public Builder setComprador(Persona comprador) {
-			this.comprador = comprador;
-			return this;
-		}
-
-		public ContratoVenta build() {
-			return new ContratoVenta(this);
-		}
-		
-	}
+    }
 
 }
