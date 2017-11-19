@@ -79,6 +79,20 @@ public class MovimientoService {
 				.build();
 		return ret;
 	}
+	
+	public static Movimiento getInstanciaSellado(Cobro c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
+				.setMonto(c.getInteres())
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Impuesto)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Egreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
+				.setCobro(c)
+				.build();
+		return ret;
+	}
 
 	public static Movimiento getInstanciaGananciaInmobiliaria(Cobro c) {
 		Movimiento ret= new Movimiento.Builder()
