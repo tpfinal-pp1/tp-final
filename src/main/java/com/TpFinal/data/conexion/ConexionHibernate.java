@@ -30,14 +30,19 @@ public class ConexionHibernate {
 
     private static boolean backupmode = false;
 
-	public static boolean isBackupmode() {
-		return backupmode;
-	}
+    public static boolean isBackupmode() {
+	return backupmode;
+    }
 
-	public static void setTipoConexion(TipoConexion tipo) {
+    public static void setTipoConexion(TipoConexion tipo) {
 	tipoConexion = tipo;
 	conexion = Conexion.getTipoConexionFrom(tipoConexion);
-
+	try {
+	    conexion.setDbName(Parametros.getProperty(Parametros.DB_NAME));
+	} catch (IllegalArgumentException | FileExistsException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
 	conexion.setDbRelativePath("Files");
 	Parametros.setProperty(Parametros.DB_PATH, conexion.getDbPath());
 	Parametros.setProperty(Parametros.DB_NAME, conexion.getDbName());
@@ -79,12 +84,12 @@ public class ConexionHibernate {
 
     public static void enterBackupMode() {
 
-		startOfBackupMode=DateTime.now();
-		backupmode = true;
+	startOfBackupMode = DateTime.now();
+	backupmode = true;
     }
 
     public static void leaveBackupMode() {
-	startOfBackupMode=null;
+	startOfBackupMode = null;
 	backupmode = false;
     }
 
@@ -105,10 +110,10 @@ public class ConexionHibernate {
 
     public static Session openSession() {
 	if (backupmode) {
-	
-		if(startOfBackupMode.plusHours(1).isBefore(DateTime.now())){
-			backupmode=false;
-		}
+
+	    if (startOfBackupMode.plusHours(1).isBefore(DateTime.now())) {
+		backupmode = false;
+	    }
 	    try {
 		while (backupmode) {
 		    Thread.sleep(1000);

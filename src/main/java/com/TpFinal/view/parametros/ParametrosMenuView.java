@@ -1,10 +1,19 @@
 package com.TpFinal.view.parametros;
 
+import java.math.BigDecimal;
+
+import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
 import com.TpFinal.services.DashboardEvent;
+import com.TpFinal.services.ParametrosSistemaService;
+import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DefaultLayout;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
+import com.vaadin.data.Binder;
+import com.vaadin.data.converter.StringToBigDecimalConverter;
+import com.vaadin.data.converter.StringToDoubleConverter;
+import com.vaadin.data.converter.StringToIntegerConverter;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -27,58 +36,146 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 
     // Para identificar los layout de acciones
     private int acciones = 0;
-    Button newItem = new Button("Nuevo");
-    Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
-    RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
-    VerticalLayout mainLayout;
+    FormLayout mainLayout;
     private boolean isonMobile = false;
+    private Button duracionesContratos = new Button("Duraciones de Contratos", VaadinIcons.CALENDAR_CLOCK);
+    private Button sellados = new Button("Sellado de bancos", VaadinIcons.INSTITUTION);
 
-    // XXX ParametrosService services = new ParametrosService()
+    // Contratos:
+    private BlueLabel seccionContratos = new BlueLabel("Parámetros de contratos");
+    private TextField proximoAVencer = new TextField("Próximo a Vencer (dias)");
+    private TextField diaDePago = new TextField("Día de pago");
+    private TextField cantMininimaCertificados = new TextField("Cantidad mínima de certificados");
+    private TextField valorCertificado = new TextField("Valor Certificado ($)");
+    private TextField comisionAPropietario = new TextField("Comisión a propietario (%)");
+    private TextField comisionAInquilino = new TextField("Comisión a inquilino (%)");
+    private TextField comisionCobro = new TextField("Comisión cobro de cuota");
+    // Recordatorios
+    private BlueLabel seccionRecordatorios = new BlueLabel("Parámetros de recordatorios");
+    private TextField frecuenciaAvisoA = new TextField("Frecuencia de aviso calificación A");
+    private TextField frecuenciaAvisoB = new TextField("Frecuencia de aviso calificación B");
+    private TextField frecuenciaAvisoC = new TextField("Frecuencia de aviso calificación C");
+    private TextField frecuenciaAvisoD = new TextField("Frecuencia de aviso calificación D");
+    private Button guardar = new Button("Guardar", VaadinIcons.CHECK);
+
+    // Services y binder
+    private Binder<ParametrosSistema> binder = new Binder<>();
+    private ParametrosSistema parametros;
+   
     // ContratoDuracionService service = new ContratoDuracionService();
 
     public ParametrosMenuView() {
-
 	super();
+	parametros = ParametrosSistemaService.getParametros();
 	buildLayout();
 	configureComponents();
+	binding();
+	binder.readBean(parametros);
 
+    }
+
+    private void binding() {
+	binder.forField(this.cantMininimaCertificados)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getCantMinimaCertificados, ParametrosSistema::setCantMinimaCertificados);
+
+	binder.forField(this.comisionAInquilino)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getComisionAInquilino, ParametrosSistema::setComisionAInquilino);
+
+	binder.forField(this.comisionAPropietario)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getComisionAPropietario, ParametrosSistema::setComisionAPropietario);
+
+	binder.forField(this.comisionCobro)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToDoubleConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getComisionCobro, ParametrosSistema::setComisionCobro);
+
+	binder.forField(this.diaDePago)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n > 0 && n <= 28, "Debe ingresar un número entre 1 y 28")
+		.bind(ParametrosSistema::getDiaDePago, ParametrosSistema::setDiaDePago);
+
+	binder.forField(this.frecuenciaAvisoA)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n > 0, "Debe ingresar un número positivo")
+		.bind(ParametrosSistema::getFrecuenciaAvisoCategoriaA, ParametrosSistema::setFrecuenciaAvisoCategoriaA);
+
+	binder.forField(this.frecuenciaAvisoB)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n > 0, "Debe ingresar un número positivo")
+		.bind(ParametrosSistema::getFrecuenciaAvisoCategoriaB, ParametrosSistema::setFrecuenciaAvisoCategoriaB);
+
+	binder.forField(this.frecuenciaAvisoC)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n > 0, "Debe ingresar un número positivo")
+		.bind(ParametrosSistema::getFrecuenciaAvisoCategoriaC, ParametrosSistema::setFrecuenciaAvisoCategoriaC);
+
+	binder.forField(this.frecuenciaAvisoD)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n > 0, "Debe ingresar un número positivo")
+		.bind(ParametrosSistema::getFrecuenciaAvisoCategoriaD, ParametrosSistema::setFrecuenciaAvisoCategoriaD);
+
+	binder.forField(this.proximoAVencer)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getProximoAVencer, ParametrosSistema::setProximoAVencer);
+	
+	binder.forField(this.valorCertificado)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
+		.withValidator(n -> n.compareTo(BigDecimal.ZERO) >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getValorCertificado, ParametrosSistema::setValorCertificado);
     }
 
     private void configureComponents() {
-
-	newItem.addClickListener(e -> {
-	});
 	Responsive.makeResponsive(this);
-	newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 
-    }
-
-    public void setComponentsVisible(boolean b) {
-	newItem.setVisible(b);
     }
 
     private void buildLayout() {
 
-	CssLayout filtering = new CssLayout();
+	CssLayout toolbar = new CssLayout();
 	HorizontalLayout hl = new HorizontalLayout();
-	filtering.addComponents(clearFilterTextBtn, newItem);
-	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-	hl.addComponent(filtering);
-
+	toolbar.addComponents(duracionesContratos, sellados);
+	toolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	hl.addComponent(toolbar);
 	buildToolbar("Parámetros del Sistema", hl);
-	// XXX Cargar botones aca.
-	Button recordatorios = new Button("Periodicidad de Recordatorios", VaadinIcons.CLOCK);
-	Button duracionesContratos = new Button("Duraciones de Contratos", VaadinIcons.CALENDAR_CLOCK);
-	Button comisiones = new Button("Comisiones", VaadinIcons.COIN_PILES);
-	Button sellados = new Button("Sellado de bancos", VaadinIcons.INSTITUTION);
-
-	mainLayout = new VerticalLayout(recordatorios, duracionesContratos, comisiones, sellados);
+	mainLayout = new FormLayout(seccionContratos,
+		proximoAVencer,
+		diaDePago,
+		cantMininimaCertificados,
+		valorCertificado,
+		comisionAPropietario,
+		comisionAInquilino,
+		comisionCobro,
+		seccionRecordatorios,
+		frecuenciaAvisoA,
+		frecuenciaAvisoB,
+		frecuenciaAvisoC,
+		frecuenciaAvisoD, guardar);
 	mainLayout.setSpacing(true);
+	mainLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	mainLayout.forEach(component -> {
 	    component.setWidth("500px");
-	    mainLayout.setExpandRatio(component, 1);
-	    component.addStyleName(ValoTheme.BUTTON_HUGE);
+	    component.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
 	});
+	guardar.removeStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	guardar.addStyleNames(ValoTheme.BUTTON_PRIMARY);
 	mainLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
 	mainLayout.setWidthUndefined();
 	addComponent(mainLayout);
