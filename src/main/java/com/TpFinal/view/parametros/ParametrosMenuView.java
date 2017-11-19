@@ -2,11 +2,11 @@ package com.TpFinal.view.parametros;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-
+import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.ParametrosSistemaService;
+import com.TpFinal.services.ProvinciaService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
@@ -15,18 +15,23 @@ import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue;
 import com.vaadin.data.converter.StringToBigDecimalConverter;
 import com.vaadin.data.converter.StringToDoubleConverter;
 import com.vaadin.data.converter.StringToIntegerConverter;
+import com.vaadin.event.selection.SingleSelectionEvent;
+import com.vaadin.event.selection.SingleSelectionListener;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
+import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
+import org.mockito.internal.matchers.Not;
 
 /* User Interface written in Java.
  *
@@ -61,13 +66,6 @@ public class ParametrosMenuView extends DefaultLayout implements View {
     private TextField frecuenciaAvisoB = new TextField("Frecuencia de aviso calificación B");
     private TextField frecuenciaAvisoC = new TextField("Frecuencia de aviso calificación C");
     private TextField frecuenciaAvisoD = new TextField("Frecuencia de aviso calificación D");
-    private BlueLabel seccionRecordatoriosVencimientos = new BlueLabel("Recordatorios de contratos");
-    private TextField mesesAntesVencimientoContrato = new TextField("Inicio de aviso Próximo a vencer (meses)");
-    private TextField periodicidadEnDias_MesesAntesVencimientoContrato = new TextField(
-	    "Periodicidad de aviso Próximo a vencer (dias)");
-    private TextField diasAntesVencimientoContrato = new TextField("Inicio de aviso Vencimiento de contrato (dias)");
-    private TextField periodicidadEnDias_DiasAntesVencimientoContrato = new TextField(
-	    "Periodicidad de aviso Vencimiento de contrato (dias)");
 
     private Button guardar = new Button("Guardar", VaadinIcons.CHECK);
 
@@ -84,6 +82,10 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	configureComponents();
 	binding();
 	binder.readBean(parametros);
+		duracionesContratos.addClickListener(click -> {
+			new DuracionContratosABMWindow("Duraciones de Contratos");
+		});
+
     }
 
     private void binding() {
@@ -153,33 +155,8 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		.withValidator(n -> n.compareTo(BigDecimal.ZERO) >= 0, "Debe ingresar un número no negativo")
 		.bind(ParametrosSistema::getValorCertificado, ParametrosSistema::setValorCertificado);
 
-	binder.forField(this.mesesAntesVencimientoContrato)
-		.asRequired("Campo requerido")
-		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-		.bind(ParametrosSistema::getMesesAntesVencimientoContrato,
-			ParametrosSistema::setMesesAntesVencimientoContrato);
 
-	binder.forField(this.periodicidadEnDias_MesesAntesVencimientoContrato)
-		.asRequired("Campo requerido")
-		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-		.bind(ParametrosSistema::getPeriodicidadEnDias_MesesAntesVencimientoContrato,
-			ParametrosSistema::setPeriodicidadEnDias_MesesAntesVencimientoContrato);
 
-	binder.forField(this.diasAntesVencimientoContrato)
-		.asRequired("Campo requerido")
-		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-		.bind(ParametrosSistema::getDiasAntesVencimientoContrato,
-			ParametrosSistema::setDiasAntesVencimientoContrato);
-
-	binder.forField(this.periodicidadEnDias_DiasAntesVencimientoContrato)
-		.asRequired("Campo requerido")
-		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-		.bind(ParametrosSistema::getPeriodicidadEnDias_DiasAntesVencimientoContrato,
-			ParametrosSistema::setPeriodicidadEnDias_DiasAntesVencimientoContrato);
     }
 
     private void configureComponents() {
@@ -190,8 +167,8 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		    "¿Realmente desea modificar los parámetros del Sistema?", "200px", save());
 	    dialog.addNoListener(cancel());
 	});
-
-	duracionesContratos.addClickListener(click -> {
+	
+	duracionesContratos.addClickListener(click ->{
 	    new DuracionContratosABMWindow("Duraciones de Contratos");
 	});
 
@@ -224,6 +201,7 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	toolbar.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	hl.addComponent(toolbar);
 	buildToolbar("Parámetros del Sistema", hl);
+
 	mainLayout = new FormLayout(seccionContratos,
 		proximoAVencer,
 		diaDePago,
@@ -236,13 +214,7 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		frecuenciaAvisoA,
 		frecuenciaAvisoB,
 		frecuenciaAvisoC,
-		frecuenciaAvisoD,
-		seccionRecordatoriosVencimientos,
-		mesesAntesVencimientoContrato,
-		periodicidadEnDias_MesesAntesVencimientoContrato,
-		diasAntesVencimientoContrato,
-		periodicidadEnDias_DiasAntesVencimientoContrato,
-		guardar);
+		frecuenciaAvisoD, guardar);
 	mainLayout.setSpacing(true);
 	mainLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	mainLayout.forEach(component -> {
@@ -256,6 +228,12 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	addComponent(mainLayout);
 	this.setComponentAlignment(mainLayout, Alignment.TOP_CENTER);
 	this.setExpandRatio(mainLayout, 1);
+	sellados.addClickListener(new ClickListener() {
+		@Override
+		public void buttonClick(Button.ClickEvent clickEvent) {
+			new SelladosWindow();
+		}
+	});
 
     }
 
