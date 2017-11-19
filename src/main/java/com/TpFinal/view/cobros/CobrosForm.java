@@ -118,6 +118,8 @@ public class CobrosForm extends FormLayout {
 									}else if(cobro.getContrato() instanceof ContratoVenta) {
 										Movimiento movPagoAlquiler = MovimientoService.getInstanciaPagoVenta(cobro);
 										movimientoService.saveOrUpdate(movPagoAlquiler);
+										Movimiento sellado = MovimientoService.getInstanciaSellado(cobro);
+										movimientoService.saveOrUpdate(sellado);
 									}
 								}
 							}

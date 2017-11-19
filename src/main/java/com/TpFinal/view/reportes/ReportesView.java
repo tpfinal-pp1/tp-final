@@ -77,8 +77,8 @@ public class ReportesView extends DefaultLayout implements View {
 
     DateField fDesde3 = null;
 
-    ComboBox<TipoMovimiento> comboTipoMov = new ComboBox<>("Tipo Mov.", TipoMovimiento.toList());
-    ComboBox<TipoReporteMovimientos> comboTipoRepMov = new ComboBox<>("Tipo Rep.", TipoReporteMovimientos.toList());
+    ComboBox<TipoMovimiento> comboTipoMov = new ComboBox<>("Tipo de Mov.", TipoMovimiento.toList());
+    ComboBox<TipoReporteMovimientos> comboTipoRepMov = new ComboBox<>("Tipo de Rep.", TipoReporteMovimientos.toList());
 
     List<Object> objects = null;
     boolean incluirCobrosPendientes;
@@ -283,7 +283,7 @@ public class ReportesView extends DefaultLayout implements View {
 	fDesde2.setParseErrorMessage("Formato de fecha no reconocido");
 
 	fDesde3 = new DateField();
-	fDesde3.setPlaceholder("Mes-Año");
+	fDesde3.setPlaceholder("Mes o Año");
 	fDesde3.setParseErrorMessage("Formato de fecha no reconocido");
 	fDesde3.setVisible(false);
 

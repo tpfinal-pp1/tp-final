@@ -56,6 +56,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	private Integer intervaloActualizacion;
 	@Column(name = "diaDePago")
 	private Integer diaDePago;
+	
 	@Column(name="randomKey")
 	UUID randomKey;
 

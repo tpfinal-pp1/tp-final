@@ -467,24 +467,30 @@ public class ContratoService {
 		if(contrato.getCobros()==null)
 			contrato.setCobros(new HashSet<>());
 		
+		//XXX remplazar por lo de la bd
+		BigDecimal sellado= new BigDecimal("1.2");
+		
 		BigDecimal comisionComprador=new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal comisionVendedor=new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal total= new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal totalComision = new BigDecimal("0");
 		BigDecimal montoVendedor=new BigDecimal(contrato.getPrecioVenta().toString());
+		BigDecimal interesSellado=new BigDecimal("0");
 		
-		comisionComprador=comisionComprador.multiply(new BigDecimal(this.porcentajeComisionComprador)).divide(new BigDecimal("100"));
-		comisionVendedor=comisionVendedor.multiply(new BigDecimal(this.porcentajeComisionVendedor)).divide(new BigDecimal("100"));
+		comisionComprador=comisionComprador.multiply(new BigDecimal(contrato.getComisionAComprador())).divide(new BigDecimal("100"));
+		comisionVendedor=comisionVendedor.multiply(new BigDecimal(contrato.getComsionAVendedor())).divide(new BigDecimal("100"));
 		total=total.add(comisionComprador).add(comisionVendedor);
 		totalComision=totalComision.add(comisionComprador).add(comisionVendedor);
 		montoVendedor=montoVendedor.subtract(comisionVendedor);
+		interesSellado=contrato.getPrecioVenta().multiply(sellado).divide(new BigDecimal("100"));
+		total=total.add(interesSellado);
 		
 		Cobro c = new Cobro.Builder()
 				.setNumeroCuota(0)
 				.setFechaDeVencimiento(contrato.getFechaCelebracion())
 				.setMontoOriginal(contrato.getPrecioVenta())
 				.setMontoRecibido(total)
-				.setInteres(new BigDecimal(0))
+				.setInteres(interesSellado)
 				.setMontoPropietario(montoVendedor)
 				.setComision(totalComision)
 				.setTipoCobro(TipoCobro.Venta)
@@ -538,6 +544,18 @@ public class ContratoService {
 				contrato.addCobro(c);
 			}
 		}
+	}
+	
+	public Cobro cobrarCuota(Integer numero, ContratoAlquiler contrato) {
+		List<Cobro>ret=new ArrayList<>();
+		contrato.getCobros().forEach(cobro -> {
+			if(cobro.getNumeroCuota().equals(numero)) {
+				cobro.setEstadoCobro(EstadoCobro.COBRADO);
+				cobro.setFechaDePago(contrato.getFechaCelebracion());
+				ret.add(cobro);
+			}
+		});
+		return ret.get(0);
 	}
 
 	public static void setMontoInicialRenovacion(ContratoAlquiler ca) {

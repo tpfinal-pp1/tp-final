@@ -38,7 +38,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	ParametrosSistemaService.crearParametrosDefault();
 	CredencialService.crearAdminAdmin();
 	ContratoDuracionService.crearDuracionesPorDefecto();
-	if(logger.isDebugEnabled()) {
+	if (logger.isDebugEnabled()) {
 	    logger.debug("=============================");
 	    logger.debug("Leyendo parámetros desde db ");
 	    logger.debug("=============================");
@@ -73,11 +73,11 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
-	/*
-	 * logger.info("================="); logger.info("Generando datos..");
-	 * logger.info("=================");
-	 * GeneradorDeDatosSinAsociaciones.generarDatos(4);
-	 */
+
+	logger.info("=================");
+	logger.info("Generando datos..");
+	logger.info("=================");
+	GeneradorDeDatosSinAsociaciones.generarDatos(6);
 
     }
 

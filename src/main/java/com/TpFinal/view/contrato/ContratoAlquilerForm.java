@@ -20,6 +20,7 @@ import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.MailSender;
+import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.services.Planificador;
 import com.TpFinal.utils.Utils;
@@ -78,6 +79,7 @@ public class ContratoAlquilerForm extends FormLayout {
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
     DateField fechaIngreso = new DateField("Fecha de Ingreso");
     DateField fechaVencimiento = new DateField("Fecha de Vencimiento");
+    
 
     public String nombreArchivo = "";
     File archivo;
@@ -247,7 +249,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	});
 	finalizarCarga.addClickListener(finalizarContrato());
 	renovarContrato.addClickListener(e -> {
-	   
+
 	    this.binderContratoAlquiler = getBinderParaEdicion();
 	    ContratoAlquiler ca = contratoAlquiler.clone();
 	    ContratoService.setMontoInicialRenovacion(ca);
@@ -268,25 +270,26 @@ public class ContratoAlquilerForm extends FormLayout {
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
-		
+
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
-		
-		//agrego los jobs para los cobros que esten vencidos
+
+		// agrego los jobs para los cobros que esten vencidos
 		Planificador.get().addJobsCobrosVencidos(ultimo);
-		
-		//agrego los jobs para los cobros que vencen dentro de poco
+
+		// agrego los jobs para los cobros que vencen dentro de poco
 		Planificador.get().addJobsCobrosPorVencer(ultimo);
-		
-		//agrego el contrato para que avise cuando esta por vencer
+
+		// agrego el contrato para que avise cuando esta por vencer
 		Planificador.get().addJobAlquilerPorVencer(ultimo);
-		
-		//agrego los jobs para que avise cuando el alquiler este vencido
+
+		// agrego los jobs para que avise cuando el alquiler este vencido
 		Planificador.get().addJobAlquilerVencido(ultimo);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();
-		Notification.show("Errores de validación, por favor revise los campos.", Notification.Type.WARNING_MESSAGE);
+		Notification.show("Errores de validación, por favor revise los campos.",
+			Notification.Type.WARNING_MESSAGE);
 		checkFieldsPerTab(binderContratoAlquiler.validate().getFieldValidationErrors());
 	    }
 
@@ -299,6 +302,9 @@ public class ContratoAlquilerForm extends FormLayout {
 
     private Binder<ContratoAlquiler> getBinderParaEdicion() {
 	Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
+
+	
+
 	binderContratoAlquiler.forField(this.fechaIngreso).asRequired("Seleccione una fecha de Ingreso")
 		.bind(Contrato::getFechaIngreso, Contrato::setFechaIngreso);
 
@@ -485,7 +491,7 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
-	 //this.clearFields();
+	// this.clearFields();
 	if (contratoAlquiler != null) {
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
 	    this.contratoAlquiler = contratoAlquiler;
@@ -496,14 +502,14 @@ public class ContratoAlquilerForm extends FormLayout {
 	} else {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
-	    this.tfDiaDePago.setValue("10");
+	    this.tfDiaDePago.setValue(ParametrosSistemaService.getParametros().getDiaDePago().toString());
+	   
 	}
 
 	setVisible(true);
 	contratoABMView().setComponentsVisible(false);
 	if (contratoABMView().isIsonMobile())
 	    tabSheet.focus();
-
     }
 
     /**
@@ -544,6 +550,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPActualizacion.setEnabled(true);
 	    this.tfPagoFueraDeTermino.setEnabled(true);
 	    this.tfValorInicial.setEnabled(true);
+	   
 
 	} else if (estadoContrato == EstadoContrato.Vencido) {
 	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
@@ -567,6 +574,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPActualizacion.setEnabled(false);
 	    this.tfPagoFueraDeTermino.setEnabled(false);
 	    this.tfValorInicial.setEnabled(false);
+	    
 
 	} else {
 	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
@@ -590,7 +598,6 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPActualizacion.setEnabled(false);
 	    this.tfPagoFueraDeTermino.setEnabled(false);
 	    this.tfValorInicial.setEnabled(false);
-
 	}
     }
 
