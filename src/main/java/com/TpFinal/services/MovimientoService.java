@@ -60,6 +60,7 @@ public class MovimientoService {
 				.setClaseMovimiento(ClaseMovimiento.Alquiler)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
 				.setCobro(c)
 				.build();
 		return ret;
@@ -73,6 +74,7 @@ public class MovimientoService {
 				.setClaseMovimiento(ClaseMovimiento.Venta)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
 				.setCobro(c)
 				.build();
 		return ret;
@@ -86,6 +88,7 @@ public class MovimientoService {
 				.setClaseMovimiento(ClaseMovimiento.Comisión)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
 				.setCobro(c)
 				.build();
 		return ret;
@@ -100,6 +103,7 @@ public class MovimientoService {
 				.setClaseMovimiento(ClaseMovimiento.PagoAPropietario)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Egreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
 				.setCobro(c)
 				.build();
 		return ret;
