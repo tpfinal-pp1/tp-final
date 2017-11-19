@@ -7,6 +7,7 @@ import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DefaultLayout;
+import com.TpFinal.view.component.DialogConfirmacion;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -21,6 +22,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
 
 /* User Interface written in Java.
@@ -61,7 +63,7 @@ public class ParametrosMenuView extends DefaultLayout implements View {
     // Services y binder
     private Binder<ParametrosSistema> binder = new Binder<>();
     private ParametrosSistema parametros;
-   
+
     // ContratoDuracionService service = new ContratoDuracionService();
 
     public ParametrosMenuView() {
@@ -71,7 +73,6 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	configureComponents();
 	binding();
 	binder.readBean(parametros);
-
     }
 
     private void binding() {
@@ -134,7 +135,7 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(ParametrosSistema::getProximoAVencer, ParametrosSistema::setProximoAVencer);
-	
+
 	binder.forField(this.valorCertificado)
 		.asRequired("Campo requerido")
 		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
@@ -145,6 +146,31 @@ public class ParametrosMenuView extends DefaultLayout implements View {
     private void configureComponents() {
 	Responsive.makeResponsive(this);
 
+	guardar.addClickListener(click -> {
+	    DialogConfirmacion dialog = new DialogConfirmacion("Guardar Parámetros", VaadinIcons.COGS,
+		    "¿Realmente desea modificar los parámetros del Sistema?", "200px", save());
+	    dialog.addNoListener(cancel());
+	});
+
+    }
+
+    private ClickListener cancel() {
+	return click -> {
+	    showErrorNotification("No se realizaron cambios.");
+	    binder.readBean(ParametrosSistemaService.getParametros());
+	};
+    }
+
+    private ClickListener save() {
+	return click -> {
+	    if (binder.writeBeanIfValid(parametros)) {
+		ParametrosSistemaService.updateParametros(parametros);
+		showSuccessNotification("Parámetros del sistema modificados satisfactoriamente.");
+	    } else {
+		Notification.show("Errores de validación, revise los campos ingresados.",
+			Notification.Type.WARNING_MESSAGE);
+	    }
+	};
     }
 
     private void buildLayout() {
