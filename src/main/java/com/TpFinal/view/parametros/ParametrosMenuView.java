@@ -8,6 +8,7 @@ import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.view.component.BlueLabel;
 import com.TpFinal.view.component.DefaultLayout;
 import com.TpFinal.view.component.DialogConfirmacion;
+import com.TpFinal.view.duracionContratos.DuracionContratosABMWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -150,6 +151,10 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	    DialogConfirmacion dialog = new DialogConfirmacion("Guardar Parámetros", VaadinIcons.COGS,
 		    "¿Realmente desea modificar los parámetros del Sistema?", "200px", save());
 	    dialog.addNoListener(cancel());
+	});
+	
+	duracionesContratos.addClickListener(click ->{
+	    new DuracionContratosABMWindow("Duraciones de Contratos");
 	});
 
     }

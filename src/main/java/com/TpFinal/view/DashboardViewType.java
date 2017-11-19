@@ -20,7 +20,6 @@ public enum DashboardViewType {
 	INMUEBLES("inmuebles", InmuebleABMView.class, VaadinIcons.BUILDING, false),
 	PUBLICACIONES("publicaciones", PublicacionABMView.class, VaadinIcons.BOOKMARK_O, false),
 	CONTRATOS("contratos", ContratoABMView.class, VaadinIcons.HANDSHAKE, false),
-	DURACIONCONTRATOS("duracion Contratos", DuracionContratosABMView.class, VaadinIcons.CLOCK, false),
 	COBROS("cobros", CobrosABMView.class, VaadinIcons.CASH, false),
 	REPORTES("reportes", ReportesView.class, VaadinIcons.FILE, false),
 	EMPLEADOS("empleados", EmpleadoABMView.class, VaadinIcons.GROUP, false),
