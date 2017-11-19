@@ -72,7 +72,7 @@ public class Planificador {
 		//parametros
 		horasAntesRecoradatorio1 = 1;
 		horasAntesRecoradatorio2 = 24;
-		horasAntesCobrosVencidos = 240;
+		horasAntesCobrosVencidos = 0;
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
 		mesesAntesVencimientoContrato=1;
 		perioricidadEnDiasVencimientoContrato=1;
@@ -156,6 +156,7 @@ public class Planificador {
 	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
 			agregarJobNotificacionCobroVencido(cobro, horasAntesCobrosVencidos, 1);
+			agregarJobMailCobroPorVencido(cobro, 2);
 			System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
 		} else
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
@@ -166,6 +167,7 @@ public class Planificador {
 		try {
 			if (cobro.getId() != null) {
 				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-1"));
+				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-2"));
 				System.out.println("[INFO] Eliminados jobs de cobros vencidos correctamente");
 			} else
 				throw new IllegalArgumentException("El Cobro debe estar persistida");
@@ -186,7 +188,7 @@ public class Planificador {
 	
 	public void addJobCobroPorVencer(Cobro cobro) {
 		if (cobro.getId() != null) {
-			agregarJobMailCobroPorVencer(cobro, diasAntesCobroPorVencer, 2);
+			agregarJobMailCobroPorVencer(cobro, diasAntesCobroPorVencer, 3);
 			System.out.println("[INFO] Agregados jobs de cobros por vencer correctamente");
 		} else
 			throw new IllegalArgumentException("El Cobro debe estar persistida");
@@ -196,7 +198,7 @@ public class Planificador {
 		boolean ret = true;;
 		try {
 			if (cobro.getId() != null) {
-				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-2"));
+				ret= ret&& sc.unscheduleJob(TriggerKey.triggerKey(cobro.getTriggerKey() + "-3"));
 				System.out.println("[INFO] Eliminados jobs de cobros por vencer correctamente");
 			} else
 				throw new IllegalArgumentException("El Cobro debe estar persistida");
@@ -322,11 +324,26 @@ public class Planificador {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(1));
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
 		fechaInicio = fechaInicio.minusHours(horas);
-		fechaFin = fechaFin.minusHours(horas);
+		//fechaFin = fechaFin.minusHours(horas);
 		String perioricidad = "1/1";
 		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
 		String username = "broadcast";
 		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, perioricidad, triggerKey);
+	}
+	
+	private void agregarJobMailCobroPorVencido(Cobro c, Integer nro) {
+		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento().plusDays(1), LocalTime.now().plusMinutes(1));
+		LocalDateTime fechaFin = fechaInicio.plusYears(150);
+		String dia=String.valueOf(fechaInicio.getDayOfMonth());
+		String perioricidad = dia+"/"+this.perioricidadSegunCalificacion(c);
+		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
+		ContratoAlquiler ca= (ContratoAlquiler) c.getContrato();
+		String titulo="Pago vencido";
+		String texto="Señor: "+ca.getInquilinoContrato().getPersona().toString()+" recuerde que el pago de su alquiler vencio el dia: "
+				+c.getFechaDeVencimiento()
+			.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString();
+		String mail=ca.getInquilinoContrato().getPersona().getMail();
+		agregarJobMail(titulo, texto, mail, fechaInicio, fechaFin, perioricidad, triggerKey);
 	}
 	
 	private void agregarJobMailCobroPorVencer(Cobro c, Integer dias, Integer nro) {
@@ -336,7 +353,6 @@ public class Planificador {
 		fechaFin = fechaFin.minusDays(1);
 		String dia=String.valueOf(fechaInicio.getDayOfMonth());
 		String perioricidad = dia+"/"+this.perioricidadSegunCalificacion(c);
-		System.out.println("[DEBUG] perioricidad: "+perioricidad);
 		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
 		ContratoAlquiler ca= (ContratoAlquiler) c.getContrato();
 		String titulo="Pago proximo a vencer";
