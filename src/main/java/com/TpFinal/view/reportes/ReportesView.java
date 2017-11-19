@@ -77,8 +77,8 @@ public class ReportesView extends DefaultLayout implements View {
     
     DateField fDesde3 = null;
     
-    ComboBox <TipoMovimiento> comboTipoMov = new ComboBox<>("Tipo Movimiento", TipoMovimiento.toList());
-    ComboBox <TipoReporteMovimientos> comboTipoRepMov = new ComboBox<>("Tipo Rep. Movimiento", TipoReporteMovimientos.toList());
+    ComboBox <TipoMovimiento> comboTipoMov = new ComboBox<>("Tipo Mov.", TipoMovimiento.toList());
+    ComboBox <TipoReporteMovimientos> comboTipoRepMov = new ComboBox<>("Tipo Rep.", TipoReporteMovimientos.toList());
 
     List<Object> objects = null;
     boolean incluirCobrosPendientes;
@@ -191,33 +191,117 @@ public class ReportesView extends DefaultLayout implements View {
 		TipoMovimiento tipoMov = comboTipoMov.getValue();
 		TipoReporteMovimientos tipoRep = comboTipoRepMov.getValue();
 		
-		Integer refMensualAnual;
+		Integer refMensualAnual=1;
 		
 		LocalDate fechaDesde = fDesde3.getValue();
-	    LocalDate fechaHasta;
+	    LocalDate fechaHasta = null;
+	    
 
 	    // Por defecto traer cobros del mes actual
-	    if (fechaDesde == null) {
+	    if (fechaDesde == null && tipoMov == null && tipoRep == null) {
 		fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
 		fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
 		refMensualAnual=1;
+		tipoMov=TipoMovimiento.Ingreso;
+		logger.debug("========HEREEEEEEEEEEE==========");
 	    } 
 	    
-	    if (fechaDesde == null && tipoRep.equals(TipoReporteMovimientos.Anual)) {
+	    if (fechaDesde != null && tipoMov.equals(TipoMovimiento.Ingreso) && tipoRep == null){
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+			tipoMov=TipoMovimiento.Ingreso;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+	    if (fechaDesde != null && tipoMov.equals(TipoMovimiento.Egreso) && tipoRep == null) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+		    } 
+	    
+	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Mensual) && tipoMov==null) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+			tipoMov=TipoMovimiento.Ingreso;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+	    
+	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov==null) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
+			refMensualAnual=2;
+			tipoMov=TipoMovimiento.Ingreso;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+	    
+	    
+	    if (fechaDesde == null && tipoMov.equals(TipoMovimiento.Ingreso) && tipoRep == null) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+	    
+	    if (fechaDesde == null && tipoMov.equals(TipoMovimiento.Egreso) && tipoRep == null) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+	    
+	    if (fechaDesde == null && tipoMov == null && tipoRep.equals(TipoReporteMovimientos.Mensual)) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+			tipoMov=TipoMovimiento.Ingreso;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+	    
+	    if (fechaDesde == null && tipoMov == null && tipoRep.equals(TipoReporteMovimientos.Anual)) {
+			fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfMonth());
+			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfMonth());
+			refMensualAnual=1;
+			tipoMov=TipoMovimiento.Ingreso;
+			logger.debug("========HEREEEEEEEEEEE==========");
+		    } 
+		    
+	    if (fechaDesde == null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Ingreso)) {
 	    	fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
-			fechaHasta = LocalDate.now().with(TemporalAdjusters.lastDayOfYear());
+	    	fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
 	    	refMensualAnual=2;
+	    	logger.debug("========HEREEEEEEEEEEE==========");
 	    }
 	    
-	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual)) {
-	    	fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfYear());
-			fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfYear());
+	    if (fechaDesde == null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Egreso)) {
+	    	fechaDesde = LocalDate.now().with(TemporalAdjusters.firstDayOfYear());
+	    	fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
 	    	refMensualAnual=2;
+	    	logger.debug("========HEREEEEEEEEEEE==========");
 	    }
+	    
+	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Ingreso)) {
+	    	fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfYear());
+			fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
+	    	refMensualAnual=2;
+	    	logger.debug("========HEREEEEEEEEEEE==========");
+	    	
+	    }
+	    
+	    if (fechaDesde != null && tipoRep.equals(TipoReporteMovimientos.Anual) && tipoMov.equals(TipoMovimiento.Egreso)) {
+	    	fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfYear());
+	    	fechaHasta = LocalDate.of(fechaDesde.getYear(),12,31);
+	    	//fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfYear());
+	    	refMensualAnual=2;
+	    	logger.debug("========HEREEEEEEEEEEE==========");
+	    }
+	    
 	    else {
-		fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfMonth());
-		fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfMonth());
-		refMensualAnual=1;
+		//fechaDesde = fechaDesde.with(TemporalAdjusters.firstDayOfMonth());
+		//fechaHasta = fechaDesde.with(TemporalAdjusters.lastDayOfMonth());
+		//refMensualAnual=1;
+		//tipoMov=TipoMovimiento.Ingreso;
+		//logger.debug("========HEREEEEEEEEEEE==========");
 	    }
 
 	    if (logger.isDebugEnabled()) {
@@ -248,6 +332,7 @@ public class ReportesView extends DefaultLayout implements View {
 
     public void buildLayout() {
 	CssLayout filtering = new CssLayout();
+	CssLayout filtering2 = new CssLayout();
 	
 	comboInmuebles.setVisible(false);
 	comboTipoMov.setVisible(false);
@@ -273,6 +358,7 @@ public class ReportesView extends DefaultLayout implements View {
 	fDesde3 = new DateField();
 	fDesde3.setPlaceholder("Mes-Año");
 	fDesde3.setParseErrorMessage("Formato de fecha no reconocido");
+	fDesde3.setVisible(false);
 	
 	
 	tipoReporteCB.setSelectedItem(TipoReporte.Propietario);
@@ -281,7 +367,7 @@ public class ReportesView extends DefaultLayout implements View {
 	fDesdeDatePicker.setVisible(false);
 	fHastaDatePicker.setVisible(false);
 	fDesde2.setVisible(false);
-	fDesde3.setVisible(false);
+	
 	checkboxIncluirPendientes.setVisible(false);
 	fDesdeDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
 	fHastaDatePicker.setStyleName(ValoTheme.DATEFIELD_BORDERLESS);
@@ -297,9 +383,10 @@ public class ReportesView extends DefaultLayout implements View {
 
 	generarReporte();
 	
-	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, fDesde3,
-			comboTipoMov, comboTipoRepMov, checkboxIncluirPendientes,
+	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2, checkboxIncluirPendientes,
 			comboInmuebles,	tipoReporteCB, newReport);
+	filtering2.addComponents(fDesde3,
+			comboTipoMov, comboTipoRepMov);
 	tipoReporteCB.setStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	tipoReporteCB.addValueChangeListener(new HasValue.ValueChangeListener<TipoReporte>() {
 	    @Override
@@ -365,19 +452,19 @@ public class ReportesView extends DefaultLayout implements View {
 		    fDesde3.setVisible(false);
 		    comboTipoMov.setVisible(false);
 		    comboTipoRepMov.setVisible(false);
+		}
 		    
 		 if (valueChangeEvent.getValue() == TipoReporte.FichaMovimientos) {
+			fDesde3.setVisible(true);
+			comboTipoMov.setVisible(true);
+			comboTipoRepMov.setVisible(true);
 		    comboInmuebles.setVisible(false);
 		    clearFilterTextBtn.setVisible(false);
 		    fDesdeDatePicker.setVisible(false);
 		    fHastaDatePicker.setVisible(false);
 		    fDesde2.setVisible(false);
 		    checkboxIncluirPendientes.setVisible(false);
-			fDesde3.setVisible(true);
-		    comboTipoMov.setVisible(true);
-		    comboTipoRepMov.setVisible(true);
-
-		    }
+	    
 		}
 
 	    }
@@ -389,8 +476,13 @@ public class ReportesView extends DefaultLayout implements View {
 
 	filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 	filtering.setResponsive(true);
+	
+	filtering2.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+	filtering2.setResponsive(true);
+
 
 	buildToolbar("Reportes", filtering);
+	buildToolbar("", filtering2);
 
 	pdfComponent.setSizeFull();
 	addComponent(pdfComponent);

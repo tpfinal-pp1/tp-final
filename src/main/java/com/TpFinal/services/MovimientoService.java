@@ -117,16 +117,9 @@ public class MovimientoService {
 			logger.debug("Movimientos cant: " + listaMovimientos.size());
 		}
 
-		listaMovimientos.forEach(movimiento -> {
-			
 				movimientos.addAll(listaMovimientos.stream()
 						.filter(c -> {
-							if (tipoMov.equals(TipoMovimiento.Ingreso))
-								return c.getTipoMovimiento().equals(TipoMovimiento.Ingreso);
-							if (tipoMov.equals(TipoMovimiento.Egreso))
-							return c.getTipoMovimiento().equals(TipoMovimiento.Egreso);
-							return false;
-								
+							return c.getTipoMovimiento().equals(tipoMov);
 						})
 						.filter(c -> {
 							return fechaDesde != null ? c.getFecha().compareTo(fechaDesde) >= 0 : true;
@@ -135,9 +128,11 @@ public class MovimientoService {
 							return fechaHasta != null ? c.getFecha().compareTo(fechaHasta) <= 0 : true;
 						})
 						.collect(Collectors.toList()));
-
+				
+				if (logger.isDebugEnabled())
+					logger.debug("Cantidad de movimientos obtenidos: " + movimientos.size());
 		
-				});
+				
 		movimientos.forEach(mov -> {
 					itemsReporte.add(new ItemFichaMovimientos(mov, refMensualAnual));
 				});

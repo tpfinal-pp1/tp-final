@@ -7,6 +7,7 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.movimiento.Movimiento;
 
@@ -133,7 +134,7 @@ public class ItemFichaMovimientos {
 			this.simbolo=TipoMoneda.getSimbolo(m.getCobro().getContrato().getMoneda());
 		}
 		
-		else {
+		if (m.getCobro().getContrato() instanceof ContratoVenta) {
 			this.simbolo=TipoMoneda.getSimbolo(m.getCobro().getContrato().getMoneda());
 		}
 	}

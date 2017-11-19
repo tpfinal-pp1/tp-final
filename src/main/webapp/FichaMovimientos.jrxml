@@ -35,52 +35,52 @@
 	<field name="repAnualMensual" class="java.lang.String">
 		<fieldDescription><![CDATA[repAnualMensual]]></fieldDescription>
 	</field>
-	<variable name="IngresoVentaDolares" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoVentaDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Venta") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoVentaPesos" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoVentaPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Venta") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoAlquilerDolares" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoAlquilerDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Alquiler") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoAlquilerPesos" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoAlquilerPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Alquiler") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoComisionDolares" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoComisionDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Comisión") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoComisionPesos" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoComisionPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Comisión") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoOtrosDolares" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoOtrosDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Otro") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoOtrosPesos" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoOtrosPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Otro") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoImpuestosDolares" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoImpuestosDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="IngresoImpuestoPesos" class="java.lang.String" calculation="Sum">
+	<variable name="IngresoImpuestoPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="EgresoPagoAPropsDolares" class="java.lang.String" calculation="Sum">
+	<variable name="EgresoPagoAPropsDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("PagoAPropietario") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="EgresoPagoAPropsPesos" class="java.lang.String" calculation="Sum">
+	<variable name="EgresoPagoAPropsPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("PagoAPropietario") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="EgresoOtrosDolares" class="java.lang.String" calculation="Sum">
+	<variable name="EgresoOtrosDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Otro") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="EgresoOtrosPesos" class="java.lang.String" calculation="Sum">
+	<variable name="EgresoOtrosPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Otro") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="EgresoImpuestosDolares" class="java.lang.String" calculation="Sum">
+	<variable name="EgresoImpuestosDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
-	<variable name="EgresoImpuestosPesos" class="java.lang.String" calculation="Sum">
+	<variable name="EgresoImpuestosPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<group name="Group1">
@@ -144,9 +144,7 @@
 				<frame>
 					<reportElement x="1" y="0" width="551" height="30" uuid="7e0e9a81-afee-4cbb-9059-5fe34cb93559"/>
 					<textField>
-						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#6EBAB3" uuid="96b0633a-1a2e-4ffb-b70c-6b7f088293df">
-							<printWhenExpression><![CDATA[new Boolean($F{repAnualMensual}.equals("Mensual"))]]></printWhenExpression>
-						</reportElement>
+						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#6EBAB3" uuid="96b0633a-1a2e-4ffb-b70c-6b7f088293df"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
@@ -173,9 +171,7 @@
 				<frame>
 					<reportElement x="1" y="0" width="551" height="30" uuid="6158529b-2859-4834-95ab-494563d6913b"/>
 					<textField>
-						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#7F8281" uuid="c5386631-6363-4977-90fa-dc6f18dcecd0">
-							<printWhenExpression><![CDATA[new Boolean($F{repAnualMensual}.equals("Mensual"))]]></printWhenExpression>
-						</reportElement>
+						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#7F8281" uuid="c5386631-6363-4977-90fa-dc6f18dcecd0"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
