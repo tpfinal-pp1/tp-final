@@ -30,8 +30,8 @@ public class Planificador {
 	Job notificacion;
 	Job mailSender;
 	// citas
-	Integer horasAntesRecoradatorio1;
-	Integer horasAntesRecoradatorio2;
+	Integer horasAntesCita1;
+	Integer horasAntesCita2;
 	// cobros por vencer
 	Integer perioricidadPorVencerA;
 	Integer perioricidadPorVencerB;
@@ -43,6 +43,9 @@ public class Planificador {
 	//Contratos por vencer
 	Integer mesesAntesVencimientoContrato;
 	Integer perioricidadEnDiasVencimientoContrato;
+	
+	//Contratos vencidos
+	Integer perioricidadContratoVencido;
 
 	private static Planificador instancia;
 	public static boolean demoIniciado = false;
@@ -76,12 +79,17 @@ public class Planificador {
 //		this.diasAntesCobroPorVencer=10;
 		
 		ParametrosSistema ps = ParametrosSistemaService.getParametros();
-		
-		horasAntesRecoradatorio1 = 1;
-		horasAntesRecoradatorio2 = 24;
+		//citas
+		horasAntesCita1 = 1;
+		horasAntesCita2 = 24;
+		//Cobros vencidos
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
+		//contrato por vencer
 		mesesAntesVencimientoContrato=1;
-		perioricidadEnDiasVencimientoContrato=1;
+		perioricidadEnDiasVencimientoContrato=10;
+		//Contrato vencido
+		this.perioricidadContratoVencido=1;
+		//Cobros por vencer
 		this.perioricidadPorVencerA=ps.getFrecuenciaAvisoCategoriaA();
 		this.perioricidadPorVencerB=ps.getFrecuenciaAvisoCategoriaB();
 		this.perioricidadPorVencerC=ps.getFrecuenciaAvisoCategoriaC();
@@ -125,8 +133,8 @@ public class Planificador {
 
 	public void addJobCita(Cita cita) {
 		if (cita.getId() != null) {
-			agregarJobNotificacionCita(cita, horasAntesRecoradatorio1, 1);
-			agregarJobNotificacionCita(cita, horasAntesRecoradatorio2, 2);
+			agregarJobNotificacionCita(cita, horasAntesCita1, 1);
+			agregarJobNotificacionCita(cita, horasAntesCita2, 2);
 		} else
 			throw new IllegalArgumentException("La cita debe estar persistida");
 	}
@@ -370,22 +378,21 @@ public class Planificador {
 	private void agregarJobMailAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()),
 				LocalTime.now().plusMinutes(1));
-		//para que pare un dia antes del vencimiento
-		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
-				.minusDays(1), LocalTime.now().plusMinutes(10));
+		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()), LocalTime.now().plusMinutes(10));
 		fechaInicio=fechaInicio.minusMonths(meses);
 		String triggerKey = c.getTriggerKey()+"-"+key.toString();
 		String dia=String.valueOf(fechaInicio.getDayOfMonth());
 		String perioricidad=dia+"/"+this.perioricidadEnDiasVencimientoContrato.toString();
-		agregarJobMail(c.getTitulo(), c.getMessage(), c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
+		String mensaje="El contrato de alquiler se vence el dia: "+c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
+				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString()+"."+"\nRecuerde que el inmueble debe ser "
+						+ "entregado en condiciones";
+		agregarJobMail("Vencimiento de contrato", mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
 	
 	private void agregarJobNotificacionAlquilerPorVencer(ContratoAlquiler c, Integer meses, Integer key) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()),
 				LocalTime.now().plusMinutes(1));
-		//para que pare un dia antes del vencimiento
-		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
-				.minusDays(1), LocalTime.now().plusMinutes(10));
+		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()), LocalTime.now().plusMinutes(10));
 		fechaInicio=fechaInicio.minusMonths(meses);
 		String triggerKey = c.getTriggerKey()+"-"+key.toString();
 		String dia=String.valueOf(fechaInicio.getDayOfMonth());
@@ -397,12 +404,15 @@ public class Planificador {
 	private void agregarJobMailAlquilerVencido(ContratoAlquiler c, Integer key) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()),
 				LocalTime.now().plusMinutes(1));
+		fechaInicio=fechaInicio.minusDays(10);
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion()), LocalTime.now().plusMinutes(10));
 		String triggerKey = c.getTriggerKey()+"-"+key.toString();
-		String perioricidad="1/1";
-		String mensaje="El contrato de alquiler se vencio el dia: "+c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
-				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString();
-		agregarJobMail("Se vencio el contrato de alquiler",mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
+		String dia=String.valueOf(fechaInicio.getDayOfMonth());
+		String perioricidad=dia+"/"+this.perioricidadContratoVencido;
+		String mensaje="El contrato de alquiler se vence el dia: "+c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
+				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString()+"."+"\nRecuerde que el inmueble debe ser "
+						+ "entregado en condiciones";
+		agregarJobMail("Vencimiento de contrato",mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
 
 	public LocalTime getHoraInicioCobrosVencidos() {
