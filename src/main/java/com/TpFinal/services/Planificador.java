@@ -6,6 +6,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
+import java.util.List;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -130,6 +131,11 @@ public class Planificador {
 			e.printStackTrace();
 		}
 	}
+	
+	public void updateTriggersJobCita(List<Cita>citas) {
+		citas.forEach(cita -> this.removeJobCita(cita));
+		citas.forEach(cita -> this.addJobCita(cita));
+	}
 
 	public void addJobCita(Cita cita) {
 		if (cita.getId() != null) {
@@ -162,6 +168,11 @@ public class Planificador {
 		return ret;
 	}
 	
+	public void updateTriggersJobCobrosVencidos(List<Cobro>cobros) {
+		cobros.forEach(cobro -> this.removeJobCobroVencido(cobro));
+		cobros.forEach(cobro -> this.addJobCobroVencido(cobro));
+	}
+	
 	public void addJobsCobrosVencidos(ContratoAlquiler c) {
 		c.getCobros().forEach(c1 -> this.addJobCobroVencido(c1));
 		System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
@@ -189,6 +200,11 @@ public class Planificador {
 			e.printStackTrace();
 		}
 		return ret;
+	}
+	
+	public void updateTriggersJobCobrosPorVencer(List<Cobro>cobros) {
+		cobros.forEach(cobro -> this.removeJobCobroPorVencer(cobro));
+		cobros.forEach(cobro -> this.addJobCobroPorVencer(cobro));
 	}
 	
 	public void addJobsCobrosPorVencer(ContratoAlquiler ca){
@@ -222,6 +238,11 @@ public class Planificador {
 		return ret;
 	}
 	
+	public void updateTriggersJobAlquileresPorVencer(List<ContratoAlquiler>alquileres) {
+		alquileres.forEach(alquiler -> this.removeJobAlquilerPorVencer(alquiler));
+		alquileres.forEach(alquiler -> this.addJobAlquilerPorVencer(alquiler));
+	}
+	
 	public void addJobAlquilerPorVencer(ContratoAlquiler contrato) {
 		if(contrato.getId()!=null && tieneVencimientoFuturo(contrato)) {
 			agregarJobMailAlquilerPorVencer(contrato, mesesAntesVencimientoContrato,1);
@@ -246,6 +267,11 @@ public class Planificador {
 		return ret;
 	}
 	
+	public void updateTriggersJobAlquileresVencidos(List<ContratoAlquiler>alquileres) {
+		alquileres.forEach(alquiler -> this.removeJobAlquilerVencido(alquiler));
+		alquileres.forEach(alquiler -> this.addJobAlquilerVencido(alquiler));
+	}
+	
 	public void addJobAlquilerVencido(ContratoAlquiler contrato) {
 		if(contrato.getId()!=null) {
 			agregarJobMailAlquilerVencido(contrato, 3);
@@ -253,7 +279,7 @@ public class Planificador {
 		}
 	}
 	
-	public boolean removeJobAlquilerPorVencido(ContratoAlquiler contrato) {
+	public boolean removeJobAlquilerVencido(ContratoAlquiler contrato) {
 		boolean ret = true;
 		try {
 			if (contrato.getId() != null) {
