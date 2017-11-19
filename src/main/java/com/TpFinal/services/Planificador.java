@@ -384,7 +384,7 @@ public class Planificador {
 		String dia=String.valueOf(fechaInicio.getDayOfMonth());
 		String perioricidad=dia+"/"+this.perioricidadEnDiasVencimientoContrato.toString();
 		String mensaje="El contrato de alquiler se vence el dia: "+c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
-				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString()+"\n recuerde que el inmueble debe ser "
+				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString()+"."+"\nRecuerde que el inmueble debe ser "
 						+ "entregado en condiciones";
 		agregarJobMail("Vencimiento de contrato", mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
@@ -410,7 +410,7 @@ public class Planificador {
 		String dia=String.valueOf(fechaInicio.getDayOfMonth());
 		String perioricidad=dia+"/"+this.perioricidadContratoVencido;
 		String mensaje="El contrato de alquiler se vence el dia: "+c.getFechaIngreso().plusMonths(c.getDuracionContrato().getDuracion())
-				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString()+"\n recuerde que el inmueble debe ser "
+				.format(new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter()).toString()+"."+"\nRecuerde que el inmueble debe ser "
 						+ "entregado en condiciones";
 		agregarJobMail("Vencimiento de contrato",mensaje, c.getInquilinoContrato().getPersona().getMail(), fechaInicio, fechaFin, perioricidad,triggerKey);
 	}
