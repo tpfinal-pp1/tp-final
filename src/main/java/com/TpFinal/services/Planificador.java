@@ -1,17 +1,11 @@
 package com.TpFinal.services;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatterBuilder;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import com.TpFinal.dto.notificacion.NotificadorJob;
-import com.TpFinal.dto.persona.Calificacion;
 
 import org.quartz.CronScheduleBuilder;
 import org.quartz.Job;
@@ -25,10 +19,10 @@ import org.quartz.TriggerKey;
 import org.quartz.impl.StdSchedulerFactory;
 
 import com.TpFinal.dto.cita.Cita;
-import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
-import com.TpFinal.dto.interfaces.Messageable;
+import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
+import com.TpFinal.dto.persona.Calificacion;
 
 public class Planificador {
 
@@ -45,7 +39,6 @@ public class Planificador {
 	Integer perioricidadPorVencerD;
 	Integer diasAntesCobroPorVencer;
 	// cobros vencidos
-	Integer horasAntesCobrosVencidos;
 	LocalTime horaInicioCobrosVencidos;
 	//Contratos por vencer
 	Integer mesesAntesVencimientoContrato;
@@ -70,16 +63,29 @@ public class Planificador {
 		if (sc == null)
 			this.sc = StdSchedulerFactory.getDefaultScheduler();
 		//parametros
+//		horasAntesRecoradatorio1 = 1;
+//		horasAntesRecoradatorio2 = 24;
+//		horasAntesCobrosVencidos = 0;
+//		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
+//		mesesAntesVencimientoContrato=1;
+//		perioricidadEnDiasVencimientoContrato=1;
+//		this.perioricidadPorVencerA=1;
+//		this.perioricidadPorVencerB=3;
+//		this.perioricidadPorVencerC=4;
+//		this.perioricidadPorVencerD=5;
+//		this.diasAntesCobroPorVencer=10;
+		
+		ParametrosSistema ps = ParametrosSistemaService.getParametros();
+		
 		horasAntesRecoradatorio1 = 1;
 		horasAntesRecoradatorio2 = 24;
-		horasAntesCobrosVencidos = 0;
 		horaInicioCobrosVencidos = LocalTime.of(19, 00, 00);
 		mesesAntesVencimientoContrato=1;
 		perioricidadEnDiasVencimientoContrato=1;
-		this.perioricidadPorVencerA=1;
-		this.perioricidadPorVencerB=3;
-		this.perioricidadPorVencerC=4;
-		this.perioricidadPorVencerD=5;
+		this.perioricidadPorVencerA=ps.getFrecuenciaAvisoCategoriaA();
+		this.perioricidadPorVencerB=ps.getFrecuenciaAvisoCategoriaB();
+		this.perioricidadPorVencerC=ps.getFrecuenciaAvisoCategoriaC();
+		this.perioricidadPorVencerD=ps.getFrecuenciaAvisoCategoriaD();
 		this.diasAntesCobroPorVencer=10;
 	}
 
@@ -155,7 +161,7 @@ public class Planificador {
 
 	public void addJobCobroVencido(Cobro cobro) {
 		if (cobro.getId() != null) {
-			agregarJobNotificacionCobroVencido(cobro, horasAntesCobrosVencidos, 1);
+			agregarJobNotificacionCobroVencido(cobro, 1);
 			agregarJobMailCobroPorVencido(cobro, 2);
 			System.out.println("[INFO] Agregados jobs de cobros vencidos correctamente");
 		} else
@@ -320,11 +326,9 @@ public class Planificador {
 		agregarJobNotificacionSistema(c.getTitulo(), c.getMessage(), username, fechaInicio, fechaFin, perioricidad, triggerKey);
 	}
 
-	private void agregarJobNotificacionCobroVencido(Cobro c, Integer horas, Integer nro) {
+	private void agregarJobNotificacionCobroVencido(Cobro c, Integer nro) {
 		LocalDateTime fechaInicio = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(1));
 		LocalDateTime fechaFin = LocalDateTime.of(c.getFechaDeVencimiento(), LocalTime.now().plusMinutes(10));
-		fechaInicio = fechaInicio.minusHours(horas);
-		//fechaFin = fechaFin.minusHours(horas);
 		String perioricidad = "1/1";
 		String triggerKey = c.getTriggerKey()+"-"+nro.toString();
 		String username = "broadcast";
