@@ -24,6 +24,7 @@ public class FiltroCobros {
     private Predicate<Cobro> filtroMonto = p -> true;
     private Predicate<Cobro> filtroCustom = p -> true;
     private Predicate<Cobro> filtroTipoMoneda = c -> c.getContrato().getMoneda().equals(TipoMoneda.Pesos);
+    private Predicate<Cobro> filtroTipo = p -> true;
 
     public FiltroCobros() {
 	filtroCompuesto = p -> true;
@@ -32,7 +33,7 @@ public class FiltroCobros {
 
     private void actualizarComposicion() {
 	filtros.clear();
-	filtros.addAll(Arrays.asList(filtroInmueble, filtroMonto, filtroCustom,
+	filtros.addAll(Arrays.asList(filtroTipo, filtroInmueble, filtroMonto, filtroCustom,
 		filtroFechaVencimientoDesde,
 		filtroFechaVencimientoHasta,
 		filtroFechaDePagoDesde,
@@ -175,6 +176,15 @@ public class FiltroCobros {
     public void setTipoMoneda(TipoMoneda tipoMoneda) {
 	filtroTipoMoneda = c -> c.getContrato().getMoneda().equals(tipoMoneda);
 	actualizarComposicion();
+    }
+
+    public void setfiltroTipo(Predicate<Cobro> p) {
+	this.filtroTipo = p;
+	actualizarComposicion();
+    }
+
+    public Predicate<Cobro> getFiltroTipo() {
+	return filtroTipo;
     }
 
 }
