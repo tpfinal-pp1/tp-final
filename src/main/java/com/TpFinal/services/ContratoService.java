@@ -477,8 +477,8 @@ public class ContratoService {
 		BigDecimal montoVendedor=new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal interesSellado=new BigDecimal("0");
 		
-		comisionComprador=comisionComprador.multiply(new BigDecimal(this.porcentajeComisionComprador)).divide(new BigDecimal("100"));
-		comisionVendedor=comisionVendedor.multiply(new BigDecimal(this.porcentajeComisionVendedor)).divide(new BigDecimal("100"));
+		comisionComprador=comisionComprador.multiply(new BigDecimal(contrato.getComisionAComprador())).divide(new BigDecimal("100"));
+		comisionVendedor=comisionVendedor.multiply(new BigDecimal(contrato.getComsionAVendedor())).divide(new BigDecimal("100"));
 		total=total.add(comisionComprador).add(comisionVendedor);
 		totalComision=totalComision.add(comisionComprador).add(comisionVendedor);
 		montoVendedor=montoVendedor.subtract(comisionVendedor);
