@@ -187,7 +187,7 @@ public class ReportesView extends DefaultLayout implements View {
 	}
 	
 	case FichaMovimientos: {
-		//LocalDate fecha = fDesde3.getValue();
+		
 		TipoMovimiento tipoMov = comboTipoMov.getValue();
 		TipoReporteMovimientos tipoRep = comboTipoRepMov.getValue();
 		
