@@ -283,7 +283,6 @@ public class ContratoAlquilerForm extends FormLayout {
 		service.finalizarPublicacionAsociada(contratoAlquiler);
 		service.addCobrosAlquiler(contratoAlquiler);
 		
-		
 		service.cobrarCuota(1, contratoAlquiler);
 		
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
