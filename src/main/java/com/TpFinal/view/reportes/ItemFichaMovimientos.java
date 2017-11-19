@@ -35,7 +35,8 @@ public class ItemFichaMovimientos {
 	this.tipoMovimiento = String.valueOf(m.getTipoMovimiento());
 	this.descripción = m.getDescripcionMovimiento();
 	this.monto = m.getMonto();
-	castearContrato(m);
+	//castearContrato(m);
+	this.simbolo = TipoMoneda.getSimbolo(m.getTipoMoneda());
 	this.anio = fechaLocalDate.getYear();
 	this.mes = formatearMes(fechaLocalDate.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag(
 		"es-AR")));
@@ -133,7 +134,7 @@ public class ItemFichaMovimientos {
 
     }
 
-    public void castearContrato(Movimiento m) {
+    private void castearContrato(Movimiento m) {
 	if (logger.isDebugEnabled()) {
 	    String movString = "nulo";
 	    String cobroString = "nulo";
