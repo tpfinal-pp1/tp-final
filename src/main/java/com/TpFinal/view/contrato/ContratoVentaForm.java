@@ -247,13 +247,13 @@ public class ContratoVentaForm extends FormLayout {
 		.asRequired("Ingrese un porcentaje de comisión")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un porcentaje no negativo")
-		.bind(ContratoVenta::getComisionAInquilino, ContratoVenta::setComisionAInquilino);
+		.bind(ContratoVenta::getComisionAComprador, ContratoVenta::setComisionAComprador);
 
 	binderContratoVenta.forField(this.comisionAPropietario)
 		.asRequired("Ingrese un porcentaje de comisión")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un porcentaje no negativo")
-		.bind(ContratoVenta::getComsionAPropietario, ContratoVenta::setComsionAPropietario);
+		.bind(ContratoVenta::getComsionAVendedor, ContratoVenta::setComsionAVendedor);
 
 	binderContratoVenta.forField(fechaIngreso).asRequired("Seleccione una fecha de ingreso").bind(
 		Contrato::getFechaIngreso,

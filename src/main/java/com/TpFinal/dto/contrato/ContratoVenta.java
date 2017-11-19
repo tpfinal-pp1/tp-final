@@ -42,10 +42,10 @@ public class ContratoVenta extends Contrato implements Cloneable {
     @JoinColumn(name = "id_vendedor")
     private Persona vendedor;
 
-    @Column(name = "comisionAInquilino")
-    private Integer comisionAInquilino;
-    @Column(name = "comisionAPropietario")
-    private Integer comsionAPropietario;
+    @Column(name = "comisionAComprador")
+    private Integer comisionAComprador;
+    @Column(name = "comisionAVendedor")
+    private Integer comsionAVendedor;
 
     public ContratoVenta() {
 	super();
@@ -64,20 +64,20 @@ public class ContratoVenta extends Contrato implements Cloneable {
     
     
 
-    public Integer getComisionAInquilino() {
-        return comisionAInquilino;
+    public Integer getComisionAComprador() {
+        return comisionAComprador;
     }
 
-    public void setComisionAInquilino(Integer comisionAInquilino) {
-        this.comisionAInquilino = comisionAInquilino;
+    public void setComisionAComprador(Integer comisionAComprador) {
+        this.comisionAComprador = comisionAComprador;
     }
 
-    public Integer getComsionAPropietario() {
-        return comsionAPropietario;
+    public Integer getComsionAVendedor() {
+        return comsionAVendedor;
     }
 
-    public void setComsionAPropietario(Integer comsionAPropietario) {
-        this.comsionAPropietario = comsionAPropietario;
+    public void setComsionAVendedor(Integer comsionAVendedor) {
+        this.comsionAVendedor = comsionAVendedor;
     }
 
     public Persona getVendedor() {
