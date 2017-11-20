@@ -24,7 +24,7 @@ public enum DashboardViewType {
 	REPORTES("reportes", ReportesView.class, VaadinIcons.FILE, false),
 	EMPLEADOS("empleados", EmpleadoABMView.class, VaadinIcons.GROUP, false),
 	MOVIMIENTOS("movimientos", MovimientoABMView.class, VaadinIcons.CHART_GRID, false),
-	PARAMETROS("Configuración", ParametrosMenuView.class, VaadinIcons.COGS, false);
+	PARAMETROS("parametros", ParametrosMenuView.class, VaadinIcons.COGS, false);
 
     private final String viewName;
     private final Class<? extends View> viewClass;
