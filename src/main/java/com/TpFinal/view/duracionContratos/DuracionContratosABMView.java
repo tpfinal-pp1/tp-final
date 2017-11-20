@@ -66,6 +66,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	configureComponents();
+	clearFilterTextBtn.setVisible(false);
 
     }
 
@@ -208,7 +209,7 @@ public class DuracionContratosABMView extends DefaultLayout implements View {
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
 	// seleccionFiltro.setVisible(b);
-	// clearFilterTextBtn.setVisible(b);
+	clearFilterTextBtn.setVisible(!b);
 	if (isonMobile)
 	    grid.setVisible(b);
 

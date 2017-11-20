@@ -3,10 +3,7 @@ package com.TpFinal;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.dto.notificacion.NotificadorJob;
-import com.TpFinal.services.ContratoDuracionService;
-import com.TpFinal.services.CredencialService;
-import com.TpFinal.services.ParametrosSistemaService;
-import com.TpFinal.services.Planificador;
+import com.TpFinal.services.*;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.vaadin.server.ServiceException;
 import com.vaadin.server.SessionDestroyEvent;
@@ -15,6 +12,7 @@ import com.vaadin.server.SessionInitEvent;
 import com.vaadin.server.SessionInitListener;
 import com.vaadin.server.VaadinServlet;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
@@ -36,7 +34,8 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("===================");
 	establecerConexionesBD();
 	ParametrosSistemaService.crearParametrosDefault();
-	CredencialService.crearAdminAdmin();
+
+	//CredencialService.crearAdminAdmin();
 	ContratoDuracionService.crearDuracionesPorDefecto();
 	if (logger.isDebugEnabled()) {
 	    logger.debug("=============================");
@@ -74,10 +73,10 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
 
-	logger.info("=================");
+	/*logger.info("=================");
 	logger.info("Generando datos..");
 	logger.info("=================");
-	GeneradorDeDatosSinAsociaciones.generarDatos(6);
+	GeneradorDeDatosSinAsociaciones.generarDatos(6);*/
 
     }
 

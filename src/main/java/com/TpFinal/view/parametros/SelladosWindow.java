@@ -98,9 +98,11 @@ public class SelladosWindow extends CustomComponent {
 
 
 						}
-						if(bigDecimal!=null)
+						if(bigDecimal!=null){
+
 							provinciaService.
 									setSelladoToProvincia(provincias.getValue(),bigDecimal);
+							montoSellado.setComponentError(null);}
 					}
 				}
 			}

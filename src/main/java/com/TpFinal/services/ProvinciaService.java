@@ -46,8 +46,15 @@ public class ProvinciaService {
     }
 
     public BigDecimal getSelladoFromProvincia(Provincia provincia){
+
     	ArrayList<SelladoBanco> selladoBancos=
 				(ArrayList<SelladoBanco>) daoSelladoBanco.readAll();
+    	if(selladoBancos.size()==0){
+			setSelladoToProvincia(getProvinciaFromString("Buenos Aires"),new BigDecimal(1.2));
+    	}
+		selladoBancos=
+				(ArrayList<SelladoBanco>) daoSelladoBanco.readAll();
+
 		for (SelladoBanco sellado: selladoBancos
 			 ) {
 			if(sellado.getProvincia().equals(provincia.getNombre()))
@@ -62,18 +69,18 @@ public class ProvinciaService {
 		boolean exists=false;
 		for (SelladoBanco sellado: selladoBancos
 				) {
-		if(sellado.getProvincia().equals(provincia.getNombre())){
-			exists=true;
-			sellado.setMonto(monto);
-			daoSelladoBanco.saveOrUpdate(sellado);
-		}
+				if(sellado.getProvincia().equals(provincia.getNombre())){
+					exists=true;
+					sellado.setMonto(monto);
+					daoSelladoBanco.saveOrUpdate(sellado);
+				}
 
-	}
-		if(!exists){
-		SelladoBanco nuevo=new SelladoBanco();
-		nuevo.setMonto(monto);
-		nuevo.setProvincia(provincia.getNombre());
-		daoSelladoBanco.saveOrUpdate(nuevo);
+			}
+			if(!exists){
+				SelladoBanco nuevo=new SelladoBanco();
+				nuevo.setMonto(monto);
+				nuevo.setProvincia(provincia.getNombre());
+				daoSelladoBanco.saveOrUpdate(nuevo);
 	}
 
 }
