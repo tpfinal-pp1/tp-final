@@ -194,7 +194,6 @@ public class InmuebleForm extends FormLayout {
 	this.persona.setEsInmobiliaria(false);
 	persona.addRol(new Propietario());
 	Propietario propietario = (Propietario) persona.getRol(Rol.Propietario);
-	propietario.addInmueble(this.inmueble);
 
 	new PersonaFormWindow(this.persona) {
 	    @Override
@@ -212,7 +211,6 @@ public class InmuebleForm extends FormLayout {
 	this.persona.setEsInmobiliaria(true);
 	persona.addRol(new Propietario());
 	Propietario propietario = (Propietario) persona.getRol(Rol.Propietario);
-	propietario.addInmueble(this.inmueble);
 
 	new InmobiliariaWindow(this.persona) {
 	    @Override
