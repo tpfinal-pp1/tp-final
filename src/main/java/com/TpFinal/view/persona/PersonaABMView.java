@@ -71,7 +71,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 		updateList();
 		cerrarForm.addClickListener(click -> {
 			personaForm.setVisible(false); 
-			newItem.setVisible(true);
+			setComponentsVisible(true);
 		});
 		cerrarForm.setVisible(false);
 
