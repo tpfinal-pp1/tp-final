@@ -72,7 +72,6 @@ public class InmuebleForm extends FormLayout {
     private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
     private ComboBox<Provincia> provincias = new ComboBox<>("Provincia");
 
-
     // TabCaracteristicas 1
     private TextField ambientes = new TextField("Ambientes");
     private TextField cocheras = new TextField("Cocheras");
@@ -92,20 +91,18 @@ public class InmuebleForm extends FormLayout {
     private ProvinciaService provinciaService = new ProvinciaService();
 
     private Image portada;
-    private Button imageManager=new Button("Imagenes",e-> new ImagenesInmuebleWindow(inmueble) {
-		@Override
-		public void onClose() {
-			Resource res=InmuebleService.getPortada(inmueble);
-			portada.setSource(res);
-			if(res==null)
-				portada.setVisible(false);
-			else
-				portada.setVisible(true);
+    private Button imageManager = new Button("Imagenes", e -> new ImagenesInmuebleWindow(inmueble) {
+	@Override
+	public void onClose() {
+	    Resource res = InmuebleService.getPortada(inmueble);
+	    portada.setSource(res);
+	    if (res == null)
+		portada.setVisible(false);
+	    else
+		portada.setVisible(true);
 
-
-
-		}
-	});
+	}
+    });
     boolean edicion = false;
 
     TabSheet tabSheet;
@@ -395,9 +392,8 @@ public class InmuebleForm extends FormLayout {
 	portada.setCaption("Portada");
 	HorizontalLayout layoutCbBoxInmov = new HorizontalLayout(cbEsInmobiliaria);
 	layoutCbBoxInmov.setCaption("Inmobiliaria");
-	principal = new FormLayout(layoutCbBoxInmov, propietarioCombo, clasesInmueble, tiposInmueble
-		,new BlueLabel("Inmueble"),portada, calle, nro, provincias, localidades, codPostal
-		);
+	principal = new FormLayout(layoutCbBoxInmov, propietarioCombo, clasesInmueble, tiposInmueble, new BlueLabel(
+		"Inmueble"), portada, calle, nro, provincias, localidades, codPostal);
 
 	caracteristicas1 = new FormLayout(ambientes, cocheras, dormitorios, supTotal,
 		supCubierta, new BlueLabel("Adicionales"), aEstrenar, aireAcond, cJardin, cParrilla, cPpileta);
@@ -414,8 +410,7 @@ public class InmuebleForm extends FormLayout {
 
 	// pic.setSpacing(true);
 
-
-	HorizontalLayout actions = new HorizontalLayout(save, delete,imageManager);
+	HorizontalLayout actions = new HorizontalLayout(save, delete, imageManager);
 	addComponents(inmuebleFromTabSheet, actions);
 	actions.setSpacing(true);
 
@@ -430,29 +425,28 @@ public class InmuebleForm extends FormLayout {
 
 	if (inmueble != null) {
 
-
 	    this.inmueble = inmueble;
 	    binderInmueble.readBean(this.inmueble);
-		//Fix #213
-		updateComboPersonas();
-		comboPropietario.setSelectedItem(inmueble.getPropietario().getPersona());
-		//Fix #213
+	    // Fix #213
+	    updateComboPersonas();
+	    comboPropietario.setSelectedItem(inmueble.getPropietario().getPersona());
+	    // Fix #213
 	    localidades.setEnabled(true);
 	    Resource res = InmuebleService.getPortada(this.inmueble);
 	    if (res == null) {
-			System.out.println("Res es null?");
+		System.out.println("Res es null?");
 
 		portada.setSource(null);
 		portada.setVisible(false);
 	    } else {
-	    	portada.setVisible(true);
-			portada.setSource(res);
+		portada.setVisible(true);
+		portada.setSource(res);
 	    }
 	    delete.setVisible(true);
 	} else {
-		portada.setSource(null);
-		portada.setVisible(false);
-		delete.setVisible(false);
+	    portada.setSource(null);
+	    portada.setVisible(false);
+	    delete.setVisible(false);
 	    this.inmueble = InmuebleService.getInstancia();
 	    localidades.setEnabled(false);
 	    delete.setVisible(false);
@@ -487,8 +481,6 @@ public class InmuebleForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderInmueble.writeBean(inmueble);
-
-	    Notification.show(inmueble.nombreArchivoPortada);
 	    if (inmueble.getPropietario().getPersona() != null)
 		success = inmbService.merge(inmueble);
 	    if (success)
