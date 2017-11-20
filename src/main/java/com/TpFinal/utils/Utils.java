@@ -256,4 +256,22 @@ public class Utils {
     public static DateTimeFormatter getFormatoFechaArg() {
 	return new DateTimeFormatterBuilder().appendPattern("dd/MM/YYYY").toFormatter();
     }
+
+    public static String getFileExtension(String strFilename) {
+	int j;
+	String ret = strFilename;
+	if (logger.isDebugEnabled()) {
+	    logger.debug("String de donde obtener extension: " + ret);
+	}
+
+	int index = ret.lastIndexOf('.');
+	if (index != -1)
+	    ret = ret.substring(index);
+
+	if (logger.isDebugEnabled()) {
+	    logger.debug("extension obtenida: " + ret);
+	}
+
+	return ret;
+    }
 }

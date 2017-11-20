@@ -111,7 +111,8 @@ public class DownloadButton extends Button {
 	    public InputStream getStream() {
 		InputStream is = null;
 		try {
-		    is = new FileInputStream(path+File.separator+filename);
+		    
+		    is = new FileInputStream(path);
 		} catch (FileNotFoundException e) {
 		    System.err.println("No se ha encontrado el archivo a descargar: " + path+File.separator+filename);
 		    e.printStackTrace();
