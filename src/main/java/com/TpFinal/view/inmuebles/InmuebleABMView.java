@@ -106,6 +106,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
      */
     public void setComponentsVisible(boolean b) {
 	newItem.setVisible(b);
+	clearFilterTextBtn.setVisible(!b);
 	btnSearch.setVisible(b);
 	if (isonMobile)
 	    grid.setVisible(b);
@@ -190,6 +191,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 	    configureGrid();
 	    configureSearch();
 	    updateList();
+		clearFilterTextBtn.setVisible(false);
 	}
 
 	private void configureNewItem() {

@@ -93,7 +93,7 @@ public class CobrosABMView extends DefaultLayout implements View {
      *            true para mostrar, false para ocultar
      */
     public void setComponentsVisible(boolean b) {
-	// clearFilterTextBtn.setVisible(b);
+	clearFilterTextBtn.setVisible(!b);
 	if (isonMobile)
 	    grid.setVisible(b);
 

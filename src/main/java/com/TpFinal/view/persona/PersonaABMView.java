@@ -73,6 +73,8 @@ public class PersonaABMView extends DefaultLayout implements View {
 			personaForm.setVisible(false); 
 			newItem.setVisible(true);
 		});
+		cerrarForm.setVisible(false);
+
 	}
 
 	private void configurarNewItem() {
@@ -317,6 +319,8 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 	public void setComponentsVisible(boolean b) {
 		newItem.setVisible(b);
+		System.out.println("Ahora visible?="+!b);
+		cerrarForm.setVisible(!b);
 		if (isonMobile)
 			grid.setVisible(b);
 
