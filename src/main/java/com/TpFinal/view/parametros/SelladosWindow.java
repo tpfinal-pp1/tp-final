@@ -95,12 +95,7 @@ public class SelladosWindow extends CustomComponent {
 							return "Porfavor, ingrese un número como monto sellado";
 						}
 							});
-						Notification success = new Notification(
-								"Porfavor, ingrese un número como monto sellado");
-						success.setDelayMsec(2000);
-						success.setStyleName("bar error small");
-							success.setPosition(Position.BOTTOM_CENTER);
-							success.show(Page.getCurrent());
+
 
 						}
 						if(bigDecimal!=null)
