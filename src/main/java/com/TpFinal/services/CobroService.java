@@ -42,7 +42,7 @@ public class CobroService {
 
 	public List<Cobro> readAll() {
 		List<Cobro> ret = dao.readAllActives();
-		calcularDatosFaltantes(ret);
+		calcularDatosFaltantes(ret.stream().filter(c -> c.getContrato() instanceof ContratoAlquiler).collect(Collectors.toList()));
 		return ret;
 	}
 

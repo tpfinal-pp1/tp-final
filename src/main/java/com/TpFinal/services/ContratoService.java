@@ -296,8 +296,8 @@ public class ContratoService {
 		ret = daoVenta.mergeContrato(c, doc);
 		if (ret == false)
 		    throw new ContratoServiceException("Fallo daoVenta.mergeContrato(c,doc) ");
-		else if (c.getEstadoContrato().equals(EstadoContrato.Celebrado))
-		    addCobroVenta(c);
+		// else if (c.getEstadoContrato().equals(EstadoContrato.Celebrado))
+		//    addCobroVenta(c);
 	    } else {
 		ret = daoVenta.merge(c);
 		if (ret == false)

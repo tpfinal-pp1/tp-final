@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
@@ -61,6 +63,8 @@ import com.vaadin.ui.themes.ValoTheme;
  * with @PropertyId annotation.
  */
 public class ContratoVentaForm extends FormLayout {
+    private static final Logger logger = Logger.getLogger(ContratoVentaForm.class);
+
     private ContratoVenta contratoVenta;
     private InmuebleService inmuebleService = new InmuebleService();
     private MovimientoService movimientoService = new MovimientoService();
@@ -512,16 +516,23 @@ public class ContratoVentaForm extends FormLayout {
 	boolean success = false;
 	try {
 	    binderContratoVenta.writeBean(contratoVenta);
-	    if (contratoVenta.getEstadoContrato() == EstadoContrato.Vigente) {
+	    if (contratoVenta.getEstadoContrato() == EstadoContrato.Celebrado) {
 		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
-		service.getPublicacionVentaActiva(contratoVenta.getInmueble()).setEstadoPublicacion(
-			EstadoPublicacion.Terminada);
+		if (service.getPublicacionVentaActiva(contratoVenta.getInmueble()) != null) {
+		    service.getPublicacionVentaActiva(contratoVenta.getInmueble()).setEstadoPublicacion(
+			    EstadoPublicacion.Terminada);
+		}
 	    }
 
-	    if (archivo != null && !archivo.exists()) {		
+	    if (archivo != null && !archivo.exists()) {
 		success = service.saveOrUpdate(contratoVenta, null);
 	    } else {
 		success = service.saveOrUpdate(contratoVenta, archivo);
+		if (contratoVenta.getEstadoContrato().equals(EstadoContrato.Celebrado)) {
+		    logger.debug("Añadiendo cobros");
+		    service.addCobroVenta(contratoVenta);
+		    success = service.saveOrUpdate(contratoVenta, archivo);
+		}
 	    }
 
 	    contratoABMView.updateList();
@@ -530,6 +541,7 @@ public class ContratoVentaForm extends FormLayout {
 
 	    if (success) {
 		contratoABMView().showSuccessNotification("Guardado");
+
 	    } else {
 		contratoABMView().showErrorNotification("Fallo al guardar");
 	    }
