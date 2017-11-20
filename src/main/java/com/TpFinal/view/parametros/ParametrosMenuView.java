@@ -81,10 +81,6 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	buildLayout();
 	configureComponents();
 	binding();
-	binder.readBean(parametros);
-		duracionesContratos.addClickListener(click -> {
-			new DuracionContratosABMWindow("Duraciones de Contratos");
-		});
 
     }
 
