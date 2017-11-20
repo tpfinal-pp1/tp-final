@@ -71,7 +71,7 @@ public class InmuebleForm extends FormLayout {
     private TextField codPostal = new TextField("Código postal");
     private ComboBox<Localidad> localidades = new ComboBox<>("Localidad");
     private ComboBox<Provincia> provincias = new ComboBox<>("Provincia");
-    private TinyButton buscarUbicacion = new TinyButton("Buscar Ubicación", VaadinIcons.MAP_MARKER);
+
 
     // TabCaracteristicas 1
     private TextField ambientes = new TextField("Ambientes");
@@ -92,7 +92,7 @@ public class InmuebleForm extends FormLayout {
     private ProvinciaService provinciaService = new ProvinciaService();
 
     private Image portada;
-    private Button imageManager=new Button(null,e-> new ImagenesInmuebleWindow(inmueble) {
+    private Button imageManager=new Button("Imagenes",e-> new ImagenesInmuebleWindow(inmueble) {
 		@Override
 		public void onClose() {
 			Resource res=InmuebleService.getPortada(inmueble);
@@ -363,7 +363,7 @@ public class InmuebleForm extends FormLayout {
 
     private void buildLayout() {
 	// addStyleName("v-scrollable");
-	buscarUbicacion.setEnabled(false);
+
 	btnNuevoPropietario.setIcon(VaadinIcons.PLUS);
 	comboPropietario.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 	btnNuevoPropietario.addStyleName(ValoTheme.BUTTON_BORDERLESS);
@@ -393,8 +393,6 @@ public class InmuebleForm extends FormLayout {
 	portada.setCaption(null);
 
 	portada.setCaption("Portada");
-	buscarUbicacion.setCaption("Ubicación");
-	buscarUbicacion.setCaption("Ubicación");
 	HorizontalLayout layoutCbBoxInmov = new HorizontalLayout(cbEsInmobiliaria);
 	layoutCbBoxInmov.setCaption("Inmobiliaria");
 	principal = new FormLayout(layoutCbBoxInmov, propietarioCombo, clasesInmueble, tiposInmueble
@@ -423,6 +421,7 @@ public class InmuebleForm extends FormLayout {
 
 	inmuebleFromTabSheet.setSelectedTab(principal);
 	principal.addComponents();
+
 	imageManager.setIcon(VaadinIcons.CAMERA);
 
     }
@@ -561,7 +560,6 @@ public class InmuebleForm extends FormLayout {
 	tabPrincipalComponents.add(provincias);
 	tabPrincipalComponents.add(localidades);
 	tabPrincipalComponents.add(codPostal);
-	tabPrincipalComponents.add(buscarUbicacion);
 	for (BindingValidationStatus invalidField : invalidComponents) {
 	    tabPrincipalInvalidFields = tabPrincipalComponents.contains(invalidField.getField());
 	    if (tabPrincipalInvalidFields)

@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import com.TpFinal.dto.Provincia;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
@@ -468,21 +469,24 @@ public class ContratoService {
 			contrato.setCobros(new HashSet<>());
 		
 		//XXX remplazar por lo de la bd
-		BigDecimal sellado= new BigDecimal("1.2");
-		
+		ProvinciaService provinciaService=new ProvinciaService();
+		Provincia provincia=provinciaService.getProvinciaFromString(
+				contrato.getInmueble().getDireccion().getProvincia());
+		BigDecimal sellado= provinciaService.getSelladoFromProvincia(provincia);
 		BigDecimal comisionComprador=new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal comisionVendedor=new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal total= new BigDecimal(contrato.getPrecioVenta().toString());
 		BigDecimal totalComision = new BigDecimal("0");
 		BigDecimal montoVendedor=new BigDecimal(contrato.getPrecioVenta().toString());
-		BigDecimal interesSellado=new BigDecimal("0");
+
+
 		
 		comisionComprador=comisionComprador.multiply(new BigDecimal(contrato.getComisionAComprador())).divide(new BigDecimal("100"));
 		comisionVendedor=comisionVendedor.multiply(new BigDecimal(contrato.getComsionAVendedor())).divide(new BigDecimal("100"));
 		total=total.add(comisionComprador).add(comisionVendedor);
 		totalComision=totalComision.add(comisionComprador).add(comisionVendedor);
 		montoVendedor=montoVendedor.subtract(comisionVendedor);
-		interesSellado=contrato.getPrecioVenta().multiply(sellado).divide(new BigDecimal("100"));
+		BigDecimal interesSellado = contrato.getPrecioVenta().multiply(sellado).divide(new BigDecimal("100"));
 		total=total.add(interesSellado);
 		
 		Cobro c = new Cobro.Builder()

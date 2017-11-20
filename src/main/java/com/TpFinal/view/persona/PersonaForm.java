@@ -35,7 +35,7 @@ public class PersonaForm extends FormLayout {
 		    delete();
 		}
 	    });
-    private Button cargarPrefsBusqueda = new Button("Cargar Preferencias De Búsqueda");
+    private Button cargarPrefsBusqueda = new Button("Pref. Busqueda");
 
     private CheckBox cbEsInmobiliaria = new CheckBox(null);
     private TextField nombre = new TextField("Nombre");
@@ -177,7 +177,7 @@ public class PersonaForm extends FormLayout {
 	/*
 	 * contratos.addClickListener(e -> new PersonaFormWindow(new Persona()));
 	 */
-	VerticalLayout Roles = new VerticalLayout(calificacion, contratos, busquedas);
+	VerticalLayout Roles = new VerticalLayout(calificacion);
 
 	HorizontalLayout checkboxInm = new HorizontalLayout(cbEsInmobiliaria);
 	checkboxInm.setCaption("Inmobiliaria");

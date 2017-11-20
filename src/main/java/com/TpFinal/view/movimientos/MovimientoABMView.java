@@ -83,6 +83,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 		// filter.setIcon(VaadinIcons.SEARCH);
 		// filter.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+		clearFilterTextBtn.setVisible(false);
 
 		updateList();
 	}
@@ -237,9 +238,10 @@ public class MovimientoABMView extends DefaultLayout implements View {
 	public void setComponentsVisible(boolean b) {
 		newItem.setVisible(b);
 		// seleccionFiltro.setVisible(b);
-		// clearFilterTextBtn.setVisible(b);
+		clearFilterTextBtn.setVisible(!b);
 		if (isonMobile)
 			grid.setVisible(b);
+
 
 	}
 
