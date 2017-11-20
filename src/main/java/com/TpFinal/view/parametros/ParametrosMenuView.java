@@ -81,7 +81,7 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	buildLayout();
 	configureComponents();
 	binding();
-
+	binder.readBean(parametros);
     }
 
     private void binding() {

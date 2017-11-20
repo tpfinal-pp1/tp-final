@@ -8,6 +8,7 @@ import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.services.CitaService;
 import com.TpFinal.services.CredencialService;
+import com.TpFinal.utils.Utils;
 import com.TpFinal.view.component.DeleteButton;
 import com.vaadin.data.*;
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -255,9 +256,7 @@ public abstract class CitaFormWindow extends Window {
 
 	} catch (ValidationException e) {
 	    Notification.show("Error al guardar, por favor revise los campos e intente de nuevo");
-	    e.printStackTrace();
-	    System.out.println(e.getValidationErrors() + " " + e.getFieldValidationErrors());
-
+	    Utils.mostarErroresValidator(e);
 	    return;
 	}
 
