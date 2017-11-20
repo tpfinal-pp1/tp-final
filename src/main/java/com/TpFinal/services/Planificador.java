@@ -31,8 +31,8 @@ public class Planificador {
 	Job notificacion;
 	Job mailSender;
 	// citas
-	Integer horasAntesCita1;
-	Integer horasAntesCita2;
+	Integer horasAntesCita1=1;
+	Integer horasAntesCita2=24;
 	// cobros por vencer
 	Integer perioricidadPorVencerA;
 	Integer perioricidadPorVencerB;
@@ -341,6 +341,7 @@ public class Planificador {
 
 	private void agregarJobNotificacionCita(Cita c, Integer horas, Integer nro) {
 		LocalDateTime fechaInicio = c.getFechaInicio();
+		System.out.println("Fecha"+fechaInicio);
 		fechaInicio = fechaInicio.minusHours(horas);
 		LocalDateTime fechaFin = c.getFechaInicio();
 		String perioricidad = "1/1";

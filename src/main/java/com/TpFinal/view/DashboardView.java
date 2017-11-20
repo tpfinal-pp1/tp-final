@@ -429,11 +429,12 @@ public final class DashboardView extends Panel implements View {
 	footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
 	footer.setWidth("100%");
 	footer.setSpacing(false);
-	Button showAll = new Button("Mostrar todas las notificaciones",
+
+	Button showAll = new Button("",
 		new ClickListener() {
 		    @Override
 		    public void buttonClick(final ClickEvent event) {
-			Notification.show("Aun no implementado");
+
 		    }
 		});
 	showAll.addStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);

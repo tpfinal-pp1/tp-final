@@ -87,19 +87,6 @@ public final class DashboardMenu extends CustomComponent {
         settingsItem = settings.addItem("",
                 new ThemeResource("img/profile-pic-300px.jpg"), null);
         updateUserName(null);
-        settingsItem.addItem("Editar Perfil", new Command() {
-            @Override
-            public void menuSelected(final MenuItem selectedItem) {
-                ProfilePreferencesWindow.open(user, false);
-            }
-        });
-        settingsItem.addItem("Preferencias", new Command() {
-            @Override
-            public void menuSelected(final MenuItem selectedItem) {
-                ProfilePreferencesWindow.open(user, true);
-            }
-        });
-        settingsItem.addSeparator();
         settingsItem.addItem("Cerrar Sesion", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
