@@ -9,136 +9,143 @@ import java.io.OutputStream;
 import org.apache.log4j.Logger;
 import org.apache.tika.mime.MimeTypeException;
 
-
 public class UploadReceiver implements Receiver {
     private static final long serialVersionUID = 2215337036540966711L;
     private static Logger logger = Logger.getLogger(UploadReceiver.class);
-    
+
     private OutputStream outputFile = null;
-    private static final String directorioUpload =  "Files";
+    private static final String directorioUpload = "Files";
     private String fullPath;
-    private String filePath =directorioUpload+File.separator;
+    private String filePath = directorioUpload + File.separator;
     private String fileName;
     private String fileType;
     private String fileExtension;
-    
-    public UploadReceiver()
-    {
-        File dir = new File(directorioUpload);
-        dir.mkdir();
+
+    public UploadReceiver() {
+	File dir = new File(directorioUpload);
+	dir.mkdir();
     }
 
     @Override
     public OutputStream receiveUpload(String strFilename, String strMIMEType) {
-        File file=null;
-        try {
-            this.setFullPath(filePath+strFilename);
-//            if(filePath.equals(System.getProperty("user.home"))){
-//                Long randomName=+Instant.now().toEpochMilli();
-//                this.setFullPath(System.getProperty("user.home")+randomName+".mv.db");
-//                this.setFileName(randomName.toString()+".mv.db");
-//            }
+	File file = null;
+	try {
+	    this.setFullPath(filePath + strFilename);
+	    // if(filePath.equals(System.getProperty("user.home"))){
+	    // Long randomName=+Instant.now().toEpochMilli();
+	    // this.setFullPath(System.getProperty("user.home")+randomName+".mv.db");
+	    // this.setFileName(randomName.toString()+".mv.db");
+	    // }
 
-            if (logger.isDebugEnabled()) {
-        	logger.debug("Cargando archivo: " + strFilename);}
-            this.setFileName(strFilename);
-            this.setFileType(strMIMEType);
-            try {
-		this.fileExtension = Utils.allTypes.forName(strMIMEType).getExtension();
-		fileName = Utils.removeFileExtension(strFilename);
-	    } catch (MimeTypeException e) {
-		fileExtension = "";
+	    if (logger.isDebugEnabled()) {
+		logger.debug("Cargando archivo: " + strFilename);
+		logger.debug("Path de archivo: " + getFullPath());
 	    }
-            if (logger.isDebugEnabled()) {
-        	logger.debug("Extension Obtenida: " + fileExtension);}
-            file = new File(this.getFullPath());
-            if(!file.exists()) {
-                System.out.println("No existe");
-                file.createNewFile();
-            }
-            else{
-                while (file.exists()){
-                    strFilename="copia_"+strFilename;
-                    fileName="copia_"+fileName;
-                    this.setFullPath(filePath+strFilename);
-                    System.out.println("Ya Existe");
-                    file = new File(this.getFullPath());
-                }
-                file.createNewFile();
-            }
-            outputFile =  new FileOutputStream(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return outputFile;
-    }    
-    
+
+	    this.setFileName(strFilename);
+	    this.setFileType(strMIMEType);
+
+	    this.fileExtension = Utils.getFileExtension(strFilename);
+	    fileName = Utils.removeFileExtension(strFilename);
+
+	    if (logger.isDebugEnabled()) {
+		logger.debug("Extension Obtenida: " + fileExtension);
+	    }
+	    file = new File(this.getFullPath());
+	    if (!file.exists()) {
+		if (logger.isDebugEnabled()) {
+		    logger.debug("El archivo no existe: " + strFilename);
+		    logger.debug("Creando archivo en: " + getFullPath());
+		}
+		file.createNewFile();
+	    } else {
+		while (file.exists()) {
+		    strFilename = "copia_" + strFilename;
+		    fileName = "copia_" + fileName;
+		    this.setFullPath(filePath + strFilename);
+		    if (logger.isDebugEnabled()) {
+			logger.debug("El archivo ya existe: " + strFilename);
+			logger.debug("Path de archivo modificado: " + getFullPath());
+		    }
+		    file = new File(this.getFullPath());
+		}
+		if (logger.isDebugEnabled())
+		    logger.debug("Creando archivo en: " + getFullPath());
+		file.createNewFile();
+	    }
+	    outputFile = new FileOutputStream(file);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return outputFile;
+    }
+
     public String getFileExtension() {
-        return fileExtension;
+	return fileExtension;
     }
 
     public void setFileExtension(String fileExtension) {
-        this.fileExtension = fileExtension;
+	this.fileExtension = fileExtension;
     }
 
     public String getFileName() {
-        return fileName;
+	return fileName;
     }
 
-    public void setFilePath(String filePath){
-        this.filePath=filePath;
+    public void setFilePath(String filePath) {
+	this.filePath = filePath;
     }
 
     public void setFileName(String fileName) {
-        this.fileName = fileName;
+	this.fileName = fileName;
     }
 
     public String getFileType() {
-        return fileType;
+	return fileType;
     }
 
     public void setFileType(String fileType) {
-        this.fileType = fileType;
+	this.fileType = fileType;
     }
 
     public String getFilePath() {
-        return filePath;
-    }   
+	return filePath;
+    }
 
     public OutputStream getOutputFile() {
-        return outputFile;
+	return outputFile;
     }
 
     public void setOutputFile(OutputStream outputFile) {
-        this.outputFile = outputFile;
+	this.outputFile = outputFile;
     }
 
     protected void finalize() {
-        try {
-            super.finalize();
-            if(outputFile!=null) {
-                outputFile.close();
-                outputFile = null;
-            }
-        } catch (Throwable exception) {
-            exception.printStackTrace();
-        }
+	try {
+	    super.finalize();
+	    if (outputFile != null) {
+		outputFile.close();
+		outputFile = null;
+	    }
+	} catch (Throwable exception) {
+	    exception.printStackTrace();
+	}
     }
-    
 
     /**
      * Devuelve path completo de un archivo. Path + filename + . + extension.
+     * 
      * @return String con el path completo e.g. "../File/file.doc"
      */
     public String getFullPath() {
-        return fullPath;
+	return fullPath;
     }
 
     /**
      * Setea path completo de un archivo. "Path + filename + . + extension"
      */
-    
+
     public void setFullPath(String fileName) {
-        this.fullPath = fileName;
+	this.fullPath = fileName;
     }
 }

@@ -26,7 +26,7 @@ public class BackupWindow extends CustomComponent {
     private final Label infoLabel = new Label("", ContentMode.HTML);
     private UploadButton importar = null;
     private boolean seImportoBD = false;
-    private final DownloadButton exportar = new DownloadButton();
+    private final ExportDBButton exportar = new ExportDBButton();
     private final Window window = new Window();
     private Button shutdown = new Button("Detener", VaadinIcons.STOP_COG);
 
@@ -64,9 +64,9 @@ public class BackupWindow extends CustomComponent {
 	String dbFile = "";
 	try {
 	    dbFile = Parametros.getProperty(Parametros.DB_NAME);
-	    if(!dbFile.contains(".mv.db")){
-	    	dbFile=dbFile+".mv.db";
-		}
+	    if (!dbFile.contains(".mv.db")) {
+		dbFile = dbFile + ".mv.db";
+	    }
 
 	} catch (FileExistsException e) {
 	    e.printStackTrace();
@@ -125,7 +125,8 @@ public class BackupWindow extends CustomComponent {
 				ConexionHibernate.enterBackupMode();
 
 				apagarServicios();
-				infoLabel.setValue("Espere " + pollInterval / 1000 + " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora");
+				infoLabel.setValue("Espere " + pollInterval / 1000
+					+ " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora");
 
 				window.setClosable(false);
 				shutdown.setEnabled(false);
@@ -180,7 +181,6 @@ public class BackupWindow extends CustomComponent {
 	buttonsHLayout.addComponent(exportar);
 
     }
-
 
     private void reiniciarServiciosYSesion() {
 	logger.debug("Actualizando Conexión");
