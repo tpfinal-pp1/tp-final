@@ -56,7 +56,6 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	    tx = session.beginTransaction();
 	    inmueble.removeImagen(img);
 	    session.merge(inmueble);
-	    tx.commit();
 	} catch (HibernateException e) {
 	    System.err.println("Error al realizar Merge: " + inmueble);
 	    e.printStackTrace();
@@ -69,7 +68,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	try {
 	    tx = session.beginTransaction();
 	    Blob archivo = null;
-	    byte[] imagen = getImage(img.getPath(),img.getExtension());
+	    byte[] imagen = getImage(img.getPath(), img.getExtension());
 	    if (imagen != null) {
 		archivo = BlobProxy.generateProxy(imagen);
 		img.setImagen(archivo);
@@ -100,7 +99,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
     }
 
-    public static byte[] getImage(String path,String extension) {
+    public static byte[] getImage(String path, String extension) {
 	File file = new File("./" + path);
 	if (file.exists()) {
 	    try {
@@ -186,7 +185,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 		disjuncion.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, EstadoInmueble.EnVenta));
 		disjuncion.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, EstadoInmueble.EnAlquilerYVenta));
 		query.add(disjuncion);
-	    } 	
+	    }
 	}
 
 	if (criterio.getMaxCantAmbientes() != null) {
@@ -279,7 +278,7 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 	Transaction tx = null;
 	try {
 	    tx = session.beginTransaction();
-	    Inmueble merged = (Inmueble)session.merge(inmueble);	    
+	    Inmueble merged = (Inmueble) session.merge(inmueble);
 	    tx.commit();
 	    ret = merged.getId();
 	} catch (HibernateException e) {
