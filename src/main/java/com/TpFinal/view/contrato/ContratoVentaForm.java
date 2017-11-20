@@ -216,11 +216,6 @@ public class ContratoVentaForm extends FormLayout {
 	finalizarCarga.addClickListener(e -> {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoVenta.isValid()) {
-		
-		//Añadir cobro de venta
-		service.addCobroVenta(contratoVenta);
-		System.out.println("Cantidad de cobros " + contratoVenta.getCobros().size());
-		
 		contratoVenta.setEstadoContrato(EstadoContrato.Celebrado);
 		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
 
