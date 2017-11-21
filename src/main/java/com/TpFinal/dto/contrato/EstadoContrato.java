@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public enum EstadoContrato {
-    EnProcesoDeCarga, Vigente, ProximoAVencer, Renovado, Cancelado, Vencido, Celebrado;
+    EnProcesoDeCarga, Vigente, ProximoAVencer, Renovado, Rescindido, Vencido, Celebrado;
 
     public static List<EstadoContrato> toList() {
 	EstadoContrato[] estadosContrato = EstadoContrato.values();
@@ -27,7 +27,7 @@ public enum EstadoContrato {
 	case ProximoAVencer:
 	    ret = "Próximo a vencer";
 	    break;
-		case Cancelado:
+		case Rescindido:
 			ret = "Rescindido";
 	default:
 	    ret = super.toString();

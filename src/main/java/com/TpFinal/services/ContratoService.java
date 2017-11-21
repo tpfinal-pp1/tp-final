@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.notificacion.NotificadorJob;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
@@ -163,7 +162,7 @@ public class ContratoService {
 
 
 	private boolean cancelarContratoAlquiler(ContratoAlquiler alquiler){
-		alquiler.setEstadoContrato(EstadoContrato.Cancelado);
+		alquiler.setEstadoContrato(EstadoContrato.Rescindido);
 		CobroService cobroService = new CobroService();
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
@@ -192,7 +191,7 @@ public class ContratoService {
 		return daoAlquiler.saveOrUpdate(alquiler);
 	}
 	private boolean cancelarContratoVenta(ContratoVenta venta){
-		venta.setEstadoContrato(EstadoContrato.Cancelado);
+		venta.setEstadoContrato(EstadoContrato.Rescindido);
 		CobroService cobroService = new CobroService();
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
