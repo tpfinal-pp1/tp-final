@@ -56,6 +56,8 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	private Integer intervaloActualizacion;
 	@Column(name = "diaDePago")
 	private Integer diaDePago;
+	@Column(name = "cantidad_certificados_garantes")
+	private Integer cantCertificadosGarantes=2;
 	
 	@Column(name="randomKey")
 	UUID randomKey;
@@ -91,12 +93,22 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		this.duracionContrato = b.duracionContrato;
 		this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
 		this.fechaCelebracion=b.fechaCelebracion;
+		this.cantCertificadosGarantes = b.cantCertificadosGarantes;
 		this.setCobros(new HashSet<>());
 
 		if (b.inmueble != null) {
 			this.propietario = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 		}
 		this.randomKey=UUID.randomUUID();
+	}
+	
+
+	public Integer getCantCertificadosGarantes() {
+	    return cantCertificadosGarantes;
+	}
+
+	public void setCantCertificadosGarantes(Integer cantCertificadosGarantes) {
+	    this.cantCertificadosGarantes = cantCertificadosGarantes;
 	}
 
 	public Double getInteresPunitorio() {
@@ -240,6 +252,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 
 	public static class Builder {
 
+		private Integer cantCertificadosGarantes;
 		private ContratoDuracion duracionContrato;
 		private TipoInteres tipoInteresPunitorio;
 		private TipoInteres tipoIncrementoCuota;
@@ -259,6 +272,11 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 		public Builder setId(Long dato) {
 			this.id = dato;
 			return this;
+		}
+		
+		public Builder setCantCertificadosGarantes(Integer cant) {
+		    this.cantCertificadosGarantes = cant;
+		    return this;
 		}
 
 		public Builder setFechaIngreso(LocalDate dato) {

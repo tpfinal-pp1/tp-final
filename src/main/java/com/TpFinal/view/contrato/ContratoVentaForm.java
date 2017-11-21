@@ -527,12 +527,13 @@ public class ContratoVentaForm extends FormLayout {
 	    if (archivo != null && !archivo.exists()) {
 		success = service.saveOrUpdate(contratoVenta, null);
 	    } else {
-		success = service.saveOrUpdate(contratoVenta, archivo);
+		//success = service.saveOrUpdate(contratoVenta, archivo);
 		if (contratoVenta.getEstadoContrato().equals(EstadoContrato.Celebrado)) {
 		    logger.debug("Añadiendo cobros");
 		    service.addCobroVenta(contratoVenta);
-		    success = service.saveOrUpdate(contratoVenta, archivo);
 		}
+		    success = service.saveOrUpdate(contratoVenta, archivo);
+		
 	    }
 
 	    contratoABMView.updateList();
