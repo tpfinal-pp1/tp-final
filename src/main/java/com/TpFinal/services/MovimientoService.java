@@ -61,7 +61,6 @@ public class MovimientoService {
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
 				.setTipoMoneda(c.getContrato().getMoneda())
-				.setCobro(c)
 				.build();
 		return ret;
 	}
@@ -75,12 +74,11 @@ public class MovimientoService {
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
 				.setTipoMoneda(c.getContrato().getMoneda())
-				.setCobro(c)
 				.build();
 		return ret;
 	}
 	
-	public static Movimiento getInstanciaSellado(Cobro c) {
+	public static Movimiento getInstanciaSelladoEgreso(Cobro c) {
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
 				.setMonto(c.getInteres())
@@ -89,7 +87,84 @@ public class MovimientoService {
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Egreso)
 				.setTipoMoneda(c.getContrato().getMoneda())
-				.setCobro(c)
+				.build();
+		return ret;
+	}
+	
+	public static Movimiento getInstanciaSelladoIngreso(Cobro c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
+				.setMonto(c.getInteres())
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Impuesto)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
+				.build();
+		return ret;
+	}
+	
+	public static Movimiento getInstanciaCertificadoIngreso(ContratoAlquiler c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ParametrosSistemaService.getParametros().getValorCertificado().multiply(BigDecimal.valueOf(c.getCantCertificadosGarantes())))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.CertificadoGarante)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getMoneda())
+				.build();
+		return ret;
+	}
+	
+	public static Movimiento getInstanciaCertificadoEgreso(ContratoAlquiler c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ParametrosSistemaService.getParametros().getValorCertificado().multiply(BigDecimal.valueOf(c.getCantCertificadosGarantes())))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.CertificadoGarante)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Egreso)
+				.setTipoMoneda(c.getMoneda())
+				.build();
+		return ret;
+	}
+	
+	public static Movimiento getInstanciaMesComision(ContratoAlquiler c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ContratoService.getMontoUltimaCuota(c))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Comision)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getMoneda())
+				.build();
+		return ret;
+	}
+	
+	public static Movimiento getInstanciaMesGarantiaIngreso(ContratoAlquiler c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ContratoService.getMontoUltimaCuota(c))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Garantia)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getMoneda())
+				.build();
+		return ret;
+	}
+	
+	public static Movimiento getInstanciaMesGarantiaEgreso(ContratoAlquiler c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ContratoService.getMontoUltimaCuota(c))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Garantia)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Egreso)
+				.setTipoMoneda(c.getMoneda())
 				.build();
 		return ret;
 	}
@@ -99,17 +174,15 @@ public class MovimientoService {
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
 				.setMonto(c.getComision())
 				.setFecha(LocalDate.now())
-				.setClaseMovimiento(ClaseMovimiento.Comisión)
+				.setClaseMovimiento(ClaseMovimiento.Comision)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
 				.setTipoMoneda(c.getContrato().getMoneda())
-				.setCobro(c)
 				.build();
 		return ret;
 	}
 
 	public static Movimiento getInstanciaPagoAPropietario(Cobro c) {
-		ContratoAlquiler c1=(ContratoAlquiler) c.getContrato();
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
 				.setMonto(c.getMontoPropietario())
@@ -118,7 +191,6 @@ public class MovimientoService {
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Egreso)
 				.setTipoMoneda(c.getContrato().getMoneda())
-				.setCobro(c)
 				.build();
 		return ret;
 	}

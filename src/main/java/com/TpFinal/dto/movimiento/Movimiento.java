@@ -66,9 +66,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 	@Column(name = "tipoMoneda")
 	private TipoMoneda tipoMoneda;
 
-	@OneToOne(fetch=FetchType.EAGER)
-	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.MERGE})
-	private Cobro cobro;
 
 	public Movimiento() {
 
@@ -81,7 +78,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 		this.estadoRegistro = b.estadoRegistro;
 		this.tipoMovimiento = b.tipoMovimiento;
 		this.claseMovimiento = b.claseMovimiento;
-		this.cobro=b.cobro;
 		this.tipoMoneda=b.tipoMoneda;
 	}
 
@@ -90,7 +86,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 		private String descripcionMovimiento;
 		private BigDecimal monto;
 		private LocalDate fecha;
-		private Cobro cobro;
 		private EstadoRegistro estadoRegistro;
 		private TipoMovimiento tipoMovimiento;
 		private ClaseMovimiento claseMovimiento;
@@ -108,11 +103,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 
 		public Builder setFecha(LocalDate fecha) {
 			this.fecha = fecha;
-			return this;
-		}
-
-		public Builder setCobro(Cobro dato) {
-			this.cobro=dato;
 			return this;
 		}
 
@@ -198,14 +188,6 @@ public class Movimiento implements Identificable, BorradoLogico{
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Cobro getCobro() {
-		return cobro;
-	}
-
-	public void setCobro(Cobro cobro) {
-		this.cobro = cobro;
 	}
 	
 	public TipoMoneda getTipoMoneda() {
