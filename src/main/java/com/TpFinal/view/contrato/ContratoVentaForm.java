@@ -412,8 +412,8 @@ public class ContratoVentaForm extends FormLayout {
     public void setContratoVenta(ContratoVenta contratoVenta) {
 
 	if (contratoVenta != null) {
+		this.contratoVenta = contratoVenta;
 	    configurarComponentesSegunEstadoContrato(contratoVenta.getEstadoContrato());
-	    this.contratoVenta = contratoVenta;
 	    binderContratoVenta.readBean(contratoVenta);
 	} else {
 	    this.contratoVenta = ContratoService.getInstanciaVenta();
@@ -480,7 +480,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.comisionAPropietario.setEnabled(false);
 	} else if(ContratoService.puedeSerRescindido(contratoVenta)){
 		this.delete.setVisible(true);
-		delete.setCaption("Rescindir");
+		delete.setInfo("Rescindir");
 		this.save.setVisible(false);
 		this.finalizarCarga.setVisible(false);
 		this.renovarContrato.setVisible(false);

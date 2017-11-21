@@ -74,11 +74,16 @@ public class CobrosForm extends FormLayout {
     }
 
     private void configureComponents() {
+
 	pagar.addClickListener(click -> {
 	    if (cobro.getEstadoCobro().equals(EstadoCobro.COBRADO)) {
 		Notification.show("Este alquiler ya esta cobrado",
 			Notification.Type.WARNING_MESSAGE);
-	    } else {
+	    }else  if (cobro.getEstadoCobro().equals(EstadoCobro.ANULADO)) {
+			Notification.show("Este alquiler fue rescindido y el cobro anulado",
+					Notification.Type.WARNING_MESSAGE);
+		}
+	    else {
 		DialogConfirmacion dialog = new DialogConfirmacion("Cobrar",
 			VaadinIcons.WARNING,
 			"¿Esta seguro que desea cobrar?",
@@ -218,7 +223,8 @@ public class CobrosForm extends FormLayout {
     }
 
     public void setCobro(Cobro cobro) {
-
+    	if(cobro.getEstadoCobro()==EstadoCobro.ANULADO)
+    		Notification.show("ANULADO");
 	if (cobro != null) {
 	    this.cobro = cobro;
 	    binderCobro.readBean(this.cobro);

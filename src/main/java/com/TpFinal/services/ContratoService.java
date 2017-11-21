@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 import com.TpFinal.dto.Provincia;
 import com.TpFinal.dto.notificacion.NotificadorJob;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
@@ -156,8 +157,7 @@ public class ContratoService {
 		EstadoContrato estadoContrato=contrato.getEstadoContrato();
 		return  estadoContrato==EstadoContrato.Celebrado
 				||estadoContrato==EstadoContrato.ProximoAVencer
-				||estadoContrato==EstadoContrato.Vigente||
-				estadoContrato==EstadoContrato.Renovado;
+				||estadoContrato==EstadoContrato.Vigente;
 
 	}
 
@@ -174,13 +174,21 @@ public class ContratoService {
 				Planificador.get().removeJobCobroPorVencer(cobro);
 				LocalDate now = LocalDate.now();
 				if(now.plusMonths(1).isBefore(cobro.getFechaDeVencimiento())) {
-					cobro.setEstadoCobro(EstadoCobro.ANULADO);
-					cobroService.save(cobro);
+					alquiler.removeCobro(cobro);
+					cobroService.delete(cobro);
+
 				}
 			}
 		}
-		Planificador.get().removeJobAlquilerPorVencer(alquiler);
-		Planificador.get().removeJobAlquilerVencido(alquiler);
+
+
+		try{
+			//Planificador.get().removeJobAlquilerPorVencer(alquiler);
+		//	Planificador.get().removeJobAlquilerVencido(alquiler);
+		}
+		catch (NullPointerException e){
+			logger.info("ERROR AL ELIMINAR TRIGGER CONTRATO");
+		}
 		return daoAlquiler.saveOrUpdate(alquiler);
 	}
 	private boolean cancelarContratoVenta(ContratoVenta venta){
@@ -193,7 +201,10 @@ public class ContratoService {
 			if(cobro.getContrato().equals(venta)){
 				Planificador.get().removeJobCobroVencido(cobro);
 				Planificador.get().removeJobCobroPorVencer(cobro);
+				venta.removeCobro(cobro);
+				cobroService.delete(cobro);
 				cobro.setEstadoCobro(EstadoCobro.ANULADO);
+				venta.addCobro(cobro);
 				cobroService.save(cobro);
 
 			}

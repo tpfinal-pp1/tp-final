@@ -553,8 +553,8 @@ public class ContratoAlquilerForm extends FormLayout {
     public void setContratoAlquiler(ContratoAlquiler contratoAlquiler) {
 	// this.clearFields();
 	if (contratoAlquiler != null) {
+		this.contratoAlquiler = contratoAlquiler;
 	    configurarComponentesSegunEstadoContrato(contratoAlquiler.getEstadoContrato());
-	    this.contratoAlquiler = contratoAlquiler;
 	    binderContratoAlquiler.readBean(contratoAlquiler);
 	    this.btDescargar.setArchivo(contratoAlquiler.getArchivo());
 	    btDescargar.setEnabled(true);
@@ -638,7 +638,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	} else if(ContratoService.puedeSerRescindido(contratoAlquiler)){
 		this.save.setVisible(false);
 		this.delete.setVisible(true);
-		delete.setCaption("Rescindir");
+		delete.setInfo("Rescindir");
 		this.finalizarCarga.setVisible(false);
 		this.renovarContrato.setVisible(false);
 		this.btCargar.setEnabled(false);

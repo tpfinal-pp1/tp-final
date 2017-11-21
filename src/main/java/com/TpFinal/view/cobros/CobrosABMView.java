@@ -65,8 +65,9 @@ public class CobrosABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	controller.configureComponents();
-	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}" +
-			".v-grid-row.anulado { text-decoration: line-through;}");
+	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}" );
+     UI.getCurrent().getPage().getStyles().add(".v-grid-row.anulado {color: blue;}");
+
 
     }
 
@@ -186,14 +187,15 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 	    grid.setStyleGenerator(cobro -> {
 		String ret = null;
+		if(cobro.getEstadoCobro().equals(EstadoCobro.ANULADO)){
+				ret="anulado";
+			}
 		if (cobro.getFechaDeVencimiento() != null) {
 		    if (cobro.getFechaDeVencimiento().isBefore(LocalDate.now())) {
 			ret = "vencido";
 		    }
 		}
-		if(cobro.getEstadoCobro()== EstadoCobro.ANULADO){
-	    	ret="anulado";
-			}
+
 		return ret;
 	    });
 
@@ -697,7 +699,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 	public void updateList() {
 	    List<Cobro> cobros = cobroService.findAll(filtro);
-	    grid.setItems(cobros);
+		grid.setItems(cobros);
 	}
 
     }
