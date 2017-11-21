@@ -333,7 +333,10 @@ public class ContratoAlquilerForm extends FormLayout {
 	movService.saveOrUpdate(mov);
 	mov = MovimientoService.getInstanciaMesGarantiaIngreso(ultimo);
 	movService.saveOrUpdate(mov);
-	
+	mov = MovimientoService.getInstanciaSelladoAlquilerIngreso(ultimo);
+	movService.saveOrUpdate(mov);
+	mov = MovimientoService.getInstanciaSelladoAlquilerEgreso(ultimo);
+	movService.saveOrUpdate(mov);
 	//TODO movimiento de sellado de contrato de alquiler
     }
 

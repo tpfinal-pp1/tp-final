@@ -78,7 +78,7 @@ public class MovimientoService {
 		return ret;
 	}
 	
-	public static Movimiento getInstanciaSelladoEgreso(Cobro c) {
+	public static Movimiento getInstanciaSelladoVentaEgreso(Cobro c) {
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
 				.setMonto(c.getInteres())
@@ -89,20 +89,33 @@ public class MovimientoService {
 				.setTipoMoneda(c.getContrato().getMoneda())
 				.build();
 		return ret;
-	}
+	}	
 	
-	public static Movimiento getInstanciaSelladoIngreso(Cobro c) {
+	public static Movimiento getInstanciaSelladoAlquilerIngreso(ContratoAlquiler c) {
 		Movimiento ret= new Movimiento.Builder()
-				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
-				.setMonto(c.getInteres())
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ContratoService.getValorSelladoAlquiler(c))
 				.setFecha(LocalDate.now())
-				.setClaseMovimiento(ClaseMovimiento.Impuesto)
+				.setClaseMovimiento(ClaseMovimiento.Sellado)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Ingreso)
-				.setTipoMoneda(c.getContrato().getMoneda())
+				.setTipoMoneda(c.getMoneda())
 				.build();
 		return ret;
-	}
+	}	
+	public static Movimiento getInstanciaSelladoAlquilerEgreso(ContratoAlquiler c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getInmueble().toString())
+				.setMonto(ContratoService.getValorSelladoAlquiler(c))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Sellado)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Egreso)
+				.setTipoMoneda(c.getMoneda())
+				.build();
+		return ret;
+	}	
+	
 	
 	public static Movimiento getInstanciaCertificadoIngreso(ContratoAlquiler c) {
 		Movimiento ret= new Movimiento.Builder()
@@ -129,6 +142,8 @@ public class MovimientoService {
 				.build();
 		return ret;
 	}
+	
+	
 	
 	public static Movimiento getInstanciaMesComision(ContratoAlquiler c) {
 		Movimiento ret= new Movimiento.Builder()
