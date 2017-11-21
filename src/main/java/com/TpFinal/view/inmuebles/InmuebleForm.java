@@ -232,6 +232,7 @@ public class InmuebleForm extends FormLayout {
 		.bind(Inmueble::getConAireAcondicionado, Inmueble::setConAireAcondicionado);
 
 	binderInmueble.forField(this.ambientes).withNullRepresentation("")
+		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getCantidadAmbientes, Inmueble::setCantidadAmbientes);
@@ -244,6 +245,7 @@ public class InmuebleForm extends FormLayout {
 
 	binderInmueble.forField(this.cocheras)
 		.withNullRepresentation("")
+		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getCantidadCocheras, Inmueble::setCantidadCocheras);
@@ -256,6 +258,7 @@ public class InmuebleForm extends FormLayout {
 
 	binderInmueble.forField(this.dormitorios)
 		.withNullRepresentation("")
+		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getCantidadDormitorios, Inmueble::setCantidadDormitorios);
@@ -325,17 +328,20 @@ public class InmuebleForm extends FormLayout {
 
 	binderInmueble.forField(this.supCubierta)
 		.withNullRepresentation("")
+		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
 		.bind(Inmueble::getSuperficieCubierta, Inmueble::setSuperficieCubierta);
 
 	binderInmueble.forField(this.supTotal)
 		.withNullRepresentation("")
+		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.withValidator(n -> n > 0, "Debe ingresar un número positivo")
 		.bind(Inmueble::getSuperficieTotal, Inmueble::setSuperficieTotal);
 
 	binderInmueble.forField(this.tiposInmueble)
+		.asRequired("Debe Seleccionar un tipo de inmueble")
 		.bind(Inmueble::getTipoInmueble, Inmueble::setTipoInmueble);
 
     }
