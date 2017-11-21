@@ -28,7 +28,7 @@ public enum ClaseMovimiento {
 			break;
 		
 		case PagoAPropietario:
-			ret="PagoAPropietario";
+			ret="Pago a propietario";
 			break;
 			
 		case Impuesto:

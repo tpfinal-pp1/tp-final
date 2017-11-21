@@ -7,9 +7,6 @@ import java.time.format.TextStyle;
 import java.util.Locale;
 
 import org.apache.log4j.Logger;
-
-import com.TpFinal.dto.contrato.ContratoAlquiler;
-import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.movimiento.Movimiento;
 
@@ -35,7 +32,7 @@ public class ItemFichaMovimientos {
 	this.tipoMovimiento = String.valueOf(m.getTipoMovimiento());
 	this.descripción = m.getDescripcionMovimiento();
 	this.monto = m.getMonto();
-	//castearContrato(m);
+	// castearContrato(m);
 	this.simbolo = TipoMoneda.getSimbolo(m.getTipoMoneda());
 	this.anio = fechaLocalDate.getYear();
 	this.mes = formatearMes(fechaLocalDate.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag(
@@ -132,39 +129,6 @@ public class ItemFichaMovimientos {
 	    RepAnualMensual = "Anual";
 	}
 
-    }
-
-    private void castearContrato(Movimiento m) {
-	if (logger.isDebugEnabled()) {
-	    String movString = "nulo";
-	    String cobroString = "nulo";
-	    String contratoString = "nulo";
-	    String monedaString = "nulo";
-
-	    if (m != null) {
-		movString = m.toString();
-		if (m.getCobro() != null) {
-		    cobroString = m.getCobro().toString();
-		    if (m.getCobro().getContrato() != null) {
-			contratoString = m.getCobro().getContrato().toString();
-			if (m.getCobro().getContrato().getMoneda() != null) {
-			    monedaString = m.getCobro().getContrato().getMoneda().toString();
-			}
-		    }
-		}
-	    }
-	    logger.debug("Movimiento: " + movString);
-	    logger.debug("Cobro: " + cobroString);
-	    logger.debug("Contrato: " + contratoString);
-	    logger.debug("Moneda: " + monedaString);
-	}
-	if (m.getCobro().getContrato() instanceof ContratoAlquiler) {
-	    this.simbolo = TipoMoneda.getSimbolo(m.getCobro().getContrato().getMoneda());
-	}
-
-	if (m.getCobro().getContrato() instanceof ContratoVenta) {
-	    this.simbolo = TipoMoneda.getSimbolo(m.getCobro().getContrato().getMoneda());
-	}
     }
 
     public String formatearMes(String mes) {
