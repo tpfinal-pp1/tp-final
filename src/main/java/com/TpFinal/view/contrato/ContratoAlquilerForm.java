@@ -79,7 +79,6 @@ public class ContratoAlquilerForm extends FormLayout {
     DateField fechaCelebracion = new DateField("Fecha de Celebracion");
     DateField fechaIngreso = new DateField("Fecha de Ingreso");
     DateField fechaVencimiento = new DateField("Fecha de Vencimiento");
-    
 
     public String nombreArchivo = "";
     File archivo;
@@ -101,6 +100,7 @@ public class ContratoAlquilerForm extends FormLayout {
     ComboBox<TipoInteres> cbtipointeres = new ComboBox<>("Tipo Interes");
     TextField tfValorInicial = new TextField("Valor Inicial $");
     RadioButtonGroup<TipoMoneda> rbgTipoMoneda = new RadioButtonGroup<>("Tipo Moneda", TipoMoneda.toList());
+    TextField tfCantGarantes = new TextField("Cantidad de Cert. Garantes");
 
     ContratoService service = new ContratoService();
     InmuebleService inmuebleService = new InmuebleService();
@@ -303,12 +303,28 @@ public class ContratoAlquilerForm extends FormLayout {
     private Binder<ContratoAlquiler> getBinderParaEdicion() {
 	Binder<ContratoAlquiler> binderContratoAlquiler = new Binder<>(ContratoAlquiler.class);
 
-	
+	binderContratoAlquiler.forField(this.tfCantGarantes).asRequired(
+		"Debe ingresar una cantidad de garantes para el contrato")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 2, "Debe ingresar al menos 2 certificados!")
+		.bind(ContratoAlquiler::getCantCertificadosGarantes, ContratoAlquiler::setCantCertificadosGarantes);
 
 	binderContratoAlquiler.forField(this.fechaIngreso).asRequired("Seleccione una fecha de Ingreso")
+		.withValidator(fechaIngreso -> {
+		    if (fechaIngreso != null && fechaCelebracion.getValue() != null)
+			return fechaIngreso.compareTo(fechaCelebracion.getValue()) >= 0;
+		    else
+			return true;
+		}, "La fecha de ingreso debe ser igual o posterior a la fecha de celebración")
 		.bind(Contrato::getFechaIngreso, Contrato::setFechaIngreso);
 
 	binderContratoAlquiler.forField(this.fechaCelebracion).asRequired("Seleccione una fecha de celebración")
+		.withValidator(fechaCelebracion -> {
+		    if (fechaCelebracion != null && fechaIngreso.getValue() != null)
+			return fechaCelebracion.compareTo(fechaIngreso.getValue()) <= 0;
+		    else
+			return true;
+		}, "La fecha de celebracion debe ser igual o anterior a la fecha de celebración")
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
 
 	binderContratoAlquiler.forField(this.fechaVencimiento)
@@ -472,7 +488,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	condiciones = new FormLayout(cbDuracionContrato, tfDiaDePago, tfPagoFueraDeTermino, cbInteresFueraDeTermino,
 		new BlueLabel("Monto e Incremento"),
-		stIncremento, tfPActualizacion, cbtipointeres, tfValorInicial, rbgTipoMoneda);
+		stIncremento, tfPActualizacion, cbtipointeres, tfCantGarantes, tfValorInicial, rbgTipoMoneda);
 	condiciones.setMargin(true);
 	condiciones.setDefaultComponentAlignment(Alignment.MIDDLE_LEFT);
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
@@ -503,7 +519,8 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.contratoAlquiler = ContratoService.getInstanciaAlquiler();
 	    configurarComponentesSegunEstadoContrato(this.contratoAlquiler.getEstadoContrato());
 	    this.tfDiaDePago.setValue(ParametrosSistemaService.getParametros().getDiaDePago().toString());
-	   
+	    this.tfCantGarantes.setValue(ParametrosSistemaService.getParametros().getCantMinimaCertificados()
+		    .toString());
 	}
 
 	setVisible(true);
@@ -524,7 +541,6 @@ public class ContratoAlquilerForm extends FormLayout {
      * @param estadoContrato
      */
     private void configurarComponentesSegunEstadoContrato(EstadoContrato estadoContrato) {
-	// TODO Auto-generated method stub
 
 	tfDocumento.setEnabled(false);
 	if (estadoContrato == EstadoContrato.EnProcesoDeCarga) {
@@ -550,7 +566,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPActualizacion.setEnabled(true);
 	    this.tfPagoFueraDeTermino.setEnabled(true);
 	    this.tfValorInicial.setEnabled(true);
-	   
+	    this.tfCantGarantes.setEnabled(true);
 
 	} else if (estadoContrato == EstadoContrato.Vencido) {
 	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
@@ -574,7 +590,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPActualizacion.setEnabled(false);
 	    this.tfPagoFueraDeTermino.setEnabled(false);
 	    this.tfValorInicial.setEnabled(false);
-	    
+	    this.tfCantGarantes.setEnabled(false);
 
 	} else {
 	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
@@ -598,6 +614,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfPActualizacion.setEnabled(false);
 	    this.tfPagoFueraDeTermino.setEnabled(false);
 	    this.tfValorInicial.setEnabled(false);
+	    this.tfCantGarantes.setEnabled(false);
 	}
     }
 
