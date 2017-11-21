@@ -109,7 +109,6 @@ public class MovimientoService {
 	}
 
 	public static Movimiento getInstanciaPagoAPropietario(Cobro c) {
-		ContratoAlquiler c1=(ContratoAlquiler) c.getContrato();
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
 				.setMonto(c.getMontoPropietario())
