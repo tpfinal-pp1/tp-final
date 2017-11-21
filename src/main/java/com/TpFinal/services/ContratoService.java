@@ -203,10 +203,6 @@ public class ContratoService {
 				Planificador.get().removeJobCobroPorVencer(cobro);
 				venta.removeCobro(cobro);
 				cobroService.delete(cobro);
-				cobro.setEstadoCobro(EstadoCobro.ANULADO);
-				venta.addCobro(cobro);
-				cobroService.save(cobro);
-
 			}
 		}
 
