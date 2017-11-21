@@ -130,7 +130,7 @@ public class CobrosForm extends FormLayout {
 						.getInstanciaGananciaInmobiliaria(cobro);
 					movimientoService.saveOrUpdate(movGananciaInmobiliaria);
 
-					Movimiento sellado = MovimientoService.getInstanciaSellado(cobro);
+					Movimiento sellado = MovimientoService.getInstanciaSelladoEgreso(cobro);
 					movimientoService.saveOrUpdate(sellado);
 				    }
 				}

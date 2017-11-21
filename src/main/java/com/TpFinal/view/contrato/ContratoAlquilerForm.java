@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.TpFinal.dto.cobro.Cobro;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
@@ -16,6 +17,7 @@ import com.TpFinal.dto.inmueble.EstadoInmueble;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.movimiento.Movimiento;
+import com.TpFinal.dto.movimiento.TipoMovimiento;
 import com.TpFinal.dto.notificacion.NotificadorJob;
 import com.TpFinal.dto.persona.Calificacion;
 import com.TpFinal.dto.persona.Inquilino;
@@ -284,10 +286,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		logger.debug("Contrato Alquiler id antes de guardar:" + contratoAlquiler.getId());
 		this.save();
 		ContratoAlquiler ultimo = service.getUltimoAlquiler();
-		
-		Movimiento mov=MovimientoService.getInstanciaPagoAlquiler(service.getCuota(1, ultimo));
-		new MovimientoService().saveOrUpdate(mov);
-		
+
+		crearMovimientos(ultimo);
+
 		Planificador.get().setNotificacion(new NotificadorJob());
 		Planificador.get().setMailSender(new MailSender());
 
@@ -302,7 +303,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 		// agrego los jobs para que avise cuando el alquiler este vencido
 		Planificador.get().addJobAlquilerVencido(ultimo);
-		
+
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();
@@ -312,6 +313,28 @@ public class ContratoAlquilerForm extends FormLayout {
 	    }
 
 	};
+    }
+
+    private void crearMovimientos(ContratoAlquiler ultimo) {
+	MovimientoService movService = new MovimientoService();
+	Cobro cobro = service.getCuota(1, ultimo);
+	
+	Movimiento mov = MovimientoService.getInstanciaPagoAlquiler(cobro);
+	movService.saveOrUpdate(mov);
+	mov = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
+	movService.saveOrUpdate(mov);
+	mov = MovimientoService.getInstanciaPagoAPropietario(cobro);
+	movService.saveOrUpdate(mov);
+	mov = MovimientoService.getInstanciaCertificadoIngreso(ultimo);
+	movService.saveOrUpdate(mov);
+	mov = MovimientoService.getInstanciaCertificadoEgreso(ultimo);
+	movService.saveOrUpdate(mov);	
+	mov = MovimientoService.getInstanciaMesComision(ultimo);
+	movService.saveOrUpdate(mov);
+	mov = MovimientoService.getInstanciaMesGarantiaIngreso(ultimo);
+	movService.saveOrUpdate(mov);
+	
+	//TODO movimiento de sellado de contrato de alquiler
     }
 
     private void binding() {
