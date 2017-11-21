@@ -6,6 +6,7 @@ import java.time.format.TextStyle;
 import java.util.List;
 import java.util.Locale;
 
+import com.TpFinal.dto.cobro.EstadoCobro;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.dto.cobro.Cobro;
@@ -64,7 +65,8 @@ public class CobrosABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	controller.configureComponents();
-	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}");
+	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}" +
+			".v-grid-row.anulado { text-decoration: line-through;}");
 
     }
 
@@ -189,6 +191,9 @@ public class CobrosABMView extends DefaultLayout implements View {
 			ret = "vencido";
 		    }
 		}
+		if(cobro.getEstadoCobro()== EstadoCobro.ANULADO){
+	    	ret="anulado";
+			}
 		return ret;
 	    });
 

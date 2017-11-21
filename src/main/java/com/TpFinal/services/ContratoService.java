@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import com.TpFinal.dto.Provincia;
+import com.TpFinal.dto.notificacion.NotificadorJob;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.data.dao.DAOContratoAlquilerImpl;
@@ -135,6 +136,71 @@ public class ContratoService {
 	return itemsReporte;
 
     }
+
+	public boolean rescindirContrato(Contrato contrato){
+		if(contrato.getId()==null)
+			return false;
+		if(!puedeSerRescindido(contrato))
+			return false;
+
+		if(contrato instanceof ContratoAlquiler)
+			return cancelarContratoAlquiler((ContratoAlquiler)contrato);
+		else if(contrato instanceof ContratoVenta)
+			return cancelarContratoVenta((ContratoVenta)contrato);
+
+
+		return false;
+	}
+
+	public static boolean puedeSerRescindido(Contrato contrato){
+		EstadoContrato estadoContrato=contrato.getEstadoContrato();
+		return  estadoContrato==EstadoContrato.Celebrado
+				||estadoContrato==EstadoContrato.ProximoAVencer
+				||estadoContrato==EstadoContrato.Vigente||
+				estadoContrato==EstadoContrato.Renovado;
+
+	}
+
+
+	private boolean cancelarContratoAlquiler(ContratoAlquiler alquiler){
+		alquiler.setEstadoContrato(EstadoContrato.Cancelado);
+		CobroService cobroService = new CobroService();
+		Planificador.get().setNotificacion(new NotificadorJob());
+		Planificador.get().setMailSender(new MailSender());
+
+		for (Cobro cobro:cobroService.readNoCobrados()) {
+			if(cobro.getContrato().equals(alquiler)){
+				Planificador.get().removeJobCobroVencido(cobro);
+				Planificador.get().removeJobCobroPorVencer(cobro);
+				LocalDate now = LocalDate.now();
+				if(now.plusMonths(1).isBefore(cobro.getFechaDeVencimiento())) {
+					cobro.setEstadoCobro(EstadoCobro.ANULADO);
+					cobroService.save(cobro);
+				}
+			}
+		}
+		Planificador.get().removeJobAlquilerPorVencer(alquiler);
+		Planificador.get().removeJobAlquilerVencido(alquiler);
+		return daoAlquiler.saveOrUpdate(alquiler);
+	}
+	private boolean cancelarContratoVenta(ContratoVenta venta){
+		venta.setEstadoContrato(EstadoContrato.Cancelado);
+		CobroService cobroService = new CobroService();
+		Planificador.get().setNotificacion(new NotificadorJob());
+		Planificador.get().setMailSender(new MailSender());
+
+		for (Cobro cobro:cobroService.readNoCobrados()) {
+			if(cobro.getContrato().equals(venta)){
+				Planificador.get().removeJobCobroVencido(cobro);
+				Planificador.get().removeJobCobroPorVencer(cobro);
+				cobro.setEstadoCobro(EstadoCobro.ANULADO);
+				cobroService.save(cobro);
+
+			}
+		}
+
+		return daoVenta.saveOrUpdate(venta);
+	}
 
     public boolean verificarSiExisteCobroConMasDeUnAnio(LocalDate fechaActual) {
 

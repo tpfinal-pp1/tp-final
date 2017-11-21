@@ -585,7 +585,6 @@ public class ContratoAlquilerForm extends FormLayout {
      * @param estadoContrato
      */
     private void configurarComponentesSegunEstadoContrato(EstadoContrato estadoContrato) {
-
 	tfDocumento.setEnabled(false);
 	if (estadoContrato == EstadoContrato.EnProcesoDeCarga) {
 	    binderContratoAlquiler = getBinderParaEdicion();
@@ -636,7 +635,31 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfValorInicial.setEnabled(false);
 	    this.tfCantGarantes.setEnabled(false);
 
-	} else {
+	} else if(ContratoService.puedeSerRescindido(contratoAlquiler)){
+		this.save.setVisible(false);
+		this.delete.setVisible(true);
+		delete.setCaption("Rescindir");
+		this.finalizarCarga.setVisible(false);
+		this.renovarContrato.setVisible(false);
+		this.btCargar.setEnabled(false);
+		this.btDescargar.setEnabled(true);
+		this.cbDuracionContrato.setEnabled(false);
+		this.cbInmuebles.setEnabled(false);
+		this.cbInquilino.setEnabled(false);
+		this.cbInteresFueraDeTermino.setEnabled(false);
+		this.cbtipointeres.setEnabled(false);
+		this.fechaIngreso.setEnabled(false);
+		this.fechaCelebracion.setEnabled(false);
+		this.rbgTipoMoneda.setEnabled(false);
+		this.stIncremento.setEnabled(false);
+		this.tfDiaDePago.setEnabled(false);
+		this.tfDocumento.setEnabled(false);
+		this.tfPActualizacion.setEnabled(false);
+		this.tfPagoFueraDeTermino.setEnabled(false);
+		this.tfValorInicial.setEnabled(false);
+		this.tfCantGarantes.setEnabled(false);
+	}
+	else {
 	    binderContratoAlquiler = getBinderParaFinalizacionDeCarga();
 	    this.save.setVisible(false);
 	    this.delete.setVisible(false);
@@ -663,7 +686,14 @@ public class ContratoAlquilerForm extends FormLayout {
     }
 
     private void delete() {
-	boolean success = service.delete(contratoAlquiler);
+		boolean success =false;
+    if(ContratoService.puedeSerRescindido(contratoAlquiler)){
+    	success=service.rescindirContrato(contratoAlquiler);
+	}
+
+	else{
+    	success = service.delete(contratoAlquiler);
+	}
 	contratoABMView.updateList();
 	setVisible(false);
 	contratoABMView().setComponentsVisible(true);

@@ -478,7 +478,22 @@ public class ContratoVentaForm extends FormLayout {
 	    this.tfPrecioDeVenta.setEnabled(false);
 	    this.comisionAInquilino.setEnabled(false);
 	    this.comisionAPropietario.setEnabled(false);
-	} else {
+	} else if(ContratoService.puedeSerRescindido(contratoVenta)){
+		this.delete.setVisible(true);
+		delete.setCaption("Rescindir");
+		this.save.setVisible(false);
+		this.finalizarCarga.setVisible(false);
+		this.renovarContrato.setVisible(false);
+		this.btCargar.setEnabled(false);
+		this.btDescargar.setEnabled(true);
+		this.cbComprador.setEnabled(false);
+		this.cbInmuebles.setEnabled(false);
+		this.fechaIngreso.setEnabled(false);
+		this.fechaCelebracion.setEnabled(false);
+		this.rbgTipoMoneda.setEnabled(false);
+		this.tfDocumento.setEnabled(false);
+		this.tfPrecioDeVenta.setEnabled(false);
+	}else {
 	    binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    this.save.setVisible(false);
 	    this.delete.setVisible(false);
@@ -499,7 +514,14 @@ public class ContratoVentaForm extends FormLayout {
     }
 
     private void delete() {
-	boolean success = service.delete(contratoVenta);
+		boolean success =false;
+		if(ContratoService.puedeSerRescindido(contratoVenta)){
+			success=service.rescindirContrato(contratoVenta);
+		}
+
+		else{
+			success = service.delete(contratoVenta);
+		}
 	contratoABMView.updateList();
 	setVisible(false);
 	contratoABMView().setComponentsVisible(true);

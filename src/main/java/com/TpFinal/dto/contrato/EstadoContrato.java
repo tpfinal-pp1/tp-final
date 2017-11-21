@@ -27,6 +27,8 @@ public enum EstadoContrato {
 	case ProximoAVencer:
 	    ret = "Próximo a vencer";
 	    break;
+		case Cancelado:
+			ret = "Rescindido";
 	default:
 	    ret = super.toString();
 	    break;
