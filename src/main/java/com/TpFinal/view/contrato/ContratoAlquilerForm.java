@@ -302,6 +302,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 		// agrego los jobs para que avise cuando el alquiler este vencido
 		Planificador.get().addJobAlquilerVencido(ultimo);
+		
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");
 		binderContratoAlquiler.validate().getFieldValidationErrors();
