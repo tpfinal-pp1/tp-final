@@ -21,6 +21,9 @@ public enum ClaseMovimiento {
 	case Venta:
 	    ret = "Venta";
 	    break;
+	case Sellado:
+	    ret = "Sellado";
+	    break;
 	case CertificadoGarante:
 	    ret = "Certificado Garante";
 	    break;
