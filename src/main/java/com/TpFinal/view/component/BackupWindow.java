@@ -25,7 +25,7 @@ public class BackupWindow extends CustomComponent {
     private static final long serialVersionUID = 1L;
     private final Label infoLabel = new Label("", ContentMode.HTML);
     private UploadButton importar = null;
-    private boolean seImportoBD = false;
+
     private final ExportDBButton exportar = new ExportDBButton();
     private final Window window = new Window();
     private Button shutdown = new Button("Detener", VaadinIcons.STOP_COG);
@@ -75,12 +75,10 @@ public class BackupWindow extends CustomComponent {
 	UploadReceiver uR = new UploadReceiver();
 	importar = new UploadButton(uR);
 	importar.addSucceededListener(success -> {
-	    logger.debug("Seteando importacion de db a true");
-	    seImportoBD = true;
 	    Parametros.setProperty(Parametros.DB_NAME, uR.getFileName());
 	    importar.setEnabled(false);
 	    exportar.setEnabled(false);
-	    reiniciar.click();
+	    reiniciarServiciosYSesion(true);
 
 	});
 	exportar.focus();
@@ -156,7 +154,7 @@ public class BackupWindow extends CustomComponent {
 	    public void buttonClick(Button.ClickEvent clickEvent) {
 
 		ConexionHibernate.leaveBackupMode();
-		reiniciarServiciosYSesion();
+		reiniciarServiciosYSesion(false);
 
 	    }
 	});
@@ -168,7 +166,7 @@ public class BackupWindow extends CustomComponent {
 	    public void buttonClick(Button.ClickEvent clickEvent) {
 
 		ConexionHibernate.leaveBackupMode();
-		reiniciarServiciosYSesion();
+		reiniciarServiciosYSesion(false);
 
 	    }
 	});
@@ -182,15 +180,14 @@ public class BackupWindow extends CustomComponent {
 
     }
 
-    private void reiniciarServiciosYSesion() {
+    private void reiniciarServiciosYSesion(boolean seImportoDB) {
 	logger.debug("Actualizando Conexión");
 	ConexionHibernate.refreshConnection();
 	logger.debug("Apagando Planificador");
 	Planificador.get().apagar();
 	logger.debug("Abriendo Conexiones");
 	ConexionHibernate.createSessionFactory();
-	if (seImportoBD) {
-	    seImportoBD = false;
+	if (seImportoDB) {
 	    ConexionHibernate.leaveBackupMode();
 	    logger.debug("Cargando Imagenes en File System");
 	    InmuebleService.cargarImagenesAFileSystem();
