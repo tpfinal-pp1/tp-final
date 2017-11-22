@@ -33,6 +33,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 	logger.info("Iniciando Server..");
 	logger.info("===================");
 	establecerConexionesBD();
+	
 	ParametrosSistemaService.crearParametrosDefault();
 
 	//CredencialService.crearAdminAdmin();
@@ -72,7 +73,7 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
-
+	InmuebleService.cargarImagenesAFileSystem();
 	/*logger.info("=================");
 	logger.info("Generando datos..");
 	logger.info("=================");
