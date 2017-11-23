@@ -4,6 +4,8 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.properties.Parametros;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.Planificador;
+import com.TpFinal.utils.Utils;
+import com.TpFinal.utils.XZCompressor;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
@@ -39,7 +41,6 @@ public class BackupWindow extends CustomComponent {
     }
 
     public BackupWindow() {
-
 	vaadinSession = VaadinSession.getCurrent();
 	pollInterval = getUI().getCurrent().getPollInterval();
 	getUI().getCurrent().setPollInterval(500);
@@ -61,39 +62,28 @@ public class BackupWindow extends CustomComponent {
 	window.setCaption("Backup/Restore");
 	window.setIcon(VaadinIcons.DATABASE);
 	window.setDraggable(false);
-	String dbFile = "";
-	try {
-	    dbFile = Parametros.getProperty(Parametros.DB_NAME);
-	    if (!dbFile.contains(".mv.db")) {
-		dbFile = dbFile + ".mv.db";
-	    }
-
-	} catch (FileExistsException e) {
-	    e.printStackTrace();
-	}
-
-	UploadReceiver uR = new UploadReceiver();
+	//UPLOAD
+	DBUploadReceiver uR = new DBUploadReceiver();
 	importar = new UploadButton(uR);
 	importar.addSucceededListener(success -> {
-	    Parametros.setProperty(Parametros.DB_NAME, uR.getFileName());
+		String descomprimido="";
+		try {
+			System.out.println("FILENAME  "+uR.getFileName());
+			descomprimido= XZCompressor.descomprimir(uR.getFileName(),"Files");
+			System.out.println("descomprimido "+descomprimido);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Parametros.setProperty(Parametros.DB_NAME, Utils.removeFileExtension(descomprimido));
 	    importar.setEnabled(false);
 	    exportar.setEnabled(false);
 	    reiniciarServiciosYSesion(true);
 
 	});
+
+	//DOWNLOAD
 	exportar.focus();
-	try {
-	    exportar.setArchivoFromPath(Parametros.getProperty(Parametros.DB_PATH) + File.separator, dbFile);
-	} catch (IllegalArgumentException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	} catch (FileExistsException e) {
-	    // TODO Auto-generated catch block
-	    e.printStackTrace();
-	}
-	// TODO
-	exportar.addClickListener(click -> {
-	});
+
 
 	// ui
 	popupVLayout.addComponent(infoLabel);
@@ -120,29 +110,33 @@ public class BackupWindow extends CustomComponent {
 			    @Override
 			    public void buttonClick(Button.ClickEvent clickEvent) {
 
-				ConexionHibernate.enterBackupMode();
+						ConexionHibernate.enterBackupMode();
 
-				apagarServicios();
-				infoLabel.setValue("Espere " + pollInterval / 1000
-					+ " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora");
+						apagarServicios();
+						infoLabel.setValue("Espere " + pollInterval / 1000
+							+ " segundos... Porfavor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora");
 
-				window.setClosable(false);
-				shutdown.setEnabled(false);
+						window.setClosable(false);
+						shutdown.setEnabled(false);
 
-				new Thread(() -> {
-				    try {
-					Thread.sleep(pollInterval);
-				    } catch (InterruptedException e) {
-					e.printStackTrace();
-				    }
-				    infoLabel.setValue("Ahora puede Importar o Exportar la Base de datos,\n" +
-					    " porfavor antes de cerrar el navegador seleccione Reiniciar!!");
-				    importar.setEnabled(true);
-				    exportar.setEnabled(true);
-				    shutdown.setVisible(false);
-				    reiniciar.setVisible(true);
+						new Thread(() -> {
+							try {
+							Thread.sleep(pollInterval);
+							} catch (InterruptedException e) {
+							e.printStackTrace();
+							}
+							ComprimirDBYPrepararDownload();
+							infoLabel.setValue("Compactando la Base de datos...Por favor no cierre el navegador. De cerrarlo el servidor puede quedar inhabilitado por 1 hora\"");
+							importar.setEnabled(true);
+							exportar.setEnabled(true);
+							shutdown.setVisible(false);
+							reiniciar.setVisible(true);
+							infoLabel.setValue("Ahora puede Importar o Exportar la Base de datos,\n" +
+									" porfavor antes de cerrar el navegador seleccione Reiniciar!!");
 
-				}).start();
+
+						}).start();
+
 
 			    }
 			});
@@ -214,6 +208,25 @@ public class BackupWindow extends CustomComponent {
 	Planificador.get().apagar();
 
     }
+    public void ComprimirDBYPrepararDownload(){
+		String dbFile="";
+		String dbPath="";
+		String dbCompressedFile="";
+
+		try {
+			dbFile = Parametros.getProperty(Parametros.DB_NAME);
+			dbPath = Parametros.getProperty(Parametros.DB_PATH);
+			if (!dbFile.contains(".mv.db"))
+				dbFile = dbFile + ".mv.db";
+
+			dbCompressedFile=XZCompressor.comprimir(dbFile,dbPath);
+			exportar.setArchivoFromPath(dbPath + File.separator, dbCompressedFile);
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
     public void setInfo(String info) {
 	infoLabel.setValue(info);

@@ -56,7 +56,6 @@ public final class DashboardUI extends UI {
 			if (!VaadinSession.getCurrent().equals(BackupWindow.getVaadinSession())) {
 
 				if (ConexionHibernate.isBackupmode()) {
-					DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());
 					for (int i = 0; i <999 ; i++) {
 						showWaitNotification();
 					}

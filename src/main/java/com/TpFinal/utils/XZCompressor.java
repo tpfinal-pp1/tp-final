@@ -12,13 +12,16 @@ import java.io.FileOutputStream;
 public class XZCompressor {
 
     public static String descomprimir(String archivoADesComprimir,String path)throws Exception{
-        if(!archivoADesComprimir.contains(".xz"))
-            return "";
+
         //DESCOMPRIMIR
         FileInputStream fin = new FileInputStream(path+File.separator+archivoADesComprimir);
         BufferedInputStream in = new BufferedInputStream(fin);
-        int corte=archivoADesComprimir.indexOf(".xz");
-        String descomprimido=archivoADesComprimir.substring(0,corte);
+        String descomprimido=archivoADesComprimir;
+
+        if(archivoADesComprimir.contains(".xz")){
+            int corte=archivoADesComprimir.indexOf(".xz");
+            descomprimido=archivoADesComprimir.substring(0,corte);
+        }
         File descomp=new File(path+File.separator+descomprimido);
         while (descomp.exists()) {
             String name="copia_" + descomp.getName();
