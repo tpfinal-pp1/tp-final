@@ -32,7 +32,7 @@ public class ParametrosTest {
 		String decripted=Cipher.decrypt(encripted);
 		assertEquals(original,decripted);
 	}
-	@Test
+	@Ignore
 	public void comprimiryDescomprimir() throws Exception {
 		XZCompressor.comprimir("inmobi_db.mv.db","Files"+ File.separator);
 		//DESCOMPRIMIR
