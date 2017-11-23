@@ -309,6 +309,11 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 	public String toString() {
 		return this.contrato.getInmueble().getDireccion().toString();
 	}
+	
+	@Override
+	public void generateUUID() {
+		this.randomKey=UUID.randomUUID();
+	}
 
 	public static class Builder{
 		Integer numeroCuota;
