@@ -55,7 +55,7 @@ public class XZCompressor {
             out.write(buf, 0, size);
 
         out.finish();
-
+        out.close();
         return archivoAComprimir+".xz";
     }
 
