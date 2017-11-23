@@ -10,6 +10,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -386,7 +388,7 @@ public class InmuebleService {
     public static void cargarImagenesAFileSystem() {
 	DAOInmuebleImpl dao = new DAOInmuebleImpl();
 	dao.readAllActives().forEach(InmuebleService::cargarImagenesDeInmueble);
-	
+
     }
 
     public static void cargarImagenesDeInmueble(Inmueble i) {
@@ -397,16 +399,20 @@ public class InmuebleService {
     }
 
     private static void cargarImagen(Imagen imagen) {
-	File path = new File("."+File.separator+imagen.getPath());
-	if (!path.exists()) {
-	    logger.debug("Cargando archivo a file system: " + path);
-	    FileOutputStream fout = null;
-	    try {
-		fout = new FileOutputStream(path);
-		IOUtils.copy(imagen.getImagen().getBinaryStream(), fout);
-	    } catch (IOException | SQLException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+	Path p = Paths.get("." + File.separator + imagen.getPath());
+	if (!Files.exists(p)) {
+	    File path = new File("." + File.separator + imagen.getPath());
+	    if (!path.exists()) {
+		logger.debug("Cargando archivo a file system: " + path);
+		FileOutputStream fout = null;
+		try {
+		    fout = new FileOutputStream(path);
+		    IOUtils.copy(imagen.getImagen().getBinaryStream(), fout);
+		    fout.close();
+		} catch (IOException | SQLException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
 	    }
 	}
     }

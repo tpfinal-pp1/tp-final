@@ -428,7 +428,9 @@ public class InmuebleForm extends FormLayout {
     public void setInmueble(Inmueble inmueble) {
 
 	if (inmueble != null) {
-
+	    
+	    InmuebleService.cargarImagenesDeInmueble(inmueble);
+	    
 	    this.inmueble = inmueble;
 	    binderInmueble.readBean(this.inmueble);
 	    // Fix #213
