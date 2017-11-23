@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum ClaseMovimiento {
-    Garantia,
+    Deposito,
 	CertificadoGarante,
 	Sellado,
 	Venta,
@@ -12,7 +12,7 @@ public enum ClaseMovimiento {
 	Comision,
 	Otro,
 	PagoAPropietario,
-	Impuesto;
+	Impuesto, MesComision;
 
     @Override
     public String toString() {
@@ -27,16 +27,19 @@ public enum ClaseMovimiento {
 	case CertificadoGarante:
 	    ret = "Certificado Garante";
 	    break;
-	case Garantia:
-	    ret = "Garantía";
+	case Deposito:
+	    ret = "Depósito";
 	    break;
 
 	case Alquiler:
-	    ret = "Alquiler";
+	    ret = "Cuota Alquiler";
 	    break;
 
 	case Comision:
 	    ret = "Comisión";
+	    break;
+	case MesComision:
+	    ret = "Mes comisión";
 	    break;
 
 	case Otro:
