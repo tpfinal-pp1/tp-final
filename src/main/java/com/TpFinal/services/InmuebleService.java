@@ -401,7 +401,7 @@ public class InmuebleService {
     private static void cargarImagen(Imagen imagen) {
 	Path p = Paths.get("." + File.separator + imagen.getPath());
 	if (!Files.exists(p)) {
-	    File path = new File("." + File.separator + imagen.getPath());
+	    File path = p.toFile();
 	    if (!path.exists()) {
 		logger.debug("Cargando archivo a file system: " + path);
 		FileOutputStream fout = null;
