@@ -10,28 +10,25 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 public class XZCompressor {
-    @Deprecated
-    public static String descomprimir(String archivoADesComprimir, String NombreDesComprimido,String path)throws Exception{
-        //DESCOMPRIMIR
-        FileInputStream fin = new FileInputStream(path+archivoADesComprimir+".xz");
-        BufferedInputStream in = new BufferedInputStream(fin);
-        FileOutputStream out2 = new FileOutputStream(path+NombreDesComprimido);
-        XZInputStream xzIn = new XZInputStream(in);
-        final byte[] buffer = new byte[8192];
-        int n = 0;
-        while (-1 != (n = xzIn.read(buffer))) {
-            out2.write(buffer, 0, n);
-        }
-        out2.close();
-        xzIn.close();
-        return NombreDesComprimido;
-    }
 
     public static String descomprimir(String archivoADesComprimir,String path)throws Exception{
+
         //DESCOMPRIMIR
-        FileInputStream fin = new FileInputStream(path+"comprimido_"+archivoADesComprimir);
+        FileInputStream fin = new FileInputStream(path+File.separator+archivoADesComprimir);
         BufferedInputStream in = new BufferedInputStream(fin);
-        FileOutputStream out2 = new FileOutputStream(path+"descomprimido_"+archivoADesComprimir);
+        String descomprimido=archivoADesComprimir;
+
+        if(archivoADesComprimir.contains(".xz")){
+            int corte=archivoADesComprimir.indexOf(".xz");
+            descomprimido=archivoADesComprimir.substring(0,corte);
+        }
+        File descomp=new File(path+File.separator+descomprimido);
+        while (descomp.exists()) {
+            String name="copia_" + descomp.getName();
+            descomp = new File(path+File.separator+name);
+        }
+        System.out.println("descomp"+descomp.getName());
+        FileOutputStream out2 = new FileOutputStream(path+File.separator+descomp.getName());
         XZInputStream xzIn = new XZInputStream(in);
         final byte[] buffer = new byte[8192];
         int n = 0;
@@ -40,12 +37,12 @@ public class XZCompressor {
         }
         out2.close();
         xzIn.close();
-        return "descomprimido_"+archivoADesComprimir;
+        return descomp.getName();
     }
 
     public static String comprimir(String archivoAComprimir,String path)throws Exception{
-        FileInputStream inFile = new FileInputStream(path+archivoAComprimir);
-        FileOutputStream outfile = new FileOutputStream(path+"comprimido_"+archivoAComprimir);
+        FileInputStream inFile = new FileInputStream(path+File.separator+archivoAComprimir);
+        FileOutputStream outfile = new FileOutputStream(path+File.separator+archivoAComprimir+".xz");
         LZMA2Options options = new LZMA2Options();
 
         options.setPreset(7); // play with this number: 6 is default but 7 works better for mid sized archives ( > 8mb)
@@ -59,27 +56,8 @@ public class XZCompressor {
 
         out.finish();
 
-        return "comprimido_"+archivoAComprimir;
+        return archivoAComprimir+".xz";
     }
-    @Deprecated
-    public static String comprimir(String archivoAComprimir, String nombreComprimido,String path)throws Exception{
-        FileInputStream inFile = new FileInputStream(path+archivoAComprimir);
-        FileOutputStream outfile = new FileOutputStream(path+nombreComprimido+".xz");
 
-        LZMA2Options options = new LZMA2Options();
-
-        options.setPreset(7); // play with this number: 6 is default but 7 works better for mid sized archives ( > 8mb)
-
-        XZOutputStream out = new XZOutputStream(outfile, options);
-
-        byte[] buf = new byte[8192];
-        int size;
-        while ((size = inFile.read(buf)) != -1)
-            out.write(buf, 0, size);
-
-        out.finish();
-
-        return nombreComprimido;
-    }
 
 }

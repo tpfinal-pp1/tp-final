@@ -17,6 +17,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
 
 public class ParametrosTest {
 
@@ -32,16 +35,17 @@ public class ParametrosTest {
 		String decripted=Cipher.decrypt(encripted);
 		assertEquals(original,decripted);
 	}
-	@Ignore
+	@Test
 	public void comprimiryDescomprimir() throws Exception {
-		XZCompressor.comprimir("inmobi_db.mv.db","Files"+ File.separator);
-		//DESCOMPRIMIR
-		XZCompressor.descomprimir("inmobi_db.mv.db","Files"+ File.separator);
+		String text = "Texto De Prueba";
+		Files.write(Paths.get("Files"+File.separator+"test.txt"), text.getBytes());
+		String comprimido=XZCompressor.comprimir("test.txt","Files");
+		String descomprimido=XZCompressor.descomprimir(comprimido,"Files");
+		String content = new Scanner(new File("Files"+File.separator+descomprimido))
+				.useDelimiter("\\Z").next();
+		assertEquals(text,content);
 
 	}
-
-
-
 	@Test
 	public void traeDefaultsBien() throws IllegalArgumentException, FileExistsException {
 		assertNotEquals(null, Parametros.getProperty("emailKey"));

@@ -12,5 +12,11 @@ public class UploadButton extends Upload {
         this.setCaption(null);
     }
 
+    public UploadButton (DBUploadReceiver uploadReceiver){
+        super(null,uploadReceiver);
+        this.setStyleName(ValoTheme.BUTTON_TINY);
+        this.setCaption(null);
+    }
+
 }
 
