@@ -44,7 +44,7 @@ public class ItemFichaInmuebleSimple {
     	 this.conPileta = inmueble.getConPileta();
     	 this.estadoInmueble = inmueble.getEstadoInmueble().toString();
     	 this.tipoInmueble = inmueble.getTipoInmueble().toString();
-    	 this.claseInmueble = inmueble.getClaseInmueble().toString();
+    	 this.claseInmueble = inmueble.getClaseInmueble()!= null? inmueble.getClaseInmueble().toString() : "sin datos";
     	 this.calleDireccion = inmueble.getDireccion().getCalle();
     	 this.localidadDireccion = inmueble.getDireccion().getLocalidad();
     	 this.nroDireccion = inmueble.getDireccion().getNro();
