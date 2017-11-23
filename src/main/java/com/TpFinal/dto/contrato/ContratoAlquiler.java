@@ -226,6 +226,11 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 	public int hashCode() {
 		return 3;
 	}
+	
+	@Override
+	public void generateUUID() {
+		this.randomKey=UUID.randomUUID();
+	}
 
 	@Override
 	public ContratoAlquiler clone() {

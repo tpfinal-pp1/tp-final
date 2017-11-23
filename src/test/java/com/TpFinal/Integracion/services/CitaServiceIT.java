@@ -82,6 +82,7 @@ public class CitaServiceIT {
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 2")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 3")));
 		assertTrue(service.readAll().stream().anyMatch(c -> c.getCitado().equals("Señor 4")));
+		service.readAll().forEach(cita -> System.out.println("key: "+cita.getTriggerKey()));
 	}
 
 	@Test

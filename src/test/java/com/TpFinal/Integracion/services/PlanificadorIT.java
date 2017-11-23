@@ -275,7 +275,6 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep(62);
 	}
 	
-	@Ignore
 	@Test 
 	public void removeAlquilerPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
@@ -301,6 +300,7 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep(10);
 	}
 	
+	@Ignore
 	@Test 
 	public void addAlquilerVencido() throws InterruptedException {
 		//XXX
@@ -326,7 +326,6 @@ public class PlanificadorIT {
 		TimeUnit.SECONDS.sleep(62);
 	}
 	
-	@Ignore
 	@Test 
 	public void removeAlquilerVencido() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
