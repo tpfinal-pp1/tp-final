@@ -26,6 +26,7 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
@@ -209,22 +210,21 @@ public class Utils {
 
     public static String removeFileExtension(String strFilename) {
 	int j;
-		String ret = strFilename;
-
+	String ret = strFilename;
 
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String antes de remover extension: " + ret);
 	}
-		int index ;
-	if(strFilename.contains(".mv.db")) {
-		index = ret.lastIndexOf('.');
-		if (index != -1)
-			ret = ret.substring(0, ret.lastIndexOf('.'));
+	int index;
+	if (strFilename.contains(".mv.db")) {
+	    index = ret.lastIndexOf('.');
+	    if (index != -1)
+		ret = ret.substring(0, ret.lastIndexOf('.'));
 	}
 
 	index = ret.lastIndexOf('.');
 	if (index != -1)
-		ret = ret.substring(0, ret.lastIndexOf('.'));
+	    ret = ret.substring(0, ret.lastIndexOf('.'));
 
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String después de remover extension: " + ret);
@@ -233,7 +233,7 @@ public class Utils {
 	return ret;
 
     }
-    
+
     public static String removeDBFileExtension(String strFilename) {
 	int j;
 	String ret = strFilename;
@@ -243,7 +243,7 @@ public class Utils {
 
 	int index = ret.lastIndexOf('.');
 	if (index != -1)
-	    ret = ret.substring(0,ret.length()-6);
+	    ret = ret.substring(0, ret.length() - 6);
 
 	if (logger.isDebugEnabled()) {
 	    logger.debug("String después de remover extension: " + ret);
@@ -273,5 +273,15 @@ public class Utils {
 	}
 
 	return ret;
+    }
+
+    public static void reemplazarFileSeparator(String path) {
+	String sep = File.separator;
+	if (path.contains("/"))
+	    sep = "/";
+	else if (path.contains("\\"))
+	    sep = "\\\\";
+	path.replaceAll(sep, Matcher.quoteReplacement(File.separator =="\\" ? "\\" : "/"));
+
     }
 }

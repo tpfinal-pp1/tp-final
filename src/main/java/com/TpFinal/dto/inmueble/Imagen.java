@@ -1,10 +1,20 @@
 package com.TpFinal.dto.inmueble;
 import javax.persistence.*;
+
+import org.apache.log4j.Logger;
+
+import com.TpFinal.utils.Utils;
+
+
+import java.io.File;
 import java.sql.Blob;
+import java.util.regex.Matcher;
 
 @Embeddable
 @Table(name = "Imagenes")
 public class Imagen {
+    private static final Logger logger = Logger.getLogger(Imagen.class);
+    
 
     @Column(name = "nombre")
     private String nombre;
@@ -40,8 +50,12 @@ public class Imagen {
     }
 
     public String getPath() {
+	Utils.reemplazarFileSeparator(path);
 	return path;
     }
+
+
+    
 
     public void setPath(String path) {
 	this.path = path;
