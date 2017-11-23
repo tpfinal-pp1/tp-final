@@ -2,6 +2,7 @@ package com.TpFinal.UnitTests;
 
 import static org.junit.Assert.*;
 
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.utils.Cipher;
 import com.TpFinal.utils.XZCompressor;
 import org.apache.commons.io.FileExistsException;
@@ -19,6 +20,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.util.Scanner;
 
 public class ParametrosTest {
@@ -35,6 +37,15 @@ public class ParametrosTest {
 		String decripted=Cipher.decrypt(encripted);
 		assertEquals(original,decripted);
 	}
+	@Test
+	public void serial(){
+		CredencialService cs=new CredencialService();
+		String key="VEZFXkJDRUZaQEdXQQ==";
+
+		assertFalse(cs.validateSerial(key));
+
+	}
+
 	@Test
 	public void comprimiryDescomprimir() throws Exception {
 		String text = "Texto De Prueba";

@@ -11,7 +11,7 @@ import com.TpFinal.services.NotificacionService;
 import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
 import com.TpFinal.view.calendario.MeetingItem;
-import com.TpFinal.view.calendario.ParametrosDelSistemaWindow;
+import com.TpFinal.view.parametros.ParametrosDelSistemaWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Title;
 import com.vaadin.event.LayoutEvents.LayoutClickEvent;

@@ -2,8 +2,10 @@ package com.TpFinal.view.parametros;
 
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.ViewAccess;
+import com.TpFinal.properties.Parametros;
 import com.TpFinal.services.CitaService;
 
+import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.view.component.BackupWindow;
 import com.TpFinal.view.component.BlueLabel;
@@ -21,6 +23,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.commons.io.FileExistsException;
 
 @SuppressWarnings("serial")
 public abstract class ParametrosDelSistemaWindow extends Window {
@@ -159,6 +162,7 @@ public abstract class ParametrosDelSistemaWindow extends Window {
 	    }
 	});
 	ok.focus();
+
 	Button openBackupWindow = new Button("Backup/Restore", VaadinIcons.DATABASE);
 	openBackupWindow.addClickListener(new ClickListener() {
 	    @Override
@@ -166,7 +170,19 @@ public abstract class ParametrosDelSistemaWindow extends Window {
 		new BackupWindow();
 	    }
 	});
-	footer.addComponents(openBackupWindow, ok);
+
+		try {
+			if(!Boolean.valueOf(Parametros.getProperty(Parametros.AGENTE_BACKUP))) {
+				boolean accesoABackup=CredencialService.getCurrentUser().getCredencial().getViewAccess() == ViewAccess.Recovery||
+						CredencialService.getCurrentUser().getCredencial().getViewAccess() == ViewAccess.Admin;
+				openBackupWindow.setEnabled(accesoABackup);
+
+			}
+		} catch (FileExistsException e) {
+			e.printStackTrace();
+		}
+
+		footer.addComponents(openBackupWindow, ok);
 	openBackupWindow.setVisible(true);
 	footer.setComponentAlignment(ok, Alignment.TOP_RIGHT);
 	footer.setComponentAlignment(openBackupWindow, Alignment.TOP_LEFT);

@@ -74,7 +74,14 @@ public class BackupWindow extends CustomComponent {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Parametros.setProperty(Parametros.DB_NAME, Utils.removeFileExtension(descomprimido));
+		for (int i = 0; i <2 ; i++) {
+			System.out.println("ORIGINAL"+descomprimido);
+			descomprimido=Utils.removeFileExtension(descomprimido);
+			System.out.println("RECORTANDO EXTENSIONES DB "+descomprimido);
+			descomprimido=Utils.removeFileExtension(descomprimido);
+			System.out.println("RECORTANDO EXTENSIONES DB "+descomprimido);
+		}
+		Parametros.setProperty(Parametros.DB_NAME,descomprimido );
 	    importar.setEnabled(false);
 	    exportar.setEnabled(false);
 	    reiniciarServiciosYSesion(true);

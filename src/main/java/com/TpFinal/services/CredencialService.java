@@ -1,20 +1,23 @@
 package com.TpFinal.services;
 
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.Period;
+
+import java.io.File;
+import java.io.IOException;
+import java.time.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.TpFinal.utils.Cipher;
+import com.google.gwt.i18n.client.constants.DateTimeConstantsImpl;
 import org.apache.log4j.Logger;
-
 import com.TpFinal.DashboardUI;
 import com.TpFinal.data.dao.DAOCredencialImpl;
 import com.TpFinal.data.dao.DAOPersonaImpl;
 import com.TpFinal.data.dao.interfaces.DAOCredencial;
 import com.TpFinal.dto.persona.*;
-
 import com.TpFinal.view.DashboardViewType;
+
 
 public class CredencialService {
     private final static Logger logger = Logger.getLogger(CredencialService.class);
@@ -69,69 +72,113 @@ public class CredencialService {
 	return false;
     }
 
+  public boolean validateSerial(String serial){
+    	try {
+			long instant = Long.valueOf(Cipher.decrypt(serial));
+			Instant instantOfKey = Instant.ofEpochMilli(instant);
+			LocalDate dateOfKey= instantOfKey.atZone(ZoneId.systemDefault()).toLocalDate();;
+			LocalDate now=LocalDate.now();
+			System.out.println("Date of Key: "+dateOfKey);
+			System.out.println("Now: "+now);
+			return dateOfKey.plusDays(3).isAfter(now);
+
+
+		}
+    	catch (Exception e){
+    		e.printStackTrace();
+    		return false;
+		}
+
+	}
+
     public Empleado logIn(String user, String pass) {
-	Empleado ret = new Empleado();
-	ArrayList<Credencial> credencials = new ArrayList<Credencial>();
-	try {
-	    credencials.addAll(readAll());
-	} catch (Exception e) {
-	    e.printStackTrace();
-	}
-	boolean hayAlMenosUnAdmin = false;
-	boolean huboMatch = false;
-	boolean noHayEmpleados = credencials.size() == 0;
-	for (Credencial cred : credencials) {
-
-	    if (credencials.size() == 1) { // ANTILOCKOUT
-		if (logger.isDebugEnabled()) {
-		    logger.debug("Credencial size = 1 -> ok");
+		Empleado ret = new Empleado();
+		ArrayList<Credencial> credencials = new ArrayList<Credencial>();
+		try {
+			credencials.addAll(readAll());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		Persona personaTemp = cred.getEmpleado().getPersona();
-		if ((personaTemp.getNombre() + personaTemp.getApellido()).equals("AccesoTemporal")) {
-		    cred.setViewAccess(ViewAccess.Admin);
-		    return cred.getEmpleado();
+		boolean hayAlMenosUnAdmin = false;
+		boolean huboMatch = false;
+		boolean noHayEmpleados = credencials.size() == 0;
+		//SERIAL Y ACTIVACION
+		if (noHayEmpleados) {
+			if(validateSerial(user+pass)){
+				return  temporalAdmin();
+			}
+			else{
+				File f=new File("inmobi.db.mv");
+				if(f.exists()){
+					return new Empleado();
+				}
+				try {
+					if(f.createNewFile()){
+						return temporalDemo();
+					}
+					else{
+						return new Empleado();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					return new Empleado();
+				}
+			}
 		}
-	    }
 
-	    boolean match = cred.getUsuario().equals(user)
-		    && cred.getContrasenia().equals(pass);
-	    if (match) {
-		ret = cred.getEmpleado();
-		huboMatch = true;
-	    }
-	    if (cred.getViewAccess().equals(ViewAccess.Admin)) {
-		hayAlMenosUnAdmin = true;
 
-	    }
-	}
-	// ANTILOCKOUT
-	if (!hayAlMenosUnAdmin && !huboMatch) {
+		for (Credencial cred : credencials) {
 
-	    Persona p = new Persona.Builder().setNombre("Acceso").setApellido("Temporal").build();
-	    Empleado emp = new Empleado.Builder().setPersona(p).setPersona(p).build();
-	    Credencial cred = new Credencial();
-	    emp.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria);
+			if (credencials.size() == 1) { // ANTILOCKOUT
+			if (logger.isDebugEnabled()) {
+				logger.debug("Credencial size = 1 -> ok");
+			}
+			Persona personaTemp = cred.getEmpleado().getPersona();
+			if ((personaTemp.getNombre() + personaTemp.getApellido()).equals("AccesoTemporal")) {
+				cred.setViewAccess(ViewAccess.Admin);
+				return cred.getEmpleado();
+			}
+			}
 
-	    if (noHayEmpleados) {
-		cred.setUsuario("admin");
-		cred.setContrasenia("admin");
-	    } else {
-		cred.setUsuario(String.valueOf(Instant.now().toEpochMilli()));
-		cred.setContrasenia(String.valueOf(Instant.now().toEpochMilli()));
-	    }
-	    cred.setEmpleado(emp);
-	    cred.setViewAccess(ViewAccess.Recovery);
-	    emp.setCredencial(cred);
-	    ret = emp;
-	}
-	// ANTILOCKOUT
-	else if (!hayAlMenosUnAdmin && huboMatch) {
-	    Credencial credUpgrade = ret.getCredencial();
-	    credUpgrade.setViewAccess(ViewAccess.Admin);
-	    ret.setCredencial(credUpgrade);
-	}
+			boolean match = cred.getUsuario().equals(user)
+				&& cred.getContrasenia().equals(pass);
+			if (match) {
+			ret = cred.getEmpleado();
+			huboMatch = true;
+			}
+			if (cred.getViewAccess().equals(ViewAccess.Admin)) {
+			hayAlMenosUnAdmin = true;
 
-	return ret;
+			}
+		}
+		// ANTILOCKOUT
+		if (!hayAlMenosUnAdmin && !huboMatch) {
+
+			Persona p = new Persona.Builder().setNombre("Acceso").setApellido("Temporal").build();
+			Empleado emp = new Empleado.Builder().setPersona(p).setPersona(p).build();
+			Credencial cred = new Credencial();
+			emp.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria);
+
+			if (noHayEmpleados) {
+			cred.setUsuario("admin");
+			cred.setContrasenia("admin");
+			} else {
+			cred.setUsuario(String.valueOf(Instant.now().toEpochMilli()));
+			cred.setContrasenia(String.valueOf(Instant.now().toEpochMilli()));
+			}
+			cred.setEmpleado(emp);
+			cred.setViewAccess(ViewAccess.Recovery);
+			emp.setCredencial(cred);
+			ret = emp;
+		}
+		// ANTILOCKOUT
+		else if (!hayAlMenosUnAdmin && huboMatch) {
+			Credencial credUpgrade = ret.getCredencial();
+			credUpgrade.setViewAccess(ViewAccess.Admin);
+			ret.setCredencial(credUpgrade);
+		}
+
+		return ret;
     }
 
     public static void crearAdminAdmin() {
@@ -151,6 +198,34 @@ public class CredencialService {
 	}
 
     }
+
+
+	private Empleado temporalDemo(){
+		Persona p = new Persona.Builder().setNombre("Modo").setApellido("Demostración").build();
+		Empleado emp = new Empleado.Builder().setPersona(p).setPersona(p).build();
+		Credencial cred = new Credencial();
+		emp.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria);
+		cred.setUsuario("demo");
+		cred.setContrasenia("demo");
+		cred.setEmpleado(emp);
+		cred.setViewAccess(ViewAccess.Demo);
+		emp.setCredencial(cred);
+		return emp;
+	}
+
+	private Empleado temporalAdmin(){
+		Persona p = new Persona.Builder().setNombre("Acceso").setApellido("Temporal").build();
+		Empleado emp = new Empleado.Builder().setPersona(p).setPersona(p).build();
+		Credencial cred = new Credencial();
+		emp.setCategoriaEmpleado(CategoriaEmpleado.sinCategoria);
+		cred.setUsuario("admin");
+		cred.setContrasenia("admin");
+		cred.setEmpleado(emp);
+		cred.setViewAccess(ViewAccess.Recovery);
+		emp.setCredencial(cred);
+		return emp;
+	}
+
 
     private static Persona empleadoRandom() {
 

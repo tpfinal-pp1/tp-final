@@ -14,6 +14,7 @@ public class Parametros {
     public static final String EMAIL_KEY = "emailKey";
     public static final String DB_PATH ="dbPath";
     public static final String DB_NAME = "dbName";
+    public static final String AGENTE_BACKUP ="agenteBackupAccess";
     public static final String PARAM_FILE = "Files" + File.separator + "inmobi.properties";
 
     private Parametros() {
@@ -98,6 +99,7 @@ public class Parametros {
 	    prop.setProperty(MAPS_KEY, "JDoODiAJNyADIQw7OQITK1IxHysmDFgsAkM1BBkxTF4qAw4KER1d");
 	    prop.setProperty(DB_PATH, "Files");
 	    prop.setProperty(DB_NAME, "inmobi_db");
+		prop.setProperty(AGENTE_BACKUP, "false");
 	    
 
 	    prop.store(output, null);
