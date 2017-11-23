@@ -350,7 +350,8 @@ public class ContratoAlquilerForm extends FormLayout {
 	binderContratoAlquiler.forField(this.tfCantGarantes).asRequired(
 		"Debe ingresar una cantidad de garantes para el contrato")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
-		.withValidator(n -> n >= 2, "Debe ingresar al menos 2 certificados!")
+		.withValidator(n -> n >= ParametrosSistemaService.getParametros().getCantMinimaCertificados(),
+		"Debe ingresar al menos "+ ParametrosSistemaService.getParametros().getCantMinimaCertificados() +" certificados!")
 		.bind(ContratoAlquiler::getCantCertificadosGarantes, ContratoAlquiler::setCantCertificadosGarantes);
 
 	binderContratoAlquiler.forField(this.fechaIngreso).asRequired("Seleccione una fecha de Ingreso")
