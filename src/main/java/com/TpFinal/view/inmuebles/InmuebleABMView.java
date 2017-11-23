@@ -395,6 +395,7 @@ public class InmuebleABMView extends DefaultLayout implements View {
 		Button verFotos = new Button(VaadinIcons.PICTURE);
 		Map<String, Resource> fotos = new HashMap<>();
 		verFotos.addClickListener(click -> {
+		    InmuebleService.cargarImagenesDeInmueble(inmueble);
 		    if (logger.isDebugEnabled()) {
 			logger.debug("Imagen Foto de portada: " + inmueble.getNombreArchivoPortada());
 			InmuebleService.getImagenPortada(inmueble);

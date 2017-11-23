@@ -73,12 +73,10 @@ public class DashboardServlet extends VaadinServlet implements SessionInitListen
 
     @Override
     public void sessionInit(SessionInitEvent event) throws ServiceException {
-	InmuebleService.cargarImagenesAFileSystem();
 	/*logger.info("=================");
 	logger.info("Generando datos..");
 	logger.info("=================");
 	GeneradorDeDatosSinAsociaciones.generarDatos(6);*/
-
     }
 
     @Override
