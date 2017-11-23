@@ -2,14 +2,14 @@ package com.TpFinal.UnitTests;
 
 import static org.junit.Assert.*;
 
-import com.TpFinal.services.Cipher;
+import com.TpFinal.utils.Cipher;
+import com.TpFinal.utils.XZCompressor;
 import org.apache.commons.io.FileExistsException;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.TpFinal.properties.Parametros;
 import org.tukaani.xz.LZMA2Options;
-import org.tukaani.xz.UnsupportedOptionsException;
 import org.tukaani.xz.XZInputStream;
 import org.tukaani.xz.XZOutputStream;
 
@@ -32,38 +32,11 @@ public class ParametrosTest {
 		String decripted=Cipher.decrypt(encripted);
 		assertEquals(original,decripted);
 	}
-	@Ignore
+	@Test
 	public void comprimiryDescomprimir() throws Exception {
-		//COMPRIMIR
-		FileInputStream inFile = new FileInputStream("Files"+ File.separator+"inmobi_db.mv.db");
-		FileOutputStream outfile = new FileOutputStream("Files"+ File.separator+"inmobi_db.mv.db.xz");
-
-		LZMA2Options options = new LZMA2Options();
-
-		options.setPreset(7); // play with this number: 6 is default but 7 works better for mid sized archives ( > 8mb)
-
-		XZOutputStream out = new XZOutputStream(outfile, options);
-
-		byte[] buf = new byte[8192];
-		int size;
-		while ((size = inFile.read(buf)) != -1)
-			out.write(buf, 0, size);
-
-		out.finish();
-
+		XZCompressor.comprimir("inmobi_db.mv.db","Files"+ File.separator);
 		//DESCOMPRIMIR
-		FileInputStream fin = new FileInputStream("Files"+ File.separator+"inmobi_db.mv.db.xz");
-		BufferedInputStream in = new BufferedInputStream(fin);
-		FileOutputStream out2 = new FileOutputStream("Files"+ File.separator+"inmobi_db(descomprimida).mv.db");
-		XZInputStream xzIn = new XZInputStream(in);
-		final byte[] buffer = new byte[8192];
-		int n = 0;
-		while (-1 != (n = xzIn.read(buffer))) {
-			out2.write(buffer, 0, n);
-		}
-		out2.close();
-		xzIn.close();
-
+		XZCompressor.descomprimir("inmobi_db.mv.db","Files"+ File.separator);
 
 	}
 
