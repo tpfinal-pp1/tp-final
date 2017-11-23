@@ -244,7 +244,7 @@ public class MovimientoService {
 			
 	
 		itemsReporte.sort(Comparator.comparing(ItemFichaMovimientos::getAnio).reversed()
-				.thenComparing(ItemFichaMovimientos::getClaseMovimiento));
+				.thenComparing(ItemFichaMovimientos::getDescripción));
 				
 		if (logger.isDebugEnabled()) {
 			logger.debug("=====================================================");

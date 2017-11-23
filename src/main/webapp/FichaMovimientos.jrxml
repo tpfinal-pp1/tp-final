@@ -83,6 +83,12 @@
 	<variable name="EgresoImpuestosPesos" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
+	<variable name="Ingreso" class="java.lang.String"/>
+	<variable name="Variable_2" class="java.lang.String"/>
+	<variable name="Variable_3" class="java.lang.String"/>
+	<variable name="Variable_4" class="java.lang.String"/>
+	<variable name="Variable_5" class="java.lang.String"/>
+	<variable name="Variable_6" class="java.lang.String"/>
 	<group name="Group1">
 		<groupExpression><![CDATA[$F{repAnualMensual}]]></groupExpression>
 		<groupHeader>
@@ -90,7 +96,7 @@
 				<frame>
 					<reportElement x="0" y="0" width="554" height="30" uuid="f6de9634-791b-4c18-9de3-0429b60267dc"/>
 					<textField>
-						<reportElement mode="Opaque" x="0" y="0" width="552" height="30" forecolor="#FFFFFF" backcolor="#BD605E" uuid="04a16b7d-75d4-4f3b-a75a-8a15a49562cf"/>
+						<reportElement mode="Opaque" x="0" y="0" width="552" height="30" forecolor="#FFFFFF" backcolor="#373B3A" uuid="04a16b7d-75d4-4f3b-a75a-8a15a49562cf"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
@@ -117,7 +123,7 @@
 				<frame>
 					<reportElement x="0" y="0" width="554" height="30" uuid="e40d7163-08f9-4930-be93-45930273af69"/>
 					<textField>
-						<reportElement mode="Opaque" x="0" y="0" width="552" height="30" forecolor="#FFFFFF" backcolor="#729BB8" uuid="13af1f9d-ee4d-4a2e-b1de-0069443822f7"/>
+						<reportElement mode="Opaque" x="0" y="0" width="552" height="30" forecolor="#FFFFFF" backcolor="#5E8ABD" uuid="13af1f9d-ee4d-4a2e-b1de-0069443822f7"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
@@ -144,7 +150,7 @@
 				<frame>
 					<reportElement x="1" y="0" width="551" height="30" uuid="7e0e9a81-afee-4cbb-9059-5fe34cb93559"/>
 					<textField>
-						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#6EBAB3" uuid="96b0633a-1a2e-4ffb-b70c-6b7f088293df"/>
+						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#C42364" uuid="96b0633a-1a2e-4ffb-b70c-6b7f088293df"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
@@ -171,7 +177,7 @@
 				<frame>
 					<reportElement x="1" y="0" width="551" height="30" uuid="6158529b-2859-4834-95ab-494563d6913b"/>
 					<textField>
-						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#7F8281" uuid="c5386631-6363-4977-90fa-dc6f18dcecd0"/>
+						<reportElement mode="Opaque" x="-1" y="0" width="552" height="29" forecolor="#FFFFFF" backcolor="#72B8A3" uuid="c5386631-6363-4977-90fa-dc6f18dcecd0"/>
 						<box>
 							<pen lineStyle="Solid" lineColor="#030303"/>
 							<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#030303"/>
@@ -199,7 +205,7 @@
 			<frame>
 				<reportElement x="0" y="0" width="554" height="80" uuid="dcd0b6f6-f3aa-4695-815d-3d8ffb1ce7f7"/>
 				<staticText>
-					<reportElement key="" mode="Opaque" x="1" y="0" width="551" height="45" forecolor="#FCFAFA" backcolor="#000000" uuid="a24e69a3-61db-458e-9be7-d9eecc8123bd"/>
+					<reportElement key="" mode="Opaque" x="1" y="0" width="551" height="45" forecolor="#FCFAFA" backcolor="#B02373" uuid="a24e69a3-61db-458e-9be7-d9eecc8123bd"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#FCFAFA"/>
 						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -236,7 +242,7 @@
 			<frame>
 				<reportElement x="0" y="0" width="554" height="40" uuid="e6147148-ef62-434f-a696-2fb06c65f6b3"/>
 				<staticText>
-					<reportElement key="" mode="Opaque" x="0" y="5" width="150" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="3b26ca42-a19e-42b4-85c0-06bd91e2d187"/>
+					<reportElement key="" mode="Opaque" x="0" y="5" width="150" height="30" forecolor="#FCFCFC" backcolor="#B02373" uuid="3b26ca42-a19e-42b4-85c0-06bd91e2d187"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -249,7 +255,7 @@
 					<text><![CDATA[ Descripción]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="" mode="Opaque" x="310" y="5" width="50" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="19c4124e-f4e5-4ca1-8a06-4b8d7bb5932a"/>
+					<reportElement key="" mode="Opaque" x="310" y="5" width="50" height="30" forecolor="#FCFCFC" backcolor="#B02373" uuid="19c4124e-f4e5-4ca1-8a06-4b8d7bb5932a"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -262,7 +268,7 @@
 					<text><![CDATA[ Simb.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="" mode="Opaque" x="360" y="5" width="110" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="41ca4302-f8e3-4fe3-a012-9f0ca6356e9a"/>
+					<reportElement key="" mode="Opaque" x="360" y="5" width="110" height="30" forecolor="#FCFCFC" backcolor="#B02373" uuid="41ca4302-f8e3-4fe3-a012-9f0ca6356e9a"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -275,7 +281,7 @@
 					<text><![CDATA[ Monto]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="" mode="Opaque" x="150" y="5" width="160" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="af901636-085b-4b39-87b8-9ac5c76f35c0"/>
+					<reportElement key="" mode="Opaque" x="150" y="5" width="160" height="30" forecolor="#FCFCFC" backcolor="#B02373" uuid="af901636-085b-4b39-87b8-9ac5c76f35c0"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -288,7 +294,7 @@
 					<text><![CDATA[ Clase de Mov.]]></text>
 				</staticText>
 				<staticText>
-					<reportElement key="" mode="Opaque" x="470" y="5" width="82" height="30" forecolor="#FCFCFC" backcolor="#000000" uuid="7e5d481b-98aa-4d45-958d-2358ffe230bc"/>
+					<reportElement key="" mode="Opaque" x="470" y="5" width="82" height="30" forecolor="#FCFCFC" backcolor="#B02373" uuid="7e5d481b-98aa-4d45-958d-2358ffe230bc"/>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
 						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -404,7 +410,7 @@
 			<frame>
 				<reportElement x="2" y="0" width="552" height="600" uuid="d5a48b3e-1c0f-4d54-9c68-4e185c69907c"/>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="10" width="140" height="49" forecolor="#FFFFFF" backcolor="#000000" uuid="3513dc4d-1c84-464a-8a05-38ef344b3b74">
+					<reportElement mode="Opaque" x="4" y="10" width="140" height="49" forecolor="#FFFFFF" backcolor="#B02373" uuid="3513dc4d-1c84-464a-8a05-38ef344b3b74">
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -419,7 +425,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Venta en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="127" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="fdc15bf9-fcf6-4b80-b12a-fb709b3ed71d">
+					<reportElement mode="Opaque" x="4" y="127" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="fdc15bf9-fcf6-4b80-b12a-fb709b3ed71d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -436,7 +442,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Alquiler en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="3" y="245" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="80a5b219-cd8c-4409-ae47-4de6800ec94f">
+					<reportElement mode="Opaque" x="3" y="245" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="80a5b219-cd8c-4409-ae47-4de6800ec94f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -519,7 +525,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoAlquilerPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="68" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="fffdf396-fa95-43d4-ae23-3c1b13d28cc2">
+					<reportElement mode="Opaque" x="4" y="68" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="fffdf396-fa95-43d4-ae23-3c1b13d28cc2">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -553,7 +559,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoVentaPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="186" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="1921fdb2-0678-417d-9021-b7ad093c43b9">
+					<reportElement mode="Opaque" x="4" y="186" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="1921fdb2-0678-417d-9021-b7ad093c43b9">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -570,7 +576,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Alquiler en Pesos:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="228" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="3d13563c-ae59-477d-866f-4ce6ccc6fae4">
+					<reportElement mode="Opaque" x="282" y="228" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="3d13563c-ae59-477d-866f-4ce6ccc6fae4">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
@@ -586,7 +592,7 @@
 					<text><![CDATA[Importe Total de Otros Egresos en Pesos:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="90" width="140" height="70" forecolor="#FFFFFF" backcolor="#000000" uuid="18e9547e-fb17-46a6-8494-8dc05bd50a89">
+					<reportElement mode="Opaque" x="282" y="90" width="140" height="70" forecolor="#FFFFFF" backcolor="#B02373" uuid="18e9547e-fb17-46a6-8494-8dc05bd50a89">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
@@ -618,7 +624,7 @@
 					<textFieldExpression><![CDATA["  "+$V{EgresoOtrosPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="10" width="140" height="70" forecolor="#FFFFFF" backcolor="#000000" uuid="4f2c0bef-ecfc-4640-a05d-90679535717d">
+					<reportElement mode="Opaque" x="283" y="10" width="140" height="70" forecolor="#FFFFFF" backcolor="#B02373" uuid="4f2c0bef-ecfc-4640-a05d-90679535717d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
@@ -666,7 +672,7 @@
 					<textFieldExpression><![CDATA["  "+$V{EgresoPagoAPropsPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="169" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="8f94c00f-8510-41fc-bdb6-634e6d86eab4">
+					<reportElement mode="Opaque" x="282" y="169" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="8f94c00f-8510-41fc-bdb6-634e6d86eab4">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
@@ -698,7 +704,7 @@
 					<textFieldExpression><![CDATA["  "+$V{EgresoOtrosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="3" y="304" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="71f8453b-7838-4c11-987a-1481948d536a">
+					<reportElement mode="Opaque" x="3" y="304" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="71f8453b-7838-4c11-987a-1481948d536a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -715,7 +721,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión en Pesos:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="420" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="5f5e9f32-a2f0-4339-8c56-0aacb1a9810a">
+					<reportElement mode="Opaque" x="4" y="420" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="5f5e9f32-a2f0-4339-8c56-0aacb1a9810a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -783,7 +789,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoOtrosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="362" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="88cc5ef0-baff-4dc7-a7e4-62420d29ab6f">
+					<reportElement mode="Opaque" x="4" y="362" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="88cc5ef0-baff-4dc7-a7e4-62420d29ab6f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -800,7 +806,7 @@
 					<text><![CDATA[Importe Total de Otros Ingresos en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="5" y="479" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="cc9ad537-114f-49e2-b3da-2ed011a3b3a1">
+					<reportElement mode="Opaque" x="5" y="479" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="cc9ad537-114f-49e2-b3da-2ed011a3b3a1">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -834,7 +840,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoImpuestosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="4" y="537" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="a69bb401-4d9b-4265-9261-48aef350b29c">
+					<reportElement mode="Opaque" x="4" y="537" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="a69bb401-4d9b-4265-9261-48aef350b29c">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -884,7 +890,7 @@
 					<textFieldExpression><![CDATA["  "+$V{EgresoImpuestosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="348" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="f6ddbab7-5d6b-4968-9064-9b2da93da38c">
+					<reportElement mode="Opaque" x="282" y="348" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="f6ddbab7-5d6b-4968-9064-9b2da93da38c">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
@@ -916,7 +922,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{EgresoImpuestosPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="287" width="140" height="50" forecolor="#FFFFFF" backcolor="#000000" uuid="9c96a227-9be3-41ff-850a-8ef5f5615df2">
+					<reportElement mode="Opaque" x="282" y="287" width="140" height="50" forecolor="#FFFFFF" backcolor="#B02373" uuid="9c96a227-9be3-41ff-850a-8ef5f5615df2">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
