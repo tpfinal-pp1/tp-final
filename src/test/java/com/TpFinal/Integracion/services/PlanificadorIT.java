@@ -58,7 +58,6 @@ public class PlanificadorIT {
 	}
 
 	@Ignore
-	@Test
 	public void eliminarCita() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
@@ -104,7 +103,6 @@ public class PlanificadorIT {
 	}
 
 	@Ignore
-	@Test
 	public void addCitas() {
 		try {
 			sc.setNotificacion(new NotificadorConcreto());
@@ -140,7 +138,6 @@ public class PlanificadorIT {
 	}
 
 	@Ignore
-	@Test
 	public void addCobrosVencidos() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
@@ -274,8 +271,8 @@ public class PlanificadorIT {
 		
 		TimeUnit.SECONDS.sleep(62);
 	}
-	
-	@Test 
+
+	@Ignore
 	public void removeAlquilerPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
@@ -299,9 +296,8 @@ public class PlanificadorIT {
 		
 		TimeUnit.SECONDS.sleep(10);
 	}
-	
+
 	@Ignore
-	@Test 
 	public void addAlquilerVencido() throws InterruptedException {
 		//XXX
 		sc.setNotificacion(new NotificadorConcreto());
@@ -325,8 +321,8 @@ public class PlanificadorIT {
 		
 		TimeUnit.SECONDS.sleep(62);
 	}
-	
-	@Test 
+
+	@Ignore
 	public void removeAlquilerVencido() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
