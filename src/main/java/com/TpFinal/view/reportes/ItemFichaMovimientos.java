@@ -32,7 +32,6 @@ public class ItemFichaMovimientos {
 	this.tipoMovimiento = String.valueOf(m.getTipoMovimiento());
 	this.descripción = m.getDescripcionMovimiento();
 	this.monto = m.getMonto();
-	// castearContrato(m);
 	this.simbolo = TipoMoneda.getSimbolo(m.getTipoMoneda());
 	this.anio = fechaLocalDate.getYear();
 	this.mes = formatearMes(fechaLocalDate.getMonth().getDisplayName(TextStyle.FULL, Locale.forLanguageTag(
