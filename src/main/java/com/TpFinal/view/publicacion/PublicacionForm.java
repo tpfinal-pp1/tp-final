@@ -1,8 +1,11 @@
 package com.TpFinal.view.publicacion;
 
+import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.publicacion.*;
+import com.TpFinal.services.ContratoDuracionService;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
 import com.TpFinal.utils.Utils;
@@ -47,6 +50,18 @@ public class PublicacionForm extends FormLayout {
     private PublicacionABMView addressbookView;
     private Binder<Publicacion> binderPublicacion = new Binder<>();
     ComboBox<Inmueble> comboInmueble = new ComboBox<Inmueble>("Inmueble", new InmuebleService().readAll());
+
+    // XXX refinamiento requerimientos
+    private BlueLabel condiciones = new BlueLabel("Condiciones");
+    private Binder<PublicacionAlquiler> binderAlquiler = new Binder<>();
+    private ComboBox<ContratoDuracion> comboDuracion = new ComboBox<ContratoDuracion>("Duración",
+	    new ContratoDuracionService().readAll());
+    private TextField frecuenciaIncrementoCuota = new TextField("Frecuencia de incremento (meses)");
+    private TextField aumentoPorActualizacion = new TextField("Aumento por actualización (%)");
+    private ComboBox<TipoInteres> tipoInteres = new ComboBox<>("Tipo Interes", TipoInteres.toList());
+    private TextField cantCertificados = new TextField("Cantidad de certificados");
+    private TextField sellado = new TextField("Sellado (%)");
+    // XXX
 
     DeleteButton delete = new DeleteButton("Eliminar",
 	    VaadinIcons.WARNING, "Eliminar", "20%", new Button.ClickListener() {
@@ -199,10 +214,10 @@ public class PublicacionForm extends FormLayout {
 
     private SerializablePredicate<? super EstadoPublicacion> noMasDeUnaPublicacionPorTipo(Publicacion publicacion2) {
 	return estado -> {
-	    logger.debug("Publicacion: " +publicacion);
+	    logger.debug("Publicacion: " + publicacion);
 	    if (estado == EstadoPublicacion.Activa && comboInmueble.getValue() != null && publicacion
 		    .getTipoPublicacion() != null) {
-		if(publicacion != null && publicacion.getId()!= null) {
+		if (publicacion != null && publicacion.getId() != null) {
 		    if (publicacion.getEstadoPublicacion() == EstadoPublicacion.Activa)
 			return true;
 		}
@@ -214,7 +229,10 @@ public class PublicacionForm extends FormLayout {
     }
 
     private void buildLayout() {
-
+	comboDuracion.setEmptySelectionAllowed(false);
+	tipoInteres.setEmptySelectionAllowed(false);	
+	sellado.setEnabled(false);
+	
 	comboInmueble.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
 
 	moneda.addStyleName(ValoTheme.COMBOBOX_BORDERLESS);
@@ -228,7 +246,9 @@ public class PublicacionForm extends FormLayout {
 	// moneda.setWidth("30%");
 	nombrePropietario.setCaption("Propietario: ");
 	FormLayout principal = new FormLayout(tipoPublicacion, fechaPublicacion, estadoPublicacion,
-		new BlueLabel("Inmueble"), comboInmueble, nombrePropietario, monto, moneda);
+		new BlueLabel("Inmueble"), comboInmueble, nombrePropietario, monto, moneda, condiciones, comboDuracion,
+		frecuenciaIncrementoCuota,
+		aumentoPorActualizacion, tipoInteres, cantCertificados, sellado);
 	principal.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	tabSheet.addTab(principal, "Publicacion");
 

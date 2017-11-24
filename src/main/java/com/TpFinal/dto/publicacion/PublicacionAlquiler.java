@@ -1,10 +1,15 @@
 package com.TpFinal.dto.publicacion;
 
 import com.TpFinal.dto.EstadoRegistro;
+import com.TpFinal.dto.contrato.ContratoDuracion;
+import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 
 import javax.persistence.*;
+
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,9 +24,58 @@ public class PublicacionAlquiler extends Publicacion {
     @Column(name = pPrecioAlquiler)
     private BigDecimal valorCuota;
 
+    // XXX refinamiento de requerimientos
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipoIncrementoCuota")
+    private TipoInteres tipoIncrementoCuota;
+    @Column(name = "incrementoCuota")
+    private Double porcentajeIncrementoCuota;
+    @Column(name = "intervaloActualizacionCuota")
+    private Integer intervaloActualizacion;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @Cascade({ CascadeType.SAVE_UPDATE, CascadeType.MERGE })
+    @JoinColumn(name = "duracionContrato_Id")
+    private ContratoDuracion duracionContrato;
+    @Column(name = "cantidad_certificados_garantes")
+    private Integer cantCertificadosGarantes = 2;
+
+    // XXX
+
     @Enumerated(EnumType.STRING)
     @Column(name = "moneda")
     private TipoMoneda moneda;
+
+    public TipoInteres getTipoIncrementoCuota() {
+	return tipoIncrementoCuota;
+    }
+
+    public void setTipoIncrementoCuota(TipoInteres tipoIncrementoCuota) {
+	this.tipoIncrementoCuota = tipoIncrementoCuota;
+    }
+
+    public Double getPorcentajeIncrementoCuota() {
+	return porcentajeIncrementoCuota;
+    }
+
+    public void setPorcentajeIncrementoCuota(Double porcentajeIncrementoCuota) {
+	this.porcentajeIncrementoCuota = porcentajeIncrementoCuota;
+    }
+
+    public Integer getIntervaloActualizacion() {
+	return intervaloActualizacion;
+    }
+
+    public void setIntervaloActualizacion(Integer intervaloActualizacion) {
+	this.intervaloActualizacion = intervaloActualizacion;
+    }
+
+    public ContratoDuracion getDuracionContrato() {
+	return duracionContrato;
+    }
+
+    public void setDuracionContrato(ContratoDuracion duracionContrato) {
+	this.duracionContrato = duracionContrato;
+    }
 
     public BigDecimal getValorCuota() {
 	return valorCuota;
@@ -42,6 +96,11 @@ public class PublicacionAlquiler extends Publicacion {
 	this.fechaPublicacion = b.fechaPublicacion;
 	this.inmueble = b.inmueble;
 	this.moneda = b.moneda;
+	this.duracionContrato = b.duracionContrato;
+	this.cantCertificadosGarantes = b.cantidadCertificadosGarantes;
+	this.intervaloActualizacion = b.intervaloActualizacion;
+	this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
+	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
 	this.valorCuota = b.valorCuota.setScale(2, RoundingMode.CEILING);
 	;
 	tipoPublicacion = TipoPublicacion.Alquiler;
@@ -65,10 +124,41 @@ public class PublicacionAlquiler extends Publicacion {
     }
 
     public static class Builder {
+	private TipoInteres tipoIncrementoCuota;
+	private Double porcentajeIncrementoCuota;
+	private Integer intervaloActualizacion;
+	private Integer cantidadCertificadosGarantes;
+	private ContratoDuracion duracionContrato;
 	private Inmueble inmueble;
 	private LocalDate fechaPublicacion;
 	private BigDecimal valorCuota;
 	private TipoMoneda moneda;
+
+	public Builder setContratoDuracion(ContratoDuracion duracion) {
+	    this.duracionContrato = duracion;
+	    return this;
+	}
+
+	public Builder setCantidadDeCertificados(Integer val) {
+	    this.cantidadCertificadosGarantes = val;
+	    return this;
+	}
+
+	public Builder setIntervaloActualizacion(Integer val) {
+	    this.intervaloActualizacion = val;
+	    return this;
+
+	}
+
+	public Builder setPorcentajeIncrementoCuota(Double p) {
+	    this.porcentajeIncrementoCuota = p;
+	    return this;
+	}
+
+	public Builder setTipoIncrementoCuota(TipoInteres tipo) {
+	    this.tipoIncrementoCuota = tipo;
+	    return this;
+	}
 
 	public Builder setInmueble(Inmueble inmueble) {
 	    this.inmueble = inmueble;
