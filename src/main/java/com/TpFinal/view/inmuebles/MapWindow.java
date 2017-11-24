@@ -23,7 +23,7 @@ public class MapWindow extends Window {
     private final static Logger logger = Logger.getLogger(MapWindow.class);
 
     private VerticalLayout mainLayout;
-	private Button recalcularDir=new Button("Geocode");
+	private Button recalcularDir=new Button("Calcular");
 	private InmuebleService inmuebleService=new InmuebleService();
 
 
@@ -33,6 +33,13 @@ public class MapWindow extends Window {
 	super();
 	if(inmueble==null||inmueble.getDireccion()==null||inmueble.getDireccion().getCoordenada()==null){
 		return;
+	}
+	if(inmueble.getDireccion().getCoordenada().equals(new Coordenada(null,null))){
+		UbicacionService us=new UbicacionService();
+		Coordenada coords=us.geoCode(inmueble.getDireccion());
+		Direccion dir=inmueble.getDireccion();
+		dir.setCoordenada(coords);
+		inmueble.setDireccion(dir);
 	}
 	mainLayout = new VerticalLayout();
 	mainLayout.setSizeFull();
