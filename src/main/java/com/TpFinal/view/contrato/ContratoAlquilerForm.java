@@ -195,6 +195,11 @@ public class ContratoAlquilerForm extends FormLayout {
 							if (asociado != null) {
 								contratoAlquiler.setValorInicial(asociado.getValorCuota());
 								contratoAlquiler.setMoneda(asociado.getMoneda());
+								contratoAlquiler.setCantCertificadosGarantes(asociado.getCantCertificadosGarantes());
+								contratoAlquiler.setDuracionContrato(asociado.getDuracionContrato());
+								contratoAlquiler.setTipoIncrementoCuota(asociado.getTipoIncrementoCuota());
+								contratoAlquiler.setIntervaloActualizacion(asociado.getIntervaloActualizacion());
+								contratoAlquiler.setPorcentajeIncrementoCuota(asociado.getPorcentajeIncrementoCuota());
 								if (logger.isDebugEnabled()) {
 								    logger.debug("Contrato de alquiler: " + contratoAlquiler);
 								}
@@ -693,6 +698,9 @@ public class ContratoAlquilerForm extends FormLayout {
 		boolean success =false;
 		if(ContratoService.puedeSerRescindido(contratoAlquiler)){
 			success=service.rescindirContrato(contratoAlquiler);
+			Movimiento mov = MovimientoService.getInstanciaMesGarantiaEgreso(contratoAlquiler);
+			MovimientoService ms = new MovimientoService();
+			ms.saveOrUpdate(mov);
 		}
 
 		else{
