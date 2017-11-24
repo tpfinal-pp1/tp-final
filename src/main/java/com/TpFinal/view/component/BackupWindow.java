@@ -66,6 +66,17 @@ public class BackupWindow extends CustomComponent {
 	// UPLOAD
 	DBUploadReceiver uR = new DBUploadReceiver();
 	importar = new UploadButton(uR);
+	importar.addStartedListener(new Upload.StartedListener() {
+		@Override
+		public void uploadStarted(Upload.StartedEvent event) {
+			// TODO Auto-generated method stub
+
+			if(!event.getFilename().contains(".xz")){
+				Notification.show("Error", "Tipo de archivo invalido", Notification.Type.ERROR_MESSAGE);
+				importar.interruptUpload();
+			}
+		}
+	});
 	importar.addSucceededListener(success -> {
 	    String descomprimido = "";
 	    try {
