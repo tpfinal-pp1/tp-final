@@ -20,6 +20,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
+import org.mockito.internal.matchers.Not;
 
 /**
  * A responsive menu component providing user information and the controls for
@@ -87,10 +88,16 @@ public final class DashboardMenu extends CustomComponent {
         settingsItem = settings.addItem("",
                 new ThemeResource("img/profile-pic-300px.jpg"), null);
         updateUserName(null);
+
+        CredencialService credencialService=new CredencialService();
+
         settingsItem.addItem("Cerrar Sesion", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
-                DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());
+                if(credencialService.isfirstRun())
+                   DashboardUI.showErrorNotification("Debe Crear un Administrador Primero");
+                else{
+                    DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());}
             }
         });
         return settings;

@@ -1,12 +1,8 @@
 package com.TpFinal;
 
 import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.dto.cita.Cita;
-import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.dto.persona.ViewAccess;
 import com.TpFinal.services.*;
-import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
 import com.TpFinal.view.MainView;
 import com.TpFinal.view.component.BackupWindow;
@@ -27,9 +23,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 @Theme("dashboard")
@@ -46,6 +39,7 @@ public final class DashboardUI extends UI {
 
     private final DashboardEventBus dashboardEventbus = new DashboardEventBus();
     private CredencialService credServ = new CredencialService();
+    private boolean alreadyWatingForBackupToEnd =false;
 
     @Override
     protected void init(final VaadinRequest request) {
@@ -57,16 +51,27 @@ public final class DashboardUI extends UI {
 			if (!VaadinSession.getCurrent().equals(BackupWindow.getVaadinSession())) {
 
 				if (ConexionHibernate.isBackupmode()) {
-					for (int i = 0; i <999 ; i++) {
-						showWaitNotification();
+					if(!alreadyWatingForBackupToEnd){
+						alreadyWatingForBackupToEnd = true;
+						for (int i = 0; i < 999; i++) {
+							showWaitNotification();
+						}
+						Page page=Page.getCurrent();
+						VaadinSession session=VaadinSession.getCurrent();
+						new Thread(() -> {
+							while (ConexionHibernate.isBackupmode())
+								try {
+									Thread.sleep(1000);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+							alreadyWatingForBackupToEnd =false;
+							session.close();
+							page.reload();
+						}).start();
 					}
-					try {
-						Thread.sleep(1000);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
-					VaadinSession.getCurrent().close();
-					Page.getCurrent().reload();
+
+
 
 				} else {
 					DashboardEventBus.post(new DashboardEvent.NotificationsCountUpdatedEvent());
@@ -128,7 +133,7 @@ public final class DashboardUI extends UI {
 	    getNavigator().navigateTo(getNavigator().getState());
 	}
     }
-	public void showWaitNotification() {
+	public static void showWaitNotification() {
 		Notification success = new Notification(
 				"Sistema Inmobi se encuentra en mantenimiento, \n" +
 						"porfavor espere a que el administrador concluya el proceso de mantenimiento");
@@ -137,7 +142,7 @@ public final class DashboardUI extends UI {
 		success.setPosition(Position.MIDDLE_CENTER);
 		success.show(Page.getCurrent());
 	}
-	public void showErrorNotification(String notification) {
+	public static void showErrorNotification(String notification) {
 		Notification success = new Notification(
 				notification);
 		success.setDelayMsec(4000);
