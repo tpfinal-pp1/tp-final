@@ -6,12 +6,12 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.movimiento.Movimiento;
 
 public class ItemFichaMovimientos {
-    private static final Logger logger = Logger.getLogger(ItemFichaMovimientos.class);
+    //private static final Logger logger = Logger.getLogger(ItemFichaMovimientos.class);
     String claseMovimiento;
     String tipoMovimiento;
     String descripción;

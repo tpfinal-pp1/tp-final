@@ -418,9 +418,9 @@ public class ContratoVentaForm extends FormLayout {
 	} else {
 	    this.contratoVenta = ContratoService.getInstanciaVenta();
 	    configurarComponentesSegunEstadoContrato(this.contratoVenta.getEstadoContrato());
-	    this.comisionAInquilino.setValue(ParametrosSistemaService.getParametros().getComisionAInquilino()
+	    this.comisionAInquilino.setValue(ParametrosSistemaService.getParametros().getComisionAComprador()
 		    .toString());
-	    this.comisionAPropietario.setValue(ParametrosSistemaService.getParametros().getComisionAPropietario()
+	    this.comisionAPropietario.setValue(ParametrosSistemaService.getParametros().getComisionAVendededor()
 		    .toString());
 	}
 

@@ -402,8 +402,10 @@ public class ContratoABMView extends DefaultLayout implements View {
 	    edit.addClickListener(e -> {
 		if (contrato instanceof ContratoAlquiler) {
 		    ContratoAlquilerForm.setContratoAlquiler((ContratoAlquiler) contrato);
+		    ContratoVentaForm.setVisible(false);
 		} else {
 		    ContratoVentaForm.setContratoVenta((ContratoVenta) contrato);
+		    ContratoAlquilerForm.setVisible(false);
 		}
 
 	    });

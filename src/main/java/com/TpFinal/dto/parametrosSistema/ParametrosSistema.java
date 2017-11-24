@@ -123,7 +123,7 @@ public class ParametrosSistema implements Identificable, BorradoLogico {
 	this.valorCertificado = valorCertificado;
     }
 
-    public Integer getComisionAPropietario() {
+    public Integer getComisionAVendededor() {
 	return comisionAPropietario;
     }
 
@@ -131,7 +131,7 @@ public class ParametrosSistema implements Identificable, BorradoLogico {
 	this.comisionAPropietario = comisionAPropietario;
     }
 
-    public Integer getComisionAInquilino() {
+    public Integer getComisionAComprador() {
 	return comisionAInquilino;
     }
 

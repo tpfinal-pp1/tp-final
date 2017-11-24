@@ -10,47 +10,49 @@ import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
 public class ParametrosSistemaService {
     private final static DAOImpl<ParametrosSistema> dao = new DAOImpl<>(ParametrosSistema.class);
     private final static ContratoService cs = new ContratoService();
-    
+
     public ParametrosSistemaService() {
 	// TODO Auto-generated constructor stub
     }
 
-    
     /**
-     *  Crea los parametros por defecto del sistema si no se encuentran guardados
-     *  en la bd. Caso contrario no hace nada.
+     * Crea los parametros por defecto del sistema si no se encuentran guardados en
+     * la bd. Caso contrario no hace nada.
      */
     public static void crearParametrosDefault() {
 	if (dao.readAll().isEmpty())
 	    dao.save(new ParametrosSistema());
     }
-    
+
     public static void updateParametros(ParametrosSistema parametros) {
 	ParametrosSistema parametrosViejos = getParametros();
 	dao.merge(parametros);
-	
-	boolean refreshTriggersContratos = false 
-		|| parametros.getDiasAntesVencimientoContrato() != parametrosViejos.getDiasAntesVencimientoContrato()
+
+	boolean refreshTriggersContratos = false
+
 		|| parametros.getFrecuenciaAvisoCategoriaA() != parametrosViejos.getFrecuenciaAvisoCategoriaA()
 		|| parametros.getFrecuenciaAvisoCategoriaB() != parametrosViejos.getFrecuenciaAvisoCategoriaB()
 		|| parametros.getFrecuenciaAvisoCategoriaC() != parametrosViejos.getFrecuenciaAvisoCategoriaC()
 		|| parametros.getFrecuenciaAvisoCategoriaD() != parametrosViejos.getFrecuenciaAvisoCategoriaD()
 		|| parametros.getMesesAntesVencimientoContrato() != parametrosViejos.getMesesAntesVencimientoContrato()
-		|| parametros.getPeriodicidadEnDias_DiasAntesVencimientoContrato() != parametrosViejos.getPeriodicidadEnDias_DiasAntesVencimientoContrato()
-		|| parametros.getPeriodicidadEnDias_MesesAntesVencimientoContrato() != parametrosViejos.getPeriodicidadEnDias_MesesAntesVencimientoContrato();
+		|| parametros.getDiasAntesVencimientoContrato() != parametrosViejos.getDiasAntesVencimientoContrato()
+		|| parametros.getPeriodicidadEnDias_DiasAntesVencimientoContrato() != parametrosViejos
+			.getPeriodicidadEnDias_DiasAntesVencimientoContrato()
+		|| parametros.getPeriodicidadEnDias_MesesAntesVencimientoContrato() != parametrosViejos
+			.getPeriodicidadEnDias_MesesAntesVencimientoContrato();
 
 	if (parametros.getProximoAVencer() != parametrosViejos.getProximoAVencer()) {
-		    cs.actualizarEstadoContratosAlquiler();
+	    cs.actualizarEstadoContratosAlquiler();
 	}
-	
+
 	if (refreshTriggersContratos) {
 	    DAOContratoAlquilerImpl daoAlquileres = new DAOContratoAlquilerImpl();
 	    List<ContratoAlquiler> alquileres = daoAlquileres.readAllActives();
 	    Planificador.get().updateTriggersJobAlquileresPorVencer(alquileres);
 	}
     }
-    
-    public static ParametrosSistema getParametros() { 
+
+    public static ParametrosSistema getParametros() {
 	if (dao.readAll().isEmpty()) {
 	    crearParametrosDefault();
 	}

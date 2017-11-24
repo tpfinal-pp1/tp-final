@@ -331,6 +331,17 @@ public class InmuebleForm extends FormLayout {
 		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.withValidator(n -> {
+		    boolean ret = true;
+		    if (supTotal.getValue() != null) {
+			try {
+			    Integer sTotal = Integer.parseInt(supTotal.getValue());
+			    ret = sTotal >= n;
+			} catch (Exception e) {
+			}
+		    }
+		    return ret;
+		}, "La superficie cubierta no puede ser mayor a la total!")
 		.bind(Inmueble::getSuperficieCubierta, Inmueble::setSuperficieCubierta);
 
 	binderInmueble.forField(this.supTotal)
@@ -338,6 +349,17 @@ public class InmuebleForm extends FormLayout {
 		.asRequired("Debe ingresar un número")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n > 0, "Debe ingresar un número positivo")
+		.withValidator(n -> {
+		    boolean ret = true;
+		    if (supCubierta.getValue() != null) {
+			try {
+			    Integer sCubierta = Integer.parseInt(supCubierta.getValue());
+			    ret = sCubierta <= n;
+			} catch (Exception e) {
+			}
+		    }
+		    return ret;
+		}, "La superficie toal no puede ser menor a la cubierta!")
 		.bind(Inmueble::getSuperficieTotal, Inmueble::setSuperficieTotal);
 
 	binderInmueble.forField(this.tiposInmueble)
@@ -428,9 +450,9 @@ public class InmuebleForm extends FormLayout {
     public void setInmueble(Inmueble inmueble) {
 
 	if (inmueble != null) {
-	    
+
 	    InmuebleService.cargarImagenesDeInmueble(inmueble);
-	    
+
 	    this.inmueble = inmueble;
 	    binderInmueble.readBean(this.inmueble);
 	    // Fix #213

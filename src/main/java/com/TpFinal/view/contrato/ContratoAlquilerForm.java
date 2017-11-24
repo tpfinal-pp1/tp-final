@@ -195,6 +195,9 @@ public class ContratoAlquilerForm extends FormLayout {
 							if (asociado != null) {
 								contratoAlquiler.setValorInicial(asociado.getValorCuota());
 								contratoAlquiler.setMoneda(asociado.getMoneda());
+								if (logger.isDebugEnabled()) {
+								    logger.debug("Contrato de alquiler: " + contratoAlquiler);
+								}
 								binderContratoAlquiler.readBean(contratoAlquiler);
 							}
 						} else {

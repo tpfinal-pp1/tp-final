@@ -65,9 +65,8 @@ public class CobrosABMView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	controller.configureComponents();
-	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}" );
-     UI.getCurrent().getPage().getStyles().add(".v-grid-row.anulado {color: blue;}");
-
+	UI.getCurrent().getPage().getStyles().add(".v-grid-row.vencido {color: darkred;}");
+	UI.getCurrent().getPage().getStyles().add(".v-grid-row.anulado {color: blue;}");
 
     }
 
@@ -187,11 +186,11 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 	    grid.setStyleGenerator(cobro -> {
 		String ret = null;
-		if(cobro.getEstadoCobro().equals(EstadoCobro.ANULADO)){
-				ret="anulado";
-			}
+		if (cobro.getEstadoCobro().equals(EstadoCobro.ANULADO)) {
+		    ret = "anulado";
+		}
 		if (cobro.getFechaDeVencimiento() != null) {
-		    if (cobro.getFechaDeVencimiento().isBefore(LocalDate.now())) {
+		    if (cobro.getFechaDeVencimiento().isBefore(LocalDate.now()) && cobro.getFechaDePago() == null) {
 			ret = "vencido";
 		    }
 		}
@@ -256,7 +255,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 	    grid.addComponentColumn(cobro -> {
 		Button ver = new Button(VaadinIcons.EYE);
-		ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL, ValoTheme.BUTTON_PRIMARY);
+		ver.addStyleNames(ValoTheme.BUTTON_BORDERLESS, ValoTheme.BUTTON_SMALL);
 		ver.addClickListener(e -> {
 		    cobrosForm.setCobro(cobro);
 		});
@@ -266,22 +265,58 @@ public class CobrosABMView extends DefaultLayout implements View {
 		acciones++;
 		return hl;
 	    }).setCaption("Acciones").setId("acciones");
-	    grid.setColumnOrder("acciones", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos", "inquilinos",
+
+	    grid.addColumn(cobro -> {
+		String ret = "";
+		if (cobro.getNumeroCuota() != null) {
+		    if (cobro.getNumeroCuota() == 0)
+			ret = "Cuota única";
+		    else
+			ret = cobro.getNumeroCuota().toString();
+		}
+		return ret;
+	    }).setCaption("N° Cuota").setId("nroCuota");
+
+	    grid.setColumnOrder("acciones", "nroCuota", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos",
+		    "inquilinos",
 		    "montos");
 	    grid.getColumns().forEach(col -> {
 		col.setResizable(false);
 		col.setHidable(true);
 	    });
+	    grid.getColumn("nroCuota").setWidth(140);
 	    grid.getColumn("montos").setWidth(250);
 
 	    HeaderRow filterRow = grid.appendHeaderRow();
 	    filterRow.getCell("inmuebles").setComponent(filtroInmuebles());
-	    // TODO
+	    filterRow.getCell("nroCuota").setComponent(filtroCuota());
 	    filterRow.getCell("tipos").setComponent(filtroTipos());
 	    filterRow.getCell("fechasDeVencimiento").setComponent(filtroFechaVencimiento());
 	    filterRow.getCell("fechasDePagos").setComponent(filtroFechaPago());
 	    filterRow.getCell("inquilinos").setComponent(filtroInquilinos());
 	    filterRow.getCell("montos").setComponent(filtroMontos());
+	}
+
+	private Component filtroCuota() {
+	    TextField filtroInmuebles = new TextField();
+	    filtroInmuebles.addStyleName(ValoTheme.TEXTFIELD_BORDERLESS);
+	    filtroInmuebles.setPlaceholder("Sin Filtro");
+	    filtroInmuebles.addValueChangeListener(e -> {
+		if (e.getValue() != null && !e.getValue().isEmpty()) {
+		    if ("cuota unica".toLowerCase().contains(e.getValue())
+			    || "cuota única".toLowerCase().contains(e.getValue()))
+			filtro.setFiltroCuota(cobro -> cobro.getNumeroCuota().equals(0));
+		    else {
+			filtro.setFiltroCuota(cobro -> cobro.getNumeroCuota()
+				.toString().toLowerCase()
+				.contains(e.getValue().toLowerCase()));
+		    }
+		} else {
+		    filtro.setFiltroCuota(cobro -> true);
+		}
+		updateList();
+	    });
+	    return filtroInmuebles;
 	}
 
 	private Component filtroFechaVencimiento() {
@@ -699,7 +734,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 
 	public void updateList() {
 	    List<Cobro> cobros = cobroService.findAll(filtro);
-		grid.setItems(cobros);
+	    grid.setItems(cobros);
 	}
 
     }
