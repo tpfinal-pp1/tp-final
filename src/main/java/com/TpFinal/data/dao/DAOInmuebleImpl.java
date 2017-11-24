@@ -178,7 +178,10 @@ public class DAOInmuebleImpl extends DAOImpl<Inmueble> implements DAOInmueble {
 
 	if (criterio.getEstadoInmueble() != null) {
 	    if (criterio.getEstadoInmueble() != EstadoInmueble.EnAlquilerYVenta) {
-		query.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, criterio.getEstadoInmueble()));
+		Disjunction disjuncion = Restrictions.disjunction();
+		disjuncion.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, criterio.getEstadoInmueble()));
+		disjuncion.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, EstadoInmueble.EnAlquilerYVenta));
+		query.add(disjuncion);
 	    } else {
 		Disjunction disjuncion = Restrictions.disjunction();
 		disjuncion.add(Restrictions.eq(alias + Inmueble.pEstadoInmueble, EstadoInmueble.EnAlquiler));

@@ -223,6 +223,7 @@ public class DAOInmuebleImplIT {
 	assertTrue(inmuebles.get(0).getConAireAcondicionado() == false);
     }
 
+    
     @Test
     public void findInmueblesByCriteria_Estado() {
 	int cantidadDeInmuebles = 3;
@@ -350,6 +351,7 @@ public class DAOInmuebleImplIT {
 	assertTrue(inmuebles.get(0).getConPileta() == false);
     }
 
+    @Ignore
     @Test
     public void findInmueblesByCriteria_EstadoInmueble() {
 
