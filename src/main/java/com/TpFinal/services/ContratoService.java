@@ -2,6 +2,7 @@ package com.TpFinal.services;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -665,7 +666,7 @@ public class ContratoService {
 		ret = ret.multiply(BigDecimal.ONE.add(interes));
 	    }
 	}
-	return ret;
+	return ret.setScale(2, RoundingMode.CEILING);
     }
 
     public static void setMontoInicialRenovacion(ContratoAlquiler ca) {
@@ -741,7 +742,7 @@ public class ContratoService {
 	if (logger.isDebugEnabled()) {
 	    logger.debug("Valor total del contrato: " + total);
 	}
-	return total;
+	return total.setScale(2, RoundingMode.CEILING);
     }
 
     public static BigDecimal getValorSelladoAlquiler(ContratoAlquiler contrato) {
@@ -754,17 +755,17 @@ public class ContratoService {
 	if (logger.isDebugEnabled()) {
 	    logger.debug("Valor total del sellado: " + total);
 	}
-	return total;
+	return total.setScale(2, RoundingMode.CEILING);
     }
     
     public static BigDecimal getValorCertificadosGarantes(ContratoAlquiler contrato) {
-	return ParametrosSistemaService.getParametros().getValorCertificado().multiply(BigDecimal.valueOf(contrato.getCantCertificadosGarantes()));
+	return ParametrosSistemaService.getParametros().getValorCertificado().multiply(BigDecimal.valueOf(contrato.getCantCertificadosGarantes())).setScale(2, RoundingMode.CEILING);
     }
     
     public static BigDecimal getValorEntrada(ContratoAlquiler contrato) {
 	return contrato.getValorInicial()
 		.add((getMontoUltimaCuota(contrato).multiply(BigDecimal.valueOf(2))))
 		.add(getValorSelladoAlquiler(contrato))
-		.add(getValorCertificadosGarantes(contrato));
+		.add(getValorCertificadosGarantes(contrato)).setScale(2, RoundingMode.CEILING);
     }
 }
