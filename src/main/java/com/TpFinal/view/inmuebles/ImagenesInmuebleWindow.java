@@ -135,6 +135,24 @@ public abstract class ImagenesInmuebleWindow extends Window {
 
     private void configureComponents() {
 
+		upload.addStartedListener(new Upload.StartedListener() {
+			@Override
+			public void uploadStarted(Upload.StartedEvent event) {
+				// TODO Auto-generated method stub
+
+				if(!(event.getFilename().contains(".jpg")||
+						event.getFilename().contains(".png")||
+						event.getFilename().contains(".gif")||
+						event.getFilename().contains(".jpeg")||
+						event.getFilename().contains(".bmp")||
+						event.getFilename().contains(".raw")||
+						event.getFilename().contains(".tif"))){
+
+					Notification.show("Error", "Tipo de archivo invalido", Notification.Type.ERROR_MESSAGE);
+					upload.interruptUpload();
+				}
+			}
+	});
 	upload.addSucceededListener(success -> {
 	    if (uploadReciever.getFileName() != null && uploadReciever.getFileName() != "") {
 		inmueble.addPathImagen(uploadReciever.getFileName() + uploadReciever.getFileExtension());

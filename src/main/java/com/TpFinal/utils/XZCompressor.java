@@ -8,6 +8,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.time.LocalDate;
 
 public class XZCompressor {
 
@@ -42,7 +43,8 @@ public class XZCompressor {
 
     public static String comprimir(String archivoAComprimir,String path)throws Exception{
         FileInputStream inFile = new FileInputStream(path+File.separator+archivoAComprimir);
-        FileOutputStream outfile = new FileOutputStream(path+File.separator+archivoAComprimir+".xz");
+        LocalDate localDate=LocalDate.now();
+        FileOutputStream outfile = new FileOutputStream(path+File.separator+"Backup-"+localDate.toString()+".mv.db.xz");
         LZMA2Options options = new LZMA2Options();
 
         options.setPreset(7); // play with this number: 6 is default but 7 works better for mid sized archives ( > 8mb)
@@ -56,7 +58,7 @@ public class XZCompressor {
 
         out.finish();
         out.close();
-        return archivoAComprimir+".xz";
+        return "Backup-"+localDate.toString()+".mv.db.xz";
     }
 
 
