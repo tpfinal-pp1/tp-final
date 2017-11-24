@@ -59,13 +59,21 @@ public class ParametrosMenuView extends DefaultLayout implements View {
     private TextField valorCertificado = new TextField("Valor Certificado ($)");
     private TextField comisionAPropietario = new TextField("Comisión a propietario (%)");
     private TextField comisionAInquilino = new TextField("Comisión a inquilino (%)");
-    private TextField comisionCobro = new TextField("Comisión cobro de cuota");
+    private TextField comisionCobro = new TextField("Comisión cobro de cuota (cociente)");
     // Recordatorios
     private BlueLabel seccionRecordatorios = new BlueLabel("Parámetros de recordatorios");
-    private TextField frecuenciaAvisoA = new TextField("Frecuencia de aviso calificación A");
-    private TextField frecuenciaAvisoB = new TextField("Frecuencia de aviso calificación B");
-    private TextField frecuenciaAvisoC = new TextField("Frecuencia de aviso calificación C");
-    private TextField frecuenciaAvisoD = new TextField("Frecuencia de aviso calificación D");
+    private TextField frecuenciaAvisoA = new TextField("Frecuencia de aviso calificación A (dias)");
+    private TextField frecuenciaAvisoB = new TextField("Frecuencia de aviso calificación B (dias)");
+    private TextField frecuenciaAvisoC = new TextField("Frecuencia de aviso calificación C (dias)");
+    private TextField frecuenciaAvisoD = new TextField("Frecuencia de aviso calificación D (dias)");
+    private TextField mesesAntesVencimientoContrato = new TextField(
+	    "Inicio de recordatorio vencimiento de contrato 1 (meses)");
+    private TextField periodicidadEnDias_MesesAntesVencimientoContrato = new TextField(
+	    "Frecuencia de aviso de recordatorio de vencimiento de contrato 1 (dias)");
+    private TextField diasAntesVencimientoContrato = new TextField(
+	    "Inicio de recordatorio vencimiento de contrato 2 (dias)");
+    private TextField periodicidadEnDias_DiasAntesVencimientoContrato = new TextField(
+	    "Frecuencia de aviso de recordatorio de vencimiento de contrato 2 (dias)");
 
     private Button guardar = new Button("Guardar", VaadinIcons.CHECK);
 
@@ -85,6 +93,34 @@ public class ParametrosMenuView extends DefaultLayout implements View {
     }
 
     private void binding() {
+	binder.forField(this.mesesAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getMesesAntesVencimientoContrato,
+			ParametrosSistema::setMesesAntesVencimientoContrato);
+
+	binder.forField(this.periodicidadEnDias_MesesAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "La frecuencia de aviso debe ser no negativa")
+		.bind(ParametrosSistema::getPeriodicidadEnDias_MesesAntesVencimientoContrato,
+			ParametrosSistema::setPeriodicidadEnDias_MesesAntesVencimientoContrato);
+
+	binder.forField(this.diasAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
+		.bind(ParametrosSistema::getDiasAntesVencimientoContrato,
+			ParametrosSistema::setDiasAntesVencimientoContrato);
+
+	binder.forField(this.periodicidadEnDias_DiasAntesVencimientoContrato)
+		.asRequired("Campo requerido")
+		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
+		.withValidator(n -> n >= 0, "La frecuencia de aviso debe ser no negativa")
+		.bind(ParametrosSistema::getPeriodicidadEnDias_DiasAntesVencimientoContrato,
+			ParametrosSistema::setPeriodicidadEnDias_DiasAntesVencimientoContrato);
+
 	binder.forField(this.cantMininimaCertificados)
 		.asRequired("Campo requerido")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
@@ -151,8 +187,6 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		.withValidator(n -> n.compareTo(BigDecimal.ZERO) >= 0, "Debe ingresar un número no negativo")
 		.bind(ParametrosSistema::getValorCertificado, ParametrosSistema::setValorCertificado);
 
-
-
     }
 
     private void configureComponents() {
@@ -163,8 +197,8 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		    "¿Realmente desea modificar los parámetros del Sistema?", "200px", save());
 	    dialog.addNoListener(cancel());
 	});
-	
-	duracionesContratos.addClickListener(click ->{
+
+	duracionesContratos.addClickListener(click -> {
 	    new DuracionContratosABMWindow("Duraciones de Contratos");
 	});
 
@@ -210,7 +244,12 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		frecuenciaAvisoA,
 		frecuenciaAvisoB,
 		frecuenciaAvisoC,
-		frecuenciaAvisoD, guardar);
+		frecuenciaAvisoD,
+		mesesAntesVencimientoContrato,
+		periodicidadEnDias_MesesAntesVencimientoContrato,
+		diasAntesVencimientoContrato,
+		periodicidadEnDias_DiasAntesVencimientoContrato,
+		guardar);
 	mainLayout.setSpacing(true);
 	mainLayout.addStyleName(ValoTheme.FORMLAYOUT_LIGHT);
 	mainLayout.forEach(component -> {
@@ -225,10 +264,10 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 	this.setComponentAlignment(mainLayout, Alignment.TOP_CENTER);
 	this.setExpandRatio(mainLayout, 1);
 	sellados.addClickListener(new ClickListener() {
-		@Override
-		public void buttonClick(Button.ClickEvent clickEvent) {
-			new SelladosWindow();
-		}
+	    @Override
+	    public void buttonClick(Button.ClickEvent clickEvent) {
+		new SelladosWindow();
+	    }
 	});
 
     }
