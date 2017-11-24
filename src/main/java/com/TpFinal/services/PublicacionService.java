@@ -127,7 +127,7 @@ public class PublicacionService {
 		.setFechaPublicacion(LocalDate.now())
 		.setMoneda(TipoMoneda.Pesos)
 		.setCantidadDeCertificados(ParametrosSistemaService.getParametros().getCantMinimaCertificados())
-		.setContratoDuracion(new ContratoDuracionService().getInstancia())
+		.setContratoDuracion(new ContratoDuracionService().readAll().get(0))
 		.setIntervaloActualizacion(1)
 		.setPorcentajeIncrementoCuota(0.0)
 		.setTipoIncrementoCuota(TipoInteres.Simple)

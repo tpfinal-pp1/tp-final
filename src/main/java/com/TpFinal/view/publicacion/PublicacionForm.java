@@ -384,6 +384,10 @@ public class PublicacionForm extends FormLayout {
 	try {
 	    binderPublicacion.validate();
 	    binderPublicacion.writeBean(publicacion);
+	    if (publicacion instanceof PublicacionAlquiler) {
+		binderAlquiler.validate();
+		binderAlquiler.writeBean((PublicacionAlquiler)publicacion);
+	    }
 
 	    success = service.save(publicacion);
 
