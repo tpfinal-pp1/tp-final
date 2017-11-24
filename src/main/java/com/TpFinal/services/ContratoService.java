@@ -756,4 +756,15 @@ public class ContratoService {
 	}
 	return total;
     }
+    
+    public static BigDecimal getValorCertificadosGarantes(ContratoAlquiler contrato) {
+	return ParametrosSistemaService.getParametros().getValorCertificado().multiply(BigDecimal.valueOf(contrato.getCantCertificadosGarantes()));
+    }
+    
+    public static BigDecimal getValorEntrada(ContratoAlquiler contrato) {
+	return contrato.getValorInicial()
+		.add((getMontoUltimaCuota(contrato).multiply(BigDecimal.valueOf(2))))
+		.add(getValorSelladoAlquiler(contrato))
+		.add(getValorCertificadosGarantes(contrato));
+    }
 }

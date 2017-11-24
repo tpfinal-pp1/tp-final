@@ -5,6 +5,7 @@ import com.TpFinal.data.dao.interfaces.DAOPublicacion;
 import com.TpFinal.dto.contrato.Contrato;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.EstadoContrato;
+import com.TpFinal.dto.contrato.TipoInteres;
 import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.persona.Persona;
 import com.TpFinal.dto.persona.Rol;
@@ -125,6 +126,11 @@ public class PublicacionService {
 		.setValorCuota(new BigDecimal(0))
 		.setFechaPublicacion(LocalDate.now())
 		.setMoneda(TipoMoneda.Pesos)
+		.setCantidadDeCertificados(ParametrosSistemaService.getParametros().getCantMinimaCertificados())
+		.setContratoDuracion(new ContratoDuracionService().getInstancia())
+		.setIntervaloActualizacion(1)
+		.setPorcentajeIncrementoCuota(0.0)
+		.setTipoIncrementoCuota(TipoInteres.Simple)
 		.setInmueble(new Inmueble.Builder()
 			.setaEstrenar(false)
 			.setCantidadAmbientes(0)
