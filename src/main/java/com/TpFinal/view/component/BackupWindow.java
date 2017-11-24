@@ -71,9 +71,7 @@ public class BackupWindow extends CustomComponent {
 		public void uploadStarted(Upload.StartedEvent event) {
 			// TODO Auto-generated method stub
 
-			if(event.getFilename().contains(".xz")){
-				importar.setEnabled(false);
-			}else{
+			if(!event.getFilename().contains(".xz")){
 				Notification.show("Error", "Tipo de archivo invalido", Notification.Type.ERROR_MESSAGE);
 				importar.interruptUpload();
 			}
