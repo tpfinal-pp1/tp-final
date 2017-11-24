@@ -1,10 +1,12 @@
 package com.TpFinal.view.inmuebles;
 
+import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.inmueble.*;
 import com.TpFinal.dto.publicacion.EstadoPublicacion;
 import com.TpFinal.dto.publicacion.Publicacion;
 import com.TpFinal.dto.publicacion.PublicacionAlquiler;
 import com.TpFinal.dto.publicacion.PublicacionVenta;
+import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.PublicacionService;
@@ -221,10 +223,20 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		for (Publicacion p : pubs) {
 		    if (p instanceof PublicacionAlquiler) {
 			PublicacionAlquiler pubA = (PublicacionAlquiler) p;
+			String entrada = "";
+			ContratoAlquiler aux = new ContratoAlquiler.Builder()
+						.setCantCertificadosGarantes(pubA.getCantCertificadosGarantes())
+						.setDuracionContrato(pubA.getDuracionContrato())
+						.setIntervaloActualizacion(pubA.getIntervaloActualizacion())
+						.setPorcentajeIncremento(pubA.getPorcentajeIncrementoCuota())
+						.setTipoIncrementoCuota(pubA.getTipoIncrementoCuota())
+						.setValorIncial(pubA.getValorCuota())
+						.build();
 			ret = ret + " Alquiler: " + TipoMoneda.getSimbolo(pubA.getMoneda()) + pubA.getPrecio()
 				.toString() + " | ";
 		    } else {
 			PublicacionVenta pubV = (PublicacionVenta) p;
+			
 			ret = ret + " Venta: " + TipoMoneda.getSimbolo(pubV.getMoneda()) + pubV.getPrecio().toString()
 				+ " | ";
 		    }

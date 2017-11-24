@@ -45,6 +45,16 @@ public class PublicacionAlquiler extends Publicacion {
     @Column(name = "moneda")
     private TipoMoneda moneda;
 
+    
+    
+    public Integer getCantCertificadosGarantes() {
+        return cantCertificadosGarantes;
+    }
+
+    public void setCantCertificadosGarantes(Integer cantCertificadosGarantes) {
+        this.cantCertificadosGarantes = cantCertificadosGarantes;
+    }
+
     public TipoInteres getTipoIncrementoCuota() {
 	return tipoIncrementoCuota;
     }
