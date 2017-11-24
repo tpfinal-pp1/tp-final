@@ -32,6 +32,7 @@ import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -224,19 +225,14 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		    if (p instanceof PublicacionAlquiler) {
 			PublicacionAlquiler pubA = (PublicacionAlquiler) p;
 			String entrada = "";
-			ContratoAlquiler aux = new ContratoAlquiler.Builder()
-						.setCantCertificadosGarantes(pubA.getCantCertificadosGarantes())
-						.setDuracionContrato(pubA.getDuracionContrato())
-						.setIntervaloActualizacion(pubA.getIntervaloActualizacion())
-						.setPorcentajeIncremento(pubA.getPorcentajeIncrementoCuota())
-						.setTipoIncrementoCuota(pubA.getTipoIncrementoCuota())
-						.setValorIncial(pubA.getValorCuota())
-						.build();
+			ContratoAlquiler aux = getContratoTemporalAPartirDePublicacion(pubA);
+			entrada = "(E:" + TipoMoneda.getSimbolo(pubA.getMoneda()) + ContratoService.getValorEntrada(aux)
+				.toPlainString() + ")";
 			ret = ret + " Alquiler: " + TipoMoneda.getSimbolo(pubA.getMoneda()) + pubA.getPrecio()
-				.toString() + " | ";
+				.toString() + " " + entrada + " " + " | ";
 		    } else {
 			PublicacionVenta pubV = (PublicacionVenta) p;
-			
+
 			ret = ret + " Venta: " + TipoMoneda.getSimbolo(pubV.getMoneda()) + pubV.getPrecio().toString()
 				+ " | ";
 		    }
@@ -249,7 +245,33 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 		if (ret == "")
 		    ret = "No Encontrado";
 		return ret;
-	    }).setCaption("Precio").setId("precio");
+	    }).setCaption("Precio").setId("precio")
+		    .setDescriptionGenerator(i -> {
+			String ret = "";
+			List<Publicacion> pubs = inmuebleService.getPublicacionesActivas(i);
+			PublicacionAlquiler pub = pubs.stream()
+				.filter(p -> p instanceof PublicacionAlquiler)
+				.map(p -> (PublicacionAlquiler) p)
+				.findFirst().orElse(null);
+			if (pub != null) {
+			    ContratoAlquiler c = getContratoTemporalAPartirDePublicacion(pub);
+			    String simbolo = TipoMoneda.getSimbolo(pub.getMoneda());
+			    ret = "Valor entrada:"
+				    + "\n1ra cuota: " + simbolo + pub.getValorCuota().setScale(2, RoundingMode.CEILING)
+					    .toPlainString()
+				    + "\nMes comisión: " + simbolo + ContratoService.getMontoUltimaCuota(c)
+					    .toPlainString()
+				    + "\nMes depósito: " + simbolo + ContratoService.getMontoUltimaCuota(c)
+					    .toPlainString()
+				    + "\nSellado: " + simbolo + ContratoService.getValorSelladoAlquiler(c)
+					    .toPlainString()
+				    + "\nGarantes: " + simbolo + ContratoService.getValorCertificadosGarantes(c)
+					    .toPlainString()
+				    + "\nTOTAL: " + simbolo + ContratoService.getValorEntrada(c).toPlainString();
+			}
+
+			return ret;
+		    });
 	    grid.addColumn(Inmueble::getPropietario).setCaption("Propietario").setId("propietario");
 	    grid.addColumn(Inmueble::getTipoInmueble).setCaption("TipoInmueble").setId("tipo inmueble");
 	    grid.addColumn(Inmueble::getEstadoInmueble).setCaption("Estado Inmueble").setId("estado inmueble");
@@ -278,6 +300,18 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 	    filterRow.getCell("propietario").setComponent(filtroPropietario());
 	    filterRow.getCell("tipo inmueble").setComponent(filtroTipo());
 	    filterRow.getCell("estado inmueble").setComponent(filtroEstado());
+	}
+
+	private ContratoAlquiler getContratoTemporalAPartirDePublicacion(PublicacionAlquiler pubA) {
+	    return new ContratoAlquiler.Builder()
+		    .setCantCertificadosGarantes(pubA.getCantCertificadosGarantes())
+		    .setDuracionContrato(pubA.getDuracionContrato())
+		    .setIntervaloActualizacion(pubA.getIntervaloActualizacion())
+		    .setPorcentajeIncremento(pubA.getPorcentajeIncrementoCuota())
+		    .setTipoIncrementoCuota(pubA.getTipoIncrementoCuota())
+		    .setValorIncial(pubA.getValorCuota())
+		    .setInmueble(pubA.getInmueble())
+		    .build();
 	}
 
 	private Component filtroDireccion() {
