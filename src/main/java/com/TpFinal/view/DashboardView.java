@@ -4,10 +4,8 @@ import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.notificacion.Notificacion;
 import com.TpFinal.dto.persona.Empleado;
-import com.TpFinal.services.CitaService;
-import com.TpFinal.services.DashboardEvent;
-import com.TpFinal.services.DashboardEventBus;
-import com.TpFinal.services.NotificacionService;
+import com.TpFinal.dto.persona.ViewAccess;
+import com.TpFinal.services.*;
 import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
 import com.TpFinal.view.calendario.MeetingItem;
@@ -20,6 +18,8 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
 import org.ocpsoft.prettytime.PrettyTime;
@@ -82,8 +82,30 @@ public final class DashboardView extends Panel implements View {
 		DashboardEventBus.post(new DashboardEvent.CloseOpenWindowsEvent());
 	    }
 	});
+		if(CredencialService.getCurrentUser().getCredencial().getViewAccess()== ViewAccess.Demo)
+			showDemoNotification();
+		else if(CredencialService.getCurrentUser().getCredencial().getViewAccess()== ViewAccess.Recovery)
+			showRecoveryNotification();
 
     }
+
+
+	public void showDemoNotification() {
+		Notification success = new Notification(
+				"Modo de prueba: No podrá volver a entrar a no ser que ingrese un Serial");
+		success.setDelayMsec(4000);
+		success.setStyleName("bar success small");
+		success.setPosition(Position.MIDDLE_CENTER);
+		success.show(Page.getCurrent());
+	}
+	public void showRecoveryNotification() {
+		Notification success = new Notification(
+				"Modo de Recuperacion: No podra utilizar el sistema hasta que no cree una cuenta de adminsitrador");
+		success.setDelayMsec(4000);
+		success.setStyleName("bar success small");
+		success.setPosition(Position.MIDDLE_CENTER);
+		success.show(Page.getCurrent());
+	}
 
     @Subscribe
     public void updateNotificationsCount(

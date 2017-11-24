@@ -4,6 +4,7 @@ import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
 import com.TpFinal.dto.persona.Empleado;
+import com.TpFinal.dto.persona.ViewAccess;
 import com.TpFinal.services.*;
 import com.TpFinal.utils.GeneradorDeDatosSinAsociaciones;
 import com.TpFinal.view.LoginView;
@@ -95,6 +96,8 @@ public final class DashboardUI extends UI {
 			DashboardEventBus.post(new DashboardEvent.BrowserResizeEvent());
 		    }
 		});
+
+
     }
 
     /**
@@ -106,7 +109,12 @@ public final class DashboardUI extends UI {
 	Empleado empleado = (Empleado) VaadinSession.getCurrent()
 		.getAttribute(Empleado.class.getName());
 	if (empleado == null) {
-	    setContent(new LoginView());
+		if(credServ.isfirstRun())
+			setContent(new LoginView(true));
+		else{
+			setContent(new LoginView());
+		}
+
 	    // Cuando recien inicia entra con empleado=null
 	} else if (empleado.getCredencial() == null) {
 	    setContent(new LoginView());
@@ -123,7 +131,7 @@ public final class DashboardUI extends UI {
 	public void showWaitNotification() {
 		Notification success = new Notification(
 				"Sistema Inmobi se encuentra en mantenimiento, \n" +
-						"porfavor espere a que el administrador concluya el proceso de Backup");
+						"porfavor espere a que el administrador concluya el proceso de mantenimiento");
 		success.setDelayMsec(999999999);
 		success.setStyleName("bar error small");
 		success.setPosition(Position.MIDDLE_CENTER);
@@ -137,6 +145,7 @@ public final class DashboardUI extends UI {
 		success.setPosition(Position.BOTTOM_CENTER);
 		success.show(Page.getCurrent());
 	}
+
     @Subscribe
     public void userLoginRequested(final DashboardEvent.UserLoginRequestedEvent event) {
 	Empleado empleado = credServ.logIn(event.getUserName(),

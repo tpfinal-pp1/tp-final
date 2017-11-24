@@ -72,6 +72,24 @@ public class CredencialService {
 	return false;
     }
 
+
+    public static boolean demoIsOver(){
+		File f=new File("inmobi.db.mv");
+		return f.exists();
+	}
+
+	public static boolean terminateDemo(){
+		File f=new File("inmobi.db.mv");
+		try {
+			return f.createNewFile();
+		} catch (IOException e) {
+			return false;
+		}
+	}
+
+    public boolean isfirstRun(){
+    	return readAll().size()==0;
+	}
   public boolean validateSerial(String serial){
     	try {
 			long instant = Long.valueOf(Cipher.decrypt(serial));
@@ -85,7 +103,7 @@ public class CredencialService {
 
 		}
     	catch (Exception e){
-    		e.printStackTrace();
+
     		return false;
 		}
 
@@ -109,22 +127,18 @@ public class CredencialService {
 			}
 			else{
 				File f=new File("inmobi.db.mv");
-				if(f.exists()){
+				if(demoIsOver()){
 					return new Empleado();
 				}
-				try {
-					if(f.createNewFile()){
-						return temporalDemo();
-					}
-					else{
-						return new Empleado();
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
+				else if(terminateDemo()){
+					return temporalDemo();
+				}
+				else{
 					return new Empleado();
+				}
 				}
 			}
-		}
+
 
 
 		for (Credencial cred : credencials) {
