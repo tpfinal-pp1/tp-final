@@ -284,6 +284,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 		col.setResizable(false);
 		col.setHidable(true);
 	    });
+	    grid.getColumn("nroCuota").setWidth(140);
 	    grid.getColumn("montos").setWidth(250);
 
 	    HeaderRow filterRow = grid.appendHeaderRow();

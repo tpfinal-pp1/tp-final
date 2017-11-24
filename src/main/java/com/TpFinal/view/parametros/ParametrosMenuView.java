@@ -131,13 +131,13 @@ public class ParametrosMenuView extends DefaultLayout implements View {
 		.asRequired("Campo requerido")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-		.bind(ParametrosSistema::getComisionAInquilino, ParametrosSistema::setComisionAInquilino);
+		.bind(ParametrosSistema::getComisionAComprador, ParametrosSistema::setComisionAInquilino);
 
 	binder.forField(this.comisionAPropietario)
 		.asRequired("Campo requerido")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> n >= 0, "Debe ingresar un número no negativo")
-		.bind(ParametrosSistema::getComisionAPropietario, ParametrosSistema::setComisionAPropietario);
+		.bind(ParametrosSistema::getComisionAVendededor, ParametrosSistema::setComisionAPropietario);
 
 	binder.forField(this.comisionCobro)
 		.asRequired("Campo requerido")

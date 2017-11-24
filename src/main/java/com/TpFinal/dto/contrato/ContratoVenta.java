@@ -56,28 +56,28 @@ public class ContratoVenta extends Contrato implements Cloneable {
 	this.fechaCelebracion = b.fechaCelebracion;
 	this.precioVenta = b.precioVenta;
 	this.comprador = b.comprador;
+	this.comisionAComprador = b.comisionAComprador;
+	this.comsionAVendedor = b.comisionAVendedor;
 	if (b.inmueble != null) {
 	    this.vendedor = b.inmueble.getPropietario() != null ? b.inmueble.getPropietario().getPersona() : null;
 	    this.inmueble = b.inmueble;
 	}
     }
-    
-    
 
     public Integer getComisionAComprador() {
-        return comisionAComprador;
+	return comisionAComprador;
     }
 
     public void setComisionAComprador(Integer comisionAComprador) {
-        this.comisionAComprador = comisionAComprador;
+	this.comisionAComprador = comisionAComprador;
     }
 
     public Integer getComsionAVendedor() {
-        return comsionAVendedor;
+	return comsionAVendedor;
     }
 
     public void setComsionAVendedor(Integer comsionAVendedor) {
-        this.comsionAVendedor = comsionAVendedor;
+	this.comsionAVendedor = comsionAVendedor;
     }
 
     public Persona getVendedor() {
@@ -141,6 +141,8 @@ public class ContratoVenta extends Contrato implements Cloneable {
 
     public static class Builder {
 
+	private Integer comisionAVendedor;
+	private Integer comisionAComprador;
 	private Persona comprador;
 	private Inmueble inmueble;
 	private Long id;
@@ -149,6 +151,16 @@ public class ContratoVenta extends Contrato implements Cloneable {
 	private Blob documento;
 	private BigDecimal precioVenta;
 	private EstadoRegistro estadoRegistro = EstadoRegistro.ACTIVO;
+
+	public Builder setComisionAVendedor(Integer comision) {
+	    this.comisionAVendedor = comision;
+	    return this;
+	}
+
+	public Builder setComisionAComprador(Integer comision) {
+	    this.comisionAComprador = comision;
+	    return this;
+	}
 
 	public Builder setId(Long dato) {
 	    this.id = dato;

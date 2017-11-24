@@ -492,11 +492,11 @@ public class ContratoService {
 
     public static ContratoAlquiler getInstanciaAlquiler() {
 	return new ContratoAlquiler.Builder()
-		.setDiaDePago(10)
+		.setDiaDePago(ParametrosSistemaService.getParametros().getDiaDePago())
 		.setDuracionContrato(ContratoDuracionService.getInstancia())
 		.setInquilinoContrato(PersonaService.getPersonaConInquilino())
 		.setInteresPunitorio(0.0)
-		.setIntervaloActualizacion(24)
+		.setIntervaloActualizacion(1)
 		.setTipoIncrementoCuota(TipoInteres.Acumulativo)
 		.setTipoInteresPunitorio(TipoInteres.Simple)
 		.setValorIncial(BigDecimal.ZERO)
@@ -504,6 +504,7 @@ public class ContratoService {
 		.setEstadoRegistro(EstadoRegistro.ACTIVO)
 		.setFechaIngreso(LocalDate.now())
 		.setInmueble(InmuebleService.getInstancia())
+		.setCantCertificadosGarantes(ParametrosSistemaService.getParametros().getCantMinimaCertificados())
 		.build();
     }
 
@@ -512,6 +513,8 @@ public class ContratoService {
 		.setPrecioVenta(new BigDecimal("0"))
 		.setFechaIngreso(LocalDate.now())
 		.setDocumento(null)
+		.setComisionAComprador(ParametrosSistemaService.getParametros().getComisionAComprador())
+		.setComisionAVendedor(ParametrosSistemaService.getParametros().getComisionAVendededor())
 		.setInmueble(new Inmueble.Builder()
 			.setaEstrenar(false)
 			.setCantidadAmbientes(0)
