@@ -9,6 +9,7 @@ import com.TpFinal.services.*;
 import com.TpFinal.view.calendario.CitaFormWindow;
 import com.TpFinal.view.calendario.MeetingCalendar;
 import com.TpFinal.view.calendario.MeetingItem;
+import com.TpFinal.view.component.NotificationLayout;
 import com.TpFinal.view.parametros.ParametrosDelSistemaWindow;
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.annotations.Title;
@@ -130,6 +131,7 @@ public final class DashboardView extends Panel implements View {
 	nuevo.addClickListener(new ClickListener() {
 	    @Override
 	    public void buttonClick(ClickEvent clickEvent) {
+		notificationsWindow.close();
 		Cita cita = new Cita();
 		cita.setFechaInicio(LocalDate.now().atTime(LocalTime.now()));
 		cita.setFechaFin(LocalDate.now().atTime(LocalTime.now().plusHours(1)));
@@ -217,6 +219,7 @@ public final class DashboardView extends Panel implements View {
 
 	    @Override
 	    public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+			notificationsWindow.close();
 		if (citaWindow != null && citaWindow.isAttached())
 		    return;
 
@@ -236,7 +239,7 @@ public final class DashboardView extends Panel implements View {
 
 	    @Override
 	    public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
-
+		notificationsWindow.close();
 		MeetingItem item = (MeetingItem) event.getCalendarItem();
 
 		final Cita cita = item.getMeeting();
@@ -384,42 +387,28 @@ public final class DashboardView extends Panel implements View {
 	for (int i=0 ;i<size ;i++) {
 		Notificacion notification=notifications.get(i);
 
-	    VerticalLayout notificationLayout = new VerticalLayout();
-	    notificationLayout.setMargin(false);
-	    notificationLayout.setSpacing(false);
-	    notificationLayout.addStyleName("notification-item");
+	    String contentLabel = notification.getMensaje();
 
-	    Label titleLabel = new Label(notification.getTitulo());
-	    titleLabel.addStyleName("notification-title");
-	    PrettyTime p = new PrettyTime(Locale.getDefault());
-
-	    Date out = Date.from(notification.getFechaCreacion()
-		    .atZone(ZoneId.systemDefault()).toInstant());
-
-	    p.setLocale(new Locale("es", "AR"));
-	    Label timeLabel = new Label(p.format(out));
-	    timeLabel.addStyleName("notification-time");
-
-	    String content = notification.getMensaje();
-	    String ret = "";
-
-	    if (content.length() > 39 &&  notification.getMensaje().length()>=42) {
-		content = notification.getMensaje().substring(0, 42) + "...";
+	    if (contentLabel.length() > 39 &&  notification.getMensaje().length()>=42) {
+		contentLabel = notification.getMensaje().substring(0, 42) + "...";
 	    }
 
-	    Label contentLabel = new Label(content);
-	    contentLabel.addStyleName("notification-content");
+		PrettyTime p = new PrettyTime(Locale.getDefault());
 
-	    notificationLayout.addComponents(titleLabel, timeLabel,
-		    contentLabel);
+		Date out = Date.from(notification.getFechaCreacion()
+				.atZone(ZoneId.systemDefault()).toInstant());
 
-	    notificationLayout.setDescription(notification.getIdCita());
+		p.setLocale(new Locale("es", "AR"));
+
+		NotificationLayout notificationLayout =new NotificationLayout(
+				notification.getIdCita(),notification.getTitulo(),p.format(out),contentLabel
+				);
 
 	    notificationLayout.addLayoutClickListener(new LayoutClickListener() {
 		@Override
 		public void layoutClick(LayoutClickEvent layoutClickEvent) {
 		    CitaService citaService = new CitaService();
-		    Cita ret = citaService.getCitaFromTriggerKey(notificationLayout.getDescription());
+		    Cita ret = citaService.getCitaFromTriggerKey(notificationLayout.getIdentification());
 		    if (ret != null) {
 		    	notificationsWindow.close();
 			citaWindow = new CitaFormWindow(ret) {

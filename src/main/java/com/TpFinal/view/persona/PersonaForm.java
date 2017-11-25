@@ -2,7 +2,10 @@ package com.TpFinal.view.persona;
 
 import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.persona.Calificacion;
+import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
+import com.TpFinal.dto.publicacion.PublicacionAlquiler;
+import com.TpFinal.dto.publicacion.PublicacionVenta;
 import com.TpFinal.services.PersonaService;
 import com.TpFinal.utils.DummyDataGenerator;
 import com.TpFinal.utils.Utils;
@@ -46,7 +49,7 @@ public class PersonaForm extends FormLayout {
     private TextField mail = new TextField("Mail");
     private TextArea infoAdicional = new TextArea("Info");
     private ContratoVenta aSeleccionar;
-    private NativeSelect<Calificacion> calificacion = new NativeSelect<>("Calificacion Inquilino");
+    private TextField calificacion = new TextField("Calificacion Inquilino");
 
     // private NativeSelect<Persona.Sexo> sexo = new NativeSelect<>("Sexo");
 
@@ -72,9 +75,6 @@ public class PersonaForm extends FormLayout {
     }
 
     private void configureComponents() {
-	calificacion.setItems(Calificacion.values());
-	calificacion.setEmptySelectionAllowed(true);
-	calificacion.setSelectedItem(Calificacion.A);
 	delete.setStyleName(ValoTheme.BUTTON_DANGER);
 	save.addClickListener(e -> this.save());
 	save.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -129,7 +129,17 @@ public class PersonaForm extends FormLayout {
 	});
 	setVisible(false);
     }
-
+	private Button configurarBtnCalcularCalificaciones() {
+		Button btnCalcularCalificaciones = new Button ("Calcular calificaciones");
+		btnCalcularCalificaciones.setVisible(true);
+		btnCalcularCalificaciones.addClickListener(event -> {
+			personaService.readAll().forEach(persona -> {
+				personaService.calificarInquilino(persona);
+				personaService.saveOrUpdate(persona);
+			});
+		});
+		return btnCalcularCalificaciones;
+	}
     private void binding() {
 	// binder.bindInstanceFields(this); //Binding automatico
 	nombre.setRequiredIndicatorVisible(true);
@@ -155,6 +165,19 @@ public class PersonaForm extends FormLayout {
 	binderPersona.forField(infoAdicional).bind(Persona::getInfoAdicional, Persona::setInfoAdicional);
 
 	binderPersona.forField(cbEsInmobiliaria).bind(Persona::getEsInmobiliaria, Persona::setEsInmobiliaria);
+	binderPersona.forField(calificacion).bind(persona -> {
+		calificacion.setVisible(false);
+		if(persona.getInquilino()!=null){
+			Inquilino inquilino=persona.getInquilino();
+			if(inquilino.getCalificacion()!=null) {
+				calificacion.setVisible(true);
+				return inquilino.getCalificacion().toString();
+
+			}
+
+		}
+		return "";
+		}, null);
 
     }
 
@@ -177,7 +200,7 @@ public class PersonaForm extends FormLayout {
 	/*
 	 * contratos.addClickListener(e -> new PersonaFormWindow(new Persona()));
 	 */
-	VerticalLayout Roles = new VerticalLayout(calificacion);
+	VerticalLayout Roles = new VerticalLayout(calificacion,configurarBtnCalcularCalificaciones());
 
 	HorizontalLayout checkboxInm = new HorizontalLayout(cbEsInmobiliaria);
 	checkboxInm.setCaption("Inmobiliaria");
@@ -209,13 +232,8 @@ public class PersonaForm extends FormLayout {
     }
 
     public void setPersona(Persona persona) {
-	/*
-	 * if(persona.getInquilino()!=null){ this.calificacion.setVisible(true);
-	 * calificacion.setSelectedItem(Calificacion.A);
-	 * this.calificacion.setSelectedItem(persona.getInquilino().getCalificacion());
-	 * } else{ this.calificacion.setVisible(false); }
-	 */
-	this.calificacion.setVisible(false);
+
+
 	this.persona = persona;
 	binderPersona.readBean(persona);
 

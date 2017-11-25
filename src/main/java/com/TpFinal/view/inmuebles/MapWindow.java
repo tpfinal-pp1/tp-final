@@ -23,7 +23,7 @@ public class MapWindow extends Window {
     private final static Logger logger = Logger.getLogger(MapWindow.class);
 
     private VerticalLayout mainLayout;
-	private Button recalcularDir=new Button("Calcular");
+	private Button recalcularDir=new Button("Ubicación Original");
 	private InmuebleService inmuebleService=new InmuebleService();
 
 
