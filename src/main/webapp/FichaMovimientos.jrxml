@@ -42,10 +42,10 @@
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Venta") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoAlquilerDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Alquiler") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Cuota Alquiler") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoAlquilerPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Alquiler") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Cuota Alquiler") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoComisionDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Comisión") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
@@ -66,10 +66,10 @@
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoPagoAPropsDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("PagoAPropietario") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Pago a propietario") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoPagoAPropsPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("PagoAPropietario") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Pago a propietario") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoOtrosDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Otro") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
@@ -84,34 +84,34 @@
 		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Impuesto") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoMesComisionDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("MesComision") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Mes comisión") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoMesComisionPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("MesComision") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Mes comisión") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoDepositoDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Deposito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Depósito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoDepositoPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Deposito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Depósito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoDepositoDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Deposito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Depósito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoDepositoPesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Deposito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Depósito") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoCertificadoGaranteDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("CertificadoGarante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Certificado Garante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoCertificadoGarantePesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("CertificadoGarante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Certificado Garante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoCertificadoGaranteDolares" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("CertificadoGarante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Certificado Garante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="EgresoCertificadoGarantePesos" class="java.math.BigDecimal" calculation="Sum">
-		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("CertificadoGarante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
+		<variableExpression><![CDATA[$F{simbolo}.equals("$") && $F{tipoMovimiento}.equals("Egreso") && $F{claseMovimiento}.equals("Certificado Garante") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
 	</variable>
 	<variable name="IngresoSelladoDolares" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{simbolo}.equals("U$S") && $F{tipoMovimiento}.equals("Ingreso") && $F{claseMovimiento}.equals("Sellado") ? $F{monto} : new BigDecimal(0)]]></variableExpression>
@@ -1130,7 +1130,7 @@
 					<reportElement x="420" y="535" width="120" height="50" uuid="fc4e1f2f-7242-4b94-baae-6e9fd91d6d70">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1164,7 +1164,7 @@
 					<reportElement x="420" y="587" width="120" height="50" uuid="4344cb00-4ec6-4f1f-a3a5-81affe29f741">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1266,7 +1266,7 @@
 					<reportElement x="420" y="327" width="120" height="50" uuid="78dda861-f0e8-421a-be71-536ac4082bbe">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1300,7 +1300,7 @@
 					<reportElement x="420" y="379" width="120" height="50" uuid="c92550a5-4a5d-41a1-8ee3-e1995fab675b">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1334,7 +1334,7 @@
 					<reportElement x="420" y="431" width="120" height="50" uuid="e25b6f72-2e65-4487-88bc-f164b3dfe407">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
@@ -1351,7 +1351,7 @@
 					<reportElement x="420" y="483" width="120" height="50" uuid="389e56d5-6c2c-4c9d-a5c6-1daa009a656e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
-						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
+						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Egreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
 						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>

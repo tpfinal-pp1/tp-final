@@ -31,7 +31,7 @@ Section "instaladorJar"
 	File /r "Files"
 	File "icon.ico"
 	File "Privs.bat"
-	File "reinicio.bat"
+	
 	
 	#File "db.properties"
 	#File "addcicon.png"
@@ -67,7 +67,9 @@ Section "instaladorJar"
 	
 	#Con esto se informa el tamaño de la 	createShortCut "$DESKTOP" -jar $\"$INSTDIR\programa.jar" "" "$INSTDIR\icono.ico" #instalacion
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${NOMBRE}" "EstimatedSize" ${INSTALLSIZE}
-	setOutPath $INSTDIR
+	setOutPath $DESKTOP
+	File "Inmobi_Chrome_Extension.crx"
+	
 	#Exec '"$INSTDIR\reinicio.bat"'
 	MessageBox MB_YESNO|MB_ICONQUESTION "Para finalizar la Instalacion debe reinciar el equipo, desea hacerlo ahora?" IDNO +2
   Reboot
