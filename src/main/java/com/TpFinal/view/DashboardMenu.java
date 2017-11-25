@@ -3,6 +3,7 @@ package com.TpFinal.view;
 import com.TpFinal.DashboardUI;
 import com.TpFinal.dto.persona.Empleado;
 
+import com.TpFinal.dto.persona.ViewAccess;
 import com.TpFinal.services.CredencialService;
 import com.TpFinal.services.DashboardEvent;
 import com.TpFinal.services.DashboardEventBus;
@@ -94,7 +95,8 @@ public final class DashboardMenu extends CustomComponent {
         settingsItem.addItem("Cerrar Sesion", new Command() {
             @Override
             public void menuSelected(final MenuItem selectedItem) {
-                if(credencialService.isfirstRun())
+                if(credencialService.isfirstRun()&&
+                        CredencialService.getCurrentUser().getCredencial().getViewAccess()== ViewAccess.Recovery)
                    DashboardUI.showErrorNotification("Debe Crear un Administrador Primero");
                 else{
                     DashboardEventBus.post(new DashboardEvent.UserLoggedOutEvent());}

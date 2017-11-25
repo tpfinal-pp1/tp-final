@@ -36,7 +36,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 
 	private Grid<Persona> grid = new Grid<>(Persona.class);
 	Button newItem = new Button("Nuevo");
-	Button btnCalcularCalificaciones = new Button ("Calcular calificaciones");
+
 	Button cerrarForm = new Button(VaadinIcons.CLOSE);
 	RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
 	HorizontalLayout mainLayout;
@@ -67,7 +67,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 		Responsive.makeResponsive(this);
 		configurarNewItem();
 		configurarGrid();
-		configurarBtnCalcularCalificaciones();
 		updateList();
 		cerrarForm.addClickListener(click -> {
 			personaForm.setVisible(false); 
@@ -85,16 +84,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 		newItem.setStyleName(ValoTheme.BUTTON_PRIMARY);
 	}
 
-	private void configurarBtnCalcularCalificaciones() {
-		btnCalcularCalificaciones.setVisible(true);
-		btnCalcularCalificaciones.addClickListener(event -> {
-			personaService.readAll().forEach(persona -> {
-				personaService.calificarInquilino(persona);
-				personaService.saveOrUpdate(persona);
-			});
-			updateList();
-		});
-	}
 
 	private void configurarGrid() {
 		grid.setColumns("nombre", "apellido", "DNI");
@@ -332,7 +321,6 @@ public class PersonaABMView extends DefaultLayout implements View {
 		HorizontalLayout hl = new HorizontalLayout();
 		filtering.addComponents(cerrarForm, newItem);
 		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
-		hl.addComponent(btnCalcularCalificaciones);
 		hl.addComponent(filtering);
 
 		buildToolbar("Clientes", hl);
@@ -360,7 +348,7 @@ public class PersonaABMView extends DefaultLayout implements View {
 		success.setStyleName("bar success small");
 		success.setPosition(Position.BOTTOM_CENTER);
 		success.show(Page.getCurrent());
-	}
+}
 
 	public void updateList() {
 		filtroBase.setFiltroPersona(filtroClientes.getFiltroCompuesto());

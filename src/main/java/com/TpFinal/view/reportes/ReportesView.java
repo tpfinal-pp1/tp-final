@@ -253,7 +253,6 @@ public class ReportesView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	configureComponents();
-
     }
 
     public void buildLayout() {

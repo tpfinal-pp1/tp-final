@@ -128,31 +128,59 @@ public class Planificador {
 	citas.forEach(cita -> this.addJobCita(cita));
     }
 
+    public boolean notificacionVencida(Integer horasAntesCita,
+									   LocalDateTime inicioCita){
+		LocalDateTime now=LocalDateTime.now();
+		System.out.println("Recordatorio: "+inicioCita.minusHours(horasAntesCita)+
+				"   es Antes que ahora? ("+now+"\n");
+		if(inicioCita.minusHours(horasAntesCita).isBefore(now))
+			System.out.println("VENCIDA!!!\n");
+		else{
+			System.out.println("NO VENCIDA!!!\n");
+		}
+		return inicioCita.minusHours(horasAntesCita).isBefore(now);
+	}
+
     public void addJobCita(Cita cita) {
 	if (cita.getId() != null) {
-	    agregarJobNotificacionCita(cita, horasAntesCita1, 1);
-	    agregarJobNotificacionCita(cita, horasAntesCita2, 2);
+		if(!notificacionVencida(horasAntesCita1,cita.getFechaInicio()))
+	    	agregarJobNotificacionCita(cita, horasAntesCita1, 1);
+		if(!notificacionVencida(horasAntesCita2,cita.getFechaInicio()))
+	    	agregarJobNotificacionCita(cita, horasAntesCita2, 2);
 	} else
 	    throw new IllegalArgumentException("La cita debe estar persistida");
     }
 
     public void addJobCita(Cita cita, Integer hsAntesRecordatorio1, Integer hsAntesRecordatorio2) {
 	if (cita.getId() != null) {
-	    agregarJobNotificacionCita(cita, hsAntesRecordatorio1, 1);
-	    agregarJobNotificacionCita(cita, hsAntesRecordatorio2, 2);
+
+		if(!notificacionVencida(hsAntesRecordatorio1,cita.getFechaInicio()) )
+			agregarJobNotificacionCita(cita, hsAntesRecordatorio1, 1);
+
+		if(!notificacionVencida(hsAntesRecordatorio2,cita.getFechaInicio()) )
+			agregarJobNotificacionCita(cita, hsAntesRecordatorio2, 2);
 	} else
 	    throw new IllegalArgumentException("La cita debe estar persistida");
     }
 
     public boolean removeJobCita(Cita cita) {
-	boolean ret = false;
+	boolean ret = true;
 	try {
 	    if (cita.getId() != null) {
+			if(!notificacionVencida(horasAntesCita1,cita.getFechaInicio()) ){
+				ret = sc.unscheduleJob(TriggerKey.triggerKey(cita.getTriggerKey() + "-1"));
+			}
 
-		return sc.unscheduleJob(TriggerKey.triggerKey(cita.getTriggerKey() + "-1")) &&
-			sc.unscheduleJob(TriggerKey.triggerKey(cita.getTriggerKey() + "-2"));
-	    } else
-		throw new IllegalArgumentException("La cita debe estar persistida");
+			if(!notificacionVencida(horasAntesCita1,cita.getFechaInicio())) {
+				ret =ret&&sc.unscheduleJob(TriggerKey.triggerKey(cita.getTriggerKey() + "-2"));
+			}
+		return ret;
+	    }
+	    else{
+
+			throw new IllegalArgumentException("La cita debe estar persistida");
+		}
+
 	} catch (Exception e) {
 	    e.printStackTrace();
 	}
