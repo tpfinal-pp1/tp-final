@@ -253,8 +253,6 @@ public class ReportesView extends DefaultLayout implements View {
 	super();
 	buildLayout();
 	configureComponents();
-	newReport.click();
-
     }
 
     public void buildLayout() {
@@ -307,7 +305,7 @@ public class ReportesView extends DefaultLayout implements View {
 	    }
 	});
 
-	generarReporte();
+	//generarReporte();
 
 	filtering.addComponents(fDesdeDatePicker, fHastaDatePicker, clearFilterTextBtn, fDesde2,
 		checkboxIncluirPendientes,
