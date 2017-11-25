@@ -263,9 +263,9 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 					    .toPlainString()
 				    + "\nMes depósito: " + simbolo + ContratoService.getMontoUltimaCuota(c)
 					    .toPlainString()
-				    + "\nSellado: " + simbolo + ContratoService.getValorSelladoAlquiler(c)
+				    + "\nsellado: " + simbolo + ContratoService.getValorSelladoAlquiler(c)
 					    .toPlainString()
-				    + "\nGarantes: " + simbolo + ContratoService.getValorCertificadosGarantes(c)
+				    + "\ngarantes("+pub.getCantCertificadosGarantes()+"): " + simbolo + ContratoService.getValorCertificadosGarantes(c)
 					    .toPlainString()
 				    + "\nTOTAL: " + simbolo + ContratoService.getValorEntrada(c).toPlainString();
 			}
