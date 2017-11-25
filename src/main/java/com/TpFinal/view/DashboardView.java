@@ -131,6 +131,7 @@ public final class DashboardView extends Panel implements View {
 	nuevo.addClickListener(new ClickListener() {
 	    @Override
 	    public void buttonClick(ClickEvent clickEvent) {
+		notificationsWindow.close();
 		Cita cita = new Cita();
 		cita.setFechaInicio(LocalDate.now().atTime(LocalTime.now()));
 		cita.setFechaFin(LocalDate.now().atTime(LocalTime.now().plusHours(1)));
@@ -218,6 +219,7 @@ public final class DashboardView extends Panel implements View {
 
 	    @Override
 	    public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
+			notificationsWindow.close();
 		if (citaWindow != null && citaWindow.isAttached())
 		    return;
 
@@ -237,7 +239,7 @@ public final class DashboardView extends Panel implements View {
 
 	    @Override
 	    public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
-
+		notificationsWindow.close();
 		MeetingItem item = (MeetingItem) event.getCalendarItem();
 
 		final Cita cita = item.getMeeting();
