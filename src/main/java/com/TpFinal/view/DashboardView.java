@@ -221,7 +221,8 @@ public final class DashboardView extends Panel implements View {
 
 	    @Override
 	    public void onCalendarRangeSelect(CalendarComponentEvents.RangeSelectEvent event) {
-			notificationsWindow.close();
+			if(notificationsWindow != null)
+	    		notificationsWindow.close();
 		if (citaWindow != null && citaWindow.isAttached())
 		    return;
 
@@ -241,7 +242,8 @@ public final class DashboardView extends Panel implements View {
 
 	    @Override
 	    public void onCalendarClick(CalendarComponentEvents.ItemClickEvent event) {
-		notificationsWindow.close();
+			if(notificationsWindow != null)
+				notificationsWindow.close();
 		MeetingItem item = (MeetingItem) event.getCalendarItem();
 
 		final Cita cita = item.getMeeting();
