@@ -125,7 +125,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 			return ret;
 		}).setCaption("Rubro").setId("claseMovimiento");;
 
-		grid.setColumnOrder("acciones", "descripcionMovimiento", "monto","fecha","tipoMovimiento","claseMovimiento");
+		grid.setColumnOrder("acciones","fecha", "descripcionMovimiento","tipoMovimiento", "monto","claseMovimiento");
 		grid.getColumns().forEach(col -> {
 			col.setResizable(false);
 			col.setHidable(true);
