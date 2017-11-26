@@ -66,16 +66,17 @@ public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implement
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-
+            contrato.setDocumento(null);
+            ContratoAlquiler merged = (ContratoAlquiler)session.merge(contrato);
             Blob archivo = null;
 
             docInputStream = new FileInputStream(doc);
             archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
 
-            contrato.setDocumento(archivo);
+            merged.setDocumento(archivo);
             //contrato.getInmueble().getContratos().remove(contrato);
             System.out.println("Contrato -> inmueble: " + contrato.getInmueble());
-            session.merge(contrato);
+            session.merge(merged);
             tx.commit();
             ret = true;
         } catch (HibernateException | FileNotFoundException e) {
