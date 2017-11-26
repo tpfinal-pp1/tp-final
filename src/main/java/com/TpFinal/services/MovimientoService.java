@@ -29,6 +29,7 @@ public class MovimientoService {
 	}
 
 	public boolean saveOrUpdate(Movimiento m) {
+	    logger.info("Guardando Movimiento" + m.getDescripcionMovimiento() +" - "+m.getClaseMovimiento());
 		return dao.saveOrUpdate(m);
 	}
 

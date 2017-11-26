@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 import com.TpFinal.dto.cobro.Cobro;
@@ -281,6 +282,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    ContratoAlquiler ca = contratoAlquiler.clone();
 	    ContratoService.setMontoInicialRenovacion(ca);
 	    this.setContratoAlquiler(ca);
+	    this.delete.setVisible(false);
 
 	});
     }
@@ -579,6 +581,7 @@ public class ContratoAlquilerForm extends FormLayout {
 	    this.tfDiaDePago.setValue(ParametrosSistemaService.getParametros().getDiaDePago().toString());
 	    this.tfCantGarantes.setValue(ParametrosSistemaService.getParametros().getCantMinimaCertificados()
 		    .toString());
+	    this.delete.setVisible(false);
 	}
 
 	setVisible(true);
@@ -700,8 +703,13 @@ public class ContratoAlquilerForm extends FormLayout {
 
     private void delete() {
 	boolean success = false;
+	if (logger.isDebugEnabled()) {
+	    logger.debug("Puede ser rescindido?: " + ContratoService.puedeSerRescindido(contratoAlquiler));
+	}
 	if (ContratoService.puedeSerRescindido(contratoAlquiler)) {
 	    success = service.rescindirContrato(contratoAlquiler);
+	    if (logger.isDebugEnabled())
+		logger.debug("Contrato rescindido: " + success);
 	    Movimiento mov = MovimientoService.getInstanciaMesGarantiaEgreso(contratoAlquiler);
 	    MovimientoService ms = new MovimientoService();
 	    ms.saveOrUpdate(mov);
