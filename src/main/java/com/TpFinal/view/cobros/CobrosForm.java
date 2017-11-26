@@ -103,7 +103,7 @@ public class CobrosForm extends FormLayout {
 					movimientoService.saveOrUpdate(movPagoAlquiler);
 
 					Movimiento movGananciaInmobiliaria = MovimientoService
-						.getInstanciaGananciaInmobiliariaVenta(cobro);
+						.getInstanciaComisionCuotaAlquiler(cobro);
 					movimientoService.saveOrUpdate(movGananciaInmobiliaria);
 
 					Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(
