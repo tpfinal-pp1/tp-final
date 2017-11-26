@@ -14,6 +14,7 @@ import org.hibernate.Transaction;
 import com.TpFinal.data.conexion.ConexionHibernate;
 import com.TpFinal.data.dao.interfaces.DAOContratoVenta;
 import com.TpFinal.dto.contrato.Archivo;
+import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoVenta;
 
 public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOContratoVenta {
@@ -67,15 +68,16 @@ public class DAOContratoVentaImpl extends DAOImpl<ContratoVenta> implements DAOC
 	Transaction tx = null;
 	try {
 	    tx = session.beginTransaction();
-
+	    entidad.setDocumento(null);;
+	    ContratoVenta merged = (ContratoVenta)session.merge(entidad);
 	    Blob archivo = null;
 
 	    docInputStream = new FileInputStream(doc);
 	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
 
-	    entidad.setDocumento(archivo);
+	    merged.setDocumento(archivo);
 
-	    session.merge(entidad);
+	    session.merge(merged);
 	    tx.commit();
 	    ret = true;
 	} catch (HibernateException | FileNotFoundException e) {

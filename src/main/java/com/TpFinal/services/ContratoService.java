@@ -188,7 +188,7 @@ public class ContratoService {
 	    logger.info("ERROR AL ELIMINAR TRIGGER CONTRATO");
 	    e.printStackTrace();
 	}
-	return daoAlquiler.saveOrUpdate(alquiler);
+	return daoAlquiler.merge(alquiler);
     }
 
     private boolean cancelarContratoVenta(ContratoVenta venta) {
@@ -206,7 +206,7 @@ public class ContratoService {
 	    }
 	}
 
-	return daoVenta.saveOrUpdate(venta);
+	return daoVenta.merge(venta);
     }
 
     public boolean verificarSiExisteCobroConMasDeUnAnio(LocalDate fechaActual) {
