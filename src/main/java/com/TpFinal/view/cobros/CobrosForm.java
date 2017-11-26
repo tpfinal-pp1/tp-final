@@ -131,12 +131,13 @@ public class CobrosForm extends FormLayout {
 						cobro);
 					movimientoService.saveOrUpdate(movPagoAPropietario);
 
-					Movimiento movGananciaInmobiliaria = MovimientoService
-						.getInstanciaGananciaInmobiliaria(cobro);
+					Movimiento movGananciaInmobiliaria = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
 					movimientoService.saveOrUpdate(movGananciaInmobiliaria);
 
-					Movimiento sellado = MovimientoService.getInstanciaSelladoVentaEgreso(cobro);
-					movimientoService.saveOrUpdate(sellado);
+					Movimiento selladoIngreso = MovimientoService.getInstanciaSelladoVentaIngreso(cobro);
+					movimientoService.saveOrUpdate(selladoIngreso);
+					Movimiento selladoEgreso = MovimientoService.getInstanciaSelladoVentaEgreso(cobro);
+					movimientoService.saveOrUpdate(selladoEgreso);
 				    }
 				}
 			    }
