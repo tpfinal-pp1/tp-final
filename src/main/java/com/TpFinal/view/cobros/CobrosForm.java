@@ -103,7 +103,7 @@ public class CobrosForm extends FormLayout {
 					movimientoService.saveOrUpdate(movPagoAlquiler);
 
 					Movimiento movGananciaInmobiliaria = MovimientoService
-						.getInstanciaGananciaInmobiliaria(cobro);
+						.getInstanciaGananciaInmobiliariaComprador(cobro);
 					movimientoService.saveOrUpdate(movGananciaInmobiliaria);
 
 					Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(
@@ -130,10 +130,13 @@ public class CobrosForm extends FormLayout {
 					Movimiento movPagoAPropietario = MovimientoService.getInstanciaPagoAPropietario(
 						cobro);
 					movimientoService.saveOrUpdate(movPagoAPropietario);
+					
+					Movimiento movGananciaInmobiliariaVendedor = MovimientoService.getInstanciaGananciaInmobiliariaVendedor(cobro);
+					movimientoService.saveOrUpdate(movGananciaInmobiliariaVendedor);
 
-					Movimiento movGananciaInmobiliaria = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
-					movimientoService.saveOrUpdate(movGananciaInmobiliaria);
-
+					Movimiento movGananciaInmobiliariaComprador = MovimientoService.getInstanciaGananciaInmobiliariaComprador(cobro);
+					movimientoService.saveOrUpdate(movGananciaInmobiliariaComprador);
+					
 					Movimiento selladoIngreso = MovimientoService.getInstanciaSelladoVentaIngreso(cobro);
 					movimientoService.saveOrUpdate(selladoIngreso);
 					Movimiento selladoEgreso = MovimientoService.getInstanciaSelladoVentaEgreso(cobro);

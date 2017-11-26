@@ -196,7 +196,7 @@ public class MovimientoService {
 		return ret;
 	}
 
-	public static Movimiento getInstanciaGananciaInmobiliaria(Cobro c) {
+	public static Movimiento getInstanciaGananciaInmobiliariaComprador(Cobro c) {
 		ContratoVenta cv = (ContratoVenta) c.getContrato();
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
@@ -211,11 +211,27 @@ public class MovimientoService {
 				.build();
 		return ret;
 	}
+	
+	public static Movimiento getInstanciaGananciaInmobiliariaVendedor(Cobro c) {
+		ContratoVenta cv = (ContratoVenta) c.getContrato();
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
+				.setMonto(c.getComision().subtract(c.getMontoOriginal()
+						.multiply(new BigDecimal(cv.getComisionAComprador().toString()))
+						.divide(new BigDecimal("100"))))
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Comision)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Ingreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
+				.build();
+		return ret;
+	}
 
 	public static Movimiento getInstanciaPagoAPropietario(Cobro c) {
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
-				.setMonto(c.getMontoPropietario())
+				.setMonto(c.getMontoOriginal())
 				.setFecha(LocalDate.now())
 				.setClaseMovimiento(ClaseMovimiento.PagoAPropietario)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)

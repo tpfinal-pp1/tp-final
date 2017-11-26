@@ -333,7 +333,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	Movimiento mov = MovimientoService.getInstanciaPagoAlquiler(cobro);
 	movService.saveOrUpdate(mov);
-	mov = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
+	mov = MovimientoService.getInstanciaGananciaInmobiliariaComprador(cobro);
 	movService.saveOrUpdate(mov);
 	mov = MovimientoService.getInstanciaPagoAPropietario(cobro);
 	movService.saveOrUpdate(mov);
