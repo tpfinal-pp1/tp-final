@@ -11,7 +11,7 @@ import com.TpFinal.dto.inmueble.TipoMoneda;
 import com.TpFinal.dto.movimiento.Movimiento;
 
 public class ItemFichaMovimientos {
-    //private static final Logger logger = Logger.getLogger(ItemFichaMovimientos.class);
+	//private static final Logger logger = Logger.getLogger(ItemFichaMovimientos.class);//
     String claseMovimiento;
     String tipoMovimiento;
     String descripción;
