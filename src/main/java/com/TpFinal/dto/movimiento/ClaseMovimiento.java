@@ -9,15 +9,27 @@ public enum ClaseMovimiento {
 	Sellado,
 	Venta,
 	Alquiler,
-	Comision,
+	ComisionCuotaAlquiler,
 	Otro,
 	PagoAPropietario,
-	Impuesto, MesComision;
+	Impuesto,
+	MesComision,
+	PagoAVendedor,
+	ComisionAVendedor,ComisionAComprador;
 
     @Override
     public String toString() {
 	String ret = "";
 	switch (this) {
+	case ComisionAComprador:
+	    ret = "Comisión a comprador";
+	    break;
+	case ComisionAVendedor:
+	    ret = "Comisión a vendedor";
+	    break;
+	case PagoAVendedor:
+	    ret = "Pago a vendedor";
+	    break;
 	case Venta:
 	    ret = "Venta";
 	    break;
@@ -35,8 +47,8 @@ public enum ClaseMovimiento {
 	    ret = "Cuota Alquiler";
 	    break;
 
-	case Comision:
-	    ret = "Comisión";
+	case ComisionCuotaAlquiler:
+	    ret = "Comisión Cuota Alquiler";
 	    break;
 	case MesComision:
 	    ret = "Mes comisión";
@@ -59,7 +71,7 @@ public enum ClaseMovimiento {
     }
 
     public static List<ClaseMovimiento> toList() {
-	return Arrays.asList(ClaseMovimiento.Venta, ClaseMovimiento.Alquiler, ClaseMovimiento.Comision,
+	return Arrays.asList(ClaseMovimiento.Venta, ClaseMovimiento.Alquiler, ClaseMovimiento.ComisionCuotaAlquiler,
 		ClaseMovimiento.Otro, ClaseMovimiento.PagoAPropietario, ClaseMovimiento.Impuesto);
     }
 

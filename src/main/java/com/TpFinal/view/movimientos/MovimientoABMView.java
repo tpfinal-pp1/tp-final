@@ -108,7 +108,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 		grid.addColumn(mov -> {
 			String ret="";
-			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			ret = mov.getFecha().format(formatters);
 			return ret;
 		}).setCaption("Fecha").setId("fecha");;
@@ -125,7 +125,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 			return ret;
 		}).setCaption("Rubro").setId("claseMovimiento");;
 
-		grid.setColumnOrder("acciones", "descripcionMovimiento", "monto","fecha","tipoMovimiento","claseMovimiento");
+		grid.setColumnOrder("acciones","fecha", "descripcionMovimiento","tipoMovimiento", "monto","claseMovimiento");
 		grid.getColumns().forEach(col -> {
 			col.setResizable(false);
 			col.setHidable(true);
