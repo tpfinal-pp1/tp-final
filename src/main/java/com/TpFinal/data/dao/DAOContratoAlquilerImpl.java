@@ -19,80 +19,106 @@ import java.sql.Blob;
 /**
  * Created by Max on 9/30/2017.
  */
-public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implements DAOContratoAlquiler{
-    public DAOContratoAlquilerImpl() { super(ContratoAlquiler.class); }
+public class DAOContratoAlquilerImpl extends DAOImpl<ContratoAlquiler> implements DAOContratoAlquiler {
+    public DAOContratoAlquilerImpl() {
+	super(ContratoAlquiler.class);
+    }
 
     @Override
     public boolean saveOrUpdateContrato(ContratoAlquiler contrato, File doc) {
-        boolean ret = false;
-        FileInputStream docInputStream = null;
-        Session session = ConexionHibernate.openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
+	boolean ret = false;
+	FileInputStream docInputStream = null;
+	Session session = ConexionHibernate.openSession();
+	Transaction tx = null;
+	try {
+	    tx = session.beginTransaction();
 
-            Blob archivo = null;
+	    Blob archivo = null;
 
-            docInputStream = new FileInputStream(doc);
-            archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
-            
-            contrato.setDocumento(archivo);
-            
-            session.saveOrUpdate(contrato);
-            tx.commit();
-            ret = true;
-        } catch (HibernateException | FileNotFoundException e) {
-            System.err.println("Error realizar saveOrUpdate entidad: " + contrato);
-            e.printStackTrace();
-           if(tx!=null) tx.rollback();
-        } finally {
-            session.close();
-            if (docInputStream != null)
-                try {
-                    docInputStream.close();
-                } catch (IOException e) {
-                    System.err.println("Error cerrar el archivo: " + docInputStream);
-                    e.printStackTrace();
-                }
-        }
-        return ret;
+	    docInputStream = new FileInputStream(doc);
+	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
+
+	    contrato.setDocumento(archivo);
+
+	    session.saveOrUpdate(contrato);
+	    tx.commit();
+	    ret = true;
+	} catch (HibernateException | FileNotFoundException e) {
+	    System.err.println("Error realizar saveOrUpdate entidad: " + contrato);
+	    e.printStackTrace();
+	    if (tx != null)
+		tx.rollback();
+	} finally {
+	    session.close();
+	    if (docInputStream != null)
+		try {
+		    docInputStream.close();
+		} catch (IOException e) {
+		    System.err.println("Error cerrar el archivo: " + docInputStream);
+		    e.printStackTrace();
+		}
+	}
+	return ret;
     }
 
     @Override
     public boolean mergeContrato(ContratoAlquiler contrato, File doc) {
 	boolean ret = false;
-        FileInputStream docInputStream = null;
-        Session session = ConexionHibernate.openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            contrato.setDocumento(null);
-            ContratoAlquiler merged = (ContratoAlquiler)session.merge(contrato);
-            Blob archivo = null;
+	FileInputStream docInputStream = null;
+	Session session = ConexionHibernate.openSession();
+	Transaction tx = null;
+	try {
+	    tx = session.beginTransaction();
+	    contrato.setDocumento(null);
+	    ContratoAlquiler merged = (ContratoAlquiler) session.merge(contrato);
+	    Blob archivo = null;
 
-            docInputStream = new FileInputStream(doc);
-            archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
+	    docInputStream = new FileInputStream(doc);
+	    archivo = Hibernate.getLobCreator(session).createBlob(docInputStream, doc.length());
 
-            merged.setDocumento(archivo);
-            //contrato.getInmueble().getContratos().remove(contrato);
-            System.out.println("Contrato -> inmueble: " + contrato.getInmueble());
-            session.merge(merged);
-            tx.commit();
-            ret = true;
-        } catch (HibernateException | FileNotFoundException e) {
-            System.err.println("Error al realizar Merge: "+contrato);
-            e.printStackTrace();
-           if(tx!=null) tx.rollback();
-        } finally {
-            session.close();
-            if (docInputStream != null)
-                try {
-                    docInputStream.close();
-                } catch (IOException e) {
-                    System.err.println("Error cerrar el archivo: " + docInputStream);
-                    e.printStackTrace();
-                }
-        }
-        return ret;
+	    merged.setDocumento(archivo);
+	    System.out.println("Contrato -> inmueble: " + contrato.getInmueble());
+	    session.merge(merged);
+	    tx.commit();
+	    ret = true;
+	} catch (HibernateException | FileNotFoundException e) {
+	    System.err.println("Error al realizar Merge: " + contrato);
+	    e.printStackTrace();
+	    if (tx != null)
+		tx.rollback();
+	} finally {
+	    session.close();
+	    if (docInputStream != null)
+		try {
+		    docInputStream.close();
+		} catch (IOException e) {
+		    System.err.println("Error cerrar el archivo: " + docInputStream);
+		    e.printStackTrace();
+		}
+	}
+	return ret;
     }
+
+    @Override
+    public boolean merge(ContratoAlquiler entidad) {
+	boolean ret = false;
+	Session session = ConexionHibernate.openSession();
+	Transaction tx = null;
+	try {
+	    tx = session.beginTransaction();
+	    entidad.setDocumento(null);
+	    ContratoAlquiler merged = (ContratoAlquiler) session.merge(entidad);
+	    tx.commit();
+	    ret = true;
+	} catch (HibernateException e) {
+	    System.err.println("Error al realizar Merge: " + entidad);
+	    e.printStackTrace();
+	    if (tx != null)
+		tx.rollback();
+	} finally {
+	    session.close();
+	}
+	return ret;
+    }
+
 }
