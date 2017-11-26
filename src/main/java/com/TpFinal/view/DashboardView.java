@@ -131,7 +131,9 @@ public final class DashboardView extends Panel implements View {
 	nuevo.addClickListener(new ClickListener() {
 	    @Override
 	    public void buttonClick(ClickEvent clickEvent) {
-		notificationsWindow.close();
+	    	if(notificationsWindow != null) {
+				notificationsWindow.close();
+			}
 		Cita cita = new Cita();
 		cita.setFechaInicio(LocalDate.now().atTime(LocalTime.now()));
 		cita.setFechaFin(LocalDate.now().atTime(LocalTime.now().plusHours(1)));
