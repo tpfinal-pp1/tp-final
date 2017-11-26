@@ -13,13 +13,12 @@ import com.TpFinal.data.dao.DAOMovimientoImpl;
 import com.TpFinal.data.dao.interfaces.DAOMovimiento;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cobro.Cobro;
-import com.TpFinal.dto.cobro.EstadoCobro;
 import com.TpFinal.dto.contrato.ContratoAlquiler;
+import com.TpFinal.dto.contrato.ContratoVenta;
 import com.TpFinal.dto.movimiento.ClaseMovimiento;
 import com.TpFinal.dto.movimiento.Movimiento;
 import com.TpFinal.dto.movimiento.TipoMovimiento;
 import com.TpFinal.view.reportes.ItemFichaMovimientos;
-import com.TpFinal.view.reportes.ItemRepAlquileresACobrar;
 
 public class MovimientoService {
 	DAOMovimiento dao;
@@ -68,7 +67,7 @@ public class MovimientoService {
 	public static Movimiento getInstanciaPagoVenta(Cobro c) {
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
-				.setMonto(c.getMontoRecibido())
+				.setMonto(c.getMontoOriginal())
 				.setFecha(LocalDate.now())
 				.setClaseMovimiento(ClaseMovimiento.Venta)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
@@ -86,6 +85,19 @@ public class MovimientoService {
 				.setClaseMovimiento(ClaseMovimiento.Impuesto)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
 				.setTipoMovimiento(TipoMovimiento.Egreso)
+				.setTipoMoneda(c.getContrato().getMoneda())
+				.build();
+		return ret;
+	}	
+	
+	public static Movimiento getInstanciaSelladoVentaIngreso(Cobro c) {
+		Movimiento ret= new Movimiento.Builder()
+				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
+				.setMonto(c.getInteres())
+				.setFecha(LocalDate.now())
+				.setClaseMovimiento(ClaseMovimiento.Impuesto)
+				.setEstadoRegistro(EstadoRegistro.ACTIVO)
+				.setTipoMovimiento(TipoMovimiento.Ingreso)
 				.setTipoMoneda(c.getContrato().getMoneda())
 				.build();
 		return ret;
@@ -185,9 +197,12 @@ public class MovimientoService {
 	}
 
 	public static Movimiento getInstanciaGananciaInmobiliaria(Cobro c) {
+		ContratoVenta cv = (ContratoVenta) c.getContrato();
 		Movimiento ret= new Movimiento.Builder()
 				.setdescripcionMovimiento(c.getContrato().getInmueble().toString())
-				.setMonto(c.getComision())
+				.setMonto(c.getComision().subtract(c.getMontoOriginal()
+						.multiply(new BigDecimal(cv.getComsionAVendedor().toString()))
+						.divide(new BigDecimal("100"))))
 				.setFecha(LocalDate.now())
 				.setClaseMovimiento(ClaseMovimiento.Comision)
 				.setEstadoRegistro(EstadoRegistro.ACTIVO)
