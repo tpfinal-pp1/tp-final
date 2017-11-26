@@ -108,7 +108,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 		grid.addColumn(mov -> {
 			String ret="";
-			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 			ret = mov.getFecha().format(formatters);
 			return ret;
 		}).setCaption("Fecha").setId("fecha");;

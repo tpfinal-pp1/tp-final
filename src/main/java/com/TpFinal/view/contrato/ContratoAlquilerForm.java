@@ -335,7 +335,7 @@ public class ContratoAlquilerForm extends FormLayout {
 
 	Movimiento mov = MovimientoService.getInstanciaPagoAlquiler(cobro);
 	movService.saveOrUpdate(mov);
-	mov = MovimientoService.getInstanciaGananciaInmobiliaria(cobro);
+	mov = MovimientoService.getInstanciaComisionCuotaAlquiler(cobro);
 	movService.saveOrUpdate(mov);
 	mov = MovimientoService.getInstanciaPagoAPropietario(cobro);
 	movService.saveOrUpdate(mov);
@@ -351,7 +351,6 @@ public class ContratoAlquilerForm extends FormLayout {
 	movService.saveOrUpdate(mov);
 	mov = MovimientoService.getInstanciaSelladoAlquilerEgreso(ultimo);
 	movService.saveOrUpdate(mov);
-	// TODO movimiento de sellado de contrato de alquiler
     }
 
     private void binding() {
