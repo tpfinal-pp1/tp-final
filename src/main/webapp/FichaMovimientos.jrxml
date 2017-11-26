@@ -233,7 +233,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="7"/>
+			<band height="627"/>
 		</groupFooter>
 	</group>
 	<group name="Group4">
@@ -476,7 +476,7 @@
 			<frame>
 				<reportElement x="2" y="0" width="552" height="801" uuid="d5a48b3e-1c0f-4d54-9c68-4e185c69907c"/>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="2" width="140" height="49" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="3513dc4d-1c84-464a-8a05-38ef344b3b74">
+					<reportElement mode="Opaque" x="2" y="1" width="140" height="49" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="3513dc4d-1c84-464a-8a05-38ef344b3b74">
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -491,7 +491,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Venta en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="106" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="fdc15bf9-fcf6-4b80-b12a-fb709b3ed71d">
+					<reportElement mode="Opaque" x="2" y="105" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="fdc15bf9-fcf6-4b80-b12a-fb709b3ed71d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -508,7 +508,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Cuota Alquiler en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="212" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="80a5b219-cd8c-4409-ae47-4de6800ec94f">
+					<reportElement mode="Opaque" x="2" y="224" width="140" height="66" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="80a5b219-cd8c-4409-ae47-4de6800ec94f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -525,7 +525,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión Cuot. Alquiler en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="2" width="120" height="49" uuid="7f8ddd3e-e9d8-4cad-93ce-4b9bb09cdf28">
+					<reportElement x="142" y="1" width="120" height="49" uuid="7f8ddd3e-e9d8-4cad-93ce-4b9bb09cdf28">
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
 					</reportElement>
 					<box>
@@ -540,7 +540,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoVentaDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="142" y="106" width="120" height="50" uuid="01ecba5e-3033-485e-abaf-3f3afbdf655d">
+					<reportElement x="142" y="105" width="120" height="50" uuid="01ecba5e-3033-485e-abaf-3f3afbdf655d">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -557,7 +557,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoAlquilerDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="142" y="212" width="120" height="50" uuid="a9d5b1c1-9c54-444b-ae76-cb9a60372904">
+					<reportElement x="142" y="224" width="120" height="66" uuid="a9d5b1c1-9c54-444b-ae76-cb9a60372904">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -574,7 +574,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoComisionCuotaAlqDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="142" y="159" width="120" height="50" uuid="4fbfd62a-6158-4544-9e03-98542dca581e">
+					<reportElement x="142" y="158" width="120" height="62" uuid="4fbfd62a-6158-4544-9e03-98542dca581e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -591,7 +591,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoAlquilerPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="54" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="fffdf396-fa95-43d4-ae23-3c1b13d28cc2">
+					<reportElement mode="Opaque" x="2" y="53" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="fffdf396-fa95-43d4-ae23-3c1b13d28cc2">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -608,7 +608,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Venta en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="54" width="120" height="50" uuid="25aeeb9a-07ac-48ff-9a52-c9df104ea897">
+					<reportElement x="142" y="53" width="120" height="50" uuid="25aeeb9a-07ac-48ff-9a52-c9df104ea897">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -625,7 +625,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoVentaPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="159" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="1921fdb2-0678-417d-9021-b7ad093c43b9">
+					<reportElement mode="Opaque" x="2" y="158" width="140" height="62" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="1921fdb2-0678-417d-9021-b7ad093c43b9">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -770,7 +770,7 @@
 					<textFieldExpression><![CDATA["  "+$V{EgresoOtrosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="265" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="71f8453b-7838-4c11-987a-1481948d536a">
+					<reportElement mode="Opaque" x="2" y="292" width="140" height="66" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="71f8453b-7838-4c11-987a-1481948d536a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -787,7 +787,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión Cuot. Alquiler en Pesos:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="370" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="5f5e9f32-a2f0-4339-8c56-0aacb1a9810a">
+					<reportElement mode="Opaque" x="2" y="412" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="5f5e9f32-a2f0-4339-8c56-0aacb1a9810a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -804,7 +804,7 @@
 					<text><![CDATA[Importe Total de Otros Ingresos en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="265" width="120" height="50" uuid="83cb39ec-dff3-402e-96fb-e0a52052788e">
+					<reportElement x="142" y="292" width="120" height="66" uuid="83cb39ec-dff3-402e-96fb-e0a52052788e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -821,7 +821,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoComisionCuotaAlqPesos}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="142" y="370" width="120" height="50" uuid="2c3d22e8-3d5e-4054-9860-fcce1726dea0">
+					<reportElement x="142" y="412" width="120" height="50" uuid="2c3d22e8-3d5e-4054-9860-fcce1726dea0">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -838,7 +838,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoOtrosPesos}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="142" y="318" width="120" height="50" uuid="5c650763-380d-4cfd-81c3-2ca4e22a3e21">
+					<reportElement x="142" y="360" width="120" height="50" uuid="5c650763-380d-4cfd-81c3-2ca4e22a3e21">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -855,7 +855,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoOtrosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="318" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="88cc5ef0-baff-4dc7-a7e4-62420d29ab6f">
+					<reportElement mode="Opaque" x="2" y="360" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="88cc5ef0-baff-4dc7-a7e4-62420d29ab6f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -872,7 +872,7 @@
 					<text><![CDATA[Importe Total de Otros Ingresos en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="423" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="cc9ad537-114f-49e2-b3da-2ed011a3b3a1">
+					<reportElement mode="Opaque" x="2" y="465" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="cc9ad537-114f-49e2-b3da-2ed011a3b3a1">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -889,7 +889,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Impuestos en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="423" width="120" height="50" uuid="e77fc925-2635-4739-b807-ae23256102f1">
+					<reportElement x="142" y="465" width="120" height="50" uuid="e77fc925-2635-4739-b807-ae23256102f1">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -906,7 +906,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoImpuestosDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="476" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="a69bb401-4d9b-4265-9261-48aef350b29c">
+					<reportElement mode="Opaque" x="2" y="518" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="a69bb401-4d9b-4265-9261-48aef350b29c">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -923,7 +923,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Impuestos en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="476" width="120" height="50" uuid="f5a2a572-f8f4-4258-a136-e4a014befabd">
+					<reportElement x="142" y="518" width="120" height="50" uuid="f5a2a572-f8f4-4258-a136-e4a014befabd">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1004,7 +1004,7 @@
 					<text><![CDATA[Importe Total de Egresos de Impuestos en Dólares:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="529" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="4a33f99d-bc5e-44eb-a42c-c3b0cf01d2f7">
+					<reportElement mode="Opaque" x="2" y="571" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="4a33f99d-bc5e-44eb-a42c-c3b0cf01d2f7">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1021,7 +1021,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Depósito en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="529" width="120" height="50" uuid="57288a53-7ad2-4651-916b-fc2fd2641a14">
+					<reportElement x="142" y="571" width="120" height="50" uuid="57288a53-7ad2-4651-916b-fc2fd2641a14">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1038,7 +1038,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoDepositoDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="2" y="581" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="7aee5551-d6dc-412a-8775-3904c4eca85e">
+					<reportElement mode="Opaque" x="2" y="623" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="7aee5551-d6dc-412a-8775-3904c4eca85e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1055,7 +1055,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Depósito en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="142" y="581" width="120" height="50" uuid="bf487024-0f14-4adb-9be2-ea786cfd748f">
+					<reportElement x="142" y="623" width="120" height="50" uuid="bf487024-0f14-4adb-9be2-ea786cfd748f">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1072,7 +1072,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoDepositoPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="424" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="ba607eab-e64a-4156-bc78-82ef8b153dc1">
+					<reportElement mode="Opaque" x="282" y="466" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="ba607eab-e64a-4156-bc78-82ef8b153dc1">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1089,7 +1089,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Cert. Garante en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="422" y="424" width="120" height="50" uuid="751f2c3b-20a4-4371-b8ff-e24f373a138e">
+					<reportElement x="422" y="466" width="120" height="50" uuid="751f2c3b-20a4-4371-b8ff-e24f373a138e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1106,7 +1106,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoCertificadoGaranteDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="422" y="476" width="120" height="50" uuid="e4c022ef-6e7a-45ad-8eaf-ff55e70a24d3">
+					<reportElement x="422" y="518" width="120" height="50" uuid="e4c022ef-6e7a-45ad-8eaf-ff55e70a24d3">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1123,7 +1123,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoCertificadoGarantePesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="476" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="0fac4d91-ef02-4656-9996-c1de6f85b8f2">
+					<reportElement mode="Opaque" x="282" y="518" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="0fac4d91-ef02-4656-9996-c1de6f85b8f2">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1208,7 +1208,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{EgresoSelladoPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="2" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="f596bde2-3bb7-4dad-a47f-3dfbfcb73aac">
+					<reportElement mode="Opaque" x="283" y="1" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="f596bde2-3bb7-4dad-a47f-3dfbfcb73aac">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1225,7 +1225,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Sellados en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="423" y="2" width="120" height="50" uuid="e82386c1-a97a-4432-9ec3-c37cdd38e8d0">
+					<reportElement x="423" y="1" width="120" height="50" uuid="e82386c1-a97a-4432-9ec3-c37cdd38e8d0">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1242,7 +1242,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoSelladoDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="423" y="54" width="120" height="50" uuid="3e8a51c2-609c-41ae-bb36-378aab5934f5">
+					<reportElement x="423" y="53" width="120" height="50" uuid="3e8a51c2-609c-41ae-bb36-378aab5934f5">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1259,7 +1259,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoSelladoPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="54" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="4c0f49f4-dee3-4c57-8a0f-fa27fbb8ef92">
+					<reportElement mode="Opaque" x="283" y="53" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="4c0f49f4-dee3-4c57-8a0f-fa27fbb8ef92">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1412,7 +1412,7 @@
 					<text><![CDATA[Importe Total de Egresos de Cert. Garante en Pesos:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="107" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="3d4c4d7a-4011-4bd9-bc9f-39547f26807a">
+					<reportElement mode="Opaque" x="283" y="106" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="3d4c4d7a-4011-4bd9-bc9f-39547f26807a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1429,7 +1429,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Mes Comisión en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="423" y="107" width="120" height="50" uuid="c8bee7ac-9257-46ec-b16c-ee948c0f8294">
+					<reportElement x="423" y="106" width="120" height="50" uuid="c8bee7ac-9257-46ec-b16c-ee948c0f8294">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1446,7 +1446,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoMesComisionDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="160" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="14c1281a-a28b-4d9c-90d2-c82feb29339e">
+					<reportElement mode="Opaque" x="283" y="159" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="14c1281a-a28b-4d9c-90d2-c82feb29339e">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1463,7 +1463,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Mes Comisión en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="423" y="160" width="120" height="50" uuid="28bd7dec-6d21-421c-ae00-0ae30dcc4581">
+					<reportElement x="423" y="159" width="120" height="50" uuid="28bd7dec-6d21-421c-ae00-0ae30dcc4581">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1480,7 +1480,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoMesComisionPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="214" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="0e330b69-11f2-41cd-bbaa-c11493ab0a44">
+					<reportElement mode="Opaque" x="283" y="211" width="140" height="68" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="0e330b69-11f2-41cd-bbaa-c11493ab0a44">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1497,7 +1497,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión A Comprador en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="423" y="214" width="120" height="50" uuid="9171a338-d57e-443c-9aba-c01c9d32c586">
+					<reportElement x="423" y="211" width="120" height="68" uuid="9171a338-d57e-443c-9aba-c01c9d32c586">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1514,7 +1514,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoComisionACompradorDolares}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="423" y="266" width="120" height="50" uuid="4d82c6bd-b349-4e46-87ed-fdcaf8f8e7fc">
+					<reportElement x="423" y="281" width="120" height="65" uuid="4d82c6bd-b349-4e46-87ed-fdcaf8f8e7fc">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1531,7 +1531,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoComisionACompradorPesos}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="266" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="9a302688-f061-407d-9477-53c34e8c57d7">
+					<reportElement mode="Opaque" x="283" y="281" width="140" height="65" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="9a302688-f061-407d-9477-53c34e8c57d7">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1548,7 +1548,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión A Comprador en Pesos:]]></text>
 				</staticText>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="319" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="e73ec2a8-15cc-4cbe-8ad9-fa8e82f03e96">
+					<reportElement mode="Opaque" x="283" y="348" width="140" height="64" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="e73ec2a8-15cc-4cbe-8ad9-fa8e82f03e96">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1565,7 +1565,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión A Vendedor en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="423" y="319" width="120" height="50" uuid="890f0d1e-13e5-4c56-a46e-299df257c484">
+					<reportElement x="423" y="348" width="120" height="64" uuid="890f0d1e-13e5-4c56-a46e-299df257c484">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1582,7 +1582,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{IngresoComisionAVendedorDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="283" y="372" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="53084fea-dd59-4638-b83b-c70ae862417a">
+					<reportElement mode="Opaque" x="283" y="414" width="140" height="50" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="53084fea-dd59-4638-b83b-c70ae862417a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1599,7 +1599,7 @@
 					<text><![CDATA[Importe Total de Ingresos de Comisión A Vendedor en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="423" y="372" width="120" height="50" uuid="d80b2011-42c9-45ac-afce-df70ec861c5a">
+					<reportElement x="423" y="414" width="120" height="50" uuid="d80b2011-42c9-45ac-afce-df70ec861c5a">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1684,7 +1684,7 @@
 					<textFieldExpression><![CDATA["  "+ $V{EgresoPagoAVendedorDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="528" width="140" height="50" forecolor="#FFFFFF" backcolor="#75BFD1" uuid="3901333e-71cc-4c95-bb24-cb30250b43df">
+					<reportElement mode="Opaque" x="282" y="570" width="140" height="50" forecolor="#FFFFFF" backcolor="#75BFD1" uuid="3901333e-71cc-4c95-bb24-cb30250b43df">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1701,7 +1701,7 @@
 					<text><![CDATA[Importe Total de Ingresos en Dólares:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="422" y="528" width="120" height="50" uuid="aef81409-bb3d-44e9-a278-165cb1e69c4c">
+					<reportElement x="422" y="570" width="120" height="50" uuid="aef81409-bb3d-44e9-a278-165cb1e69c4c">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1718,7 +1718,7 @@
 					<textFieldExpression><![CDATA["  "+$V{IngresoTotalDolares}]]></textFieldExpression>
 				</textField>
 				<staticText>
-					<reportElement mode="Opaque" x="282" y="580" width="140" height="50" forecolor="#FFFFFF" backcolor="#75BFD1" uuid="5e956e8c-694c-4ec2-8f47-a65ad7cab169">
+					<reportElement mode="Opaque" x="282" y="622" width="140" height="50" forecolor="#FFFFFF" backcolor="#75BFD1" uuid="5e956e8c-694c-4ec2-8f47-a65ad7cab169">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
@@ -1735,7 +1735,7 @@
 					<text><![CDATA[Importe Total de Ingresos en Pesos:]]></text>
 				</staticText>
 				<textField>
-					<reportElement x="422" y="580" width="120" height="50" uuid="14d23e4c-31bd-43f3-84d1-1b9cf37f5af0">
+					<reportElement x="422" y="622" width="120" height="50" uuid="14d23e4c-31bd-43f3-84d1-1b9cf37f5af0">
 						<property name="com.jaspersoft.studio.unit.height" value="px"/>
 						<property name="com.jaspersoft.studio.unit.width" value="px"/>
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
