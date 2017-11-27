@@ -410,7 +410,7 @@ public class ContratoAlquilerForm extends FormLayout {
 				return fechaCelebracion.compareTo(fechaIngreso.getValue()) <= 0;
 			else
 				return true;
-		}, "La fecha de celebracion debe ser igual o anterior a la fecha de celebración")
+		}, "La fecha de celebració debe ser igual o anterior a la fecha de ingreso")
 		.bind(Contrato::getFechaCelebracion, Contrato::setFechaCelebracion);
 
 		binderContratoAlquiler.forField(this.fechaVencimiento)
