@@ -233,7 +233,7 @@
 			</band>
 		</groupHeader>
 		<groupFooter>
-			<band height="627"/>
+			<band height="7"/>
 		</groupFooter>
 	</group>
 	<group name="Group4">
@@ -472,9 +472,9 @@
 		</band>
 	</pageFooter>
 	<summary>
-		<band height="801" splitType="Stretch">
+		<band height="700" splitType="Stretch">
 			<frame>
-				<reportElement x="2" y="0" width="552" height="801" uuid="d5a48b3e-1c0f-4d54-9c68-4e185c69907c"/>
+				<reportElement x="2" y="0" width="552" height="690" uuid="d5a48b3e-1c0f-4d54-9c68-4e185c69907c"/>
 				<staticText>
 					<reportElement mode="Opaque" x="2" y="1" width="140" height="49" forecolor="#FFFFFF" backcolor="#50B6BF" uuid="3513dc4d-1c84-464a-8a05-38ef344b3b74">
 						<printWhenExpression><![CDATA[new Boolean($F{tipoMovimiento}.equals("Ingreso"))]]></printWhenExpression>
