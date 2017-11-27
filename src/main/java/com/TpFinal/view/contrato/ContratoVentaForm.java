@@ -222,6 +222,10 @@ public class ContratoVentaForm extends FormLayout {
 		Utils.mostarErroresValidator(e1);
 		Notification.show("Error al guardar, por favor revise los campos e intente de nuevo.",
 			Notification.Type.WARNING_MESSAGE);
+	    } catch (IllegalStateException e3) {
+		System.err.println("Error al guardar: " + "\n" + e3.getCause());
+		e3.printStackTrace();
+
 	    } catch (Exception e2) {
 		e2.printStackTrace();
 		Notification.show("Error: " + e2.toString());
@@ -242,7 +246,13 @@ public class ContratoVentaForm extends FormLayout {
 		Utils.mostarErroresValidator(e1);
 		Notification.show("Error al guardar, por favor revise los campos e intente de nuevo.",
 			Notification.Type.WARNING_MESSAGE);
-	    } catch (Exception e2) {
+	    } catch (IllegalStateException e3) {
+		System.err.println("Error al guardar: " + "\n" + e3.getCause());
+		e3.printStackTrace();
+
+	    }
+
+	    catch (Exception e2) {
 		e2.printStackTrace();
 		Notification.show("Error: " + e2.toString());
 	    }
@@ -558,43 +568,47 @@ public class ContratoVentaForm extends FormLayout {
 	}
     }
 
-    private void save() throws ValidationException, ContratoServiceException {
+    private void save() throws ValidationException, ContratoServiceException, IllegalStateException {
+	if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargando)) {
+	    Notification.show("Aguarde a que el documento finalice de cargar e intente nuevamente.",
+		    Notification.Type.WARNING_MESSAGE);
+	    throw new IllegalStateException("Documento en proceso de carga, no es posible guardar.");
+	} else {
+	    System.out.println("Entre al save");
+	    boolean success = false;
 
-	System.out.println("Entre al save");
-	boolean success = false;
+	    binderContratoVenta.writeBean(contratoVenta);
+	    if (contratoVenta.getEstadoContrato() == EstadoContrato.Celebrado) {
+		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
+		if (service.getPublicacionVentaActiva(contratoVenta.getInmueble()) != null) {
+		    service.getPublicacionVentaActiva(contratoVenta.getInmueble()).setEstadoPublicacion(
+			    EstadoPublicacion.Terminada);
+		}
+	    }
 
-	binderContratoVenta.writeBean(contratoVenta);
-	if (contratoVenta.getEstadoContrato() == EstadoContrato.Celebrado) {
-	    contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
-	    if (service.getPublicacionVentaActiva(contratoVenta.getInmueble()) != null) {
-		service.getPublicacionVentaActiva(contratoVenta.getInmueble()).setEstadoPublicacion(
-			EstadoPublicacion.Terminada);
+	    if (archivo != null && !archivo.exists()) {
+		success = service.saveOrUpdate(contratoVenta, null);
+	    } else {
+		// success = service.saveOrUpdate(contratoVenta, archivo);
+		if (contratoVenta.getEstadoContrato().equals(EstadoContrato.Celebrado)) {
+		    logger.debug("Añadiendo cobros");
+		    service.addCobroVenta(contratoVenta);
+		}
+		success = service.saveOrUpdate(contratoVenta, archivo);
+
+	    }
+
+	    contratoABMView.updateList();
+	    setVisible(false);
+	    contratoABMView().setComponentsVisible(true);
+
+	    if (success) {
+		contratoABMView().showSuccessNotification("Guardado");
+
+	    } else {
+		contratoABMView().showErrorNotification("Fallo al guardar");
 	    }
 	}
-
-	if (archivo != null && !archivo.exists()) {
-	    success = service.saveOrUpdate(contratoVenta, null);
-	} else {
-	    // success = service.saveOrUpdate(contratoVenta, archivo);
-	    if (contratoVenta.getEstadoContrato().equals(EstadoContrato.Celebrado)) {
-		logger.debug("Añadiendo cobros");
-		service.addCobroVenta(contratoVenta);
-	    }
-	    success = service.saveOrUpdate(contratoVenta, archivo);
-
-	}
-
-	contratoABMView.updateList();
-	setVisible(false);
-	contratoABMView().setComponentsVisible(true);
-
-	if (success) {
-	    contratoABMView().showSuccessNotification("Guardado");
-
-	} else {
-	    contratoABMView().showErrorNotification("Fallo al guardar");
-	}
-
     }
 
     public void cancel() {
