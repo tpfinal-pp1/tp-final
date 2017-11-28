@@ -563,6 +563,7 @@ public class InmuebleForm extends FormLayout {
 	this.supCubierta.clear();
 	this.supTotal.clear();
 	this.tiposInmueble.clear();
+	this.cbEsInmobiliaria.clear();
     }
 
     private void checkFieldsPerTab(List<BindingValidationStatus<?>> invalidComponents) {
