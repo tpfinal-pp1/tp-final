@@ -443,7 +443,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 		    mes.clear();
 	    });
 	    mes.addValueChangeListener(e -> {
-		if (e.getValue() != null) {
+		if (e.getValue() != null && !e.getValue().isEmpty()) {
 		    filtro.setMesV(cobro -> cobro.getFechaDeVencimiento()
 			    .getMonth()
 			    .getDisplayName(TextStyle.FULL, Locale.forLanguageTag("es-AR"))
@@ -548,7 +548,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 	    fHasta.setPlaceholder("Hasta");
 	    fHasta.setParseErrorMessage("Formato de fecha no reconocido");
 	    fHasta.addValueChangeListener(e -> {
-		if (fHasta.getValue() != null) {
+		if (fHasta.getValue() != null ) {
 		    filtro.setFiltroFechaDePagoHasta(cobro -> {
 			LocalDate fechaPago = cobro.getFechaDePago();
 			if (fechaPago != null) {
@@ -602,6 +602,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 	}
 
 	private TextField filtroPMes() {
+	    
 	    TextField mes = new TextField();
 	    mes.setPlaceholder("Mes");
 	    mes.addBlurListener(e -> {
@@ -609,7 +610,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 		    mes.clear();
 	    });
 	    mes.addValueChangeListener(e -> {
-		if (e.getValue() != null) {
+		if (e.getValue() != null && !e.getValue().isEmpty()) {
 		    filtro.setMesP(cobro -> {
 			LocalDate fechaPago = cobro.getFechaDePago();
 			if (fechaPago != null) {
