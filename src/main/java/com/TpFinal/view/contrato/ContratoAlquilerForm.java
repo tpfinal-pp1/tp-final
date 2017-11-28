@@ -485,6 +485,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		.bind(ContratoAlquiler::getIntervaloActualizacion, ContratoAlquiler::setIntervaloActualizacion);
 
 	binderContratoAlquiler.forField(this.tfDiaDePago).withNullRepresentation("")
+		.asRequired("Debe ingresar un dia de pago.")
 		.withConverter(new StringToIntegerConverter("Debe ingresar un número"))
 		.withValidator(n -> (n > 0 && n < 29), "Ingrese un dia entre 1 y 28")
 		.bind(ContratoAlquiler::getDiaDePago, ContratoAlquiler::setDiaDePago);
@@ -502,11 +503,13 @@ public class ContratoAlquilerForm extends FormLayout {
 		});
 
 	binderContratoAlquiler.forField(this.tfPActualizacion).withNullRepresentation("")
+		.asRequired("Debe ingresar un porcentaje entre 0 y 100")
 		.withConverter(new StringToDoubleConverter("Debe ingresar un número"))
 		.withValidator(n -> (n >= 0 && n <= 100), "Ingrese un porcentaje entre 0 y 100")
 		.bind(ContratoAlquiler::getPorcentajeIncrementoCuota, ContratoAlquiler::setPorcentajeIncrementoCuota);
 
 	binderContratoAlquiler.forField(this.tfPagoFueraDeTermino).withNullRepresentation("")
+		.asRequired("Debe ingresar un porcentaje entre 0 y 100")
 		.withConverter(new StringToDoubleConverter("Debe ingresar un número"))
 		.withValidator(n -> (n >= 0 && n <= 100), "Ingrese un porcentaje entre 0 y 100")
 		.bind(ContratoAlquiler::getInteresPunitorio, ContratoAlquiler::setInteresPunitorio);
@@ -522,6 +525,7 @@ public class ContratoAlquilerForm extends FormLayout {
 		});
 
 	binderContratoAlquiler.forField(this.tfValorInicial).withNullRepresentation("")
+		.asRequired("Debe ingresar un valor del contrato")
 		.withConverter(new StringToBigDecimalConverter("Debe ingresar un número"))
 		.withValidator(n -> {
 		    return (n.compareTo(BigDecimal.ZERO) > 0);
