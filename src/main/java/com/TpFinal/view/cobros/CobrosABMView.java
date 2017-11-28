@@ -267,14 +267,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 	    }).setCaption("Acciones").setId("acciones");
 
 	    grid.addColumn(cobro -> {
-		String ret = "";
-		if (cobro.getNumeroCuota() != null) {
-		    if (cobro.getNumeroCuota() == 0)
-			ret = "Cuota única";
-		    else
-			ret = cobro.getNumeroCuota().toString();
-		}
-		return ret;
+		return cobro.getNumeroCuota();
 	    }).setCaption("N° Cuota").setId("nroCuota");
 
 	    grid.setColumnOrder("acciones", "nroCuota", "inmuebles", "tipos", "fechasDeVencimiento", "fechasDePagos",
@@ -303,13 +296,11 @@ public class CobrosABMView extends DefaultLayout implements View {
 	    filtroInmuebles.setPlaceholder("Sin Filtro");
 	    filtroInmuebles.addValueChangeListener(e -> {
 		if (e.getValue() != null && !e.getValue().isEmpty()) {
-		    if ("cuota unica".toLowerCase().contains(e.getValue())
-			    || "cuota única".toLowerCase().contains(e.getValue()))
-			filtro.setFiltroCuota(cobro -> cobro.getNumeroCuota().equals(0));
-		    else {
-			filtro.setFiltroCuota(cobro -> cobro.getNumeroCuota()
-				.toString().toLowerCase()
-				.contains(e.getValue().toLowerCase()));
+		    try {
+			Integer i = Integer.parseInt(e.getValue());
+			filtro.setFiltroCuota(cobro -> cobro.getNumeroCuota().compareTo(i) == 0);
+		    } catch (Exception ex) {
+			filtro.setFiltroCuota(cobro -> true);
 		    }
 		} else {
 		    filtro.setFiltroCuota(cobro -> true);
@@ -548,7 +539,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 	    fHasta.setPlaceholder("Hasta");
 	    fHasta.setParseErrorMessage("Formato de fecha no reconocido");
 	    fHasta.addValueChangeListener(e -> {
-		if (fHasta.getValue() != null ) {
+		if (fHasta.getValue() != null) {
 		    filtro.setFiltroFechaDePagoHasta(cobro -> {
 			LocalDate fechaPago = cobro.getFechaDePago();
 			if (fechaPago != null) {
@@ -602,7 +593,7 @@ public class CobrosABMView extends DefaultLayout implements View {
 	}
 
 	private TextField filtroPMes() {
-	    
+
 	    TextField mes = new TextField();
 	    mes.setPlaceholder("Mes");
 	    mes.addBlurListener(e -> {

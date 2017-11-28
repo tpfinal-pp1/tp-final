@@ -42,6 +42,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 	private Grid<Movimiento> grid = new Grid<>();
 	Button newItem = new Button("Nuevo");
 	Button clearFilterTextBtn = new Button(VaadinIcons.CLOSE);
+	Button resumen = new Button("Resumen");
 	//RadioButtonGroup<String> filtroRoles = new RadioButtonGroup<>();
 
 	HorizontalLayout mainLayout;
@@ -62,6 +63,9 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 	private void configureComponents() {
 		//filtro = new FiltroDuracion();
+	    	resumen.addClickListener(click -> {
+	    	    new ResumenWindow();
+	    	});
 		clearFilterTextBtn.addClickListener(e -> ClearFilterBtnAction());
 
 		newItem.addClickListener(e -> {
@@ -249,7 +253,7 @@ public class MovimientoABMView extends DefaultLayout implements View {
 
 		CssLayout filtering = new CssLayout();
 		HorizontalLayout hl = new HorizontalLayout();
-		filtering.addComponents(clearFilterTextBtn, newItem);
+		filtering.addComponents(resumen,clearFilterTextBtn, newItem);
 		filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
 		hl.addComponent(filtering);
 
