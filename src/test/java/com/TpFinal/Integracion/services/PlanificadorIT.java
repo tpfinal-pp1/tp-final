@@ -8,17 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.TpFinal.data.conexion.ConexionHibernate;
-import com.TpFinal.data.conexion.TipoConexion;
 import com.TpFinal.dto.EstadoRegistro;
 import com.TpFinal.dto.cita.Cita;
 import com.TpFinal.dto.cita.TipoCita;
@@ -27,6 +23,8 @@ import com.TpFinal.dto.contrato.ContratoAlquiler;
 import com.TpFinal.dto.contrato.ContratoDuracion;
 import com.TpFinal.dto.contrato.EstadoContrato;
 import com.TpFinal.dto.contrato.TipoInteres;
+import com.TpFinal.dto.inmueble.Direccion;
+import com.TpFinal.dto.inmueble.Inmueble;
 import com.TpFinal.dto.interfaces.Messageable;
 import com.TpFinal.dto.parametrosSistema.ParametrosSistema;
 import com.TpFinal.dto.persona.CategoriaEmpleado;
@@ -34,12 +32,9 @@ import com.TpFinal.dto.persona.Credencial;
 import com.TpFinal.dto.persona.Empleado;
 import com.TpFinal.dto.persona.Inquilino;
 import com.TpFinal.dto.persona.Persona;
-import com.TpFinal.dto.persona.Rol;
 import com.TpFinal.services.ContratoService;
 import com.TpFinal.services.NotificadorConcreto;
-import com.TpFinal.services.ParametrosSistemaService;
 import com.TpFinal.services.Planificador;
-import com.itextpdf.text.log.SysoCounter;
 
 
 public class PlanificadorIT {
@@ -50,11 +45,13 @@ public class PlanificadorIT {
 		sc = Planificador.get();
 		sc.encender();
 		Planificador.get().setParametros(new ParametrosSistema());
+		sc.setNotificacion(new NotificadorConcreto());
+		sc.setMailSender(new NotificadorConcreto());
 	}
 
 	@After
 	public void tearDown() throws Exception {
-		//sc.apagar();
+		sc.apagar();
 	}
 
 	@Ignore
@@ -145,6 +142,14 @@ public class PlanificadorIT {
 		ContratoAlquiler contrato=instanciaAlquilerConCobrosVencidos();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
+		contrato.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 
 		new ContratoService().addCobrosAlquiler(contrato);
 
@@ -164,13 +169,20 @@ public class PlanificadorIT {
 	}
 	
 	@Ignore
-	@Test
 	public void removeCobrosVencidos() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setHoraInicioCobrosVencidos(LocalTime.now().plusMinutes(2));
 		ContratoAlquiler contrato=instanciaAlquilerConCobrosVencidos();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
+		contrato.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 
 		new ContratoService().addCobrosAlquiler(contrato);
 
@@ -193,7 +205,6 @@ public class PlanificadorIT {
 	}
 	
 	@Ignore
-	@Test
 	public void addCobrosPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
@@ -201,6 +212,14 @@ public class PlanificadorIT {
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
 		contrato.setId(new Long(1));
+		contrato.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 
 		new ContratoService().addCobrosAlquiler(contrato);
 
@@ -219,13 +238,20 @@ public class PlanificadorIT {
 	}
 	
 	@Ignore
-	@Test
 	public void removeCobrosPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
 		ContratoAlquiler contrato=instanciaAlquilerConCobrosPorVencer();
 		contrato.setEstadoContrato(EstadoContrato.Vigente);
 		contrato.setInquilinoContrato(personaInquilino(1).getInquilino());
+		contrato.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 
 		new ContratoService().addCobrosAlquiler(contrato);
 		
@@ -241,19 +267,26 @@ public class PlanificadorIT {
 			Planificador.get().addJobCobroPorVencer(c);
 			Planificador.get().removeJobCobroPorVencer(c);
 		});
-		TimeUnit.SECONDS.sleep(62);
+		TimeUnit.SECONDS.sleep(10);
 		System.out.println();
 		System.out.println("--------------------");
 		System.out.println();
 	}
 	
 	@Ignore
-	@Test 
 	public void addAlquilerPorVencer() throws InterruptedException {
 		sc.setNotificacion(new NotificadorConcreto());
 		sc.setMailSender(new NotificadorConcreto());
 		ContratoAlquiler ca =contratoAlquilerPorVencer();
 		ca.setId(new Long("1"));
+		ca.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 		
 
 		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
@@ -278,7 +311,14 @@ public class PlanificadorIT {
 		sc.setMailSender(new NotificadorConcreto());
 		ContratoAlquiler ca =contratoAlquilerPorVencer();
 		ca.setId(new Long("1"));
-		
+		ca.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 
 		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
 		
@@ -304,6 +344,14 @@ public class PlanificadorIT {
 		sc.setMailSender(new NotificadorConcreto());
 		ContratoAlquiler ca =contratoAlquilerVencido();
 		ca.setId(new Long("1"));
+		ca.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 		
 
 		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
@@ -328,6 +376,14 @@ public class PlanificadorIT {
 		sc.setMailSender(new NotificadorConcreto());
 		ContratoAlquiler ca =contratoAlquilerVencido();
 		ca.setId(new Long("1"));
+		ca.setInmueble( new Inmueble.Builder()
+				.setDireccion(new Direccion.Builder()
+						.setCalle("calle")
+						.setNro(1)
+						.setLocalidad("localidad")
+						.setProvincia("provincia")
+						.build())
+				.build());
 		
 
 		ca.setPropietario(new Persona.Builder().setMail("tpmailsender@mail.com").build());
