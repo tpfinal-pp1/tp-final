@@ -35,7 +35,7 @@ public class PublicacionVenta extends Publicacion {
 		this.fechaPublicacion =b.fechaPublicacion;
 		this.inmueble = b.inmueble;
 		this.moneda = b.moneda;
-		this.precio = b.precio.setScale(2, RoundingMode.CEILING);;
+		this.precio = b.precio.setScale(2,RoundingMode.HALF_UP);;
 		tipoPublicacion = TipoPublicacion.Venta;
 		this.estadoRegistro=EstadoRegistro.ACTIVO;
 	}
@@ -50,7 +50,7 @@ public class PublicacionVenta extends Publicacion {
 
 	public void setPrecio(BigDecimal precio) {
 		this.precio = precio;
-		this.precio=this.precio.setScale(2, RoundingMode.CEILING);
+		this.precio=this.precio.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public TipoMoneda getMoneda() {

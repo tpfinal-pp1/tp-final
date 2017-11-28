@@ -219,7 +219,7 @@ public class ContratoServiceIT {
 	BigDecimal monto = new BigDecimal("100.00");
 	BigDecimal expected = new BigDecimal("100.00");
 	for (int i = 0; i < cos.size(); i++) {
-	    expected = expected.setScale(2, RoundingMode.CEILING);
+	    expected = expected.setScale(2,RoundingMode.HALF_UP);
 	    assertEquals(expected.toBigInteger(), cos.get(i).getMontoOriginal().toBigInteger());
 	    if ((i + 1) % 2 == 0) {
 		Double interes = new Double(0.5);
@@ -252,12 +252,12 @@ public class ContratoServiceIT {
 
 	LocalDate fecha = LocalDate.of(2017, 06, 11);
 	for (int i = 0; i < cos.size(); i++) {
-	    expected = expected.setScale(2, RoundingMode.CEILING);
+	    expected = expected.setScale(2,RoundingMode.HALF_UP);
 	    assertEquals(expected.toBigInteger(), cos.get(i).getMontoOriginal().toBigInteger());
 	    if ((i + 1) % 2 == 0) {
 		Double interes = new Double(0.5);
 		expected = expected.add(expected.multiply(new BigDecimal(interes.toString())));
-		expected = expected.setScale(2, RoundingMode.CEILING);
+		expected = expected.setScale(2,RoundingMode.HALF_UP);
 	    }
 	    assertEquals(fecha, cos.get(i).getFechaDeVencimiento());
 	    fecha = fecha.plusMonths(1);

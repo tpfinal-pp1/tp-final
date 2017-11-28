@@ -94,7 +94,7 @@ public class ContratoVenta extends Contrato implements Cloneable {
 
     public void setPrecioVenta(BigDecimal precioVenta) {
 	this.precioVenta = precioVenta;
-	this.precioVenta = this.precioVenta.setScale(2, RoundingMode.CEILING);
+	this.precioVenta = this.precioVenta.setScale(2,RoundingMode.HALF_UP);
     }
 
     public Persona getComprador() {

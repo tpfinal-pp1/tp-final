@@ -125,7 +125,7 @@ public class ContratoAlquiler extends Contrato implements Cloneable, Messageable
 
 	public void setValorInicial(BigDecimal valorInicial) {
 		this.valorInicial = valorInicial;
-		this.valorInicial = this.valorInicial.setScale(2, RoundingMode.CEILING);
+		this.valorInicial = this.valorInicial.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public Integer getDiaDePago() {

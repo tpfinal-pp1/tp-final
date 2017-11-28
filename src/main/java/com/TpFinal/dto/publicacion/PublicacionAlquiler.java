@@ -93,7 +93,7 @@ public class PublicacionAlquiler extends Publicacion {
 
     public void setValorCuota(BigDecimal valorCuota) {
 	this.valorCuota = valorCuota;
-	this.valorCuota = this.valorCuota.setScale(2, RoundingMode.CEILING);
+	this.valorCuota = this.valorCuota.setScale(2,RoundingMode.HALF_UP);
     }
 
     public PublicacionAlquiler() {
@@ -111,7 +111,7 @@ public class PublicacionAlquiler extends Publicacion {
 	this.intervaloActualizacion = b.intervaloActualizacion;
 	this.porcentajeIncrementoCuota = b.porcentajeIncrementoCuota;
 	this.tipoIncrementoCuota = b.tipoIncrementoCuota;
-	this.valorCuota = b.valorCuota.setScale(2, RoundingMode.CEILING);
+	this.valorCuota = b.valorCuota.setScale(2,RoundingMode.HALF_UP);
 	;
 	tipoPublicacion = TipoPublicacion.Alquiler;
 	this.estadoRegistro = EstadoRegistro.ACTIVO;
