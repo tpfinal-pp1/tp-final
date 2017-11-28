@@ -235,6 +235,7 @@ public class ContratoVentaForm extends FormLayout {
 	    this.binderContratoVenta = getBinderParaFinalizacionDeCarga();
 	    if (estadoCargaDocumento.equals(EstadoCargaDocumento.Cargado) && binderContratoVenta.isValid()) {
 		contratoVenta.setEstadoContrato(EstadoContrato.Celebrado);
+		 service.finalizarPublicacionAsociada(contratoVenta);
 		contratoVenta.getInmueble().setEstadoInmueble(EstadoInmueble.Vendido);
 	    } else {
 		tfDocumento.setValue("Cargue un documento.");

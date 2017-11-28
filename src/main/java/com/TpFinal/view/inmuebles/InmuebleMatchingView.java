@@ -257,7 +257,7 @@ public class InmuebleMatchingView extends DefaultLayout implements View {
 			    ContratoAlquiler c = getContratoTemporalAPartirDePublicacion(pub);
 			    String simbolo = TipoMoneda.getSimbolo(pub.getMoneda());
 			    ret = "Valor entrada:"
-				    + "\n1ra cuota: " + simbolo + pub.getValorCuota().setScale(2, RoundingMode.CEILING)
+				    + "\n1ra cuota: " + simbolo + pub.getValorCuota().setScale(2,RoundingMode.HALF_UP)
 					    .toPlainString()
 				    + "\nMes comisión: " + simbolo + ContratoService.getMontoUltimaCuota(c)
 					    .toPlainString()

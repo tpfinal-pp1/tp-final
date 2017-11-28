@@ -154,7 +154,7 @@ public class CobroServiceIT {
 		interes=interes.multiply(new BigDecimal(diasAtraso.toString()));
 		interes=ca.getValorInicial().multiply(interes);
 		expected=interes.add(ca.getValorInicial());
-		expected=expected.setScale(2, RoundingMode.CEILING);
+		expected=expected.setScale(2,RoundingMode.HALF_UP);
 		assertEquals(expected,cos.get(0).getMontoRecibido());
 	}
 	
@@ -190,7 +190,7 @@ public class CobroServiceIT {
 			valorAnterior=valorAnterior.add(valorAnterior.multiply(interes));
 		}
 	
-		valorAnterior=valorAnterior.setScale(2, RoundingMode.CEILING);
+		valorAnterior=valorAnterior.setScale(2,RoundingMode.HALF_UP);
 		assertEquals(valorAnterior,cos.get(0).getMontoRecibido());
 		assertEquals(cos.get(0).getContrato(), cos.get(1).getContrato());
 	}

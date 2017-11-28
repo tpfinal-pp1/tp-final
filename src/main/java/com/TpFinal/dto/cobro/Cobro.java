@@ -151,27 +151,27 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 
 	public void setMontoOriginal(BigDecimal montoOriginal) {
 		this.montoOriginal = montoOriginal;
-		this.montoOriginal=this.montoOriginal.setScale(2, RoundingMode.CEILING);
+		this.montoOriginal=this.montoOriginal.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public void setMontoRecibido(BigDecimal montoRecibido) {
 		this.montoRecibido = montoRecibido;
-		this.montoRecibido = this.montoRecibido.setScale(2, RoundingMode.CEILING);
+		this.montoRecibido = this.montoRecibido.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public void setInteres(BigDecimal interes) {
 		this.interes = interes;
-		this.interes= this.interes.setScale(2, RoundingMode.CEILING);
+		this.interes= this.interes.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public void setComision(BigDecimal comision) {
 		this.comision = comision;
-		this.comision=this.comision.setScale(2, RoundingMode.CEILING);
+		this.comision=this.comision.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public void setMontoPropietario(BigDecimal montoPropietario) {
 		this.montoPropietario = montoPropietario;
-		this.montoPropietario=this.montoPropietario.setScale(2, RoundingMode.CEILING);
+		this.montoPropietario=this.montoPropietario.setScale(2,RoundingMode.HALF_UP);
 	}
 
 	public void setFechaDePago(LocalDate fechaDePago) {
@@ -332,27 +332,27 @@ public class Cobro implements Identificable, BorradoLogico, Messageable {
 		}
 		public Builder setMontoOriginal(BigDecimal dato) {
 			this.montoOriginal=dato;
-			this.montoOriginal=this.montoOriginal.setScale(2, RoundingMode.CEILING);
+			this.montoOriginal=this.montoOriginal.setScale(2,RoundingMode.HALF_UP);
 			return this;
 		}
 		public Builder setMontoRecibido(BigDecimal dato) {
 			this.montoRecibido=dato;
-			this.montoRecibido=this.montoRecibido.setScale(2, RoundingMode.CEILING);
+			this.montoRecibido=this.montoRecibido.setScale(2,RoundingMode.HALF_UP);
 			return this;
 		}
 		public Builder setInteres(BigDecimal dato) {
 			this.interes=dato;
-			this.interes=this.interes.setScale(2, RoundingMode.CEILING);
+			this.interes=this.interes.setScale(2,RoundingMode.HALF_UP);
 			return this;
 		}
 		public Builder setComision(BigDecimal dato) {
 			this.comision=dato;
-			this.comision=this.comision.setScale(2, RoundingMode.CEILING);
+			this.comision=this.comision.setScale(2,RoundingMode.HALF_UP);
 			return this;
 		}
 		public Builder setMontoPropietario(BigDecimal dato) {
 			this.montoPropietario=dato;
-			this.montoPropietario=this.montoPropietario.setScale(2, RoundingMode.CEILING);
+			this.montoPropietario=this.montoPropietario.setScale(2,RoundingMode.HALF_UP);
 			return this;
 		}
 		public Builder setFechaDePago(LocalDate dato) {
