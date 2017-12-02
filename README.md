@@ -14,8 +14,4 @@
     
   -  Coveralls(Covertura): https://coveralls.io/github/tpfinal-pp1/tp-final
     
-  - Jenkins(Deployment): http://inmobi.ddns.net:8090   
-    
-  - Web-App(Demo)=: http://inmobi.ddns.net
-  
 
