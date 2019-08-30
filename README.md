@@ -4,29 +4,38 @@
 
 See tests logs for Serial Key or go to Installer/KeyGen
 
-#Maven goal:
+# Maven goal:
 
+```
 jetty:run
+```
 
-#CI-CD:
+# CI-CD:
+```bash
+    #cleanup workspace
+    rm -rf jetty.old
+    mv jetty jetty.old
+    # download jetty
+    cp /config/workspace/Package/jetty.tar.gz jetty.tar.gz
+    tar xfz jetty.tar.gz
+    mv jetty-distribution-9.4.8.v20171121 jetty
+    rm jetty.tar.gz
+    mv jetty.old/Files jetty/Files
+    #Kill jetty if running
+    pkill -9 -f jetty.port=9012 || true
+    sleep 5
+    cd jetty
+    cp /config/workspace/Package/target/Inmobi.war /config/workspace/Run/jetty/webapps/root.war
+    #start jetty & prevent jenkins killing job after finish
+    BUILD_ID=dontKillMe nohup java -jar start.jar jetty.port=9012 > ../jetty.log 2>&1 &
+```
 
-# cleanup workspace
-rm -rf jetty.old
-mv jetty jetty.old
-# download jetty
-cp /config/workspace/Package/jetty.tar.gz jetty.tar.gz
-tar xfz jetty.tar.gz
-mv jetty-distribution-9.4.8.v20171121 jetty
-rm jetty.tar.gz
-mv jetty.old/Files jetty/Files
 
-# kill jetty if running
-pkill -9 -f jetty.port=9012 || true
-sleep 5
-cd jetty
-cp /config/workspace/Package/target/Inmobi.war /config/workspace/Run/jetty/webapps/root.war
-# start jetty & prevent jenkins killing job after finish
-BUILD_ID=dontKillMe nohup java -jar start.jar jetty.port=9012 > ../jetty.log 2>&1 &
+
+
+
+
+
 
 
 
