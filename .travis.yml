@@ -8,8 +8,8 @@ cache:
   - $HOME/.sonarscanner/sonar-scanner-2.8
 sudo: false
 install: true
-
-
-script:  mvn -q -Pproduction-mode test 
+jdk:
+  - oraclejdk8
+script:  mvn -q -Pproduction-mode test
 notifications:
     slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
