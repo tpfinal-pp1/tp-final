@@ -10,6 +10,6 @@ sudo: false
 install: true
 
 
-script:  mvn -Pproduction-mode test
+script:  mvn -q -Pproduction-mode test 
 notifications:
     slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
