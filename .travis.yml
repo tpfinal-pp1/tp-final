@@ -1,4 +1,6 @@
+dist: xenial
 language: java
+jdk: openjdk8
 cache:
   directories:
   - .autoconf
@@ -8,8 +10,6 @@ cache:
   - $HOME/.sonarscanner/sonar-scanner-2.8
 sudo: false
 install: true
-jdk:
-  - oraclejdk8
 script:  mvn -q -Pproduction-mode test
 notifications:
     slack: tpfinal:HiKM45Mt99yllzQnQRGdIpNQ
