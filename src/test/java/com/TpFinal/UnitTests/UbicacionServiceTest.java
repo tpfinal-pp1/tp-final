@@ -7,6 +7,7 @@ import com.TpFinal.services.InmuebleService;
 import com.TpFinal.services.UbicacionService;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class UbicacionServiceTest {
@@ -17,7 +18,7 @@ public class UbicacionServiceTest {
     }
 
 
-    @Test
+    @Ignore
     public void downloadJsonGeocodeDataAndStaticMapTest(){
         Inmueble inmueble= InmuebleService.getInstancia();
         Direccion dir=new Direccion.Builder().setLocalidad("San Miguel")
